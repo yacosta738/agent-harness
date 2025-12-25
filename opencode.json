@@ -3,10 +3,12 @@
   "theme": "aura-dark",
   "autoupdate": true,
   "mcp": {
-    "context7": {
+   "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
-      "enabled": true
+      "headers": {
+        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+      }
     },
     "deepwiki": {
       "type": "remote",
@@ -24,13 +26,13 @@
       "enabled": true
     },
     "linear": {
-      "type": "remote",
-      "url": "https://mcp.linear.app/sse",
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "https://mcp.linear.app/mcp"],
       "enabled": true
     },
     "notion": {
       "type": "local",
-      "command": ["npx", "-y", "@notionhq/mcp-server-notion@latest"],
+      "command": ["npx", "-y", "mcp-remote", "https://mcp.notion.com/mcp"],
       "enabled": true
     }
   },
