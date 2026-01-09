@@ -10,6 +10,14 @@
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       }
     },
+    // "github": {
+    //   "type": "remote",
+    //   "url": "https://api.githubcopilot.com/mcp/",
+    //   "enabled": true,
+    //   "headers": {
+    //     "Authorization": "Bearer ${GITHUB_TOKEN}"
+    //   }
+    // },
     "deepwiki": {
       "type": "remote",
       "url": "https://mcp.deepwiki.com/sse",
