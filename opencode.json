@@ -18,6 +18,11 @@
     //     "Authorization": "Bearer ${GITHUB_TOKEN}"
     //   }
     // },
+  "magic-patterns": {
+    "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "https://mcp.magicpatterns.com/mcp"],
+      "enabled": true
+  },
     "deepwiki": {
       "type": "remote",
       "url": "https://mcp.deepwiki.com/sse",
