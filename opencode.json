@@ -11,20 +11,10 @@
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
       }
     },
-    // "sonarqube": {
-    //   "type": "local",
-    //   "command": ["npx","-y", "sonarqube-mcp-server@latest"],
-    //   "environment": {
-    //     "SONARQUBE_URL": "https://tu-instancia-sonarqube.com",
-    //     "SONARQUBE_TOKEN": "TU_TOKEN_DE_SONARQUBE",
-    //     "SONARQUBE_ORGANIZATION": "tu-org-si-usas-sonarcloud"
-    //   },
-    //   "enabled": true
-    // },
     "github": {
       "type": "remote",
       "url": "https://api.githubcopilot.com/mcp/",
-      "enabled": true,
+      "enabled": false,
       "headers": {
         "Authorization": "Bearer {env:GITHUB_TOKEN}"
       }
@@ -32,7 +22,7 @@
   "magic-patterns": {
     "type": "local",
       "command": ["npx", "-y", "mcp-remote", "https://mcp.magicpatterns.com/mcp"],
-      "enabled": true
+      "enabled": false
   },
     "deepwiki": {
       "type": "remote",
@@ -52,12 +42,12 @@
     "linear": {
       "type": "local",
       "command": ["npx", "-y", "mcp-remote", "https://mcp.linear.app/mcp"],
-      "enabled": true
+      "enabled": false
     },
     "notion": {
       "type": "local",
       "command": ["npx", "-y", "mcp-remote", "https://mcp.notion.com/mcp"],
-      "enabled": true
+      "enabled": false
     }
   },
   "agent": {
