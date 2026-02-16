@@ -52,8 +52,13 @@
       "enabled": false
     },
     "deepwiki": {
-      "type": "remote",
-      "url": "https://mcp.deepwiki.com/sse",
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mcp-remote",
+        "https://mcp.deepwiki.com/mcp",
+      ],
       "enabled": true
     },
     "gh_grep": {
