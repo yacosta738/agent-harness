@@ -1,7 +1,7 @@
 ---
 name: jules-cli
 description: >
-  Interact with the Jules CLI for remote coding tasks. 
+  Interact with the Jules CLI for remote coding tasks.
   Trigger: Use when a task is large-scale, isolated, or exploratory and requires a remote VM environment.
 ---
 

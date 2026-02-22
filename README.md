@@ -37,7 +37,7 @@ Edit `opencode.json` and change the `theme` value to:
 ## 🤖 Agents
 
 ### 1. Kuko (Primary Agent)
-**Mode:** `primary`  
+**Mode:** `primary`
 **Description:** Cuban fullstack architect focused on code reviews and best practices
 
 **Use for:**
@@ -54,7 +54,7 @@ Edit `opencode.json` and change the `theme` value to:
 ---
 
 ### 2. Linear PM (Project Management)
-**Mode:** `secondary`  
+**Mode:** `secondary`
 **Description:** Project management specialist for Linear workflow
 
 **Use for:**
@@ -82,7 +82,7 @@ Edit `opencode.json` and change the `theme` value to:
 ---
 
 ### 3. PKM (Personal Knowledge Management)
-**Mode:** `secondary`  
+**Mode:** `secondary`
 **Description:** Maintains Obsidian vault and Notion databases
 
 **Vault Location:** `/Users/acosta/Library/Mobile Documents/iCloud~md~obsidian/Documents/🧠`
@@ -147,29 +147,29 @@ Main content with [[wikilinks]]
 ## 🔌 MCP Servers
 
 ### Context7
-Type: Remote  
+Type: Remote
 Purpose: Up-to-date library documentation
 
 ### DeepWiki
-Type: Remote  
+Type: Remote
 Purpose: GitHub repository documentation and Q&A
 
 ### GitHub Grep
-Type: Remote  
+Type: Remote
 Purpose: Search code across GitHub repositories
 
 ### Chrome DevTools
-Type: Local  
+Type: Local
 Purpose: Browser automation and debugging
 
 ### Linear
-Type: Remote  
-Purpose: Linear API access for issue management  
+Type: Remote
+Purpose: Linear API access for issue management
 URL: `https://mcp.linear.app/sse`
 
 ### Notion
-Type: Local  
-Purpose: Notion API access for database management  
+Type: Local
+Purpose: Notion API access for database management
 Command: `npx -y @notionhq/mcp-server-notion@latest`
 
 ---
