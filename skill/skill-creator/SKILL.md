@@ -1,13 +1,13 @@
 ---
 name: skill-creator
 description: >
-  Creates new AI agent skills following the Agent Skills spec.
+  Creates new AI agent skills following a generic Agent Skills specification.
   Trigger: When user asks to create a new skill, add agent instructions, or document patterns for AI.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
 # Skill Creator Guide
 
-This guide outlines how to create new AI agent skills following the Agent Skills specification. It covers when to create a skill, the skill structure, naming conventions, frontmatter fields, content guidelines, and registration.
+This guide outlines how to create new AI agent skills following a generic Agent Skills specification. It covers when to create a skill, the skill structure, naming conventions, frontmatter fields, content guidelines, and registration.
 
 ## When to Create a Skill
 
@@ -50,7 +50,7 @@ description: >
   Trigger: {When the AI should load this skill}.
 license: Apache-2.0
 metadata:
-  author: prowler-cloud
+  author: generic-author
   version: "1.0"
 ---
 
@@ -86,8 +86,8 @@ metadata:
 | Type | Pattern | Examples |
 |------|---------|----------|
 | Generic skill | `{technology}` | `pytest`, `playwright`, `typescript` |
-| Prowler-specific | `prowler-{component}` | `prowler-api`, `prowler-ui`, `prowler-sdk-check` |
-| Testing skill | `prowler-test-{component}` | `prowler-test-sdk`, `prowler-test-api` |
+| Repo-specific | `{repo}-{component}` | `repo-api`, `repo-ui`, `repo-sdk-check` |
+| Testing skill | `test-{component}` | `test-sdk`, `test-api` |
 | Workflow skill | `{action}-{target}` | `skill-creator`, `jira-task` |
 
 ---
@@ -108,13 +108,13 @@ Link to external guides?    → references/ (with local path)
 
 ---
 
-## Decision: Prowler-Specific vs Generic
+## Decision: Repo-Specific vs Generic
 
 ```
 
 Patterns apply to ANY project?     → Generic skill (e.g., pytest, typescript)
-Patterns are Prowler-specific?     → prowler-{name} skill
-Generic skill needs Prowler info?  → Add references/ pointing to Prowler docs
+Patterns are repo-specific?        → {repo}-{name} skill
+Generic skill needs repo info?     → Add references/ pointing to repo docs
 
 ```markdown
 
@@ -126,8 +126,8 @@ Generic skill needs Prowler info?  → Add references/ pointing to Prowler docs
 |-------|----------|-------------|
 | `name` | Yes | Skill identifier (lowercase, hyphens) |
 | `description` | Yes | What + Trigger in one block |
-| `license` | Yes | Always `Apache-2.0` for Prowler |
-| `metadata.author` | Yes | `prowler-cloud` |
+| `license` | Yes | Always `Apache-2.0` |
+| `metadata.author` | Yes | `generic-author` |
 | `metadata.version` | Yes | Semantic version as string |
 
 ---
