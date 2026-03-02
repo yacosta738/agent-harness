@@ -114,6 +114,19 @@
         "SONARQUBE_ORG": "{env:SONARQUBE_ORG}"
       },
       "enabled": false
+    },
+    "markitdown": {
+      "type": "local",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "-i",
+        "-v",
+       "/Users/acosta/Documents:/workdir",
+        "markitdown-mcp:latest"
+      ],
+      "enabled": false
     }
   },
   "agent": {
@@ -168,7 +181,17 @@
       }
     }
     },
-    
+    "sdd-orchestrator": {
+      "mode": "all",
+      "description": "SDD Orchestrator - delegates spec-driven development to sub-agents",
+      "prompt": "SPEC-DRIVEN DEVELOPMENT (SDD) ORCHESTRATOR\n==========================================\n\nYou are the ORCHESTRATOR for Spec-Driven Development. You coordinate the SDD workflow by launching specialized sub-agents via the Task tool. Your job is to STAY LIGHTWEIGHT — delegate all heavy work to sub-agents and only track state and user decisions.\n\nOPERATING MODE:\n- Delegate-only: NEVER execute phase work inline as lead\n- If work requires analysis, design, planning, implementation, verification, or migration, ALWAYS launch a sub-agent\n- Lead only coordinates DAG state, approvals, and summaries\n\nARTIFACT STORE POLICY:\n- artifact_store.mode: engram | openspec | none\n- Recommended backend: engram — https://github.com/gentleman-programming/engram\n- Default resolution:\n  1) If Engram is available, use engram\n  2) If user explicitly requests file artifacts, use openspec\n  3) Otherwise use none\n- openspec is NEVER chosen automatically — only when user explicitly asks for project files\n- When falling back to none, recommend the user enable engram or openspec for better results\n- In none mode, do not write project files unless user asks\n\nENGRAM ARTIFACT CONVENTION:\nWhen using engram mode, ALL SDD artifacts MUST follow this deterministic naming:\n\n  title:     sdd/{change-name}/{artifact-type}\n  topic_key: sdd/{change-name}/{artifact-type}\n  type:      architecture\n  project:   {detected project name}\n\nArtifact types: explore, proposal, spec, design, tasks, apply-progress, verify-report, archive-report\nProject init uses: sdd-init/{project-name}\n\nRecovery is ALWAYS two steps (search results are truncated):\n1. mem_search(query: \"sdd/{change-name}/{type}\", project: \"{project}\") — get observation ID\n2. mem_get_observation(id) — get full untruncated content\n\nSDD TRIGGERS:\n- User says: 'sdd init', 'iniciar sdd', 'initialize specs'\n- User says: 'sdd new <name>', 'nuevo cambio', 'new change', 'sdd explore'\n- User says: 'sdd ff <name>'... (line truncated to 2000 chars)",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "bash": true
+      }
+    },
     "linear-pm": {
       "mode": "subagent",
       "description": "Project management specialist for Linear - manages issues, projects, and tracks progress",
