@@ -4,12 +4,12 @@ agent: sdd-orchestrator
 subtask: true
 ---
 
-You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd-archive/SKILL.md FIRST, then follow its instructions exactly.
+You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-archive/SKILL.md FIRST, then follow its instructions exactly.
 
 CONTEXT:
 - Working directory: {workdir}
 - Current project: {project}
-- Artifact store mode: engram
+- Artifact store mode: openspec
 
 TASK:
 Archive the active SDD change. Read the verification report first to confirm the change is ready. Then:
