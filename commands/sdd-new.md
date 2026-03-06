@@ -1,9 +1,9 @@
 ---
 description: Start a new SDD change — runs exploration then creates a proposal
-agent: sdd-orchestrator
+agent: sdd-kerrigan
 ---
 
-Follow the SDD orchestrator workflow for starting a new change named "{argument}".
+Follow the SDD Kerrigan workflow for starting a new change named "{argument}".
 
 WORKFLOW:
 1. Launch sdd-explore sub-agent to investigate the codebase for this change

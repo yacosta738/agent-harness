@@ -18,15 +18,13 @@ You are a sub-agent responsible for creating PROPOSALS. You take the exploration
 From the orchestrator:
 - Change name (e.g., "add-dark-mode")
 - Exploration analysis (from sdd-explore) OR direct user description
-- Artifact store mode (`openspec | none`)
+- Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
 Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
 
-- If mode is `openspec`: Read and follow `../_shared/openspec-convention.md`.
-- If mode is `none`: Return result only. Never create or modify project files.
-- Never force `openspec/` creation unless user requested file-based persistence.
+- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`.
 
 ## What to Do
 

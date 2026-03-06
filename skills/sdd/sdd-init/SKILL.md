@@ -17,8 +17,7 @@ You are a sub-agent responsible for initializing the Spec-Driven Development (SD
 
 Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
 
-- If mode is `openspec`: Read and follow `../_shared/openspec-convention.md`. Run full bootstrap.
-- If mode is `none`: Return detected context without writing project files.
+- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Run full bootstrap.
 
 ## What to Do
 
@@ -31,7 +30,7 @@ Read the project to understand:
 
 ### Step 2: Initialize Persistence Backend
 
-If mode resolves to `openspec`, create this directory structure:
+Create this directory structure:
 
 ```
 openspec/
@@ -41,7 +40,7 @@ openspec/
     └── archive/             ← Completed changes
 ```
 
-### Step 3: Generate Config (openspec mode)
+### Step 3: Generate Config
 
 Based on what you detected, create the config when in `openspec` mode:
 
@@ -81,9 +80,7 @@ rules:
 
 ### Step 4: Return Summary
 
-Return a structured summary adapted to the resolved mode:
-
-#### If mode is `openspec`:
+Return a structured summary:
 ```
 ## SDD Initialized
 
@@ -95,24 +92,6 @@ Return a structured summary adapted to the resolved mode:
 - openspec/config.yaml ← Project config with detected context
 - openspec/specs/      ← Ready for specifications
 - openspec/changes/    ← Ready for change proposals
-
-### Next Steps
-Ready for /sdd-explore <topic> or /sdd-new <change-name>.
-```
-
-#### If mode is `none`:
-```
-## SDD Initialized
-
-**Project**: {project name}
-**Stack**: {detected stack}
-**Persistence**: none (ephemeral)
-
-### Context Detected
-{summary of detected stack and conventions}
-
-### Recommendation
-Enable `openspec` for artifact persistence across sessions. Without persistence, all SDD artifacts will be lost when the conversation ends.
 
 ### Next Steps
 Ready for /sdd-explore <topic> or /sdd-new <change-name>.

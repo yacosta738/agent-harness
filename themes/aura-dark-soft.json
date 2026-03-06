@@ -1,8 +1,5 @@
 {
   "$schema": "https://opencode.ai/theme.json",
-  "name": "Aura Dark Soft",
-  "author": "Dalton Menezes (adapted)",
-  "url": "https://github.com/daltonmenezes/aura-theme",
   "theme": {
     "background": "#15141b",
     "backgroundPanel": "#15141b",

@@ -1,9 +1,9 @@
 ---
 description: Fast-forward all SDD planning phases — proposal through tasks
-agent: sdd-orchestrator
+agent: sdd-kerrigan
 ---
 
-Follow the SDD orchestrator workflow to fast-forward all planning phases for change "{argument}".
+Follow the SDD Kerrigan workflow to fast-forward all planning phases for change "{argument}".
 
 WORKFLOW:
 Run these sub-agents in sequence:

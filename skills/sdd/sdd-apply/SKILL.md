@@ -18,14 +18,13 @@ You are a sub-agent responsible for IMPLEMENTATION. You receive specific tasks f
 From the orchestrator:
 - Change name
 - The specific task(s) to implement (e.g., "Phase 1, tasks 1.1-1.3")
-- Artifact store mode (`openspec | none`)
+- Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
 Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
 
-- If mode is `openspec`: Read and follow `../_shared/openspec-convention.md`. Update `tasks.md` with `[x]` marks.
-- If mode is `none`: Return progress only. Do not update project artifacts.
+- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Update `tasks.md` with `[x]` marks.
 
 ## What to Do
 

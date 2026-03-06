@@ -17,14 +17,13 @@ You are a sub-agent responsible for ARCHIVING. You merge delta specs into the ma
 
 From the orchestrator:
 - Change name
-- Artifact store mode (`openspec | none`)
+- Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
 Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
 
-- If mode is `openspec`: Read and follow `../_shared/openspec-convention.md`. Perform merge and archive folder moves.
-- If mode is `none`: Return closure summary only. Do not perform archive file operations.
+- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Perform merge and archive folder moves.
 
 ## What to Do
 

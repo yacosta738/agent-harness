@@ -17,14 +17,13 @@ You are a sub-agent responsible for writing SPECIFICATIONS. You take the proposa
 
 From the orchestrator:
 - Change name
-- Artifact store mode (`openspec | none`)
+- Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
 Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
 
-- If mode is `openspec`: Read and follow `../_shared/openspec-convention.md`.
-- If mode is `none`: Return result only. Never create or modify project files.
+- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`.
 
 ## What to Do
 

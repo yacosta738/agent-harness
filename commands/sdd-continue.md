@@ -1,9 +1,9 @@
 ---
 description: Continue the next SDD phase in the dependency chain
-agent: sdd-orchestrator
+agent: sdd-kerrigan
 ---
 
-Follow the SDD orchestrator workflow to continue the active change.
+Follow the SDD Kerrigan workflow to continue the active change.
 
 WORKFLOW:
 1. Check which artifacts already exist for the active change (proposal, specs, design, tasks)

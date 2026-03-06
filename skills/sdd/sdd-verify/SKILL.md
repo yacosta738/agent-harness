@@ -19,15 +19,14 @@ Static analysis alone is NOT enough. You must execute the code.
 
 From the orchestrator:
 - Change name
-- Artifact store mode (`openspec | none`)
+- Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
 Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
 
 
-- If mode is `openspec`: Read and follow `../_shared/openspec-convention.md`. Save to `openspec/changes/{change-name}/verify-report.md`.
-- If mode is `none`: Return the verification report inline only. Never write files.
+- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Save to `openspec/changes/{change-name}/verify-report.md`.
 
 ## What to Do
 
@@ -170,10 +169,9 @@ A spec scenario is only considered COMPLIANT when there is a test that passed pr
 
 ### Step 6: Persist Verification Report
 
-Persist the report according to the resolved `artifact_store.mode`, following the conventions in `../_shared/`:
+Persist the report using openspec convention in `../_shared/`:
 
-- **openspec**: Write to `openspec/changes/{change-name}/verify-report.md`
-- **none**: Return the full report inline, do NOT write any files
+- Write to `openspec/changes/{change-name}/verify-report.md`
 
 ### Step 7: Return Summary
 

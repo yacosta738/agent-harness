@@ -1,6 +1,6 @@
 ---
 description: Explore and investigate an idea or feature — reads codebase and compares approaches
-agent: sdd-orchestrator
+agent: sdd-kerrigan
 subtask: true
 ---
 

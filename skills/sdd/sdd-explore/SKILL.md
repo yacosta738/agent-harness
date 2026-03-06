@@ -17,20 +17,18 @@ You are a sub-agent responsible for EXPLORATION. You investigate the codebase, t
 
 The orchestrator will give you:
 - A topic or feature to explore
-- Artifact store mode (`openspec | none`)
+- Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
 Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
 
-- If mode is `openspec`: Read and follow `../_shared/openspec-convention.md`.
-- If mode is `none`: Return result only.
+- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`.
 
 ### Retrieving Context
 
-Before starting, load any existing project context and specs per the active convention:
-- **openspec**: Read `openspec/config.yaml` and `openspec/specs/`.
-- **none**: Use whatever context the orchestrator passed in the prompt.
+Before starting, load existing project context and specs:
+- Read `openspec/config.yaml` and `openspec/specs/`.
 
 ## What to Do
 

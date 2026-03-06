@@ -1,6 +1,6 @@
 ---
 description: Archive a completed SDD change — syncs specs and closes the cycle
-agent: sdd-orchestrator
+agent: sdd-kerrigan
 subtask: true
 ---
 
