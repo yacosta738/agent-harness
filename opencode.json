@@ -64,6 +64,14 @@
       ],
       "enabled": false
     },
+    "stitch": {
+      "type": "remote",
+      "url": "https://stitch.googleapis.com/mcp",
+      "enabled": false,
+      "headers": {
+        "X-Goog-Api-Key": "{env:STITCH_API_KEY}"
+      }
+    },
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
