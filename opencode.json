@@ -56,6 +56,16 @@
         "Authorization": "Bearer {env:GITHUB_TOKEN}"
       }
     },
+    "ahrefs": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "mcp-remote",
+        "https://api.ahrefs.com/mcp/mcp"
+      ],
+      "enabled": false
+    },
     "magic-patterns": {
       "type": "local",
       "command": [
