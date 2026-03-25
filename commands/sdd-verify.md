@@ -12,11 +12,11 @@ CONTEXT:
 - Artifact store mode: openspec
 
 TASK:
-Verify the active SDD change. Read the proposal, specs, design, and tasks artifacts. Then:
+Verify the active SDD change using the shared active change resolution rule. Read the proposal, specs, design, and tasks artifacts. Then:
 1. Check completeness — are all tasks done?
 2. Check correctness — does code match specs?
 3. Check coherence — were design decisions followed?
 4. Run tests and build (real execution)
 5. Build the spec compliance matrix
 
-Return a structured verification report with: status, executive_summary, detailed_report, artifacts, and next_recommended.
+Return a structured verification report with: status, executive_summary, detailed_report (optional), artifacts, next_recommended, and risks.

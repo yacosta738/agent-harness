@@ -6,7 +6,7 @@ subtask: true
 
 You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-apply/SKILL.md FIRST, then follow its instructions exactly.
 
-The sdd-apply skill (v2.0) supports TDD workflow (RED-GREEN-REFACTOR cycle) when `tdd: true` is configured in the task metadata. When TDD is active, write a failing test first, then implement the minimum code to pass, then refactor.
+The sdd-apply skill supports TDD workflow (RED-GREEN-REFACTOR cycle) when `tdd: true` is configured in the task metadata. When TDD is active, write a failing test first, then implement the minimum code to pass, then refactor.
 
 CONTEXT:
 - Working directory: {workdir}
@@ -14,7 +14,7 @@ CONTEXT:
 - Artifact store mode: openspec
 
 TASK:
-Find the active SDD change artifacts (proposal, specs, design, tasks). Read them to understand what needs to be implemented.
+Find the active SDD change artifacts (proposal, specs, design, tasks) using the shared active change resolution rule. Read them to understand what needs to be implemented.
 
 Implement the remaining incomplete tasks. For each task:
 1. Read the relevant spec scenarios (acceptance criteria)
@@ -23,4 +23,4 @@ Implement the remaining incomplete tasks. For each task:
 4. Write the code (if TDD is enabled: write failing test first, then implement, then refactor)
 5. Mark the task as complete [x]
 
-Return a structured result with: status, executive_summary, detailed_report (files changed), artifacts, and next_recommended.
+Return a structured result with: status, executive_summary, detailed_report (optional; include files changed when relevant), artifacts, next_recommended, and risks.

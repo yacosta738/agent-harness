@@ -12,9 +12,9 @@ CONTEXT:
 - Artifact store mode: openspec
 
 TASK:
-Archive the active SDD change. Read the verification report first to confirm the change is ready. Then:
+Archive the active SDD change using the shared active change resolution rule. Read the verification report first to confirm the change is ready. Then:
 1. Sync delta specs into main specs (source of truth)
 2. Move the change folder to archive with date prefix
 3. Verify the archive is complete
 
-Return a structured result with: status, executive_summary, artifacts, and next_recommended.
+Return a structured result with: status, executive_summary, detailed_report (optional), artifacts, next_recommended, and risks.

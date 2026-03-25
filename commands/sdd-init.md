@@ -14,4 +14,4 @@ CONTEXT:
 TASK:
 Initialize Spec-Driven Development in this project. Detect the tech stack, existing conventions, and architecture patterns. Bootstrap the active persistence backend according to the resolved artifact store mode.
 
-Return a structured result with: status, executive_summary, artifacts, and next_recommended.
+Return a structured result with: status, executive_summary, detailed_report (optional), artifacts, next_recommended, and risks.

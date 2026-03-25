@@ -50,6 +50,16 @@ Config:    openspec/config.yaml
 Main specs: openspec/specs/{domain}/spec.md
 ```
 
+## Resolving the Active Change
+
+Use the shared rule from `persistence-contract.md`:
+
+1. Prefer explicit `Change name: {argument}` from the orchestrator.
+2. Otherwise inspect `openspec/changes/`, excluding `archive/`.
+3. If exactly one active change exists, use it.
+4. If multiple active changes exist, stop and report ambiguity.
+5. If none exist, stop and report that no active change exists.
+
 ## Writing Rules
 
 - ALWAYS create the change directory (`openspec/changes/{change-name}/`) before writing artifacts
