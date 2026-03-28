@@ -6,7 +6,7 @@ description: >
 license: MIT
 metadata:
   author: acosta
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Purpose
@@ -21,13 +21,16 @@ From the orchestrator:
 
 ## Execution and Persistence Contract
 
-Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
 
-- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Perform merge and archive folder moves.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Perform merge and archive folder moves.
 
 ## What to Do
 
-### Step 1: Sync Delta Specs to Main Specs
+### Step 1: Load Skills
+Follow **Section A** from `../_shared/sdd-phase-common.md`.
+
+### Step 2: Sync Delta Specs to Main Specs
 
 For each delta spec in `openspec/changes/{change-name}/specs/`:
 
@@ -57,7 +60,7 @@ openspec/changes/{change-name}/specs/{domain}/spec.md
   → openspec/specs/{domain}/spec.md
 ```
 
-### Step 2: Move to Archive
+### Step 3: Move to Archive
 
 Move the entire change folder to archive with date prefix:
 
@@ -68,7 +71,7 @@ openspec/changes/{change-name}/
 
 Use today's date in ISO format (e.g., `2026-02-16`).
 
-### Step 3: Verify Archive
+### Step 4: Verify Archive
 
 Confirm:
 - [ ] Main specs updated correctly
@@ -76,7 +79,7 @@ Confirm:
 - [ ] Archive contains all artifacts (proposal, specs, design, tasks)
 - [ ] Active changes directory no longer has this change
 
-### Step 4: Return Summary
+### Step 5: Return Summary
 
 Return to the orchestrator:
 
@@ -116,4 +119,4 @@ Ready for the next change.
 - The archive is an AUDIT TRAIL — never delete or modify archived changes
 - If `openspec/changes/archive/` doesn't exist, create it
 - Apply any `rules.archive` from `openspec/config.yaml`
-- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`
+- Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

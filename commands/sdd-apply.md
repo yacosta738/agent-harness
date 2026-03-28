@@ -1,12 +1,12 @@
 ---
 description: Implement SDD tasks — writes code following specs and design
-agent: sdd-kerrigan
+agent: sdd-apply
 subtask: true
 ---
 
-You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-apply/SKILL.md FIRST, then follow its instructions exactly.
+You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-apply/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.
 
-The sdd-apply skill supports TDD workflow (RED-GREEN-REFACTOR cycle) when `tdd: true` is configured in the task metadata. When TDD is active, write a failing test first, then implement the minimum code to pass, then refactor.
+The sdd-apply skill supports TDD workflow (RED-GREEN-REFACTOR cycle) when `tdd: true` is configured in `openspec/config.yaml`. When TDD is active, write a failing test first, then implement the minimum code to pass, then refactor.
 
 CONTEXT:
 - Working directory: {workdir}
@@ -21,6 +21,6 @@ Implement the remaining incomplete tasks. For each task:
 2. Read the design decisions (technical approach)
 3. Read existing code patterns in the project
 4. Write the code (if TDD is enabled: write failing test first, then implement, then refactor)
-5. Mark the task as complete [x]
+5. Mark the task as complete [x] in tasks.md AS YOU GO, not at the end
 
-Return a structured result with: status, executive_summary, detailed_report (optional; include files changed when relevant), artifacts, next_recommended, and risks.
+Return a structured result with: status, executive_summary, detailed_report (files changed), artifacts, next_recommended, and risks.

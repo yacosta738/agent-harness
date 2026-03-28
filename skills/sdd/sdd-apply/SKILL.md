@@ -6,7 +6,7 @@ description: >
 license: MIT
 metadata:
   author: acosta
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Purpose
@@ -22,13 +22,16 @@ From the orchestrator:
 
 ## Execution and Persistence Contract
 
-Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
 
-- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Update `tasks.md` with `[x]` marks.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Update `tasks.md` with `[x]` marks.
 
 ## What to Do
 
-### Step 1: Read Context
+### Step 1: Load Skills
+Follow **Section A** from `../_shared/sdd-phase-common.md`.
+
+### Step 2: Read Context
 
 Before writing ANY code:
 1. Read the specs — understand WHAT the code must do
@@ -36,7 +39,7 @@ Before writing ANY code:
 3. Read existing code in affected files — understand current patterns
 4. Check the project's coding conventions from `config.yaml`
 
-### Step 2: Detect Implementation Mode
+### Step 3: Detect Implementation Mode
 
 Before writing code, determine if the project uses TDD:
 
@@ -51,7 +54,7 @@ IF TDD mode is detected → use Step 2a (TDD Workflow)
 IF standard mode → use Step 2b (Standard Workflow)
 ```
 
-### Step 2a: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
+### Step 3a: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
 
 When TDD is active, EVERY task follows this cycle:
 
@@ -95,7 +98,7 @@ Detect test runner from:
 
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`, `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
 
-### Step 2b: Implement Tasks (Standard Workflow)
+### Step 3b: Implement Tasks (Standard Workflow)
 
 When TDD is not active:
 
@@ -110,7 +113,7 @@ FOR EACH TASK:
 └── Note any issues or deviations
 ```
 
-### Step 3: Mark Tasks Complete
+### Step 4: Mark Tasks Complete
 
 Update `tasks.md` — change `- [ ]` to `- [x]` for completed tasks:
 
@@ -122,7 +125,13 @@ Update `tasks.md` — change `- [ ]` to `- [x]` for completed tasks:
 - [ ] 1.3 Add auth routes to `internal/server/server.go`  ← still pending
 ```
 
-### Step 4: Return Summary
+### Step 5: Persist Progress
+
+**This step is MANDATORY — do NOT skip it.**
+
+Follow **Section C** from `../_shared/sdd-phase-common.md`. Update `tasks.md` with `[x]` marks as you complete each task.
+
+### Step 6: Return Summary
 
 Return to the orchestrator:
 
@@ -179,4 +188,4 @@ If none, say "None."}
 - Apply any `rules.apply` from `openspec/config.yaml`
 - If TDD mode is detected (Step 2), ALWAYS follow the RED → GREEN → REFACTOR cycle — never skip RED (writing the failing test first)
 - When running tests during TDD, run ONLY the relevant test file/suite, not the entire test suite (for speed)
-- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`
+- Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

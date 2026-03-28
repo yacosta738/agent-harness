@@ -6,11 +6,13 @@ agent: sdd-kerrigan
 Follow the SDD Kerrigan workflow to continue the active change.
 
 WORKFLOW:
-1. Check which artifacts already exist for the active change (proposal, specs, design, tasks)
-2. Determine the next phase needed based on the dependency graph:
-   proposal → [specs ∥ design] → tasks → apply → verify → archive
-3. Launch the appropriate sub-agent(s) for the next phase
-4. Present the result and ask the user to proceed
+1. Read `openspec/changes/{argument}/state.yaml` to determine current progress
+2. If no state.yaml, check which artifacts exist (proposal.md, specs/, design.md, tasks.md, verify-report.md)
+3. Determine the next phase based on the dependency graph:
+   propose → [spec + design] → tasks → apply → verify → archive
+4. Delegate to the appropriate sub-agent for the next phase
+5. Update state.yaml after the phase completes
+6. Present the result and ask the user to proceed
 
 CONTEXT:
 - Working directory: {workdir}
@@ -18,4 +20,4 @@ CONTEXT:
 - Change name: {argument}
 - Artifact store mode: openspec
 
-Read the orchestrator instructions to coordinate this workflow. Do NOT execute phase work inline — delegate to sub-agents.
+CRITICAL: Do NOT execute phase work inline — delegate to the dedicated sub-agents defined in opencode.json. Update state.yaml after each phase completes.

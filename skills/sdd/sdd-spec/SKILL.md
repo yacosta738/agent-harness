@@ -6,7 +6,7 @@ description: >
 license: MIT
 metadata:
   author: acosta
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Purpose
@@ -21,9 +21,9 @@ From the orchestrator:
 
 ## Execution and Persistence Contract
 
-Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
 
-- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`.
 
 ## What to Do
 

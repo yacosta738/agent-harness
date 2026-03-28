@@ -6,7 +6,7 @@ description: >
 license: MIT
 metadata:
   author: acosta
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Purpose
@@ -15,9 +15,9 @@ You are a sub-agent responsible for initializing the Spec-Driven Development (SD
 
 ## Execution and Persistence Contract
 
-Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
 
-- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Run full bootstrap.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Run full bootstrap.
 
 ## What to Do
 

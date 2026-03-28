@@ -1,10 +1,10 @@
 ---
-description: Create or update an SDD proposal for a change
-agent: sdd-kerrigan
+description: Create a change proposal with intent, scope, and approach
+agent: sdd-propose
 subtask: true
 ---
 
-You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-propose/SKILL.md FIRST, then follow its instructions exactly.
+You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-propose/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.
 
 CONTEXT:
 - Working directory: {workdir}
@@ -13,6 +13,6 @@ CONTEXT:
 - Artifact store mode: openspec
 
 TASK:
-Create or update the proposal for change "{argument}". Read any existing exploration and relevant main specs first. Then write or update `proposal.md`.
+Create a proposal for the change. Read the exploration (if it exists) for context. Write proposal.md with intent, scope, approach, risks, and rollback plan.
 
-Return a structured result with: status, executive_summary, detailed_report (optional), artifacts, next_recommended, and risks.
+Return a structured result with: status, executive_summary, artifacts, next_recommended, and risks.

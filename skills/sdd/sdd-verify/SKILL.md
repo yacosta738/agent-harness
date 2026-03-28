@@ -6,7 +6,7 @@ description: >
 license: MIT
 metadata:
   author: acosta
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Purpose
@@ -23,14 +23,16 @@ From the orchestrator:
 
 ## Execution and Persistence Contract
 
-Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
 
-
-- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`. Save to `openspec/changes/{change-name}/verify-report.md`.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Save to `openspec/changes/{change-name}/verify-report.md`.
 
 ## What to Do
 
-### Step 1: Check Completeness
+### Step 1: Load Skills
+Follow **Section A** from `../_shared/sdd-phase-common.md`.
+
+### Step 2: Check Completeness
 
 Verify ALL tasks are done:
 
@@ -42,7 +44,7 @@ Read tasks.md
 └── Flag: CRITICAL if core tasks incomplete, WARNING if cleanup tasks incomplete
 ```
 
-### Step 2: Check Correctness (Static Specs Match)
+### Step 3: Check Correctness (Static Specs Match)
 
 For EACH spec requirement and scenario, search the codebase for structural evidence:
 
@@ -59,7 +61,7 @@ FOR EACH REQUIREMENT in specs/:
 
 Note: This is static analysis only. Behavioral validation with real execution happens in Step 5.
 
-### Step 3: Check Coherence (Design Match)
+### Step 4: Check Coherence (Design Match)
 
 Verify design decisions were followed:
 
@@ -71,7 +73,7 @@ FOR EACH DECISION in design.md:
 └── Flag: WARNING if deviation found (may be valid improvement)
 ```
 
-### Step 4: Check Testing (Static)
+### Step 5: Check Testing (Static)
 
 Verify test files exist and cover the right scenarios:
 
@@ -84,7 +86,7 @@ Search for test files related to the change
 └── Flag: WARNING if scenarios lack tests, SUGGESTION if coverage could improve
 ```
 
-### Step 4b: Run Tests (Real Execution)
+### Step 5b: Run Tests (Real Execution)
 
 Detect the project's test runner and execute the tests:
 
@@ -108,7 +110,7 @@ Flag: CRITICAL if exit code != 0 (any test failed)
 Flag: WARNING if skipped tests relate to changed areas
 ```
 
-### Step 4c: Build & Type Check (Real Execution)
+### Step 5c: Build & Type Check (Real Execution)
 
 Detect and run the build/type-check command:
 
@@ -130,7 +132,7 @@ Flag: CRITICAL if build fails (exit code != 0)
 Flag: WARNING if there are type errors even with passing build
 ```
 
-### Step 4d: Coverage Validation (Real Execution — if threshold configured)
+### Step 5d: Coverage Validation (Real Execution — if threshold configured)
 
 Run with coverage only if `rules.verify.coverage_threshold` is set in `openspec/config.yaml`:
 
@@ -146,7 +148,7 @@ IF coverage_threshold is NOT configured:
 └── Skip this step, report as "Not configured"
 ```
 
-### Step 5: Spec Compliance Matrix (Behavioral Validation)
+### Step 6: Spec Compliance Matrix (Behavioral Validation)
 
 This is the most important step. Cross-reference EVERY spec scenario against the actual test run results from Step 4b to build behavioral evidence.
 
@@ -167,13 +169,13 @@ FOR EACH REQUIREMENT in specs/:
 
 A spec scenario is only considered COMPLIANT when there is a test that passed proving the behavior at runtime. Code existing in the codebase is NOT sufficient evidence.
 
-### Step 6: Persist Verification Report
+### Step 7: Persist Verification Report
 
-Persist the report using openspec convention in `../_shared/`:
+**This step is MANDATORY — do NOT skip it.**
 
-- Write to `openspec/changes/{change-name}/verify-report.md`
+Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to `openspec/changes/{change-name}/verify-report.md`.
 
-### Step 7: Return Summary
+### Step 8: Return Summary
 
 Return to the orchestrator the same content you wrote to `verify-report.md`:
 
@@ -274,4 +276,4 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 - DO NOT fix any issues — only report them. The orchestrator decides what to do.
 - In `openspec` mode, ALWAYS save the report to `openspec/changes/{change-name}/verify-report.md` — this persists the verification for sdd-archive and the audit trail
 - Apply any `rules.verify` from `openspec/config.yaml`
-- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`
+- Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

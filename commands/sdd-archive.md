@@ -1,10 +1,10 @@
 ---
 description: Archive a completed SDD change — syncs specs and closes the cycle
-agent: sdd-kerrigan
+agent: sdd-archive
 subtask: true
 ---
 
-You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-archive/SKILL.md FIRST, then follow its instructions exactly.
+You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-archive/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.
 
 CONTEXT:
 - Working directory: {workdir}

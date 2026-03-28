@@ -43,6 +43,22 @@ All SDD phases MUST return the same structured envelope:
 
 Commands and skills should use this exact envelope so orchestrators can consume results consistently.
 
+## State Persistence (Orchestrator)
+
+The orchestrator persists DAG state after each phase transition to enable recovery and `sdd-continue` resumption.
+
+Write `openspec/changes/{change-name}/state.yaml` after each phase completes:
+
+```yaml
+change: {change-name}
+current_phase: {last completed phase}
+completed: [explore, propose, spec, design, tasks]
+next: {next phase in DAG}
+updated: {ISO date}
+```
+
+To recover state: read `openspec/changes/{change-name}/state.yaml`. If missing, fall back to checking which artifact files exist in the change directory.
+
 ## Detail Level
 
 The orchestrator may also pass `detail_level`: `concise | standard | deep`.

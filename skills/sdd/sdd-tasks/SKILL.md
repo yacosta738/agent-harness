@@ -6,7 +6,7 @@ description: >
 license: MIT
 metadata:
   author: acosta
-  version: "1.0"
+  version: "2.0"
 ---
 
 ## Purpose
@@ -21,21 +21,23 @@ From the orchestrator:
 
 ## Execution and Persistence Contract
 
-Read and follow `../_shared/persistence-contract.md` for mode resolution rules.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
 
-
-- Use `openspec` mode only: Read and follow `../_shared/openspec-convention.md`.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`.
 
 ## What to Do
 
-### Step 1: Analyze the Design
+### Step 1: Load Skills
+Follow **Section A** from `../_shared/sdd-phase-common.md`.
+
+### Step 2: Analyze the Design
 
 From the design document, identify:
 - All files that need to be created/modified/deleted
 - The dependency order (what must come first)
 - Testing requirements per component
 
-### Step 2: Write tasks.md
+### Step 3: Write tasks.md
 
 Create the task file:
 
@@ -111,7 +113,13 @@ Phase 5: Cleanup (if needed)
   └─ Documentation, remove dead code, polish
 ```
 
-### Step 3: Return Summary
+### Step 4: Persist Artifact
+
+**This step is MANDATORY — do NOT skip it.**
+
+Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to `openspec/changes/{change-name}/tasks.md`.
+
+### Step 5: Return Summary
 
 Return to the orchestrator:
 
@@ -146,4 +154,5 @@ Ready for implementation (sdd-apply).
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `openspec/config.yaml`
 - If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task (make it pass) → REFACTOR task (clean up)
-- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`
+- **Size budget**: Tasks artifact MUST be under 530 words. Each task: 1-2 lines max. Use checklist format, not paragraphs.
+- Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.
