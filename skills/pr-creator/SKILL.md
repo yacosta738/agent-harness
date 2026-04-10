@@ -47,10 +47,17 @@ Follow these steps to create a Pull Request:
     rm <temp_file_path>
     ```
 
-    - **Title**: Ensure the title follows the
-      [Conventional Commits](https://www.conventionalcommits.org/) format if the
-      repository uses it (e.g., `feat(ui): add new button`,
-      `fix(core): resolve crash`).
+    - **Title**: Use a semantic PR title following
+      [Conventional Commits](https://www.conventionalcommits.org/) style when the
+      repository supports it (e.g., `feat(ui): add new button`,
+      `fix(core): resolve crash`, `chore(ci): update workflow permissions`).
+
+5. **Align Semantics**: Keep branch name, commit message, and PR title aligned in
+   intent.
+    - Good alignment: `feat/search-shortcuts` → `feat: add search shortcuts` →
+      `feat: add search shortcuts`
+    - Avoid mixing intents like `chore/...` branch with `feat:` PR title unless
+      the actual scope changed and you explicitly renamed the branch strategy.
 
 ## Principles
 

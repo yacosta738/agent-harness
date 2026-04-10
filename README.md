@@ -170,6 +170,7 @@ All skills reference `_shared/sdd-phase-common.md` which defines:
 | Playwright      | Local  | Enabled  | Browser testing                  |
 | JetBrains       | Local  | Enabled  | IDE integration                  |
 | GitHub          | Remote | Disabled | GitHub Copilot API               |
+| Cloudflare API  | Remote | Disabled | Cloudflare MCP and platform APIs |
 | Ahrefs          | Local  | Disabled | SEO analysis                     |
 | Magic Patterns  | Local  | Disabled | Design patterns                  |
 | Stitch          | Remote | Disabled | Google Stitch API                |
@@ -196,7 +197,38 @@ Read:
 
 ## Skills
 
-Skills are reusable instruction sets in `skills/`. The SDD skills live under `skills/sdd/`:
+Skills are reusable instruction sets in `skills/`.
+
+### Workflow and platform skills
+
+- **GitHub**
+  - `github` → general GitHub triage and routing
+  - `gh-address-comments` → review thread follow-up
+  - `gh-fix-ci` → failing GitHub Actions investigation
+  - `yeet` → publish flow (branch, commit, push, draft PR)
+  - `pr-creator` → PR template/body compliance
+- **Linear**
+  - `linear` → direct Linear operations
+  - `linear-pm` subagent → multi-issue triage, planning, orchestration
+- **Notion**
+  - `notion-spec-to-implementation`
+  - `notion-research-documentation`
+  - `notion-meeting-intelligence`
+  - `notion-knowledge-capture`
+- **Sentry**
+  - `sentry` → read-only issue and event investigation
+- **Cloudflare**
+  - `cloudflare`
+  - `wrangler`
+  - `durable-objects`
+  - `agents-sdk`
+  - `building-mcp-server-on-cloudflare`
+  - `building-ai-agent-on-cloudflare`
+  - `workers-best-practices`
+
+### SDD skills
+
+The SDD skills live under `skills/sdd/`:
 
 ```
 skills/sdd/
@@ -216,6 +248,28 @@ skills/sdd/
 ```
 
 All skills are at **v2.0** and follow the shared protocol.
+
+---
+
+## Conventions
+
+### Semantic Git and PR naming
+
+- **Branch**: semantic prefix plus short slug
+  - `feat/...`
+  - `fix/...`
+  - `chore/...`
+  - `docs/...`
+  - `refactor/...`
+  - `test/...`
+- **Commit**: Conventional Commits
+  - `feat: add Cloudflare skills integration`
+  - `fix: correct Sentry skill script path`
+- **PR title**: semantic title aligned with commit intent
+  - `feat: add Cloudflare skills integration`
+  - `fix: correct Sentry skill script path`
+
+Rule: branch intent, commit type, and PR title should stay aligned unless scope changes intentionally.
 
 ---
 
@@ -252,6 +306,11 @@ editors/agents/opencode/
 │   ├── sdd-continue.md
 │   └── a11y-expert.md     ← Standalone accessibility expert
 ├── skills/
+│   ├── github/            ← GitHub workflow skills
+│   ├── linear/            ← Linear workflow skill
+│   ├── notion-*/          ← Notion workflow skills
+│   ├── sentry/            ← Sentry investigation skill
+│   ├── cloudflare stack   ← Cloudflare platform skills
 │   └── sdd/               ← SDD skill files (see Skills section)
 ├── themes/
 │   ├── aura-dark.json
