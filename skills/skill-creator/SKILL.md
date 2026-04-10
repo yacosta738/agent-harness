@@ -5,9 +5,12 @@ description: >
   Trigger: When user asks to create a new skill, add agent instructions, or document patterns for AI.
 allowed-tools: Read, Edit, Write, Glob, Grep, Bash, WebFetch, WebSearch, Task
 ---
+
 # Skill Creator Guide
 
-This guide outlines how to create new AI agent skills following a generic Agent Skills specification. It covers when to create a skill, the skill structure, naming conventions, frontmatter fields, content guidelines, and registration.
+This guide outlines how to create new AI agent skills following a generic Agent Skills
+specification. It covers when to create a skill, the skill structure, naming conventions,
+frontmatter fields, content guidelines, and registration.
 
 ## When to Create a Skill
 
@@ -96,11 +99,11 @@ metadata:
 
 ```
 
-Need code templates?        → assets/
-Need JSON schemas?          → assets/
-Need example configs?       → assets/
-Link to existing docs?      → references/
-Link to external guides?    → references/ (with local path)
+Need code templates? → assets/
+Need JSON schemas? → assets/
+Need example configs? → assets/
+Link to existing docs? → references/
+Link to external guides? → references/ (with local path)
 
 ```markdown
 
@@ -112,9 +115,9 @@ Link to external guides?    → references/ (with local path)
 
 ```
 
-Patterns apply to ANY project?     → Generic skill (e.g., pytest, typescript)
-Patterns are repo-specific?        → {repo}-{name} skill
-Generic skill needs repo info?     → Add references/ pointing to repo docs
+Patterns apply to ANY project? → Generic skill (e.g., pytest, typescript)
+Patterns are repo-specific? → {repo}-{name} skill
+Generic skill needs repo info? → Add references/ pointing to repo docs
 
 ```markdown
 

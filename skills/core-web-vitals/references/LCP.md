@@ -2,7 +2,8 @@
 
 ## What is LCP?
 
-Largest Contentful Paint (LCP) measures when the largest content element in the viewport becomes visible. This is typically:
+Largest Contentful Paint (LCP) measures when the largest content element in the viewport becomes
+visible. This is typically:
 
 - An `<img>` element
 - An `<image>` element inside `<svg>`
@@ -26,12 +27,14 @@ Largest Contentful Paint (LCP) measures when the largest content element in the 
 Target: < 800ms
 
 **Causes:**
+
 - Slow server/database queries
 - No CDN/edge caching
 - Inefficient backend code
 - Cold starts (serverless)
 
 **Solutions:**
+
 ```javascript
 // Use edge functions for dynamic content
 // Vercel example
@@ -45,6 +48,7 @@ res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 ### 2. Resource load time
 
 **For images:**
+
 ```html
 <!-- Preload LCP image -->
 <link rel="preload" as="image" href="/hero.webp" 
@@ -62,6 +66,7 @@ res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 ```
 
 **For text (web fonts):**
+
 ```css
 @font-face {
   font-family: 'Heading';
@@ -73,6 +78,7 @@ res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 ### 3. Render blocking resources
 
 **Critical CSS pattern:**
+
 ```html
 <head>
   <!-- Inline critical CSS -->
@@ -89,6 +95,7 @@ res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 ```
 
 **Defer JavaScript:**
+
 ```html
 <!-- ❌ Blocks parsing -->
 <script src="/app.js"></script>
@@ -107,6 +114,7 @@ res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
 **Solutions:**
 
 **Server-side rendering (SSR):**
+
 ```javascript
 // Next.js
 export async function getServerSideProps() {
@@ -116,6 +124,7 @@ export async function getServerSideProps() {
 ```
 
 **Static site generation (SSG):**
+
 ```javascript
 // Next.js
 export async function getStaticProps() {
@@ -125,6 +134,7 @@ export async function getStaticProps() {
 ```
 
 **Streaming SSR:**
+
 ```jsx
 // React 18+
 import { Suspense } from 'react';
@@ -141,6 +151,7 @@ function Page() {
 ## Framework-specific tips
 
 ### Next.js
+
 ```jsx
 import Image from 'next/image';
 
@@ -155,6 +166,7 @@ import Image from 'next/image';
 ```
 
 ### Nuxt
+
 ```vue
 <NuxtImg
   src="/hero.jpg"
@@ -165,6 +177,7 @@ import Image from 'next/image';
 ```
 
 ### Astro
+
 ```astro
 ---
 import { Image } from 'astro:assets';
@@ -199,10 +212,10 @@ new PerformanceObserver((entryList) => {
 
 ## Common issues
 
-| Issue | Impact | Fix |
-|-------|--------|-----|
+| Issue                    | Impact      | Fix                        |
+|--------------------------|-------------|----------------------------|
 | No preload for LCP image | +500-1000ms | Add `<link rel="preload">` |
-| Large unoptimized image | +300-800ms | Compress, use WebP/AVIF |
-| Render-blocking CSS | +200-500ms | Inline critical CSS |
-| Slow TTFB | +300-2000ms | CDN, edge caching |
-| Client-rendered content | +500-2000ms | SSR/SSG |
+| Large unoptimized image  | +300-800ms  | Compress, use WebP/AVIF    |
+| Render-blocking CSS      | +200-500ms  | Inline critical CSS        |
+| Slow TTFB                | +300-2000ms | CDN, edge caching          |
+| Client-rendered content  | +500-2000ms | SSR/SSG                    |

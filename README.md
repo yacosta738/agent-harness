@@ -1,6 +1,7 @@
 # OpenCode Agent Configuration
 
-Custom agent configuration for [OpenCode](https://opencode.ai) with a Cuban-style fullstack architect, project management, and a full Spec-Driven Development (SDD) pipeline.
+Custom agent configuration for [OpenCode](https://opencode.ai) with a Cuban-style fullstack
+architect, project management, and a full Spec-Driven Development (SDD) pipeline.
 
 ---
 
@@ -11,7 +12,7 @@ opencode.json
 ├── Agents
 │   ├── kuko (primary)          — Fullstack architect, mentor, orchestrator
 │   ├── linear-pm (subagent)    — Linear issue/sprint management
-│   ├── sdd-kerrigan (all)      — SDD orchestrator (coordinates, never executes)
+│   ├── kerrigan (all)          — SDD orchestrator (coordinates, never executes)
 │   └── sdd-{phase} (subagent)  — 9 dedicated SDD phase executors
 ├── MCP Servers                  — External tool integrations
 ├── Permissions                  — Tiered access control
@@ -34,7 +35,8 @@ Cuban fullstack architect (15+ years). Warm, direct, practical. Solves first, ex
 - TypeScript: strongly typed, avoid `any`
 - Challenges bad decisions with evidence and alternatives
 
-**Subagents:** tech-lead, senior-dev, devops-engineer, qa-engineer, security-engineer, product-manager, code-reviewer, performance-engineer, ux-designer, data-engineer
+**Subagents:** tech-lead, senior-dev, devops-engineer, qa-engineer, security-engineer,
+product-manager, code-reviewer, performance-engineer, ux-designer, data-engineer
 
 **Tools:** read, search, bash, write, edit
 
@@ -55,7 +57,8 @@ Project management specialist for Linear workflows.
 
 **Mode:** `all`
 
-Cuban-style SDD orchestrator. Coordinates the full Spec-Driven Development lifecycle by delegating to dedicated sub-agents. Never executes phase work inline.
+Cuban-style SDD orchestrator. Coordinates the full Spec-Driven Development lifecycle by delegating
+to dedicated sub-agents. Never executes phase work inline.
 
 See [SDD Workflow](#sdd-workflow) below for details.
 
@@ -65,19 +68,20 @@ See [SDD Workflow](#sdd-workflow) below for details.
 
 **Mode:** `subagent` | **Hidden:** `true`
 
-Each phase has a dedicated executor that reads its SKILL.md and the shared protocol, then does the work:
+Each phase has a dedicated executor that reads its SKILL.md and the shared protocol, then does the
+work:
 
-| Agent | Description |
-|-------|-------------|
-| `sdd-init` | Bootstrap openspec structure, detect tech stack |
-| `sdd-explore` | Investigate codebase, compare approaches |
-| `sdd-propose` | Create change proposal with scope and rollback plan |
-| `sdd-spec` | Write delta specs with Given/When/Then scenarios |
-| `sdd-design` | Technical design with architecture decisions |
-| `sdd-tasks` | Break down into phased implementation checklist |
-| `sdd-apply` | Implement code (supports TDD RED-GREEN-REFACTOR) |
-| `sdd-verify` | Quality gate — real test execution + spec compliance matrix |
-| `sdd-archive` | Sync delta specs to main specs, move to archive |
+| Agent         | Description                                                 |
+|---------------|-------------------------------------------------------------|
+| `sdd-init`    | Bootstrap openspec structure, detect tech stack             |
+| `sdd-explore` | Investigate codebase, compare approaches                    |
+| `sdd-propose` | Create change proposal with scope and rollback plan         |
+| `sdd-spec`    | Write delta specs with Given/When/Then scenarios            |
+| `sdd-design`  | Technical design with architecture decisions                |
+| `sdd-tasks`   | Break down into phased implementation checklist             |
+| `sdd-apply`   | Implement code (supports TDD RED-GREEN-REFACTOR)            |
+| `sdd-verify`  | Quality gate — real test execution + spec compliance matrix |
+| `sdd-archive` | Sync delta specs to main specs, move to archive             |
 
 **Tools:** bash, edit, read, write
 
@@ -96,24 +100,24 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 
 **Phase commands** (routed to dedicated sub-agents):
 
-| Command | Agent | Description |
-|---------|-------|-------------|
-| `/sdd-init` | sdd-init | Initialize openspec structure |
-| `/sdd-explore <topic>` | sdd-explore | Investigate before committing |
-| `/sdd-propose <name>` | sdd-propose | Create change proposal |
-| `/sdd-spec` | sdd-spec | Write specifications |
-| `/sdd-design` | sdd-design | Create technical design |
-| `/sdd-tasks` | sdd-tasks | Break down into tasks |
-| `/sdd-apply` | sdd-apply | Implement (TDD when configured) |
-| `/sdd-verify` | sdd-verify | Validate against specs |
-| `/sdd-archive` | sdd-archive | Close the cycle |
+| Command                | Agent       | Description                     |
+|------------------------|-------------|---------------------------------|
+| `/sdd-init`            | sdd-init    | Initialize openspec structure   |
+| `/sdd-explore <topic>` | sdd-explore | Investigate before committing   |
+| `/sdd-propose <name>`  | sdd-propose | Create change proposal          |
+| `/sdd-spec`            | sdd-spec    | Write specifications            |
+| `/sdd-design`          | sdd-design  | Create technical design         |
+| `/sdd-tasks`           | sdd-tasks   | Break down into tasks           |
+| `/sdd-apply`           | sdd-apply   | Implement (TDD when configured) |
+| `/sdd-verify`          | sdd-verify  | Validate against specs          |
+| `/sdd-archive`         | sdd-archive | Close the cycle                 |
 
 **Meta-commands** (routed to kerrigan orchestrator):
 
-| Command | Description |
-|---------|-------------|
-| `/sdd-new <name>` | explore + propose |
-| `/sdd-ff <name>` | propose + [spec + design] + tasks |
+| Command                | Description                       |
+|------------------------|-----------------------------------|
+| `/sdd-new <name>`      | explore + propose                 |
+| `/sdd-ff <name>`       | propose + [spec + design] + tasks |
 | `/sdd-continue [name]` | Resume next phase from state.yaml |
 
 ### Artifact Store
@@ -147,32 +151,32 @@ openspec/
 
 All skills reference `_shared/sdd-phase-common.md` which defines:
 
-| Section | Purpose |
-|---------|---------|
-| **A. Skill Loading** | How to load project-specific coding standards |
-| **B. Artifact Retrieval** | Read from openspec filesystem paths |
-| **C. Artifact Persistence** | Write to openspec filesystem paths (MANDATORY) |
-| **D. Return Envelope** | Structured response: status, summary, artifacts, next, risks |
+| Section                     | Purpose                                                      |
+|-----------------------------|--------------------------------------------------------------|
+| **A. Skill Loading**        | How to load project-specific coding standards                |
+| **B. Artifact Retrieval**   | Read from openspec filesystem paths                          |
+| **C. Artifact Persistence** | Write to openspec filesystem paths (MANDATORY)               |
+| **D. Return Envelope**      | Structured response: status, summary, artifacts, next, risks |
 
 ---
 
 ## MCP Servers
 
-| Server | Type | Status | Purpose |
-|--------|------|--------|---------|
-| Context7 | Remote | Enabled | Up-to-date library documentation |
-| GitHub Grep | Remote | Enabled | Search code across GitHub repos |
-| Chrome DevTools | Local | Enabled | Browser automation and debugging |
-| Playwright | Local | Enabled | Browser testing |
-| JetBrains | Local | Enabled | IDE integration |
-| GitHub | Remote | Disabled | GitHub Copilot API |
-| Ahrefs | Local | Disabled | SEO analysis |
-| Magic Patterns | Local | Disabled | Design patterns |
-| Stitch | Remote | Disabled | Google Stitch API |
-| Linear | Local | Disabled | Linear project management |
-| Notion | Local | Disabled | Notion API |
-| SonarQube | Local | Disabled | Code quality analysis |
-| MarkItDown | Local | Disabled | Document conversion |
+| Server          | Type   | Status   | Purpose                          |
+|-----------------|--------|----------|----------------------------------|
+| Context7        | Remote | Enabled  | Up-to-date library documentation |
+| GitHub Grep     | Remote | Enabled  | Search code across GitHub repos  |
+| Chrome DevTools | Local  | Enabled  | Browser automation and debugging |
+| Playwright      | Local  | Enabled  | Browser testing                  |
+| JetBrains       | Local  | Enabled  | IDE integration                  |
+| GitHub          | Remote | Disabled | GitHub Copilot API               |
+| Ahrefs          | Local  | Disabled | SEO analysis                     |
+| Magic Patterns  | Local  | Disabled | Design patterns                  |
+| Stitch          | Remote | Disabled | Google Stitch API                |
+| Linear          | Local  | Disabled | Linear project management        |
+| Notion          | Local  | Disabled | Notion API                       |
+| SonarQube       | Local  | Disabled | Code quality analysis            |
+| MarkItDown      | Local  | Disabled | Document conversion              |
 
 ---
 
@@ -243,7 +247,7 @@ editors/agents/opencode/
 │   ├── sdd-apply.md
 │   ├── sdd-verify.md
 │   ├── sdd-archive.md
-│   ├── sdd-new.md         ← Meta-commands (→ sdd-kerrigan)
+│   ├── sdd-new.md         ← Meta-commands (→ kerrigan)
 │   ├── sdd-ff.md
 │   ├── sdd-continue.md
 │   └── a11y-expert.md     ← Standalone accessibility expert
@@ -272,4 +276,5 @@ ln -sf ~/Dev/dotfiles/editors/agents/opencode/themes ~/.config/opencode/themes
 
 ---
 
-Made with care by a Cuban who doesn't sugarcoat — arquitectura primero, evidencia siempre, y cero humo.
+Made with care by a Cuban who doesn't sugarcoat — arquitectura primero, evidencia siempre, y cero
+humo.

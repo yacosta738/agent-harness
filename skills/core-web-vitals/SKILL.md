@@ -9,15 +9,16 @@ metadata:
 
 # Core Web Vitals optimization
 
-Targeted optimization for the three Core Web Vitals metrics that affect Google Search ranking and user experience.
+Targeted optimization for the three Core Web Vitals metrics that affect Google Search ranking and
+user experience.
 
 ## The three metrics
 
-| Metric | Measures | Good | Needs work | Poor |
-|--------|----------|------|------------|------|
-| **LCP** | Loading | ≤ 2.5s | 2.5s – 4s | > 4s |
-| **INP** | Interactivity | ≤ 200ms | 200ms – 500ms | > 500ms |
-| **CLS** | Visual Stability | ≤ 0.1 | 0.1 – 0.25 | > 0.25 |
+| Metric  | Measures         | Good    | Needs work    | Poor    |
+|---------|------------------|---------|---------------|---------|
+| **LCP** | Loading          | ≤ 2.5s  | 2.5s – 4s     | > 4s    |
+| **INP** | Interactivity    | ≤ 200ms | 200ms – 500ms | > 500ms |
+| **CLS** | Visual Stability | ≤ 0.1   | 0.1 – 0.25    | > 0.25  |
 
 Google measures at the **75th percentile** — 75% of page visits must meet "Good" thresholds.
 
@@ -26,6 +27,7 @@ Google measures at the **75th percentile** — 75% of page visits must meet "Goo
 ## LCP: Largest Contentful Paint
 
 LCP measures when the largest visible content element renders. Usually this is:
+
 - Hero image or video
 - Large text block
 - Background image
@@ -34,11 +36,13 @@ LCP measures when the largest visible content element renders. Usually this is:
 ### Common LCP issues
 
 **1. Slow server response (TTFB > 800ms)**
+
 ```
 Fix: CDN, caching, optimized backend, edge rendering
 ```
 
 **2. Render-blocking resources**
+
 ```html
 <!-- ❌ Blocks rendering -->
 <link rel="stylesheet" href="/all-styles.css">
@@ -50,6 +54,7 @@ Fix: CDN, caching, optimized backend, edge rendering
 ```
 
 **3. Slow resource load times**
+
 ```html
 <!-- ❌ No hints, discovered late -->
 <img src="/hero.jpg" alt="Hero">
@@ -60,6 +65,7 @@ Fix: CDN, caching, optimized backend, edge rendering
 ```
 
 **4. Client-side rendering delays**
+
 ```javascript
 // ❌ Content loads after JavaScript
 useEffect(() => {
@@ -87,6 +93,7 @@ export async function getServerSideProps() {
 ```
 
 ### LCP element identification
+
 ```javascript
 // Find your LCP element
 new PerformanceObserver((list) => {
@@ -101,21 +108,23 @@ new PerformanceObserver((list) => {
 
 ## INP: Interaction to Next Paint
 
-INP measures responsiveness across ALL interactions (clicks, taps, key presses) during a page visit. It reports the worst interaction (at 98th percentile for high-traffic pages).
+INP measures responsiveness across ALL interactions (clicks, taps, key presses) during a page visit.
+It reports the worst interaction (at 98th percentile for high-traffic pages).
 
 ### INP breakdown
 
 Total INP = **Input Delay** + **Processing Time** + **Presentation Delay**
 
-| Phase | Target | Optimization |
-|-------|--------|--------------|
-| Input Delay | < 50ms | Reduce main thread blocking |
-| Processing | < 100ms | Optimize event handlers |
-| Presentation | < 50ms | Minimize rendering work |
+| Phase        | Target  | Optimization                |
+|--------------|---------|-----------------------------|
+| Input Delay  | < 50ms  | Reduce main thread blocking |
+| Processing   | < 100ms | Optimize event handlers     |
+| Presentation | < 50ms  | Minimize rendering work     |
 
 ### Common INP issues
 
 **1. Long tasks blocking main thread**
+
 ```javascript
 // ❌ Long synchronous task
 function processLargeArray(items) {
@@ -137,6 +146,7 @@ async function processLargeArray(items) {
 ```
 
 **2. Heavy event handlers**
+
 ```javascript
 // ❌ All work in handler
 button.addEventListener('click', () => {
@@ -165,6 +175,7 @@ button.addEventListener('click', () => {
 ```
 
 **3. Third-party scripts**
+
 ```javascript
 // ❌ Eagerly loaded, blocks interactions
 <script src="https://heavy-widget.com/widget.js"></script>
@@ -178,6 +189,7 @@ button.addEventListener('click', loadWidget, { once: true });
 ```
 
 **4. Excessive re-renders (React/Vue)**
+
 ```javascript
 // ❌ Re-renders entire tree
 function App() {
@@ -217,6 +229,7 @@ function App() {
 ```
 
 ### INP debugging
+
 ```javascript
 // Identify slow interactions
 new PerformanceObserver((list) => {
@@ -238,13 +251,15 @@ new PerformanceObserver((list) => {
 
 ## CLS: Cumulative Layout Shift
 
-CLS measures unexpected layout shifts. A shift occurs when a visible element changes position between frames without user interaction.
+CLS measures unexpected layout shifts. A shift occurs when a visible element changes position
+between frames without user interaction.
 
 **CLS Formula:** `impact fraction × distance fraction`
 
 ### Common CLS causes
 
 **1. Images without dimensions**
+
 ```html
 <!-- ❌ Causes layout shift when loaded -->
 <img src="photo.jpg" alt="Photo">
@@ -257,6 +272,7 @@ CLS measures unexpected layout shifts. A shift occurs when a visible element cha
 ```
 
 **2. Ads, embeds, and iframes**
+
 ```html
 <!-- ❌ Unknown size until loaded -->
 <iframe src="https://ad-network.com/ad"></iframe>
@@ -274,6 +290,7 @@ CLS measures unexpected layout shifts. A shift occurs when a visible element cha
 ```
 
 **3. Dynamically injected content**
+
 ```javascript
 // ❌ Inserts content above viewport
 notifications.prepend(newNotification);
@@ -293,6 +310,7 @@ if (insertBelow) {
 ```
 
 **4. Web fonts causing FOUT**
+
 ```css
 /* ❌ Font swap shifts text */
 @font-face {
@@ -319,6 +337,7 @@ if (insertBelow) {
 ```
 
 **5. Animations triggering layout**
+
 ```css
 /* ❌ Animates layout properties */
 .animate {
@@ -347,6 +366,7 @@ if (insertBelow) {
 ```
 
 ### CLS debugging
+
 ```javascript
 // Track layout shifts
 new PerformanceObserver((list) => {
@@ -368,11 +388,13 @@ new PerformanceObserver((list) => {
 ## Measurement tools
 
 ### Lab testing
+
 - **Chrome DevTools** → Performance panel, Lighthouse
 - **WebPageTest** → Detailed waterfall, filmstrip
 - **Lighthouse CLI** → `npx lighthouse <url>`
 
 ### Field data (real users)
+
 - **Chrome User Experience Report (CrUX)** → BigQuery or API
 - **Search Console** → Core Web Vitals report
 - **web-vitals library** → Send to your analytics
@@ -398,6 +420,7 @@ onCLS(sendToAnalytics);
 ## Framework quick fixes
 
 ### Next.js
+
 ```jsx
 // LCP: Use next/image with priority
 import Image from 'next/image';
@@ -410,6 +433,7 @@ const HeavyComponent = dynamic(() => import('./Heavy'), { ssr: false });
 ```
 
 ### React
+
 ```jsx
 // LCP: Preload in head
 <link rel="preload" href="/hero.jpg" as="image" fetchpriority="high" />
@@ -422,6 +446,7 @@ startTransition(() => setExpensiveState(newValue));
 ```
 
 ### Vue/Nuxt
+
 ```vue
 <!-- LCP: Use nuxt/image with preload -->
 <NuxtImg src="/hero.jpg" preload loading="eager" />

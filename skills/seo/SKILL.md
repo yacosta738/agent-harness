@@ -9,19 +9,20 @@ metadata:
 
 # SEO optimization
 
-Search engine optimization based on Lighthouse SEO audits and Google Search guidelines. Focus on technical SEO, on-page optimization, and structured data.
+Search engine optimization based on Lighthouse SEO audits and Google Search guidelines. Focus on
+technical SEO, on-page optimization, and structured data.
 
 ## SEO fundamentals
 
 Search ranking factors (approximate influence):
 
-| Factor | Influence | This Skill |
-|--------|-----------|------------|
-| Content quality & relevance | ~40% | Partial (structure) |
-| Backlinks & authority | ~25% | ✗ |
-| Technical SEO | ~15% | ✓ |
-| Page experience (Core Web Vitals) | ~10% | See [Core Web Vitals](../core-web-vitals/SKILL.md) |
-| On-page SEO | ~10% | ✓ |
+| Factor                            | Influence | This Skill                                         |
+|-----------------------------------|-----------|----------------------------------------------------|
+| Content quality & relevance       | ~40%      | Partial (structure)                                |
+| Backlinks & authority             | ~25%      | ✗                                                  |
+| Technical SEO                     | ~15%      | ✓                                                  |
+| Page experience (Core Web Vitals) | ~10%      | See [Core Web Vitals](../core-web-vitals/SKILL.md) |
+| On-page SEO                       | ~10%      | ✓                                                  |
 
 ---
 
@@ -30,6 +31,7 @@ Search ranking factors (approximate influence):
 ### Crawlability
 
 **robots.txt:**
+
 ```text
 # /robots.txt
 User-agent: *
@@ -47,6 +49,7 @@ Sitemap: https://example.com/sitemap.xml
 ```
 
 **Meta robots:**
+
 ```html
 <!-- Default: indexable, followable -->
 <meta name="robots" content="index, follow">
@@ -62,6 +65,7 @@ Sitemap: https://example.com/sitemap.xml
 ```
 
 **Canonical URLs:**
+
 ```html
 <!-- Prevent duplicate content issues -->
 <link rel="canonical" href="https://example.com/page">
@@ -95,6 +99,7 @@ Sitemap: https://example.com/sitemap.xml
 ```
 
 **Sitemap best practices:**
+
 - Maximum 50,000 URLs or 50MB per sitemap
 - Use sitemap index for larger sites
 - Include only canonical, indexable URLs
@@ -114,6 +119,7 @@ https://example.com/products/item/category/subcategory/blue-widget-2024-sale-dis
 ```
 
 **URL guidelines:**
+
 - Use hyphens, not underscores
 - Lowercase only
 - Keep short (< 75 characters)
@@ -132,6 +138,7 @@ https://example.com/products/item/category/subcategory/blue-widget-2024-sale-dis
 ```
 
 **Security headers for SEO trust signals:**
+
 ```
 Strict-Transport-Security: max-age=31536000; includeSubDomains
 X-Content-Type-Options: nosniff
@@ -154,6 +161,7 @@ X-Frame-Options: DENY
 ```
 
 **Title tag guidelines:**
+
 - 50-60 characters (Google truncates ~60)
 - Primary keyword near the beginning
 - Unique for every page
@@ -171,6 +179,7 @@ X-Frame-Options: DENY
 ```
 
 **Meta description guidelines:**
+
 - 150-160 characters
 - Include primary keyword naturally
 - Compelling call-to-action
@@ -195,6 +204,7 @@ X-Frame-Options: DENY
 ```
 
 **Heading guidelines:**
+
 - Single `<h1>` per page (the main topic)
 - Logical hierarchy (don't skip levels)
 - Include keywords naturally
@@ -215,6 +225,7 @@ X-Frame-Options: DENY
 ```
 
 **Image guidelines:**
+
 - Descriptive filenames with keywords
 - Alt text describes the image content
 - Compressed and properly sized
@@ -234,6 +245,7 @@ X-Frame-Options: DENY
 ```
 
 **Linking guidelines:**
+
 - Descriptive anchor text with keywords
 - Link to relevant internal pages
 - Reasonable number of links per page
@@ -389,6 +401,7 @@ X-Frame-Options: DENY
 ### Validation
 
 Test structured data at:
+
 - [Google Rich Results Test](https://search.google.com/test/rich-results)
 - [Schema.org Validator](https://validator.schema.org/)
 
@@ -466,6 +479,7 @@ body {
 ## SEO audit checklist
 
 ### Critical
+
 - [ ] HTTPS enabled
 - [ ] robots.txt allows crawling
 - [ ] No `noindex` on important pages
@@ -473,6 +487,7 @@ body {
 - [ ] Single `<h1>` per page
 
 ### High priority
+
 - [ ] Meta descriptions present
 - [ ] Sitemap submitted
 - [ ] Canonical URLs set
@@ -480,6 +495,7 @@ body {
 - [ ] Core Web Vitals passing
 
 ### Medium priority
+
 - [ ] Structured data implemented
 - [ ] Internal linking strategy
 - [ ] Image alt text
@@ -487,6 +503,7 @@ body {
 - [ ] Breadcrumb navigation
 
 ### Ongoing
+
 - [ ] Fix crawl errors in Search Console
 - [ ] Update sitemap when content changes
 - [ ] Monitor ranking changes
@@ -497,13 +514,13 @@ body {
 
 ## Tools
 
-| Tool | Use |
-|------|-----|
-| Google Search Console | Monitor indexing, fix issues |
+| Tool                      | Use                           |
+|---------------------------|-------------------------------|
+| Google Search Console     | Monitor indexing, fix issues  |
 | Google PageSpeed Insights | Performance + Core Web Vitals |
-| Rich Results Test | Validate structured data |
-| Lighthouse | Full SEO audit |
-| Screaming Frog | Crawl analysis |
+| Rich Results Test         | Validate structured data      |
+| Lighthouse                | Full SEO audit                |
+| Screaming Frog            | Crawl analysis                |
 
 ## References
 

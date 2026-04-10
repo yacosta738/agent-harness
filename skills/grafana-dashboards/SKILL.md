@@ -9,7 +9,8 @@ Create and manage production-ready Grafana dashboards for comprehensive system o
 
 ## Purpose
 
-Design effective Grafana dashboards for monitoring applications, infrastructure, and business metrics.
+Design effective Grafana dashboards for monitoring applications, infrastructure, and business
+metrics.
 
 ## When to Use
 

@@ -5,7 +5,8 @@ description: Master SQL query optimization, indexing strategies, and EXPLAIN ana
 
 # SQL Optimization Patterns
 
-Transform slow database queries into lightning-fast operations through systematic optimization, proper indexing, and query plan analysis.
+Transform slow database queries into lightning-fast operations through systematic optimization,
+proper indexing, and query plan analysis.
 
 ## When to Use This Skill
 

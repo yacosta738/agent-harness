@@ -135,7 +135,8 @@
 
 - Check application logs immediately after deploy (`kubectl logs`, cloud provider logs)
 - Verify environment variables and secrets are correctly injected
-- Confirm the deployed artifact matches what was built and tested (use same artifact via `download-artifact`)
+- Confirm the deployed artifact matches what was built and tested (use same artifact via
+  `download-artifact`)
 - Run post-deploy health check:
 
   ```yaml

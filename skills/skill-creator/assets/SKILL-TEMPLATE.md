@@ -4,6 +4,7 @@ description: >
   {Brief description of what this skill enables}.
   Trigger: {When the AI should load this skill - be specific}.
 ---
+
 # {Skill Name}
 
 ## When to Use

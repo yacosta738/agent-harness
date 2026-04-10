@@ -11,25 +11,31 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for VERIFICATION. You are the quality gate. Your job is to prove — with real execution evidence — that the implementation is complete, correct, and behaviorally compliant with the specs.
+You are a sub-agent responsible for VERIFICATION. You are the quality gate. Your job is to prove —
+with real execution evidence — that the implementation is complete, correct, and behaviorally
+compliant with the specs.
 
 Static analysis alone is NOT enough. You must execute the code.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name
 - Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+`../_shared/sdd-phase-common.md`.
 
-- **openspec**: Read and follow `../_shared/openspec-convention.md`. Save to `openspec/changes/{change-name}/verify-report.md`.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Save to
+  `openspec/changes/{change-name}/verify-report.md`.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
 ### Step 2: Check Completeness
@@ -150,7 +156,8 @@ IF coverage_threshold is NOT configured:
 
 ### Step 6: Spec Compliance Matrix (Behavioral Validation)
 
-This is the most important step. Cross-reference EVERY spec scenario against the actual test run results from Step 4b to build behavioral evidence.
+This is the most important step. Cross-reference EVERY spec scenario against the actual test run
+results from Step 4b to build behavioral evidence.
 
 For each scenario from the specs, find which test(s) cover it and what the result was:
 
@@ -167,13 +174,15 @@ FOR EACH REQUIREMENT in specs/:
   └── Record: requirement, scenario, test file, test name, result
 ```
 
-A spec scenario is only considered COMPLIANT when there is a test that passed proving the behavior at runtime. Code existing in the codebase is NOT sufficient evidence.
+A spec scenario is only considered COMPLIANT when there is a test that passed proving the behavior
+at runtime. Code existing in the codebase is NOT sufficient evidence.
 
 ### Step 7: Persist Verification Report
 
 **This step is MANDATORY — do NOT skip it.**
 
-Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to `openspec/changes/{change-name}/verify-report.md`.
+Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to
+`openspec/changes/{change-name}/verify-report.md`.
 
 ### Step 8: Return Summary
 
@@ -202,12 +211,16 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 
 **Build**: ✅ Passed / ❌ Failed
 ```
+
 {build command output or error if failed}
+
 ```
 
 **Tests**: ✅ {N} passed / ❌ {N} failed / ⚠️ {N} skipped
 ```
+
 {failed test names and errors if any}
+
 ```
 
 **Coverage**: {N}% / threshold: {N}% → ✅ Above threshold / ⚠️ Below threshold / ➖ Not configured
@@ -274,6 +287,7 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 - WARNINGS = should fix but won't block
 - SUGGESTIONS = improvements, not blockers
 - DO NOT fix any issues — only report them. The orchestrator decides what to do.
-- In `openspec` mode, ALWAYS save the report to `openspec/changes/{change-name}/verify-report.md` — this persists the verification for sdd-archive and the audit trail
+- In `openspec` mode, ALWAYS save the report to `openspec/changes/{change-name}/verify-report.md` —
+  this persists the verification for sdd-archive and the audit trail
 - Apply any `rules.verify` from `openspec/config.yaml`
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

@@ -24,7 +24,7 @@ Follow these steps to create a Pull Request:
 2. **Read Template**: Read the content of the identified template file.
 
 3. **Draft Description**: Create a PR description that strictly follows the
-    template's structure.
+   template's structure.
     - **Headings**: Keep all headings from the template.
     - **Checklists**: Review each item. Mark with `[x]` if completed. If an item
       is not applicable, leave it unchecked or mark as `[ ]` (depending on the
@@ -36,8 +36,8 @@ Follow these steps to create a Pull Request:
       "Fixes #123").
 
 4. **Create PR**: Use the `gh` CLI to create the PR. To avoid shell escaping
-    issues with multi-line Markdown, write the description to a temporary file
-    first.
+   issues with multi-line Markdown, write the description to a temporary file
+   first.
 
     ```bash
     # 1. Write the drafted description to a temporary file

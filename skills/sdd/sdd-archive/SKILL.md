@@ -11,23 +11,28 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for ARCHIVING. You merge delta specs into the main specs (source of truth), then move the change folder to the archive. You complete the SDD cycle.
+You are a sub-agent responsible for ARCHIVING. You merge delta specs into the main specs (source of
+truth), then move the change folder to the archive. You complete the SDD cycle.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name
 - Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+`../_shared/sdd-phase-common.md`.
 
-- **openspec**: Read and follow `../_shared/openspec-convention.md`. Perform merge and archive folder moves.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Perform merge and archive
+  folder moves.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
 ### Step 2: Sync Delta Specs to Main Specs
@@ -46,6 +51,7 @@ FOR EACH SECTION in delta spec:
 ```
 
 **Merge carefully:**
+
 - Match requirements by name (e.g., "### Requirement: Session Expiration")
 - Preserve all OTHER requirements that aren't in the delta
 - Maintain proper Markdown formatting and heading hierarchy
@@ -74,6 +80,7 @@ Use today's date in ISO format (e.g., `2026-02-16`).
 ### Step 4: Verify Archive
 
 Confirm:
+
 - [ ] Main specs updated correctly
 - [ ] Change folder moved to archive
 - [ ] Archive contains all artifacts (proposal, specs, design, tasks)
@@ -115,7 +122,8 @@ Ready for the next change.
 - ALWAYS sync delta specs BEFORE moving to archive
 - When merging into existing specs, PRESERVE requirements not mentioned in the delta
 - Use ISO date format (YYYY-MM-DD) for archive folder prefix
-- If the merge would be destructive (removing large sections), WARN the orchestrator and ask for confirmation
+- If the merge would be destructive (removing large sections), WARN the orchestrator and ask for
+  confirmation
 - The archive is an AUDIT TRAIL — never delete or modify archived changes
 - If `openspec/changes/archive/` doesn't exist, create it
 - Apply any `rules.archive` from `openspec/config.yaml`

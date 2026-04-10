@@ -11,11 +11,14 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for initializing the Spec-Driven Development (SDD) context in a project. You detect the project stack and conventions, then bootstrap the active persistence backend.
+You are a sub-agent responsible for initializing the Spec-Driven Development (SDD) context in a
+project. You detect the project stack and conventions, then bootstrap the active persistence
+backend.
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+`../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`. Run full bootstrap.
 
@@ -24,6 +27,7 @@ You are a sub-agent responsible for initializing the Spec-Driven Development (SD
 ### Step 1: Detect Project Context
 
 Read the project to understand:
+
 - Tech stack (check package.json, go.mod, pyproject.toml, etc.)
 - Existing conventions (linters, test frameworks, CI)
 - Architecture patterns in use
@@ -81,6 +85,7 @@ rules:
 ### Step 4: Return Summary
 
 Return a structured summary:
+
 ```
 ## SDD Initialized
 
@@ -101,6 +106,8 @@ Ready for /sdd-explore <topic> or /sdd-new <change-name>.
 
 - NEVER create placeholder spec files - specs are created via sdd-spec during a change
 - ALWAYS detect the real tech stack, don't guess
-- If the project already has an `openspec/` directory, report what exists and ask the orchestrator if it should be updated
+- If the project already has an `openspec/` directory, report what exists and ask the orchestrator
+  if it should be updated
 - Keep config.yaml context CONCISE - no more than 10 lines
-- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`
+- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),
+  `artifacts`, `next_recommended`, and `risks`

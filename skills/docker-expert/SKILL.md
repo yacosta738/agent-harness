@@ -18,13 +18,19 @@ metadata:
 
 ## Critical Patterns
 
-- **Security First (Non-Root):** NEVER run containers as `root`. Always create and switch to a non-root user via the `USER` instruction.
-- **Secrets over Env Vars:** Use Docker Secrets (`secrets:`) for sensitive data in `docker-compose.yml` rather than plain environment variables.
-- **Multi-Stage Builds:** Always separate the builder (compilation, dependency fetching) from the final runtime image. Do not ship build tools to production.
+- **Security First (Non-Root):** NEVER run containers as `root`. Always create and switch to a
+  non-root user via the `USER` instruction.
+- **Secrets over Env Vars:** Use Docker Secrets (`secrets:`) for sensitive data in
+  `docker-compose.yml` rather than plain environment variables.
+- **Multi-Stage Builds:** Always separate the builder (compilation, dependency fetching) from the
+  final runtime image. Do not ship build tools to production.
 - **Minimal Attack Surface:** Prefer `alpine`, `slim`, or `distroless` base images.
-- **Supply Chain Integrity:** Pin base image versions down to the digest (e.g., `alpine:3.21@sha256:xyz...`).
-- **Layer Caching:** Order instructions by frequency of change. Copy and install dependencies *before* copying the rest of the source code.
-- **One Layer Operations:** Chain `apt-get update` with `apt-get install` using `&&` and clear the cache (`rm -rf /var/lib/apt/lists/*`) in the exact same `RUN` command.
+- **Supply Chain Integrity:** Pin base image versions down to the digest (e.g.,
+  `alpine:3.21@sha256:xyz...`).
+- **Layer Caching:** Order instructions by frequency of change. Copy and install dependencies
+  *before* copying the rest of the source code.
+- **One Layer Operations:** Chain `apt-get update` with `apt-get install` using `&&` and clear the
+  cache (`rm -rf /var/lib/apt/lists/*`) in the exact same `RUN` command.
 
 ## Code Examples
 
@@ -134,4 +140,5 @@ docker images --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
 
 ## Resources
 
-- **Templates**: See [assets/.dockerignore](assets/.dockerignore) for a production-ready `.dockerignore` template to optimize build context.
+- **Templates**: See [assets/.dockerignore](assets/.dockerignore) for a production-ready
+  `.dockerignore` template to optimize build context.

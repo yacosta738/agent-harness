@@ -21,14 +21,22 @@ metadata:
 
 ## Critical Patterns
 
-- **Pin Actions to Commit SHA:** Always use full commit SHA, never mutable tags (`@v4`, `@main`). Add version as comment: `uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1`. Tags can be silently moved to compromised commits (supply chain attack).
-- **Least Privilege `GITHUB_TOKEN`:** Set `permissions: contents: read` at workflow level. Grant write only where explicitly needed, per-job.
-- **Secrets via `secrets` Context Only:** Never hardcode sensitive data. Use `${{ secrets.NAME }}`. Use environment secrets for deployment targets with manual approvals.
-- **OIDC Over Static Credentials:** Use OpenID Connect for cloud auth (AWS, Azure, GCP) instead of long-lived access keys.
-- **Cache Dependencies:** Use `actions/cache` with `hashFiles()` keys for `node_modules`, pip, Maven, etc. to dramatically speed up builds.
+- **Pin Actions to Commit SHA:** Always use full commit SHA, never mutable tags (`@v4`, `@main`).
+  Add version as comment:
+  `uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1`. Tags can be silently
+  moved to compromised commits (supply chain attack).
+- **Least Privilege `GITHUB_TOKEN`:** Set `permissions: contents: read` at workflow level. Grant
+  write only where explicitly needed, per-job.
+- **Secrets via `secrets` Context Only:** Never hardcode sensitive data. Use `${{ secrets.NAME }}`.
+  Use environment secrets for deployment targets with manual approvals.
+- **OIDC Over Static Credentials:** Use OpenID Connect for cloud auth (AWS, Azure, GCP) instead of
+  long-lived access keys.
+- **Cache Dependencies:** Use `actions/cache` with `hashFiles()` keys for `node_modules`, pip,
+  Maven, etc. to dramatically speed up builds.
 - **Shallow Clone:** Use `fetch-depth: 1` in `actions/checkout` unless full history is needed.
 - **Fail Fast on Security:** Integrate dependency review and SAST (CodeQL) as blocking checks.
-- **Environment Protection:** Use GitHub Environments with required reviewers and branch restrictions for staging/production deploys.
+- **Environment Protection:** Use GitHub Environments with required reviewers and branch
+  restrictions for staging/production deploys.
 
 ## Workflow Structure
 
@@ -328,27 +336,27 @@ jobs:
 
 ## Anti-Patterns to Avoid
 
-| Anti-Pattern | Risk | Do Instead |
-|---|---|---|
+| Anti-Pattern                              | Risk                                                       | Do Instead                                                            |
+|-------------------------------------------|------------------------------------------------------------|-----------------------------------------------------------------------|
 | `uses: actions/checkout@v4` (mutable tag) | Supply chain attack — tag can be moved to malicious commit | Pin to full SHA: `@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1` |
-| No `permissions` block | `GITHUB_TOKEN` gets default broad access | Set `permissions: contents: read` at workflow level |
-| `secrets.MY_KEY` in `echo` or logs | Secret leakage even with masking | Never print secrets; use them only in env vars for commands |
-| Long-lived cloud credentials as secrets | Large blast radius if compromised | Use OIDC for short-lived tokens |
-| `fetch-depth: 0` by default | Slow checkout, wastes bandwidth | `fetch-depth: 1` unless full history needed |
-| No `concurrency` on deploy workflows | Race conditions, double deploys | Add `concurrency` with `cancel-in-progress` |
-| Hardcoded versions in multiple places | Drift, maintenance burden | Use reusable workflows or composite actions |
-| No `timeout-minutes` on jobs | Hung workflows burn runner minutes | Set reasonable `timeout-minutes` per job |
-| No `retention-days` on artifacts | Storage bloat, cost increase | Set `retention-days` based on need (7-30 days) |
-| Running E2E tests on every push | Slow CI, wasted resources | Run on PR and main only, or use path filters |
+| No `permissions` block                    | `GITHUB_TOKEN` gets default broad access                   | Set `permissions: contents: read` at workflow level                   |
+| `secrets.MY_KEY` in `echo` or logs        | Secret leakage even with masking                           | Never print secrets; use them only in env vars for commands           |
+| Long-lived cloud credentials as secrets   | Large blast radius if compromised                          | Use OIDC for short-lived tokens                                       |
+| `fetch-depth: 0` by default               | Slow checkout, wastes bandwidth                            | `fetch-depth: 1` unless full history needed                           |
+| No `concurrency` on deploy workflows      | Race conditions, double deploys                            | Add `concurrency` with `cancel-in-progress`                           |
+| Hardcoded versions in multiple places     | Drift, maintenance burden                                  | Use reusable workflows or composite actions                           |
+| No `timeout-minutes` on jobs              | Hung workflows burn runner minutes                         | Set reasonable `timeout-minutes` per job                              |
+| No `retention-days` on artifacts          | Storage bloat, cost increase                               | Set `retention-days` based on need (7-30 days)                        |
+| Running E2E tests on every push           | Slow CI, wasted resources                                  | Run on PR and main only, or use path filters                          |
 
 ## Deployment Strategies Reference
 
-| Strategy | How It Works | Best For | Rollback |
-|---|---|---|---|
-| **Rolling** | Gradually replaces old instances | Stateless apps, most cases | Redeploy previous version |
-| **Blue/Green** | Full parallel env, switch traffic | Zero-downtime critical apps | Switch traffic back to blue |
-| **Canary** | Route small % to new version | Risk-sensitive changes | Route 100% back to stable |
-| **Dark Launch** | Deploy hidden behind feature flags | Decoupling deploy from release | Toggle flag off |
+| Strategy        | How It Works                       | Best For                       | Rollback                    |
+|-----------------|------------------------------------|--------------------------------|-----------------------------|
+| **Rolling**     | Gradually replaces old instances   | Stateless apps, most cases     | Redeploy previous version   |
+| **Blue/Green**  | Full parallel env, switch traffic  | Zero-downtime critical apps    | Switch traffic back to blue |
+| **Canary**      | Route small % to new version       | Risk-sensitive changes         | Route 100% back to stable   |
+| **Dark Launch** | Deploy hidden behind feature flags | Decoupling deploy from release | Toggle flag off             |
 
 ## Commands
 
@@ -377,9 +385,12 @@ gh secret list
 
 ## Resources
 
-- **Review Checklist**: See [references/review-checklist.md](references/review-checklist.md) for a comprehensive workflow review checklist
-- **Troubleshooting**: See [references/troubleshooting.md](references/troubleshooting.md) for diagnosing common failures
+- **Review Checklist**: See [references/review-checklist.md](references/review-checklist.md) for a
+  comprehensive workflow review checklist
+- **Troubleshooting**: See [references/troubleshooting.md](references/troubleshooting.md) for
+  diagnosing common failures
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Security Hardening Guide](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
 - [OIDC with Cloud Providers](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments)
-- Related skill: [docker-expert](../docker-expert/SKILL.md) — for Dockerfile and container best practices
+- Related skill: [docker-expert](../docker-expert/SKILL.md) — for Dockerfile and container best
+  practices

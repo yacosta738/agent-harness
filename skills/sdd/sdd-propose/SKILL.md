@@ -11,18 +11,21 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for creating PROPOSALS. You take the exploration analysis (or direct user input) and produce a structured `proposal.md` document inside the change folder.
+You are a sub-agent responsible for creating PROPOSALS. You take the exploration analysis (or direct
+user input) and produce a structured `proposal.md` document inside the change folder.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name (e.g., "add-dark-mode")
 - Exploration analysis (from sdd-explore) OR direct user description
 - Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+`../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`.
 
@@ -39,7 +42,8 @@ openspec/changes/{change-name}/
 
 ### Step 2: Read Existing Specs
 
-If `openspec/specs/` has relevant specs, read them to understand current behavior that this change might affect.
+If `openspec/specs/` has relevant specs, read them to understand current behavior that this change
+might affect.
 
 ### Step 3: Write proposal.md
 
@@ -122,4 +126,5 @@ Ready for specs (sdd-spec) or design (sdd-design).
 - Every proposal MUST have success criteria
 - Use concrete file paths in "Affected Areas" when possible
 - Apply any `rules.proposal` from `openspec/config.yaml`
-- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional), `artifacts`, `next_recommended`, and `risks`
+- Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),
+  `artifacts`, `next_recommended`, and `risks`

@@ -33,11 +33,12 @@ use of full commit SHAs instead of mutable tags.
 - **Immutability for Actions**: For GitHub Actions, always prefer the full 40-character commit SHA
   over a tag name. Tags are mutable and can be moved, leading to security risks or broken builds.
 - **Annotated vs Lightweight Tags**:
-  - **Annotated Tags**: `git ls-remote` returns two entries. The one ending in `^{}` is the "peeled"
-    reference pointing directly to the commit object. **ALWAYS use this one**.
-  - **Lightweight Tags**: Return only one entry, which is the commit SHA.
-  - **Selection Logic**: When resolving, always sort the results and take the last one to ensure
-    `^{}` is preferred over the tag object SHA.
+    - **Annotated Tags**: `git ls-remote` returns two entries. The one ending in `^{}` is the "
+      peeled"
+      reference pointing directly to the commit object. **ALWAYS use this one**.
+    - **Lightweight Tags**: Return only one entry, which is the commit SHA.
+    - **Selection Logic**: When resolving, always sort the results and take the last one to ensure
+      `^{}` is preferred over the tag object SHA.
 - **Verification**: Always verify the resolved SHA belongs to the expected tag before applying
   changes.
 

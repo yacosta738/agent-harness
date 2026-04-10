@@ -5,12 +5,13 @@
 The orchestrator passes `artifact_store.mode` as `openspec`.
 
 Default resolution (when orchestrator does not explicitly set a mode):
+
 1. Use `openspec` for persistent storage in the filesystem
 
 ## Behavior Per Mode
 
 | Mode       | Read from                                 | Write to   | Project files |
-| ---------- | ----------------------------------------- | ---------- | ------------- |
+|------------|-------------------------------------------|------------|---------------|
 | `openspec` | Filesystem (see `openspec-convention.md`) | Filesystem | Yes           |
 
 ## Common Rules
@@ -41,11 +42,13 @@ All SDD phases MUST return the same structured envelope:
 - `next_recommended`
 - `risks`
 
-Commands and skills should use this exact envelope so orchestrators can consume results consistently.
+Commands and skills should use this exact envelope so orchestrators can consume results
+consistently.
 
 ## State Persistence (Orchestrator)
 
-The orchestrator persists DAG state after each phase transition to enable recovery and `sdd-continue` resumption.
+The orchestrator persists DAG state after each phase transition to enable recovery and
+`sdd-continue` resumption.
 
 Write `openspec/changes/{change-name}/state.yaml` after each phase completes:
 
@@ -57,9 +60,11 @@ next: {next phase in DAG}
 updated: {ISO date}
 ```
 
-To recover state: read `openspec/changes/{change-name}/state.yaml`. If missing, fall back to checking which artifact files exist in the change directory.
+To recover state: read `openspec/changes/{change-name}/state.yaml`. If missing, fall back to
+checking which artifact files exist in the change directory.
 
 ## Detail Level
 
 The orchestrator may also pass `detail_level`: `concise | standard | deep`.
-This controls output verbosity but does NOT affect what gets persisted — always persist the full artifact.
+This controls output verbosity but does NOT affect what gets persisted — always persist the full
+artifact.

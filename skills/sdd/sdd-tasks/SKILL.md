@@ -11,28 +11,33 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for creating the TASK BREAKDOWN. You take the proposal, specs, and design, then produce a `tasks.md` with concrete, actionable implementation steps organized by phase.
+You are a sub-agent responsible for creating the TASK BREAKDOWN. You take the proposal, specs, and
+design, then produce a `tasks.md` with concrete, actionable implementation steps organized by phase.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name
 - Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+`../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
 ### Step 2: Analyze the Design
 
 From the design document, identify:
+
 - All files that need to be created/modified/deleted
 - The dependency order (what must come first)
 - Testing requirements per component
@@ -83,12 +88,12 @@ openspec/changes/{change-name}/
 
 Each task MUST be:
 
-| Criteria | Example ✅ | Anti-example ❌ |
-|----------|-----------|----------------|
-| **Specific** | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth" |
-| **Actionable** | "Add `ValidateToken()` method to `AuthService`" | "Handle tokens" |
-| **Verifiable** | "Test: `POST /login` returns 401 without token" | "Make sure it works" |
-| **Small** | One file or one logical unit of work | "Implement the feature" |
+| Criteria       | Example ✅                                                  | Anti-example ❌          |
+|----------------|------------------------------------------------------------|-------------------------|
+| **Specific**   | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth"              |
+| **Actionable** | "Add `ValidateToken()` method to `AuthService`"            | "Handle tokens"         |
+| **Verifiable** | "Test: `POST /login` returns 401 without token"            | "Make sure it works"    |
+| **Small**      | One file or one logical unit of work                       | "Implement the feature" |
 
 ### Phase Organization Guidelines
 
@@ -117,7 +122,8 @@ Phase 5: Cleanup (if needed)
 
 **This step is MANDATORY — do NOT skip it.**
 
-Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to `openspec/changes/{change-name}/tasks.md`.
+Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to
+`openspec/changes/{change-name}/tasks.md`.
 
 ### Step 5: Return Summary
 
@@ -153,6 +159,8 @@ Ready for implementation (sdd-apply).
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `openspec/config.yaml`
-- If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task (make it pass) → REFACTOR task (clean up)
-- **Size budget**: Tasks artifact MUST be under 530 words. Each task: 1-2 lines max. Use checklist format, not paragraphs.
+- If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task (
+  make it pass) → REFACTOR task (clean up)
+- **Size budget**: Tasks artifact MUST be under 530 words. Each task: 1-2 lines max. Use checklist
+  format, not paragraphs.
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

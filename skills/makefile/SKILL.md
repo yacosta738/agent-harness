@@ -20,15 +20,24 @@ metadata:
 
 ## Critical Patterns
 
-- **Tabs, Not Spaces:** Every recipe line MUST start with a **tab character**. Spaces will cause a syntax error.
-- **Declare `.PHONY`:** Always mark non-file targets (e.g., `clean`, `all`, `test`, `install`) with `.PHONY` to avoid conflicts with files of the same name.
-- **Use `:=` Over `=` When Possible:** Prefer simple expansion (`:=`) for variables to avoid unexpected recursive expansion and improve performance.
-- **Automatic Variables:** Use `$@` (target), `$<` (first prerequisite), `$^` (all prerequisites), `$?` (newer prerequisites), and `$*` (stem) in recipes to keep rules generic and reusable.
-- **Use `$(wildcard ...)` Not `$(shell ls ...)`:** Never shell out for file lists; use Make's built-in `$(wildcard *.c)` function instead.
-- **Auto-Generate Dependencies:** Use compiler flags like `-MMD -MP` to generate `.d` files rather than maintaining header dependencies manually.
-- **Clean Target:** Always provide a `clean` target and prefix destructive commands with `-` to ignore errors if files don't exist.
-- **Variables First, Rules Second:** Define all variables at the top, followed by the default goal, then build rules, then phony targets.
-- **Avoid Recursive Make:** Don't use `$(MAKE) -C subdir` unless absolutely necessary; prefer includes or non-recursive approaches.
+- **Tabs, Not Spaces:** Every recipe line MUST start with a **tab character**. Spaces will cause a
+  syntax error.
+- **Declare `.PHONY`:** Always mark non-file targets (e.g., `clean`, `all`, `test`, `install`) with
+  `.PHONY` to avoid conflicts with files of the same name.
+- **Use `:=` Over `=` When Possible:** Prefer simple expansion (`:=`) for variables to avoid
+  unexpected recursive expansion and improve performance.
+- **Automatic Variables:** Use `$@` (target), `$<` (first prerequisite), `$^` (all prerequisites),
+  `$?` (newer prerequisites), and `$*` (stem) in recipes to keep rules generic and reusable.
+- **Use `$(wildcard ...)` Not `$(shell ls ...)`:** Never shell out for file lists; use Make's
+  built-in `$(wildcard *.c)` function instead.
+- **Auto-Generate Dependencies:** Use compiler flags like `-MMD -MP` to generate `.d` files rather
+  than maintaining header dependencies manually.
+- **Clean Target:** Always provide a `clean` target and prefix destructive commands with `-` to
+  ignore errors if files don't exist.
+- **Variables First, Rules Second:** Define all variables at the top, followed by the default goal,
+  then build rules, then phony targets.
+- **Avoid Recursive Make:** Don't use `$(MAKE) -C subdir` unless absolutely necessary; prefer
+  includes or non-recursive approaches.
 
 ## File Structure
 
@@ -213,16 +222,16 @@ clean:
 
 ## Anti-Patterns to Avoid
 
-| Anti-Pattern | Why It's Bad | Do Instead |
-|---|---|---|
-| Spaces instead of tabs in recipes | Syntax error, hard to debug | Use **tab** characters |
-| `$(shell ls *.c)` for file lists | Creates subprocess, fragile | `$(wildcard *.c)` |
-| Missing `.PHONY` declarations | `clean` won't run if a file named `clean` exists | `.PHONY: clean` |
-| Hardcoded file lists | Maintenance burden, easy to forget new files | `$(wildcard ...)` or auto-discovery |
-| Complex shell scripts in recipes | Hard to read and debug | Move to a separate `.sh` script |
-| Recursive make `$(MAKE) -C subdir` | Breaks dependency tracking across dirs | `include` or non-recursive make |
-| Using `=` everywhere | Unexpected recursive expansion, slower | Use `:=` for simple values |
-| Circular dependencies | Infinite loop, build failure | Restructure dependency graph |
+| Anti-Pattern                       | Why It's Bad                                     | Do Instead                          |
+|------------------------------------|--------------------------------------------------|-------------------------------------|
+| Spaces instead of tabs in recipes  | Syntax error, hard to debug                      | Use **tab** characters              |
+| `$(shell ls *.c)` for file lists   | Creates subprocess, fragile                      | `$(wildcard *.c)`                   |
+| Missing `.PHONY` declarations      | `clean` won't run if a file named `clean` exists | `.PHONY: clean`                     |
+| Hardcoded file lists               | Maintenance burden, easy to forget new files     | `$(wildcard ...)` or auto-discovery |
+| Complex shell scripts in recipes   | Hard to read and debug                           | Move to a separate `.sh` script     |
+| Recursive make `$(MAKE) -C subdir` | Breaks dependency tracking across dirs           | `include` or non-recursive make     |
+| Using `=` everywhere               | Unexpected recursive expansion, slower           | Use `:=` for simple values          |
+| Circular dependencies              | Infinite loop, build failure                     | Restructure dependency graph        |
 
 ## Commands
 

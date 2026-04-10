@@ -19,11 +19,17 @@ metadata:
 
 ## Critical Patterns
 
-- **Descriptive Links:** Never use "click here", "here", "this", "read more" as link text. Link text must make sense when read out of context.
-- **Image Alt Text:** Every image needs meaningful alt text. Empty alt `![]()` is only acceptable for explicitly decorative images. Filenames and generic words like "screenshot" are not valid alt text.
-- **Heading Hierarchy:** One H1 per document, never skip levels (e.g., `##` to `####` is a violation), and never use bold text as a fake heading.
-- **Proper Lists:** Always use markdown list syntax (`-`, `*`, `+`, `1.`). Never use emoji or special characters as bullet points.
-- **Emoji Restraint:** Don't stack multiple consecutive emoji. Don't use emoji as the sole conveyor of meaning.
+- **Descriptive Links:** Never use "click here", "here", "this", "read more" as link text. Link text
+  must make sense when read out of context.
+- **Image Alt Text:** Every image needs meaningful alt text. Empty alt `![]()` is only acceptable
+  for explicitly decorative images. Filenames and generic words like "screenshot" are not valid alt
+  text.
+- **Heading Hierarchy:** One H1 per document, never skip levels (e.g., `##` to `####` is a
+  violation), and never use bold text as a fake heading.
+- **Proper Lists:** Always use markdown list syntax (`-`, `*`, `+`, `1.`). Never use emoji or
+  special characters as bullet points.
+- **Emoji Restraint:** Don't stack multiple consecutive emoji. Don't use emoji as the sole conveyor
+  of meaning.
 
 ## Review Priority
 
@@ -65,7 +71,8 @@ See the [API documentation](https://example.com/api).
 See the [CLI documentation](https://example.com/cli).
 ```
 
-**Why it matters:** Screen readers can present all links as an isolated list. "here", "here", "here" tells the user nothing. Each link must stand on its own.
+**Why it matters:** Screen readers can present all links as an isolated list. "here", "here", "here"
+tells the user nothing. Each link must stand on its own.
 
 ### 2. Image Alt Text
 
@@ -89,7 +96,8 @@ See the [CLI documentation](https://example.com/cli).
 <!-- Only valid when the image adds no informational value -->
 ```
 
-**For complex images** (charts, infographics), summarize the key data in alt text and provide a longer description:
+**For complex images** (charts, infographics), summarize the key data in alt text and provide a
+longer description:
 
 ```markdown
 ![Sales by region: North 45%, South 30%, East 15%, West 10%](sales-chart.png)
@@ -107,7 +115,8 @@ See the [CLI documentation](https://example.com/cli).
 </details>
 ```
 
-**Important:** When suggesting alt text improvements, present them as recommendations. Only the author can properly assess visual content and context.
+**Important:** When suggesting alt text improvements, present them as recommendations. Only the
+author can properly assess visual content and context.
 
 ### 3. Heading Hierarchy
 
@@ -139,9 +148,11 @@ First, clone the repo...
 ## Getting Started
 ```
 
-**Note:** In projects where H1 is auto-generated from front matter (e.g., Jekyll, Hugo, Docusaurus), start content at H2.
+**Note:** In projects where H1 is auto-generated from front matter (e.g., Jekyll, Hugo, Docusaurus),
+start content at H2.
 
-**Why it matters:** Screen reader users navigate by heading level. Skipped levels break that mental model — it's like a book jumping from Chapter 2 to Chapter 4.
+**Why it matters:** Screen reader users navigate by heading level. Skipped levels break that mental
+model — it's like a book jumping from Chapter 2 to Chapter 4.
 
 ### 4. Plain Language
 
@@ -169,7 +180,8 @@ The system handles each request in three steps:
 3. **Logs the attempt** for audit compliance.
 ```
 
-**Important:** When suggesting plain language improvements, present them as recommendations. Language decisions depend on audience, context, and tone that only the author fully understands.
+**Important:** When suggesting plain language improvements, present them as recommendations.
+Language decisions depend on audience, context, and tone that only the author fully understands.
 
 ### 5. Lists and Emoji
 
@@ -195,7 +207,9 @@ First install Node.js. Then install dependencies. Finally run the app.
 3. Run the app
 ```
 
-**Why it matters:** Proper list syntax lets screen readers announce "list, 3 items" and navigate item-by-item. Emoji bullets are read aloud in full (e.g., "small blue diamond, Install dependencies").
+**Why it matters:** Proper list syntax lets screen readers announce "list, 3 items" and navigate
+item-by-item. Emoji bullets are read aloud in full (e.g., "small blue diamond, Install
+dependencies").
 
 #### Emoji
 
@@ -213,12 +227,15 @@ Status: ✅
 Status: Passing ✅
 ```
 
-**Why it matters:** Each emoji name is read aloud in full. "rocket, sparkles, fire, hundred points, party popper" is disruptive. A single well-placed emoji enhances; a cluster of them creates noise.
+**Why it matters:** Each emoji name is read aloud in full. "rocket, sparkles, fire, hundred points,
+party popper" is disruptive. A single well-placed emoji enhances; a cluster of them creates noise.
 
 ## Review Tone
 
-- **Explain impact:** Specify _who_ is affected — screen reader users, people with cognitive disabilities, non-native speakers.
-- **Preserve voice:** Accessibility and personality are not mutually exclusive. Don't flatten engaging writing.
+- **Explain impact:** Specify _who_ is affected — screen reader users, people with cognitive
+  disabilities, non-native speakers.
+- **Preserve voice:** Accessibility and personality are not mutually exclusive. Don't flatten
+  engaging writing.
 - **Be actionable:** Give specific fixes, not vague advice.
 
 ## Commands

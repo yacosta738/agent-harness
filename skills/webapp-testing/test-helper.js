@@ -44,7 +44,7 @@ function captureConsoleLogs(page) {
 async function captureScreenshot(page, name) {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filename = `${name}-${timestamp}.png`;
-  await page.screenshot({ path: filename, fullPage: true });
+  await page.screenshot({path: filename, fullPage: true});
   console.log(`Screenshot saved: ${filename}`);
   return filename;
 }
