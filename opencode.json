@@ -133,6 +133,19 @@
       ],
       "enabled": false
     },
+    "n8n": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "supergateway",
+        "--streamableHttp",
+        "https://n8n.ahome.quest/mcp-server/http",
+        "--header",
+        "authorization:Bearer {env:N8N_MCP_AUTH_TOKEN}"
+      ],
+      "enabled": false
+    },
     "sonarqube": {
       "type": "local",
       "command": [
