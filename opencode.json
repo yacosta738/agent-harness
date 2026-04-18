@@ -3,7 +3,8 @@
   "autoupdate": true,
   "plugin": [
     "opencode-anthropic-login-via-cli@latest",
-    "opencode-gemini-auth@latest"
+    "opencode-gemini-auth@latest",
+    "@warp-dot-dev/opencode-warp"
   ],
   "permission": {
     "bash": {
