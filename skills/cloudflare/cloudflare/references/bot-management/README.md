@@ -1,13 +1,17 @@
 # Cloudflare Bot Management
 
-Enterprise-grade bot detection, protection, and mitigation using ML/heuristics, bot scores, JavaScript detections, and verified bot handling.
+Enterprise-grade bot detection, protection, and mitigation using ML/heuristics, bot scores,
+JavaScript detections, and verified bot handling.
 
 ## Overview
 
 Bot Management provides multi-tier protection:
+
 - **Free (Bot Fight Mode)**: Auto-blocks definite bots, no config
-- **Pro/Business (Super Bot Fight Mode)**: Configurable actions, static resource protection, analytics groupings
-- **Enterprise (Bot Management)**: Granular 1-99 scores, WAF integration, JA3/JA4 fingerprinting, Workers API, Advanced Analytics
+- **Pro/Business (Super Bot Fight Mode)**: Configurable actions, static resource protection,
+  analytics groupings
+- **Enterprise (Bot Management)**: Granular 1-99 scores, WAF integration, JA3/JA4 fingerprinting,
+  Workers API, Advanced Analytics
 
 ## Quick Start
 
@@ -33,29 +37,33 @@ Bot Management provides multi-tier protection:
 
 ## Reading Order
 
-| Task | Files to Read |
-|------|---------------|
+| Task                  | Files to Read             |
+|-----------------------|---------------------------|
 | Enable bot protection | README → configuration.md |
-| Workers bot detection | README → api.md |
-| WAF rule templates | README → patterns.md |
-| Debug bot issues | gotchas.md |
-| Advanced analytics | api.md#bot-analytics |
+| Workers bot detection | README → api.md           |
+| WAF rule templates    | README → patterns.md      |
+| Debug bot issues      | gotchas.md                |
+| Advanced analytics    | api.md#bot-analytics      |
 
 ## Core Concepts
 
-**Bot Scores**: 1-99 (1 = definitely automated, 99 = definitely human). Threshold: <30 indicates bot traffic. Enterprise gets granular 1-99; Pro/Business get groupings only.
+**Bot Scores**: 1-99 (1 = definitely automated, 99 = definitely human). Threshold: <30 indicates bot
+traffic. Enterprise gets granular 1-99; Pro/Business get groupings only.
 
-**Detection Engines**: Heuristics (known fingerprints, assigns score=1), ML (majority of detections, supervised learning on billions of requests), Anomaly Detection (optional, baseline traffic analysis), JavaScript Detections (headless browser detection).
+**Detection Engines**: Heuristics (known fingerprints, assigns score=1), ML (majority of detections,
+supervised learning on billions of requests), Anomaly Detection (optional, baseline traffic
+analysis), JavaScript Detections (headless browser detection).
 
-**Verified Bots**: Allowlisted good bots (search engines, AI crawlers) verified via reverse DNS or Web Bot Auth. Access via `cf.bot_management.verified_bot` or `cf.verified_bot_category`.
+**Verified Bots**: Allowlisted good bots (search engines, AI crawlers) verified via reverse DNS or
+Web Bot Auth. Access via `cf.bot_management.verified_bot` or `cf.verified_bot_category`.
 
 ## Platform Limits
 
-| Plan | Bot Scores | JA3/JA4 | Custom Rules | Analytics Retention |
-|------|------------|---------|--------------|---------------------|
-| Free | No (auto-block only) | No | 5 | N/A (no analytics) |
-| Pro/Business | Groupings only | No | 20/100 | 30 days (72h at a time) |
-| Enterprise | 1-99 granular | Yes | 1,000+ | 30 days (1 week at a time) |
+| Plan         | Bot Scores           | JA3/JA4 | Custom Rules | Analytics Retention        |
+|--------------|----------------------|---------|--------------|----------------------------|
+| Free         | No (auto-block only) | No      | 5            | N/A (no analytics)         |
+| Pro/Business | Groupings only       | No      | 20/100       | 30 days (72h at a time)    |
+| Enterprise   | 1-99 granular        | Yes     | 1,000+       | 30 days (1 week at a time) |
 
 ## Basic Patterns
 
@@ -82,10 +90,13 @@ export default {
 
 ## In This Reference
 
-- [configuration.md](./configuration.md) - Product tiers, WAF rule setup, JavaScript Detections, ML auto-updates
+- [configuration.md](./configuration.md) - Product tiers, WAF rule setup, JavaScript Detections, ML
+  auto-updates
 - [api.md](./api.md) - Workers BotManagement interface, WAF fields, JA4 Signals
-- [patterns.md](./patterns.md) - E-commerce, API protection, mobile app allowlisting, SEO-friendly handling
-- [gotchas.md](./gotchas.md) - False positives/negatives, score=0 issues, JSD limitations, CSP requirements
+- [patterns.md](./patterns.md) - E-commerce, API protection, mobile app allowlisting, SEO-friendly
+  handling
+- [gotchas.md](./gotchas.md) - False positives/negatives, score=0 issues, JSD limitations, CSP
+  requirements
 
 ## See Also
 

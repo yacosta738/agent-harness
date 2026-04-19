@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use this reference during code-first review to map visible SwiftUI patterns to likely runtime costs and safer remediation guidance.
+Use this reference during code-first review to map visible SwiftUI patterns to likely runtime costs
+and safer remediation guidance.
 
 ## High-priority smells
 
@@ -34,7 +35,8 @@ var filtered: [Item] {
 }
 ```
 
-Prefer deriving this once per meaningful input change in a model/helper, or store derived view-owned state only when the view truly owns the transformation lifecycle.
+Prefer deriving this once per meaningful input change in a model/helper, or store derived view-owned
+state only when the view truly owns the transformation lifecycle.
 
 ### Sorting or filtering inside `body`
 
@@ -70,7 +72,8 @@ ForEach(items, id: \.self) { item in
 }
 ```
 
-Avoid `id: \.self` for non-stable values or collections that reorder. Use a stable domain identifier.
+Avoid `id: \.self` for non-stable values or collections that reorder. Use a stable domain
+identifier.
 
 ### Top-level conditional view swapping
 
@@ -84,7 +87,8 @@ var content: some View {
 }
 ```
 
-Prefer one stable base view and localize conditions to sections or modifiers. This reduces root identity churn and makes diffing cheaper.
+Prefer one stable base view and localize conditions to sections or modifiers. This reduces root
+identity churn and makes diffing cheaper.
 
 ### Image decoding on the main thread
 
@@ -108,7 +112,9 @@ var body: some View {
 }
 ```
 
-If many views read the same broad collection or root model, small changes can fan out into wide invalidation. Prefer narrower derived inputs, smaller observable surfaces, or per-item state closer to the leaf views.
+If many views read the same broad collection or root model, small changes can fan out into wide
+invalidation. Prefer narrower derived inputs, smaller observable surfaces, or per-item state closer
+to the leaf views.
 
 ### Broad `ObservableObject` reads on iOS 16 and earlier
 
@@ -118,15 +124,19 @@ final class Model: ObservableObject {
 }
 ```
 
-The same warning applies to legacy observation. Avoid having many descendants observe a large shared object when they only need one derived field.
+The same warning applies to legacy observation. Avoid having many descendants observe a large shared
+object when they only need one derived field.
 
 ## Remediation notes
 
 ### `@State` is not a generic cache
 
-Use `@State` for view-owned state and derived values that intentionally belong to the view lifecycle. Do not move arbitrary expensive computation into `@State` unless you also define when and why it updates.
+Use `@State` for view-owned state and derived values that intentionally belong to the view
+lifecycle. Do not move arbitrary expensive computation into `@State` unless you also define when and
+why it updates.
 
 Better alternatives:
+
 - precompute in the model or store
 - update derived state in response to a specific input change
 - memoize in a dedicated helper
@@ -135,6 +145,7 @@ Better alternatives:
 ### `equatable()` is conditional guidance
 
 Use `equatable()` only when:
+
 - equality is cheaper than recomputing the subtree, and
 - the view inputs are value-semantic and stable enough for meaningful equality checks
 
@@ -143,6 +154,7 @@ Do not apply `equatable()` as a blanket fix for all redraws.
 ## Triage order
 
 When multiple smells appear together, prioritize in this order:
+
 1. Broad invalidation and observation fan-out
 2. Unstable identity and list churn
 3. Main-thread work during render

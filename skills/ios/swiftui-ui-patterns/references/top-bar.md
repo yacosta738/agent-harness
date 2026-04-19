@@ -2,7 +2,8 @@
 
 ## Intent
 
-Provide a custom top selector or pill row that sits above scroll content, using `safeAreaBar(.top)` on iOS 26 and a compatible fallback on earlier OS versions.
+Provide a custom top selector or pill row that sits above scroll content, using `safeAreaBar(.top)`
+on iOS 26 and a compatible fallback on earlier OS versions.
 
 ## iOS 26+ approach
 

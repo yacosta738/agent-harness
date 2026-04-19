@@ -7,6 +7,7 @@ Upload, playback, live streaming, and management APIs.
 ### Direct Creator Upload (Recommended)
 
 **Backend: Create upload URL (SDK)**
+
 ```typescript
 import Cloudflare from 'cloudflare';
 
@@ -22,6 +23,7 @@ const uploadData = await client.stream.directUpload.create({
 ```
 
 **Frontend: Upload file**
+
 ```typescript
 async function uploadVideo(file: File, uploadURL: string) {
   const formData = new FormData();

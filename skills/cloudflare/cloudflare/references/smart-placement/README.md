@@ -1,14 +1,19 @@
 # Cloudflare Workers Smart Placement
 
-Automatic workload placement optimization to minimize latency by running Workers closer to backend infrastructure rather than end users.
+Automatic workload placement optimization to minimize latency by running Workers closer to backend
+infrastructure rather than end users.
 
 ## Core Concept
 
-Smart Placement automatically analyzes Worker request duration across Cloudflare's global network and intelligently routes requests to optimal data center locations. Instead of defaulting to the location closest to the end user, Smart Placement can forward requests to locations closer to backend infrastructure when this reduces overall request duration.
+Smart Placement automatically analyzes Worker request duration across Cloudflare's global network
+and intelligently routes requests to optimal data center locations. Instead of defaulting to the
+location closest to the end user, Smart Placement can forward requests to locations closer to
+backend infrastructure when this reduces overall request duration.
 
 ### When to Use
 
 **Enable Smart Placement when:**
+
 - Worker makes multiple round trips to backend services/databases
 - Backend infrastructure is geographically concentrated
 - Request duration dominated by backend latency rather than network latency from user
@@ -16,6 +21,7 @@ Smart Placement automatically analyzes Worker request duration across Cloudflare
 - Worker uses `fetch` handler (not RPC methods)
 
 **Do NOT enable for:**
+
 - Workers serving only static content or cached responses
 - Workers without significant backend communication
 - Pure edge logic (auth checks, redirects, simple transformations)
@@ -51,6 +57,7 @@ Does your Worker have a fetch handler?
 ### Key Architecture Pattern
 
 **Recommended:** Split full-stack applications into separate Workers:
+
 ```
 User → Frontend Worker (at edge, close to user)
          ↓ Service Binding
@@ -111,6 +118,7 @@ wrangler tail your-worker-name --header cf-placement
 ## Reading Order
 
 **First time?** Start here:
+
 1. This README - understand core concepts and when to use Smart Placement
 2. [configuration.md](./configuration.md) - set up wrangler.jsonc and understand limitations
 3. [patterns.md](./patterns.md) - see practical examples for your use case
@@ -118,6 +126,7 @@ wrangler tail your-worker-name --header cf-placement
 5. [gotchas.md](./gotchas.md) - troubleshoot common issues
 
 **Quick lookup:**
+
 - "Should I enable Smart Placement?" → See "When to Use" above
 - "How do I configure it?" → [configuration.md](./configuration.md)
 - "How do I split frontend/backend?" → [patterns.md](./patterns.md)

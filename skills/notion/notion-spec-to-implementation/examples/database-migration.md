@@ -5,20 +5,24 @@
 ## Workflow
 
 ### 1. Find & Fetch Spec
+
 ```
 Notion:notion-search → Found "User Preferences Schema Migration Spec"
 Notion:notion-fetch → Extracted requirements
 ```
 
-**Spec Summary**: Migrate from JSON blob to structured schema for better performance and data integrity.
+**Spec Summary**: Migrate from JSON blob to structured schema for better performance and data
+integrity.
 
 ### 2. Parse Requirements
+
 - **Current**: JSONB preferences column
 - **Target**: Separate `user_preferences` and `notification_preferences` tables
 - **Must maintain**: Backward compatibility during migration
 - **Performance**: Support 1M+ users with zero downtime
 
 ### 3. Create Implementation Plan
+
 ```
 Notion:notion-create-pages
 pages: [{
@@ -30,6 +34,7 @@ pages: [{
 ```
 
 **Plan included**:
+
 - **Phase 1**: Create new tables with indexes
 - **Phase 2**: Backfill data from JSONB
 - **Phase 3**: Dual-write mode (both old and new)
@@ -37,6 +42,7 @@ pages: [{
 - **Phase 5**: Drop old JSONB column
 
 ### 4. Find Task Database & Create Tasks
+
 ```
 Notion:notion-search → Found "Engineering Tasks" database
 Notion:notion-fetch → Got schema (Task, Status, Priority, Assignee, etc.)
@@ -58,6 +64,7 @@ pages: [
 ```
 
 **Tasks created**:
+
 1. Write migration SQL scripts
 2. Implement backfill job
 3. Add dual-write logic to API
@@ -65,6 +72,7 @@ pages: [
 5. Rollback plan & monitoring
 
 ### 5. Track Progress
+
 Regular updates to implementation plan with status, blockers, and completion notes.
 
 ## Key Outputs
@@ -74,6 +82,7 @@ Regular updates to implementation plan with status, blockers, and completion not
 **Progress Tracking** (updated as work progresses)
 
 ## Success Factors
+
 - Broke down complex migration into clear phases
 - Created tasks with specific acceptance criteria
 - Established dependencies (Phase 1 → 2 → 3 → 4 → 5)

@@ -3,6 +3,7 @@
 ## Docker Deployment
 
 ### Token-Based (Recommended)
+
 ```yaml
 services:
   cloudflared:
@@ -12,6 +13,7 @@ services:
 ```
 
 ### Local Config
+
 ```yaml
 services:
   cloudflared:
@@ -69,11 +71,13 @@ ingress:
   - service: http_status:404
 ```
 
-Run same config on multiple machines. Cloudflare automatically load balances. Long-lived connections (WebSocket, SSH) may drop during updates.
+Run same config on multiple machines. Cloudflare automatically load balances. Long-lived
+connections (WebSocket, SSH) may drop during updates.
 
 ## Use Cases
 
 ### Web Application
+
 ```yaml
 ingress:
   - hostname: myapp.example.com
@@ -82,6 +86,7 @@ ingress:
 ```
 
 ### SSH Access
+
 ```yaml
 ingress:
   - hostname: ssh.example.com
@@ -92,6 +97,7 @@ ingress:
 Client: `cloudflared access ssh --hostname ssh.example.com`
 
 ### gRPC Service
+
 ```yaml
 ingress:
   - hostname: grpc.example.com
@@ -179,6 +185,7 @@ new cloudflare.Record("dns", {
 ## Service Installation
 
 ### Linux systemd
+
 ```bash
 cloudflared service install
 systemctl start cloudflared && systemctl enable cloudflared
@@ -186,6 +193,7 @@ journalctl -u cloudflared -f  # Logs
 ```
 
 ### macOS launchd
+
 ```bash
 sudo cloudflared service install
 sudo launchctl start com.cloudflare.cloudflared

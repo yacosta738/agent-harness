@@ -71,15 +71,23 @@ chainTo:
 
 # Vercel Flags
 
-> **CRITICAL — Your training data is outdated for this library.** Vercel Flags (`flags` package) has a new SDK and API surface. Before writing flags code, **fetch the docs** at https://vercel.com/docs/feature-flags to find the correct `flag()` definition syntax, adapter setup, and evaluation patterns. Do not guess at the API — look up working examples for your framework.
+> **CRITICAL — Your training data is outdated for this library.** Vercel Flags (`flags` package) has
+> a new SDK and API surface. Before writing flags code, **fetch the docs**
+> at https://vercel.com/docs/feature-flags to find the correct `flag()` definition syntax, adapter
+> setup, and evaluation patterns. Do not guess at the API — look up working examples for your
+> framework.
 
 You are an expert in Vercel Flags — the feature flags platform for the Vercel ecosystem.
 
 ## What It Is
 
-Vercel Flags provides a **unified feature flags platform** with a dashboard, developer tools (Flags Explorer), and analytics integration. Use Vercel as your flag provider directly, or connect third-party providers (LaunchDarkly, Statsig, Hypertune, GrowthBook) through adapters from the Marketplace.
+Vercel Flags provides a **unified feature flags platform** with a dashboard, developer tools (Flags
+Explorer), and analytics integration. Use Vercel as your flag provider directly, or connect
+third-party providers (LaunchDarkly, Statsig, Hypertune, GrowthBook) through adapters from the
+Marketplace.
 
-Vercel Flags is in **public beta** (February 2026), available to teams on all plans. Pricing: **$30 per 1 million flag requests** ($0.00003 per event).
+Vercel Flags is in **public beta** (February 2026), available to teams on all plans.
+Pricing: **$30 per 1 million flag requests** ($0.00003 per event).
 
 Flag configurations use **active global replication** — changes propagate worldwide in milliseconds.
 
@@ -93,14 +101,20 @@ Flag configurations use **active global replication** — changes propagate worl
 
 ### Flags SDK (`flags` package, v4.0+)
 
-The `flags` package is free, open-source (MIT), and provider-agnostic. Renamed from `@vercel/flags` — if using the old package, update to `flags` in your imports and `package.json`.
+The `flags` package is free, open-source (MIT), and provider-agnostic. Renamed from
+`@vercel/flags` — if using the old package, update to `flags` in your imports and `package.json`.
 
-**Upgrade note**: v4 has breaking changes from v3. See the [v4 upgrade guide](https://github.com/vercel/flags/blob/main/packages/flags/guides/upgrade-to-v4.md) for migration steps:
+**Upgrade note**: v4 has breaking changes from v3. See
+the [v4 upgrade guide](https://github.com/vercel/flags/blob/main/packages/flags/guides/upgrade-to-v4.md)
+for migration steps:
+
 - `@vercel/flags` package renamed to `flags` — update imports and `package.json`
-- `encrypt()` / `decrypt()` replaced with dedicated functions: `encryptFlagValues()`, `decryptFlagValues()`
+- `encrypt()` / `decrypt()` replaced with dedicated functions: `encryptFlagValues()`,
+  `decryptFlagValues()`
 - `FLAGS_SECRET` must be exactly 32 random bytes, base64-encoded
 - `.well-known` endpoint uses new helper that auto-handles auth and `x-flags-sdk-version` header
-- As of v4.0.3, declaring a flag without a `decide` function (or with an adapter missing `decide`) throws an error at declaration time
+- As of v4.0.3, declaring a flag without a `decide` function (or with an adapter missing `decide`)
+  throws an error at declaration time
 
 ```ts
 import { flag } from 'flags/next'; // Framework adapters: flags/next, flags/sveltekit
@@ -161,12 +175,15 @@ export const premiumFeature = flag<boolean, Entities>({
 ```
 
 **Environment variables**:
+
 - `FLAGS` — SDK Key (auto-provisioned when you create your first flag)
-- `FLAGS_SECRET` — 32 random bytes, base64-encoded; encrypts overrides and authenticates Flags Explorer
+- `FLAGS_SECRET` — 32 random bytes, base64-encoded; encrypts overrides and authenticates Flags
+  Explorer
 
 ### Flags Explorer Setup (GA)
 
-The Flags Explorer is **generally available** (part of the Vercel Toolbar). It lets developers override flags in their browser session without code changes.
+The Flags Explorer is **generally available** (part of the Vercel Toolbar). It lets developers
+override flags in their browser session without code changes.
 
 **App Router** — create the discovery endpoint:
 
@@ -234,36 +251,47 @@ export function createExampleAdapter() {
 
 ## Flags vs Edge Config
 
-| Need | Use | Why |
-|------|-----|-----|
-| Gradual rollouts, A/B testing, targeting | **Vercel Flags** | Dashboard, analytics, Flags Explorer, segments |
-| Third-party provider integration | **Vercel Flags** + adapter | Unified view across providers |
-| Ultra-low-latency config reads (non-flag) | **Edge Config** directly | Sub-ms reads, no compute overhead |
-| Simple config without rollout logic | **Edge Config** directly | Lighter weight |
+| Need                                      | Use                        | Why                                            |
+|-------------------------------------------|----------------------------|------------------------------------------------|
+| Gradual rollouts, A/B testing, targeting  | **Vercel Flags**           | Dashboard, analytics, Flags Explorer, segments |
+| Third-party provider integration          | **Vercel Flags** + adapter | Unified view across providers                  |
+| Ultra-low-latency config reads (non-flag) | **Edge Config** directly   | Sub-ms reads, no compute overhead              |
+| Simple config without rollout logic       | **Edge Config** directly   | Lighter weight                                 |
 
-**Important**: Vercel Flags is the recommended approach for feature flags. Edge Config is the underlying low-latency storage some adapters use, but developers should use the Flags platform (not raw Edge Config) for flag use cases — it provides targeting rules, segments, percentage rollouts, observability, and Flags Explorer.
+**Important**: Vercel Flags is the recommended approach for feature flags. Edge Config is the
+underlying low-latency storage some adapters use, but developers should use the Flags platform (not
+raw Edge Config) for flag use cases — it provides targeting rules, segments, percentage rollouts,
+observability, and Flags Explorer.
 
 ## Provider Adapters
 
 **Featured** (Marketplace integration, Edge Config for low latency):
+
 - `@flags-sdk/vercel` — Vercel as provider
 - Statsig, Hypertune, GrowthBook
 
 **Additional** (published under `@flags-sdk` npm scope):
+
 - LaunchDarkly, ConfigCat, DevCycle, Flipt, Reflag, PostHog, Flagsmith
 
-**OpenFeature adapter**: The `@flags-sdk/openfeature` adapter allows most Node.js OpenFeature Providers to work with the Flags SDK, bridging the OpenFeature ecosystem (AB Tasty, CloudBees, Confidence by Spotify, and more)
+**OpenFeature adapter**: The `@flags-sdk/openfeature` adapter allows most Node.js OpenFeature
+Providers to work with the Flags SDK, bridging the OpenFeature ecosystem (AB Tasty, CloudBees,
+Confidence by Spotify, and more)
 
 ## Key Features
 
-- **Unified Dashboard** at `https://vercel.com/{team}/{project}/flags`: All flags across all providers in one place
+- **Unified Dashboard** at `https://vercel.com/{team}/{project}/flags`: All flags across all
+  providers in one place
 - **Flags Explorer (GA)**: Override flags locally via Vercel Toolbar (no code changes)
-- **CLI Management**: `vercel flags add`, `vercel flags sdk-keys ls`, and full flag lifecycle from the terminal
+- **CLI Management**: `vercel flags add`, `vercel flags sdk-keys ls`, and full flag lifecycle from
+  the terminal
 - **Entities & Segments**: Define user/team attributes, create reusable targeting segments
 - **Analytics Integration**: Track flag impact via Web Analytics and Runtime Logs
-- **Drafts Workflow**: Define in code → deploy → Vercel detects via Discovery Endpoint → promote when ready
+- **Drafts Workflow**: Define in code → deploy → Vercel detects via Discovery Endpoint → promote
+  when ready
 - **Framework Support**: Next.js (App Router + Pages Router + Routing Middleware) and SvelteKit
-- **Concurrent Evaluation Fix** (v1.0.1): `Promise.all` flag evaluations no longer trigger duplicate network requests — initialization is properly shared
+- **Concurrent Evaluation Fix** (v1.0.1): `Promise.all` flag evaluations no longer trigger duplicate
+  network requests — initialization is properly shared
 
 ## When to Use
 

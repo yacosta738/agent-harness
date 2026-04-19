@@ -16,6 +16,7 @@ filters: {
 ```
 
 **When to use**:
+
 - Finding recent updates on a topic
 - Focusing on current information
 - Excluding outdated content
@@ -31,6 +32,7 @@ filters: {
 ```
 
 **When to use**:
+
 - Research from subject matter experts
 - Team-specific information
 - Attribution tracking
@@ -59,6 +61,7 @@ teamspace_id: "teamspace-uuid"
 ```
 
 **When to use**:
+
 - Project-specific research
 - Department-focused information
 - Reducing noise from irrelevant results
@@ -72,6 +75,7 @@ page_url: "https://notion.so/workspace/Page-Title-uuid"
 ```
 
 **When to use**:
+
 - Research within a project hierarchy
 - Documentation updates
 - Focused investigation
@@ -85,6 +89,7 @@ data_source_url: "collection://data-source-uuid"
 ```
 
 **When to use**:
+
 - Task/project database research
 - Structured data investigation
 - Finding specific entries
@@ -99,6 +104,7 @@ data_source_url: "collection://data-source-uuid"
 4. Fetch detailed content from top results
 
 **Example**:
+
 ```
 Search 1: query="API integration" → 50 results across workspace
 Search 2: query="API integration", teamspace_id="engineering" → 12 results
@@ -132,6 +138,7 @@ Search 3: created_date_range 2025 → Current state
 ### Identifying Relevant Results
 
 Look for:
+
 - **High semantic match**: Result summary closely matches query intent
 - **Recent updates**: Last-edited date is recent
 - **Authoritative sources**: Created by known experts or in official locations
@@ -171,21 +178,25 @@ If search returns < 3 results:
 ### Effective Search Queries
 
 **Good queries** (specific, semantic):
+
 - "Q4 product roadmap"
 - "authentication implementation guide"
 - "customer feedback themes"
 
 **Weak queries** (too vague):
+
 - "roadmap"
 - "guide"
 - "feedback"
 
 **Over-specific queries** (too narrow):
+
 - "Q4 2024 product roadmap for mobile app version 3.2 feature X"
 
 ### User Context
 
 Always use available user context:
+
 - Query should match their terminology
 - Scope to their relevant teamspaces
 - Consider their role/department
@@ -196,6 +207,7 @@ Always use available user context:
 ### Notion Integrations
 
 Search extends beyond Notion pages to:
+
 - Slack messages (if connected)
 - Google Drive documents (if connected)
 - GitHub issues/PRs (if connected)
@@ -206,6 +218,7 @@ Be aware results may come from these sources.
 ### Source Attribution
 
 When citing results from connected sources:
+
 - Note the source type in documentation
 - Use appropriate mention format
 - Verify user has access to the source system

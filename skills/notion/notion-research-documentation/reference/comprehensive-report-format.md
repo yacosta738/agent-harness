@@ -1,6 +1,7 @@
 # Comprehensive Report Format
 
 **When to use**:
+
 - Formal documentation requirements
 - Strategic decision support
 - Complex topics requiring extensive analysis
@@ -11,6 +12,7 @@
 **Length**: 1500+ words
 
 **Structure**:
+
 - Executive summary
 - Background & context
 - Methodology

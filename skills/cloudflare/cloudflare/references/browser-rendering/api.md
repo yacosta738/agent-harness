@@ -7,16 +7,16 @@
 
 ### Endpoints
 
-| Endpoint | Description | Key Options |
-|----------|-------------|-------------|
-| `/content` | Get rendered HTML | `url`, `waitUntil` |
-| `/screenshot` | Capture image | `screenshotOptions: {type, fullPage, clip}` |
-| `/pdf` | Generate PDF | `pdfOptions: {format, landscape, margin}` |
-| `/snapshot` | HTML + inlined resources | `url` |
-| `/scrape` | Extract by selectors | `selectors: ["h1", ".price"]` |
-| `/json` | AI-structured extraction | `schema: {name: "string", price: "number"}` |
-| `/links` | Get all links | `url` |
-| `/markdown` | Convert to markdown | `url` |
+| Endpoint      | Description              | Key Options                                 |
+|---------------|--------------------------|---------------------------------------------|
+| `/content`    | Get rendered HTML        | `url`, `waitUntil`                          |
+| `/screenshot` | Capture image            | `screenshotOptions: {type, fullPage, clip}` |
+| `/pdf`        | Generate PDF             | `pdfOptions: {format, landscape, margin}`   |
+| `/snapshot`   | HTML + inlined resources | `url`                                       |
+| `/scrape`     | Extract by selectors     | `selectors: ["h1", ".price"]`               |
+| `/json`       | AI-structured extraction | `schema: {name: "string", price: "number"}` |
+| `/links`      | Get all links            | `url`                                       |
+| `/markdown`   | Convert to markdown      | `url`                                       |
 
 ```bash
 curl -X POST '.../browser-rendering/screenshot' \
@@ -100,9 +100,9 @@ await puppeteer.limits(env.MYBROWSER);
 
 ## Key Options
 
-| Option | Values |
-|--------|--------|
-| `waitUntil` | `load`, `domcontentloaded`, `networkidle0`, `networkidle2` |
-| `keep_alive` | Max 600000ms (10 min) |
-| `screenshot.type` | `png`, `jpeg` |
-| `pdf.format` | `A4`, `Letter`, `Legal` |
+| Option            | Values                                                     |
+|-------------------|------------------------------------------------------------|
+| `waitUntil`       | `load`, `domcontentloaded`, `networkidle0`, `networkidle2` |
+| `keep_alive`      | Max 600000ms (10 min)                                      |
+| `screenshot.type` | `png`, `jpeg`                                              |
+| `pdf.format`      | `A4`, `Letter`, `Legal`                                    |

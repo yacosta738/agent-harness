@@ -70,7 +70,8 @@ await writer.write(new TextEncoder().encode(`*2\r\n$3\r\nGET\r\n$3\r\nkey\r\n`))
 
 ### PostgreSQL
 
-**Use [Hyperdrive](../hyperdrive/) for production.** Raw Postgres protocol is complex (startup, auth, query messages).
+**Use [Hyperdrive](../hyperdrive/) for production.** Raw Postgres protocol is complex (startup,
+auth, query messages).
 
 ### MQTT
 

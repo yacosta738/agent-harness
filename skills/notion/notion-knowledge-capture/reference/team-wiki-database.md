@@ -4,14 +4,14 @@
 
 ## Schema
 
-| Property | Type | Options | Purpose |
-|----------|------|---------|---------|
-| **Title** | title | - | Page name |
-| **Section** | select | Getting Started, Processes, Tools, Reference, Onboarding | Wiki organization |
-| **Tags** | multi_select | - | Topic tags |
-| **Owner** | people | - | Page maintainer |
-| **Last Updated** | last_edited_time | - | Auto-tracked |
-| **Visibility** | select | Public, Team Only, Confidential | Access level |
+| Property         | Type             | Options                                                  | Purpose           |
+|------------------|------------------|----------------------------------------------------------|-------------------|
+| **Title**        | title            | -                                                        | Page name         |
+| **Section**      | select           | Getting Started, Processes, Tools, Reference, Onboarding | Wiki organization |
+| **Tags**         | multi_select     | -                                                        | Topic tags        |
+| **Owner**        | people           | -                                                        | Page maintainer   |
+| **Last Updated** | last_edited_time | -                                                        | Auto-tracked      |
+| **Visibility**   | select           | Public, Team Only, Confidential                          | Access level      |
 
 ## Usage
 

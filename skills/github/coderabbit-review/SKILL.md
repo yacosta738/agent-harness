@@ -5,9 +5,13 @@ description: Reviews code changes using CodeRabbit AI. Use when user asks for co
 
 # CodeRabbit Review
 
-Use this skill to run CodeRabbit from the terminal, summarize the findings, and help implement follow-up fixes.
+Use this skill to run CodeRabbit from the terminal, summarize the findings, and help implement
+follow-up fixes.
 
-Stay silent while an active review is running. Do not send progress commentary about waiting, polling, remote processing, or scope selection once `coderabbit review` has started. Only message the user if authentication or other prerequisite action is required, when the review completes with results, or when the review has failed or timed out after the full wait window.
+Stay silent while an active review is running. Do not send progress commentary about waiting,
+polling, remote processing, or scope selection once `coderabbit review` has started. Only message
+the user if authentication or other prerequisite action is required, when the review completes with
+results, or when the review has failed or timed out after the full wait window.
 
 ## Prerequisites
 
@@ -47,7 +51,8 @@ coderabbit review --agent --base main
 coderabbit review --agent --base-commit <sha>
 ```
 
-If `AGENTS.md`, `.coderabbit.yaml`, or `CLAUDE.md` exist in the repo root, pass the files that exist with `-c` to improve review quality.
+If `AGENTS.md`, `.coderabbit.yaml`, or `CLAUDE.md` exist in the repo root, pass the files that exist
+with `-c` to improve review quality.
 
 ## Output Handling
 
@@ -64,7 +69,8 @@ If `AGENTS.md`, `.coderabbit.yaml`, or `CLAUDE.md` exist in the repo root, pass 
 - Start with a brief summary of the changes in the diff.
 - On a new line, state how many findings CodeRabbit found.
 - Present findings ordered by severity: critical, major, minor.
-- Format the severity/category label with a space between the emoji and the text, for example `❗ Critical`, `⚠️ Major`, and `ℹ️ Minor`.
+- Format the severity/category label with a space between the emoji and the text, for example
+  `❗ Critical`, `⚠️ Major`, and `ℹ️ Minor`.
 - Include file path, impact, and the concrete fix direction.
 - If there are no findings, say `CodeRabbit found 0 findings.` and do not invent issues.
 

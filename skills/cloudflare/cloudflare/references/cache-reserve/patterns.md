@@ -65,7 +65,8 @@ const cacheRules = [
 
 ### 4. Making Assets Cache Reserve Eligible from Workers
 
-**Note**: This modifies response headers to meet eligibility criteria but does NOT directly control Cache Reserve storage (which is zone-level automatic).
+**Note**: This modifies response headers to meet eligibility criteria but does NOT directly control
+Cache Reserve storage (which is zone-level automatic).
 
 ```typescript
 export default {
@@ -187,7 +188,8 @@ console.log(mediaLibrary);
 - **Set appropriate TTLs**: 10hr minimum, 24hr+ optimal for stable content, 30d max cautiously
 - **Cache high-value stable assets**: Images, media, fonts, archives, documentation
 - **Exclude frequently changing**: APIs, user-specific content, real-time data
-- **Compression note**: Cache Reserve fetches uncompressed from origin, serves compressed to visitors - factor in origin egress costs
+- **Compression note**: Cache Reserve fetches uncompressed from origin, serves compressed to
+  visitors - factor in origin egress costs
 
 ## See Also
 

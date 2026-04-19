@@ -5,6 +5,7 @@
 **Endpoint**: `https://api.cloudflare.com/client/v4/graphql`
 
 **Query Workers Metrics**:
+
 ```graphql
 query {
   viewer {
@@ -82,6 +83,7 @@ ORDER BY occurrences DESC;
 ### Console Logging API
 
 **Methods**:
+
 ```typescript
 // Standard methods (all appear in Workers Logs)
 console.log('info message');
@@ -101,6 +103,7 @@ console.log({
 ```
 
 **Log Levels**: All console methods produce logs; use structured fields for filtering:
+
 ```typescript
 console.log({
   level: 'error',
@@ -129,6 +132,7 @@ interface AnalyticsEngineDataPoint {
 ```
 
 **Field Limits**:
+
 - Max 20 indexes
 - Max 20 blobs
 - Max 20 doubles

@@ -123,6 +123,7 @@ Recommended for serving static files (replaces old `site` config).
 ```
 
 Access in Worker:
+
 ```typescript
 export default {
   async fetch(request, env) {

@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use a title menu in the navigation bar to provide context‑specific filtering or quick actions without adding extra chrome.
+Use a title menu in the navigation bar to provide context‑specific filtering or quick actions
+without adding extra chrome.
 
 ## Core patterns
 

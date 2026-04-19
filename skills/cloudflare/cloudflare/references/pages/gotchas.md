@@ -3,14 +3,17 @@
 ## Functions Not Running
 
 **Problem**: Function endpoints return 404 or don't execute
-**Causes**: `_routes.json` excludes path; wrong file extension (`.jsx`/`.tsx`); Functions dir not at output root
+**Causes**: `_routes.json` excludes path; wrong file extension (`.jsx`/`.tsx`); Functions dir not at
+output root
 **Solution**: Check `_routes.json`, rename to `.ts`/`.js`, verify build output structure
 
 ## 404 on Static Assets
 
 **Problem**: Static files not serving
-**Causes**: Build output dir misconfigured; Functions catching requests; Advanced mode missing `env.ASSETS.fetch()`
-**Solution**: Verify output dir, add exclusions to `_routes.json`, call `env.ASSETS.fetch()` in `_worker.js`
+**Causes**: Build output dir misconfigured; Functions catching requests; Advanced mode missing
+`env.ASSETS.fetch()`
+**Solution**: Verify output dir, add exclusions to `_routes.json`, call `env.ASSETS.fetch()` in
+`_worker.js`
 
 ## Bindings Not Working
 
@@ -21,8 +24,10 @@
 ## Build Failures
 
 **Problem**: Deployment fails during build
-**Causes**: Wrong build command/output dir; Node version incompatibility; missing env vars; 20min timeout; OOM
-**Solution**: Check Dashboard → Deployments → Build log; verify settings; add `.nvmrc`; optimize build
+**Causes**: Wrong build command/output dir; Node version incompatibility; missing env vars; 20min
+timeout; OOM
+**Solution**: Check Dashboard → Deployments → Build log; verify settings; add `.nvmrc`; optimize
+build
 
 ## Middleware Not Running
 
@@ -34,7 +39,8 @@
 
 **Problem**: `_headers` or `_redirects` not applying
 **Causes**: Only work for static assets; Functions override; syntax errors; exceeded limits
-**Solution**: Set headers in Response object for Functions; verify syntax; check limits (100 headers, 2,100 redirects)
+**Solution**: Set headers in Response object for Functions; verify syntax; check limits (100
+headers, 2,100 redirects)
 
 ## TypeScript Errors
 
@@ -46,7 +52,8 @@
 
 **Problem**: Dev server errors or bindings don't work
 **Causes**: Port conflict; bindings not passed; local vs HTTPS differences
-**Solution**: Use `--port=3000`; pass bindings via CLI or wrangler.jsonc; account for HTTP/HTTPS differences
+**Solution**: Use `--port=3000`; pass bindings via CLI or wrangler.jsonc; account for HTTP/HTTPS
+differences
 
 ## Performance Issues
 
@@ -59,37 +66,43 @@
 ### ⚠️ Deprecated Frameworks
 
 **Next.js**: Official adapter (`@cloudflare/next-on-pages`) **deprecated** and unmaintained.
+
 - **Problem**: No updates since 2024; incompatible with Next.js 15+; missing App Router features
 - **Cause**: Cloudflare discontinued official support; community fork exists but limited
 - **Solutions**:
-  1. **Recommended**: Use Vercel (official Next.js host)
-  2. **Advanced**: Self-host on Workers using custom adapter (complex, unsupported)
-  3. **Migration**: Switch to SvelteKit/Nuxt (similar DX, full Pages support)
+    1. **Recommended**: Use Vercel (official Next.js host)
+    2. **Advanced**: Self-host on Workers using custom adapter (complex, unsupported)
+    3. **Migration**: Switch to SvelteKit/Nuxt (similar DX, full Pages support)
 
 **Remix**: Official adapter (`@remix-run/cloudflare-pages`) **deprecated**.
+
 - **Problem**: No maintenance from Remix team; compatibility issues with Remix v2+
 - **Cause**: Remix team deprecated all framework adapters
 - **Solutions**:
-  1. **Recommended**: Migrate to SvelteKit (similar file-based routing, better DX)
-  2. **Alternative**: Use Astro (static-first with optional SSR)
-  3. **Workaround**: Continue using deprecated adapter (no future support)
+    1. **Recommended**: Migrate to SvelteKit (similar file-based routing, better DX)
+    2. **Alternative**: Use Astro (static-first with optional SSR)
+    3. **Workaround**: Continue using deprecated adapter (no future support)
 
 ### ✅ Supported Frameworks
 
 **SvelteKit**:
+
 - Use `@sveltejs/adapter-cloudflare`
 - Access bindings via `platform.env` in server load functions
 - Set `platform: 'cloudflare'` in `svelte.config.js`
 
 **Astro**:
+
 - Built-in Cloudflare adapter
 - Access bindings via `Astro.locals.runtime.env`
 
 **Nuxt**:
+
 - Set `nitro.preset: 'cloudflare-pages'` in `nuxt.config.ts`
 - Access bindings via `event.context.cloudflare.env`
 
 **Qwik, Solid Start**:
+
 - Built-in or official Cloudflare adapters available
 - Check respective framework docs for binding access
 
@@ -122,7 +135,8 @@ console.log('Params:', params);
 
 **Problem**: Smart Placement enabled but no latency reduction observed
 **Cause**: Traffic evenly distributed globally, or no data locality constraints
-**Solution**: Smart Placement most effective with centralized data (D1/DO) or regional traffic; disable if no benefit
+**Solution**: Smart Placement most effective with centralized data (D1/DO) or regional traffic;
+disable if no benefit
 
 ## Remote Bindings Issues
 
@@ -131,6 +145,7 @@ console.log('Params:', params);
 **Problem**: Local dev with `--remote` altered production database/KV
 **Cause**: Remote bindings connect directly to production resources; writes are real
 **Solution**:
+
 - Use `--remote` only for read-heavy debugging
 - Create separate preview environments for testing
 - Never use `--remote` for write operations during development
@@ -140,6 +155,7 @@ console.log('Params:', params);
 **Problem**: `npx wrangler pages dev --remote` fails with "Unauthorized" or auth error
 **Cause**: Not logged in, session expired, or insufficient account permissions
 **Solution**:
+
 1. Run `npx wrangler login` to re-authenticate
 2. Verify account has access to project and bindings
 3. Check binding IDs match production configuration
@@ -153,43 +169,50 @@ console.log('Params:', params);
 ## Common Errors
 
 ### "Module not found"
+
 **Cause**: Dependencies not bundled or build output incorrect
 **Solution**: Check build output directory, ensure dependencies bundled
 
 ### "Binding not found"
+
 **Cause**: Binding not configured or types out of sync
 **Solution**: Verify wrangler.jsonc, run `npx wrangler types`
 
 ### "Request exceeded CPU limit"
+
 **Cause**: Code execution too slow or heavy compute
 **Solution**: Optimize hot paths, upgrade to Workers Paid
 
 ### "Script too large"
+
 **Cause**: Bundle size exceeds limit
 **Solution**: Tree-shake, use dynamic imports, code-split
 
 ### "Too many subrequests"
+
 **Cause**: Exceeded 50 subrequest limit
 **Solution**: Batch or reduce fetch calls
 
 ### "KV key not found"
+
 **Cause**: Key doesn't exist or wrong namespace
 **Solution**: Check namespace matches environment
 
 ### "D1 error"
+
 **Cause**: Wrong database_id or missing migrations
 **Solution**: Verify config, run `wrangler d1 migrations list`
 
 ## Limits Reference (Jan 2026)
 
-| Resource | Free | Paid |
-|----------|------|------|
-| Functions Requests | 100k/day | Unlimited |
-| CPU Time | 10ms/req | 30ms/req |
-| Memory | 128MB | 128MB |
-| Script Size | 1MB | 10MB |
-| Subrequests | 50/req | 1,000/req |
-| Deployments | 500/month | 5,000/month |
+| Resource           | Free      | Paid        |
+|--------------------|-----------|-------------|
+| Functions Requests | 100k/day  | Unlimited   |
+| CPU Time           | 10ms/req  | 30ms/req    |
+| Memory             | 128MB     | 128MB       |
+| Script Size        | 1MB       | 10MB        |
+| Subrequests        | 50/req    | 1,000/req   |
+| Deployments        | 500/month | 5,000/month |
 
 **Tip**: Hitting CPU limit? Optimize hot paths or upgrade to Workers Paid plan.
 

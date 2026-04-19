@@ -5,6 +5,7 @@ See [README.md](./README.md) for overview.
 ## Create Config
 
 **PostgreSQL:**
+
 ```bash
 # Basic
 npx wrangler hyperdrive create my-db \
@@ -22,6 +23,7 @@ npx wrangler hyperdrive create my-db \
 ```
 
 **MySQL:**
+
 ```bash
 npx wrangler hyperdrive create my-db \
   --connection-string="mysql://user:pass@host:3306/db"
@@ -43,9 +45,11 @@ npx wrangler hyperdrive create my-db \
 }
 ```
 
-**Generate TypeScript types:** Run `npx wrangler types` to auto-generate `worker-configuration.d.ts` from your wrangler.jsonc.
+**Generate TypeScript types:** Run `npx wrangler types` to auto-generate `worker-configuration.d.ts`
+from your wrangler.jsonc.
 
 **Multiple configs:**
+
 ```jsonc
 {
   "hyperdrive": [
@@ -68,19 +72,20 @@ npx wrangler hyperdrive delete <ID>
 
 Hyperdrive create/update CLI flags:
 
-| Option | Default | Notes |
-|--------|---------|-------|
-| `--caching-disabled` | `false` | Disable caching |
-| `--max-age` | `60` | Cache TTL (max 3600s) |
-| `--swr` | `15` | Stale-while-revalidate |
-| `--origin-connection-limit` | 20/100 | Free/paid |
-| `--access-client-id` | - | Tunnel auth |
-| `--access-client-secret` | - | Tunnel auth |
-| `--sslmode` | `require` | PostgreSQL only |
+| Option                      | Default   | Notes                  |
+|-----------------------------|-----------|------------------------|
+| `--caching-disabled`        | `false`   | Disable caching        |
+| `--max-age`                 | `60`      | Cache TTL (max 3600s)  |
+| `--swr`                     | `15`      | Stale-while-revalidate |
+| `--origin-connection-limit` | 20/100    | Free/paid              |
+| `--access-client-id`        | -         | Tunnel auth            |
+| `--access-client-secret`    | -         | Tunnel auth            |
+| `--sslmode`                 | `require` | PostgreSQL only        |
 
 ## Smart Placement Integration
 
-For Workers making **multiple queries** per request, enable Smart Placement to execute near your database:
+For Workers making **multiple queries** per request, enable Smart Placement to execute near your
+database:
 
 ```jsonc
 {
@@ -98,7 +103,8 @@ For Workers making **multiple queries** per request, enable Smart Placement to e
 }
 ```
 
-**Benefits:** Multi-query Workers run closer to DB, reducing round-trip latency. See [patterns.md](./patterns.md) for examples.
+**Benefits:** Multi-query Workers run closer to DB, reducing round-trip latency.
+See [patterns.md](./patterns.md) for examples.
 
 ## Private DB via Tunnel
 
@@ -107,6 +113,7 @@ Worker → Hyperdrive → Access → Tunnel → Private Network → DB
 ```
 
 **Setup:**
+
 ```bash
 # 1. Create tunnel
 cloudflared tunnel create my-db-tunnel
@@ -133,6 +140,7 @@ npx wrangler hyperdrive create my-private-db \
 ## Local Dev
 
 **Option 1: Local (RECOMMENDED):**
+
 ```bash
 # Env var (takes precedence)
 export CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE="postgres://user:pass@localhost:5432/dev"
@@ -143,6 +151,7 @@ npx wrangler dev
 ```
 
 **Remote DB locally:**
+
 ```bash
 # PostgreSQL
 export CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE="postgres://user:pass@remote:5432/db?sslmode=require"
@@ -152,6 +161,7 @@ export CLOUDFLARE_HYPERDRIVE_LOCAL_CONNECTION_STRING_HYPERDRIVE="mysql://user:pa
 ```
 
 **Option 2: Remote execution:**
+
 ```bash
 npx wrangler dev --remote  # Uses deployed config, affects production
 ```

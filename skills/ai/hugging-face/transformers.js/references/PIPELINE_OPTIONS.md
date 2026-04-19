@@ -1,6 +1,7 @@
 # Pipeline Options Reference
 
-Guide to configuring model loading and inference using the `PretrainedModelOptions` parameter in the `pipeline()` function.
+Guide to configuring model loading and inference using the `PretrainedModelOptions` parameter in the
+`pipeline()` function.
 
 ## Table of Contents
 
@@ -61,7 +62,8 @@ interface PretrainedModelOptions {
 
 ### Progress Callback
 
-Track model download and loading progress. **Note:** Models consist of multiple files (model weights, config, tokenizer, etc.), and each file reports its own progress:
+Track model download and loading progress. **Note:** Models consist of multiple files (model
+weights, config, tokenizer, etc.), and each file reports its own progress:
 
 ```javascript
 const fileProgress = {};
@@ -150,6 +152,7 @@ const pipe = await pipeline('text-generation', 'model-id', {
 ```
 
 **Use cases:**
+
 - Override default generation parameters
 - Adjust model-specific settings
 - Test different configurations without modifying model files
@@ -168,11 +171,10 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 ```
 
 **Default behavior:**
+
 - If not specified, uses `env.cacheDir` (default: `./.cache`)
 - Only applies when `env.useFSCache = true` (Node.js)
 - Browser cache uses Cache API (configured via `env.cacheKey`)
-
-
 
 ### Local Files Only
 
@@ -185,17 +187,17 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 ```
 
 **Use cases:**
+
 - Offline applications
 - Air-gapped environments
 - Testing with pre-downloaded models
 - Production deployments with bundled models
 
 **Important:**
+
 - Model must already be cached or available locally
 - Throws error if model not found locally
 - Requires `env.allowLocalModels = true`
-
-
 
 ### Model Revision
 
@@ -220,12 +222,14 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 **Default:** `'main'` (latest version)
 
 **Use cases:**
+
 - Pin to stable release for production
 - Test experimental features
 - Reproduce results with specific model version
 - Work with models under development
 
 **Important:**
+
 - Only applies to remote models (Hugging Face Hub)
 - Ignored for local file paths
 - Each revision is cached separately
@@ -243,11 +247,10 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 **Default:** `'onnx'`
 
 **Use cases:**
+
 - Custom model repository structure
 - Multiple model variants in same repo
 - Organizational preferences
-
-
 
 ### Model File Name
 
@@ -261,13 +264,12 @@ const pipe = await pipeline('text-generation', 'model-id', {
 ```
 
 **Use cases:**
+
 - Models with non-standard file names
 - Select specific model variant
 - Encoder-decoder models with separate files
 
 **Note:** Currently only valid for encoder-only or decoder-only models.
-
-
 
 ## Device and Performance Options
 
@@ -288,13 +290,15 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 ```
 
 **Common devices:**
+
 - `'wasm'` - WebAssembly (CPU, most compatible)
 - `'webgpu'` - WebGPU (GPU, faster in browsers)
 - `'cpu'` - CPU
 - `'gpu'` - Auto-detect GPU
 - `'cuda'` - NVIDIA CUDA (Node.js with GPU)
 
-See the full list in the [devices.js source](https://github.com/huggingface/transformers.js/blob/main/src/utils/devices.js).
+See the full list in
+the [devices.js source](https://github.com/huggingface/transformers.js/blob/main/src/utils/devices.js).
 
 **Per-component device selection:**
 
@@ -310,11 +314,10 @@ const pipe = await pipeline('automatic-speech-recognition', 'model-id', {
 ```
 
 **WebGPU Requirements:**
+
 - Chrome/Edge 113+
 - Enable chrome://flags/#enable-unsafe-webgpu (if needed)
 - Adequate GPU memory
-
-
 
 ### Data Type (Quantization)
 
@@ -343,6 +346,7 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 ```
 
 **Common data types:**
+
 - `'fp32'` - 32-bit floating point (full precision)
 - `'fp16'` - 16-bit floating point (half precision)
 - `'q8'` - 8-bit quantized (good balance)
@@ -350,7 +354,8 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 - `'int8'` - 8-bit integer
 - `'uint8'` - 8-bit unsigned integer
 
-See the full list in the [dtypes.js source](https://github.com/huggingface/transformers.js/blob/main/src/utils/dtypes.js).
+See the full list in
+the [dtypes.js source](https://github.com/huggingface/transformers.js/blob/main/src/utils/dtypes.js).
 
 **Per-component data type:**
 
@@ -365,14 +370,12 @@ const pipe = await pipeline('automatic-speech-recognition', 'model-id', {
 
 **Trade-offs:**
 
-| Data Type | Model Size | Speed | Accuracy | Use Case |
-|-----------|-----------|-------|----------|----------|
-| `fp32` | Largest | Slowest | Highest | Research, maximum quality |
-| `fp16` | Medium | Medium | High | Production, GPU inference |
-| `q8` | Small | Fast | Good | Production, CPU inference |
-| `q4` | Smallest | Fastest | Acceptable | Edge devices, real-time apps |
-
-
+| Data Type | Model Size | Speed   | Accuracy   | Use Case                     |
+|-----------|------------|---------|------------|------------------------------|
+| `fp32`    | Largest    | Slowest | Highest    | Research, maximum quality    |
+| `fp16`    | Medium     | Medium  | High       | Production, GPU inference    |
+| `q8`      | Small      | Fast    | Good       | Production, CPU inference    |
+| `q4`      | Smallest   | Fastest | Acceptable | Edge devices, real-time apps |
 
 ### External Data Format
 
@@ -391,11 +394,13 @@ const pipe = await pipeline('text-generation', 'large-model-id', {
 ```
 
 **How it works:**
+
 - Models >= 2GB split weights into separate files
 - Main file: `model.onnx` (structure only)
 - Data files: `model.onnx_data` or `model.onnx_data_0`, `model.onnx_data_1`, etc.
 
 **Default behavior:**
+
 - `false` - No external data (models < 2GB)
 - `true` - Load external data automatically
 - `number` - Load this many external data chunks
@@ -412,8 +417,6 @@ const pipe = await pipeline('text-generation', 'large-model-id', {
   }
 });
 ```
-
-
 
 ### Session Options
 
@@ -435,23 +438,22 @@ const pipe = await pipeline('sentiment-analysis', 'model-id', {
 
 **Common session options:**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `executionProviders` | Ordered list of execution providers | `['wasm']` |
-| `graphOptimizationLevel` | Graph optimization: `'disabled'`, `'basic'`, `'extended'`, `'all'` | `'all'` |
-| `enableCpuMemArena` | Enable CPU memory arena for faster memory allocation | `true` |
-| `enableMemPattern` | Enable memory pattern optimization | `true` |
-| `executionMode` | `'sequential'` or `'parallel'` | `'sequential'` |
-| `logSeverityLevel` | 0=Verbose, 1=Info, 2=Warning, 3=Error, 4=Fatal | `2` |
-| `freeDimensionOverrides` | Override dynamic dimensions (e.g., `{ batch_size: 1 }`) | - |
+| Option                   | Description                                                        | Default        |
+|--------------------------|--------------------------------------------------------------------|----------------|
+| `executionProviders`     | Ordered list of execution providers                                | `['wasm']`     |
+| `graphOptimizationLevel` | Graph optimization: `'disabled'`, `'basic'`, `'extended'`, `'all'` | `'all'`        |
+| `enableCpuMemArena`      | Enable CPU memory arena for faster memory allocation               | `true`         |
+| `enableMemPattern`       | Enable memory pattern optimization                                 | `true`         |
+| `executionMode`          | `'sequential'` or `'parallel'`                                     | `'sequential'` |
+| `logSeverityLevel`       | 0=Verbose, 1=Info, 2=Warning, 3=Error, 4=Fatal                     | `2`            |
+| `freeDimensionOverrides` | Override dynamic dimensions (e.g., `{ batch_size: 1 }`)            | -              |
 
 **Use cases:**
+
 - Fine-tune performance for specific hardware
 - Debug model execution issues
 - Override dynamic shapes
 - Control memory usage
-
-
 
 ## Common Configuration Patterns
 
@@ -542,4 +544,6 @@ const pipe = await pipeline('automatic-speech-recognition', 'model-id', {
 
 ---
 
-This document covers all available options for the `pipeline()` function. For environment-level configuration (remote hosts, global cache settings, WASM paths), see the [Configuration Reference](./CONFIGURATION.md).
+This document covers all available options for the `pipeline()` function. For environment-level
+configuration (remote hosts, global cache settings, WASM paths), see
+the [Configuration Reference](./CONFIGURATION.md).

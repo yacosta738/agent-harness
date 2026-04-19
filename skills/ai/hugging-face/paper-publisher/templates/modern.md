@@ -39,7 +39,8 @@ layout: modern
 
 ## Introduction
 
-Modern research requires clear, accessible communication. This template provides a clean, web-friendly format inspired by Distill and modern scientific publications.
+Modern research requires clear, accessible communication. This template provides a clean,
+web-friendly format inspired by Distill and modern scientific publications.
 
 <div class="key-insight">
 💡 **Key Insight**: Present your main contribution upfront to engage readers immediately.
@@ -124,12 +125,12 @@ Explain how you train the model, including:
 
 <div class="experiment-details">
 
-| Component | Configuration |
-|-----------|--------------|
-| **Dataset** | Name, Size, Split |
-| **Hardware** | GPU Type, RAM |
-| **Framework** | PyTorch 2.0, Transformers |
-| **Training Time** | Hours/Days |
+| Component         | Configuration             |
+|-------------------|---------------------------|
+| **Dataset**       | Name, Size, Split         |
+| **Hardware**      | GPU Type, RAM             |
+| **Framework**     | PyTorch 2.0, Transformers |
+| **Training Time** | Hours/Days                |
 
 </div>
 
@@ -139,11 +140,11 @@ Present results clearly with tables and visualizations.
 
 <div class="results-table">
 
-| Model | Accuracy | F1 Score | Params | Speed |
-|-------|----------|----------|--------|-------|
-| Baseline | 85.2% | 0.84 | 100M | 100 tok/s |
-| **Ours** | **92.1%** | **0.91** | 120M | 95 tok/s |
-| SOTA | 90.5% | 0.89 | 300M | 60 tok/s |
+| Model    | Accuracy  | F1 Score | Params | Speed     |
+|----------|-----------|----------|--------|-----------|
+| Baseline | 85.2%     | 0.84     | 100M   | 100 tok/s |
+| **Ours** | **92.1%** | **0.91** | 120M   | 95 tok/s  |
+| SOTA     | 90.5%     | 0.89     | 300M   | 60 tok/s  |
 
 </div>
 
@@ -167,9 +168,9 @@ Systematically evaluate each component's contribution.
 
 <div class="ablation-results">
 
-| Configuration | Score | Δ |
-|---------------|-------|---|
-| Full Model | 92.1% | - |
+| Configuration | Score | Δ     |
+|---------------|-------|-------|
+| Full Model    | 92.1% | -     |
 | - Component A | 89.3% | -2.8% |
 | - Component B | 90.1% | -2.0% |
 | - Component C | 91.5% | -0.6% |
@@ -214,11 +215,11 @@ Compare and contrast with existing methods.
 
 ### Prior Approaches
 
-| Method | Year | Key Idea | Limitation |
-|--------|------|----------|------------|
-| Method A | 2020 | Approach 1 | Issue X |
-| Method B | 2021 | Approach 2 | Issue Y |
-| Method C | 2023 | Approach 3 | Issue Z |
+| Method   | Year | Key Idea   | Limitation |
+|----------|------|------------|------------|
+| Method A | 2020 | Approach 1 | Issue X    |
+| Method B | 2021 | Approach 2 | Issue Y    |
+| Method C | 2023 | Approach 3 | Issue Z    |
 
 ### How We Differ
 

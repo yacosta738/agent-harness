@@ -7,12 +7,14 @@ See [README.md](README.md) for overview.
 **Critical:** Design for resilience from day one.
 
 **Requirements:**
+
 - Device-level diversity (separate hardware)
 - Backup Internet connectivity (no SLA on CNI)
 - Network-resilient locations preferred
 - Regular failover testing
 
 **Architecture:**
+
 ```
 Your Network A ──10G CNI v2──> CF CCR Device 1
                                      │
@@ -22,6 +24,7 @@ Your Network B ──10G CNI v2──> CF CCR Device 2
 ```
 
 **Capacity Planning:**
+
 - Plan across all links
 - Account for failover scenarios
 - Your responsibility
@@ -53,6 +56,7 @@ const status = await pollUntilActive(id, ic.id);
 **Use Case:** AWS/GCP workloads with Cloudflare.
 
 **AWS Direct Connect:**
+
 ```typescript
 // 1. Order Direct Connect in AWS Console
 // 2. Get LOA + VLAN from AWS
@@ -66,6 +70,7 @@ await configureStaticRoutes(id, {
 ```
 
 **GCP Cloud Interconnect:**
+
 ```
 1. Get VLAN attachment pairing key from GCP Console
 2. Create via Dashboard: Interconnects → Create → Cloud Interconnect → Google
@@ -120,6 +125,7 @@ const tertiary = await client.networkInterconnects.interconnects.create({
 **Use Case:** Quick deployment, no colocation.
 
 **Setup:**
+
 1. Order virtual circuit in Equinix Fabric Portal
 2. Select Cloudflare as destination
 3. Choose facility
@@ -132,12 +138,14 @@ const tertiary = await client.networkInterconnects.interconnects.create({
 ## Failover & Security
 
 **Failover Best Practices:**
+
 - Use BGP local preferences for priority
 - Configure BFD for fast detection (v1)
 - Test regularly with traffic shift
 - Document runbooks
 
 **Security:**
+
 - BGP password authentication
 - BGP route filtering
 - Monitor unexpected routes
@@ -147,17 +155,17 @@ const tertiary = await client.networkInterconnects.interconnects.create({
 
 ## Decision Matrix
 
-| Requirement | Recommended |
-|-------------|-------------|
-| Collocated with CF | Direct |
-| Not collocated | Partner |
-| AWS/GCP workloads | Cloud |
-| 1500 MTU both ways | v2 |
-| VLAN tagging | v1 |
-| Public peering | v1 |
-| Simplest config | v2 |
-| BFD fast failover | v1 |
-| LACP bundling | v1 |
+| Requirement        | Recommended |
+|--------------------|-------------|
+| Collocated with CF | Direct      |
+| Not collocated     | Partner     |
+| AWS/GCP workloads  | Cloud       |
+| 1500 MTU both ways | v2          |
+| VLAN tagging       | v1          |
+| Public peering     | v1          |
+| Simplest config    | v2          |
+| BFD fast failover  | v1          |
+| LACP bundling      | v1          |
 
 ## Resources
 

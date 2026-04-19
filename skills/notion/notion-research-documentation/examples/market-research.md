@@ -1,23 +1,29 @@
 # Example: Market Research
 
-**User Request**: "Research the current state of AI coding assistants market and create a summary document in Notion"
+**User Request**: "Research the current state of AI coding assistants market and create a summary
+document in Notion"
 
 ## Workflow
 
 ### 1. Search
+
 ```
 Notion:notion-search
 query: "AI coding assistants market"
 ```
+
 Found 3 relevant pages across Engineering, Strategy, and Product teamspaces.
 
 ### 2. Fetch & Analyze
+
 ```
 Notion:notion-fetch (3x)
 ```
+
 Extracted market size, competitive landscape, technology trends from source pages.
 
 ### 3. Create Documentation
+
 ```
 Notion:notion-create-pages
 ```
@@ -56,6 +62,7 @@ Source: <mention-page url="...">Developer Tools Landscape</mention-page>
 ```
 
 ## Key Takeaways
+
 - Found relevant pages across multiple teamspaces
 - Synthesized competitive, market, and technical perspectives
 - Used proper citations linking to source pages

@@ -9,6 +9,7 @@ Run a deterministic bootstrap flow for new or partially configured repositories.
 ## Preflight
 
 <!-- Sourced from bootstrap skill: Preflight -->
+
 1. Confirm Vercel CLI is installed and authenticated.
 
 ```bash
@@ -32,8 +33,10 @@ vercel link --yes --scope <team> --project <project>
 cp .env.example .env.local
 ```
 
-6. Detect package manager and available scripts (`db:push`, `db:seed`, `db:migrate`, `db:generate`, `dev`) from `package.json`.
-7. Inspect auth/database signals (`prisma/schema.prisma`, `drizzle.config.*`, `auth.*`, `src/**/auth.*`) to scope bootstrap details.
+6. Detect package manager and available scripts (`db:push`, `db:seed`, `db:migrate`, `db:generate`,
+   `dev`) from `package.json`.
+7. Inspect auth/database signals (`prisma/schema.prisma`, `drizzle.config.*`, `auth.*`,
+   `src/**/auth.*`) to scope bootstrap details.
 
 Stop with clear guidance if CLI auth or linkage fails.
 
@@ -47,7 +50,9 @@ Execute in this order:
 4. Application bootstrap (`db:*` then `dev`) only after env checks pass.
 
 <!-- Sourced from bootstrap skill: Rules -->
-- Do not run `db:push`, `db:migrate`, `db:seed`, or `dev` until Vercel linking is complete and env keys are verified.
+
+- Do not run `db:push`, `db:migrate`, `db:seed`, or `dev` until Vercel linking is complete and env
+  keys are verified.
 - Prefer Vercel-managed provisioning (`vercel integration ...`) for shared resources.
 - Use provider CLIs only as fallback when Vercel integration flow is unavailable.
 - Never echo secret values in terminal output, logs, or summaries.
@@ -67,6 +72,7 @@ If `.env.example` is absent, use `.env.sample` or `.env.template`.
 ### 2. Provision Postgres
 
 <!-- Sourced from bootstrap skill: Resource Setup: Postgres -->
+
 ### Preferred path (Vercel-managed Neon)
 
 1. Read integration setup guidance:
@@ -95,7 +101,8 @@ vercel env pull .env.local --yes
 
 ### Fallback path 2 (Neon CLI)
 
-Use Neon CLI only when Vercel-managed provisioning is unavailable. After creating resources, add required env vars in Vercel and pull again.
+Use Neon CLI only when Vercel-managed provisioning is unavailable. After creating resources, add
+required env vars in Vercel and pull again.
 
 ### 3. Generate and store `AUTH_SECRET`
 
@@ -143,7 +150,8 @@ npm run db:seed
 npm run dev
 ```
 
-Use the repository package manager (`npm`, `pnpm`, `bun`, or `yarn`) and run only scripts that exist in `package.json`.
+Use the repository package manager (`npm`, `pnpm`, `bun`, or `yarn`) and run only scripts that exist
+in `package.json`.
 
 ## Verification
 
@@ -155,7 +163,8 @@ Confirm each checkpoint:
 - Postgres integration path completed (Vercel integration, dashboard, or provider CLI fallback).
 - `vercel env pull .env.local --yes` succeeds.
 - Required env key diff is empty.
-- Database command status is recorded (`db:push`, `db:seed`, `db:migrate`, `db:generate` as applicable).
+- Database command status is recorded (`db:push`, `db:seed`, `db:migrate`, `db:generate` as
+  applicable).
 - `dev` command starts without immediate config/auth/env failure.
 
 If verification fails, stop and report exact failing step plus remediation.
@@ -178,6 +187,8 @@ Return a final bootstrap summary in this format:
 ## Next Steps
 
 <!-- Sourced from bootstrap skill: Bootstrap Next Steps -->
-- If env keys are still missing, add the missing keys in Vercel and re-run `vercel env pull .env.local --yes`.
+
+- If env keys are still missing, add the missing keys in Vercel and re-run
+  `vercel env pull .env.local --yes`.
 - If DB commands fail, fix connectivity/schema issues and re-run only the failed db step.
 - If `dev` fails, resolve runtime errors, then restart with your package manager's `run dev`.

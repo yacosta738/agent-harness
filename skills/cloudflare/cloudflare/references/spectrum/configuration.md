@@ -5,6 +5,7 @@
 Use when origin is a single server with static IP.
 
 **TypeScript SDK:**
+
 ```typescript
 const app = await client.spectrum.apps.create({
   zone_id: 'your-zone-id',
@@ -17,6 +18,7 @@ const app = await client.spectrum.apps.create({
 ```
 
 **Terraform:**
+
 ```hcl
 resource "cloudflare_spectrum_application" "ssh" {
   zone_id  = var.zone_id
@@ -39,6 +41,7 @@ resource "cloudflare_spectrum_application" "ssh" {
 Use when origin is a hostname (not static IP). Spectrum resolves DNS dynamically.
 
 **TypeScript SDK:**
+
 ```typescript
 const app = await client.spectrum.apps.create({
   zone_id: 'your-zone-id',
@@ -51,6 +54,7 @@ const app = await client.spectrum.apps.create({
 ```
 
 **Terraform:**
+
 ```hcl
 resource "cloudflare_spectrum_application" "database" {
   zone_id  = var.zone_id
@@ -76,6 +80,7 @@ resource "cloudflare_spectrum_application" "database" {
 Use for high availability and failover.
 
 **Terraform:**
+
 ```hcl
 resource "cloudflare_load_balancer" "game_lb" {
   zone_id          = var.zone_id
@@ -104,14 +109,15 @@ resource "cloudflare_spectrum_application" "game" {
 
 ## TLS Configuration
 
-| Mode | Description | Use Case | Origin Cert |
-|------|-------------|----------|-------------|
-| `off` | No TLS | Non-encrypted (SSH, gaming) | No |
-| `flexible` | TLS client→CF, plain CF→origin | Testing | No |
-| `full` | TLS end-to-end, self-signed OK | Production | Yes (any) |
-| `strict` | Full + valid cert verification | Max security | Yes (CA) |
+| Mode       | Description                    | Use Case                    | Origin Cert |
+|------------|--------------------------------|-----------------------------|-------------|
+| `off`      | No TLS                         | Non-encrypted (SSH, gaming) | No          |
+| `flexible` | TLS client→CF, plain CF→origin | Testing                     | No          |
+| `full`     | TLS end-to-end, self-signed OK | Production                  | Yes (any)   |
+| `strict`   | Full + valid cert verification | Max security                | Yes (CA)    |
 
 **Example:**
+
 ```typescript
 const app = await client.spectrum.apps.create({
   zone_id: 'your-zone-id',
@@ -126,19 +132,21 @@ const app = await client.spectrum.apps.create({
 
 Forwards real client IP to origin. Origin must support parsing.
 
-| Version | Protocol | Use Case |
-|---------|----------|----------|
-| `off` | - | Origin doesn't need client IP |
-| `v1` | TCP | Most TCP apps (SSH, databases) |
-| `v2` | TCP | High-performance TCP |
-| `simple` | UDP | UDP applications |
+| Version  | Protocol | Use Case                       |
+|----------|----------|--------------------------------|
+| `off`    | -        | Origin doesn't need client IP  |
+| `v1`     | TCP      | Most TCP apps (SSH, databases) |
+| `v2`     | TCP      | High-performance TCP           |
+| `simple` | UDP      | UDP applications               |
 
 **Compatibility:**
+
 - **v1**: HAProxy, nginx, SSH, most databases
 - **v2**: HAProxy 1.5+, nginx 1.11+
 - **simple**: Cloudflare-specific UDP format
 
 **Enable:**
+
 ```typescript
 const app = await client.spectrum.apps.create({
   // ...
@@ -147,6 +155,7 @@ const app = await client.spectrum.apps.create({
 ```
 
 **Origin Config (nginx):**
+
 ```nginx
 stream {
     server {

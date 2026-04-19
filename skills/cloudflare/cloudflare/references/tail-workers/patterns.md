@@ -5,14 +5,17 @@
 While most tail Worker implementations are custom, these libraries may help:
 
 **Logging/Observability:**
+
 - **Axiom** - `axiom-cloudflare-workers` (npm) - Direct Axiom integration
 - **Baselime** - SDK for Baselime observability platform
 - **LogFlare** - Structured log aggregation
 
 **Type Definitions:**
+
 - **@cloudflare/workers-types** - Official TypeScript types (use `TraceItem`)
 
-**Note:** Most integrations require custom tail handler implementation. See integration examples below.
+**Note:** Most integrations require custom tail handler implementation. See integration examples
+below.
 
 ## Basic Patterns
 
@@ -173,7 +176,8 @@ See durable-objects skill for full implementation.
 
 ### Workers for Platforms
 
-Dynamic dispatch sends TWO events per request. Filter by `scriptName` to distinguish dispatch vs user Worker events.
+Dynamic dispatch sends TWO events per request. Filter by `scriptName` to distinguish dispatch vs
+user Worker events.
 
 ### Error Handling
 

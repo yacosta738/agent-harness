@@ -158,6 +158,7 @@ const worker = new cloudflare.WorkerScript("worker", {
 ```
 
 **Benefits:**
+
 - `wrangler dev` uses same bindings as production
 - No config drift between Pulumi and local dev
 - Single source of truth (Pulumi config)

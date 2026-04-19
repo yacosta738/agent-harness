@@ -101,6 +101,7 @@ describe("API", () => {
 Install: `npm install -D vitest @cloudflare/vitest-pool-workers`
 
 **vitest.config.ts:**
+
 ```typescript
 import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
 export default defineWorkersConfig({
@@ -109,6 +110,7 @@ export default defineWorkersConfig({
 ```
 
 **tests/api.test.ts:**
+
 ```typescript
 import { env, SELF } from "cloudflare:test";
 import { describe, it, expect } from "vitest";

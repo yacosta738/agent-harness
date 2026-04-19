@@ -1,21 +1,27 @@
 # Example: Group Trip Research & Planning
 
-**User Request**: "Research and plan our friends' trip to Japan in March - we're 6 people looking for 10 days"
+**User Request**: "Research and plan our friends' trip to Japan in March - we're 6 people looking
+for 10 days"
 
 ## Workflow
 
 ### 1. Search Existing Notes
+
 ```
 Notion:notion-search
 query: "Japan travel"
 ```
+
 Found: Japan Travel Guide (from friend), Tokyo Restaurants, Kyoto Temple Guide
 
 ### 2. Fetch & Extract Tips
+
 ```
 Notion:notion-fetch (3x)
 ```
+
 **Key info from previous travelers:**
+
 - Best time: March-April (cherry blossoms)
 - Must-see: Tokyo, Kyoto, Osaka
 - Budget: $200-300/day (mid-range)
@@ -24,7 +30,9 @@ Notion:notion-fetch (3x)
 - Top restaurants: Sushi Dai, Ichiran Ramen, Tsunahachi Tempura
 
 ### 3. Research & Synthesize
+
 Combined previous traveler insights with:
+
 - Flight options and prices
 - Accommodation types (hotels/ryokans/Airbnb)
 - Transportation (JR Pass essential)
@@ -32,6 +40,7 @@ Combined previous traveler insights with:
 - Budget breakdown
 
 ### 4. Create Comprehensive Plan
+
 ```
 Notion:notion-create-pages
 parent: { page_id: "travel-plans-parent-id" }
@@ -121,6 +130,7 @@ Source: <mention-page url="...">Japan Travel Guide</mention-page>
 ```
 
 ## Key Takeaways
+
 - Leveraged previous traveler notes from Notion
 - Combined personal insights with research
 - Created actionable itinerary with budget breakdown

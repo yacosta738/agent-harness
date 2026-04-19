@@ -90,7 +90,8 @@ chainTo:
 
 # Vercel CLI
 
-You are an expert in the Vercel CLI v50.28.0 (`vercel` or `vc`). The CLI is the primary way to manage Vercel projects from the terminal.
+You are an expert in the Vercel CLI v50.28.0 (`vercel` or `vc`). The CLI is the primary way to
+manage Vercel projects from the terminal.
 
 ## Installation
 
@@ -106,7 +107,9 @@ The CLI uses an **OAuth 2.0 Device Flow** for authentication.
 vercel login
 ```
 
-> **Deprecation notice**: Email-based login (`vercel login your@email.com`) and the flags `--github`, `--gitlab`, `--bitbucket`, `--oob` were removed February 26, 2026. The `team` method (SAML-based login) remains supported until June 1, 2026, then will also be removed.
+> **Deprecation notice**: Email-based login (`vercel login your@email.com`) and the flags
+`--github`, `--gitlab`, `--bitbucket`, `--oob` were removed February 26, 2026. The `team` method (
+> SAML-based login) remains supported until June 1, 2026, then will also be removed.
 
 ## Core Commands
 
@@ -167,7 +170,9 @@ Prefer explicit non-interactive linking for bootstrap and automation:
 vercel link --yes --project <name-or-id> --scope <team>
 ```
 
-This is more reliable than interactive prompt-driven linking, which can pick the wrong project or team in multi-account setups. If there is any ambiguity, run `vercel open` to confirm the dashboard project, then relink with explicit `--project` and `--scope`.
+This is more reliable than interactive prompt-driven linking, which can pick the wrong project or
+team in multi-account setups. If there is any ambiguity, run `vercel open` to confirm the dashboard
+project, then relink with explicit `--project` and `--scope`.
 
 ### Environment Variables
 
@@ -198,7 +203,9 @@ vercel env pull .env.production.local --environment=production
 
 ### Logs & Inspection
 
-The `vercel logs` command (rebuilt February 2026) supports **historical log querying** and uses **git context by default** — it automatically scopes logs to your current repository when run from a project directory.
+The `vercel logs` command (rebuilt February 2026) supports **historical log querying** and uses *
+*git context by default** — it automatically scopes logs to your current repository when run from a
+project directory.
 
 ```bash
 # View runtime/function logs (real-time)
@@ -238,10 +245,12 @@ vercel ls
 ```
 
 > **Note:** `vercel logs` shows runtime request logs only. For build output, use
-> `vercel inspect <deployment-url>` or view build logs at `https://vercel.com/{team}/{project}/deployments` → select deployment → **Build Logs**.
+> `vercel inspect <deployment-url>` or view build logs at
+`https://vercel.com/{team}/{project}/deployments` → select deployment → **Build Logs**.
 >
 > **Drains and advanced observability:** Log drains, trace export, and analytics data forwarding are
-> configured via the Vercel Dashboard at `https://vercel.com/dashboard/{team}/~/settings/log-drains` or REST API (`/v1/drains`), not the CLI. See `⤳ skill: observability`
+> configured via the Vercel Dashboard at `https://vercel.com/dashboard/{team}/~/settings/log-drains`
+> or REST API (`/v1/drains`), not the CLI. See `⤳ skill: observability`
 > for drain setup, payload schemas, and signature verification.
 
 ### Domains
@@ -311,7 +320,9 @@ vercel cache invalidate --srcimg /api/avatar/1
 vercel cache dangerously-delete --srcimg /api/avatar/1
 ```
 
-**Key distinction:** `invalidate` serves STALE and revalidates in the background. `dangerously-delete` serves MISS and blocks while revalidating. Prefer `invalidate` unless you need immediate freshness.
+**Key distinction:** `invalidate` serves STALE and revalidates in the background.
+`dangerously-delete` serves MISS and blocks while revalidating. Prefer `invalidate` unless you need
+immediate freshness.
 
 **Note:** `--tag` and `--srcimg` cannot be used together.
 
@@ -325,7 +336,8 @@ vercel mcp
 vercel mcp --project
 ```
 
-The `vercel mcp` command links your local MCP client configuration to a Vercel Project. It generates connection details so AI agents and tools can call your MCP endpoints deployed on Vercel securely.
+The `vercel mcp` command links your local MCP client configuration to a Vercel Project. It generates
+connection details so AI agents and tools can call your MCP endpoints deployed on Vercel securely.
 
 ### Programmatic Configuration (`@vercel/config`)
 
@@ -340,13 +352,16 @@ npx @vercel/config validate
 npx @vercel/config generate
 ```
 
-Use `vercel.ts` (or `.js`, `.mjs`, `.cjs`, `.mts`) instead of `vercel.json` for type-safe, dynamic project configuration. Only one config file per project — `vercel.json` or `vercel.ts`, not both.
+Use `vercel.ts` (or `.js`, `.mjs`, `.cjs`, `.mts`) instead of `vercel.json` for type-safe, dynamic
+project configuration. Only one config file per project — `vercel.json` or `vercel.ts`, not both.
 
-> **Note:** Legacy `now.json` support will be removed on March 31, 2026. Rename to `vercel.json` (no content changes needed).
+> **Note:** Legacy `now.json` support will be removed on March 31, 2026. Rename to `vercel.json` (no
+> content changes needed).
 
 ### Marketplace Integrations
 
-Auto-provisioning is the default for `vercel integration add` — the CLI automatically creates resources and sets environment variables without extra prompts.
+Auto-provisioning is the default for `vercel integration add` — the CLI automatically creates
+resources and sets environment variables without extra prompts.
 
 ```bash
 # List installed integrations
@@ -364,7 +379,8 @@ vercel integration remove neon
 
 #### Agent-Optimized: `discover` and `guide`
 
-AI agents can autonomously discover, install, and retrieve setup instructions for Marketplace integrations (added March 2026):
+AI agents can autonomously discover, install, and retrieve setup instructions for Marketplace
+integrations (added March 2026):
 
 ```bash
 # Search the integration catalog (returns JSON for automation)
@@ -382,17 +398,22 @@ vercel integration add neon
 vercel integration guide neon
 ```
 
-- `discover` — Searches the Vercel Marketplace catalog. Use `--format=json` for non-interactive output suitable for scripting and agent pipelines.
-- `guide <name>` — Returns getting-started documentation in agent-friendly markdown: environment variables, SDK setup, and code snippets.
-- Human-in-the-loop safety: the CLI prompts for developer confirmation when accepting Terms of Service.
+- `discover` — Searches the Vercel Marketplace catalog. Use `--format=json` for non-interactive
+  output suitable for scripting and agent pipelines.
+- `guide <name>` — Returns getting-started documentation in agent-friendly markdown: environment
+  variables, SDK setup, and code snippets.
+- Human-in-the-loop safety: the CLI prompts for developer confirmation when accepting Terms of
+  Service.
 
 > Full subcommands: `discover`, `guide`, `add`, `list` (alias `ls`), `balance`, `open`, `remove`.
 
 ### Project-Level Routing (No Redeploy)
 
-Create and update routing rules — headers, rewrites, redirects — without building a new deployment. Rules take effect instantly.
+Create and update routing rules — headers, rewrites, redirects — without building a new deployment.
+Rules take effect instantly.
 
-Available via dashboard (CDN tab), API, CLI, and Vercel SDK. Project-level routes run after bulk redirects and before deployment config routes.
+Available via dashboard (CDN tab), API, CLI, and Vercel SDK. Project-level routes run after bulk
+redirects and before deployment config routes.
 
 ### Feature Flags
 
@@ -411,7 +432,8 @@ See `⤳ skill: vercel-flags` for full flag configuration and adapter patterns.
 
 ### Direct API Access
 
-The `vercel api` command (added January 2026) gives direct access to the full Vercel REST API from the terminal. Designed for AI agents — call Vercel APIs with no additional configuration.
+The `vercel api` command (added January 2026) gives direct access to the full Vercel REST API from
+the terminal. Designed for AI agents — call Vercel APIs with no additional configuration.
 
 ```bash
 # Call any Vercel REST API endpoint
@@ -436,6 +458,7 @@ vercel metrics --raw-values
 ## CI/CD Integration
 
 Required environment variables for CI:
+
 ```bash
 VERCEL_TOKEN=<your-token>
 VERCEL_ORG_ID=<org-id>
@@ -454,17 +477,18 @@ VERCEL_PROJECT_ID=<project-id>
 
 ## Global Options
 
-| Flag | Purpose |
-|------|---------|
-| `--token` | Authentication token (for CI) |
-| `--cwd <dir>` | Working directory |
-| `--debug` / `-d` | Verbose output |
-| `--yes` / `-y` | Skip confirmation prompts |
-| `--scope <team>` | Execute as a team |
+| Flag             | Purpose                       |
+|------------------|-------------------------------|
+| `--token`        | Authentication token (for CI) |
+| `--cwd <dir>`    | Working directory             |
+| `--debug` / `-d` | Verbose output                |
+| `--yes` / `-y`   | Skip confirmation prompts     |
+| `--scope <team>` | Execute as a team             |
 
 ## Common Workflows
 
 ### First-Time Setup
+
 ```bash
 vercel link          # Connect to Vercel project
 vercel env pull      # Get environment variables
@@ -472,6 +496,7 @@ vercel dev           # Start local dev
 ```
 
 ### Deploy from CI
+
 ```bash
 vercel pull --yes --environment=production --token=$TOKEN
 vercel build --prod --token=$TOKEN
@@ -479,6 +504,7 @@ vercel deploy --prebuilt --prod --token=$TOKEN
 ```
 
 ### Quick Preview
+
 ```bash
 vercel               # Creates preview deployment, returns URL
 ```

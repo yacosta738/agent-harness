@@ -17,11 +17,13 @@ The schema has a single entry point: `Query.viewer`. Mutations are not supported
 
 ## Aggregation Fields
 
-Aggregated dataset nodes (`*Groups`) return these field categories. Not every node has all — use introspection to check.
+Aggregated dataset nodes (`*Groups`) return these field categories. Not every node has all — use
+introspection to check.
 
 ### count
 
-Total events in the group. Available on `*Groups` nodes but **not** on raw `*Adaptive` nodes (e.g., `workersInvocationsAdaptive` — use `sum { requests }` instead).
+Total events in the group. Available on `*Groups` nodes but **not** on raw `*Adaptive` nodes (e.g.,
+`workersInvocationsAdaptive` — use `sum { requests }` instead).
 
 ### sum
 
@@ -37,7 +39,9 @@ sum { requests errors subrequests cpuTimeUs wallTime duration responseBodySize c
 
 ### quantiles
 
-Percentile distributions (on datasets like `workersInvocationsAdaptive`). Available percentiles: P25, P50, P75, P90, P95, P99, P999 for `cpuTime`, `wallTime`, `requestDuration`, `duration`, `responseBodySize`.
+Percentile distributions (on datasets like `workersInvocationsAdaptive`). Available percentiles:
+P25, P50, P75, P90, P95, P99, P999 for `cpuTime`, `wallTime`, `requestDuration`, `duration`,
+`responseBodySize`.
 
 ```graphql
 quantiles { cpuTimeP50 cpuTimeP99 wallTimeP50 wallTimeP99 }
@@ -60,14 +64,14 @@ Dimensions are fields you can group by via the `dimensions` sub-selection.
 
 ### Time Dimensions
 
-| Dimension | Granularity |
-|-----------|------------|
-| `date` | Day |
-| `datetime` | Exact timestamp |
-| `datetimeMinute` | 1 minute |
-| `datetimeFiveMinutes` | 5 minutes |
-| `datetimeFifteenMinutes` | 15 minutes |
-| `datetimeHour` | 1 hour |
+| Dimension                | Granularity     |
+|--------------------------|-----------------|
+| `date`                   | Day             |
+| `datetime`               | Exact timestamp |
+| `datetimeMinute`         | 1 minute        |
+| `datetimeFiveMinutes`    | 5 minutes       |
+| `datetimeFifteenMinutes` | 15 minutes      |
+| `datetimeHour`           | 1 hour          |
 
 Workers datasets also support `datetimeSixHours`.
 
@@ -75,24 +79,25 @@ Workers datasets also support `datetimeSixHours`.
 
 83 dimensions available. Key ones:
 
-| Dimension | Description |
-|-----------|-------------|
-| `clientCountryName` | Country of origin |
-| `clientRequestHTTPHost` | Requested hostname |
-| `clientRequestHTTPMethodName` | HTTP method |
-| `clientRequestPath` | URI path |
-| `edgeResponseStatus` | Edge HTTP status code |
-| `cacheStatus` | Cache status (hit, miss, dynamic, etc.) |
-| `coloCode` | Cloudflare datacenter IATA code |
-| `clientIP` / `clientAsn` | Client IP address / ASN |
-| `botScore` / `botManagementDecision` | Bot management score (0-99) / verdict |
-| `wafAttackScore` / `securityAction` | WAF score / firewall action taken |
-| `ja3Hash` / `ja4` | TLS fingerprints |
-| `sampleInterval` | ABR sample interval |
+| Dimension                            | Description                             |
+|--------------------------------------|-----------------------------------------|
+| `clientCountryName`                  | Country of origin                       |
+| `clientRequestHTTPHost`              | Requested hostname                      |
+| `clientRequestHTTPMethodName`        | HTTP method                             |
+| `clientRequestPath`                  | URI path                                |
+| `edgeResponseStatus`                 | Edge HTTP status code                   |
+| `cacheStatus`                        | Cache status (hit, miss, dynamic, etc.) |
+| `coloCode`                           | Cloudflare datacenter IATA code         |
+| `clientIP` / `clientAsn`             | Client IP address / ASN                 |
+| `botScore` / `botManagementDecision` | Bot management score (0-99) / verdict   |
+| `wafAttackScore` / `securityAction`  | WAF score / firewall action taken       |
+| `ja3Hash` / `ja4`                    | TLS fingerprints                        |
+| `sampleInterval`                     | ABR sample interval                     |
 
 ### Workers Dimensions (workersInvocationsAdaptive)
 
-`scriptName`, `scriptTag`, `scriptVersion`, `environmentName`, `status`, `usageModel`, `coloCode`, `dispatchNamespaceName`, `isDispatcher`
+`scriptName`, `scriptTag`, `scriptVersion`, `environmentName`, `status`, `usageModel`, `coloCode`,
+`dispatchNamespaceName`, `isDispatcher`
 
 ### Firewall Dimensions (firewallEventsAdaptive)
 
@@ -121,15 +126,15 @@ httpRequestsAdaptiveGroups(
 
 ### Filter Operators
 
-| Operator | Meaning | Example |
-|----------|---------|---------|
-| (none) | equals | `clientCountryName: "US"` |
-| `_gt` / `_lt` | greater / less than | `datetime_gt: "..."` |
-| `_geq` / `_leq` | greater/less or equal | `datetime_geq: "..."` |
-| `_neq` | not equal | `cacheStatus_neq: "hit"` |
-| `_in` / `_notin` | in / not in list | `clientCountryName_in: ["US", "GB"]` |
-| `_like` / `_notlike` | SQL LIKE with `%` | `clientRequestPath_like: "/api/%"` |
-| `_has` / `_hasall` / `_hasany` | array contains | `botDetectionIds_has: "abc"` |
+| Operator                       | Meaning               | Example                              |
+|--------------------------------|-----------------------|--------------------------------------|
+| (none)                         | equals                | `clientCountryName: "US"`            |
+| `_gt` / `_lt`                  | greater / less than   | `datetime_gt: "..."`                 |
+| `_geq` / `_leq`                | greater/less or equal | `datetime_geq: "..."`                |
+| `_neq`                         | not equal             | `cacheStatus_neq: "hit"`             |
+| `_in` / `_notin`               | in / not in list      | `clientCountryName_in: ["US", "GB"]` |
+| `_like` / `_notlike`           | SQL LIKE with `%`     | `clientRequestPath_like: "/api/%"`   |
+| `_has` / `_hasall` / `_hasany` | array contains        | `botDetectionIds_has: "abc"`         |
 
 > `_notin` and `_notlike` are in the schema but not in official docs. Confirmed via introspection.
 

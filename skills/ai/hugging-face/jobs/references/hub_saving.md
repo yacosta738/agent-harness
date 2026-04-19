@@ -1,10 +1,12 @@
 # Saving Results to Hugging Face Hub
 
-**⚠️ CRITICAL:** Job environments are ephemeral. ALL results are lost when a job completes unless persisted to the Hub or external storage.
+**⚠️ CRITICAL:** Job environments are ephemeral. ALL results are lost when a job completes unless
+persisted to the Hub or external storage.
 
 ## Why Persistence is Required
 
 When running on Hugging Face Jobs:
+
 - Environment is temporary
 - All files deleted on job completion
 - No local disk persistence
@@ -17,18 +19,21 @@ When running on Hugging Face Jobs:
 ### Option 1: Push to Hugging Face Hub (Recommended)
 
 **For models:**
+
 ```python
 from transformers import AutoModel
 model.push_to_hub("username/model-name", token=os.environ.get("HF_TOKEN"))
 ```
 
 **For datasets:**
+
 ```python
 from datasets import Dataset
 dataset.push_to_hub("username/dataset-name", token=os.environ.get("HF_TOKEN"))
 ```
 
 **For files/artifacts:**
+
 ```python
 from huggingface_hub import HfApi
 api = HfApi(token=os.environ.get("HF_TOKEN"))
@@ -43,6 +48,7 @@ api.upload_file(
 ### Option 2: External Storage
 
 **S3:**
+
 ```python
 import boto3
 s3 = boto3.client('s3')
@@ -50,6 +56,7 @@ s3.upload_file('results.json', 'my-bucket', 'results.json')
 ```
 
 **Google Cloud Storage:**
+
 ```python
 from google.cloud import storage
 client = storage.Client()
@@ -70,6 +77,7 @@ requests.post("https://your-api.com/results", json=results)
 ### Job Configuration
 
 **Always include HF_TOKEN:**
+
 ```python
 hf_jobs("uv", {
     "script": "your_script.py",
@@ -80,12 +88,14 @@ hf_jobs("uv", {
 ### Script Configuration
 
 **Verify token exists:**
+
 ```python
 import os
 assert "HF_TOKEN" in os.environ, "HF_TOKEN required for Hub operations!"
 ```
 
 **Use token for Hub operations:**
+
 ```python
 from huggingface_hub import HfApi
 
@@ -239,7 +249,8 @@ Before submitting any job that saves to Hub, verify:
 
 ### Automatic Creation
 
-If repository doesn't exist, it's created automatically when first pushing (if token has write permissions).
+If repository doesn't exist, it's created automatically when first pushing (if token has write
+permissions).
 
 ### Manual Creation
 
@@ -259,11 +270,13 @@ api.create_repo(
 ### Repository Naming
 
 **Valid names:**
+
 - `username/my-model`
 - `username/model-name`
 - `organization/model-name`
 
 **Invalid names:**
+
 - `model-name` (missing username)
 - `username/model name` (spaces not allowed)
 - `username/MODEL` (uppercase discouraged)
@@ -275,6 +288,7 @@ api.create_repo(
 **Cause:** HF_TOKEN not provided or invalid
 
 **Solutions:**
+
 1. Verify `secrets={"HF_TOKEN": "$HF_TOKEN"}` in job config
 2. Check you're logged in: `hf_whoami()`
 3. Re-login: `hf auth login`
@@ -284,6 +298,7 @@ api.create_repo(
 **Cause:** No write access to repository
 
 **Solutions:**
+
 1. Check repository namespace matches your username
 2. Verify you're a member of organization (if using org namespace)
 3. Check token has write permissions
@@ -293,6 +308,7 @@ api.create_repo(
 **Cause:** Repository doesn't exist and auto-creation failed
 
 **Solutions:**
+
 1. Manually create repository first
 2. Check repository name format
 3. Verify namespace exists
@@ -302,6 +318,7 @@ api.create_repo(
 **Cause:** Network issues or Hub unavailable
 
 **Solutions:**
+
 1. Check logs for specific error
 2. Verify token is valid
 3. Retry push operation
@@ -321,16 +338,19 @@ api.create_repo(
 Check logs for push progress:
 
 **MCP Tool:**
+
 ```python
 hf_jobs("logs", {"job_id": "your-job-id"})
 ```
 
 **CLI:**
+
 ```bash
 hf jobs logs <job-id>
 ```
 
 **Python API:**
+
 ```python
 from huggingface_hub import fetch_job_logs
 for log in fetch_job_logs(job_id="your-job-id"):
@@ -338,6 +358,7 @@ for log in fetch_job_logs(job_id="your-job-id"):
 ```
 
 **Look for:**
+
 ```
 Pushing to username/repo-name...
 Upload file results.json: 100%
@@ -346,7 +367,8 @@ Upload file results.json: 100%
 
 ## Key Takeaway
 
-**Without `secrets={"HF_TOKEN": "$HF_TOKEN"}` and persistence code, all results are permanently lost.**
+**Without `secrets={"HF_TOKEN": "$HF_TOKEN"}` and persistence code, all results are permanently
+lost.**
 
 Always verify both are configured before submitting any job that produces results.
 

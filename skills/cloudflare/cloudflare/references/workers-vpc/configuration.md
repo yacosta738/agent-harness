@@ -6,7 +6,8 @@ Setup and configuration for TCP Sockets in Cloudflare Workers.
 
 ### Basic Setup
 
-TCP Sockets are available by default in Workers runtime. No special configuration required in `wrangler.jsonc`:
+TCP Sockets are available by default in Workers runtime. No special configuration required in
+`wrangler.jsonc`:
 
 ```jsonc
 {
@@ -93,7 +94,8 @@ Reduce latency by auto-placing Workers near backends:
 { "placement": { "mode": "smart" } }
 ```
 
-Workers automatically relocate closer to TCP socket destinations after observing connection latency. See [Smart Placement reference](../smart-placement/).
+Workers automatically relocate closer to TCP socket destinations after observing connection latency.
+See [Smart Placement reference](../smart-placement/).
 
 ## Secrets Management
 
@@ -107,7 +109,8 @@ Access in Worker via `env.DB_PASSWORD`. Use in protocol handshake or authenticat
 
 ## Local Development
 
-Test with `wrangler dev`. Note: Local mode may not access private networks. Use public endpoints or mock servers for development:
+Test with `wrangler dev`. Note: Local mode may not access private networks. Use public endpoints or
+mock servers for development:
 
 ```typescript
 const config = process.env.NODE_ENV === 'dev'
@@ -138,7 +141,8 @@ See [Hyperdrive reference](../hyperdrive/) for complete setup.
 
 ## Compatibility
 
-TCP Sockets available in all modern Workers. Use current date: `"compatibility_date": "2025-01-01"`. No special flags required.
+TCP Sockets available in all modern Workers. Use current date: `"compatibility_date": "2025-01-01"`.
+No special flags required.
 
 ## Related Configuration
 

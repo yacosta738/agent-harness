@@ -151,6 +151,7 @@ cd ../producer && wrangler deploy
 **View logs:** `wrangler tail my-tail-worker`
 
 **Incremental testing:**
+
 1. Verify receipt: `console.log('Events:', events.length)`
 2. Inspect structure: `console.log(JSON.stringify(events[0], null, 2))`
 3. Add external call with `ctx.waitUntil()`
@@ -177,12 +178,12 @@ Trigger: `curl https://producer.example.workers.dev/test`
 
 ## Common Errors
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| "Tail consumer not found" | Not deployed | Deploy tail Worker first |
-| "No tail handler" | Missing `tail()` | Add to default export |
-| "waitUntil is not a function" | Missing `ctx` | Add `ctx` parameter |
-| Timeout | Blocking await | Use `ctx.waitUntil()` |
+| Error                         | Cause            | Solution                 |
+|-------------------------------|------------------|--------------------------|
+| "Tail consumer not found"     | Not deployed     | Deploy tail Worker first |
+| "No tail handler"             | Missing `tail()` | Add to default export    |
+| "waitUntil is not a function" | Missing `ctx`    | Add `ctx` parameter      |
+| Timeout                       | Blocking await   | Use `ctx.waitUntil()`    |
 
 ## Performance Notes
 

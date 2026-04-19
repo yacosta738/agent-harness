@@ -34,32 +34,34 @@ Minimal configuration requires only `assets.directory`:
 **Configuration keys:**
 
 - `directory` (string, required): Path to assets folder (e.g. `./dist`, `./public`, `./build`)
-- `binding` (string, optional): Name to access assets in Worker code (e.g. `env.ASSETS`). Default: `"ASSETS"`
+- `binding` (string, optional): Name to access assets in Worker code (e.g. `env.ASSETS`). Default:
+  `"ASSETS"`
 - `not_found_handling` (string, optional): Behavior when asset not found
-  - `"single-page-application"`: Serve `/index.html` for non-asset paths (default for SPAs)
-  - `"404-page"`: Serve `/404.html` if present, otherwise 404
-  - `"none"`: Return 404 for missing assets
+    - `"single-page-application"`: Serve `/index.html` for non-asset paths (default for SPAs)
+    - `"404-page"`: Serve `/404.html` if present, otherwise 404
+    - `"none"`: Return 404 for missing assets
 - `html_handling` (string, optional): URL trailing slash behavior
-- `run_worker_first` (boolean | string[], optional): Routes that invoke Worker before checking assets
+- `run_worker_first` (boolean | string[], optional): Routes that invoke Worker before checking
+  assets
 
 ### not_found_handling Modes
 
-| Mode | Behavior | Use Case |
-|------|----------|----------|
-| `"single-page-application"` | Serve `/index.html` for non-asset requests | React, Vue, Angular SPAs |
-| `"404-page"` | Serve `/404.html` if exists, else 404 | Static sites with custom error page |
-| `"none"` | Return 404 for missing assets | API-first or custom routing |
+| Mode                        | Behavior                                   | Use Case                            |
+|-----------------------------|--------------------------------------------|-------------------------------------|
+| `"single-page-application"` | Serve `/index.html` for non-asset requests | React, Vue, Angular SPAs            |
+| `"404-page"`                | Serve `/404.html` if exists, else 404      | Static sites with custom error page |
+| `"none"`                    | Return 404 for missing assets              | API-first or custom routing         |
 
 ### html_handling Modes
 
 Controls trailing slash behavior for HTML files:
 
-| Mode | `/page` | `/page/` | Use Case |
-|------|---------|----------|----------|
-| `"auto-trailing-slash"` | Redirect to `/page/` if `/page/index.html` exists | Serve `/page/index.html` | Default, SEO-friendly |
-| `"force-trailing-slash"` | Always redirect to `/page/` | Serve if exists | Consistent trailing slashes |
-| `"drop-trailing-slash"` | Serve if exists | Redirect to `/page` | Cleaner URLs |
-| `"none"` | No modification | No modification | Custom routing logic |
+| Mode                     | `/page`                                           | `/page/`                 | Use Case                    |
+|--------------------------|---------------------------------------------------|--------------------------|-----------------------------|
+| `"auto-trailing-slash"`  | Redirect to `/page/` if `/page/index.html` exists | Serve `/page/index.html` | Default, SEO-friendly       |
+| `"force-trailing-slash"` | Always redirect to `/page/`                       | Serve if exists          | Consistent trailing slashes |
+| `"drop-trailing-slash"`  | Serve if exists                                   | Redirect to `/page`      | Cleaner URLs                |
+| `"none"`                 | No modification                                   | No modification          | Custom routing logic        |
 
 **Default:** `"auto-trailing-slash"`
 
@@ -154,11 +156,13 @@ export default defineConfig({
 
 ### Key Compatibility Dates
 
-| Date | Feature | Impact |
-|------|---------|--------|
+| Date         | Feature                         | Impact                                          |
+|--------------|---------------------------------|-------------------------------------------------|
 | `2025-04-01` | Navigation request optimization | SPAs skip Worker for navigation, reducing costs |
 
-Use current date for new projects. See [Compatibility Dates](https://developers.cloudflare.com/workers/configuration/compatibility-dates/) for full list.
+Use current date for new projects.
+See [Compatibility Dates](https://developers.cloudflare.com/workers/configuration/compatibility-dates/)
+for full list.
 
 ### Environment-Specific Configuration
 

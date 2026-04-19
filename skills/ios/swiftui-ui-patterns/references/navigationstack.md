@@ -2,15 +2,19 @@
 
 ## Intent
 
-Use this pattern for programmatic navigation and deep links, especially when each tab needs an independent navigation history. The key idea is one `NavigationStack` per tab, each with its own path binding and router object.
+Use this pattern for programmatic navigation and deep links, especially when each tab needs an
+independent navigation history. The key idea is one `NavigationStack` per tab, each with its own
+path binding and router object.
 
 ## Core architecture
 
 - Define a route enum that is `Hashable` and represents all destinations.
-- Create a lightweight router (or use a library such as `https://github.com/Dimillian/AppRouter`) that owns the `path` and any sheet state.
+- Create a lightweight router (or use a library such as `https://github.com/Dimillian/AppRouter`)
+  that owns the `path` and any sheet state.
 - Each tab owns its own router instance and binds `NavigationStack(path:)` to it.
 - Inject the router into the environment so child views can navigate programmatically.
-- Centralize destination mapping with a single `navigationDestination(for:)` block (or a `withAppRouter()` modifier).
+- Centralize destination mapping with a single `navigationDestination(for:)` block (or a
+  `withAppRouter()` modifier).
 
 ## Example: custom router with per-tab stack
 
@@ -127,19 +131,19 @@ struct TabsView: View {
 @MainActor
 @Observable
 final class TabRouter {
-  private var routers: [AppTab: RouterPath] = [:]
+private var routers: [AppTab: RouterPath] = [:]
 
-  func router(for tab: AppTab) -> RouterPath {
-    if let router = routers[tab] { return router }
-    let router = RouterPath()
-    routers[tab] = router
-    return router
-  }
+func router(for tab: AppTab) -> RouterPath {
+if let router = routers[tab] { return router }
+let router = RouterPath()
+routers[tab] = router
+return router
+}
 
-  func binding(for tab: AppTab) -> Binding<[Route]> {
-    let router = router(for: tab)
-    return Binding(get: { router.path }, set: { router.path = $0 })
-  }
+func binding(for tab: AppTab) -> Binding<[Route]> {
+let router = router(for: tab)
+return Binding(get: { router.path }, set: { router.path = $0 })
+}
 }
 
 ## Design choices to keep
@@ -148,7 +152,8 @@ final class TabRouter {
 - A single source of truth for navigation state (`RouterPath` or library router).
 - Use `navigationDestination(for:)` to map routes to views.
 - Reset the path when app context changes (account switch, logout, etc.).
-- Inject the router into the environment so child views can navigate and present sheets without prop-drilling.
+- Inject the router into the environment so child views can navigate and present sheets without
+  prop-drilling.
 - Keep sheet presentation state on the router if you want a single place to manage modals.
 
 ## Pitfalls

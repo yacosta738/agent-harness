@@ -24,12 +24,13 @@ interface SocketAddress {
 }
 ```
 
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
+| Field      | Type     | Description           | Example                            |
+|------------|----------|-----------------------|------------------------------------|
 | `hostname` | `string` | Target hostname or IP | `"db.internal.net"`, `"10.0.1.50"` |
-| `port` | `number` | TCP port number | `5432`, `443`, `22` |
+| `port`     | `number` | TCP port number       | `5432`, `443`, `22`                |
 
-DNS names are resolved at connection time. IPv4, IPv6, and private IPs (10.x, 172.16.x, 192.168.x) supported.
+DNS names are resolved at connection time. IPv4, IPv6, and private IPs (10.x, 172.16.x, 192.168.x)
+supported.
 
 #### `SocketOptions`
 
@@ -40,20 +41,21 @@ interface SocketOptions {
 }
 ```
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `secureTransport` | `"off" \| "on" \| "starttls"` | `"off"` | TLS mode |
-| `allowHalfOpen` | `boolean` | `false` | Allow half-closed connections |
+| Field             | Type                          | Default | Description                   |
+|-------------------|-------------------------------|---------|-------------------------------|
+| `secureTransport` | `"off" \| "on" \| "starttls"` | `"off"` | TLS mode                      |
+| `allowHalfOpen`   | `boolean`                     | `false` | Allow half-closed connections |
 
 **`secureTransport` modes:**
 
-| Mode | Behavior | Use Case |
-|------|----------|----------|
-| `"off"` | Plain TCP, no encryption | Testing, internal trusted networks |
-| `"on"` | Immediate TLS handshake | HTTPS, secure databases, SSH |
-| `"starttls"` | Start plain, upgrade later with `startTls()` | Postgres, SMTP, IMAP |
+| Mode         | Behavior                                     | Use Case                           |
+|--------------|----------------------------------------------|------------------------------------|
+| `"off"`      | Plain TCP, no encryption                     | Testing, internal trusted networks |
+| `"on"`       | Immediate TLS handshake                      | HTTPS, secure databases, SSH       |
+| `"starttls"` | Start plain, upgrade later with `startTls()` | Postgres, SMTP, IMAP               |
 
-**`allowHalfOpen`:** When `false` (default), closing read stream auto-closes write stream. When `true`, streams are independent.
+**`allowHalfOpen`:** When `false` (default), closing read stream auto-closes write stream. When
+`true`, streams are independent.
 
 ### Returns
 
@@ -180,20 +182,21 @@ export default {
 };
 ```
 
-See [patterns.md](./patterns.md) for multi-chunk reading, error handling, and protocol implementations.
+See [patterns.md](./patterns.md) for multi-chunk reading, error handling, and protocol
+implementations.
 
 ## Quick Reference
 
-| Task | Code |
-|------|------|
-| Import | `import { connect } from 'cloudflare:sockets';` |
-| Connect | `connect({ hostname: "host", port: 443 })` |
-| With TLS | `connect(addr, { secureTransport: "on" })` |
-| StartTLS | `socket.startTls()` after handshake |
-| Write | `await writer.write(data); await writer.close();` |
-| Read | `const { value } = await reader.read();` |
-| Error handling | `try { await socket.opened; } catch { }` |
-| Always close | `try { } finally { await socket.close(); }` |
+| Task           | Code                                              |
+|----------------|---------------------------------------------------|
+| Import         | `import { connect } from 'cloudflare:sockets';`   |
+| Connect        | `connect({ hostname: "host", port: 443 })`        |
+| With TLS       | `connect(addr, { secureTransport: "on" })`        |
+| StartTLS       | `socket.startTls()` after handshake               |
+| Write          | `await writer.write(data); await writer.close();` |
+| Read           | `const { value } = await reader.read();`          |
+| Error handling | `try { await socket.opened; } catch { }`          |
+| Always close   | `try { } finally { await socket.close(); }`       |
 
 ## See Also
 

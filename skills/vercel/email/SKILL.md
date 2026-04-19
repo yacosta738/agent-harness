@@ -78,11 +78,14 @@ chainTo:
 
 # Email Integration (Resend + React Email)
 
-You are an expert in sending emails from Vercel-deployed applications — covering Resend (native Vercel Marketplace integration), React Email templates, domain verification, and transactional email patterns.
+You are an expert in sending emails from Vercel-deployed applications — covering Resend (native
+Vercel Marketplace integration), React Email templates, domain verification, and transactional email
+patterns.
 
 ## Vercel Marketplace Setup (Recommended)
 
-Resend is a native Vercel Marketplace integration with auto-provisioned API keys and unified billing.
+Resend is a native Vercel Marketplace integration with auto-provisioned API keys and unified
+billing.
 
 ### Install via Marketplace
 
@@ -92,6 +95,7 @@ vercel integration add resend
 ```
 
 Auto-provisioned environment variables:
+
 - `RESEND_API_KEY` — server-side API key for sending emails
 
 ### SDK Setup
@@ -226,7 +230,8 @@ export default function WelcomeEmail({ name }: WelcomeEmailProps) {
 npx react-email dev
 ```
 
-This opens a browser preview at `http://localhost:3000` where you can view and iterate on email templates with hot reload.
+This opens a browser preview at `http://localhost:3000` where you can view and iterate on email
+templates with hot reload.
 
 ### Upload Templates to Resend (React Email 5.0)
 
@@ -239,7 +244,9 @@ Paste your API key when prompted — templates are uploaded and available in the
 
 ### Dark Mode Support (React Email 5.x)
 
-React Email 5.x (latest 5.2.9, `@react-email/components` 1.0.8) supports dark mode with a theming system tested across popular email clients. Now also supports **React 19.2** and **Next.js 16**. Use the `Tailwind` component with Tailwind CSS v4 for email styling:
+React Email 5.x (latest 5.2.9, `@react-email/components` 1.0.8) supports dark mode with a theming
+system tested across popular email clients. Now also supports **React 19.2** and **Next.js 16**. Use
+the `Tailwind` component with Tailwind CSS v4 for email styling:
 
 ```tsx
 import { Tailwind } from "@react-email/components";
@@ -255,7 +262,8 @@ export default function MyEmail() {
 }
 ```
 
-**Upgrade note (v4 → v5)**: Replace all `renderAsync` with `render`. The Tailwind component now only supports Tailwind CSS v4.
+**Upgrade note (v4 → v5)**: Replace all `renderAsync` with `render`. The Tailwind component now only
+supports Tailwind CSS v4.
 
 ## Domain Verification
 
@@ -356,7 +364,8 @@ const { data, error } = await resend.emails.send(
 );
 ```
 
-Resend deduplicates requests with the same idempotency key within a 24-hour window. Use deterministic keys derived from your business logic (e.g., `order-confirmation-${orderId}`).
+Resend deduplicates requests with the same idempotency key within a 24-hour window. Use
+deterministic keys derived from your business logic (e.g., `order-confirmation-${orderId}`).
 
 ### Webhook Management API
 
@@ -378,7 +387,9 @@ await resend.webhooks.remove(webhookId);
 
 ### Email Status: "suppressed"
 
-Resend now tracks a `"suppressed"` delivery status for recipients on suppression lists (previous hard bounces or spam complaints). Check for this in webhook events alongside delivered/bounced/complained.
+Resend now tracks a `"suppressed"` delivery status for recipients on suppression lists (previous
+hard bounces or spam complaints). Check for this in webhook events alongside
+delivered/bounced/complained.
 
 ### Webhook for Delivery Events
 
@@ -407,8 +418,8 @@ export async function POST(req: Request) {
 
 ## Environment Variables
 
-| Variable | Scope | Description |
-|----------|-------|-------------|
+| Variable         | Scope  | Description                        |
+|------------------|--------|------------------------------------|
 | `RESEND_API_KEY` | Server | Resend API key (starts with `re_`) |
 
 ## Cross-References

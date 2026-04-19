@@ -22,6 +22,7 @@ export default {
 ## Session Reuse
 
 Keep sessions alive for performance:
+
 ```typescript
 let sessionId = await env.SESSION_KV.get("browser-session");
 if (sessionId) {
@@ -35,13 +36,13 @@ if (sessionId) {
 
 ## Common Operations
 
-| Task | Code |
-|------|------|
-| Screenshot | `await page.screenshot({ type: "png", fullPage: true })` |
-| PDF | `await page.pdf({ format: "A4", printBackground: true })` |
+| Task         | Code                                                                  |
+|--------------|-----------------------------------------------------------------------|
+| Screenshot   | `await page.screenshot({ type: "png", fullPage: true })`              |
+| PDF          | `await page.pdf({ format: "A4", printBackground: true })`             |
 | Extract data | `await page.evaluate(() => document.querySelector('h1').textContent)` |
-| Fill form | `await page.type('#input', 'value'); await page.click('button')` |
-| Wait nav | `await Promise.all([page.waitForNavigation(), page.click('a')])` |
+| Fill form    | `await page.type('#input', 'value'); await page.click('button')`      |
+| Wait nav     | `await Promise.all([page.waitForNavigation(), page.click('a')])`      |
 
 ## Parallel Scraping
 
@@ -64,6 +65,7 @@ await page.getByTestId("submit-button").click();
 ## Incognito Contexts
 
 Isolated sessions without multiple browsers:
+
 ```typescript
 const ctx1 = await browser.createIncognitoBrowserContext();
 const ctx2 = await browser.createIncognitoBrowserContext();

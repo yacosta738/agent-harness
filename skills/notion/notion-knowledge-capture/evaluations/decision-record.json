@@ -1,6 +1,8 @@
 {
   "name": "Create Decision Record",
-  "skills": ["knowledge-capture"],
+  "skills": [
+    "knowledge-capture"
+  ],
   "query": "Document our decision to use PostgreSQL instead of MongoDB for our new service",
   "context": "User has just explained the decision with rationale, options considered, and trade-offs",
   "expected_behavior": [

@@ -1,8 +1,10 @@
 # Cloudflare Sandbox SDK
 
-Secure isolated code execution in containers on Cloudflare's edge. Run untrusted code, manage files, expose services, integrate with AI agents.
+Secure isolated code execution in containers on Cloudflare's edge. Run untrusted code, manage files,
+expose services, integrate with AI agents.
 
-**Use cases**: AI code execution, interactive dev environments, data analysis, CI/CD, code interpreters, multi-tenant execution.
+**Use cases**: AI code execution, interactive dev environments, data analysis, CI/CD, code
+interpreters, multi-tenant execution.
 
 ## Architecture
 
@@ -33,6 +35,7 @@ export default {
 ```
 
 **wrangler.jsonc**:
+
 ```jsonc
 {
   "name": "my-sandbox-worker",
@@ -58,6 +61,7 @@ export default {
 ```
 
 **Dockerfile**:
+
 ```dockerfile
 FROM docker.io/cloudflare/sandbox:latest
 RUN pip3 install --no-cache-dir pandas numpy matplotlib
@@ -85,12 +89,14 @@ EXPOSE 8080 3000  # Required for wrangler dev
 - Retry on `CONTAINER_NOT_READY`
 
 ## In This Reference
+
 - [configuration.md](./configuration.md) - Config, CLI, environment setup
 - [api.md](./api.md) - Programmatic API, testing patterns
 - [patterns.md](./patterns.md) - Common workflows, CI/CD integration
 - [gotchas.md](./gotchas.md) - Issues, limits, best practices
 
 ## See Also
+
 - [durable-objects](../durable-objects/) - Sandbox runs on DO infrastructure
 - [containers](../containers/) - Container runtime fundamentals
 - [workers](../workers/) - Entry point for sandbox requests

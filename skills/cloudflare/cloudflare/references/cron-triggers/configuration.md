@@ -37,15 +37,18 @@ Schedule crons during low-carbon periods for carbon-aware execution:
 ```
 
 **Modes:**
+
 - `"smart"` - Carbon-aware scheduling (may delay up to 24h for optimal window)
 - Default (no placement config) - Standard scheduling (no delay)
 
 **How it works:**
+
 - Cloudflare delays execution until grid carbon intensity is lower
 - Maximum delay: 24 hours from scheduled time
 - Ideal for batch jobs with flexible timing requirements
 
 **Use cases:**
+
 - Nightly data processing and ETL pipelines
 - Weekly/monthly report generation
 - Database backups and maintenance
@@ -53,6 +56,7 @@ Schedule crons during low-carbon periods for carbon-aware execution:
 - ML model training
 
 **Not suitable for:**
+
 - Time-sensitive operations (SLA requirements)
 - User-facing features requiring immediate execution
 - Real-time monitoring and alerting
@@ -85,7 +89,8 @@ Schedule crons during low-carbon periods for carbon-aware execution:
 
 **Structure:** `minute hour day-of-month month day-of-week`
 
-**Special chars:** `*` (any), `,` (list), `-` (range), `/` (step), `L` (last), `W` (weekday), `#` (nth)
+**Special chars:** `*` (any), `,` (list), `-` (range), `/` (step), `L` (last), `W` (weekday), `#` (
+nth)
 
 ## Managing Triggers
 
@@ -110,12 +115,14 @@ npx wrangler deployments list
 ## API Management
 
 **Get triggers:**
+
 ```bash
 curl "https://api.cloudflare.com/client/v4/accounts/{account_id}/workers/scripts/{script_name}/schedules" \
   -H "Authorization: Bearer {api_token}"
 ```
 
 **Update triggers:**
+
 ```bash
 curl -X PUT "https://api.cloudflare.com/client/v4/accounts/{account_id}/workers/scripts/{script_name}/schedules" \
   -H "Authorization: Bearer {api_token}" \
@@ -124,6 +131,7 @@ curl -X PUT "https://api.cloudflare.com/client/v4/accounts/{account_id}/workers/
 ```
 
 **Delete all:**
+
 ```bash
 curl -X PUT "https://api.cloudflare.com/client/v4/accounts/{account_id}/workers/scripts/{script_name}/schedules" \
   -H "Authorization: Bearer {api_token}" \
@@ -157,6 +165,7 @@ For complex schedules, use multiple workers:
 ```
 
 **Benefits:**
+
 - Separate CPU limits per worker
 - Independent error isolation
 - Different Green Compute policies
@@ -165,10 +174,12 @@ For complex schedules, use multiple workers:
 ## Validation
 
 **Test cron syntax:**
+
 - [crontab.guru](https://crontab.guru/) - Interactive validator
 - Wrangler validates on deploy but won't catch logic errors
 
 **Common mistakes:**
+
 - `0 0 * * *` runs daily at midnight UTC, not your local timezone
 - `*/60 * * * *` is invalid (use `0 * * * *` for hourly)
 - `0 2 31 * *` only runs on months with 31 days

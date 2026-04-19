@@ -20,6 +20,7 @@ filters: {
 ```
 
 **Results Found:**
+
 - "Competitor Analysis - Stripe" (Product)
 - "Market Research Q3 2024" (Strategy)
 - "Pricing Strategy Discussion" (Product)
@@ -34,21 +35,25 @@ Notion:notion-fetch for each page
 **Extracted Information:**
 
 **Stripe**:
+
 - Pay-as-you-go: 2.9% + $0.30 per transaction
 - No monthly fees
 - Volume discounts available
 
 **Square**:
+
 - Pay-as-you-go: 2.6% + $0.10 per transaction
 - Monthly plan: $29/month with lower rates
 - Hardware costs separate
 
 **PayPal**:
+
 - Standard: 3.49% + $0.49 per transaction
 - Advanced: $30/month + 2.59% + $0.49
 - Multi-currency fees
 
 **Adyen**:
+
 - Interchange++ pricing model
 - Custom enterprise pricing
 - Setup and monthly fees apply
@@ -202,16 +207,18 @@ All competitors offer discounts at scale:
 ### Market Positioning
 
 ```
+
 High Volume / Enterprise
-    ↑
-    |                    Adyen
-    |
-    |         Stripe
-    |
-    |  Square    PayPal
-    |
-    └──────────────────→
-      Small / Simple        Complex / International
+↑
+| Adyen
+|
+| Stripe
+|
+| Square PayPal
+|
+└──────────────────→
+Small / Simple Complex / International
+
 ```
 
 ## Strategic Implications

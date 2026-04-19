@@ -4,7 +4,8 @@ This guide provides common training patterns and use cases for TRL on Hugging Fa
 
 ## Multi-GPU Training
 
-Automatic distributed training across multiple GPUs. TRL/Accelerate handles distribution automatically:
+Automatic distributed training across multiple GPUs. TRL/Accelerate handles distribution
+automatically:
 
 ```python
 hf_jobs("uv", {
@@ -19,6 +20,7 @@ hf_jobs("uv", {
 ```
 
 **Tips for multi-GPU:**
+
 - No code changes needed
 - Use `per_device_train_batch_size` (per GPU, not total)
 - Effective batch size = `per_device_train_batch_size` × `num_gpus` × `gradient_accumulation_steps`
@@ -100,7 +102,8 @@ hf_jobs("uv", {
 
 ## Trackio Configuration
 
-**Use sensible defaults for trackio setup.** See `references/trackio_guide.md` for complete documentation including grouping runs for experiments.
+**Use sensible defaults for trackio setup.** See `references/trackio_guide.md` for complete
+documentation including grouping runs for experiments.
 
 ### Basic Pattern
 
@@ -136,18 +139,20 @@ trackio.init(project="hyperparam-sweep", run_name="lr-0.01", group="lr_0.01")
 
 ## Pattern Selection Guide
 
-| Use Case | Pattern | Hardware | Time |
-|----------|---------|----------|------|
-| SFT training | `scripts/train_sft_example.py` | a10g-large | 2-6 hours |
-| Large dataset (>10K) | Multi-GPU | a10g-largex2 | 4-12 hours |
-| Preference learning | DPO Training | a10g-large | 2-4 hours |
-| Online RL | GRPO Training | a10g-large | 3-6 hours |
+| Use Case             | Pattern                        | Hardware     | Time       |
+|----------------------|--------------------------------|--------------|------------|
+| SFT training         | `scripts/train_sft_example.py` | a10g-large   | 2-6 hours  |
+| Large dataset (>10K) | Multi-GPU                      | a10g-largex2 | 4-12 hours |
+| Preference learning  | DPO Training                   | a10g-large   | 2-4 hours  |
+| Online RL            | GRPO Training                  | a10g-large   | 3-6 hours  |
 
 ## Critical: Evaluation Dataset Requirements
 
-**⚠️ IMPORTANT**: If you set `eval_strategy="steps"` or `eval_strategy="epoch"`, you **MUST** provide an `eval_dataset` to the trainer, or the training will hang.
+**⚠️ IMPORTANT**: If you set `eval_strategy="steps"` or `eval_strategy="epoch"`, you **MUST**
+provide an `eval_dataset` to the trainer, or the training will hang.
 
 ### ✅ CORRECT - With eval dataset:
+
 ```python
 dataset_split = dataset.train_test_split(test_size=0.1, seed=42)
 
@@ -160,6 +165,7 @@ trainer = SFTTrainer(
 ```
 
 ### ❌ WRONG - Will hang:
+
 ```python
 trainer = SFTTrainer(
     model="Qwen/Qwen2.5-0.5B",
@@ -170,6 +176,7 @@ trainer = SFTTrainer(
 ```
 
 ### Option: Disable evaluation if no eval dataset
+
 ```python
 config = SFTConfig(
     eval_strategy="no",  # ← Explicitly disable evaluation

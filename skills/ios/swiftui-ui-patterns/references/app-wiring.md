@@ -2,20 +2,26 @@
 
 ## Intent
 
-Show how to wire the app shell (TabView + NavigationStack + sheets) and install a global dependency graph (environment objects, services, streaming clients, SwiftData ModelContainer) in one place.
+Show how to wire the app shell (TabView + NavigationStack + sheets) and install a global dependency
+graph (environment objects, services, streaming clients, SwiftData ModelContainer) in one place.
 
 ## Recommended structure
 
 1) Root view sets up tabs, per-tab routers, and sheets.
-2) A dedicated view modifier installs global dependencies and lifecycle tasks (auth state, streaming watchers, push tokens, data containers).
+2) A dedicated view modifier installs global dependencies and lifecycle tasks (auth state, streaming
+   watchers, push tokens, data containers).
 3) Feature views pull only what they need from the environment; feature-specific state stays local.
 
 ## Dependency selection
 
-- Use `@Environment` for app-level services, shared clients, theme/configuration, and values that many descendants genuinely need.
-- Prefer initializer injection for feature-local dependencies and models. Do not move a dependency into the environment just to avoid passing one or two arguments.
-- Keep mutable feature state out of the environment unless it is intentionally shared across broad parts of the app.
-- Use `@EnvironmentObject` only as a legacy fallback or when the project already standardizes on it for a truly shared object.
+- Use `@Environment` for app-level services, shared clients, theme/configuration, and values that
+  many descendants genuinely need.
+- Prefer initializer injection for feature-local dependencies and models. Do not move a dependency
+  into the environment just to avoid passing one or two arguments.
+- Keep mutable feature state out of the environment unless it is intentionally shared across broad
+  parts of the app.
+- Use `@EnvironmentObject` only as a legacy fallback or when the project already standardizes on it
+  for a truly shared object.
 
 ## Root shell example (generic)
 
@@ -91,7 +97,9 @@ enum Route: Hashable {
 
 ## Dependency graph modifier (generic)
 
-Use a single modifier to install environment objects and handle lifecycle hooks when the active account/client changes. This keeps wiring consistent and avoids forgetting a dependency in call sites.
+Use a single modifier to install environment objects and handle lifecycle hooks when the active
+account/client changes. This keeps wiring consistent and avoids forgetting a dependency in call
+sites.
 
 ```swift
 extension View {
@@ -143,13 +151,15 @@ extension View {
 ```
 
 Notes:
+
 - The `.task(id:)` hooks respond to account/client changes, re-seeding services and watcher state.
 - Keep the modifier focused on global wiring; feature-specific state stays within features.
 - Adjust types (AccountManager, StreamWatcher, etc.) to match your project.
 
 ## SwiftData / ModelContainer
 
-Install your `ModelContainer` at the root so all feature views share the same store. Keep the list minimal to the models that need persistence.
+Install your `ModelContainer` at the root so all feature views share the same store. Keep the list
+minimal to the models that need persistence.
 
 ```swift
 extension View {
@@ -186,16 +196,19 @@ extension View {
 }
 ```
 
-Why: enum-driven sheets keep presentation centralized and testable; adding a new sheet means adding one enum case and one switch branch.
+Why: enum-driven sheets keep presentation centralized and testable; adding a new sheet means adding
+one enum case and one switch branch.
 
 ## When to use
 
 - Apps with multiple packages/modules that share environment objects and services.
 - Apps that need to react to account/client changes and rewire streaming/push safely.
-- Any app that wants consistent TabView + NavigationStack + sheet wiring without repeating environment setup.
+- Any app that wants consistent TabView + NavigationStack + sheet wiring without repeating
+  environment setup.
 
 ## Caveats
 
 - Keep the dependency modifier slim; do not put feature state or heavy logic there.
-- Ensure `.task(id:)` work is lightweight or cancelled appropriately; long-running work belongs in services.
+- Ensure `.task(id:)` work is lightweight or cancelled appropriately; long-running work belongs in
+  services.
 - If unauthenticated clients exist, gate streaming/watch calls to avoid reconnect spam.

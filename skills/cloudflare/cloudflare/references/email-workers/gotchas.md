@@ -108,18 +108,18 @@ Monitor: `npx wrangler tail`
 
 ## Limits
 
-| Limit | Value |
-|-------|-------|
-| Max message size | 25 MiB |
-| Max rules/zone | 200 |
+| Limit                | Value       |
+|----------------------|-------------|
+| Max message size     | 25 MiB      |
+| Max rules/zone       | 200         |
 | CPU time (free/paid) | 10ms / 50ms |
-| Reply References | 100 |
+| Reply References     | 100         |
 
 ## Common Errors
 
-| Error | Fix |
-|-------|-----|
-| "Address not verified" | Add in Email Routing dashboard |
-| "Exceeded CPU time" | Use `ctx.waitUntil()` or upgrade |
-| "Stream is locked" | Buffer `message.raw` first |
-| Silent reply failure | Check DMARC records |
+| Error                  | Fix                              |
+|------------------------|----------------------------------|
+| "Address not verified" | Add in Email Routing dashboard   |
+| "Exceeded CPU time"    | Use `ctx.waitUntil()` or upgrade |
+| "Stream is locked"     | Buffer `message.raw` first       |
+| Silent reply failure   | Check DMARC records              |

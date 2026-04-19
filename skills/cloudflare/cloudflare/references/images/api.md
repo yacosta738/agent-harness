@@ -68,7 +68,8 @@ GET  /accounts/{account_id}/images/v1?page=1         # List
 https://imagedelivery.net/{hash}/{id}/width=800,height=600,fit=cover,format=avif
 ```
 
-**Params:** `w=`, `h=`, `fit=`, `q=`, `f=`, `dpr=`, `gravity=`, `sharpen=`, `blur=`, `rotate=`, `background=`, `metadata=`
+**Params:** `w=`, `h=`, `fit=`, `q=`, `f=`, `dpr=`, `gravity=`, `sharpen=`, `blur=`, `rotate=`,
+`background=`, `metadata=`
 
 ## Direct Creator Upload
 
@@ -88,9 +89,9 @@ await fetch(result.uploadURL, { method: 'POST', body: formData });
 
 ## Error Codes
 
-| Code | Message | Solution |
-|------|---------|----------|
-| 5400 | Invalid format | Use JPEG, PNG, GIF, WebP |
-| 5401 | Too large | Max 100MB |
-| 5403 | Invalid transform | Check params |
-| 9413 | Rate limit | Implement backoff |
+| Code | Message           | Solution                 |
+|------|-------------------|--------------------------|
+| 5400 | Invalid format    | Use JPEG, PNG, GIF, WebP |
+| 5401 | Too large         | Max 100MB                |
+| 5403 | Invalid transform | Check params             |
+| 9413 | Rate limit        | Implement backoff        |

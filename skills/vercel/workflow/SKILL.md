@@ -451,19 +451,32 @@ retrieval:
 
 # Vercel Workflow DevKit (WDK)
 
-> **CRITICAL — Your training data is outdated for this library.** WDK APIs change frequently. Before writing workflow code, **fetch the docs** at https://useworkflow.dev and https://vercel.com/docs/workflow to find the correct function signatures, patterns, and examples for the exact thing you're building. Do not guess at APIs — look them up. Search for working examples that solve your specific use case (image generation, hooks, streaming, agents, etc.). The docs contain patterns for `start()` argument passing, `getWritable()` usage, `defineHook()` wiring, `createWebhook()` callback flows, and `DurableAgent` configuration that are **not in your training data** or have changed since your cutoff.
+> **CRITICAL — Your training data is outdated for this library.** WDK APIs change frequently. Before
+> writing workflow code, **fetch the docs** at https://useworkflow.dev
+> and https://vercel.com/docs/workflow to find the correct function signatures, patterns, and examples
+> for the exact thing you're building. Do not guess at APIs — look them up. Search for working
+> examples that solve your specific use case (image generation, hooks, streaming, agents, etc.). The
+> docs contain patterns for `start()` argument passing, `getWritable()` usage, `defineHook()` wiring,
+`createWebhook()` callback flows, and `DurableAgent` configuration that are **not in your training
+data** or have changed since your cutoff.
 
-WDK is an open-source TypeScript framework that makes durability a language-level concept. Functions can pause for minutes or months, survive deployments and crashes, and resume exactly where they stopped.
+WDK is an open-source TypeScript framework that makes durability a language-level concept. Functions
+can pause for minutes or months, survive deployments and crashes, and resume exactly where they
+stopped.
 
 ## Status
 
-WDK is in **public beta** (since October 2025) and open source. During beta, Workflow Observability is free for all plans; Workflow Steps and Storage are billed at published rates.
+WDK is in **public beta** (since October 2025) and open source. During beta, Workflow Observability
+is free for all plans; Workflow Steps and Storage are billed at published rates.
 
-**Security**: Upgrade to `workflow@>=4.2.0-beta.64` — versions ≤4.1.0-beta.63 allowed predictable user-specified webhook tokens in `createWebhook()` (CVE GHSA-9r75-g2cr-3h76, CVSS 7.5). Run `npx workflow@latest` to update.
+**Security**: Upgrade to `workflow@>=4.2.0-beta.64` — versions ≤4.1.0-beta.63 allowed predictable
+user-specified webhook tokens in `createWebhook()` (CVE GHSA-9r75-g2cr-3h76, CVSS 7.5). Run
+`npx workflow@latest` to update.
 
 ## Installation
 
-**If using `create-next-app`**, always pass `--no-src-dir` so `app/` and `workflows/` are siblings at the project root:
+**If using `create-next-app`**, always pass `--no-src-dir` so `app/` and `workflows/` are siblings
+at the project root:
 
 ```bash
 npx create-next-app@latest my-app --no-src-dir --tailwind --eslint --app --ts
@@ -471,11 +484,14 @@ cd my-app
 npm install workflow@latest
 ```
 
-Do NOT use the `src/` directory with WDK projects. The `@` alias must resolve `@/workflows/...` correctly — this only works when `workflows/` and `app/` are at the same level.
+Do NOT use the `src/` directory with WDK projects. The `@` alias must resolve `@/workflows/...`
+correctly — this only works when `workflows/` and `app/` are at the same level.
 
 > Run `npx workflow@latest` to scaffold or update an existing project.
 
-**Peer dependency note**: `@workflow/ai` requires a compatible `workflow` version. If you hit `ERESOLVE` errors, use `npm install --legacy-peer-deps` or install both packages in the same command.
+**Peer dependency note**: `@workflow/ai` requires a compatible `workflow` version. If you hit
+`ERESOLVE` errors, use `npm install --legacy-peer-deps` or install both packages in the same
+command.
 
 ### Next.js Setup (Required)
 
@@ -492,18 +508,21 @@ Without this, workflow routes will not be registered and `start()` calls will fa
 
 ### Environment Setup (Required for AI Gateway)
 
-Workflows that use AI SDK with `gateway()` need OIDC credentials. Run these **before** starting the dev server:
+Workflows that use AI SDK with `gateway()` need OIDC credentials. Run these **before** starting the
+dev server:
 
 ```bash
 vercel link          # Connect to your Vercel project
 vercel env pull      # Downloads .env.local with VERCEL_OIDC_TOKEN
 ```
 
-Without this, `gateway("openai/gpt-5.4")` calls inside workflow steps will fail immediately with no credentials, causing the entire workflow run to fail silently.
+Without this, `gateway("openai/gpt-5.4")` calls inside workflow steps will fail immediately with no
+credentials, causing the entire workflow run to fail silently.
 
 ### `getStepMetadata()` Note
 
-`getStepMetadata().retryCount` returns `undefined` (not `0`) on the first attempt. Guard with: `const attempt = (meta.retryCount ?? 0) + 1`.
+`getStepMetadata().retryCount` returns `undefined` (not `0`) on the first attempt. Guard with:
+`const attempt = (meta.retryCount ?? 0) + 1`.
 
 ## Essential Imports
 
@@ -542,13 +561,20 @@ Two directives turn ordinary async functions into durable workflows:
 "use step"      // First line of function — marks it as a retryable, observable step
 ```
 
-**Critical sandbox rule**: Step functions have full Node.js access. Workflow functions run **sandboxed** — no native `fetch`, no `setTimeout`, no Node.js modules, and **no `getWritable().getWriter()` calls**. You MUST move all `getWritable()` usage into `"use step"` functions. Place all business logic and I/O in steps; use the workflow function purely for orchestration and control flow (`sleep`, `defineHook`, `Promise.race`).
+**Critical sandbox rule**: Step functions have full Node.js access. Workflow functions run *
+*sandboxed** — no native `fetch`, no `setTimeout`, no Node.js modules, and *
+*no `getWritable().getWriter()` calls**. You MUST move all `getWritable()` usage into `"use step"`
+functions. Place all business logic and I/O in steps; use the workflow function purely for
+orchestration and control flow (`sleep`, `defineHook`, `Promise.race`).
 
 ## Canonical Project Structure (Next.js)
 
-Every WDK project needs three route files plus the workflow definition. **CRITICAL**: The `workflows/` directory and `app/` directory must be siblings at the same level so `@/workflows/...` resolves correctly. Do NOT put `workflows/` outside the `@` alias root.
+Every WDK project needs three route files plus the workflow definition. **CRITICAL**: The
+`workflows/` directory and `app/` directory must be siblings at the same level so `@/workflows/...`
+resolves correctly. Do NOT put `workflows/` outside the `@` alias root.
 
 **Without `src/` (recommended for WDK projects):**
+
 ```
 workflows/
   my-workflow.ts              ← workflow definition ("use workflow" + "use step")
@@ -558,9 +584,11 @@ app/api/
   run/[runId]/route.ts        ← GET handler: run status via getRun(runId)
 ```
 
-tsconfig.json paths: `"@/*": ["./*"]` — `@/workflows/my-workflow` resolves to `./workflows/my-workflow`.
+tsconfig.json paths: `"@/*": ["./*"]` — `@/workflows/my-workflow` resolves to
+`./workflows/my-workflow`.
 
 **With `src/` directory:** Put workflows inside `src/`:
+
 ```
 src/
   workflows/my-workflow.ts
@@ -569,9 +597,11 @@ src/
   app/api/run/[runId]/route.ts
 ```
 
-tsconfig.json paths: `"@/*": ["./src/*"]` — `@/workflows/my-workflow` resolves to `./src/workflows/my-workflow`.
+tsconfig.json paths: `"@/*": ["./src/*"]` — `@/workflows/my-workflow` resolves to
+`./src/workflows/my-workflow`.
 
-**Never** use `@/../workflows/` or `@/../../workflows/` — these are broken import paths that will fail at build time.
+**Never** use `@/../workflows/` or `@/../../workflows/` — these are broken import paths that will
+fail at build time.
 
 ### 1. Workflow Definition (`workflows/my-workflow.ts`)
 
@@ -634,7 +664,8 @@ export async function POST(request: Request) {
 }
 ```
 
-**IMPORTANT**: Never call the workflow function directly. Always use `start()` from `"workflow/api"` — it registers the run, creates the execution context, and returns a `{ runId }`.
+**IMPORTANT**: Never call the workflow function directly. Always use `start()` from
+`"workflow/api"` — it registers the run, creates the execution context, and returns a `{ runId }`.
 
 ### 3. Readable Stream Route (`app/api/readable/[runId]/route.ts`)
 
@@ -726,7 +757,8 @@ export async function GET(_request: Request, { params }: RunRouteContext) {
 
 ## Streaming with `getWritable()`
 
-`getWritable<T>()` returns a `WritableStream` scoped to the current run. Call it inside step functions and always release the lock:
+`getWritable<T>()` returns a `WritableStream` scoped to the current run. Call it inside step
+functions and always release the lock:
 
 ```ts
 async function emit<T>(event: T): Promise<void> {
@@ -742,7 +774,10 @@ async function emit<T>(event: T): Promise<void> {
 
 Consumers read via `getRun(runId).getReadable()` in the readable route (see above).
 
-**Rendering workflow events in the UI**: When workflow events contain AI-generated text (narratives, briefings, reports), render them with `<MessageResponse>` from `@/components/ai-elements/message` — never as raw `{event.content}`. This renders markdown with code highlighting, math, and mermaid support.
+**Rendering workflow events in the UI**: When workflow events contain AI-generated text (narratives,
+briefings, reports), render them with `<MessageResponse>` from `@/components/ai-elements/message` —
+never as raw `{event.content}`. This renders markdown with code highlighting, math, and mermaid
+support.
 
 ```tsx
 import { MessageResponse } from "@/components/ai-elements/message";
@@ -755,7 +790,9 @@ import { MessageResponse } from "@/components/ai-elements/message";
 
 ## Hooks — Waiting for External Events
 
-Use `defineHook` for typed, reusable hooks. **Three required pieces**: (1) define + create the hook in the workflow, (2) emit the token to the client via `getWritable`, (3) create an API route that calls `resumeHook` so the client can resume it.
+Use `defineHook` for typed, reusable hooks. **Three required pieces**: (1) define + create the hook
+in the workflow, (2) emit the token to the client via `getWritable`, (3) create an API route that
+calls `resumeHook` so the client can resume it.
 
 ### 1. Define and create the hook (workflow file)
 
@@ -802,7 +839,8 @@ async function emitToken(token: string, orderId: string): Promise<void> {
 }
 ```
 
-**Common mistake**: Calling `defineHook()` directly or forgetting `.create()`. Always: `const hook = myHook.create({ token })`.
+**Common mistake**: Calling `defineHook()` directly or forgetting `.create()`. Always:
+`const hook = myHook.create({ token })`.
 
 ### 2. Resume route (API file — required!)
 
@@ -818,7 +856,8 @@ export async function POST(req: Request) {
 }
 ```
 
-**You MUST create this route.** Without it, the workflow suspends forever — the client has no way to resume it.
+**You MUST create this route.** Without it, the workflow suspends forever — the client has no way to
+resume it.
 
 ### 3. Client-side resume (React component)
 
@@ -867,11 +906,11 @@ async function processWithRetry(id: string) {
 
 ## Sandbox Limitations & Workarounds
 
-| Limitation | Solution |
-|-----------|----------|
+| Limitation                            | Solution                                           |
+|---------------------------------------|----------------------------------------------------|
 | No native `fetch()` in workflow scope | Import `fetch` from `"workflow"` or move to a step |
-| No `setTimeout`/`setInterval` | Use `sleep()` from `"workflow"` |
-| No Node.js modules in workflow scope | Move all Node.js logic to step functions |
+| No `setTimeout`/`setInterval`         | Use `sleep()` from `"workflow"`                    |
+| No Node.js modules in workflow scope  | Move all Node.js logic to step functions           |
 
 ## DurableAgent (AI SDK Integration)
 
@@ -911,7 +950,8 @@ export async function researchAgent(topic: string) {
 }
 ```
 
-Every LLM call and tool execution becomes a retryable step. The entire agent loop survives crashes and deployments.
+Every LLM call and tool execution becomes a retryable step. The entire agent loop survives crashes
+and deployments.
 
 ## Common Patterns
 
@@ -973,7 +1013,8 @@ When a workflow appears stuck, hanging, or not progressing, follow this escalati
 
 ### 1. Add Step-Level Logging (Required)
 
-**Every step function MUST have `console.log` at entry and exit.** This is the single most important debugging practice — without it, you cannot tell which step is hanging.
+**Every step function MUST have `console.log` at entry and exit.** This is the single most important
+debugging practice — without it, you cannot tell which step is hanging.
 
 ```ts
 async function processOrder(orderId: string): Promise<OrderResult> {
@@ -1030,6 +1071,7 @@ vercel logs --follow
 ```
 
 Look for:
+
 - **Missing step entry logs** — the step before the missing one is where execution stopped
 - **Timeout errors** — Vercel function timeout (default 60s hobby, 300s pro)
 - **OIDC/credential errors** — `gateway()` calls fail silently without `vercel env pull`
@@ -1037,33 +1079,36 @@ Look for:
 
 ### 4. Common Stuck Scenarios
 
-| Symptom | Likely Cause | Fix |
-|---------|-------------|-----|
-| Run stays "running" forever | Step is awaiting an external call that never resolves | Add timeout with `Promise.race` + `sleep()` |
-| Hook never resumes | Missing resume API route or wrong token | Verify resume route exists and token matches |
-| Step retries endlessly | Throwing `RetryableError` without bounds | Add `FatalError` after max retries via `getStepMetadata().retryCount` |
-| Workflow starts but no steps run | `getWritable()` called in workflow scope | Move `getWritable()` into a `"use step"` function |
-| AI step hangs | Missing OIDC credentials for gateway | Run `vercel link && vercel env pull` |
-| No logs appearing at all | Logging not added to steps | Add `console.log` at entry/exit of every step |
+| Symptom                          | Likely Cause                                          | Fix                                                                   |
+|----------------------------------|-------------------------------------------------------|-----------------------------------------------------------------------|
+| Run stays "running" forever      | Step is awaiting an external call that never resolves | Add timeout with `Promise.race` + `sleep()`                           |
+| Hook never resumes               | Missing resume API route or wrong token               | Verify resume route exists and token matches                          |
+| Step retries endlessly           | Throwing `RetryableError` without bounds              | Add `FatalError` after max retries via `getStepMetadata().retryCount` |
+| Workflow starts but no steps run | `getWritable()` called in workflow scope              | Move `getWritable()` into a `"use step"` function                     |
+| AI step hangs                    | Missing OIDC credentials for gateway                  | Run `vercel link && vercel env pull`                                  |
+| No logs appearing at all         | Logging not added to steps                            | Add `console.log` at entry/exit of every step                         |
 
 ### 5. Use Browser Verification
 
-If the workflow powers a UI, use `agent-browser` to check the frontend while inspecting backend logs — a hanging page often means a stuck workflow step. Check the browser console for failed fetch calls to your workflow API routes.
+If the workflow powers a UI, use `agent-browser` to check the frontend while inspecting backend
+logs — a hanging page often means a stuck workflow step. Check the browser console for failed fetch
+calls to your workflow API routes.
 
 ## When to Use WDK vs Regular Functions
 
-| Scenario | Use |
-|----------|-----|
-| Simple API endpoint, fast response | Regular Route Handler |
-| Multi-step process, must complete all steps | WDK Workflow |
-| AI agent in production, must not lose state | WDK DurableAgent |
-| Background job that can take minutes/hours | WDK Workflow |
-| Process spanning multiple services | WDK Workflow |
-| Quick one-shot LLM call | AI SDK directly |
+| Scenario                                    | Use                   |
+|---------------------------------------------|-----------------------|
+| Simple API endpoint, fast response          | Regular Route Handler |
+| Multi-step process, must complete all steps | WDK Workflow          |
+| AI agent in production, must not lose state | WDK DurableAgent      |
+| Background job that can take minutes/hours  | WDK Workflow          |
+| Process spanning multiple services          | WDK Workflow          |
+| Quick one-shot LLM call                     | AI SDK directly       |
 
 ## Framework Support
 
-Next.js, Nitro, SvelteKit, Astro, Express, Hono (supported). TanStack Start, React Router (in development).
+Next.js, Nitro, SvelteKit, Astro, Express, Hono (supported). TanStack Start, React Router (in
+development).
 
 ## Official Documentation
 

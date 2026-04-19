@@ -133,12 +133,12 @@ do {
 
 ### Type Selection
 
-| Type | Use Case | Performance |
-|------|----------|-------------|
-| `stream` | Large values (>1MB) | Fastest - no buffering |
-| `arrayBuffer` | Binary data | Fast - single allocation |
-| `text` | String values | Medium |
-| `json` | Objects (parse overhead) | Slowest - parsing cost |
+| Type          | Use Case                 | Performance              |
+|---------------|--------------------------|--------------------------|
+| `stream`      | Large values (>1MB)      | Fastest - no buffering   |
+| `arrayBuffer` | Binary data              | Fast - single allocation |
+| `text`        | String values            | Medium                   |
+| `json`        | Objects (parse overhead) | Slowest - parsing cost   |
 
 ### Parallel Reads
 

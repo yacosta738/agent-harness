@@ -4,37 +4,45 @@ Connect Cloudflare Workers to private networks and internal infrastructure using
 
 ## Overview
 
-Workers VPC connectivity enables outbound TCP connections from Workers to private resources in AWS, Azure, GCP, on-premises datacenters, or any private network. This is achieved through the **TCP Sockets API** (`cloudflare:sockets`), which provides low-level network access for custom protocols and services.
+Workers VPC connectivity enables outbound TCP connections from Workers to private resources in AWS,
+Azure, GCP, on-premises datacenters, or any private network. This is achieved through the **TCP
+Sockets API** (`cloudflare:sockets`), which provides low-level network access for custom protocols
+and services.
 
 **Key capabilities:**
+
 - Direct TCP connections to private IPs and hostnames
 - TLS/StartTLS support for encrypted connections
 - Integration with Cloudflare Tunnel for secure private network access
 - Full control over wire protocols (database protocols, SSH, MQTT, custom TCP)
 
-**Note:** This reference documents the TCP Sockets API. For the newer Workers VPC Services product (HTTP-only service bindings with built-in SSRF protection), refer to separate documentation when available. VPC Services is currently in beta (2025+).
+**Note:** This reference documents the TCP Sockets API. For the newer Workers VPC Services product (
+HTTP-only service bindings with built-in SSRF protection), refer to separate documentation when
+available. VPC Services is currently in beta (2025+).
 
 ## Quick Decision: Which Technology?
 
 Need private network connectivity from Workers?
 
-| Requirement | Use | Why |
-|------------|-----|-----|
-| HTTP/HTTPS APIs in private network | VPC Services (beta, separate docs) | SSRF-safe, declarative bindings |
-| PostgreSQL/MySQL databases | [Hyperdrive](../hyperdrive/) | Connection pooling, caching, optimized |
-| Custom TCP protocols (SSH, MQTT, proprietary) | **TCP Sockets (this doc)** | Full protocol control |
-| Simple HTTP with lowest latency | TCP Sockets + [Smart Placement](../smart-placement/) | Manual optimization |
-| Expose on-prem to internet (inbound) | [Cloudflare Tunnel](../tunnel/) | Not Worker-specific |
+| Requirement                                   | Use                                                  | Why                                    |
+|-----------------------------------------------|------------------------------------------------------|----------------------------------------|
+| HTTP/HTTPS APIs in private network            | VPC Services (beta, separate docs)                   | SSRF-safe, declarative bindings        |
+| PostgreSQL/MySQL databases                    | [Hyperdrive](../hyperdrive/)                         | Connection pooling, caching, optimized |
+| Custom TCP protocols (SSH, MQTT, proprietary) | **TCP Sockets (this doc)**                           | Full protocol control                  |
+| Simple HTTP with lowest latency               | TCP Sockets + [Smart Placement](../smart-placement/) | Manual optimization                    |
+| Expose on-prem to internet (inbound)          | [Cloudflare Tunnel](../tunnel/)                      | Not Worker-specific                    |
 
 ## When to Use TCP Sockets
 
 **Use TCP Sockets when you need:**
+
 - ✅ Direct control over wire protocols (e.g., Postgres wire protocol, SSH, Redis RESP)
 - ✅ Non-HTTP protocols (MQTT, SMTP, custom binary protocols)
 - ✅ StartTLS or custom TLS negotiation
 - ✅ Streaming binary data over TCP
 
 **Don't use TCP Sockets when:**
+
 - ❌ You just need HTTP/HTTPS (use `fetch()` or VPC Services)
 - ❌ You need PostgreSQL/MySQL (use Hyperdrive for pooling)
 - ❌ You need WebSocket (use native Workers WebSocket)
@@ -97,11 +105,11 @@ See [configuration.md](./configuration.md) for Tunnel setup details.
 
 ## Key Limits
 
-| Limit | Value |
-|-------|-------|
-| Max concurrent sockets per request | 6 |
-| Blocked destinations | Cloudflare IPs, localhost, port 25 |
-| Scope requirement | Must create in handler (not global) |
+| Limit                              | Value                               |
+|------------------------------------|-------------------------------------|
+| Max concurrent sockets per request | 6                                   |
+| Blocked destinations               | Cloudflare IPs, localhost, port 25  |
+| Scope requirement                  | Must create in handler (not global) |
 
 See [gotchas.md](./gotchas.md) for complete limits and troubleshooting.
 

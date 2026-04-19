@@ -44,6 +44,7 @@ console.log("user_id: 123 logged in successfully in 45ms");
 ### Configure Analytics Engine
 
 **Bind to Worker**:
+
 ```toml
 # wrangler.toml
 analytics_engine_datasets = [
@@ -52,6 +53,7 @@ analytics_engine_datasets = [
 ```
 
 **Write Data Points**:
+
 ```typescript
 export interface Env {
   ANALYTICS: AnalyticsEngineDataset;
@@ -76,6 +78,7 @@ export default {
 Tail Workers receive logs/traces from other Workers for filtering, transformation, or export.
 
 **Setup**:
+
 ```toml
 # wrangler.toml
 name = "log-processor"
@@ -86,6 +89,7 @@ service = "my-worker" # Worker to tail
 ```
 
 **Tail Worker Example**:
+
 ```typescript
 export default {
   async tail(events: TraceItem[], env: Env, ctx: ExecutionContext) {
@@ -109,9 +113,11 @@ export default {
 
 ### Configure Logpush
 
-Send logs to external storage (S3, R2, GCS, Azure, Datadog, etc.). Requires Business/Enterprise plan.
+Send logs to external storage (S3, R2, GCS, Azure, Datadog, etc.). Requires Business/Enterprise
+plan.
 
 **Via Dashboard**:
+
 1. Navigate to Analytics → Logs → Logpush
 2. Select destination type
 3. Provide credentials and bucket/endpoint
@@ -119,6 +125,7 @@ Send logs to external storage (S3, R2, GCS, Azure, Datadog, etc.). Requires Busi
 5. Configure filters and fields
 
 **Via API**:
+
 ```bash
 curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/logpush/jobs" \
   -H "Authorization: Bearer <API_TOKEN>" \
@@ -136,6 +143,7 @@ curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/logpush
 ### Environment-Specific Configuration
 
 **Development** (verbose logs, full sampling):
+
 ```jsonc
 // wrangler.dev.jsonc
 {
@@ -150,6 +158,7 @@ curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/logpush
 ```
 
 **Production** (reduced sampling, structured logs):
+
 ```jsonc
 // wrangler.prod.jsonc
 {
@@ -164,6 +173,7 @@ curl -X POST "https://api.cloudflare.com/client/v4/accounts/{account_id}/logpush
 ```
 
 Deploy with env-specific config:
+
 ```bash
 wrangler deploy --config wrangler.prod.jsonc --env production
 ```

@@ -104,17 +104,20 @@ export default {
 
 ## Common Patterns
 
-See [patterns.md](./patterns.md) for Workers examples: mobile app allowlisting, corporate proxy exemption, datacenter detection, conditional delay, and more.
+See [patterns.md](./patterns.md) for Workers examples: mobile app allowlisting, corporate proxy
+exemption, datacenter detection, conditional delay, and more.
 
 ## Bot Analytics
 
 ### Access Locations
+
 - Dashboard: Security > Bots (old) or Security > Analytics > Bot analysis (new)
 - GraphQL API for programmatic access
 - Security Events & Security Analytics
 - Logpush/Logpull
 
 ### Available Data
+
 - **Enterprise BM**: Bot scores (1-99), bot score source, distribution
 - **Pro/Business**: Bot groupings (automated, likely automated, likely human)
 - Top attributes: IPs, paths, user agents, countries
@@ -122,6 +125,7 @@ See [patterns.md](./patterns.md) for Workers examples: mobile app allowlisting, 
 - Verified bot categories
 
 ### Time Ranges
+
 - **Enterprise BM**: Up to 1 week at a time, 30 days history
 - **Pro/Business**: Up to 72 hours at a time, 30 days history
 - Real-time in most cases, adaptive sampling (1-10% depending on volume)
@@ -136,6 +140,7 @@ BotDetectionIDs       # Heuristic detection IDs
 ```
 
 **BotScoreSrc values:**
+
 - `"Heuristics"` - Known fingerprint
 - `"Machine Learning"` - ML model
 - `"Anomaly Detection"` - Baseline anomaly
@@ -143,13 +148,15 @@ BotDetectionIDs       # Heuristic detection IDs
 - `"Cloudflare Service"` - Zero Trust
 - `"Not Computed"` - Score = 0
 
-Access via Logpush (stream to cloud storage/SIEM), Logpull (API to fetch logs), or GraphQL API (query analytics data).
+Access via Logpush (stream to cloud storage/SIEM), Logpull (API to fetch logs), or GraphQL API (
+query analytics data).
 
 ## Testing with Miniflare
 
 Miniflare provides mock botManagement data for local development:
 
 **Default values:**
+
 - `score: 99` (human)
 - `verifiedBot: false`
 - `corporateProxy: false`
@@ -158,6 +165,7 @@ Miniflare provides mock botManagement data for local development:
 - `detectionIds: []`
 
 **Override in tests:**
+
 ```typescript
 import { getPlatformProxy } from 'wrangler';
 

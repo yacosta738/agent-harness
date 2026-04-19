@@ -5,6 +5,7 @@ Evaluation scenarios for testing the Spec to Implementation skill across differe
 ## Purpose
 
 These evaluations ensure the Spec to Implementation skill:
+
 - Finds and parses specification pages accurately
 - Breaks down specs into actionable implementation plans
 - Creates tasks that Codex can implement with clear acceptance criteria
@@ -14,10 +15,12 @@ These evaluations ensure the Spec to Implementation skill:
 ## Evaluation Files
 
 ### basic-spec-implementation.json
+
 Tests basic workflow of turning a spec into an implementation plan.
 
 **Scenario**: Implement user authentication feature from spec
 **Key Behaviors**:
+
 - Searches for and finds the authentication spec page
 - Fetches spec and extracts requirements
 - Parses requirements into phases (setup, core features, polish)
@@ -26,10 +29,12 @@ Tests basic workflow of turning a spec into an implementation plan.
 - Includes timeline and dependencies
 
 ### spec-to-tasks.json
+
 Tests creating concrete tasks from a specification in a task database.
 
 **Scenario**: Create tasks from API redesign spec
 **Key Behaviors**:
+
 - Finds spec page in Notion
 - Extracts specific requirements and acceptance criteria
 - Searches for or creates task database
@@ -55,6 +60,7 @@ Tests creating concrete tasks from a specification in a task database.
 Spec to Implementation evaluations should verify:
 
 ### Spec Discovery & Parsing
+
 - Searches Notion for specification pages
 - Fetches complete spec content
 - Extracts all requirements accurately
@@ -63,29 +69,32 @@ Spec to Implementation evaluations should verify:
 - Notes any ambiguities or missing details
 
 ### Implementation Planning
+
 - Creates implementation plan page
 - Breaks work into logical phases:
-  - Phase 1: Foundation/Setup
-  - Phase 2: Core Implementation
-  - Phase 3: Testing & Polish
+    - Phase 1: Foundation/Setup
+    - Phase 2: Core Implementation
+    - Phase 3: Testing & Polish
 - Includes timeline estimates
 - Identifies dependencies between phases
 - Links back to original spec
 
 ### Task Creation
+
 - Finds or identifies task database
 - Fetches database schema for property names
 - Creates tasks with correct properties
 - Each task has:
-  - Clear, specific title
-  - Context and description
-  - Acceptance criteria (checklist format)
-  - Appropriate priority and status
-  - Link to spec page
+    - Clear, specific title
+    - Context and description
+    - Acceptance criteria (checklist format)
+    - Appropriate priority and status
+    - Link to spec page
 - Tasks are right-sized (not too big, not too small)
 - Dependencies between tasks are noted
 
 ### Progress Tracking
+
 - Implementation plan includes progress markers
 - Tasks can be updated as work progresses
 - Status updates link to completed work
@@ -105,6 +114,7 @@ When adding Spec to Implementation evaluations:
 ## Example Success Criteria
 
 **Good** (specific, testable):
+
 - "Searches Notion for spec page using feature name"
 - "Creates implementation plan with 3 phases: Setup → Core → Polish"
 - "Creates 5-8 tasks in task database with properties: Task (title), Status, Priority, Sprint"
@@ -113,6 +123,7 @@ When adding Spec to Implementation evaluations:
 - "Task titles are specific and actionable (e.g., 'Create login API endpoint' not 'Authentication')"
 
 **Bad** (vague, untestable):
+
 - "Creates good implementation plan"
 - "Tasks are well-structured"
 - "Breaks down spec appropriately"

@@ -13,7 +13,8 @@
 └────────────────────────────────────────────────────────────────┘
 ```
 
-Cache Reserve is a **zone-level configuration**, not a per-request API. It works automatically when enabled for the zone:
+Cache Reserve is a **zone-level configuration**, not a per-request API. It works automatically when
+enabled for the zone:
 
 ### Standard Fetch (Recommended)
 
@@ -99,6 +100,7 @@ await fetch(
 ```
 
 **Purge behavior:**
+
 - **By URL**: Immediate removal from Cache Reserve + edge cache
 - **By tag/host/prefix**: Revalidation only, assets remain in storage (costs continue)
 

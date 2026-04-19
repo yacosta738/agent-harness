@@ -3,6 +3,7 @@
 ## Prerequisites
 
 **API Token**: Create at https://dash.cloudflare.com/profile/api-tokens
+
 - Permission: `Zone.WAF Edit` or `Zone.Firewall Services Edit`
 - Zone Resources: Include specific zones or all zones
 
@@ -87,6 +88,7 @@ resource "cloudflare_ruleset" "waf_custom" {
 ```
 
 **Managed Ruleset & Rate Limiting**:
+
 ```hcl
 resource "cloudflare_ruleset" "waf_managed" {
   zone_id = var.zone_id
@@ -175,9 +177,9 @@ const rateLimiting = new cloudflare.Ruleset('rate-limiting', {
 
 1. Navigate to: **Security** > **WAF**
 2. Select tab:
-   - **Managed rules** - Deploy/configure managed rulesets
-   - **Custom rules** - Create custom rules
-   - **Rate limiting rules** - Configure rate limits
+    - **Managed rules** - Deploy/configure managed rulesets
+    - **Custom rules** - Create custom rules
+    - **Rate limiting rules** - Configure rate limits
 3. Click **Deploy** or **Create rule**
 
 **Testing**: Use Security Events to test expressions before deploying.
@@ -185,6 +187,7 @@ const rateLimiting = new cloudflare.Ruleset('rate-limiting', {
 ## Wrangler Integration
 
 WAF configuration is zone-level (not Worker-specific). Configuration methods:
+
 - Dashboard UI
 - Cloudflare API via SDK
 - Terraform/Pulumi (IaC)
@@ -192,6 +195,7 @@ WAF configuration is zone-level (not Worker-specific). Configuration methods:
 **Workers benefit from WAF automatically** - no Worker code changes needed.
 
 **Example: Query WAF API from Worker**:
+
 ```typescript
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {

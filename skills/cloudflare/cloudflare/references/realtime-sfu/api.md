@@ -15,7 +15,9 @@ curl -X POST 'https://rtc.live/v1/apps/${CALLS_APP_ID}/sessions/new' \
 
 ## Client Libraries
 
-**PartyTracks (Recommended):** Observable-based client library for production use. Handles device changes, network switches, ICE restarts automatically. Push/pull API with React hooks. See patterns.md for full examples.
+**PartyTracks (Recommended):** Observable-based client library for production use. Handles device
+changes, network switches, ICE restarts automatically. Push/pull API with React hooks. See
+patterns.md for full examples.
 
 ```bash
 npm install partytracks @cloudflare/calls
@@ -26,12 +28,14 @@ npm install partytracks @cloudflare/calls
 ## Endpoints
 
 ### Create Session
+
 ```http
 POST /v1/apps/{appId}/sessions/new
 → {sessionId, sessionDescription}
 ```
 
 ### Add Track (Publish)
+
 ```http
 POST /v1/apps/{appId}/sessions/{sessionId}/tracks/new
 Body: {
@@ -42,6 +46,7 @@ Body: {
 ```
 
 ### Add Track (Subscribe)
+
 ```http
 POST /v1/apps/{appId}/sessions/{sessionId}/tracks/new
 Body: {
@@ -55,12 +60,14 @@ Body: {
 ```
 
 ### Renegotiate
+
 ```http
 PUT /v1/apps/{appId}/sessions/{sessionId}/renegotiate
 Body: {sessionDescription: {sdp, type: "answer"}}
 ```
 
 ### Close Tracks
+
 ```http
 PUT /v1/apps/{appId}/sessions/{sessionId}/tracks/close
 Body: {tracks: [{trackName}]}
@@ -68,6 +75,7 @@ Body: {tracks: [{trackName}]}
 ```
 
 ### Get Session
+
 ```http
 GET /v1/apps/{appId}/sessions/{sessionId}
 → {sessionId, tracks: TrackMetadata[]}

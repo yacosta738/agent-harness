@@ -20,7 +20,8 @@ env.ANALYTICS.writeDataPoint({
 });
 ```
 
-**Behaviors:** No await needed, no error thrown (check tail logs), auto-sampled at high volumes, auto-timestamped.
+**Behaviors:** No await needed, no error thrown (check tail logs), auto-sampled at high volumes,
+auto-timestamped.
 
 **Blob vs Index:** Blob for GROUP BY (<100k unique), Index for filter-only (millions unique).
 
@@ -101,12 +102,12 @@ FROM api_requests GROUP BY blob1
 
 ## Limits
 
-| Resource | Limit |
-|----------|-------|
+| Resource                | Limit   |
+|-------------------------|---------|
 | Blobs/Doubles per point | 20 each |
-| Indexes per point | 1 |
-| Blob/Index size | 16KB |
-| Data retention | 90 days |
-| Query timeout | 30s |
+| Indexes per point       | 1       |
+| Blob/Index size         | 16KB    |
+| Data retention          | 90 days |
+| Query timeout           | 30s     |
 
 **Critical:** High write volumes (>1M/min) trigger automatic sampling.

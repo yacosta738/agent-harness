@@ -20,7 +20,8 @@ interface Env {
 }
 ```
 
-**Generate types:** `npx wrangler types` (auto-creates worker-configuration.d.ts from wrangler.jsonc)
+**Generate types:** `npx wrangler types` (auto-creates worker-configuration.d.ts from
+wrangler.jsonc)
 
 ## PostgreSQL (node-postgres) - RECOMMENDED
 
@@ -57,7 +58,8 @@ const sql = postgres(env.HYPERDRIVE.connectionString, {
 const users = await sql`SELECT * FROM users WHERE active = ${true} LIMIT 10`;
 ```
 
-**⚠️ `prepare: true` is enabled by default and required for Hyperdrive caching.** Setting to `false` disables prepared statements + cache.
+**⚠️ `prepare: true` is enabled by default and required for Hyperdrive caching.** Setting to `false`
+disables prepared statements + cache.
 
 ## MySQL (mysql2)
 
@@ -77,17 +79,20 @@ const [results] = await conn.query("SELECT * FROM users WHERE active = ? LIMIT ?
 ctx.waitUntil(conn.end());
 ```
 
-**⚠️ MySQL support is less mature than PostgreSQL** - expect fewer optimizations and potential edge cases.
+**⚠️ MySQL support is less mature than PostgreSQL** - expect fewer optimizations and potential edge
+cases.
 
 ## Query Caching
 
 **Cacheable:**
+
 ```sql
 SELECT * FROM posts WHERE published = true;
 SELECT COUNT(*) FROM users;
 ```
 
 **NOT cacheable:**
+
 ```sql
 -- Writes
 INSERT/UPDATE/DELETE
@@ -100,11 +105,13 @@ SELECT UUID();     -- MySQL
 ```
 
 **Cache config:**
+
 - Default: `max_age=60s`, `swr=15s`
 - Max `max_age`: 3600s
 - Disable: `--caching-disabled=true`
 
 **Multiple configs pattern:**
+
 ```typescript
 // Reads: cached
 const sqlCached = postgres(env.HYPERDRIVE_CACHED.connectionString);
@@ -118,6 +125,7 @@ const orders = await sqlNoCache`SELECT * FROM orders WHERE created_at > NOW() - 
 ## ORMs
 
 **Drizzle:**
+
 ```typescript
 import { drizzle } from "drizzle-orm/postgres-js";  // drizzle-orm@^0.45.1
 import postgres from "postgres";
@@ -128,6 +136,7 @@ const users = await db.select().from(users).where(eq(users.active, true)).limit(
 ```
 
 **Kysely:**
+
 ```typescript
 import { Kysely, PostgresDialect } from "kysely";  // kysely@^0.27+
 import postgres from "postgres";

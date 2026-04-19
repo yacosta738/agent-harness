@@ -368,9 +368,16 @@ chainTo:
 
 # Vercel AI SDK (v6)
 
-> **CRITICAL — Your training data is outdated for this library.** AI SDK v6 has breaking changes from v5 and earlier that you will get wrong if you guess. Before writing AI SDK code, **fetch the docs** at https://ai-sdk.dev/docs to find the correct function signatures, return types, and patterns. Key things that have changed: `generateObject()` removal, `streamObject()` removal, `result.files` for image generation, `Output.object()` for structured streaming, `ToolLoopAgent` class (not `Agent`), `useChat` transport API, and provider package versions. Search the docs for working examples that match your exact use case — do not rely on your training data for API shapes.
+> **CRITICAL — Your training data is outdated for this library.** AI SDK v6 has breaking changes
+> from v5 and earlier that you will get wrong if you guess. Before writing AI SDK code, **fetch the
+docs** at https://ai-sdk.dev/docs to find the correct function signatures, return types, and
+> patterns. Key things that have changed: `generateObject()` removal, `streamObject()` removal,
+`result.files` for image generation, `Output.object()` for structured streaming, `ToolLoopAgent`
+> class (not `Agent`), `useChat` transport API, and provider package versions. Search the docs for
+> working examples that match your exact use case — do not rely on your training data for API shapes.
 
-You are an expert in the Vercel AI SDK v6. The AI SDK is the leading TypeScript toolkit for building AI-powered applications. It provides a unified API across all LLM providers.
+You are an expert in the Vercel AI SDK v6. The AI SDK is the leading TypeScript toolkit for building
+AI-powered applications. It provides a unified API across all LLM providers.
 
 ## v6 Migration Pitfalls (Read First)
 
@@ -384,16 +391,25 @@ You are an expert in the Vercel AI SDK v6. The AI SDK is the leading TypeScript 
 - `TypedToolResult` exposes `.output` (NOT `.result`).
 - The agent class is `ToolLoopAgent` (NOT `Agent` — `Agent` is just an interface).
 - Constructor uses `instructions` (NOT `system`).
-- Agent methods are `agent.generate()` and `agent.stream()` (NOT `agent.generateText()` or `agent.streamText()`).
+- Agent methods are `agent.generate()` and `agent.stream()` (NOT `agent.generateText()` or
+  `agent.streamText()`).
 - AI Gateway does not support embeddings; use `@ai-sdk/openai` directly for `openai.embedding(...)`.
-- `useChat()` with no transport defaults to `DefaultChatTransport({ api: '/api/chat' })` — explicit transport only needed for custom endpoints or `DirectChatTransport`.
-- Default `stopWhen` for ToolLoopAgent is `stepCountIs(20)`, not `stepCountIs(1)` — override if you need fewer steps.
-- `strict: true` on tools is opt-in per tool, not global — only set on tools with provider-compatible schemas.
-- For agent API routes, use `createAgentUIStreamResponse({ agent, uiMessages })` instead of manual `streamText` + `toUIMessageStreamResponse()`.
-- `@ai-sdk/azure` now uses the Responses API by default — use `azure.chat()` for the previous Chat Completions API behavior.
-- `@ai-sdk/azure` uses `azure` (not `openai`) as the key for `providerMetadata` and `providerOptions`.
-- `@ai-sdk/google-vertex` uses `vertex` (not `google`) as the key for `providerMetadata` and `providerOptions`.
-- `@ai-sdk/anthropic` supports native structured outputs via `structuredOutputMode` option (Claude Sonnet 4.5+).
+- `useChat()` with no transport defaults to `DefaultChatTransport({ api: '/api/chat' })` — explicit
+  transport only needed for custom endpoints or `DirectChatTransport`.
+- Default `stopWhen` for ToolLoopAgent is `stepCountIs(20)`, not `stepCountIs(1)` — override if you
+  need fewer steps.
+- `strict: true` on tools is opt-in per tool, not global — only set on tools with
+  provider-compatible schemas.
+- For agent API routes, use `createAgentUIStreamResponse({ agent, uiMessages })` instead of manual
+  `streamText` + `toUIMessageStreamResponse()`.
+- `@ai-sdk/azure` now uses the Responses API by default — use `azure.chat()` for the previous Chat
+  Completions API behavior.
+- `@ai-sdk/azure` uses `azure` (not `openai`) as the key for `providerMetadata` and
+  `providerOptions`.
+- `@ai-sdk/google-vertex` uses `vertex` (not `google`) as the key for `providerMetadata` and
+  `providerOptions`.
+- `@ai-sdk/anthropic` supports native structured outputs via `structuredOutputMode` option (Claude
+  Sonnet 4.5+).
 
 ## Installation
 
@@ -404,29 +420,35 @@ npm install @ai-sdk/anthropic@^3.0.58   # Optional: direct Anthropic provider ac
 npm install @ai-sdk/vercel@^2.0.37      # Optional: v0 model provider (v0-1.0-md)
 ```
 
-> **`@ai-sdk/react` is a separate package** — it is NOT included in the `ai` package. For v6 projects, install `@ai-sdk/react@^3.0.x` alongside `ai@^6.0.0`.
+> **`@ai-sdk/react` is a separate package** — it is NOT included in the `ai` package. For v6
+> projects, install `@ai-sdk/react@^3.0.x` alongside `ai@^6.0.0`.
 
 > **If you install `@ai-sdk/gateway` directly, use `@ai-sdk/gateway@^3.x`** (NOT `^1.x`).
 
-> **Only install a direct provider SDK** (e.g., `@ai-sdk/anthropic`) if you need provider-specific features not exposed through the gateway.
+> **Only install a direct provider SDK** (e.g., `@ai-sdk/anthropic`) if you need provider-specific
+> features not exposed through the gateway.
 
 ## What AI SDK Can Do
 
-AI SDK is not just text — it handles **text, images, structured data, tool calling, and agents** through one unified API:
+AI SDK is not just text — it handles **text, images, structured data, tool calling, and agents**
+through one unified API:
 
-| Need | How |
-|------|-----|
-| Text generation / chat | `generateText()` or `streamText()` with `model: "openai/gpt-5.4"` |
-| **Image generation** | `generateText()` with `model: "google/gemini-3.1-flash-image-preview"` — images in `result.files`. **Always use this model, never older gemini-2.x models** |
-| Structured JSON output | `generateText()` with `output: Output.object({ schema })` |
-| Tool calling / agents | `generateText()` with `tools: { ... }` or `ToolLoopAgent` |
-| Embeddings | `embed()` / `embedMany()` with `@ai-sdk/openai` |
+| Need                   | How                                                                                                                                                         |
+|------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Text generation / chat | `generateText()` or `streamText()` with `model: "openai/gpt-5.4"`                                                                                           |
+| **Image generation**   | `generateText()` with `model: "google/gemini-3.1-flash-image-preview"` — images in `result.files`. **Always use this model, never older gemini-2.x models** |
+| Structured JSON output | `generateText()` with `output: Output.object({ schema })`                                                                                                   |
+| Tool calling / agents  | `generateText()` with `tools: { ... }` or `ToolLoopAgent`                                                                                                   |
+| Embeddings             | `embed()` / `embedMany()` with `@ai-sdk/openai`                                                                                                             |
 
-**If the product needs generated images** (portraits, posters, cover art, illustrations, comics, diagrams), use `generateText` with an image model — do NOT use placeholder images or skip image generation.
+**If the product needs generated images** (portraits, posters, cover art, illustrations, comics,
+diagrams), use `generateText` with an image model — do NOT use placeholder images or skip image
+generation.
 
 ## Setup for AI Projects
 
-For the smoothest experience, link to a Vercel project so AI Gateway credentials are auto-provisioned via OIDC:
+For the smoothest experience, link to a Vercel project so AI Gateway credentials are
+auto-provisioned via OIDC:
 
 ```bash
 vercel link                    # Connect to your Vercel project
@@ -436,13 +458,18 @@ npm install ai@^6.0.0         # Gateway is built in
 npx ai-elements                # Required: install AI text rendering components
 ```
 
-This gives you AI Gateway access with OIDC authentication, cost tracking, failover, and observability — no manual API keys needed.
+This gives you AI Gateway access with OIDC authentication, cost tracking, failover, and
+observability — no manual API keys needed.
 
-**OIDC is the default auth**: `vercel env pull` provisions a `VERCEL_OIDC_TOKEN` (short-lived JWT, ~24h). The `@ai-sdk/gateway` reads it automatically via `@vercel/oidc`. On Vercel deployments, tokens auto-refresh. For local dev, re-run `vercel env pull` when the token expires. No `AI_GATEWAY_API_KEY` or provider-specific keys needed.
+**OIDC is the default auth**: `vercel env pull` provisions a `VERCEL_OIDC_TOKEN` (short-lived JWT, ~
+24h). The `@ai-sdk/gateway` reads it automatically via `@vercel/oidc`. On Vercel deployments, tokens
+auto-refresh. For local dev, re-run `vercel env pull` when the token expires. No
+`AI_GATEWAY_API_KEY` or provider-specific keys needed.
 
 ## Global Provider System (AI Gateway — Default)
 
-In AI SDK 6, pass a `"provider/model"` string to the `model` parameter — it automatically routes through the Vercel AI Gateway:
+In AI SDK 6, pass a `"provider/model"` string to the `model` parameter — it automatically routes
+through the Vercel AI Gateway:
 
 ```ts
 import { generateText } from "ai";
@@ -453,7 +480,9 @@ const { text } = await generateText({
 });
 ```
 
-No `gateway()` wrapper needed — plain `"provider/model"` strings are the simplest approach and are what the official Vercel docs recommend. The `gateway()` function is an optional explicit wrapper (useful when you need `providerOptions.gateway` for routing, failover, or tags):
+No `gateway()` wrapper needed — plain `"provider/model"` strings are the simplest approach and are
+what the official Vercel docs recommend. The `gateway()` function is an optional explicit wrapper (
+useful when you need `providerOptions.gateway` for routing, failover, or tags):
 
 ```ts
 import { gateway } from "ai";
@@ -467,11 +496,16 @@ const { text } = await generateText({
 
 Both approaches provide failover, cost tracking, and observability on Vercel.
 
-**Model slug rules**: Always use `provider/model` format. Version numbers use **dots**, not hyphens: `anthropic/claude-sonnet-4.6` (not `claude-sonnet-4-6`). Default to `openai/gpt-5.4` or `anthropic/claude-sonnet-4.6`. Never use outdated models like `gpt-4o`.
+**Model slug rules**: Always use `provider/model` format. Version numbers use **dots**, not hyphens:
+`anthropic/claude-sonnet-4.6` (not `claude-sonnet-4-6`). Default to `openai/gpt-5.4` or
+`anthropic/claude-sonnet-4.6`. Never use outdated models like `gpt-4o`.
 
-> AI Gateway does not support embeddings. Use a direct provider SDK such as `@ai-sdk/openai` for embeddings.
+> AI Gateway does not support embeddings. Use a direct provider SDK such as `@ai-sdk/openai` for
+> embeddings.
 
-> **Direct provider SDKs** (`@ai-sdk/openai`, `@ai-sdk/anthropic`, etc.) are only needed for provider-specific features not exposed through the gateway (e.g., Anthropic computer use, OpenAI fine-tuned model endpoints).
+> **Direct provider SDKs** (`@ai-sdk/openai`, `@ai-sdk/anthropic`, etc.) are only needed for
+> provider-specific features not exposed through the gateway (e.g., Anthropic computer use, OpenAI
+> fine-tuned model endpoints).
 
 ## Core Functions
 
@@ -499,7 +533,8 @@ for await (const chunk of result.textStream) {
 
 ### Structured Output
 
-**`generateObject` was removed in AI SDK v6.** Use `generateText` with `output: Output.object()` instead. Do NOT import `generateObject` — it does not exist.
+**`generateObject` was removed in AI SDK v6.** Use `generateText` with `output: Output.object()`
+instead. Do NOT import `generateObject` — it does not exist.
 
 ```ts
 import { generateText, Output } from "ai";
@@ -527,7 +562,9 @@ const { output } = await generateText({
 
 ### Tool Calling (MCP-Aligned)
 
-In AI SDK 6, tools use `inputSchema` (not `parameters`) and `output`/`outputSchema` (not `result`), aligned with the MCP specification. Per-tool `strict` mode ensures providers only generate valid tool calls matching your schema.
+In AI SDK 6, tools use `inputSchema` (not `parameters`) and `output`/`outputSchema` (not `result`),
+aligned with the MCP specification. Per-tool `strict` mode ensures providers only generate valid
+tool calls matching your schema.
 
 ```ts
 import { generateText, tool } from "ai";
@@ -631,7 +668,8 @@ MCP OAuth for remote servers is handled automatically by `@ai-sdk/mcp`.
 
 ### Tool Approval (Human-in-the-Loop)
 
-Set `needsApproval` on any tool to require user confirmation before execution. The tool pauses in `approval-requested` state until the client responds.
+Set `needsApproval` on any tool to require user confirmation before execution. The tool pauses in
+`approval-requested` state until the client responds.
 
 ```ts
 import { streamText, tool } from "ai";
@@ -694,7 +732,8 @@ function Chat() {
 }
 ```
 
-**Tool part states:** `input-streaming` → `input-available` → `approval-requested` (if `needsApproval`) → `output-available` | `output-error`
+**Tool part states:** `input-streaming` → `input-available` → `approval-requested` (if
+`needsApproval`) → `output-available` | `output-error`
 
 ### Embeddings & Reranking
 
@@ -726,9 +765,13 @@ const { results } = await rerank({
 
 ### Image Generation & Editing
 
-AI Gateway supports image generation. Use the **`google/gemini-3.1-flash-image-preview`** model — it is significantly better than older models like `gemini-2.0-flash-exp-image-generation` or `gemini-2.0-flash-001`.
+AI Gateway supports image generation. Use the **`google/gemini-3.1-flash-image-preview`** model — it
+is significantly better than older models like `gemini-2.0-flash-exp-image-generation` or
+`gemini-2.0-flash-001`.
 
-**Always use `google/gemini-3.1-flash-image-preview`** for image generation. Do NOT use older models (`gemini-2.0-*`, `gemini-2.5-*`) — they produce much worse results and some do not support image output at all.
+**Always use `google/gemini-3.1-flash-image-preview`** for image generation. Do NOT use older
+models (`gemini-2.0-*`, `gemini-2.5-*`) — they produce much worse results and some do not support
+image output at all.
 
 #### Multimodal LLMs (recommended — use `generateText`/`streamText`)
 
@@ -758,7 +801,8 @@ const finalResult = await stream;
 console.log(`Generated ${finalResult.files.length} image(s)`);
 ```
 
-**Default image model**: `google/gemini-3.1-flash-image-preview` — fast, high-quality. This is the ONLY recommended model for image generation.
+**Default image model**: `google/gemini-3.1-flash-image-preview` — fast, high-quality. This is the
+ONLY recommended model for image generation.
 
 #### Image-only models (use `experimental_generateImage`)
 
@@ -772,7 +816,8 @@ const { images } = await generateImage({
 });
 ```
 
-Other image-only models: `google/imagen-4.0-ultra-generate-001`, `bfl/flux-2-pro`, `bfl/flux-kontext-max`, `xai/grok-imagine-image-pro`.
+Other image-only models: `google/imagen-4.0-ultra-generate-001`, `bfl/flux-2-pro`,
+`bfl/flux-kontext-max`, `xai/grok-imagine-image-pro`.
 
 #### Saving generated images
 
@@ -794,26 +839,37 @@ for (const [i, image] of images.entries()) {
 
 ## UI Hooks (React)
 
-**MANDATORY — Always use AI Elements for AI text**: AI SDK models always produce markdown — even short prose contains `**bold**`, `##` headings, `` `code` ``, and `---`. There is no "plain text" mode. Every AI-generated string displayed in a browser MUST be rendered through AI Elements.
-- **Chat messages**: Use AI Elements `<Message message={message} />` — handles text, tool calls, code blocks, reasoning, streaming.
-- **Any other AI text** (streaming panels, workflow events, reports, briefings, narratives, summaries, perspectives): Use `<MessageResponse>{text}</MessageResponse>` from `@/components/ai-elements/message`.
-- `<MessageResponse>` wraps Streamdown with code highlighting, math, mermaid, and CJK plugins — works for any markdown string, including streamed text.
-- **Never** render AI output as raw `{text}`, `<p>{content}</p>`, or `<div>{stream}</div>` — this always produces ugly unformatted output with visible markdown syntax.
-- **No exceptions**: Even if you think the response will be "simple prose", models routinely add markdown formatting. Always use AI Elements.
+**MANDATORY — Always use AI Elements for AI text**: AI SDK models always produce markdown — even
+short prose contains `**bold**`, `##` headings, `` `code` ``, and `---`. There is no "plain text"
+mode. Every AI-generated string displayed in a browser MUST be rendered through AI Elements.
 
-⤳ skill: ai-elements — Full component library, decision guidance, and troubleshooting for AI interfaces
+- **Chat messages**: Use AI Elements `<Message message={message} />` — handles text, tool calls,
+  code blocks, reasoning, streaming.
+- **Any other AI text** (streaming panels, workflow events, reports, briefings, narratives,
+  summaries, perspectives): Use `<MessageResponse>{text}</MessageResponse>` from
+  `@/components/ai-elements/message`.
+- `<MessageResponse>` wraps Streamdown with code highlighting, math, mermaid, and CJK plugins —
+  works for any markdown string, including streamed text.
+- **Never** render AI output as raw `{text}`, `<p>{content}</p>`, or `<div>{stream}</div>` — this
+  always produces ugly unformatted output with visible markdown syntax.
+- **No exceptions**: Even if you think the response will be "simple prose", models routinely add
+  markdown formatting. Always use AI Elements.
+
+⤳ skill: ai-elements — Full component library, decision guidance, and troubleshooting for AI
+interfaces
 
 ### Transport Options
 
 `useChat` uses a transport-based architecture. Three built-in transports:
 
-| Transport | Use Case |
-|-----------|----------|
-| `DefaultChatTransport` | HTTP POST to API routes (default — sends to `/api/chat`) |
-| `DirectChatTransport` | In-process agent communication without HTTP (SSR, testing) |
-| `TextStreamChatTransport` | Plain text stream protocol |
+| Transport                 | Use Case                                                   |
+|---------------------------|------------------------------------------------------------|
+| `DefaultChatTransport`    | HTTP POST to API routes (default — sends to `/api/chat`)   |
+| `DirectChatTransport`     | In-process agent communication without HTTP (SSR, testing) |
+| `TextStreamChatTransport` | Plain text stream protocol                                 |
 
-**Default behavior:** `useChat()` with no transport config defaults to `DefaultChatTransport({ api: '/api/chat' })`.
+**Default behavior:** `useChat()` with no transport config defaults to
+`DefaultChatTransport({ api: '/api/chat' })`.
 
 ### With AI Elements (Recommended)
 
@@ -837,7 +893,8 @@ function Chat() {
 }
 ```
 
-AI Elements handles UIMessage parts (text, tool calls, reasoning, images) automatically. Install with `npx ai-elements`.
+AI Elements handles UIMessage parts (text, tool calls, reasoning, images) automatically. Install
+with `npx ai-elements`.
 
 ⤳ skill: ai-elements — Full component library for AI interfaces
 ⤳ skill: json-render — Manual rendering patterns for custom UIs
@@ -865,16 +922,23 @@ Useful for SSR scenarios, testing without network, and single-process apps.
 - `useChat({ api })` → `useChat({ transport: new DefaultChatTransport({ api }) })`
 - `handleSubmit` → `sendMessage({ text })`
 - `input` / `handleInputChange` → manage your own `useState`
-- `body` / `onResponse` options were removed from `useChat`; use `transport` to configure requests/responses
+- `body` / `onResponse` options were removed from `useChat`; use `transport` to configure
+  requests/responses
 - `isLoading` → `status === 'streaming' || status === 'submitted'`
 - `message.content` → iterate `message.parts` (UIMessage format)
 
 ### Choose the correct streaming response helper
 
-- `toUIMessageStreamResponse()` is for `useChat` + `DefaultChatTransport` UIMessage-based chat UIs. Use it when you need tool calls, metadata, reasoning, and other rich message parts.
-- `toTextStreamResponse()` is for **non-browser clients only** — CLI tools, server-to-server pipes, or programmatic consumers that process raw text without rendering it in a UI. If the text will be displayed in a browser, use `toUIMessageStreamResponse()` + AI Elements instead.
-- Warning: Do **not** return `toUIMessageStreamResponse()` to a plain `fetch()` client unless that client intentionally parses the AI SDK UI message stream protocol.
-- Warning: Do **not** use `toTextStreamResponse()` + manual `fetch()` stream reading as a way to skip AI Elements. If the output goes to a browser, use `useChat` + `<MessageResponse>` or `<Message>`.
+- `toUIMessageStreamResponse()` is for `useChat` + `DefaultChatTransport` UIMessage-based chat UIs.
+  Use it when you need tool calls, metadata, reasoning, and other rich message parts.
+- `toTextStreamResponse()` is for **non-browser clients only** — CLI tools, server-to-server pipes,
+  or programmatic consumers that process raw text without rendering it in a UI. If the text will be
+  displayed in a browser, use `toUIMessageStreamResponse()` + AI Elements instead.
+- Warning: Do **not** return `toUIMessageStreamResponse()` to a plain `fetch()` client unless that
+  client intentionally parses the AI SDK UI message stream protocol.
+- Warning: Do **not** use `toTextStreamResponse()` + manual `fetch()` stream reading as a way to
+  skip AI Elements. If the output goes to a browser, use `useChat` + `<MessageResponse>` or
+  `<Message>`.
 
 ### Server-side for useChat (API Route)
 
@@ -933,7 +997,9 @@ Or use `DirectChatTransport` on the client to skip the API route entirely.
 
 ### Server-side for text-only clients (non-browser only)
 
-> **This pattern is for CLI tools, server-to-server pipes, and programmatic consumers.** If the response will be displayed in a browser UI, use `toUIMessageStreamResponse()` + AI Elements instead — even for "simple" streaming text panels.
+> **This pattern is for CLI tools, server-to-server pipes, and programmatic consumers.** If the
+> response will be displayed in a browser UI, use `toUIMessageStreamResponse()` + AI Elements
+> instead — even for "simple" streaming text panels.
 
 ```ts
 // app/api/generate/route.ts — for CLI or server consumers, NOT browser UIs
@@ -1003,22 +1069,40 @@ npx @ai-sdk/devtools
 
 ## Key Patterns
 
-1. **Default to AI Gateway with OIDC** — pass `"provider/model"` strings (e.g., `model: "openai/gpt-5.4"`) to route through the gateway automatically. `vercel env pull` provisions OIDC tokens. No manual API keys needed. The `gateway()` wrapper is optional (only needed for `providerOptions.gateway`).
-2. **Set up a Vercel project for AI** — `vercel link` → enable AI Gateway at `https://vercel.com/{team}/{project}/settings` → **AI Gateway** → `vercel env pull` to get OIDC credentials. Never manually create `.env.local` with provider-specific API keys.
-3. **Always use AI Elements for any AI text in a browser** — `npx ai-elements` installs production-ready Message, Conversation, and Tool components. Use `<Message>` for chat and `<MessageResponse>` for any other AI-generated text (streaming panels, summaries, reports). AI models always produce markdown — there is no scenario where raw `{text}` rendering is correct. ⤳ skill: ai-elements
+1. **Default to AI Gateway with OIDC** — pass `"provider/model"` strings (e.g.,
+   `model: "openai/gpt-5.4"`) to route through the gateway automatically. `vercel env pull`
+   provisions OIDC tokens. No manual API keys needed. The `gateway()` wrapper is optional (only
+   needed for `providerOptions.gateway`).
+2. **Set up a Vercel project for AI** — `vercel link` → enable AI Gateway at
+   `https://vercel.com/{team}/{project}/settings` → **AI Gateway** → `vercel env pull` to get OIDC
+   credentials. Never manually create `.env.local` with provider-specific API keys.
+3. **Always use AI Elements for any AI text in a browser** — `npx ai-elements` installs
+   production-ready Message, Conversation, and Tool components. Use `<Message>` for chat and
+   `<MessageResponse>` for any other AI-generated text (streaming panels, summaries, reports). AI
+   models always produce markdown — there is no scenario where raw `{text}` rendering is correct. ⤳
+   skill: ai-elements
 4. **Always stream for user-facing AI** — use `streamText` + `useChat`, not `generateText`
-5. **UIMessage chat UIs** — `useChat()` defaults to `DefaultChatTransport({ api: '/api/chat' })`. On the server: `convertToModelMessages()` + `toUIMessageStreamResponse()`. For no-API-route setups: `DirectChatTransport` + Agent.
-6. **Text-only clients (non-browser)** — `toTextStreamResponse()` is only for CLI tools, server pipes, and programmatic consumers. If the text is displayed in a browser, use `toUIMessageStreamResponse()` + AI Elements
-7. **Use structured output** for extracting data — `generateText` with `Output.object()` and Zod schemas
-8. **Use `ToolLoopAgent`** for multi-step reasoning — not manual loops. Default `stopWhen` is `stepCountIs(20)`. Use `createAgentUIStreamResponse` for agent API routes.
+5. **UIMessage chat UIs** — `useChat()` defaults to `DefaultChatTransport({ api: '/api/chat' })`. On
+   the server: `convertToModelMessages()` + `toUIMessageStreamResponse()`. For no-API-route setups:
+   `DirectChatTransport` + Agent.
+6. **Text-only clients (non-browser)** — `toTextStreamResponse()` is only for CLI tools, server
+   pipes, and programmatic consumers. If the text is displayed in a browser, use
+   `toUIMessageStreamResponse()` + AI Elements
+7. **Use structured output** for extracting data — `generateText` with `Output.object()` and Zod
+   schemas
+8. **Use `ToolLoopAgent`** for multi-step reasoning — not manual loops. Default `stopWhen` is
+   `stepCountIs(20)`. Use `createAgentUIStreamResponse` for agent API routes.
 9. **Use DurableAgent** (from Workflow DevKit) for production agents that must survive crashes
 10. **Use `mcp-to-ai-sdk`** to generate static tool definitions from MCP servers for security
-11. **Use `needsApproval`** for human-in-the-loop — set on any tool to pause execution until user approves; supports conditional approval via async function
-12. **Use `strict: true`** per tool — opt-in strict mode ensures providers only generate schema-valid tool calls; set on individual tools, not globally
+11. **Use `needsApproval`** for human-in-the-loop — set on any tool to pause execution until user
+    approves; supports conditional approval via async function
+12. **Use `strict: true`** per tool — opt-in strict mode ensures providers only generate
+    schema-valid tool calls; set on individual tools, not globally
 
 ## Common Pitfall: Structured Output Property Name
 
-In v6, `generateText` with `Output.object()` returns the parsed result on the **`output`** property (NOT `object`):
+In v6, `generateText` with `Output.object()` returns the parsed result on the **`output`**
+property (NOT `object`):
 
 ```ts
 // CORRECT — v6
@@ -1033,11 +1117,13 @@ console.log(output) // ✅ parsed object
 const { object } = await generateText({ ... }) // ❌ undefined — `object` doesn't exist in v6
 ```
 
-This is one of the most common v5→v6 migration mistakes. The config key is `output` and the result key is also `output`.
+This is one of the most common v5→v6 migration mistakes. The config key is `output` and the result
+key is also `output`.
 
 ## Migration from AI SDK 5
 
-Run `npx @ai-sdk/codemod upgrade` (or `npx @ai-sdk/codemod v6`) to auto-migrate. Preview with `npx @ai-sdk/codemod --dry upgrade`. Key changes:
+Run `npx @ai-sdk/codemod upgrade` (or `npx @ai-sdk/codemod v6`) to auto-migrate. Preview with
+`npx @ai-sdk/codemod --dry upgrade`. Key changes:
 
 - `generateObject` / `streamObject` → `generateText` / `streamText` with `Output.object()`
 - `parameters` → `inputSchema`
@@ -1076,8 +1162,10 @@ Run `npx @ai-sdk/codemod upgrade` (or `npx @ai-sdk/codemod v6`) to auto-migrate.
 - New: `getToolName` → `getStaticToolName`; `getToolOrDynamicToolName` → `getToolName`
 - New: `@ai-sdk/azure` defaults to Responses API; use `azure.chat()` for Chat Completions
 - New: `@ai-sdk/anthropic` `structuredOutputMode` for native structured outputs (Claude Sonnet 4.5+)
-- New: `@ai-sdk/langchain` rewritten — `toBaseMessages()`, `toUIMessageStream()`, `LangSmithDeploymentTransport`
-- New: Provider-specific tools — Anthropic (memory, code execution), OpenAI (shell, patch), Google (maps, RAG), xAI (search, code)
+- New: `@ai-sdk/langchain` rewritten — `toBaseMessages()`, `toUIMessageStream()`,
+  `LangSmithDeploymentTransport`
+- New: Provider-specific tools — Anthropic (memory, code execution), OpenAI (shell, patch), Google (
+  maps, RAG), xAI (search, code)
 - `unknown` finish reason removed → now returned as `other`
 - Warning types consolidated into single `Warning` type exported from `ai`
 

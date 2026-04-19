@@ -5,6 +5,7 @@ Expert guidance for Cloudflare R2 Data Catalog - Apache Iceberg catalog built in
 ## Reading Order
 
 **New to R2 Data Catalog?** Start here:
+
 1. Read "What is R2 Data Catalog?" and "When to Use" below
 2. [configuration.md](configuration.md) - Enable catalog, create tokens
 3. [patterns.md](patterns.md) - PyIceberg setup and common patterns
@@ -12,13 +13,15 @@ Expert guidance for Cloudflare R2 Data Catalog - Apache Iceberg catalog built in
 5. [gotchas.md](gotchas.md) - Troubleshooting when issues arise
 
 **Quick reference?** Jump to:
+
 - [Enable catalog on bucket](configuration.md#enable-catalog-on-bucket)
 - [PyIceberg connection pattern](patterns.md#pyiceberg-connection-pattern)
 - [Permission errors](gotchas.md#permission-errors)
 
 ## What is R2 Data Catalog?
 
-R2 Data Catalog is a **managed Apache Iceberg REST catalog** built directly into R2 buckets. It provides:
+R2 Data Catalog is a **managed Apache Iceberg REST catalog** built directly into R2 buckets. It
+provides:
 
 - **Apache Iceberg tables** - ACID transactions, schema evolution, time-travel queries
 - **Zero-egress costs** - Query from any cloud/region without data transfer fees
@@ -29,6 +32,7 @@ R2 Data Catalog is a **managed Apache Iceberg REST catalog** built directly into
 ### What is Apache Iceberg?
 
 Open table format for analytics datasets in object storage. Features:
+
 - **ACID transactions** - Safe concurrent reads/writes
 - **Metadata optimization** - Fast queries without full scans
 - **Schema evolution** - Add/rename/delete columns without rewrites
@@ -38,6 +42,7 @@ Open table format for analytics datasets in object storage. Features:
 ## When to Use
 
 **Use R2 Data Catalog for:**
+
 - **Log analytics** - Store and query application/system logs
 - **Data lakes/warehouses** - Analytical datasets queried by multiple engines
 - **BI pipelines** - Aggregate data for dashboards and reports
@@ -45,6 +50,7 @@ Open table format for analytics datasets in object storage. Features:
 - **Time-series data** - Event streams, metrics, sensor data
 
 **Don't use for:**
+
 - **Transactional workloads** - Use D1 or external database instead
 - **Sub-second latency** - Iceberg optimized for batch/analytical queries
 - **Small datasets (<1GB)** - Setup overhead not worth it
@@ -78,7 +84,9 @@ Open table format for analytics datasets in object storage. Features:
 ```
 
 **Key concepts:**
-- **Catalog URI** - REST endpoint for catalog operations (e.g., `https://<account-id>.r2.cloudflarestorage.com/iceberg/<bucket>`)
+
+- **Catalog URI** - REST endpoint for catalog operations (e.g.,
+  `https://<account-id>.r2.cloudflarestorage.com/iceberg/<bucket>`)
 - **Warehouse** - Logical grouping of tables (typically same as bucket name)
 - **Namespace** - Schema/database containing tables (e.g., `logs`, `analytics`)
 - **Table** - Iceberg table with schema, data files, snapshots
@@ -86,20 +94,21 @@ Open table format for analytics datasets in object storage. Features:
 
 ## Limits
 
-| Resource | Limit | Notes |
-|----------|-------|-------|
-| Namespaces per catalog | No hard limit | Organize tables logically |
-| Tables per namespace | <10,000 recommended | Performance degrades beyond this |
-| Files per table | <100,000 recommended | Run compaction regularly |
-| Snapshots per table | Configurable retention | Expire >7 days old |
-| Partitions per table | 100-1,000 optimal | Too many = slow metadata ops |
-| Table size | Same as R2 bucket | 10GB-10TB+ common |
-| API rate limits | Standard R2 API limits | Shared with R2 storage operations |
-| Target file size | 128-512 MB | After compaction |
+| Resource               | Limit                  | Notes                             |
+|------------------------|------------------------|-----------------------------------|
+| Namespaces per catalog | No hard limit          | Organize tables logically         |
+| Tables per namespace   | <10,000 recommended    | Performance degrades beyond this  |
+| Files per table        | <100,000 recommended   | Run compaction regularly          |
+| Snapshots per table    | Configurable retention | Expire >7 days old                |
+| Partitions per table   | 100-1,000 optimal      | Too many = slow metadata ops      |
+| Table size             | Same as R2 bucket      | 10GB-10TB+ common                 |
+| API rate limits        | Standard R2 API limits | Shared with R2 storage operations |
+| Target file size       | 128-512 MB             | After compaction                  |
 
 ## Current Status
 
 **Public Beta** (as of Jan 2026)
+
 - Available to all R2 subscribers
 - No extra cost beyond standard R2 storage/operations
 - Production-ready, but breaking changes possible
@@ -128,6 +137,7 @@ Start → Need analytics on object storage data?
 ```
 
 **Quick check:** If you answer "yes" to all:
+
 - Dataset >1GB and growing
 - Structured/tabular data (logs, events, metrics)
 - Multiple query tools or cloud environments

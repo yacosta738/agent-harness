@@ -1,6 +1,7 @@
 # Cloudflare Workflows
 
-Durable multi-step applications with automatic retries, state persistence, and long-running execution.
+Durable multi-step applications with automatic retries, state persistence, and long-running
+execution.
 
 ## What It Does
 
@@ -58,12 +59,14 @@ export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
 **Troubleshooting:** gotchas.md
 
 ## In This Reference
+
 - [configuration.md](./configuration.md) - wrangler.jsonc setup, step config, bindings
 - [api.md](./api.md) - Step APIs, instance management, sleep/parameters
 - [patterns.md](./patterns.md) - Common workflows, testing, orchestration
 - [gotchas.md](./gotchas.md) - Timeouts, limits, debugging strategies
 
 ## See Also
+
 - [durable-objects](../durable-objects/) - Alternative stateful approach
 - [queues](../queues/) - Message-driven workflows
 - [workers](../workers/) - Entry point for workflow instances

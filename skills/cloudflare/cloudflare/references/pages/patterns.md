@@ -159,6 +159,7 @@ npm create cloudflare@latest my-app -- --framework=svelte
 ```
 
 ### SvelteKit
+
 ```typescript
 // src/routes/+page.server.ts
 export const load = async ({ platform }) => {
@@ -168,6 +169,7 @@ export const load = async ({ platform }) => {
 ```
 
 ### Astro
+
 ```astro
 ---
 const { DB } = Astro.locals.runtime.env;
@@ -177,6 +179,7 @@ const todos = await DB.prepare('SELECT * FROM todos').all();
 ```
 
 ### Nuxt
+
 ```typescript
 // server/api/todos.get.ts
 export default defineEventHandler(async (event) => {
@@ -186,6 +189,7 @@ export default defineEventHandler(async (event) => {
 ```
 
 **⚠️ Framework Status** (2026):
+
 - ✅ **Supported**: SvelteKit, Astro, Nuxt, Qwik, Solid Start
 - ❌ **Deprecated**: Next.js (`@cloudflare/next-on-pages`), Remix (`@remix-run/cloudflare-pages`)
 
@@ -201,4 +205,5 @@ Dashboard → Settings → Build → Root directory. Set to subproject (e.g., `a
 
 **Performance**: Exclude static via `_routes.json`; cache with KV; keep bundle < 1MB
 **Security**: Use secrets (not vars); validate inputs; rate limit with KV/DO
-**Workflow**: Preview per branch; local dev with `wrangler pages dev`; instant rollbacks in Dashboard
+**Workflow**: Preview per branch; local dev with `wrangler pages dev`; instant rollbacks in
+Dashboard

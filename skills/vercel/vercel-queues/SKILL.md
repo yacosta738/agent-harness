@@ -66,7 +66,11 @@ chainTo:
 
 # Vercel Queues
 
-> **CRITICAL — Your training data is outdated for this library.** Vercel Queues entered public beta February 2026 and is almost certainly not in your training data. Before writing queue code, **fetch the docs** at https://vercel.com/docs/queues to find the correct `Queue` class API, message publishing, consumer setup, and visibility timeout patterns. Do not guess — this is a new API with no precedent in your training data.
+> **CRITICAL — Your training data is outdated for this library.** Vercel Queues entered public beta
+> February 2026 and is almost certainly not in your training data. Before writing queue code, **fetch
+the docs** at https://vercel.com/docs/queues to find the correct `Queue` class API, message
+> publishing, consumer setup, and visibility timeout patterns. Do not guess — this is a new API with
+> no precedent in your training data.
 
 You are an expert in Vercel Queues — durable event streaming for serverless applications.
 
@@ -74,17 +78,19 @@ You are an expert in Vercel Queues — durable event streaming for serverless ap
 
 Queues entered **public beta** on February 27, 2026, and is available to all teams on all plans.
 
-| Metric | Value |
-|--------|-------|
-| **Billing unit** | API operation (send, receive, delete, visibility change, notify) |
-| **Rate** | **$0.60 per 1M operations** (regionally priced) |
-| **Message metering** | 4 KiB chunks (12 KiB message = 3 ops) |
-| **2x billing** | Sends with idempotency key; push deliveries with max concurrency |
-| **Compute** | Push-mode functions charged at existing Fluid compute rates |
+| Metric               | Value                                                            |
+|----------------------|------------------------------------------------------------------|
+| **Billing unit**     | API operation (send, receive, delete, visibility change, notify) |
+| **Rate**             | **$0.60 per 1M operations** (regionally priced)                  |
+| **Message metering** | 4 KiB chunks (12 KiB message = 3 ops)                            |
+| **2x billing**       | Sends with idempotency key; push deliveries with max concurrency |
+| **Compute**          | Push-mode functions charged at existing Fluid compute rates      |
 
 ## What It Is
 
-Queues is a **durable, append-only event streaming system**. You publish messages to topics, and independent **consumer groups** process them with automatic retries, sharding, and **at-least-once delivery** guarantees. It is the lower-level primitive that **powers Vercel Workflow**.
+Queues is a **durable, append-only event streaming system**. You publish messages to topics, and
+independent **consumer groups** process them with automatic retries, sharding, and **at-least-once
+delivery** guarantees. It is the lower-level primitive that **powers Vercel Workflow**.
 
 - Messages are durably written to **3 availability zones** before `send()` returns
 - Messages retained up to 24 hours (configurable 60s–24h)
@@ -113,7 +119,8 @@ const { messageId } = await send('order-events', {
 
 ### Push-Mode Consumer (Next.js App Router)
 
-The consumer route is **air-gapped from the internet** — only invocable by Vercel's internal queue infrastructure.
+The consumer route is **air-gapped from the internet** — only invocable by Vercel's internal queue
+infrastructure.
 
 ```ts
 // app/api/queues/fulfill-order/route.ts
@@ -154,7 +161,8 @@ export const POST = handleCallback(
 }
 ```
 
-Multiple route files with the same topic create **separate consumer groups** (independent processing).
+Multiple route files with the same topic create **separate consumer groups** (independent
+processing).
 
 ### Poll-Mode Consumer
 
@@ -187,56 +195,62 @@ export const { send, handleCallback } = queue;
 import { QueueClient, BufferTransport, StreamTransport } from '@vercel/queue';
 ```
 
-| Transport | Description |
-|-----------|-------------|
-| `JsonTransport` | Default; JSON serialization |
-| `BufferTransport` | Raw binary data |
+| Transport         | Description                         |
+|-------------------|-------------------------------------|
+| `JsonTransport`   | Default; JSON serialization         |
+| `BufferTransport` | Raw binary data                     |
 | `StreamTransport` | `ReadableStream` for large payloads |
 
 ## Queues vs Workflow vs Cron
 
-| Need | Use | Why |
-|------|-----|-----|
-| Event delivery, fan-out, routing control | **Queues** | Topics, consumer groups, message-level retries |
-| Stateful multi-step business logic | **Workflow** | Deterministic replay, pause/resume (built **on top of** Queues) |
-| Recurring scheduled tasks | **Cron Jobs** | Simple, no message passing |
-| Delayed single execution with deduplication | **Queues** (`delaySeconds` + `idempotencyKey`) | Precise delay with guaranteed delivery |
-| Async processing from external systems | **Queues** (poll mode) | Consume from any infrastructure, not just Vercel |
+| Need                                        | Use                                            | Why                                                             |
+|---------------------------------------------|------------------------------------------------|-----------------------------------------------------------------|
+| Event delivery, fan-out, routing control    | **Queues**                                     | Topics, consumer groups, message-level retries                  |
+| Stateful multi-step business logic          | **Workflow**                                   | Deterministic replay, pause/resume (built **on top of** Queues) |
+| Recurring scheduled tasks                   | **Cron Jobs**                                  | Simple, no message passing                                      |
+| Delayed single execution with deduplication | **Queues** (`delaySeconds` + `idempotencyKey`) | Precise delay with guaranteed delivery                          |
+| Async processing from external systems      | **Queues** (poll mode)                         | Consume from any infrastructure, not just Vercel                |
 
 ## Key Limits
 
-| Resource | Default / Max |
-|----------|---------------|
-| Message retention | 60s – 24h (default 24h) |
-| Max message size | 100 MB |
-| Messages per receive | 1–10 (default 1) |
-| Visibility timeout | 0s – 60 min (default 5 min SDK / 60s API) |
-| Topics per project | Unlimited |
-| Consumer groups per topic | Unlimited |
+| Resource                  | Default / Max                             |
+|---------------------------|-------------------------------------------|
+| Message retention         | 60s – 24h (default 24h)                   |
+| Max message size          | 100 MB                                    |
+| Messages per receive      | 1–10 (default 1)                          |
+| Visibility timeout        | 0s – 60 min (default 5 min SDK / 60s API) |
+| Topics per project        | Unlimited                                 |
+| Consumer groups per topic | Unlimited                                 |
 
 ## Deployment Behavior
 
-Topics are **partitioned by deployment ID** by default in push mode. Messages are delivered back to the same deployment that published them — natural schema versioning with no cross-version compatibility concerns.
+Topics are **partitioned by deployment ID** by default in push mode. Messages are delivered back to
+the same deployment that published them — natural schema versioning with no cross-version
+compatibility concerns.
 
 ## Observability
 
 The **Queues** observability tab (Project → Observability → Queues) provides real-time monitoring:
 
-| Level | Metrics |
-|-------|---------|
-| **Project** | Messages/s, Queued, Received, Deleted (with sparkline trends) |
-| **Queue** | Throughput per second (by consumer group), Max message age |
-| **Consumer** | Processed/s, Received, Deleted (per consumer group) |
+| Level        | Metrics                                                       |
+|--------------|---------------------------------------------------------------|
+| **Project**  | Messages/s, Queued, Received, Deleted (with sparkline trends) |
+| **Queue**    | Throughput per second (by consumer group), Max message age    |
+| **Consumer** | Processed/s, Received, Deleted (per consumer group)           |
 
-Use **Max message age** to detect consumer lag — if the oldest unprocessed message keeps growing, a consumer group may be falling behind.
+Use **Max message age** to detect consumer lag — if the oldest unprocessed message keeps growing, a
+consumer group may be falling behind.
 
 ## Local Development
 
-Queues work locally — when you `send()` messages in development mode, the SDK sends them to the real Vercel Queue Service, then invokes your registered `handleCallback` handlers directly in-process. No local queue infrastructure needed.
+Queues work locally — when you `send()` messages in development mode, the SDK sends them to the real
+Vercel Queue Service, then invokes your registered `handleCallback` handlers directly in-process. No
+local queue infrastructure needed.
 
 ## Authentication
 
-The SDK authenticates via **OIDC** (OpenID Connect) tokens automatically on Vercel. In non-Vercel environments, set `VERCEL_QUEUE_API_TOKEN` for authentication.
+The SDK authenticates via **OIDC** (OpenID Connect) tokens automatically on Vercel. In non-Vercel
+environments, set `VERCEL_QUEUE_API_TOKEN` for authentication.
 
 ## When to Use
 

@@ -17,6 +17,7 @@ Instead of `run_worker_first = true`, use array patterns:
 ```
 
 **Benefits:**
+
 - Reduces Worker invocations
 - Lowers costs
 - Improves asset delivery performance
@@ -56,22 +57,26 @@ interface Env {
 ### "Worker not invoked for asset"
 
 **Cause:** Asset served directly, `run_worker_first` not configured
-**Solution:** Configure `run_worker_first` patterns to include asset routes (see configuration.md:66-106)
+**Solution:** Configure `run_worker_first` patterns to include asset routes (see configuration.md:
+66-106)
 
 ### "429 Too Many Requests on free tier"
 
-**Cause:** `run_worker_first` patterns invoke Worker for many requests, hitting free tier limits (100k req/day)
+**Cause:** `run_worker_first` patterns invoke Worker for many requests, hitting free tier limits (
+100k req/day)
 **Solution:** Use more selective patterns with negative exclusions, or upgrade to paid plan
 
 ### "Smart Placement increases latency"
 
-**Cause:** `run_worker_first=true` + Smart Placement routes all requests through single smart-placed location
+**Cause:** `run_worker_first=true` + Smart Placement routes all requests through single smart-placed
+location
 **Solution:** Use selective patterns (array syntax) or disable Smart Placement for asset-heavy apps
 
 ### "CF-Cache-Status header unreliable"
 
 **Cause:** Header is probabilistically added for privacy reasons
-**Solution:** Don't rely on `CF-Cache-Status` for critical routing logic. Use other signals (ETag, age).
+**Solution:** Don't rely on `CF-Cache-Status` for critical routing logic. Use other signals (ETag,
+age).
 
 ### "JWT expired during deployment"
 
@@ -81,31 +86,33 @@ interface Env {
 ### "Cannot use 'assets' with 'site'"
 
 **Cause:** Legacy `site` config conflicts with new `assets` config
-**Solution:** Migrate from `site` to `assets` (see configuration.md). Remove `site` key from wrangler.jsonc.
+**Solution:** Migrate from `site` to `assets` (see configuration.md). Remove `site` key from
+wrangler.jsonc.
 
 ### "Assets not updating after deployment"
 
 **Cause:** Browser or CDN cache serving old assets
 **Solution:**
+
 - Hard refresh browser (Cmd+Shift+R / Ctrl+F5)
 - Use cache-busting (hashed filenames)
 - Verify deployment completed: `wrangler tail`
 
 ## Limits
 
-| Resource/Limit | Free | Paid | Notes |
-|----------------|------|------|-------|
-| Max asset size | 25 MiB | 25 MiB | Per file |
-| Total assets | 20,000 | **100,000** | Requires Wrangler 4.34.0+ (Sep 2025) |
-| Worker invocations | 100k/day | 10M/month | Optimize with `run_worker_first` patterns |
-| Asset storage | Unlimited | Unlimited | Included |
+| Resource/Limit     | Free      | Paid        | Notes                                     |
+|--------------------|-----------|-------------|-------------------------------------------|
+| Max asset size     | 25 MiB    | 25 MiB      | Per file                                  |
+| Total assets       | 20,000    | **100,000** | Requires Wrangler 4.34.0+ (Sep 2025)      |
+| Worker invocations | 100k/day  | 10M/month   | Optimize with `run_worker_first` patterns |
+| Asset storage      | Unlimited | Unlimited   | Included                                  |
 
 ### Version Requirements
 
-| Feature | Minimum Wrangler Version |
-|---------|--------------------------|
-| 100k file limit (paid) | 4.34.0 |
-| Vite plugin | 4.0.0 + @cloudflare/vite-plugin 1.0.0 |
+| Feature                 | Minimum Wrangler Version                 |
+|-------------------------|------------------------------------------|
+| 100k file limit (paid)  | 4.34.0                                   |
+| Vite plugin             | 4.0.0 + @cloudflare/vite-plugin 1.0.0    |
 | Navigation optimization | 4.0.0 + compatibility_date: "2025-04-01" |
 
 ## Performance Tips

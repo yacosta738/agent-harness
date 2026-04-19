@@ -4,16 +4,16 @@
 
 ## Schema
 
-| Property | Type | Options | Purpose |
-|----------|------|---------|---------|
-| **Decision** | title | - | What was decided |
-| **Date** | date | - | When decision was made |
-| **Status** | select | Proposed, Accepted, Superseded, Deprecated | Current decision status |
-| **Domain** | select | Architecture, Product, Business, Design, Operations | Decision category |
-| **Impact** | select | High, Medium, Low | Expected impact level |
-| **Deciders** | people | - | Who made the decision |
-| **Stakeholders** | people | - | Who's affected by decision |
-| **Related Decisions** | relation | Links to other decisions | Context and dependencies |
+| Property              | Type     | Options                                             | Purpose                    |
+|-----------------------|----------|-----------------------------------------------------|----------------------------|
+| **Decision**          | title    | -                                                   | What was decided           |
+| **Date**              | date     | -                                                   | When decision was made     |
+| **Status**            | select   | Proposed, Accepted, Superseded, Deprecated          | Current decision status    |
+| **Domain**            | select   | Architecture, Product, Business, Design, Operations | Decision category          |
+| **Impact**            | select   | High, Medium, Low                                   | Expected impact level      |
+| **Deciders**          | people   | -                                                   | Who made the decision      |
+| **Stakeholders**      | people   | -                                                   | Who's affected by decision |
+| **Related Decisions** | relation | Links to other decisions                            | Context and dependencies   |
 
 ## Usage
 
@@ -33,6 +33,7 @@ Create decision records with properties:
 ## Content Template
 
 Each decision page should include:
+
 - **Context**: Why this decision was needed
 - **Decision**: What was decided
 - **Rationale**: Why this option was chosen

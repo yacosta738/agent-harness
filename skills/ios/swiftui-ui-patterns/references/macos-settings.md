@@ -7,7 +7,8 @@ Use this when building a macOS Settings window backed by SwiftUI's `Settings` sc
 ## Core patterns
 
 - Declare the Settings scene in the `App` and compile it only for macOS.
-- Keep settings content in a dedicated root view (`SettingsView`) and drive values with `@AppStorage`.
+- Keep settings content in a dedicated root view (`SettingsView`) and drive values with
+  `@AppStorage`.
 - Use `TabView` to group settings sections when you have more than one category.
 - Use `Form` inside each tab to keep controls aligned and accessible.
 - Use `OpenSettingsAction` or `SettingsLink` for in-app entry points to the Settings window.
@@ -63,7 +64,8 @@ struct SettingsView: View {
 
 - Avoid wrapping `SettingsView` in a `NavigationStack` unless you truly need deep push navigation.
 - Prefer tabs or sections; Settings is already presented as a separate window and should feel flat.
-- If you must show hierarchical settings, use a single `NavigationSplitView` with a sidebar list of categories.
+- If you must show hierarchical settings, use a single `NavigationSplitView` with a sidebar list of
+  categories.
 
 ## Pitfalls
 

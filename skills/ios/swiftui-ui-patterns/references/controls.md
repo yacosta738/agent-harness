@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use native controls for settings and configuration screens, keeping labels accessible and state bindings clear.
+Use native controls for settings and configuration screens, keeping labels accessible and state
+bindings clear.
 
 ## Core patterns
 

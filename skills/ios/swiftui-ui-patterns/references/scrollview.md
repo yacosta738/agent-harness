@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use `ScrollView` with `LazyVStack`, `LazyHStack`, or `LazyVGrid` when you need custom layout, mixed content, or horizontal/ grid-based scrolling.
+Use `ScrollView` with `LazyVStack`, `LazyHStack`, or `LazyVGrid` when you need custom layout, mixed
+content, or horizontal/ grid-based scrolling.
 
 ## Core patterns
 

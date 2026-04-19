@@ -1,18 +1,21 @@
 # Cloudflare WAF Expert Skill Reference
 
-**Expertise**: Cloudflare Web Application Firewall (WAF) configuration, custom rules, managed rulesets, rate limiting, attack detection, and API integration
+**Expertise**: Cloudflare Web Application Firewall (WAF) configuration, custom rules, managed
+rulesets, rate limiting, attack detection, and API integration
 
 ## Overview
 
 Cloudflare WAF protects web applications from attacks through managed rulesets and custom rules.
 
 **Detection (Managed Rulesets)**
+
 - Pre-configured rules maintained by Cloudflare
 - CVE-based rules, OWASP Top 10 coverage
 - Three main rulesets: Cloudflare Managed, OWASP CRS, Exposed Credentials
 - Actions: log, block, challenge, js_challenge, managed_challenge
 
 **Mitigation (Custom Rules & Rate Limiting)**
+
 - Custom expressions using Wirefilter syntax
 - Attack score-based blocking (`cf.waf.score`)
 - Rate limiting with per-IP, per-user, or custom characteristics
@@ -21,6 +24,7 @@ Cloudflare WAF protects web applications from attacks through managed rulesets a
 ## Quick Start
 
 ### Deploy Cloudflare Managed Ruleset
+
 ```typescript
 import Cloudflare from 'cloudflare';
 
@@ -44,6 +48,7 @@ await client.rulesets.create({
 ```
 
 ### Create Custom Rule
+
 ```typescript
 // Block requests with attack score >= 40
 await client.rulesets.create({
@@ -61,6 +66,7 @@ await client.rulesets.create({
 ```
 
 ### Create Rate Limit
+
 ```typescript
 await client.rulesets.create({
   zone_id: 'zone_id',
@@ -85,15 +91,16 @@ await client.rulesets.create({
 
 ## Managed Ruleset Quick Reference
 
-| Ruleset Name | ID | Coverage |
-|--------------|----|---------|
-| Cloudflare Managed | `efb7b8c949ac4650a09736fc376e9aee` | OWASP Top 10, CVEs |
-| OWASP Core Ruleset | `4814384a9e5d4991b9815dcfc25d2f1f` | OWASP ModSecurity CRS |
-| Exposed Credentials Check | `c2e184081120413c86c3ab7e14069605` | Credential stuffing |
+| Ruleset Name              | ID                                 | Coverage              |
+|---------------------------|------------------------------------|-----------------------|
+| Cloudflare Managed        | `efb7b8c949ac4650a09736fc376e9aee` | OWASP Top 10, CVEs    |
+| OWASP Core Ruleset        | `4814384a9e5d4991b9815dcfc25d2f1f` | OWASP ModSecurity CRS |
+| Exposed Credentials Check | `c2e184081120413c86c3ab7e14069605` | Credential stuffing   |
 
 ## Phases
 
 WAF rules execute in specific phases:
+
 - `http_request_firewall_managed` - Managed rulesets
 - `http_request_firewall_custom` - Custom rules
 - `http_ratelimit` - Rate limiting rules

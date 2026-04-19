@@ -1,6 +1,7 @@
 # Research Summary Template
 
-Use this for most research requests. See [research-summary-format.md](research-summary-format.md) for when to use this format.
+Use this for most research requests. See [research-summary-format.md](research-summary-format.md)
+for when to use this format.
 
 ```markdown
 # [Topic Name]

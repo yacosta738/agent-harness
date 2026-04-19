@@ -38,18 +38,21 @@ Result: `collection://abc-123-def` for use as parent
 ### Size Guidelines
 
 **Good task size**:
+
 - Completable in 1-2 days
 - Single clear deliverable
 - Independently testable
 - Minimal dependencies
 
 **Too large**:
+
 - Takes > 3 days
 - Multiple deliverables
 - Many dependencies
 - Break down further
 
 **Too small**:
+
 - Takes < 2 hours
 - Too granular
 - Group with related work
@@ -57,14 +60,17 @@ Result: `collection://abc-123-def` for use as parent
 ### Granularity by Phase
 
 **Early phases**: Larger tasks acceptable
+
 - "Design database schema"
 - "Set up API structure"
 
 **Middle phases**: Medium-sized tasks
+
 - "Implement user authentication"
 - "Build dashboard UI"
 
 **Late phases**: Smaller, precise tasks
+
 - "Fix validation bug in form"
 - "Add loading state to button"
 
@@ -302,22 +308,26 @@ Phase 3 (Polish):
 ## Priority Assignment
 
 ### P0/Critical
+
 - Blocks everything else
 - Core functionality
 - Security requirements
 - Data integrity
 
 ### P1/High
+
 - Important features
 - User-facing functionality
 - Performance requirements
 
 ### P2/Medium
+
 - Nice-to-have features
 - Optimizations
 - Minor improvements
 
 ### P3/Low
+
 - Future enhancements
 - Edge case handling
 - Cosmetic improvements
@@ -327,6 +337,7 @@ Phase 3 (Polish):
 ### Story Points
 
 If using story points:
+
 - 1 point: Few hours
 - 2 points: Half day
 - 3 points: Full day
@@ -336,6 +347,7 @@ If using story points:
 ### Time Estimates
 
 Direct time estimates:
+
 - 2-4 hours: Small task
 - 1 day: Medium task
 - 2 days: Large task
@@ -344,6 +356,7 @@ Direct time estimates:
 ### Estimation Factors
 
 Consider:
+
 - Complexity
 - Unknowns
 - Dependencies
@@ -419,6 +432,7 @@ Then:
 ✗ "Add chart"
 
 **Use action verbs**:
+
 - Implement, Build, Create
 - Integrate, Connect, Link
 - Fix, Resolve, Debug

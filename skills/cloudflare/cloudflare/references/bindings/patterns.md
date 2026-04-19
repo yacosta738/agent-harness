@@ -24,6 +24,7 @@ const response = await env.AUTH_SERVICE.fetch(
 **Why RPC?** Zero latency (same datacenter), no DNS, free, type-safe.
 
 **HTTP vs Service:**
+
 ```typescript
 // ❌ HTTP (slow, paid, cross-region latency)
 await fetch('https://auth-worker.example.com/validate');
@@ -77,6 +78,7 @@ const response = await fetch('https://api.example.com', {
 ```
 
 **Never commit secrets:**
+
 ```jsonc
 // ❌ NEVER
 { "vars": { "API_KEY": "sk_live_abc123" } }

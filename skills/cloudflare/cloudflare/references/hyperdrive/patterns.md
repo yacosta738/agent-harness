@@ -60,7 +60,8 @@ const topProducts = await client.query(`
 `, [sevenDaysAgo]);
 ```
 
-**Benefits:** Expensive aggregations cached (avoid NOW() for cacheability), dashboard instant, reduced DB load.
+**Benefits:** Expensive aggregations cached (avoid NOW() for cacheability), dashboard instant,
+reduced DB load.
 
 ## Multi-Tenant
 
@@ -117,13 +118,15 @@ const stats = await sql`SELECT COUNT(*) as total, SUM(amount) as spent FROM orde
 return Response.json({user, orders, stats});
 ```
 
-**Benefits:** Worker executes near DB → reduces latency for each query. Without Smart Placement, each query round-trips from edge.
+**Benefits:** Worker executes near DB → reduces latency for each query. Without Smart Placement,
+each query round-trips from edge.
 
 ## Connection Pooling
 
 Operates in **transaction mode**: connection acquired per transaction, `RESET` on return.
 
 **SET statements:**
+
 ```typescript
 // ✅ Within transaction
 await client.query("BEGIN");
@@ -140,6 +143,7 @@ await client.query("SELECT * FROM large_table");  // SET not applied
 ```
 
 **Best practices:**
+
 ```typescript
 // ❌ Long transactions block pooling
 await client.query("BEGIN");
@@ -161,11 +165,13 @@ await client.query("COMMIT");
 ## Performance Tips
 
 **Enable prepared statements (required for caching):**
+
 ```typescript
 const sql = postgres(connectionString, {prepare: true});  // Default, enables caching
 ```
 
 **Optimize connection settings:**
+
 ```typescript
 const sql = postgres(connectionString, {
   max: 5,             // Stay under Workers' 6 connection limit
@@ -175,6 +181,7 @@ const sql = postgres(connectionString, {
 ```
 
 **Write cache-friendly queries:**
+
 ```typescript
 // ✅ Cacheable (deterministic)
 await sql`SELECT * FROM products WHERE category = 'electronics' LIMIT 10`;

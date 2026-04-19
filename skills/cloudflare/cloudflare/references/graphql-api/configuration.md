@@ -4,13 +4,14 @@
 
 ### API Token (Recommended)
 
-| Permission | Scope | Use Case |
-|------------|-------|----------|
-| **Account Analytics: Read** | Account-wide | Workers, R2, KV, D1, DO, AI, Network Analytics |
-| **Zone Analytics: Read** | Per-zone | HTTP requests, Firewall, DNS, Load Balancing |
-| **All zones - Analytics: Read** | All zones | Multi-zone HTTP/Firewall/DNS queries |
+| Permission                      | Scope        | Use Case                                       |
+|---------------------------------|--------------|------------------------------------------------|
+| **Account Analytics: Read**     | Account-wide | Workers, R2, KV, D1, DO, AI, Network Analytics |
+| **Zone Analytics: Read**        | Per-zone     | HTTP requests, Firewall, DNS, Load Balancing   |
+| **All zones - Analytics: Read** | All zones    | Multi-zone HTTP/Firewall/DNS queries           |
 
-Create tokens at: [dash.cloudflare.com > Account API Tokens](https://dash.cloudflare.com/?to=/:account/api-tokens)
+Create tokens
+at: [dash.cloudflare.com > Account API Tokens](https://dash.cloudflare.com/?to=/:account/api-tokens)
 
 ```bash
 # Verify token
@@ -74,11 +75,15 @@ def query_graphql(query: str, variables: dict = None) -> dict:
 
 ### From a Cloudflare Worker
 
-Store the API token as a secret (`CF_API_TOKEN`). Use standard `fetch` to POST to `https://api.cloudflare.com/client/v4/graphql` with the same JSON body format as above. Always check `response.errors` — GraphQL returns 200 even on query failures.
+Store the API token as a secret (`CF_API_TOKEN`). Use standard `fetch` to POST to
+`https://api.cloudflare.com/client/v4/graphql` with the same JSON body format as above. Always check
+`response.errors` — GraphQL returns 200 even on query failures.
 
 ## GraphQL API Explorer
 
-Interactive explorer at [graphql.cloudflare.com](https://graphql.cloudflare.com/) — provides schema docs, autocomplete, variable panel, and shareable queries. Authenticates via your Cloudflare dashboard session.
+Interactive explorer at [graphql.cloudflare.com](https://graphql.cloudflare.com/) — provides schema
+docs, autocomplete, variable panel, and shareable queries. Authenticates via your Cloudflare
+dashboard session.
 
 ## Schema Introspection
 

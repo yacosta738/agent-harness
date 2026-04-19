@@ -4,19 +4,20 @@
 
 ## Schema
 
-| Property | Type | Options | Purpose |
-|----------|------|---------|---------|
-| **Title** | title | - | Event or project name |
-| **Date** | date | - | When it happened |
-| **Type** | select | Incident, Project, Experiment, Retrospective | Learning type |
-| **Severity** | select | Critical, Major, Minor | Impact level (for incidents) |
-| **Team** | people | - | Who was involved |
-| **Key Learnings** | number | - | Count of learnings |
-| **Action Items** | relation | Links to tasks | Follow-up actions |
+| Property          | Type     | Options                                      | Purpose                      |
+|-------------------|----------|----------------------------------------------|------------------------------|
+| **Title**         | title    | -                                            | Event or project name        |
+| **Date**          | date     | -                                            | When it happened             |
+| **Type**          | select   | Incident, Project, Experiment, Retrospective | Learning type                |
+| **Severity**      | select   | Critical, Major, Minor                       | Impact level (for incidents) |
+| **Team**          | people   | -                                            | Who was involved             |
+| **Key Learnings** | number   | -                                            | Count of learnings           |
+| **Action Items**  | relation | Links to tasks                               | Follow-up actions            |
 
 ## Content Template
 
 Each learning page should include:
+
 - **What Happened**: Situation description
 - **What Went Well**: Success factors
 - **What Didn't Go Well**: Problems encountered

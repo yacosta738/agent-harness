@@ -41,12 +41,15 @@ async function execWithRetry(sandbox, cmd) {
 ### "Connection refused: container port not found"
 
 **Cause:** Missing `EXPOSE` directive in Dockerfile
-**Solution:** Add `EXPOSE <port>` to Dockerfile (only needed for `wrangler dev`, production auto-exposes)
+**Solution:** Add `EXPOSE <port>` to Dockerfile (only needed for `wrangler dev`, production
+auto-exposes)
 
 ### "Preview URLs not working"
 
-**Cause:** Custom domain not configured, wildcard DNS missing, `normalizeId` not set, or `proxyToSandbox()` not called
+**Cause:** Custom domain not configured, wildcard DNS missing, `normalizeId` not set, or
+`proxyToSandbox()` not called
 **Solution:** Check:
+
 1. Custom domain configured? (not `.workers.dev`)
 2. Wildcard DNS set up? (`*.domain.com → worker.domain.com`)
 3. `normalizeId: true` in getSandbox?
@@ -56,6 +59,7 @@ async function execWithRetry(sandbox, cmd) {
 
 **Cause:** Cold start (container provisioning)
 **Solution:**
+
 - Use `sleepAfter` instead of creating new sandboxes
 - Pre-warm with cron triggers
 - Set `keepAlive: true` for critical sandboxes
@@ -116,6 +120,7 @@ getSandbox(env.Sandbox, 'id', { keepAlive: true });
 ## Security Best Practices
 
 ### Sandbox Isolation
+
 - Each sandbox = isolated container (filesystem, network, processes)
 - Use unique sandbox IDs per tenant for multi-tenant apps
 - Sandboxes cannot communicate directly
@@ -156,27 +161,31 @@ const result = await sandbox.exec('git clone ...', {
 ```
 
 ### Preview URL Security
+
 Preview URLs include auto-generated tokens:
+
 ```
 https://8080-sandbox-abc123def456.yourdomain.com
 ```
+
 Token changes on each expose operation, preventing unauthorized access.
 
 ## Limits
 
-| Resource | Lite | Standard | Heavy |
-|----------|------|----------|-------|
-| RAM | 256MB | 512MB | 1GB |
-| vCPU | 0.5 | 1 | 2 |
+| Resource | Lite  | Standard | Heavy |
+|----------|-------|----------|-------|
+| RAM      | 256MB | 512MB    | 1GB   |
+| vCPU     | 0.5   | 1        | 2     |
 
-| Operation | Default Timeout | Override |
-|-----------|----------------|----------|
-| Container provisioning | 30s | `SANDBOX_INSTANCE_TIMEOUT_MS` |
-| Port readiness | 90s | `SANDBOX_PORT_TIMEOUT_MS` |
-| exec() | 120s | `timeout` option |
-| sleepAfter | 10m | `sleepAfter` option |
+| Operation              | Default Timeout | Override                      |
+|------------------------|-----------------|-------------------------------|
+| Container provisioning | 30s             | `SANDBOX_INSTANCE_TIMEOUT_MS` |
+| Port readiness         | 90s             | `SANDBOX_PORT_TIMEOUT_MS`     |
+| exec()                 | 120s            | `timeout` option              |
+| sleepAfter             | 10m             | `sleepAfter` option           |
 
 **Performance**:
+
 - **First deploy**: 2-3 min for container build
 - **Cold start**: 2-3s when waking from sleep
 - **Bucket mounting**: Production only (FUSE not in dev)

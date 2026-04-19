@@ -46,13 +46,16 @@ chainTo:
 
 # Vercel Marketplace
 
-You are an expert in the Vercel Marketplace — the integration platform that connects third-party services to Vercel projects with unified billing, auto-provisioned environment variables, and one-click setup.
+You are an expert in the Vercel Marketplace — the integration platform that connects third-party
+services to Vercel projects with unified billing, auto-provisioned environment variables, and
+one-click setup.
 
 ## Consuming Integrations
 
 ### Linked Project Preflight
 
-Integration provisioning is project-scoped. Verify the repository is linked before running `integration add`.
+Integration provisioning is project-scoped. Verify the repository is linked before running
+`integration add`.
 
 ```bash
 # Check whether this directory is linked to a Vercel project
@@ -78,7 +81,8 @@ vercel integration discover --category monitoring
 vercel integration list
 ```
 
-For browsing the full catalog interactively, use the [Vercel Marketplace](https://vercel.com/marketplace) dashboard.
+For browsing the full catalog interactively, use
+the [Vercel Marketplace](https://vercel.com/marketplace) dashboard.
 
 ### Getting Setup Guidance
 
@@ -94,7 +98,9 @@ vercel integration guide neon
 vercel integration guide datadog --framework nextjs
 ```
 
-Use `--framework <fw>` as the default discovery flow when framework-specific setup matters. The guide returns structured setup steps including required environment variables, SDK packages, and code snippets — ideal for agentic workflows.
+Use `--framework <fw>` as the default discovery flow when framework-specific setup matters. The
+guide returns structured setup steps including required environment variables, SDK packages, and
+code snippets — ideal for agentic workflows.
 
 ### Installing an Integration
 
@@ -111,7 +117,8 @@ vercel integration add sanity        # CMS
 vercel integration add datadog       # Observability (auto-configures drain)
 ```
 
-`vercel integration add` is the primary scripted/AI path. It installs to the currently linked project, auto-connects the integration, and auto-runs environment sync locally unless disabled.
+`vercel integration add` is the primary scripted/AI path. It installs to the currently linked
+project, auto-connects the integration, and auto-runs environment sync locally unless disabled.
 
 If the CLI hands off to the dashboard for provider-specific completion, treat that as fallback:
 
@@ -123,9 +130,14 @@ Complete the web step, then return to CLI verification (`vercel env ls` and loca
 
 ### Auto-Provisioned Environment Variables
 
-When you install a Marketplace integration from a linked project, Vercel automatically provisions the required environment variables for that project.
+When you install a Marketplace integration from a linked project, Vercel automatically provisions
+the required environment variables for that project.
 
-**IMPORTANT: Provisioning delay after install.** After installing a database integration (especially Neon), the resource may take **1–3 minutes** to fully provision. During this window, connection attempts return HTTP 500 errors. Do NOT debug the connection string or code — just wait and retry. If local env sync was disabled or skipped, run `vercel env pull .env.local --yes` after a brief wait to get the finalized credentials.
+**IMPORTANT: Provisioning delay after install.** After installing a database integration (especially
+Neon), the resource may take **1–3 minutes** to fully provision. During this window, connection
+attempts return HTTP 500 errors. Do NOT debug the connection string or code — just wait and retry.
+If local env sync was disabled or skipped, run `vercel env pull .env.local --yes` after a brief wait
+to get the finalized credentials.
 
 ```bash
 # View environment variables added by integrations
@@ -140,7 +152,8 @@ vercel env ls
 # POSTGRES_HOST         — database host
 ```
 
-No manual `.env` file management is needed — the variables are injected into all environments (Development, Preview, Production) automatically.
+No manual `.env` file management is needed — the variables are injected into all environments (
+Development, Preview, Production) automatically.
 
 ### Using Provisioned Resources
 
@@ -357,35 +370,40 @@ vercel integration remove <name>
 
 ## Common Integration Categories
 
-| Category              | Popular Integrations                          | Auto-Provisioned Env Vars               |
-| --------------------- | --------------------------------------------- | --------------------------------------- |
-| Databases             | Neon, Supabase, PlanetScale, MongoDB, Turso   | `POSTGRES_URL`, `DATABASE_URL`          |
-| Cache/KV              | Upstash Redis                                 | `KV_REST_API_URL`, `KV_REST_API_TOKEN`  |
-| Auth                  | Clerk, Auth0, Descope                         | `CLERK_SECRET_KEY`, `AUTH0_SECRET`      |
-| CMS                   | Sanity, Contentful, Storyblok, DatoCMS        | `SANITY_PROJECT_ID`, `CONTENTFUL_TOKEN` |
-| Monitoring            | Datadog, Sentry, Checkly, New Relic           | `SENTRY_DSN`, `DD_API_KEY`             |
-| Payments              | Stripe                                        | `STRIPE_SECRET_KEY`                     |
-| Feature Flags         | LaunchDarkly, Statsig, Hypertune              | `LAUNCHDARKLY_SDK_KEY`                  |
-| AI Agents & Services  | CodeRabbit, Braintrust, Sourcery, Chatbase    | varies by integration                   |
-| Video                 | Mux                                           | `MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`     |
-| Messaging             | Resend, Knock, Novu                           | `RESEND_API_KEY`                        |
-| Searching             | Algolia, Meilisearch                          | `ALGOLIA_APP_ID`, `ALGOLIA_API_KEY`    |
-| Commerce              | Shopify, Swell, BigCommerce                   | `SHOPIFY_ACCESS_TOKEN`                  |
+| Category             | Popular Integrations                        | Auto-Provisioned Env Vars               |
+|----------------------|---------------------------------------------|-----------------------------------------|
+| Databases            | Neon, Supabase, PlanetScale, MongoDB, Turso | `POSTGRES_URL`, `DATABASE_URL`          |
+| Cache/KV             | Upstash Redis                               | `KV_REST_API_URL`, `KV_REST_API_TOKEN`  |
+| Auth                 | Clerk, Auth0, Descope                       | `CLERK_SECRET_KEY`, `AUTH0_SECRET`      |
+| CMS                  | Sanity, Contentful, Storyblok, DatoCMS      | `SANITY_PROJECT_ID`, `CONTENTFUL_TOKEN` |
+| Monitoring           | Datadog, Sentry, Checkly, New Relic         | `SENTRY_DSN`, `DD_API_KEY`              |
+| Payments             | Stripe                                      | `STRIPE_SECRET_KEY`                     |
+| Feature Flags        | LaunchDarkly, Statsig, Hypertune            | `LAUNCHDARKLY_SDK_KEY`                  |
+| AI Agents & Services | CodeRabbit, Braintrust, Sourcery, Chatbase  | varies by integration                   |
+| Video                | Mux                                         | `MUX_TOKEN_ID`, `MUX_TOKEN_SECRET`      |
+| Messaging            | Resend, Knock, Novu                         | `RESEND_API_KEY`                        |
+| Searching            | Algolia, Meilisearch                        | `ALGOLIA_APP_ID`, `ALGOLIA_API_KEY`     |
+| Commerce             | Shopify, Swell, BigCommerce                 | `SHOPIFY_ACCESS_TOKEN`                  |
 
 ## Observability Integration Path
 
-Marketplace observability integrations (Datadog, Sentry, Axiom, Honeycomb, etc.) connect to Vercel's **Drains** system to receive telemetry. Understanding the data-type split is critical for correct setup.
+Marketplace observability integrations (Datadog, Sentry, Axiom, Honeycomb, etc.) connect to Vercel's
+**Drains** system to receive telemetry. Understanding the data-type split is critical for correct
+setup.
 
 ### Data-Type Split
 
 | Data Type          | Delivery Mechanism                                    | Integration Setup                                                                                                      |
-| ------------------ | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+|--------------------|-------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
 | **Logs**           | Native drain (auto-configured by Marketplace install) | `vercel integration add <vendor>` auto-creates drain                                                                   |
 | **Traces**         | Native drain (OpenTelemetry-compatible)               | Same — auto-configured on install                                                                                      |
 | **Speed Insights** | Custom drain endpoint only                            | Requires manual drain creation via REST API or Dashboard (`https://vercel.com/dashboard/{team}/~/settings/log-drains`) |
 | **Web Analytics**  | Custom drain endpoint only                            | Requires manual drain creation via REST API or Dashboard (`https://vercel.com/dashboard/{team}/~/settings/log-drains`) |
 
-> **Key distinction:** When you install an observability vendor via the Marketplace, it auto-configures drains for **logs and traces** only. Speed Insights and Web Analytics data require a separate, manually configured drain pointing to a custom endpoint. See `⤳ skill: observability` for drain setup details.
+> **Key distinction:** When you install an observability vendor via the Marketplace, it
+> auto-configures drains for **logs and traces** only. Speed Insights and Web Analytics data require a
+> separate, manually configured drain pointing to a custom endpoint. See `⤳ skill: observability` for
+> drain setup details.
 
 ### Agentic Flow: Observability Vendor Setup
 
@@ -416,7 +434,8 @@ curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
   "https://api.vercel.com/v1/drains?teamId=$TEAM_ID" | jq '.[] | {id, url, type, sources}'
 ```
 
-Check the response for a drain pointing to the vendor's ingestion endpoint. If no drain appears, the integration may need manual drain setup — see `⤳ skill: observability` for REST API drain creation.
+Check the response for a drain pointing to the vendor's ingestion endpoint. If no drain appears, the
+integration may need manual drain setup — see `⤳ skill: observability` for REST API drain creation.
 
 #### 4. Validate Endpoint
 
@@ -440,11 +459,13 @@ vercel integration balance datadog
 
 Verify that logs appear both in Vercel's runtime logs and in the vendor's dashboard.
 
-> **For drain payload formats and signature verification**, see `⤳ skill: observability` — the Drains section covers JSON/NDJSON schemas and `x-vercel-signature` HMAC-SHA1 verification.
+> **For drain payload formats and signature verification**, see `⤳ skill: observability` — the
+> Drains section covers JSON/NDJSON schemas and `x-vercel-signature` HMAC-SHA1 verification.
 
 ### Speed Insights + Web Analytics Drains
 
-For observability vendors that also want Speed Insights or Web Analytics data, configure a separate drain manually:
+For observability vendors that also want Speed Insights or Web Analytics data, configure a separate
+drain manually:
 
 ```bash
 # Create a drain for Speed Insights + Web Analytics
@@ -459,12 +480,13 @@ curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" \
   }'
 ```
 
-> **Payload schema reference:** See `⤳ skill: observability` for Web Analytics drain payload formats (JSON array of `{type, url, referrer, timestamp, geo, device}` events).
+> **Payload schema reference:** See `⤳ skill: observability` for Web Analytics drain payload
+> formats (JSON array of `{type, url, referrer, timestamp, geo, device}` events).
 
 ## Decision Matrix
 
 | Need                                      | Use                                                | Why                                            |
-| ----------------------------------------- | -------------------------------------------------- | ---------------------------------------------- |
+|-------------------------------------------|----------------------------------------------------|------------------------------------------------|
 | Add a database to your project            | `vercel integration add neon`                      | Auto-provisioned, unified billing              |
 | Browse available services                 | `vercel integration discover`                      | CLI-native catalog search                      |
 | Get setup steps for an integration        | `vercel integration guide <name> --framework <fw>` | Framework-specific, agent-friendly setup guide |

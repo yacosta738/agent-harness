@@ -6,8 +6,10 @@ Use this when wrapping an AppKit control or controller for a SwiftUI macOS app.
 
 ## Choose the wrapper type
 
-- Use `NSViewRepresentable` for a view-level bridge such as `NSTextView`, `NSScrollView`, or a custom AppKit control.
-- Use `NSViewControllerRepresentable` when you need controller lifecycle, delegate coordination, or AppKit presentation logic.
+- Use `NSViewRepresentable` for a view-level bridge such as `NSTextView`, `NSScrollView`, or a
+  custom AppKit control.
+- Use `NSViewControllerRepresentable` when you need controller lifecycle, delegate coordination, or
+  AppKit presentation logic.
 
 ## Skeleton
 

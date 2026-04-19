@@ -58,7 +58,9 @@ chainTo:
 
 # Vercel Deployments & CI/CD
 
-You are an expert in Vercel deployment workflows — `vercel deploy`, `vercel promote`, `vercel rollback`, `vercel inspect`, `vercel build`, and CI/CD pipeline integration with GitHub Actions, GitLab CI, and Bitbucket Pipelines.
+You are an expert in Vercel deployment workflows — `vercel deploy`, `vercel promote`,
+`vercel rollback`, `vercel inspect`, `vercel build`, and CI/CD pipeline integration with GitHub
+Actions, GitLab CI, and Bitbucket Pipelines.
 
 ## Deployment Commands
 
@@ -72,7 +74,8 @@ vercel
 vercel deploy
 ```
 
-Preview deployments are created automatically for every push to a non-production branch when using Git integration. They provide a unique URL for testing.
+Preview deployments are created automatically for every push to a non-production branch when using
+Git integration. They provide a unique URL for testing.
 
 ### Production Deployment
 
@@ -99,7 +102,8 @@ vercel deploy --prebuilt
 vercel deploy --prebuilt --prod
 ```
 
-**When to use `--prebuilt`:** Custom CI pipelines where you control the build step, need build caching at the CI level, or need to run tests between build and deploy.
+**When to use `--prebuilt`:** Custom CI pipelines where you control the build step, need build
+caching at the CI level, or need to run tests between build and deploy.
 
 ### Promote & Rollback
 
@@ -114,7 +118,8 @@ vercel rollback
 vercel rollback <deployment-url-or-id>
 ```
 
-**Promote vs deploy --prod:** `promote` is instant — it re-points the production alias without rebuilding. Use it when a preview deployment has been validated and is ready for production.
+**Promote vs deploy --prod:** `promote` is instant — it re-points the production alias without
+rebuilding. Use it when a preview deployment has been validated and is ready for production.
 
 ### Inspect Deployments
 
@@ -173,16 +178,22 @@ jobs:
 
 ### OIDC Federation (Secure Backend Access)
 
-Vercel OIDC federation is for **secure backend access** — letting your deployed Vercel functions authenticate with third-party services (AWS, GCP, HashiCorp Vault) without storing long-lived secrets. It does **not** replace `VERCEL_TOKEN` for CLI deployments.
+Vercel OIDC federation is for **secure backend access** — letting your deployed Vercel functions
+authenticate with third-party services (AWS, GCP, HashiCorp Vault) without storing long-lived
+secrets. It does **not** replace `VERCEL_TOKEN` for CLI deployments.
 
-**What OIDC does:** Your Vercel function requests a short-lived OIDC token from Vercel at runtime, then exchanges it with an external provider's STS/token endpoint for scoped credentials.
+**What OIDC does:** Your Vercel function requests a short-lived OIDC token from Vercel at runtime,
+then exchanges it with an external provider's STS/token endpoint for scoped credentials.
 
-**What OIDC does not do:** Authenticate the Vercel CLI in CI pipelines. All `vercel pull`, `vercel build`, and `vercel deploy` commands still require `--token=${{ secrets.VERCEL_TOKEN }}`.
+**What OIDC does not do:** Authenticate the Vercel CLI in CI pipelines. All `vercel pull`,
+`vercel build`, and `vercel deploy` commands still require `--token=${{ secrets.VERCEL_TOKEN }}`.
 
 **When to use OIDC:**
+
 - Serverless functions that need to call AWS APIs (S3, DynamoDB, SQS)
 - Functions authenticating to GCP services via Workload Identity Federation
-- Any runtime service-to-service auth where you want to avoid storing static secrets in Vercel env vars
+- Any runtime service-to-service auth where you want to avoid storing static secrets in Vercel env
+  vars
 
 ### GitLab CI
 
@@ -273,43 +284,45 @@ jobs:
 
 ## Global CLI Flags for CI
 
-| Flag | Purpose |
-|------|---------|
+| Flag              | Purpose                       |
+|-------------------|-------------------------------|
 | `--token <token>` | Authenticate (required in CI) |
-| `--yes` / `-y` | Skip confirmation prompts |
-| `--scope <team>` | Execute as a specific team |
-| `--cwd <dir>` | Set working directory |
+| `--yes` / `-y`    | Skip confirmation prompts     |
+| `--scope <team>`  | Execute as a specific team    |
+| `--cwd <dir>`     | Set working directory         |
 
 ## Best Practices
 
-1. **Always use `--prebuilt` in CI** — separates build from deploy, enables build caching and test gates
+1. **Always use `--prebuilt` in CI** — separates build from deploy, enables build caching and test
+   gates
 2. **Use `vercel pull` before build** — ensures correct env vars and project settings
 3. **Prefer `promote` over re-deploy** — instant, no rebuild, same artifact
-4. **Use OIDC federation for runtime backend access** — lets Vercel functions auth to AWS/GCP without static secrets (does not replace `VERCEL_TOKEN` for CLI)
+4. **Use OIDC federation for runtime backend access** — lets Vercel functions auth to AWS/GCP
+   without static secrets (does not replace `VERCEL_TOKEN` for CLI)
 5. **Pin the Vercel CLI version in CI** — `npm install -g vercel@latest` can break unexpectedly
 6. **Add `--yes` flag in CI** — prevents interactive prompts from hanging pipelines
 
 ## Deployment Strategy Matrix
 
-| Scenario | Strategy | Commands |
-|----------|----------|----------|
-| Standard team workflow | Git-push deploy | Push to main/feature branches |
-| Custom CI/CD (Actions, CircleCI) | Prebuilt deploy | `vercel build && vercel deploy --prebuilt` |
-| Monorepo with Turborepo | Affected + remote cache | `turbo run build --affected --remote-cache` |
-| Preview for every PR | Default behavior | Auto-creates preview URL per branch |
-| Promote preview to production | CLI promotion | `vercel promote <url>` |
-| Atomic deploys with DB migrations | Two-phase | Run migration → verify → `vercel promote` |
-| Edge-first architecture | Edge Functions | Set `runtime: 'edge'` in route config |
+| Scenario                          | Strategy                | Commands                                    |
+|-----------------------------------|-------------------------|---------------------------------------------|
+| Standard team workflow            | Git-push deploy         | Push to main/feature branches               |
+| Custom CI/CD (Actions, CircleCI)  | Prebuilt deploy         | `vercel build && vercel deploy --prebuilt`  |
+| Monorepo with Turborepo           | Affected + remote cache | `turbo run build --affected --remote-cache` |
+| Preview for every PR              | Default behavior        | Auto-creates preview URL per branch         |
+| Promote preview to production     | CLI promotion           | `vercel promote <url>`                      |
+| Atomic deploys with DB migrations | Two-phase               | Run migration → verify → `vercel promote`   |
+| Edge-first architecture           | Edge Functions          | Set `runtime: 'edge'` in route config       |
 
 ## Common Build Errors
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `ERR_PNPM_OUTDATED_LOCKFILE` | Lockfile doesn't match package.json | Run `pnpm install`, commit lockfile |
-| `NEXT_NOT_FOUND` | Root directory misconfigured | Set `rootDirectory` in Project Settings |
-| `Invalid next.config.js` | Config syntax error | Validate config locally with `next build` |
-| `functions/api/*.js` mismatch | Wrong file structure | Move to `app/api/` directory (App Router) |
-| `Error: EPERM` | File permission issue in build | Don't `chmod` in build scripts; use postinstall |
+| Error                         | Cause                               | Fix                                             |
+|-------------------------------|-------------------------------------|-------------------------------------------------|
+| `ERR_PNPM_OUTDATED_LOCKFILE`  | Lockfile doesn't match package.json | Run `pnpm install`, commit lockfile             |
+| `NEXT_NOT_FOUND`              | Root directory misconfigured        | Set `rootDirectory` in Project Settings         |
+| `Invalid next.config.js`      | Config syntax error                 | Validate config locally with `next build`       |
+| `functions/api/*.js` mismatch | Wrong file structure                | Move to `app/api/` directory (App Router)       |
+| `Error: EPERM`                | File permission issue in build      | Don't `chmod` in build scripts; use postinstall |
 
 ## Deploy Summary Format
 
@@ -344,13 +357,20 @@ For production deploys, also include:
 
 Based on the deployment outcome:
 
-- **Success (preview)** → "Visit the preview URL to verify. When ready, run `/deploy prod` to promote to production."
-- **Success (production)** → "Your production site is live. Run `/status` to see the full project overview."
-- **Build error** → "Check the build logs above. Common fixes: verify `build` script in package.json, check for missing env vars with `/env list`, ensure dependencies are installed."
-- **Missing env vars** → "Run `/env pull` to sync environment variables locally, or `/env list` to review what's configured on Vercel."
-- **Monorepo issues** → "Ensure the correct project root is configured in Vercel project settings. Check `vercel.json` for `rootDirectory`."
-- **Post-deploy errors detected** → "Review errors above. Check `vercel logs <url> --level error` for details. If drains are configured, correlate with external monitoring."
-- **No monitoring configured** → "Set up drains or install an error tracking integration before the next production deploy. Run `/status` for a full observability diagnostic."
+- **Success (preview)** → "Visit the preview URL to verify. When ready, run `/deploy prod` to
+  promote to production."
+- **Success (production)** → "Your production site is live. Run `/status` to see the full project
+  overview."
+- **Build error** → "Check the build logs above. Common fixes: verify `build` script in
+  package.json, check for missing env vars with `/env list`, ensure dependencies are installed."
+- **Missing env vars** → "Run `/env pull` to sync environment variables locally, or `/env list` to
+  review what's configured on Vercel."
+- **Monorepo issues** → "Ensure the correct project root is configured in Vercel project settings.
+  Check `vercel.json` for `rootDirectory`."
+- **Post-deploy errors detected** → "Review errors above. Check `vercel logs <url> --level error`
+  for details. If drains are configured, correlate with external monitoring."
+- **No monitoring configured** → "Set up drains or install an error tracking integration before the
+  next production deploy. Run `/status` for a full observability diagnostic."
 
 ## Official Documentation
 

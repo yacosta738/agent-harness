@@ -61,7 +61,8 @@ chainTo:
 
 # Browser Automation with agent-browser
 
-When a dev server is running or the user asks to verify, test, or interact with a web page, use `agent-browser` to automate the browser.
+When a dev server is running or the user asks to verify, test, or interact with a web page, use
+`agent-browser` to automate the browser.
 
 ## Core Workflow
 

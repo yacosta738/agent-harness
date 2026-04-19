@@ -154,6 +154,7 @@ export default {
 Automatically optimizes function execution location based on traffic patterns.
 
 **Configuration** (in wrangler.jsonc):
+
 ```jsonc
 {
   "placement": {
@@ -162,11 +163,14 @@ Automatically optimizes function execution location based on traffic patterns.
 }
 ```
 
-**How it works**: Analyzes traffic patterns over time and places functions closer to users or data sources (e.g., D1 databases). Requires no code changes.
+**How it works**: Analyzes traffic patterns over time and places functions closer to users or data
+sources (e.g., D1 databases). Requires no code changes.
 
-**Trade-offs**: Initial requests may see slightly higher latency during learning period (hours-days). Performance improves as system optimizes.
+**Trade-offs**: Initial requests may see slightly higher latency during learning period (
+hours-days). Performance improves as system optimizes.
 
-**When to use**: Global apps with centralized databases or geographically concentrated traffic sources.
+**When to use**: Global apps with centralized databases or geographically concentrated traffic
+sources.
 
 ## getRequestContext (Framework SSR)
 
@@ -191,6 +195,7 @@ const data = await event.locals.runtime.env.DB.prepare('SELECT * FROM users').al
 ```
 
 **✅ Supported adapters** (2026):
+
 - **SvelteKit**: `@sveltejs/adapter-cloudflare`
 - **Astro**: Built-in Cloudflare adapter
 - **Nuxt**: Set `nitro.preset: 'cloudflare-pages'` in `nuxt.config.ts`
@@ -198,7 +203,10 @@ const data = await event.locals.runtime.env.DB.prepare('SELECT * FROM users').al
 - **Solid Start**: `@solidjs/start-cloudflare-pages`
 
 **❌ Deprecated/Unsupported**:
-- **Next.js**: Official adapter (`@cloudflare/next-on-pages`) deprecated. Use Vercel or self-host on Workers.
-- **Remix**: Official adapter (`@remix-run/cloudflare-pages`) deprecated. Migrate to supported frameworks.
+
+- **Next.js**: Official adapter (`@cloudflare/next-on-pages`) deprecated. Use Vercel or self-host on
+  Workers.
+- **Remix**: Official adapter (`@remix-run/cloudflare-pages`) deprecated. Migrate to supported
+  frameworks.
 
 See [gotchas.md](./gotchas.md#framework-specific) for migration guidance.

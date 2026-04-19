@@ -14,6 +14,7 @@
 ```
 
 **Create commands:**
+
 ```bash
 npx wrangler kv namespace create MY_KV
 npx wrangler r2 bucket create my-bucket
@@ -45,6 +46,7 @@ npx wrangler queues list
 ```
 
 **Create workflows:**
+
 ```bash
 npx wrangler workflows create my-workflow
 ```
@@ -77,6 +79,7 @@ npx wrangler workflows create my-workflow
 ```
 
 **Secrets (never in config):**
+
 ```bash
 npx wrangler secret put API_KEY
 ```
@@ -99,6 +102,7 @@ npx wrangler secret put API_KEY
 ```
 
 **Deploy:**
+
 ```bash
 npx wrangler deploy              # Production
 npx wrangler deploy --env staging
@@ -117,6 +121,7 @@ npx wrangler deploy --env staging
 ```
 
 **Or use remote:**
+
 ```bash
 npx wrangler dev --remote  # Uses production bindings
 ```
@@ -172,7 +177,8 @@ export class Counter {
 }
 ```
 
-Queue consumer handler: `export default { async queue(batch, env) { /* process batch.messages */ } }`
+Queue consumer handler:
+`export default { async queue(batch, env) { /* process batch.messages */ } }`
 
 ## Key Points
 

@@ -1,6 +1,8 @@
 {
   "name": "Create Implementation Plan from Spec",
-  "skills": ["spec-to-implementation"],
+  "skills": [
+    "spec-to-implementation"
+  ],
   "query": "Create an implementation plan for the User Authentication spec page",
   "expected_behavior": [
     "Step 1: Uses Notion:notion-search to find 'User Authentication spec' with keywords like 'User Authentication' or 'auth spec'",

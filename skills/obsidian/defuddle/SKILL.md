@@ -5,7 +5,8 @@ description: Extract clean markdown content from web pages using Defuddle CLI, r
 
 # Defuddle
 
-Use Defuddle CLI to extract clean readable content from web pages. Prefer over WebFetch for standard web pages — it removes navigation, ads, and clutter, reducing token usage.
+Use Defuddle CLI to extract clean readable content from web pages. Prefer over WebFetch for standard
+web pages — it removes navigation, ads, and clutter, reducing token usage.
 
 If not installed: `npm install -g defuddle`
 
@@ -33,9 +34,9 @@ defuddle parse <url> -p domain
 
 ## Output formats
 
-| Flag | Format |
-|------|--------|
-| `--md` | Markdown (default choice) |
-| `--json` | JSON with both HTML and markdown |
-| (none) | HTML |
-| `-p <name>` | Specific metadata property |
+| Flag        | Format                           |
+|-------------|----------------------------------|
+| `--md`      | Markdown (default choice)        |
+| `--json`    | JSON with both HTML and markdown |
+| (none)      | HTML                             |
+| `-p <name>` | Specific metadata property       |

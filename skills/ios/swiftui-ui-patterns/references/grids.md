@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use `LazyVGrid` for icon pickers, media galleries, and dense visual selections where items align in columns.
+Use `LazyVGrid` for icon pickers, media galleries, and dense visual selections where items align in
+columns.
 
 ## Core patterns
 

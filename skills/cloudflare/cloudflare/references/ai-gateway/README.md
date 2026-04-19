@@ -1,6 +1,7 @@
 # Cloudflare AI Gateway
 
-Expert guidance for implementing Cloudflare AI Gateway - a universal gateway for AI model providers with analytics, caching, rate limiting, and routing capabilities.
+Expert guidance for implementing Cloudflare AI Gateway - a universal gateway for AI model providers
+with analytics, caching, rate limiting, and routing capabilities.
 
 ## When to Use This Reference
 
@@ -105,35 +106,35 @@ export default {
 
 ## Headers Quick Reference
 
-| Header | Purpose | Example | Notes |
-|--------|---------|---------|-------|
-| `cf-aig-authorization` | Gateway auth | `Bearer {token}` | Required for authenticated gateways |
-| `cf-aig-metadata` | Tracking | `{"userId":"x"}` | Max 5 entries, flat structure |
-| `cf-aig-cache-ttl` | Cache duration | `3600` | Seconds, min 60, max 2592000 (30 days) |
-| `cf-aig-skip-cache` | Bypass cache | `true` | - |
-| `cf-aig-cache-key` | Custom cache key | `my-key` | Must be unique per response |
-| `cf-aig-collect-log` | Skip logging | `false` | Default: true |
-| `cf-aig-cache-status` | Cache hit/miss | Response only | `HIT` or `MISS` |
+| Header                 | Purpose          | Example          | Notes                                  |
+|------------------------|------------------|------------------|----------------------------------------|
+| `cf-aig-authorization` | Gateway auth     | `Bearer {token}` | Required for authenticated gateways    |
+| `cf-aig-metadata`      | Tracking         | `{"userId":"x"}` | Max 5 entries, flat structure          |
+| `cf-aig-cache-ttl`     | Cache duration   | `3600`           | Seconds, min 60, max 2592000 (30 days) |
+| `cf-aig-skip-cache`    | Bypass cache     | `true`           | -                                      |
+| `cf-aig-cache-key`     | Custom cache key | `my-key`         | Must be unique per response            |
+| `cf-aig-collect-log`   | Skip logging     | `false`          | Default: true                          |
+| `cf-aig-cache-status`  | Cache hit/miss   | Response only    | `HIT` or `MISS`                        |
 
 ## In This Reference
 
-| File | Purpose |
-|------|---------|
-| [sdk-integration.md](./sdk-integration.md) | Vercel AI SDK, OpenAI SDK, Workers binding patterns |
-| [configuration.md](./configuration.md) | Dashboard setup, wrangler, API tokens |
-| [features.md](./features.md) | Caching, rate limits, guardrails, DLP, BYOK, unified billing |
-| [dynamic-routing.md](./dynamic-routing.md) | Fallbacks, A/B testing, conditional routing |
-| [troubleshooting.md](./troubleshooting.md) | Debugging, errors, observability, gotchas |
+| File                                       | Purpose                                                      |
+|--------------------------------------------|--------------------------------------------------------------|
+| [sdk-integration.md](./sdk-integration.md) | Vercel AI SDK, OpenAI SDK, Workers binding patterns          |
+| [configuration.md](./configuration.md)     | Dashboard setup, wrangler, API tokens                        |
+| [features.md](./features.md)               | Caching, rate limits, guardrails, DLP, BYOK, unified billing |
+| [dynamic-routing.md](./dynamic-routing.md) | Fallbacks, A/B testing, conditional routing                  |
+| [troubleshooting.md](./troubleshooting.md) | Debugging, errors, observability, gotchas                    |
 
 ## Reading Order
 
-| Task | Files |
-|------|-------|
-| First-time setup | README + [configuration.md](./configuration.md) |
-| SDK integration | README + [sdk-integration.md](./sdk-integration.md) |
-| Enable caching | README + [features.md](./features.md) |
-| Setup fallbacks | README + [dynamic-routing.md](./dynamic-routing.md) |
-| Debug errors | README + [troubleshooting.md](./troubleshooting.md) |
+| Task             | Files                                               |
+|------------------|-----------------------------------------------------|
+| First-time setup | README + [configuration.md](./configuration.md)     |
+| SDK integration  | README + [sdk-integration.md](./sdk-integration.md) |
+| Enable caching   | README + [features.md](./features.md)               |
+| Setup fallbacks  | README + [dynamic-routing.md](./dynamic-routing.md) |
+| Debug errors     | README + [troubleshooting.md](./troubleshooting.md) |
 
 ## Architecture
 
@@ -146,18 +147,23 @@ Your App → AI Gateway → AI Provider (OpenAI, Anthropic, etc.)
 ```
 
 **Key URL patterns:**
-- Unified API (OpenAI-compatible): `https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/compat/chat/completions`
-- Provider-specific: `https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/{provider}/{endpoint}`
+
+- Unified API (OpenAI-compatible):
+  `https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/compat/chat/completions`
+- Provider-specific:
+  `https://gateway.ai.cloudflare.com/v1/{account_id}/{gateway_id}/{provider}/{endpoint}`
 - Dynamic routes: Use route name instead of model: `dynamic/{route-name}`
 
 ## Gateway Types
 
 1. **Unauthenticated Gateway**: Open access (not recommended for production)
-2. **Authenticated Gateway**: Requires `cf-aig-authorization` header with Cloudflare API token (recommended)
+2. **Authenticated Gateway**: Requires `cf-aig-authorization` header with Cloudflare API token (
+   recommended)
 
 ## Provider Authentication Options
 
-1. **Unified Billing**: Use AI Gateway billing to pay for inference (keyless mode - no provider API key needed)
+1. **Unified Billing**: Use AI Gateway billing to pay for inference (keyless mode - no provider API
+   key needed)
 2. **BYOK (Store Keys)**: Store provider API keys in Cloudflare dashboard
 3. **Request Headers**: Include provider API key in each request
 

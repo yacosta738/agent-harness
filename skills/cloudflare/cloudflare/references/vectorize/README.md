@@ -1,6 +1,7 @@
 # Cloudflare Vectorize
 
-Globally distributed vector database for AI applications. Store and query vector embeddings for semantic search, recommendations, RAG, and classification.
+Globally distributed vector database for AI applications. Store and query vector embeddings for
+semantic search, recommendations, RAG, and classification.
 
 **Status:** Generally Available (GA) | **Last Updated:** 2026-01-27
 
@@ -29,14 +30,14 @@ const matches = await env.VECTORIZE.query(queryVector, { topK: 5 });
 
 ## Reading Order
 
-| Task | Files to Read |
-|------|---------------|
-| New to Vectorize | README only |
-| Implement feature | README + api + patterns |
-| Setup/configure | README + configuration |
-| Debug issues | gotchas |
-| Integrate with AI | README + patterns |
-| RAG implementation | README + patterns |
+| Task               | Files to Read           |
+|--------------------|-------------------------|
+| New to Vectorize   | README only             |
+| Implement feature  | README + api + patterns |
+| Setup/configure    | README + configuration  |
+| Debug issues       | gotchas                 |
+| Integrate with AI  | README + patterns       |
+| RAG implementation | README + patterns       |
 
 ## File Guide
 
@@ -58,11 +59,11 @@ What are you building?
 └─ Pre-normalized vectors → dot-product
 ```
 
-| Metric | Best For | Score Interpretation |
-|--------|----------|---------------------|
-| `cosine` | Text embeddings, semantic similarity | Higher = closer (1.0 = identical) |
-| `euclidean` | Absolute distance, spatial data | Lower = closer (0.0 = identical) |
-| `dot-product` | Recommendations, normalized vectors | Higher = closer |
+| Metric        | Best For                             | Score Interpretation              |
+|---------------|--------------------------------------|-----------------------------------|
+| `cosine`      | Text embeddings, semantic similarity | Higher = closer (1.0 = identical) |
+| `euclidean`   | Absolute distance, spatial data      | Lower = closer (0.0 = identical)  |
+| `dot-product` | Recommendations, normalized vectors  | Higher = closer                   |
 
 **Note:** Index configuration is immutable. Cannot change dimensions or metric after creation.
 

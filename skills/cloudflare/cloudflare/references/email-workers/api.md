@@ -22,13 +22,13 @@ interface ForwardableEmailMessage {
 
 ### Properties
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `from` | string | Envelope sender (SMTP MAIL FROM) - use for security |
-| `to` | string | Envelope recipient (SMTP RCPT TO) |
-| `headers` | Headers | Message headers (Subject, Message-ID, etc.) |
-| `raw` | ReadableStream | Raw MIME message (**single-use**, buffer first) |
-| `rawSize` | number | Message size in bytes |
+| Property  | Type           | Description                                         |
+|-----------|----------------|-----------------------------------------------------|
+| `from`    | string         | Envelope sender (SMTP MAIL FROM) - use for security |
+| `to`      | string         | Envelope recipient (SMTP RCPT TO)                   |
+| `headers` | Headers        | Message headers (Subject, Message-ID, etc.)         |
+| `raw`     | ReadableStream | Raw MIME message (**single-use**, buffer first)     |
+| `rawSize` | number         | Message size in bytes                               |
 
 ### Methods
 
@@ -82,6 +82,7 @@ await message.reply(new EmailMessage(
 ```
 
 **Requirements**:
+
 - Incoming email needs valid DMARC
 - Reply once per event, recipient = `message.from`
 - Sender domain = receiving domain, with DMARC/SPF/DKIM

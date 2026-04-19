@@ -64,9 +64,11 @@ export default {
 
 **CRITICAL WARNINGS:**
 
-1. **Messages not explicitly ack'd or retry'd will auto-retry indefinitely** until `max_retries` is reached. Always call `msg.ack()` or `msg.retry()` for each message.
+1. **Messages not explicitly ack'd or retry'd will auto-retry indefinitely** until `max_retries` is
+   reached. Always call `msg.ack()` or `msg.retry()` for each message.
 
-2. **Throwing uncaught errors retries the ENTIRE batch**, not just the failed message. Always wrap individual message processing in try/catch and call `msg.retry()` explicitly per message.
+2. **Throwing uncaught errors retries the ENTIRE batch**, not just the failed message. Always wrap
+   individual message processing in try/catch and call `msg.retry()` explicitly per message.
 
 ```typescript
 // ❌ BAD: Uncaught error retries entire batch
@@ -92,7 +94,8 @@ async queue(batch: MessageBatch): Promise<void> {
 
 ## Ack/Retry Precedence Rules
 
-1. **Per-message calls take precedence**: If you call both `msg.ack()` and `msg.retry()`, last call wins
+1. **Per-message calls take precedence**: If you call both `msg.ack()` and `msg.retry()`, last call
+   wins
 2. **Batch calls don't override**: `batch.ackAll()` only affects messages without explicit ack/retry
 3. **No action = automatic retry**: Messages with no explicit action retry with configured delay
 

@@ -8,11 +8,11 @@ const result = await env.AI.run("@cf/baai/bge-base-en-v1.5", { text: [query] });
 const matches = await env.VECTORIZE.query(result.data[0], { topK: 5 }); // Pass data[0]!
 ```
 
-| Model | Dimensions |
-|-------|------------|
-| `@cf/baai/bge-small-en-v1.5` | 384 |
-| `@cf/baai/bge-base-en-v1.5` | 768 (recommended) |
-| `@cf/baai/bge-large-en-v1.5` | 1024 |
+| Model                        | Dimensions        |
+|------------------------------|-------------------|
+| `@cf/baai/bge-small-en-v1.5` | 384               |
+| `@cf/baai/bge-base-en-v1.5`  | 768 (recommended) |
+| `@cf/baai/bge-large-en-v1.5` | 1024              |
 
 ## OpenAI Integration
 

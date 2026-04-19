@@ -1,6 +1,7 @@
 # Sandbox SDK API Reference
 
-Detailed API for `@cloudflare/sandbox`. For full docs: https://developers.cloudflare.com/sandbox/api/
+Detailed API for `@cloudflare/sandbox`. For full
+docs: https://developers.cloudflare.com/sandbox/api/
 
 ## Lifecycle
 

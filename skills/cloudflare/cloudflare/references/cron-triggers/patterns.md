@@ -148,6 +148,7 @@ class Default(WorkerEntrypoint):
 ## Testing Patterns
 
 **Local testing with /__scheduled:**
+
 ```bash
 # Start dev server
 npx wrangler dev
@@ -160,6 +161,7 @@ curl "http://localhost:8787/__scheduled?cron=0+2+*+*+*&scheduledTime=17040672000
 ```
 
 **Unit tests:**
+
 ```typescript
 // test/scheduled.test.ts
 import { describe, it, expect, vi } from "vitest";

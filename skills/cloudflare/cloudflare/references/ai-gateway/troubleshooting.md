@@ -2,11 +2,11 @@
 
 ## Common Errors
 
-| Error | Cause | Fix |
-|-------|-------|-----|
-| 401 | Missing `cf-aig-authorization` header | Add header with CF API token |
-| 403 | Invalid provider key / BYOK expired | Check provider key in dashboard |
-| 429 | Rate limit exceeded | Increase limit or implement backoff |
+| Error | Cause                                 | Fix                                 |
+|-------|---------------------------------------|-------------------------------------|
+| 401   | Missing `cf-aig-authorization` header | Add header with CF API token        |
+| 403   | Invalid provider key / BYOK expired   | Check provider key in dashboard     |
+| 429   | Rate limit exceeded                   | Increase limit or implement backoff |
 
 ### 401 Fix
 
@@ -36,19 +36,20 @@ async function requestWithRetry(fn, maxRetries = 3) {
 
 ## Gotchas
 
-| Issue | Reality |
-|-------|---------|
-| Metadata limits | Max 5 entries, flat only (no nesting) |
-| Cache key collision | Use unique keys per expected response |
-| BYOK + Unified Billing | Mutually exclusive |
-| Rate limit scope | Per-gateway, not per-user (use dynamic routing for per-user) |
-| Log delay | 30-60 seconds normal |
-| Streaming + caching | **Incompatible** |
-| Model name (unified API) | Prefix required: `openai/gpt-4o`, not `gpt-4o` |
+| Issue                    | Reality                                                      |
+|--------------------------|--------------------------------------------------------------|
+| Metadata limits          | Max 5 entries, flat only (no nesting)                        |
+| Cache key collision      | Use unique keys per expected response                        |
+| BYOK + Unified Billing   | Mutually exclusive                                           |
+| Rate limit scope         | Per-gateway, not per-user (use dynamic routing for per-user) |
+| Log delay                | 30-60 seconds normal                                         |
+| Streaming + caching      | **Incompatible**                                             |
+| Model name (unified API) | Prefix required: `openai/gpt-4o`, not `gpt-4o`               |
 
 ## Cache Not Working
 
 **Causes:**
+
 - Different request params (temperature, etc.)
 - Streaming enabled
 - Caching disabled in settings

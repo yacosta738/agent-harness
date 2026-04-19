@@ -2,13 +2,13 @@
 
 ## Use Cases
 
-| Use Case | Key Metrics | Index On |
-|----------|-------------|----------|
-| API Metering | requests, bytes, compute_units | api_key |
-| Feature Usage | feature, action, duration | user_id |
-| Error Tracking | error_type, endpoint, count | customer_id |
-| Performance | latency_ms, cache_status | endpoint |
-| A/B Testing | variant, conversions | user_id |
+| Use Case       | Key Metrics                    | Index On    |
+|----------------|--------------------------------|-------------|
+| API Metering   | requests, bytes, compute_units | api_key     |
+| Feature Usage  | feature, action, duration      | user_id     |
+| Error Tracking | error_type, endpoint, count    | customer_id |
+| Performance    | latency_ms, cache_status       | endpoint    |
+| A/B Testing    | variant, conversions           | user_id     |
 
 ## API Metering (Billing)
 
@@ -49,13 +49,13 @@ env.ANALYTICS.writeDataPoint({
 
 ## Anti-Patterns
 
-| ❌ Wrong | ✅ Correct |
-|----------|-----------|
-| `await writeDataPoint()` | `writeDataPoint()` (fire-and-forget) |
+| ❌ Wrong                               | ✅ Correct                              |
+|---------------------------------------|----------------------------------------|
+| `await writeDataPoint()`              | `writeDataPoint()` (fire-and-forget)   |
 | `indexes: [method]` (low cardinality) | `blobs: [method]`, `indexes: [userId]` |
-| `blobs: [JSON.stringify(obj)]` | Store ID in blob, full object in D1/KV |
-| Write every request at 10M/min | Pre-aggregate per second |
-| Query from Worker | Query from external service/API |
+| `blobs: [JSON.stringify(obj)]`        | Store ID in blob, full object in D1/KV |
+| Write every request at 10M/min        | Pre-aggregate per second               |
+| Query from Worker                     | Query from external service/API        |
 
 ## Best Practices
 

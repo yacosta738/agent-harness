@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use haptics sparingly to reinforce user actions (tab selection, refresh, success/error) and respect user preferences.
+Use haptics sparingly to reinforce user actions (tab selection, refresh, success/error) and respect
+user preferences.
 
 ## Core patterns
 

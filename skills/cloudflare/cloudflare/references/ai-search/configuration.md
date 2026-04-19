@@ -33,6 +33,7 @@ Dashboard: AI Search → Create Instance → Select R2 bucket
 ### Website Crawler
 
 Requirements:
+
 - Domain on Cloudflare
 - `sitemap.xml` at root
 - Bot protection must allow `CloudflareAISearch` user agent
@@ -55,10 +56,12 @@ docs/**/*.md          # All .md in docs/ recursively
 Dashboard: AI Search → Instance → Use AI Search → API → Create Token
 
 Permissions:
+
 - **Read** - search operations
 - **Edit** - instance management
 
 Store securely:
+
 ```bash
 wrangler secret put AI_SEARCH_TOKEN
 ```

@@ -41,6 +41,7 @@ await this.ctx.blockConcurrencyWhile(async () => {
 ```
 
 **When to use:**
+
 - `waitUntil()`: Background cleanup, logging, non-critical work after response
 - `blockConcurrencyWhile()`: First-time init, schema migration, critical state setup
 
@@ -81,7 +82,8 @@ await this.ctx.storage.deleteAlarm(): void                 // Cancel alarm
 
 ## Storage APIs
 
-For detailed storage documentation including SQLite queries, KV operations, transactions, and Point-in-Time Recovery, see **[DO Storage](../do-storage/README.md)**.
+For detailed storage documentation including SQLite queries, KV operations, transactions, and
+Point-in-Time Recovery, see **[DO Storage](../do-storage/README.md)**.
 
 Quick reference:
 
@@ -120,18 +122,21 @@ async alarm() {
 ```
 
 **Limitations:**
+
 - 1 alarm per DO maximum
 - Overwrites previous alarm when set
 - Use queue pattern for multiple scheduled events (see [Patterns](./patterns.md))
 
 **Reliability:**
+
 - Alarms survive DO eviction/restart
 - Cloudflare retries failed alarms automatically
 - Not guaranteed exactly-once (handle idempotently)
 
 ## WebSocket Hibernation
 
-Hibernation allows DOs with open WebSocket connections to consume zero compute/memory until message arrives.
+Hibernation allows DOs with open WebSocket connections to consume zero compute/memory until message
+arrives.
 
 ```typescript
 async fetch(req: Request): Promise<Response> {
@@ -160,18 +165,22 @@ async webSocketError(ws: WebSocket, error: unknown) {
 ```
 
 **Key concepts:**
+
 - **Auto-hibernation:** DO hibernates when no active requests/alarms
 - **Zero cost:** Hibernated DOs incur no charges while preserving connections
 - **Memory cleared:** All in-memory state lost on hibernation
-- **Attachment persistence:** Use `serializeAttachment()` for per-connection metadata that survives hibernation
+- **Attachment persistence:** Use `serializeAttachment()` for per-connection metadata that survives
+  hibernation
 - **Tags for filtering:** Group connections by room/channel/user for targeted broadcasts
 
 **Handler lifecycle:**
+
 - `webSocketMessage`: DO wakes, processes message, may hibernate after
 - `webSocketClose`: Called when client closes (optional - implement for cleanup)
 - `webSocketError`: Called on connection error (optional - implement for error handling)
 
 **Metadata persistence:**
+
 ```typescript
 // Store connection metadata (survives hibernation)
 ws.serializeAttachment({ userId: "abc", room: "lobby" })

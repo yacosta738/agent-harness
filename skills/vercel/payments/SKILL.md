@@ -82,7 +82,9 @@ chainTo:
 
 # Stripe Payments Integration
 
-You are an expert in Stripe payments for Vercel-deployed applications — covering the native Vercel Marketplace integration, Checkout Sessions, webhook handling, subscription billing, and the Stripe Node.js SDK.
+You are an expert in Stripe payments for Vercel-deployed applications — covering the native Vercel
+Marketplace integration, Checkout Sessions, webhook handling, subscription billing, and the Stripe
+Node.js SDK.
 
 ## Vercel Marketplace Setup (Recommended)
 
@@ -96,6 +98,7 @@ vercel integration add stripe
 ```
 
 Auto-provisioned environment variables:
+
 - `STRIPE_SECRET_KEY` — server-side API key
 - `STRIPE_PUBLISHABLE_KEY` — client-side publishable key
 - `STRIPE_WEBHOOK_SECRET` — webhook endpoint signing secret
@@ -126,7 +129,8 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 ### Server Action (Recommended for 2026)
 
-Server Actions are the preferred pattern for creating Checkout Sessions in Next.js 15+, eliminating the need for API routes:
+Server Actions are the preferred pattern for creating Checkout Sessions in Next.js 15+, eliminating
+the need for API routes:
 
 ```ts
 // app/actions/checkout.ts
@@ -206,7 +210,8 @@ export function CheckoutButton({ priceId }: { priceId: string }) {
 
 ## Webhook Handling
 
-Stripe sends events to your webhook endpoint for asynchronous payment processing. Always verify the signature.
+Stripe sends events to your webhook endpoint for asynchronous payment processing. Always verify the
+signature.
 
 ```ts
 // app/api/webhook/stripe/route.ts
@@ -251,7 +256,8 @@ export async function POST(req: Request) {
 }
 ```
 
-**Important**: Webhook routes must read the raw body as text (not JSON) for signature verification. Do not add `bodyParser` or JSON middleware to webhook routes.
+**Important**: Webhook routes must read the raw body as text (not JSON) for signature verification.
+Do not add `bodyParser` or JSON middleware to webhook routes.
 
 ## Subscription Billing
 
@@ -288,7 +294,8 @@ export async function POST(req: Request) {
 
 ## Embedded Checkout (Recommended)
 
-Stripe's Embedded Checkout renders inside your page via an iframe, keeping users on your domain while offloading PCI compliance to Stripe:
+Stripe's Embedded Checkout renders inside your page via an iframe, keeping users on your domain
+while offloading PCI compliance to Stripe:
 
 ```ts
 // app/actions/embedded-checkout.ts
@@ -371,12 +378,12 @@ export function PaymentForm({ clientSecret }: { clientSecret: string }) {
 
 ## Environment Variables
 
-| Variable | Scope | Description |
-|----------|-------|-------------|
-| `STRIPE_SECRET_KEY` | Server | API secret key (starts with `sk_`) |
-| `STRIPE_PUBLISHABLE_KEY` | Client | Publishable key (starts with `pk_`) |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Client | Alias exposed to browser via Next.js |
-| `STRIPE_WEBHOOK_SECRET` | Server | Webhook signing secret (starts with `whsec_`) |
+| Variable                             | Scope  | Description                                   |
+|--------------------------------------|--------|-----------------------------------------------|
+| `STRIPE_SECRET_KEY`                  | Server | API secret key (starts with `sk_`)            |
+| `STRIPE_PUBLISHABLE_KEY`             | Client | Publishable key (starts with `pk_`)           |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Client | Alias exposed to browser via Next.js          |
+| `STRIPE_WEBHOOK_SECRET`              | Server | Webhook signing secret (starts with `whsec_`) |
 
 ## Cross-References
 

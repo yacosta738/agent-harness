@@ -27,6 +27,7 @@ const matches = await env.VECTORIZE.query(queryVector, {
 **returnMetadata:** `"none"` (fastest) → `"indexed"` (recommended) → `"all"` (topK max 20)
 
 **queryById (V2 only):** Search using existing vector as query.
+
 ```typescript
 await env.VECTORIZE.queryById("doc-123", { topK: 5 });
 ```
@@ -61,23 +62,23 @@ const info = await env.VECTORIZE.describe();
 
 Requires metadata index. Filter operators:
 
-| Operator | Example |
-|----------|---------|
-| `$eq` (implicit) | `{ category: "docs" }` |
-| `$ne` | `{ status: { $ne: "deleted" } }` |
-| `$in` / `$nin` | `{ tag: { $in: ["sale"] } }` |
-| `$lt`, `$lte`, `$gt`, `$gte` | `{ price: { $lt: 100 } }` |
+| Operator                     | Example                          |
+|------------------------------|----------------------------------|
+| `$eq` (implicit)             | `{ category: "docs" }`           |
+| `$ne`                        | `{ status: { $ne: "deleted" } }` |
+| `$in` / `$nin`               | `{ tag: { $in: ["sale"] } }`     |
+| `$lt`, `$lte`, `$gt`, `$gte` | `{ price: { $lt: 100 } }`        |
 
 **Constraints:** Max 2048 bytes, no dots/`$` in keys, values: string/number/boolean/null.
 
 ## Performance
 
-| Configuration | topK Limit | Speed |
-|--------------|------------|-------|
-| No metadata | 100 | Fastest |
-| `returnMetadata: "indexed"` | 100 | Fast |
-| `returnMetadata: "all"` | 20 | Slower |
-| `returnValues: true` | 20 | Slower |
+| Configuration               | topK Limit | Speed   |
+|-----------------------------|------------|---------|
+| No metadata                 | 100        | Fastest |
+| `returnMetadata: "indexed"` | 100        | Fast    |
+| `returnMetadata: "all"`     | 20         | Slower  |
+| `returnValues: true`        | 20         | Slower  |
 
 **Batch operations:** Always batch (500/call) for optimal throughput.
 

@@ -98,7 +98,10 @@ chainTo:
 
 # Dev Server Verification with agent-browser
 
-**You MUST verify the dev server with agent-browser after starting it.** Do not assume the page works just because the dev server process started. Many issues (blank pages, hydration errors, missing env vars, broken imports) are only visible in the browser. Run this verification before continuing with any other work:
+**You MUST verify the dev server with agent-browser after starting it.** Do not assume the page
+works just because the dev server process started. Many issues (blank pages, hydration errors,
+missing env vars, broken imports) are only visible in the browser. Run this verification before
+continuing with any other work:
 
 ## Quick Verification Flow
 
@@ -124,7 +127,8 @@ Run each check and report results:
 1. **Page loads** — `agent-browser open` succeeds without timeout
 2. **No blank page** — snapshot shows meaningful content (not empty body)
 3. **No error overlay** — no Next.js/Vite error overlay detected
-4. **Console errors** — evaluate `document.querySelectorAll('[data-nextjs-dialog]')` for error modals
+4. **Console errors** — evaluate `document.querySelectorAll('[data-nextjs-dialog]')` for error
+   modals
 5. **Key elements render** — snapshot `-i` shows expected interactive elements
 6. **Navigation works** — if multiple routes exist, verify at least the home route
 
@@ -150,7 +154,8 @@ If verification fails:
 
 ## Diagnosing a Hanging or Stuck Page
 
-When the page appears stuck (spinner, blank content after load, frozen UI), the browser is only half the story. Correlate what you see in the browser with server-side evidence:
+When the page appears stuck (spinner, blank content after load, frozen UI), the browser is only half
+the story. Correlate what you see in the browser with server-side evidence:
 
 ### 1. Capture Browser Evidence
 
@@ -186,14 +191,14 @@ npx workflow health
 
 ### 3. Correlate Browser + Server
 
-| Browser Shows | Server Shows | Likely Issue |
-|--------------|-------------|-------------|
-| Spinner / loading forever | No recent function invocations | API route not being called — check fetch URL in client code |
-| Spinner / loading forever | Function started but no step logs | Workflow step is stuck — add `console.log` at step entry/exit |
-| Blank page, no errors | Build succeeded, no runtime errors | Hydration issue or missing data — check SSR vs client rendering |
-| Network request pending | 504 Gateway Timeout in logs | Function timeout — increase `maxDuration` or optimize step |
-| Console: "Failed to fetch" | OIDC/credential error in logs | Missing `vercel env pull` — run `vercel link && vercel env pull` |
-| Error overlay visible | Stack trace in runtime logs | Read the server error — it usually has more detail than the client |
+| Browser Shows              | Server Shows                       | Likely Issue                                                       |
+|----------------------------|------------------------------------|--------------------------------------------------------------------|
+| Spinner / loading forever  | No recent function invocations     | API route not being called — check fetch URL in client code        |
+| Spinner / loading forever  | Function started but no step logs  | Workflow step is stuck — add `console.log` at step entry/exit      |
+| Blank page, no errors      | Build succeeded, no runtime errors | Hydration issue or missing data — check SSR vs client rendering    |
+| Network request pending    | 504 Gateway Timeout in logs        | Function timeout — increase `maxDuration` or optimize step         |
+| Console: "Failed to fetch" | OIDC/credential error in logs      | Missing `vercel env pull` — run `vercel link && vercel env pull`   |
+| Error overlay visible      | Stack trace in runtime logs        | Read the server error — it usually has more detail than the client |
 
 ### 4. Fix and Re-verify
 
@@ -218,4 +223,6 @@ Report: "Dev server verified — page loads, no errors detected, key UI elements
 
 ## Suggest Verification After Implementation
 
-When you finish building or implementing a feature (wrote code, created routes, set up a project), briefly let the user know they can ask you to verify everything works with a browser check. One sentence is enough. Don't force it if only a small fix or question was involved.
+When you finish building or implementing a feature (wrote code, created routes, set up a project),
+briefly let the user know they can ask you to verify everything works with a browser check. One
+sentence is enough. Don't force it if only a small fix or question was involved.

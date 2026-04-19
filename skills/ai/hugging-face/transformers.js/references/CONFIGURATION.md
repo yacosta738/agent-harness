@@ -14,7 +14,8 @@ Complete guide to configuring Transformers.js behavior using the `env` object.
 
 ## Overview
 
-The `env` object provides comprehensive control over Transformers.js execution, caching, and model loading:
+The `env` object provides comprehensive control over Transformers.js execution, caching, and model
+loading:
 
 ```javascript
 import { env } from '@huggingface/transformers';
@@ -117,6 +118,7 @@ env.localModelPath = '/path/to/models/';
 ```
 
 **Default values:**
+
 - Browser: `allowLocalModels = false`, `localModelPath = '/models/'`
 - Node.js: `allowLocalModels = true`, `localModelPath = '/models/'`
 
@@ -156,7 +158,8 @@ const classifier = await pipeline('sentiment-analysis', 'Xenova/distilbert-base-
 
 ## Cache Configuration
 
-Transformers.js supports multiple caching strategies to improve performance and reduce network usage.
+Transformers.js supports multiple caching strategies to improve performance and reduce network
+usage.
 
 ### Quick Configuration
 
@@ -192,6 +195,7 @@ env.cacheDir = null;
 ```
 
 For comprehensive caching documentation including:
+
 - Browser Cache API details and storage limits
 - Node.js filesystem cache structure and management
 - Custom cache implementations (Redis, database, S3)
@@ -238,6 +242,7 @@ env.backends.onnx.wasm.wasmPaths = '/static/wasm/';
 ```
 
 **Required files:**
+
 - `ort-wasm.wasm` - Main WASM binary
 - `ort-wasm-simd.wasm` - SIMD-enabled WASM binary
 - `ort-wasm-threaded.wasm` - Multi-threaded WASM binary
@@ -317,8 +322,6 @@ env.localModelPath = './test-fixtures/models/';
 env.useFSCache = false;
 ```
 
-
-
 ## Environment Best Practices
 
 ### 1. Configure Early
@@ -383,8 +386,10 @@ console.log('Transformers.js Configuration:', {
 
 ## Related Documentation
 
-- **[Caching Reference](./CACHE.md)** - Comprehensive caching guide (browser, Node.js, custom implementations)
-- [Pipeline Options](./PIPELINE_OPTIONS.md) - Configure pipeline loading with `progress_callback`, `device`, `dtype`, etc.
+- **[Caching Reference](./CACHE.md)** - Comprehensive caching guide (browser, Node.js, custom
+  implementations)
+- [Pipeline Options](./PIPELINE_OPTIONS.md) - Configure pipeline loading with `progress_callback`,
+  `device`, `dtype`, etc.
 - [Model Architectures](./MODEL_ARCHITECTURES.md) - Supported models and architectures
 - [Examples](./EXAMPLES.md) - Code examples for different runtimes
 - [Main Skill Guide](../SKILL.md) - Getting started and common usage

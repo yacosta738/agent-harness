@@ -167,10 +167,10 @@ async function playWebRTCStream(videoId: string) {
 
 ## Recording Settings
 
-| Mode | Behavior |
-|------|----------|
-| `automatic` | Record all live streams |
-| `off` | No recording |
+| Mode             | Behavior                                     |
+|------------------|----------------------------------------------|
+| `automatic`      | Record all live streams                      |
+| `off`            | No recording                                 |
 | `timeoutSeconds` | Stop recording after N seconds of inactivity |
 
 ```typescript

@@ -4,16 +4,16 @@
 
 ## Schema
 
-| Property | Type | Options | Purpose |
-|----------|------|---------|---------|
-| **Question** | title | - | The question being asked |
-| **Category** | select | Product, Engineering, Support, HR, General | Question topic |
-| **Tags** | multi_select | - | Specific topics (auth, billing, onboarding, etc.) |
-| **Answer Type** | select | Quick Answer, Detailed Guide, Link to Docs | Response format |
-| **Last Reviewed** | date | - | When answer was verified |
-| **Helpful Count** | number | - | Track usefulness (optional) |
-| **Audience** | select | Internal, External, All | Who should see this |
-| **Related Questions** | relation | Links to related FAQs | Connect similar topics |
+| Property              | Type         | Options                                    | Purpose                                           |
+|-----------------------|--------------|--------------------------------------------|---------------------------------------------------|
+| **Question**          | title        | -                                          | The question being asked                          |
+| **Category**          | select       | Product, Engineering, Support, HR, General | Question topic                                    |
+| **Tags**              | multi_select | -                                          | Specific topics (auth, billing, onboarding, etc.) |
+| **Answer Type**       | select       | Quick Answer, Detailed Guide, Link to Docs | Response format                                   |
+| **Last Reviewed**     | date         | -                                          | When answer was verified                          |
+| **Helpful Count**     | number       | -                                          | Track usefulness (optional)                       |
+| **Audience**          | select       | Internal, External, All                    | Who should see this                               |
+| **Related Questions** | relation     | Links to related FAQs                      | Connect similar topics                            |
 
 ## Usage
 
@@ -32,6 +32,7 @@ Create FAQ entries with properties:
 ## Content Template
 
 Each FAQ page should include:
+
 - **Short Answer**: 1-2 sentence quick response
 - **Detailed Explanation**: Full answer with context
 - **Steps** (if applicable): Numbered procedure

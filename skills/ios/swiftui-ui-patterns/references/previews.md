@@ -2,15 +2,21 @@
 
 ## Intent
 
-Use previews to validate layout, state wiring, and injected dependencies without relying on a running app or live services.
+Use previews to validate layout, state wiring, and injected dependencies without relying on a
+running app or live services.
 
 ## Core rules
 
-- Add `#Preview` coverage for the primary state plus important secondary states such as loading, empty, and error.
-- Use deterministic fixtures, mocks, and sample data. Do not make previews depend on live network calls, real databases, or global singletons.
-- Install required environment dependencies directly in the preview so the view can render in isolation.
-- Keep preview setup close to the view until it becomes noisy; then extract lightweight preview helpers or fixtures.
-- If a preview crashes, fix the state initialization or dependency wiring before expanding the feature further.
+- Add `#Preview` coverage for the primary state plus important secondary states such as loading,
+  empty, and error.
+- Use deterministic fixtures, mocks, and sample data. Do not make previews depend on live network
+  calls, real databases, or global singletons.
+- Install required environment dependencies directly in the preview so the view can render in
+  isolation.
+- Keep preview setup close to the view until it becomes noisy; then extract lightweight preview
+  helpers or fixtures.
+- If a preview crashes, fix the state initialization or dependency wiring before expanding the
+  feature further.
 
 ## Example: simple preview states
 

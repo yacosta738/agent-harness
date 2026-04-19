@@ -164,6 +164,7 @@ interface Env {
 ### Node.js Compatibility
 
 `nodejs_compat_v2` enables:
+
 - `Buffer`, `process.env`, `path`, `stream`
 - CommonJS `require()` for Node modules
 - `node:` imports (e.g., `import { Buffer } from 'node:buffer'`)

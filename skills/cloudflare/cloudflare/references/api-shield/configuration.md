@@ -5,6 +5,7 @@
 > ⚠️ **Classic Schema Validation deprecated.** Use Schema Validation 2.0.
 
 **Upload schema (Dashboard):**
+
 ```
 Security > API Shield > Schema Validation > Add validation
 - Upload .yml/.yaml/.json (OpenAPI v3.0)
@@ -14,6 +15,7 @@ Security > API Shield > Schema Validation > Add validation
 ```
 
 **Change validation action:**
+
 ```
 Security > API Shield > Settings > Schema Validation
 Per-endpoint: Filter → ellipses → Change action
@@ -21,6 +23,7 @@ Default action: Set global mitigation action
 ```
 
 **Migration from Classic:**
+
 ```
 1. Export existing schema (if available)
 2. Delete all Classic schema validation rules
@@ -30,6 +33,7 @@ Default action: Set global mitigation action
 ```
 
 **Fallthrough rule** (catch-all unknown endpoints):
+
 ```
 Security > API Shield > Settings > Fallthrough > Use Template
 - Select hostnames
@@ -37,11 +41,13 @@ Security > API Shield > Settings > Fallthrough > Use Template
 - Action: Log (discover) or Block (strict)
 ```
 
-**Body inspection:** Supports `application/json`, `*/*`, `application/*`. Disable origin MIME sniffing to prevent bypasses.
+**Body inspection:** Supports `application/json`, `*/*`, `application/*`. Disable origin MIME
+sniffing to prevent bypasses.
 
 ## JWT Validation
 
 **Setup token config:**
+
 ```
 Security > API Shield > Settings > JWT Settings > Add configuration
 - Name: "Auth0 JWT Config"
@@ -50,6 +56,7 @@ Security > API Shield > Settings > JWT Settings > Add configuration
 ```
 
 **Create validation rule:**
+
 ```
 Security > API Shield > API Rules > Add rule
 - Hostname: api.example.com
@@ -60,11 +67,13 @@ Security > API Shield > API Rules > Add rule
 ```
 
 **Rate limit by JWT claim:**
+
 ```wirefilter
 lookup_json_string(http.request.jwt.claims["{config_id}"][0], "sub")
 ```
 
 **Special cases:**
+
 - Two JWTs, different IdPs: Create 2 configs, select both, "Validate all"
 - IdP migration: 2 configs + 2 rules, adjust actions per state
 - Bearer prefix: API Shield handles with/without
@@ -73,6 +82,7 @@ lookup_json_string(http.request.jwt.claims["{config_id}"][0], "sub")
 ## Mutual TLS (mTLS)
 
 **Setup:**
+
 ```
 SSL/TLS > Client Certificates > Create Certificate
 - Generate CF-managed CA (all plans)
@@ -80,6 +90,7 @@ SSL/TLS > Client Certificates > Create Certificate
 ```
 
 **Configure mTLS rule:**
+
 ```
 Security > API Shield > mTLS
 - Select hostname(s)
@@ -88,6 +99,7 @@ Security > API Shield > mTLS
 ```
 
 **Test:**
+
 ```bash
 openssl req -x509 -newkey rsa:4096 -keyout client-key.pem -out client-cert.pem -days 365
 curl https://api.example.com/endpoint --cert client-cert.pem --key client-key.pem
@@ -95,11 +107,13 @@ curl https://api.example.com/endpoint --cert client-cert.pem --key client-key.pe
 
 ## Session Identifiers
 
-Critical for BOLA Detection, Sequence Mitigation, and analytics. Configure header/cookie that uniquely IDs API users.
+Critical for BOLA Detection, Sequence Mitigation, and analytics. Configure header/cookie that
+uniquely IDs API users.
 
 **Examples:** JWT sub claim, session token, API key, custom user ID header
 
 **Configure:**
+
 ```
 Security > API Shield > Settings > Session Identifiers
 - Type: Header/Cookie
@@ -111,6 +125,7 @@ Security > API Shield > Settings > Session Identifiers
 Detects Broken Object Level Authorization attacks (enumeration + parameter pollution).
 
 **Enable:**
+
 ```
 Security > API Shield > Schema Validation > [Select Schema] > BOLA Detection
 - Enable detection
@@ -119,6 +134,7 @@ Security > API Shield > Schema Validation > [Select Schema] > BOLA Detection
 ```
 
 **Requirements:**
+
 - Schema Validation 2.0 enabled
 - Session identifiers configured
 - Minimum traffic: 1000+ requests/day per endpoint
@@ -128,6 +144,7 @@ Security > API Shield > Schema Validation > [Select Schema] > BOLA Detection
 Identifies unprotected or inconsistently protected endpoints.
 
 **View report:**
+
 ```
 Security > API Shield > Authentication Posture
 - Shows endpoints lacking JWT/mTLS
@@ -135,6 +152,7 @@ Security > API Shield > Authentication Posture
 ```
 
 **Remediate:**
+
 1. Review flagged endpoints
 2. Add JWT validation rules
 3. Configure mTLS for sensitive endpoints
@@ -144,10 +162,12 @@ Security > API Shield > Authentication Posture
 
 **Volumetric Abuse Detection:**
 `Security > API Shield > Settings > Volumetric Abuse Detection`
+
 - Enable per-endpoint monitoring, set thresholds, action: Log | Challenge | Block
 
 **GraphQL Protection:**
 `Security > API Shield > Settings > GraphQL Protection`
+
 - Max query depth: 10, max size: 100KB, block introspection (production)
 
 ## Terraform

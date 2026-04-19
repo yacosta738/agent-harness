@@ -3,6 +3,7 @@
 ## Intent
 
 Use this pattern for a scalable, multi-platform tab architecture with:
+
 - a single source of truth for tab identity and content,
 - platform-specific tab sets and sidebar sections,
 - dynamic tabs sourced from data,
@@ -16,7 +17,8 @@ Use this pattern for a scalable, multi-platform tab architecture with:
 
 ## Example: custom binding with side effects
 
-Use this when tab selection needs side effects, like intercepting a special tab to perform an action instead of changing selection.
+Use this when tab selection needs side effects, like intercepting a special tab to perform an action
+instead of changing selection.
 
 ```swift
 @MainActor
@@ -98,7 +100,8 @@ struct AppView: View {
 - Use `Tab(value:)` with `selection` binding for state-driven tab selection.
 - Route selection changes through `updateTab` to handle special tabs and scroll-to-top behavior.
 - Use `TabSection` + `.tabPlacement(.sidebarOnly)` for sidebar structure.
-- Use `.tabPlacement(.pinned)` in `AppTab.tabPlacement` for a single pinned tab; this is commonly used for iOS 26 `.searchable` tab content, but can be used for any tab.
+- Use `.tabPlacement(.pinned)` in `AppTab.tabPlacement` for a single pinned tab; this is commonly
+  used for iOS 26 `.searchable` tab content, but can be used for any tab.
 
 ## Dynamic tabs pattern
 

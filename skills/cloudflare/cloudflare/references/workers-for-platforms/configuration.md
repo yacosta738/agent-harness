@@ -3,6 +3,7 @@
 ## Dispatch Namespace Binding
 
 ### wrangler.jsonc
+
 ```jsonc
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
@@ -16,6 +17,7 @@
 ## Worker Isolation Mode
 
 Workers in a namespace run in **untrusted mode** by default for security:
+
 - No access to `request.cf` object
 - Isolated cache per Worker (no shared cache)
 - `caches.default` disabled
@@ -32,14 +34,15 @@ curl -X PUT \
 ```
 
 **Caveats:**
+
 - Workers share cache within namespace (use cache key prefixes: `customer-${id}:${key}`)
 - `request.cf` object accessible
 - Redeploy existing Workers after enabling trusted mode
 
 **When to use:** Internal platforms, A/B testing platforms, need geolocation data
 
-
 ### With Outbound Worker
+
 ```jsonc
 {
   "dispatch_namespaces": [{
@@ -81,6 +84,7 @@ const userWorker = env.DISPATCHER.get(
 ```
 
 Handle limit violations:
+
 ```typescript
 try {
   return await userWorker.fetch(request);
@@ -97,6 +101,7 @@ try {
 Deploy HTML/CSS/images with Workers. See [api.md](./api.md#static-assets) for upload process.
 
 ### Wrangler
+
 ```jsonc
 {
   "name": "customer-site",
@@ -141,9 +146,11 @@ Common patterns: `customer-123`, `free|pro|enterprise`, `production|staging`
 
 ## Bindings
 
-**Supported binding types:** 29 total including KV, D1, R2, Durable Objects, Analytics Engine, Service, Assets, Queue, Vectorize, Hyperdrive, Workflow, AI, Browser, and more.
+**Supported binding types:** 29 total including KV, D1, R2, Durable Objects, Analytics Engine,
+Service, Assets, Queue, Vectorize, Hyperdrive, Workflow, AI, Browser, and more.
 
 Add via API metadata (see [api.md](./api.md#deploy-with-bindings)):
+
 ```json
 {
   "bindings": [
@@ -155,6 +162,7 @@ Add via API metadata (see [api.md](./api.md#deploy-with-bindings)):
 ```
 
 Preserve existing bindings:
+
 ```json
 {
   "bindings": [{"type": "r2_bucket", "name": "STORAGE", "bucket_name": "new"}],

@@ -40,6 +40,7 @@ POST /jwt_validation_rules             # Rule: {name,hostname,token_validation_i
 ## Workers Integration
 
 ### Access JWT Claims
+
 ```js
 export default {
   async fetch(req, env) {
@@ -54,6 +55,7 @@ export default {
 ```
 
 ### Access mTLS Info
+
 ```js
 export default {
   async fetch(req, env) {
@@ -67,6 +69,7 @@ export default {
 ```
 
 ### Dynamic JWKS Update
+
 ```js
 export default {
   async scheduled(event, env) {
@@ -83,6 +86,7 @@ export default {
 ## Firewall Fields
 
 ### Core Fields
+
 ```js
 cf.api_gateway.auth_id_present           // Session ID present
 cf.api_gateway.request_violates_schema   // Schema violation
@@ -92,6 +96,7 @@ cf.tls_client_auth.cert_fingerprint_sha256
 ```
 
 ### JWT Validation (2026)
+
 ```js
 // Modern validation syntax
 is_jwt_valid(http.request.jwt.payload["{config_id}"][0])
@@ -104,6 +109,7 @@ lookup_json_string(http.request.jwt.payload["{config_id}"][0], "claim_name")
 ```
 
 ### Risk Labels (2026)
+
 ```js
 // BOLA detection
 cf.api_gateway.cf-risk-bola-enumeration  // Sequential resource access detected

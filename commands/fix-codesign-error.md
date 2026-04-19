@@ -11,7 +11,8 @@ Inspect a macOS signing or entitlement failure and explain the minimum fix path.
 ## Workflow
 
 1. Inspect the app bundle, executable, signing info, and entitlements.
-2. Determine whether the problem is identity, provisioning, hardened runtime, sandboxing, or trust policy.
+2. Determine whether the problem is identity, provisioning, hardened runtime, sandboxing, or trust
+   policy.
 3. Summarize the exact failure class in plain language.
 4. Provide the minimal repair sequence or validation command.
 

@@ -16,11 +16,13 @@ export default {
 ```
 
 **Why it breaks:**
+
 - `env` not available in global scope
 - If using workarounds, secrets may not update without redeployment
 - Leads to "Cannot read property 'X' of undefined" errors
 
 **✅ Always access env per-request:**
+
 ```typescript
 export default {
   async fetch(request: Request, env: Env) {
@@ -34,7 +36,8 @@ export default {
 ### "env.MY_KV is undefined"
 
 **Cause:** Name mismatch or not configured
-**Solution:** Check wrangler.jsonc (case-sensitive), run `npx wrangler types`, verify `npx wrangler kv namespace list`
+**Solution:** Check wrangler.jsonc (case-sensitive), run `npx wrangler types`, verify
+`npx wrangler kv namespace list`
 
 ### "Property 'MY_KV' does not exist on type 'Env'"
 
@@ -55,6 +58,7 @@ export default {
 
 **Cause:** Eventual consistency (60s), wrong namespace, wrong environment
 **Solution:**
+
 ```bash
 # Check key exists
 npx wrangler kv key get --binding=MY_KV "your-key"
@@ -74,6 +78,7 @@ npx wrangler deployments list
 
 **Cause:** Target Worker not deployed, name mismatch, environment mismatch
 **Solution:**
+
 ```bash
 # List deployed Workers
 npx wrangler deployments list --name=target-worker
@@ -121,6 +126,7 @@ if (!value) return new Response('Not found', { status: 404 });
 ## Development Gotchas
 
 **wrangler dev vs deploy:**
+
 - dev: Uses `preview_id` or local bindings, secrets not available
 - deploy: Uses production `id`, secrets available
 
@@ -153,25 +159,25 @@ const [user, config] = await Promise.all([
 
 ## Limits Reference
 
-| Resource | Limit | Impact | Plan |
-|----------|-------|--------|------|
-| **Bindings per Worker** | 64 total | All binding types combined | All |
-| **Environment variables** | 64 max, 5KB each | Per Worker | All |
-| **Secret size** | 1KB | Per secret | All |
-| **KV key size** | 512 bytes | UTF-8 encoded | All |
-| **KV value size** | 25 MB | Per value | All |
-| **KV writes per key** | 1/second | Per key; exceeding = 429 error | All |
-| **KV list() results** | 1000 keys | Per call; use cursor for more | All |
-| **KV operations** | 1000 reads/day | Free tier only | Free |
-| **R2 object size** | 5 TB | Per object | All |
-| **R2 operations** | 1M Class A/month free | Writes | All |
-| **D1 database size** | 10 GB | Per database | All |
-| **D1 rows per query** | 100,000 | Result set limit | All |
-| **D1 databases** | 10 | Free tier | Free |
-| **Queue batch size** | 100 messages | Per consumer batch | All |
-| **Queue message size** | 128 KB | Per message | All |
-| **Service binding calls** | Unlimited | Counts toward CPU time | All |
-| **Durable Objects** | 1M requests/month free | First 1M | Free |
+| Resource                  | Limit                  | Impact                         | Plan |
+|---------------------------|------------------------|--------------------------------|------|
+| **Bindings per Worker**   | 64 total               | All binding types combined     | All  |
+| **Environment variables** | 64 max, 5KB each       | Per Worker                     | All  |
+| **Secret size**           | 1KB                    | Per secret                     | All  |
+| **KV key size**           | 512 bytes              | UTF-8 encoded                  | All  |
+| **KV value size**         | 25 MB                  | Per value                      | All  |
+| **KV writes per key**     | 1/second               | Per key; exceeding = 429 error | All  |
+| **KV list() results**     | 1000 keys              | Per call; use cursor for more  | All  |
+| **KV operations**         | 1000 reads/day         | Free tier only                 | Free |
+| **R2 object size**        | 5 TB                   | Per object                     | All  |
+| **R2 operations**         | 1M Class A/month free  | Writes                         | All  |
+| **D1 database size**      | 10 GB                  | Per database                   | All  |
+| **D1 rows per query**     | 100,000                | Result set limit               | All  |
+| **D1 databases**          | 10                     | Free tier                      | Free |
+| **Queue batch size**      | 100 messages           | Per consumer batch             | All  |
+| **Queue message size**    | 128 KB                 | Per message                    | All  |
+| **Service binding calls** | Unlimited              | Counts toward CPU time         | All  |
+| **Durable Objects**       | 1M requests/month free | First 1M                       | Free |
 
 ## Debugging Tips
 

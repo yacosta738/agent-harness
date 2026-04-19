@@ -51,11 +51,11 @@ await this.ctx.storage.put("key", value, { allowUnconfirmed: true, noCache: true
 
 ### Storage Options
 
-| Option | Methods | Effect | Use Case |
-|--------|---------|--------|----------|
-| `allowConcurrency` | get, list | Skip input gate; allow concurrent requests during read | Read-heavy metrics that don't need strict consistency |
-| `noCache` | get, put, list | Skip in-memory cache; always read from disk | Rarely-accessed data or testing storage directly |
-| `allowUnconfirmed` | put, delete | Return before write confirms (still protected by output gate) | Non-critical writes where latency matters more than confirmation |
+| Option             | Methods        | Effect                                                        | Use Case                                                         |
+|--------------------|----------------|---------------------------------------------------------------|------------------------------------------------------------------|
+| `allowConcurrency` | get, list      | Skip input gate; allow concurrent requests during read        | Read-heavy metrics that don't need strict consistency            |
+| `noCache`          | get, put, list | Skip in-memory cache; always read from disk                   | Rarely-accessed data or testing storage directly                 |
+| `allowUnconfirmed` | put, delete    | Return before write confirms (still protected by output gate) | Non-critical writes where latency matters more than confirmation |
 
 ## Transactions
 

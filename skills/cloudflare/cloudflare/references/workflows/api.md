@@ -136,6 +136,7 @@ Sleeping instances don't count toward concurrency.
 ## Parameters
 
 **Pass from Worker:**
+
 ```typescript
 const instance = await env.MY_WORKFLOW.create({
   id: crypto.randomUUID(),
@@ -144,6 +145,7 @@ const instance = await env.MY_WORKFLOW.create({
 ```
 
 **Access in Workflow:**
+
 ```typescript
 async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
   const userId = event.params.userId;
@@ -153,6 +155,7 @@ async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
 ```
 
 **CLI Trigger:**
+
 ```bash
 npx wrangler workflows trigger my-workflow '{"userId":"user123"}'
 ```

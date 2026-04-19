@@ -22,6 +22,7 @@ export default {
 ```
 
 **Key points:**
+
 - `send()` accepts single object or array
 - Always returns `Promise<void>` (no confirmation data)
 - Throws on network/validation errors (wrap in try/catch)
@@ -51,6 +52,7 @@ await env.STREAM.send(events);
 ```
 
 **Limits:**
+
 - Max 1 MB per request
 - 5 MB/s per stream
 
@@ -122,33 +124,34 @@ Create token: Dashboard → Workers → API tokens → Create with Pipeline Send
 
 ### Response Codes
 
-| Code | Meaning | Action |
-|------|---------|--------|
-| 200 | Accepted | Success |
-| 400 | Invalid format | Check JSON array, schema match |
-| 401 | Auth failed | Verify token valid |
-| 413 | Payload too large | Split into smaller batches (<1 MB) |
-| 429 | Rate limited | Back off, retry with delay |
-| 5xx | Server error | Retry with exponential backoff |
+| Code | Meaning           | Action                             |
+|------|-------------------|------------------------------------|
+| 200  | Accepted          | Success                            |
+| 400  | Invalid format    | Check JSON array, schema match     |
+| 401  | Auth failed       | Verify token valid                 |
+| 413  | Payload too large | Split into smaller batches (<1 MB) |
+| 429  | Rate limited      | Back off, retry with delay         |
+| 5xx  | Server error      | Retry with exponential backoff     |
 
 ## SQL Functions Quick Reference
 
 Available in `INSERT INTO sink SELECT ... FROM stream` transformations:
 
-| Function | Example | Use Case |
-|----------|---------|----------|
-| `UPPER(s)` | `UPPER(event_type)` | Normalize strings |
-| `LOWER(s)` | `LOWER(email)` | Case-insensitive matching |
-| `CONCAT(...)` | `CONCAT(user_id, '_', product_id)` | Generate composite keys |
-| `CASE WHEN ... THEN ... END` | `CASE WHEN amount > 100 THEN 'high' ELSE 'low' END` | Conditional enrichment |
-| `CAST(x AS type)` | `CAST(timestamp AS string)` | Type conversion |
-| `COALESCE(x, y)` | `COALESCE(amount, 0.0)` | Default values |
-| Math operators | `amount * 1.1`, `price / quantity` | Calculations |
-| Comparison | `amount > 100`, `status IN ('active', 'pending')` | Filtering |
+| Function                     | Example                                             | Use Case                  |
+|------------------------------|-----------------------------------------------------|---------------------------|
+| `UPPER(s)`                   | `UPPER(event_type)`                                 | Normalize strings         |
+| `LOWER(s)`                   | `LOWER(email)`                                      | Case-insensitive matching |
+| `CONCAT(...)`                | `CONCAT(user_id, '_', product_id)`                  | Generate composite keys   |
+| `CASE WHEN ... THEN ... END` | `CASE WHEN amount > 100 THEN 'high' ELSE 'low' END` | Conditional enrichment    |
+| `CAST(x AS type)`            | `CAST(timestamp AS string)`                         | Type conversion           |
+| `COALESCE(x, y)`             | `COALESCE(amount, 0.0)`                             | Default values            |
+| Math operators               | `amount * 1.1`, `price / quantity`                  | Calculations              |
+| Comparison                   | `amount > 100`, `status IN ('active', 'pending')`   | Filtering                 |
 
 **String types for CAST:** `string`, `int32`, `int64`, `float32`, `float64`, `bool`, `timestamp`
 
-Full reference: [Pipelines SQL Reference](https://developers.cloudflare.com/pipelines/sql-reference/)
+Full
+reference: [Pipelines SQL Reference](https://developers.cloudflare.com/pipelines/sql-reference/)
 
 ## SQL Transform Examples
 

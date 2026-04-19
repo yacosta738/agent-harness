@@ -1,16 +1,17 @@
 # Cloudflare API Shield Reference
 
-Expert guidance for API Shield - comprehensive API security suite for discovery, protection, and monitoring.
+Expert guidance for API Shield - comprehensive API security suite for discovery, protection, and
+monitoring.
 
 ## Reading Order
 
-| Task | Files to Read |
-|------|---------------|
-| Initial setup | README → configuration.md |
-| Implement JWT validation | configuration.md → api.md |
-| Add schema validation | configuration.md → patterns.md |
-| Detect API attacks | patterns.md → api.md |
-| Debug issues | gotchas.md |
+| Task                     | Files to Read                  |
+|--------------------------|--------------------------------|
+| Initial setup            | README → configuration.md      |
+| Implement JWT validation | configuration.md → api.md      |
+| Add schema validation    | configuration.md → patterns.md |
+| Detect API attacks       | patterns.md → api.md           |
+| Debug issues             | gotchas.md                     |
 
 ## Feature Selection
 
@@ -35,7 +36,8 @@ What protection do you need?
 
 ## Quick Start
 
-API Shield: Enterprise-grade API security (Discovery, Schema Validation 2.0, JWT, mTLS, BOLA Detection, Auth Posture). Available as Enterprise add-on with preview access.
+API Shield: Enterprise-grade API security (Discovery, Schema Validation 2.0, JWT, mTLS, BOLA
+Detection, Auth Posture). Available as Enterprise add-on with preview access.
 
 ## See Also
 

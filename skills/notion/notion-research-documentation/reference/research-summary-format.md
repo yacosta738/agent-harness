@@ -7,6 +7,7 @@
 **Length**: 500-1000 words typically
 
 **Structure**:
+
 - Executive summary (2-3 sentences)
 - 3-5 key findings with supporting evidence
 - Detailed analysis section

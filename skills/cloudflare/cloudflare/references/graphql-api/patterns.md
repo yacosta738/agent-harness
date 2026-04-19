@@ -44,7 +44,8 @@ query TopCountries($zoneTag: string!, $start: Time!, $end: Time!) {
 }
 ```
 
-Use `orderBy: [sum_edgeResponseBytes_DESC]` for top paths by bandwidth. Add `edgeResponseStatus_geq: 400` to the filter for top error status codes.
+Use `orderBy: [sum_edgeResponseBytes_DESC]` for top paths by bandwidth. Add
+`edgeResponseStatus_geq: 400` to the filter for top error status codes.
 
 ## Workers Analytics
 
@@ -66,7 +67,8 @@ query WorkersOverview($accountTag: string!, $start: Time!, $end: Time!) {
 }
 ```
 
-Filter by `scriptName` for a specific Worker. Add `datetimeFiveMinutes` dimension + `orderBy: [datetimeFiveMinutes_ASC]` for error rate over time.
+Filter by `scriptName` for a specific Worker. Add `datetimeFiveMinutes` dimension +
+`orderBy: [datetimeFiveMinutes_ASC]` for error rate over time.
 
 ## Firewall / Security
 
@@ -87,7 +89,8 @@ query RecentFirewallEvents($zoneTag: string!, $start: Time!) {
 }
 ```
 
-For aggregated firewall stats, use `firewallEventsAdaptiveGroups` with `action: "block"` filter and group by `ruleId`, `source`, `datetimeHour`.
+For aggregated firewall stats, use `firewallEventsAdaptiveGroups` with `action: "block"` filter and
+group by `ruleId`, `source`, `datetimeHour`.
 
 ## DNS Analytics
 
@@ -152,7 +155,8 @@ query CacheStatusBreakdown($zoneTag: string!, $start: Time!, $end: Time!) {
 }
 ```
 
-For cache hit ratio over time, use aliases to query the same dataset twice — once with `cacheStatus: "hit"` filter and once without — then compute the ratio client-side.
+For cache hit ratio over time, use aliases to query the same dataset twice — once with
+`cacheStatus: "hit"` filter and once without — then compute the ratio client-side.
 
 ## Multi-Dataset Queries
 
@@ -206,12 +210,12 @@ Both are account-scoped — nest under `accounts(filter: { accountTag: $accountT
 
 **Match time granularity to range:**
 
-| Time Range | Recommended Dimension |
-|------------|----------------------|
-| < 6 hours | `datetimeMinute` or `datetimeFiveMinutes` |
+| Time Range | Recommended Dimension                             |
+|------------|---------------------------------------------------|
+| < 6 hours  | `datetimeMinute` or `datetimeFiveMinutes`         |
 | 6-48 hours | `datetimeFiveMinutes` or `datetimeFifteenMinutes` |
-| 2-14 days | `datetimeHour` |
-| 14+ days | `date` |
+| 2-14 days  | `datetimeHour`                                    |
+| 14+ days   | `date`                                            |
 
 **Use aliases** for querying the same dataset with different filters in one request.
 

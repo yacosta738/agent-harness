@@ -12,6 +12,7 @@ https://dash.cloudflare.com/caching/cache-reserve
 ```
 
 **Prerequisites:**
+
 - Paid Cache Reserve plan or Smart Shield Advanced required
 - Tiered Cache **required** for Cache Reserve to function optimally
 
@@ -159,7 +160,8 @@ Control Cache Reserve eligibility via Cache Rules:
 
 ## Wrangler Integration
 
-Cache Reserve works automatically with Workers deployed via Wrangler. No special wrangler.jsonc configuration needed - enable Cache Reserve via Dashboard or API for the zone.
+Cache Reserve works automatically with Workers deployed via Wrangler. No special wrangler.jsonc
+configuration needed - enable Cache Reserve via Dashboard or API for the zone.
 
 ## See Also
 

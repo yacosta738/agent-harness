@@ -48,7 +48,8 @@ chainTo:
 
 # Turborepo
 
-You are an expert in Turborepo v2.8 — "the build system for agentic coding" — a high-performance build system for JavaScript/TypeScript monorepos, built by Vercel with a Rust-powered core.
+You are an expert in Turborepo v2.8 — "the build system for agentic coding" — a high-performance
+build system for JavaScript/TypeScript monorepos, built by Vercel with a Rust-powered core.
 
 ## Key Features
 
@@ -194,16 +195,16 @@ turbo build --filter=@myorg/*
 
 ### Filter syntax reference
 
-| Pattern | Meaning |
-|---------|---------|
-| `web` | Only the `web` package |
-| `web...` | `web` and all its dependencies |
-| `...web` | `web` and all its dependents |
-| `...web...` | `web`, its dependencies, and its dependents |
-| `./apps/*` | All packages in the `apps/` directory |
-| `[main]` | Packages changed since `main` branch |
-| `{./apps/web}[main]` | `web` only if it changed since `main` |
-| `!docs` | Exclude the `docs` package |
+| Pattern              | Meaning                                     |
+|----------------------|---------------------------------------------|
+| `web`                | Only the `web` package                      |
+| `web...`             | `web` and all its dependencies              |
+| `...web`             | `web` and all its dependents                |
+| `...web...`          | `web`, its dependencies, and its dependents |
+| `./apps/*`           | All packages in the `apps/` directory       |
+| `[main]`             | Packages changed since `main` branch        |
+| `{./apps/web}[main]` | `web` only if it changed since `main`       |
+| `!docs`              | Exclude the `docs` package                  |
 
 ## CI Matrix Strategies
 
@@ -296,12 +297,15 @@ turbo watch test --filter=web
 turbo watch test lint
 ```
 
-Watch mode respects the task graph — if `test` depends on `build`, changing a source file re-runs `build` first, then `test`.
+Watch mode respects the task graph — if `test` depends on `build`, changing a source file re-runs
+`build` first, then `test`.
 
 ### Persistent tasks vs watch
 
-- `persistent: true` in turbo.json: The task itself is long-running (e.g., `next dev`). Turbo starts it and keeps it alive.
-- `turbo watch`: Turbo re-invokes the task on file changes. Use for tasks that run and exit (e.g., `vitest run`, `tsc --noEmit`).
+- `persistent: true` in turbo.json: The task itself is long-running (e.g., `next dev`). Turbo starts
+  it and keeps it alive.
+- `turbo watch`: Turbo re-invokes the task on file changes. Use for tasks that run and exit (e.g.,
+  `vitest run`, `tsc --noEmit`).
 
 ## Boundary Rules
 
@@ -331,6 +335,7 @@ Enforce architectural constraints across your monorepo with `boundaries` in turb
 ```
 
 This enforces:
+
 - Apps can import shared packages
 - Shared packages cannot import from apps
 - Violations produce build-time errors with `turbo boundaries`
@@ -379,6 +384,7 @@ turbo build --dry-run=json
 ```
 
 The dry run output shows:
+
 - Each task that would execute
 - Cache status (HIT or MISS)
 - Dependencies and dependents
@@ -397,7 +403,9 @@ turbo docs
 npx @turbo/codemod migrate
 ```
 
-> **Note**: `turbo docs` output is optimized for AI coding agents — markdown format preserves context windows. The docs site also includes sample prompts for common tasks you can copy directly into your agent.
+> **Note**: `turbo docs` output is optimized for AI coding agents — markdown format preserves
+> context windows. The docs site also includes sample prompts for common tasks you can copy directly
+> into your agent.
 
 ## Composable Configuration (2.7+)
 
@@ -486,6 +494,7 @@ turbo build test lint --affected
 ```
 
 This performs intelligent graph traversal:
+
 1. Identifies changed files since the base branch
 2. Maps changes to affected packages
 3. Includes all dependent packages (transitively)
@@ -493,7 +502,8 @@ This performs intelligent graph traversal:
 
 ## Microfrontends & Multi-App Composition
 
-Turborepo is the recommended orchestration layer for Vercel's Microfrontends architecture — composing multiple independently-deployed apps behind a single URL.
+Turborepo is the recommended orchestration layer for Vercel's Microfrontends architecture —
+composing multiple independently-deployed apps behind a single URL.
 
 ### Monorepo Structure for Microfrontends
 
@@ -542,7 +552,9 @@ Use Turborepo's dependency graph to share code without coupling deploys:
 }
 ```
 
-Shared packages (`ui`, `auth`, `config`) are built first via `^build`, then each micro-app builds against the latest shared code. Remote caching ensures shared package builds are never repeated across micro-app deploys.
+Shared packages (`ui`, `auth`, `config`) are built first via `^build`, then each micro-app builds
+against the latest shared code. Remote caching ensures shared package builds are never repeated
+across micro-app deploys.
 
 ### Multi-Zone Patterns
 
@@ -584,13 +596,13 @@ Combine with Turborepo boundary rules to enforce architectural isolation:
 
 ### When to Use Turborepo for Microfrontends
 
-| Scenario | Recommended? |
-|----------|-------------|
-| Multiple teams owning independent features | Yes — independent deploys + shared packages |
-| Single team, single app | No — standard Next.js is simpler |
-| Shared component library across apps | Yes — `packages/ui` with boundary rules |
-| Gradual migration from monolith | Yes — extract features into micro-apps incrementally |
-| Need version-skew protection | Yes — isolated builds per micro-app |
+| Scenario                                   | Recommended?                                         |
+|--------------------------------------------|------------------------------------------------------|
+| Multiple teams owning independent features | Yes — independent deploys + shared packages          |
+| Single team, single app                    | No — standard Next.js is simpler                     |
+| Shared component library across apps       | Yes — `packages/ui` with boundary rules              |
+| Gradual migration from monolith            | Yes — extract features into micro-apps incrementally |
+| Need version-skew protection               | Yes — isolated builds per micro-app                  |
 
 ### Related Documentation
 
@@ -601,10 +613,16 @@ Combine with Turborepo boundary rules to enforce architectural isolation:
 
 Turborepo 2.6+ has **stable Bun support** with granular lockfile analysis:
 
-- **Lockfile format**: Turborepo requires `bun.lock` (text format). If only `bun.lockb` (binary) is found, it errors with a prompt to generate a text lockfile. Generate with `bun install --save-text-lockfile`.
-- **Granular cache invalidation**: Turborepo parses `bun.lock` to detect which specific packages changed and only invalidates caches for affected tasks — not the entire monorepo.
-- **Pruning**: `turbo prune` works with Bun workspaces, generating a minimal lockfile for single-app deploys.
-- **Skip-builds detection**: On Vercel, monorepo workspace detection automatically skips unaffected projects when `bun.lock` changes don't touch a project's dependencies. Combined with `--affected`, only changed packages and their dependents rebuild.
+- **Lockfile format**: Turborepo requires `bun.lock` (text format). If only `bun.lockb` (binary) is
+  found, it errors with a prompt to generate a text lockfile. Generate with
+  `bun install --save-text-lockfile`.
+- **Granular cache invalidation**: Turborepo parses `bun.lock` to detect which specific packages
+  changed and only invalidates caches for affected tasks — not the entire monorepo.
+- **Pruning**: `turbo prune` works with Bun workspaces, generating a minimal lockfile for single-app
+  deploys.
+- **Skip-builds detection**: On Vercel, monorepo workspace detection automatically skips unaffected
+  projects when `bun.lock` changes don't touch a project's dependencies. Combined with `--affected`,
+  only changed packages and their dependents rebuild.
 
 ```bash
 # Ensure text lockfile for Turborepo compatibility
@@ -614,23 +632,26 @@ bun install --save-text-lockfile
 turbo build --affected
 ```
 
-> **Known issue**: `turbo prune` with Bun 1.3+ may produce lockfiles with formatting differences that break `bun i --frozen-lockfile`. Track fixes in [turborepo#11007](https://github.com/vercel/turborepo/issues/11007).
+> **Known issue**: `turbo prune` with Bun 1.3+ may produce lockfiles with formatting differences
+> that break `bun i --frozen-lockfile`. Track fixes
+> in [turborepo#11007](https://github.com/vercel/turborepo/issues/11007).
 
 ## Deploying to Vercel
 
-Vercel auto-detects Turborepo and optimizes builds. Each app in `apps/` can be a separate Vercel project with automatic dependency detection.
+Vercel auto-detects Turborepo and optimizes builds. Each app in `apps/` can be a separate Vercel
+project with automatic dependency detection.
 
 ## When to Use Turborepo
 
-| Scenario | Use Turborepo? |
-|----------|----------------|
-| Single Next.js app | No — Turbopack handles bundling |
-| Multiple apps sharing code | Yes — orchestrate builds |
-| Shared component library | Yes — manage dependencies |
-| CI taking too long | Yes — caching + affected |
-| Team sharing build artifacts | Yes — remote caching |
-| Enforcing architecture boundaries | Yes — boundary rules |
-| Complex multi-step CI pipelines | Yes — task graph + matrix |
+| Scenario                          | Use Turborepo?                  |
+|-----------------------------------|---------------------------------|
+| Single Next.js app                | No — Turbopack handles bundling |
+| Multiple apps sharing code        | Yes — orchestrate builds        |
+| Shared component library          | Yes — manage dependencies       |
+| CI taking too long                | Yes — caching + affected        |
+| Team sharing build artifacts      | Yes — remote caching            |
+| Enforcing architecture boundaries | Yes — boundary rules            |
+| Complex multi-step CI pipelines   | Yes — task graph + matrix       |
 
 ## Official Documentation
 

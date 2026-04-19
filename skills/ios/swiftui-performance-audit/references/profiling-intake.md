@@ -2,12 +2,14 @@
 
 ## Intent
 
-Use this checklist when code review alone cannot explain the SwiftUI performance issue and you need runtime evidence from the user.
+Use this checklist when code review alone cannot explain the SwiftUI performance issue and you need
+runtime evidence from the user.
 
 ## Ask for first
 
 - Exact symptom: CPU spike, dropped frames, memory growth, hangs, or excessive view updates.
-- Exact interaction: scrolling, typing, initial load, navigation push/pop, animation, sheet presentation, or background refresh.
+- Exact interaction: scrolling, typing, initial load, navigation push/pop, animation, sheet
+  presentation, or background refresh.
 - Target device and OS version.
 - Whether the issue was reproduced on a real device or only in Simulator.
 - Build configuration: Debug or Release.
@@ -16,6 +18,7 @@ Use this checklist when code review alone cannot explain the SwiftUI performance
 ## Default profiling request
 
 Ask the user to:
+
 - Run the app in a Release build when possible.
 - Use the SwiftUI Instruments template.
 - Reproduce the exact problematic interaction only long enough to capture the issue.
@@ -34,7 +37,8 @@ Ask the user to:
 
 - Ask for a second capture if the first run mixes multiple interactions.
 - Ask for a before/after pair if the user has already tried a fix.
-- Ask for a device capture if the issue only appears in Simulator or if scrolling smoothness matters.
+- Ask for a device capture if the issue only appears in Simulator or if scrolling smoothness
+  matters.
 
 ## Common traps
 

@@ -72,7 +72,9 @@ You are an expert in Satori and `@vercel/og` for generating dynamic Open Graph i
 
 ## Overview
 
-**Satori** converts JSX-like HTML and CSS into SVG. **`@vercel/og`** wraps Satori with an `ImageResponse` class that renders the SVG to PNG, designed to run in Vercel Edge Functions and other edge runtimes.
+**Satori** converts JSX-like HTML and CSS into SVG. **`@vercel/og`** wraps Satori with an
+`ImageResponse` class that renders the SVG to PNG, designed to run in Vercel Edge Functions and
+other edge runtimes.
 
 ## Installation
 
@@ -188,6 +190,7 @@ const svg = await satori(
 Satori uses a subset of CSS with Flexbox layout (Yoga engine):
 
 **Supported:**
+
 - `display: flex` (default — all elements are flex containers)
 - Flexbox properties: `flexDirection`, `alignItems`, `justifyContent`, `flexWrap`, `gap`
 - Box model: `width`, `height`, `padding`, `margin`, `border`, `borderRadius`
@@ -201,6 +204,7 @@ Satori uses a subset of CSS with Flexbox layout (Yoga engine):
 - White space: `whiteSpace`, `wordBreak`, `textOverflow`
 
 **Not supported:**
+
 - `display: grid` — use nested flex containers instead
 - CSS animations or transitions
 - `position: fixed` or `sticky`
@@ -268,9 +272,11 @@ For local images, convert to base64 or use absolute deployment URLs.
 1. **Use `next/og` in Next.js projects** — it re-exports `ImageResponse` with built-in optimizations
 2. **Always set `runtime = 'edge'`** — Satori and `@vercel/og` are designed for edge runtimes
 3. **Use `display: 'flex'` everywhere** — Satori defaults to flex layout, no block or grid support
-4. **Load fonts explicitly** — no system fonts are available; bundle `.ttf`/`.woff` files or fetch from CDN
+4. **Load fonts explicitly** — no system fonts are available; bundle `.ttf`/`.woff` files or fetch
+   from CDN
 5. **Standard OG dimensions are 1200×630** — this is the most widely supported size
-6. **Use convention files for automatic `<meta>` tags** — `opengraph-image.tsx` and `twitter-image.tsx`
+6. **Use convention files for automatic `<meta>` tags** — `opengraph-image.tsx` and
+   `twitter-image.tsx`
 7. **Inline styles only** — Satori does not support external CSS or CSS-in-JS libraries
 
 ## Official Resources

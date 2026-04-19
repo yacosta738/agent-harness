@@ -3,18 +3,23 @@
 ## Script Loading
 
 ### Basic (Implicit Rendering)
+
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 ```
+
 Automatically renders widgets with `class="cf-turnstile"` on page load.
 
 ### Explicit Rendering
+
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 ```
+
 Manual control over when/where widgets render via `window.turnstile.render()`.
 
 ### With Load Callback
+
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=myCallback"></script>
 <script>
@@ -26,9 +31,11 @@ function myCallback() {
 ```
 
 ### Compatibility Mode
+
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?compat=recaptcha"></script>
 ```
+
 Provides `grecaptcha` API for Google reCAPTCHA drop-in replacement.
 
 ## Widget Configuration
@@ -75,20 +82,24 @@ Provides `grecaptcha` API for Google reCAPTCHA drop-in replacement.
 ### Key Options Explained
 
 **`execution`:**
+
 - `'render'` (default): Challenge starts immediately on render
 - `'execute'`: Wait for `turnstile.execute()` call
 
 **`appearance`:**
+
 - `'always'` (default): Widget always visible
 - `'execute'`: Hidden until `execute()` called
 - `'interaction-only'`: Hidden until user interaction needed
 
 **`refresh-expired`:**
+
 - `'auto'` (default): Auto-refresh expired tokens
 - `'manual'`: App must call `reset()` after expiry
 - `'never'`: No refresh, expired-callback triggered
 
 **`retry`:**
+
 - `'auto'` (default): Auto-retry failed challenges
 - `'never'`: Don't retry, trigger error-callback
 
@@ -96,28 +107,29 @@ Provides `grecaptcha` API for Google reCAPTCHA drop-in replacement.
 
 For implicit rendering, use data attributes on `<div class="cf-turnstile">`:
 
-| JavaScript Property | HTML Data Attribute | Example |
-|---------------------|---------------------|---------|
-| `sitekey` | `data-sitekey` | `data-sitekey="YOUR_KEY"` |
-| `action` | `data-action` | `data-action="login"` |
-| `cData` | `data-cdata` | `data-cdata="session-123"` |
-| `callback` | `data-callback` | `data-callback="onSuccess"` |
-| `error-callback` | `data-error-callback` | `data-error-callback="onError"` |
-| `expired-callback` | `data-expired-callback` | `data-expired-callback="onExpired"` |
-| `timeout-callback` | `data-timeout-callback` | `data-timeout-callback="onTimeout"` |
-| `theme` | `data-theme` | `data-theme="dark"` |
-| `size` | `data-size` | `data-size="compact"` |
-| `tabindex` | `data-tabindex` | `data-tabindex="0"` |
-| `response-field` | `data-response-field` | `data-response-field="false"` |
-| `response-field-name` | `data-response-field-name` | `data-response-field-name="token"` |
-| `retry` | `data-retry` | `data-retry="never"` |
-| `retry-interval` | `data-retry-interval` | `data-retry-interval="5000"` |
-| `language` | `data-language` | `data-language="en"` |
-| `execution` | `data-execution` | `data-execution="execute"` |
-| `appearance` | `data-appearance` | `data-appearance="interaction-only"` |
-| `refresh-expired` | `data-refresh-expired` | `data-refresh-expired="manual"` |
+| JavaScript Property   | HTML Data Attribute        | Example                              |
+|-----------------------|----------------------------|--------------------------------------|
+| `sitekey`             | `data-sitekey`             | `data-sitekey="YOUR_KEY"`            |
+| `action`              | `data-action`              | `data-action="login"`                |
+| `cData`               | `data-cdata`               | `data-cdata="session-123"`           |
+| `callback`            | `data-callback`            | `data-callback="onSuccess"`          |
+| `error-callback`      | `data-error-callback`      | `data-error-callback="onError"`      |
+| `expired-callback`    | `data-expired-callback`    | `data-expired-callback="onExpired"`  |
+| `timeout-callback`    | `data-timeout-callback`    | `data-timeout-callback="onTimeout"`  |
+| `theme`               | `data-theme`               | `data-theme="dark"`                  |
+| `size`                | `data-size`                | `data-size="compact"`                |
+| `tabindex`            | `data-tabindex`            | `data-tabindex="0"`                  |
+| `response-field`      | `data-response-field`      | `data-response-field="false"`        |
+| `response-field-name` | `data-response-field-name` | `data-response-field-name="token"`   |
+| `retry`               | `data-retry`               | `data-retry="never"`                 |
+| `retry-interval`      | `data-retry-interval`      | `data-retry-interval="5000"`         |
+| `language`            | `data-language`            | `data-language="en"`                 |
+| `execution`           | `data-execution`           | `data-execution="execute"`           |
+| `appearance`          | `data-appearance`          | `data-appearance="interaction-only"` |
+| `refresh-expired`     | `data-refresh-expired`     | `data-refresh-expired="manual"`      |
 
 **Example:**
+
 ```html
 <div class="cf-turnstile"
      data-sitekey="YOUR_SITE_KEY"
@@ -136,6 +148,7 @@ frame-src https://challenges.cloudflare.com;
 ```
 
 **Full Example:**
+
 ```html
 <meta http-equiv="Content-Security-Policy"
       content="default-src 'self';
@@ -146,9 +159,11 @@ frame-src https://challenges.cloudflare.com;
 ## Framework-Specific Setup
 
 ### React
+
 ```bash
 npm install @marsidev/react-turnstile
 ```
+
 ```jsx
 import Turnstile from '@marsidev/react-turnstile';
 
@@ -159,9 +174,11 @@ import Turnstile from '@marsidev/react-turnstile';
 ```
 
 ### Vue
+
 ```bash
 npm install vue-turnstile
 ```
+
 ```vue
 <template>
   <VueTurnstile site-key="YOUR_SITE_KEY" @success="onSuccess" />
@@ -172,9 +189,11 @@ import VueTurnstile from 'vue-turnstile';
 ```
 
 ### Svelte
+
 ```bash
 npm install svelte-turnstile
 ```
+
 ```svelte
 <script>
 import Turnstile from 'svelte-turnstile';
@@ -183,6 +202,7 @@ import Turnstile from 'svelte-turnstile';
 ```
 
 ### Next.js (App Router)
+
 ```tsx
 // app/components/TurnstileWidget.tsx
 'use client';

@@ -6,11 +6,11 @@ Common pitfalls, limitations, and solutions for TCP Sockets in Cloudflare Worker
 
 ### Connection Limits
 
-| Limit | Value |
-|-------|-------|
-| Max concurrent sockets per request | 6 (hard limit) |
-| Socket lifetime | Request duration |
-| Connection timeout | Platform-dependent, no setting |
+| Limit                              | Value                          |
+|------------------------------------|--------------------------------|
+| Max concurrent sockets per request | 6 (hard limit)                 |
+| Socket lifetime                    | Request duration               |
+| Connection timeout                 | Platform-dependent, no setting |
 
 **Problem:** Exceeding 6 connections throws error
 
@@ -25,9 +25,11 @@ for (let i = 0; i < hosts.length; i += 6) {
 
 ### Blocked Destinations
 
-Cloudflare IPs (1.1.1.1), localhost (127.0.0.1), port 25 (SMTP), Worker's own URL blocked for security.
+Cloudflare IPs (1.1.1.1), localhost (127.0.0.1), port 25 (SMTP), Worker's own URL blocked for
+security.
 
-**Solution:** Use public IPs or Tunnel hostnames: `connect({ hostname: "db.internal.company.net", port: 5432 })`
+**Solution:** Use public IPs or Tunnel hostnames:
+`connect({ hostname: "db.internal.company.net", port: 5432 })`
 
 ### Scope Requirements
 
@@ -35,13 +37,15 @@ Cloudflare IPs (1.1.1.1), localhost (127.0.0.1), port 25 (SMTP), Worker's own UR
 
 **Cause:** Sockets tied to request lifecycle
 
-**Solution:** Create inside handler: `export default { async fetch() { const socket = connect(...); } }`
+**Solution:** Create inside handler:
+`export default { async fetch() { const socket = connect(...); } }`
 
 ## Common Errors
 
 ### Error: "proxy request failed"
 
-**Causes:** Blocked destination (Cloudflare IP, localhost, port 25), DNS failure, network unreachable
+**Causes:** Blocked destination (Cloudflare IP, localhost, port 25), DNS failure, network
+unreachable
 
 **Solution:** Validate destinations, use Tunnel hostnames, catch errors with try/catch
 
@@ -81,7 +85,8 @@ await Promise.race([socket.opened, timeout]);
 
 **Problem:** Calling `startTls()` too early
 
-**Solution:** Send protocol-specific STARTTLS command, wait for server OK, then call `socket.startTls()`
+**Solution:** Send protocol-specific STARTTLS command, wait for server OK, then call
+`socket.startTls()`
 
 ### Certificate Validation
 
@@ -148,11 +153,11 @@ if (!host || !ALLOWED.includes(host)) return new Response('Forbidden', { status:
 
 ## When to Use Alternatives
 
-| Use Case | Alternative | Reason |
-|----------|-------------|--------|
-| PostgreSQL/MySQL | [Hyperdrive](../hyperdrive/) | Connection pooling, caching |
-| HTTP/HTTPS | `fetch()` | Simpler, built-in |
-| HTTP with SSRF protection | VPC Services (beta 2025+) | Declarative bindings |
+| Use Case                  | Alternative                  | Reason                      |
+|---------------------------|------------------------------|-----------------------------|
+| PostgreSQL/MySQL          | [Hyperdrive](../hyperdrive/) | Connection pooling, caching |
+| HTTP/HTTPS                | `fetch()`                    | Simpler, built-in           |
+| HTTP with SSRF protection | VPC Services (beta 2025+)    | Declarative bindings        |
 
 ## Debugging Tips
 

@@ -97,6 +97,7 @@ const migration = new D1Migration("migration", {
 ## Data Sources
 
 **Get Zone:**
+
 ```typescript
 const zone = cloudflare.getZone({name: "example.com"});
 const zoneId = zone.then(z => z.id);
@@ -141,6 +142,7 @@ const worker = new cloudflare.WorkerScript("worker", {
 ```
 
 Store secrets:
+
 ```bash
 pulumi config set --secret apiKey "secret-value"
 ```
@@ -171,12 +173,14 @@ function createBucket(name: string, args: BucketArgs) {
 ## v6.x Worker Versioning Resources
 
 **Worker** - Container for versions:
+
 ```typescript
 const worker = new cloudflare.Worker("api", {accountId, name: "api-worker"});
 export const workerId = worker.id;
 ```
 
 **WorkerVersion** - Immutable code + config:
+
 ```typescript
 const version = new cloudflare.WorkerVersion("v1", {
     accountId, workerId: worker.id,
@@ -187,6 +191,7 @@ export const versionId = version.id;
 ```
 
 **WorkersDeployment** - Active deployment with bindings:
+
 ```typescript
 const deployment = new cloudflare.WorkersDeployment("prod", {
     accountId, workerId: worker.id, versionId: version.id,
@@ -194,7 +199,8 @@ const deployment = new cloudflare.WorkersDeployment("prod", {
 });
 ```
 
-**Use:** Advanced deployments (canary, blue-green). Most apps should use `WorkerScript` (auto-versioning).
+**Use:** Advanced deployments (canary, blue-green). Most apps should use `WorkerScript` (
+auto-versioning).
 
 ---
 See: [README.md](./README.md), [configuration.md](./configuration.md), [patterns.md](./patterns.md), [gotchas.md](./gotchas.md)

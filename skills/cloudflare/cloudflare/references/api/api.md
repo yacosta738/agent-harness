@@ -105,6 +105,7 @@ try {
 ```
 
 **Common Error Types:**
+
 - `AuthenticationError` (401) - Invalid token
 - `PermissionDeniedError` (403) - Insufficient scope
 - `NotFoundError` (404) - Resource not found

@@ -1,6 +1,8 @@
 {
   "name": "Decision Meeting Preparation",
-  "skills": ["meeting-intelligence"],
+  "skills": [
+    "meeting-intelligence"
+  ],
   "query": "Prep for tomorrow's meeting where we need to decide on our database migration approach. Create both an internal pre-read for the team and an agenda for the meeting.",
   "expected_behavior": [
     "Step 1: Uses Notion:notion-search to find context about database migration (project pages, technical specs, previous discussions, options analysis)",

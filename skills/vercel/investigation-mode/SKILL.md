@@ -196,7 +196,9 @@ chainTo:
 
 # Investigation Mode — Orchestrated Debugging
 
-When a user reports something stuck, hung, broken, or not responding, you are the **diagnostic coordinator**. Do not guess. Follow the triage order, report what you find at every step, and stop when you have a high-confidence root cause.
+When a user reports something stuck, hung, broken, or not responding, you are the **diagnostic
+coordinator**. Do not guess. Follow the triage order, report what you find at every step, and stop
+when you have a high-confidence root cause.
 
 ## Reporting Contract
 
@@ -204,7 +206,8 @@ Every investigation step MUST follow this pattern:
 
 1. **Tell the user what you are checking** — "I'm checking the runtime logs for errors…"
 2. **Share the evidence you found** — paste the relevant log line, status, error, or screenshot
-3. **Explain the next step** — "The logs show a timeout on the DB call. I'll check the connection pool next."
+3. **Explain the next step** — "The logs show a timeout on the DB call. I'll check the connection
+   pool next."
 
 Never silently move between steps. The user is already frustrated — silence makes it worse.
 
@@ -241,7 +244,8 @@ Use agent-browser to visually verify what the user sees:
 - Check the Network tab for failed requests (4xx/5xx, CORS errors, hanging requests)
 - Look for hydration mismatches or React error boundaries
 
-Tell the user: "Taking a browser screenshot to see the current state…" → share the screenshot → explain what you see.
+Tell the user: "Taking a browser screenshot to see the current state…" → share the screenshot →
+explain what you see.
 
 ### 4. Deploy / Environment Status
 
@@ -255,10 +259,13 @@ Tell the user: "Checking deployment status…" → share the deployment state �
 ## Stop Condition
 
 **Stop investigating when:**
-- You find a high-confidence root cause (specific error, missing env var, failed step, etc.)
-- Two consecutive triage steps produce no signal — report what you checked and that you found no evidence, then ask the user for more context
 
-**Do not** keep cycling through steps hoping something appears. If logs are empty and workflows look fine, say so and ask the user what they expected to happen.
+- You find a high-confidence root cause (specific error, missing env var, failed step, etc.)
+- Two consecutive triage steps produce no signal — report what you checked and that you found no
+  evidence, then ask the user for more context
+
+**Do not** keep cycling through steps hoping something appears. If logs are empty and workflows look
+fine, say so and ask the user what they expected to happen.
 
 ## Common Hang Causes
 
@@ -270,11 +277,13 @@ When logs point to code issues, check for these frequent culprits:
 - **Missing env vars**: `process.env.X` returning `undefined` causing silent auth/DB failures
 - **Connection pool exhaustion**: Database connections not being released
 - **Middleware chains**: A middleware that never calls `next()` or returns a response
-- **Timeout misconfigs**: Function timeout too short for the operation (check `vercel.json` maxDuration)
+- **Timeout misconfigs**: Function timeout too short for the operation (check `vercel.json`
+  maxDuration)
 
 ## Add Logging (If Missing)
 
-If the investigation reveals insufficient observability, **add structured logging immediately** — you cannot debug what you cannot see.
+If the investigation reveals insufficient observability, **add structured logging immediately** —
+you cannot debug what you cannot see.
 
 ```typescript
 // API routes — wrap handlers with try/catch + logging
@@ -301,6 +310,9 @@ const result = await step.run('process-data', async () => {
 });
 ```
 
-**Key principle**: Every async boundary, every external call, every step entry/exit should have a log line. When something hangs, the last log line tells you exactly where it stopped.
+**Key principle**: Every async boundary, every external call, every step entry/exit should have a
+log line. When something hangs, the last log line tells you exactly where it stopped.
 
-> **Cross-reference**: For comprehensive logging setup (OpenTelemetry, log drains, Sentry, Vercel Analytics), see the **observability** skill. For workflow-specific debugging, see the **workflow** skill.
+> **Cross-reference**: For comprehensive logging setup (OpenTelemetry, log drains, Sentry, Vercel
+> Analytics), see the **observability** skill. For workflow-specific debugging, see the **workflow**
+> skill.

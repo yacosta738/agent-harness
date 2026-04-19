@@ -1,25 +1,26 @@
 # Retrieving Metrics with Trackio CLI
 
-The `trackio` CLI provides direct terminal access to query Trackio experiment tracking data locally without needing to start the MCP server.
+The `trackio` CLI provides direct terminal access to query Trackio experiment tracking data locally
+without needing to start the MCP server.
 
 ## Quick Command Reference
 
-| Task | Command |
-|------|---------|
-| List projects | `trackio list projects` |
-| List runs | `trackio list runs --project <name>` |
-| List metrics | `trackio list metrics --project <name> --run <name>` |
-| List system metrics | `trackio list system-metrics --project <name> --run <name>` |
-| List alerts | `trackio list alerts --project <name> [--run <name>] [--level <level>] [--since <timestamp>]` |
-| Get project summary | `trackio get project --project <name>` |
-| Get run summary | `trackio get run --project <name> --run <name>` |
-| Get metric values | `trackio get metric --project <name> --run <name> --metric <name>` |
-| Get metric at step | `trackio get metric ... --metric <name> --step <N>` |
-| Get metric around step | `trackio get metric ... --metric <name> --around <N> --window <W>` |
-| Get all metrics snapshot | `trackio get snapshot --project <name> --run <name> --step <N>` |
-| Get system metrics | `trackio get system-metric --project <name> --run <name>` |
-| Show dashboard | `trackio show [--project <name>]` |
-| Sync to Space | `trackio sync --project <name> --space-id <space_id>` |
+| Task                     | Command                                                                                       |
+|--------------------------|-----------------------------------------------------------------------------------------------|
+| List projects            | `trackio list projects`                                                                       |
+| List runs                | `trackio list runs --project <name>`                                                          |
+| List metrics             | `trackio list metrics --project <name> --run <name>`                                          |
+| List system metrics      | `trackio list system-metrics --project <name> --run <name>`                                   |
+| List alerts              | `trackio list alerts --project <name> [--run <name>] [--level <level>] [--since <timestamp>]` |
+| Get project summary      | `trackio get project --project <name>`                                                        |
+| Get run summary          | `trackio get run --project <name> --run <name>`                                               |
+| Get metric values        | `trackio get metric --project <name> --run <name> --metric <name>`                            |
+| Get metric at step       | `trackio get metric ... --metric <name> --step <N>`                                           |
+| Get metric around step   | `trackio get metric ... --metric <name> --around <N> --window <W>`                            |
+| Get all metrics snapshot | `trackio get snapshot --project <name> --run <name> --step <N>`                               |
+| Get system metrics       | `trackio get system-metric --project <name> --run <name>`                                     |
+| Show dashboard           | `trackio show [--project <name>]`                                                             |
+| Sync to Space            | `trackio sync --project <name> --space-id <space_id>`                                         |
 
 ## Core Commands
 
@@ -200,16 +201,19 @@ All errors exit with non-zero status code and write to stderr.
 ## JSON Output Structure
 
 ### List Projects
+
 ```json
 {"projects": ["project1", "project2"]}
 ```
 
 ### List Runs
+
 ```json
 {"project": "my-project", "runs": ["run1", "run2"]}
 ```
 
 ### Project Summary
+
 ```json
 {
   "project": "my-project",
@@ -220,6 +224,7 @@ All errors exit with non-zero status code and write to stderr.
 ```
 
 ### Run Summary
+
 ```json
 {
   "project": "my-project",
@@ -232,6 +237,7 @@ All errors exit with non-zero status code and write to stderr.
 ```
 
 ### Metric Values
+
 ```json
 {
   "project": "my-project",

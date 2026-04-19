@@ -13,11 +13,13 @@
 **Backend (Workers):** Built-in fetch API, no additional packages required
 
 **Client (PartyTracks):**
+
 ```bash
 npm install partytracks @cloudflare/calls
 ```
 
 **Client (React + PartyTracks):**
+
 ```bash
 npm install partytracks @cloudflare/calls observable-hooks
 # Observable hooks: useObservableAsValue, useValueAsObservable
@@ -61,10 +63,12 @@ wrangler deploy
 ## Environment Variables
 
 **Required:**
+
 - `CALLS_APP_ID`: From dashboard
 - `CALLS_APP_SECRET`: From dashboard (secret)
 
 **Optional:**
+
 - `MAX_WEBCAM_BITRATE` (default: 1200000)
 - `MAX_WEBCAM_FRAMERATE` (default: 24)
 - `MAX_WEBCAM_QUALITY_LEVEL` (default: 1080)
@@ -94,9 +98,11 @@ const pc = new RTCPeerConnection({
 
 **Ports:** 3478 (UDP/TCP), 53 (UDP), 80 (TCP), 443 (TLS), 5349 (TLS)
 
-**When to use TURN:** Required for restrictive corporate firewalls/networks that block UDP. ~5-10% of connections fallback to TURN. STUN works for most users.
+**When to use TURN:** Required for restrictive corporate firewalls/networks that block UDP. ~5-10%
+of connections fallback to TURN. STUN works for most users.
 
-**ICE candidate filtering:** Cloudflare handles candidate filtering automatically. No need to manually filter candidates.
+**ICE candidate filtering:** Cloudflare handles candidate filtering automatically. No need to
+manually filter candidates.
 
 ## Durable Object Boilerplate
 

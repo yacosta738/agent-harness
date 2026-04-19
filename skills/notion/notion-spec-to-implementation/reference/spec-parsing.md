@@ -58,6 +58,7 @@ id: "spec-page-id-from-search"
 ```
 
 Extract:
+
 - List of functional requirements
 - List of non-functional requirements
 - List of acceptance criteria
@@ -77,6 +78,7 @@ So that [benefit]
 ```
 
 Extract:
+
 - User personas
 - Goals/capabilities needed
 - Acceptance criteria per story
@@ -99,6 +101,7 @@ Extract:
 ```
 
 Extract:
+
 - Problem being solved
 - Proposed solution approach
 - Architectural decisions
@@ -122,6 +125,7 @@ Extract:
 ```
 
 Extract:
+
 - Business goals
 - User needs
 - Feature list
@@ -132,6 +136,7 @@ Extract:
 ### Requirement Identification
 
 Look for:
+
 - "Must", "Should", "Will" statements
 - Numbered requirements (REQ-1, etc.)
 - User stories (As a... I want...)
@@ -143,11 +148,13 @@ Look for:
 Group requirements by:
 
 **Functional**: What the system does
+
 - User capabilities
 - System behaviors
 - Data operations
 
 **Non-Functional**: How the system performs
+
 - Performance targets
 - Security requirements
 - Scalability needs
@@ -155,6 +162,7 @@ Group requirements by:
 - Compliance requirements
 
 **Constraints**: Limitations
+
 - Technical constraints
 - Business constraints
 - Timeline constraints
@@ -162,6 +170,7 @@ Group requirements by:
 ### Priority Extraction
 
 Identify priority indicators:
+
 - "Critical", "Must have", "P0"
 - "Important", "Should have", "P1"
 - "Nice to have", "Could have", "P2"
@@ -225,6 +234,7 @@ Direct acceptance criteria:
 ```
 
 Convert to checklist:
+
 - [ ] User can log in with email and password
 - [ ] System sends confirmation email
 - [ ] Session expires after 24 hours
@@ -258,6 +268,7 @@ Ensure criteria are testable:
 ### Architecture Information
 
 Extract:
+
 - System components
 - Data models
 - APIs/interfaces
@@ -267,6 +278,7 @@ Extract:
 ### Design Decisions
 
 Note:
+
 - Technology selections
 - Architecture patterns
 - Trade-offs made
@@ -275,6 +287,7 @@ Note:
 ### Implementation Guidance
 
 Look for:
+
 - Suggested approach
 - Code examples
 - Library recommendations
@@ -285,6 +298,7 @@ Look for:
 ### External Dependencies
 
 From spec, identify:
+
 - Third-party services required
 - External APIs needed
 - Infrastructure requirements
@@ -293,6 +307,7 @@ From spec, identify:
 ### Internal Dependencies
 
 Identify:
+
 - Other features needed first
 - Shared components required
 - Team dependencies
@@ -301,6 +316,7 @@ Identify:
 ### Timeline Dependencies
 
 Note:
+
 - Hard deadlines
 - Milestone dependencies
 - Sequencing requirements
@@ -310,6 +326,7 @@ Note:
 ### In Scope
 
 What's explicitly included:
+
 - Features to build
 - Use cases to support
 - Users/personas to serve
@@ -317,6 +334,7 @@ What's explicitly included:
 ### Out of Scope
 
 What's explicitly excluded:
+
 - Features deferred
 - Use cases not supported
 - Edge cases not handled
@@ -324,6 +342,7 @@ What's explicitly excluded:
 ### Assumptions
 
 What's assumed:
+
 - Environment assumptions
 - User assumptions
 - System state assumptions
@@ -333,12 +352,14 @@ What's assumed:
 Extract risk information:
 
 ### Technical Risks
+
 - Unproven technology
 - Complex integration
 - Performance concerns
 - Scalability unknowns
 
 ### Business Risks
+
 - Market timing
 - Resource availability
 - Dependency on others
@@ -352,6 +373,7 @@ Note any mitigation approaches mentioned in spec.
 Evaluate spec completeness:
 
 ✓ **Good spec**:
+
 - Clear requirements
 - Explicit acceptance criteria
 - Priorities defined
@@ -359,6 +381,7 @@ Evaluate spec completeness:
 - Technical approach outlined
 
 ⚠️ **Incomplete spec**:
+
 - Vague requirements
 - Missing acceptance criteria
 - Unclear priorities

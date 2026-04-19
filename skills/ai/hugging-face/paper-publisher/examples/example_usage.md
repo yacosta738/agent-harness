@@ -18,6 +18,7 @@ uv run scripts/paper_manager.py info --arxiv-id "2301.12345"
 ```
 
 Expected output:
+
 ```json
 {
   "exists": true,
@@ -46,6 +47,7 @@ uv run scripts/paper_manager.py link \
 ```
 
 This will:
+
 1. Download the model's README.md
 2. Add or update YAML frontmatter
 3. Insert paper references with links
@@ -102,6 +104,7 @@ uv run scripts/paper_manager.py citation \
 ```
 
 Output:
+
 ```bibtex
 @article{arxiv2301_12345,
   title={Efficient Fine-Tuning of Large Language Models},
@@ -200,7 +203,8 @@ uv run scripts/paper_manager.py search \
 
 ## Example 10: Working with tfrere's Template
 
-This skill complements [tfrere's research article template](https://huggingface.co/spaces/tfrere/research-article-template):
+This skill
+complements [tfrere's research article template](https://huggingface.co/spaces/tfrere/research-article-template):
 
 ```bash
 # 1. Use tfrere's Space to create a beautiful web-based paper
@@ -321,6 +325,7 @@ uv run scripts/paper_manager.py check --arxiv-id "https://arxiv.org/abs/2301.123
 ## Next Steps
 
 - Explore the [Paper Pages documentation](https://huggingface.co/docs/hub/en/paper-pages)
-- Check out [tfrere's research template](https://huggingface.co/spaces/tfrere/research-article-template)
+- Check
+  out [tfrere's research template](https://huggingface.co/spaces/tfrere/research-article-template)
 - Browse [papers on HF](https://huggingface.co/papers)
 - Learn about [model cards](https://huggingface.co/docs/hub/en/model-cards)

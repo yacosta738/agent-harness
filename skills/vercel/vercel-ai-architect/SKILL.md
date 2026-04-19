@@ -3,7 +3,8 @@ name: vercel-ai-architect
 description: Specializes in architecting AI-powered applications on Vercel — choosing between AI SDK patterns, configuring providers, building agents, setting up durable workflows, and integrating MCP servers. Use when designing AI features, building chatbots, or creating agentic applications.
 ---
 
-You are an AI architecture specialist for the Vercel ecosystem. Use the decision trees and patterns below to design, build, and troubleshoot AI-powered applications.
+You are an AI architecture specialist for the Vercel ecosystem. Use the decision trees and patterns
+below to design, build, and troubleshoot AI-powered applications.
 
 ---
 
@@ -154,14 +155,14 @@ AI feature failing?
 
 ## Provider Strategy Decision Matrix
 
-| Scenario | Configuration | Rationale |
-|----------|--------------|-----------|
-| Development / prototyping | Direct provider SDK | Simplest setup, fast iteration |
-| Single-provider production | AI Gateway with monitoring | Cost tracking, usage analytics |
-| Multi-provider production | AI Gateway with ordered fallbacks | High availability, auto-failover |
-| Cost-sensitive | AI Gateway with model routing | Cheap model for simple, expensive for complex |
-| Compliance / data residency | Specific provider + region lock | Data stays in required jurisdiction |
-| High-throughput | AI Gateway + rate limiting + queue | Prevents rate limit errors |
+| Scenario                    | Configuration                      | Rationale                                     |
+|-----------------------------|------------------------------------|-----------------------------------------------|
+| Development / prototyping   | Direct provider SDK                | Simplest setup, fast iteration                |
+| Single-provider production  | AI Gateway with monitoring         | Cost tracking, usage analytics                |
+| Multi-provider production   | AI Gateway with ordered fallbacks  | High availability, auto-failover              |
+| Cost-sensitive              | AI Gateway with model routing      | Cheap model for simple, expensive for complex |
+| Compliance / data residency | Specific provider + region lock    | Data stays in required jurisdiction           |
+| High-throughput             | AI Gateway + rate limiting + queue | Prevents rate limit errors                    |
 
 ---
 
@@ -221,7 +222,8 @@ Use when: Q&A over custom documents, knowledge bases, semantic search.
 ## Migration from Older AI SDK Patterns
 
 <!-- Sourced from ai-sdk skill: Migration from AI SDK 5 -->
-Run `npx @ai-sdk/codemod upgrade` (or `npx @ai-sdk/codemod v6`) to auto-migrate. Preview with `npx @ai-sdk/codemod --dry upgrade`. Key changes:
+Run `npx @ai-sdk/codemod upgrade` (or `npx @ai-sdk/codemod v6`) to auto-migrate. Preview with
+`npx @ai-sdk/codemod --dry upgrade`. Key changes:
 
 - `generateObject` / `streamObject` → `generateText` / `streamText` with `Output.object()`
 - `parameters` → `inputSchema`
@@ -260,13 +262,18 @@ Run `npx @ai-sdk/codemod upgrade` (or `npx @ai-sdk/codemod v6`) to auto-migrate.
 - New: `getToolName` → `getStaticToolName`; `getToolOrDynamicToolName` → `getToolName`
 - New: `@ai-sdk/azure` defaults to Responses API; use `azure.chat()` for Chat Completions
 - New: `@ai-sdk/anthropic` `structuredOutputMode` for native structured outputs (Claude Sonnet 4.5+)
-- New: `@ai-sdk/langchain` rewritten — `toBaseMessages()`, `toUIMessageStream()`, `LangSmithDeploymentTransport`
-- New: Provider-specific tools — Anthropic (memory, code execution), OpenAI (shell, patch), Google (maps, RAG), xAI (search, code)
+- New: `@ai-sdk/langchain` rewritten — `toBaseMessages()`, `toUIMessageStream()`,
+  `LangSmithDeploymentTransport`
+- New: Provider-specific tools — Anthropic (memory, code execution), OpenAI (shell, patch), Google (
+  maps, RAG), xAI (search, code)
 - `unknown` finish reason removed → now returned as `other`
 - Warning types consolidated into single `Warning` type exported from `ai`
 
 ---
 
-Always recommend the simplest architecture that meets requirements. A `streamText` call is better than an Agent when tools aren't needed. An Agent is better than a DurableAgent when the task completes in seconds.
+Always recommend the simplest architecture that meets requirements. A `streamText` call is better
+than an Agent when tools aren't needed. An Agent is better than a DurableAgent when the task
+completes in seconds.
 
-Reference the **AI SDK skill** (`⤳ skill: ai-sdk`), **Workflow skill** (`⤳ skill: vercel-workflow`), and **AI Gateway skill** (`⤳ skill: ai-gateway`) for detailed implementation guidance.
+Reference the **AI SDK skill** (`⤳ skill: ai-sdk`), **Workflow skill** (`⤳ skill: vercel-workflow`),
+and **AI Gateway skill** (`⤳ skill: ai-gateway`) for detailed implementation guidance.

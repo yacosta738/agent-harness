@@ -48,7 +48,9 @@ You are an expert in Sign in with Vercel — Vercel's OAuth 2.0 / OpenID Connect
 
 ## What It Is
 
-Sign in with Vercel lets users log in to your application using their **Vercel account**. Your app does not need to handle passwords, create accounts, or manage user sessions — Vercel acts as the identity provider (IdP).
+Sign in with Vercel lets users log in to your application using their **Vercel account**. Your app
+does not need to handle passwords, create accounts, or manage user sessions — Vercel acts as the
+identity provider (IdP).
 
 ## OAuth 2.0 Authorization Code Flow
 
@@ -62,15 +64,17 @@ Sign in with Vercel lets users log in to your application using their **Vercel a
 
 ## Tokens
 
-| Token | Lifetime | Purpose |
-|-------|----------|---------|
-| **ID Token** | Signed JWT | Proves user identity (name, email, avatar) |
-| **Access Token** | 1 hour | Bearer token for Vercel REST API calls |
-| **Refresh Token** | 30 days | Silent re-authentication (rotates on use) |
+| Token             | Lifetime   | Purpose                                    |
+|-------------------|------------|--------------------------------------------|
+| **ID Token**      | Signed JWT | Proves user identity (name, email, avatar) |
+| **Access Token**  | 1 hour     | Bearer token for Vercel REST API calls     |
+| **Refresh Token** | 30 days    | Silent re-authentication (rotates on use)  |
 
 ## Configuration
 
-1. Register your app at `https://vercel.com/dashboard/{team}/integrations/console` (the Integrations Console). Click **Create Integration** → fill in the OAuth details → note the Client ID and Client Secret.
+1. Register your app at `https://vercel.com/dashboard/{team}/integrations/console` (the Integrations
+   Console). Click **Create Integration** → fill in the OAuth details → note the Client ID and
+   Client Secret.
 2. Configure redirect URIs and scopes
 3. Use any standard OAuth 2.0 client library (no Vercel-specific SDK required)
 

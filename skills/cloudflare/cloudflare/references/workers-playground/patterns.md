@@ -129,4 +129,5 @@ export default {
 };
 ```
 
-**Note:** In-memory state (Maps, variables) resets on Worker cold start. Use Durable Objects or KV for persistence.
+**Note:** In-memory state (Maps, variables) resets on Worker cold start. Use Durable Objects or KV
+for persistence.

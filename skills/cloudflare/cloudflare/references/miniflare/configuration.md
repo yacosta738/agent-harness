@@ -33,7 +33,8 @@ new Miniflare({
 });
 ```
 
-**Critical:** Use `compatibilityDate: "2026-01-01"` or latest to match production runtime. Old dates limit available APIs.
+**Critical:** Use `compatibilityDate: "2026-01-01"` or latest to match production runtime. Old dates
+limit available APIs.
 
 ## HTTP Server & Request.cf
 
@@ -121,6 +122,7 @@ new Miniflare({
 ```
 
 **With routing:**
+
 ```js
 workers: [
   { name: "api", scriptPath: "./api.js", routes: ["api.example.com/*"] },

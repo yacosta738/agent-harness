@@ -9,7 +9,8 @@ Use the `obsidian` CLI to interact with a running Obsidian instance. Requires Ob
 
 ## Command reference
 
-Run `obsidian help` to see all available commands. This is always up to date. Full docs: https://help.obsidian.md/cli
+Run `obsidian help` to see all available commands. This is always up to date. Full
+docs: https://help.obsidian.md/cli
 
 ## Syntax
 
@@ -36,7 +37,8 @@ Many commands accept `file` or `path` to target a file. Without either, the acti
 
 ## Vault targeting
 
-Commands target the most recently focused vault by default. Use `vault=<name>` as the first parameter to target a specific vault:
+Commands target the most recently focused vault by default. Use `vault=<name>` as the first
+parameter to target a specific vault:
 
 ```bash
 obsidian vault="My Vault" search query="test"
@@ -57,7 +59,8 @@ obsidian tags sort=count counts
 obsidian backlinks file="My Note"
 ```
 
-Use `--copy` on any command to copy output to clipboard. Use `silent` to prevent files from opening. Use `total` on list commands to get a count.
+Use `--copy` on any command to copy output to clipboard. Use `silent` to prevent files from opening.
+Use `total` on list commands to get a count.
 
 ## Plugin development
 

@@ -6,12 +6,12 @@ Common issues, security considerations, and best practices.
 
 Some resources have known state drift. Add lifecycle blocks to prevent perpetual diffs:
 
-| Resource | Drift Attributes | Workaround |
-|----------|------------------|------------|
-| `cloudflare_pages_project` | `deployment_configs.*` | `ignore_changes = [deployment_configs]` |
-| `cloudflare_workers_script` | secrets returned as REDACTED | `ignore_changes = [secret_text_binding]` |
-| `cloudflare_load_balancer` | `adaptive_routing`, `random_steering` | `ignore_changes = [adaptive_routing, random_steering]` |
-| `cloudflare_workers_kv` | special chars in keys (< 5.16.0) | Upgrade to 5.16.0+ |
+| Resource                    | Drift Attributes                      | Workaround                                             |
+|-----------------------------|---------------------------------------|--------------------------------------------------------|
+| `cloudflare_pages_project`  | `deployment_configs.*`                | `ignore_changes = [deployment_configs]`                |
+| `cloudflare_workers_script` | secrets returned as REDACTED          | `ignore_changes = [secret_text_binding]`               |
+| `cloudflare_load_balancer`  | `adaptive_routing`, `random_steering` | `ignore_changes = [adaptive_routing, random_steering]` |
+| `cloudflare_workers_kv`     | special chars in keys (< 5.16.0)      | Upgrade to 5.16.0+                                     |
 
 ```hcl
 # Example: Ignore secret drift
@@ -33,21 +33,21 @@ Provider v5 is current (auto-generated from OpenAPI). v4→v5 has breaking chang
 
 **Resource Renames:**
 
-| v4 Resource | v5 Resource | Notes |
-|-------------|-------------|-------|
-| `cloudflare_record` | `cloudflare_dns_record` | |
-| `cloudflare_worker_script` | `cloudflare_workers_script` | Note: plural |
-| `cloudflare_worker_*` | `cloudflare_workers_*` | All worker resources |
-| `cloudflare_access_*` | `cloudflare_zero_trust_*` | Access → Zero Trust |
+| v4 Resource                | v5 Resource                 | Notes                |
+|----------------------------|-----------------------------|----------------------|
+| `cloudflare_record`        | `cloudflare_dns_record`     |                      |
+| `cloudflare_worker_script` | `cloudflare_workers_script` | Note: plural         |
+| `cloudflare_worker_*`      | `cloudflare_workers_*`      | All worker resources |
+| `cloudflare_access_*`      | `cloudflare_zero_trust_*`   | Access → Zero Trust  |
 
 **Attribute Changes:**
 
-| v4 Attribute | v5 Attribute | Resources |
-|--------------|--------------|-----------|
-| `zone` | `name` | zone |
-| `account_id` | `account.id` | zone (object syntax) |
-| `key` | `key_name` | KV |
-| `location_hint` | `location` | R2 |
+| v4 Attribute    | v5 Attribute | Resources            |
+|-----------------|--------------|----------------------|
+| `zone`          | `name`       | zone                 |
+| `account_id`    | `account.id` | zone (object syntax) |
+| `key`           | `key_name`   | KV                   |
+| `location_hint` | `location`   | R2                   |
 
 **State Migration:**
 
@@ -107,7 +107,9 @@ wrangler d1 migrations apply <db-name>
 ### "Error: couldn't find resource"
 
 **Cause:** Resource was deleted outside Terraform
-**Solution:** Import resource back into state with `terraform import cloudflare_zone.example <zone-id>` or remove from state with `terraform state rm cloudflare_zone.example`
+**Solution:** Import resource back into state with
+`terraform import cloudflare_zone.example <zone-id>` or remove from state with
+`terraform state rm cloudflare_zone.example`
 
 ### "409 Conflict on worker deployment"
 
@@ -117,12 +119,14 @@ wrangler d1 migrations apply <db-name>
 ### "DNS record already exists"
 
 **Cause:** Existing DNS record not imported into Terraform state
-**Solution:** Find record ID in Cloudflare dashboard and import with `terraform import cloudflare_dns_record.example <zone-id>/<record-id>`
+**Solution:** Find record ID in Cloudflare dashboard and import with
+`terraform import cloudflare_dns_record.example <zone-id>/<record-id>`
 
 ### "Invalid provider configuration"
 
 **Cause:** API token missing, invalid, or lacking required permissions
-**Solution:** Set `CLOUDFLARE_API_TOKEN` environment variable or check token permissions in dashboard
+**Solution:** Set `CLOUDFLARE_API_TOKEN` environment variable or check token permissions in
+dashboard
 
 ### "State locking errors"
 
@@ -131,15 +135,15 @@ wrangler d1 migrations apply <db-name>
 
 ## Limits
 
-| Resource | Limit | Notes |
-|----------|-------|-------|
-| API token rate limit | Varies by plan | Use `api_client_logging = true` to debug
-| Worker script size | 10 MB | Includes all dependencies
-| KV keys per namespace | Unlimited | Pay per operation
-| R2 storage | Unlimited | Pay per GB
-| D1 databases | 50,000 per account | Free tier: 10
-| Pages projects | 500 per account | 100 for free accounts
-| DNS records | 3,500 per zone | Free plan
+| Resource              | Limit              | Notes                                    |
+|-----------------------|--------------------|------------------------------------------|
+| API token rate limit  | Varies by plan     | Use `api_client_logging = true` to debug 
+| Worker script size    | 10 MB              | Includes all dependencies                
+| KV keys per namespace | Unlimited          | Pay per operation                        
+| R2 storage            | Unlimited          | Pay per GB                               
+| D1 databases          | 50,000 per account | Free tier: 10                            
+| Pages projects        | 500 per account    | 100 for free accounts                    
+| DNS records           | 3,500 per zone     | Free plan                                
 
 ## See Also
 

@@ -8,7 +8,8 @@ Common problems → causes → solutions.
 
 **Error:** `"401 Unauthorized"`
 **Cause:** Token missing R2 Data Catalog permissions.
-**Solution:** Use "Admin Read & Write" token (includes catalog + storage permissions). Test with `catalog.list_namespaces()`.
+**Solution:** Use "Admin Read & Write" token (includes catalog + storage permissions). Test with
+`catalog.list_namespaces()`.
 
 ### 403 Forbidden
 
@@ -27,7 +28,8 @@ Common problems → causes → solutions.
 
 **Error:** `"404 Catalog not found"`
 **Cause:** Catalog not enabled or wrong URI.
-**Solution:** Run `wrangler r2 bucket catalog enable <bucket>`. URI must be HTTPS with `/iceberg/` and case-sensitive bucket name.
+**Solution:** Run `wrangler r2 bucket catalog enable <bucket>`. URI must be HTTPS with `/iceberg/`
+and case-sensitive bucket name.
 
 ### Wrong Warehouse
 
@@ -87,7 +89,8 @@ Common problems → causes → solutions.
 
 **Problem:** Expiration fails or orphan cleanup deletes active data.
 **Cause:** Too aggressive retention or wrong order.
-**Solution:** Always expire snapshots first with `retain_last=10`, then cleanup orphans with 3+ day threshold.
+**Solution:** Always expire snapshots first with `retain_last=10`, then cleanup orphans with 3+ day
+threshold.
 
 ## Concurrency Issues
 
@@ -95,7 +98,8 @@ Common problems → causes → solutions.
 
 **Problem:** `CommitFailedException` with multiple writers.
 **Cause:** Optimistic locking - simultaneous commits.
-**Solution:** Add retry with exponential backoff (see [patterns.md](patterns.md#pattern-6-concurrent-writes-with-retry)).
+**Solution:** Add retry with exponential backoff (
+see [patterns.md](patterns.md#pattern-6-concurrent-writes-with-retry)).
 
 ### Stale Metadata
 
@@ -113,26 +117,26 @@ Common problems → causes → solutions.
 
 ## Limits
 
-| Resource | Recommended | Impact if Exceeded |
-|----------|-------------|-------------------|
-| Tables/namespace | <10k | Slow list ops |
-| Files/table | <100k | Slow query planning |
-| Partitions/table | 100-1k | Metadata overhead |
-| Snapshots/table | Expire >7d | Metadata bloat |
+| Resource         | Recommended | Impact if Exceeded  |
+|------------------|-------------|---------------------|
+| Tables/namespace | <10k        | Slow list ops       |
+| Files/table      | <100k       | Slow query planning |
+| Partitions/table | 100-1k      | Metadata overhead   |
+| Snapshots/table  | Expire >7d  | Metadata bloat      |
 
 ## Common Error Messages Reference
 
-| Error Message | Likely Cause | Fix |
-|---------------|--------------|-----|
-| `401 Unauthorized` | Missing/invalid token | Check token has catalog+storage permissions |
-| `403 Forbidden` | Token lacks storage permissions | Add R2 Storage Bucket Item permission |
-| `404 Not Found` | Catalog not enabled or wrong URI | Run `wrangler r2 bucket catalog enable` |
-| `409 Conflict` | Table/namespace already exists | Use try/except or load existing |
-| `422 Unprocessable Entity` | Schema validation failed | Check type compatibility, required fields |
-| `CommitFailedException` | Concurrent write conflict | Add retry logic with backoff |
-| `NamespaceAlreadyExistsError` | Namespace exists | Use try/except or load existing |
-| `NoSuchTableError` | Table doesn't exist | Check namespace+table name, create first |
-| `TypeError: Cannot cast` | PyArrow type mismatch | Cast data to match Iceberg schema |
+| Error Message                 | Likely Cause                     | Fix                                         |
+|-------------------------------|----------------------------------|---------------------------------------------|
+| `401 Unauthorized`            | Missing/invalid token            | Check token has catalog+storage permissions |
+| `403 Forbidden`               | Token lacks storage permissions  | Add R2 Storage Bucket Item permission       |
+| `404 Not Found`               | Catalog not enabled or wrong URI | Run `wrangler r2 bucket catalog enable`     |
+| `409 Conflict`                | Table/namespace already exists   | Use try/except or load existing             |
+| `422 Unprocessable Entity`    | Schema validation failed         | Check type compatibility, required fields   |
+| `CommitFailedException`       | Concurrent write conflict        | Add retry logic with backoff                |
+| `NamespaceAlreadyExistsError` | Namespace exists                 | Use try/except or load existing             |
+| `NoSuchTableError`            | Table doesn't exist              | Check namespace+table name, create first    |
+| `TypeError: Cannot cast`      | PyArrow type mismatch            | Cast data to match Iceberg schema           |
 
 ## Debugging Checklist
 

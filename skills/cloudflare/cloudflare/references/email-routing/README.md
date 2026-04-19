@@ -2,7 +2,9 @@
 
 ## Overview
 
-Cloudflare Email Routing enables custom email addresses for your domain that route to verified destination addresses. It's free, privacy-focused (no storage/access), and includes Email Workers for programmatic email processing.
+Cloudflare Email Routing enables custom email addresses for your domain that route to verified
+destination addresses. It's free, privacy-focused (no storage/access), and includes Email Workers
+for programmatic email processing.
 
 **Available to all Cloudflare customers using Cloudflare as authoritative nameserver.**
 
@@ -57,11 +59,13 @@ Having issues?
 
 **Routing Rules**: Pattern-based forwarding configured via Dashboard/API. Simple but limited.
 
-**Email Workers**: Custom TypeScript handlers with full email access. Handles complex logic, parsing, storage, rejection.
+**Email Workers**: Custom TypeScript handlers with full email access. Handles complex logic,
+parsing, storage, rejection.
 
 **SendEmail Binding**: Outbound email API for Workers. Transactional email only (no marketing/bulk).
 
-**ForwardableEmailMessage**: Runtime interface for incoming emails. Provides headers, raw stream, forward/reject methods.
+**ForwardableEmailMessage**: Runtime interface for incoming emails. Provides headers, raw stream,
+forward/reject methods.
 
 ## In This Reference
 

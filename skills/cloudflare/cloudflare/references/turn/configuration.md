@@ -51,6 +51,7 @@ export const config = envSchema.parse(process.env);
 ```
 
 **Store secrets separately**:
+
 ```bash
 wrangler secret put TURN_KEY_SECRET
 ```
@@ -129,12 +130,12 @@ export default {
 
 For strict firewalls, allowlist these IPs for `turn.cloudflare.com`:
 
-| Type | Address | Protocol |
-|------|---------|----------|
-| IPv4 | 141.101.90.1/32 | All |
-| IPv4 | 162.159.207.1/32 | All |
-| IPv6 | 2a06:98c1:3200::1/128 | All |
-| IPv6 | 2606:4700:48::1/128 | All |
+| Type | Address               | Protocol |
+|------|-----------------------|----------|
+| IPv4 | 141.101.90.1/32       | All      |
+| IPv4 | 162.159.207.1/32      | All      |
+| IPv6 | 2a06:98c1:3200::1/128 | All      |
+| IPv6 | 2606:4700:48::1/128   | All      |
 
 **IMPORTANT**: These IPs may change with 14-day notice. Monitor DNS:
 
@@ -157,16 +158,19 @@ Clients can connect via IPv6, but relayed traffic uses IPv4 addresses.
 ## TLS Configuration
 
 ### Supported TLS Versions
+
 - TLS 1.1
 - TLS 1.2
 - TLS 1.3
 
 ### Recommended Ciphers (TLS 1.3)
+
 - AEAD-AES128-GCM-SHA256
 - AEAD-AES256-GCM-SHA384
 - AEAD-CHACHA20-POLY1305-SHA256
 
 ### Recommended Ciphers (TLS 1.2)
+
 - ECDHE-ECDSA-AES128-GCM-SHA256
 - ECDHE-RSA-AES128-GCM-SHA256
 - ECDHE-RSA-AES128-SHA (also TLS 1.1)

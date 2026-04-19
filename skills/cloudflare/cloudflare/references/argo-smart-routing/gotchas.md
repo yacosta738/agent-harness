@@ -1,6 +1,7 @@
 ## Best Practices Summary
 
-**Smart Shield Note:** Argo Smart Routing evolving into Smart Shield. Best practices below remain applicable; monitor Cloudflare changelog for Smart Shield updates.
+**Smart Shield Note:** Argo Smart Routing evolving into Smart Shield. Best practices below remain
+applicable; monitor Cloudflare changelog for Smart Shield updates.
 
 1. **Always check editability** before attempting to enable/disable Argo
 2. **Set up billing notifications** to avoid unexpected costs
@@ -22,6 +23,7 @@
 **Cause:** Zone not eligible or billing not set up
 
 **Solution:**
+
 1. Verify zone has Enterprise or higher plan
 2. Check billing is configured in Account → Billing
 3. Ensure payment method is valid and current
@@ -34,13 +36,14 @@
 **Cause:** Insufficient permissions or zone restrictions
 
 **Solution:**
+
 1. Check API token has `Zone:Argo Smart Routing:Edit` permission
 2. Verify `editable: true` in GET response before attempting PATCH
 3. If `editable: false`, check:
-   - Billing configured for account
-   - Zone plan includes Argo (Enterprise+)
-   - No active zone holds or suspensions
-   - API token has correct scopes
+    - Billing configured for account
+    - Zone plan includes Argo (Enterprise+)
+    - No active zone holds or suspensions
+    - API token has correct scopes
 
 ### `editable: false` Error
 
@@ -49,6 +52,7 @@
 **Cause:** Zone-level restrictions from billing, plan, or permissions
 
 **Solution Pattern:**
+
 ```typescript
 const status = await client.argo.smartRouting.get({ zone_id: zoneId });
 
@@ -72,6 +76,7 @@ await client.argo.smartRouting.edit({ zone_id: zoneId, value: 'on' });
 **Cause:** Exceeded API rate limits (typically 1200 requests per 5 minutes)
 
 **Solution:**
+
 ```typescript
 import { RateLimitError } from 'cloudflare';
 
@@ -91,16 +96,16 @@ try {
 
 ## Limits
 
-| Resource/Limit | Value | Notes |
-|----------------|-------|-------|
-| Min requests for analytics | 500 in 48h | For detailed metrics via GraphQL |
-| Zones supported | Enterprise+ | Check zone plan in dashboard |
-| Billing requirement | Must be configured | Before enabling; verify payment method |
-| API rate limit | 1200 req / 5 min | Per API token across all endpoints |
-| Spectrum apps | No hard limit | Each app can enable Argo independently |
-| Traffic counting | Proxied only | Only orange-clouded DNS records count |
-| DDoS/WAF exemption | Yes | Mitigated traffic excluded from billing |
-| Analytics latency | 1-5 minutes | Real-time metrics not available |
+| Resource/Limit             | Value              | Notes                                   |
+|----------------------------|--------------------|-----------------------------------------|
+| Min requests for analytics | 500 in 48h         | For detailed metrics via GraphQL        |
+| Zones supported            | Enterprise+        | Check zone plan in dashboard            |
+| Billing requirement        | Must be configured | Before enabling; verify payment method  |
+| API rate limit             | 1200 req / 5 min   | Per API token across all endpoints      |
+| Spectrum apps              | No hard limit      | Each app can enable Argo independently  |
+| Traffic counting           | Proxied only       | Only orange-clouded DNS records count   |
+| DDoS/WAF exemption         | Yes                | Mitigated traffic excluded from billing |
+| Analytics latency          | 1-5 minutes        | Real-time metrics not available         |
 
 ## Additional Resources
 

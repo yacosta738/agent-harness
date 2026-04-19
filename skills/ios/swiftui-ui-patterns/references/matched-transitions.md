@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use matched transitions to create smooth continuity between a source view (thumbnail, avatar) and a destination view (sheet, detail, viewer).
+Use matched transitions to create smooth continuity between a source view (thumbnail, avatar) and a
+destination view (sheet, detail, viewer).
 
 ## Core patterns
 

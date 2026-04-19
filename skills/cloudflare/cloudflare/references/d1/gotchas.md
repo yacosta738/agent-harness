@@ -5,12 +5,15 @@
 ### "SQL Injection Vulnerability"
 
 **Cause:** Using string interpolation instead of prepared statements with bind()
-**Solution:** ALWAYS use prepared statements: `env.DB.prepare('SELECT * FROM users WHERE id = ?').bind(userId).all()` instead of string interpolation which allows attackers to inject malicious SQL
+**Solution:** ALWAYS use prepared statements:
+`env.DB.prepare('SELECT * FROM users WHERE id = ?').bind(userId).all()` instead of string
+interpolation which allows attackers to inject malicious SQL
 
 ### "no such table"
 
 **Cause:** Table doesn't exist because migrations haven't been run, or using wrong database binding
-**Solution:** Run migrations using `wrangler d1 migrations apply <db-name> --remote` and verify binding name in wrangler.jsonc matches code
+**Solution:** Run migrations using `wrangler d1 migrations apply <db-name> --remote` and verify
+binding name in wrangler.jsonc matches code
 
 ### "UNIQUE constraint failed"
 
@@ -25,12 +28,14 @@
 ### "N+1 Query Problem"
 
 **Cause:** Making multiple individual queries in a loop instead of single optimized query
-**Solution:** Use JOIN to fetch related data in single query or use `batch()` method for multiple queries
+**Solution:** Use JOIN to fetch related data in single query or use `batch()` method for multiple
+queries
 
 ### "Missing Indexes"
 
 **Cause:** Queries performing full table scans without indexes
-**Solution:** Use `EXPLAIN QUERY PLAN` to check if index is used, then create index with `CREATE INDEX idx_users_email ON users(email)`
+**Solution:** Use `EXPLAIN QUERY PLAN` to check if index is used, then create index with
+`CREATE INDEX idx_users_email ON users(email)`
 
 ### "Boolean Type Issues"
 
@@ -44,28 +49,30 @@
 
 ## Plan Tier Limits
 
-| Limit | Free Tier | Paid Plans | Notes |
-|-------|-----------|------------|-------|
-| Database size | 500 MB | 10 GB | Design for multiple DBs per tenant on paid |
-| Row size | 1 MB | 1 MB | Store large files in R2, not D1 |
-| Query timeout | 30s | 30s (900s with sessions) | Use sessions API for migrations |
-| Batch size | 1,000 statements | 10,000 statements | Split large batches accordingly |
-| Time Travel | 7 days | 30 days | Point-in-time recovery window |
-| Read replicas | ❌ Not available | ✅ Available | Paid add-on for lower latency |
-| Sessions API | ❌ Not available | ✅ Up to 15 min | For migrations and heavy operations |
-| Concurrent requests | 10,000/min | Higher | Contact support for custom limits |
+| Limit               | Free Tier        | Paid Plans               | Notes                                      |
+|---------------------|------------------|--------------------------|--------------------------------------------|
+| Database size       | 500 MB           | 10 GB                    | Design for multiple DBs per tenant on paid |
+| Row size            | 1 MB             | 1 MB                     | Store large files in R2, not D1            |
+| Query timeout       | 30s              | 30s (900s with sessions) | Use sessions API for migrations            |
+| Batch size          | 1,000 statements | 10,000 statements        | Split large batches accordingly            |
+| Time Travel         | 7 days           | 30 days                  | Point-in-time recovery window              |
+| Read replicas       | ❌ Not available  | ✅ Available              | Paid add-on for lower latency              |
+| Sessions API        | ❌ Not available  | ✅ Up to 15 min           | For migrations and heavy operations        |
+| Concurrent requests | 10,000/min       | Higher                   | Contact support for custom limits          |
 
 ## Production Gotchas
 
 ### "Batch size exceeded"
 
 **Cause:** Attempting to send >1,000 statements on free tier or >10,000 on paid
-**Solution:** Chunk batches: `for (let i = 0; i < stmts.length; i += MAX_BATCH) await env.DB.batch(stmts.slice(i, i + MAX_BATCH))`
+**Solution:** Chunk batches:
+`for (let i = 0; i < stmts.length; i += MAX_BATCH) await env.DB.batch(stmts.slice(i, i + MAX_BATCH))`
 
 ### "Session not closed / resource leak"
 
 **Cause:** Forgot to call `session.close()` after using sessions API
-**Solution:** Always use try/finally block: `try { await session.prepare(...) } finally { session.close() }`
+**Solution:** Always use try/finally block:
+`try { await session.prepare(...) } finally { session.close() }`
 
 ### "Replication lag causing stale reads"
 
@@ -90,7 +97,8 @@
 ### "Database size approaching limit"
 
 **Cause:** Storing too much data in single database
-**Solution:** Horizontal scale-out: create per-tenant/per-user databases, archive old data, or upgrade to paid plan
+**Solution:** Horizontal scale-out: create per-tenant/per-user databases, archive old data, or
+upgrade to paid plan
 
 ### "Local dev vs production behavior differs"
 

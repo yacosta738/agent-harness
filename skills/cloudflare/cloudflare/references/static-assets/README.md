@@ -1,6 +1,8 @@
 # Cloudflare Static Assets Skill Reference
 
-Expert guidance for deploying and configuring static assets with Cloudflare Workers. This skill covers configuration patterns, routing architectures, asset binding usage, and best practices for SPAs, SSG sites, and full-stack applications.
+Expert guidance for deploying and configuring static assets with Cloudflare Workers. This skill
+covers configuration patterns, routing architectures, asset binding usage, and best practices for
+SPAs, SSG sites, and full-stack applications.
 
 ## Quick Start
 
@@ -29,13 +31,13 @@ Deploy: `wrangler deploy`
 
 ## When to Use Workers Static Assets vs Pages
 
-| Factor | Workers Static Assets | Cloudflare Pages |
-|--------|----------------------|------------------|
-| **Use case** | Hybrid apps (static + dynamic API) | Static sites, SSG |
-| **Worker control** | Full control over routing | Limited (Functions) |
-| **Configuration** | Code-first, flexible | Git-based, opinionated |
-| **Dynamic routing** | Worker-first patterns | Functions (_functions/) |
-| **Best for** | Full-stack apps, SPAs with APIs | Jamstack, static docs |
+| Factor              | Workers Static Assets              | Cloudflare Pages        |
+|---------------------|------------------------------------|-------------------------|
+| **Use case**        | Hybrid apps (static + dynamic API) | Static sites, SSG       |
+| **Worker control**  | Full control over routing          | Limited (Functions)     |
+| **Configuration**   | Code-first, flexible               | Git-based, opinionated  |
+| **Dynamic routing** | Worker-first patterns              | Functions (_functions/) |
+| **Best for**        | Full-stack apps, SPAs with APIs    | Jamstack, static docs   |
 
 **Decision tree:**
 

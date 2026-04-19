@@ -15,6 +15,7 @@ export default {
 ```
 
 **Parameters:**
+
 - `events`: Array of `TraceItem` objects (one per producer invocation)
 - `env`: Bindings (KV, D1, R2, env vars, etc.)
 - `ctx`: Context with `waitUntil()` for async work
@@ -63,7 +64,8 @@ interface TraceItem {
 }
 ```
 
-**Note:** Official SDK uses `TraceItem`, not `TailItem`. Use `@cloudflare/workers-types` for accurate types.
+**Note:** Official SDK uses `TraceItem`, not `TailItem`. Use `@cloudflare/workers-types` for
+accurate types.
 
 ## Timestamp Handling
 
@@ -84,6 +86,7 @@ By default, sensitive data is redacted from `TraceRequest`:
 ### Header Redaction
 
 Headers containing these substrings (case-insensitive):
+
 - `auth`, `key`, `secret`, `token`, `jwt`
 - `cookie`, `set-cookie`
 
@@ -109,6 +112,7 @@ export default {
 ```
 
 **Best practices:**
+
 - Only call `getUnredacted()` when absolutely necessary
 - Never log unredacted sensitive data
 - Implement additional filtering before external transmission
@@ -194,6 +198,7 @@ const safePayload = events.map(event => ({
 ```
 
 **Common serialization issues:**
+
 - Circular references in logged objects
 - `BigInt` values (not JSON-serializable)
 - Functions or symbols in console.log arguments

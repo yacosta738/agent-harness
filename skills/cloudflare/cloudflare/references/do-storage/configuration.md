@@ -3,6 +3,7 @@
 ## SQLite-backed (Recommended)
 
 **wrangler.jsonc:**
+
 ```jsonc
 {
   "migrations": [
@@ -14,11 +15,14 @@
 }
 ```
 
-**Migration lifecycle:** Migrations run once per deployment. Existing DO instances get new storage backend on next invocation. Renaming/removing classes requires `renamed_classes` or `deleted_classes` entries.
+**Migration lifecycle:** Migrations run once per deployment. Existing DO instances get new storage
+backend on next invocation. Renaming/removing classes requires `renamed_classes` or
+`deleted_classes` entries.
 
 ## KV-backed (Legacy)
 
 **wrangler.jsonc:**
+
 ```jsonc
 {
   "migrations": [

@@ -1,6 +1,7 @@
 # Image classification
 
 ## Contents
+
 - Load Food-101 dataset
 - Preprocess (ViT image processor, torchvision transforms)
 - Evaluate (accuracy metric, compute_metrics)
@@ -9,16 +10,21 @@
 
 ---
 
-Image classification assigns a label or class to an image. Unlike text or audio classification, the inputs are the
-pixel values that comprise an image. There are many applications for image classification, such as detecting damage
-after a natural disaster, monitoring crop health, or helping screen medical images for signs of disease.
+Image classification assigns a label or class to an image. Unlike text or audio classification, the
+inputs are the
+pixel values that comprise an image. There are many applications for image classification, such as
+detecting damage
+after a natural disaster, monitoring crop health, or helping screen medical images for signs of
+disease.
 
 This guide illustrates how to:
 
-1. Fine-tune [ViT](../model_doc/vit) on the [Food-101](https://huggingface.co/datasets/ethz/food101) dataset to classify a food item in an image.
+1. Fine-tune [ViT](../model_doc/vit) on the [Food-101](https://huggingface.co/datasets/ethz/food101)
+   dataset to classify a food item in an image.
 2. Use your fine-tuned model for inference.
 
-To see all architectures and checkpoints compatible with this task, we recommend checking the [task-page](https://huggingface.co/tasks/image-classification)
+To see all architectures and checkpoints compatible with this task, we recommend checking
+the [task-page](https://huggingface.co/tasks/image-classification)
 
 Before you begin, make sure you have all the necessary libraries installed:
 
@@ -26,7 +32,8 @@ Before you begin, make sure you have all the necessary libraries installed:
 pip install transformers datasets evaluate accelerate pillow torchvision scikit-learn trackio
 ```
 
-We encourage you to log in to your Hugging Face account to upload and share your model with the community. When prompted, enter your token to log in:
+We encourage you to log in to your Hugging Face account to upload and share your model with the
+community. When prompted, enter your token to log in:
 
 ```py
 >>> from huggingface_hub import notebook_login
@@ -36,7 +43,8 @@ We encourage you to log in to your Hugging Face account to upload and share your
 
 ## Load Food-101 dataset
 
-Start by loading a smaller subset of the Food-101 dataset from the 🤗 Datasets library. This will give you a chance to
+Start by loading a smaller subset of the Food-101 dataset from the 🤗 Datasets library. This will
+give you a chance to
 experiment and make sure everything works before spending more time training on the full dataset.
 
 ```py
@@ -45,7 +53,9 @@ experiment and make sure everything works before spending more time training on 
 >>> food = load_dataset("ethz/food101", split="train[:5000]")
 ```
 
-Split the dataset's `train` split into a train and test set with the [train_test_split](https://huggingface.co/docs/datasets/v4.5.0/en/package_reference/main_classes#datasets.Dataset.train_test_split) method:
+Split the dataset's `train` split into a train and test set with
+the [train_test_split](https://huggingface.co/docs/datasets/v4.5.0/en/package_reference/main_classes#datasets.Dataset.train_test_split)
+method:
 
 ```py
 >>> food = food.train_test_split(test_size=0.2)
@@ -64,7 +74,8 @@ Each example in the dataset has two fields:
 - `image`: a PIL image of the food item
 - `label`: the label class of the food item
 
-To make it easier for the model to get the label name from the label id, create a dictionary that maps the label name
+To make it easier for the model to get the label name from the label id, create a dictionary that
+maps the label name
 to an integer and vice versa:
 
 ```py
@@ -93,9 +104,12 @@ The next step is to load a ViT image processor to process the image into a tenso
 >>> image_processor = AutoImageProcessor.from_pretrained(checkpoint)
 ```
 
-Apply some image transformations to the images to make the model more robust against overfitting. Here you'll use torchvision's [`transforms`](https://pytorch.org/vision/stable/transforms.html) module, but you can also use any image library you like.
+Apply some image transformations to the images to make the model more robust against overfitting.
+Here you'll use torchvision's [`transforms`](https://pytorch.org/vision/stable/transforms.html)
+module, but you can also use any image library you like.
 
-Crop a random part of the image, resize it, and normalize it with the image mean and standard deviation:
+Crop a random part of the image, resize it, and normalize it with the image mean and standard
+deviation:
 
 ```py
 >>> from torchvision.transforms import RandomResizedCrop, Compose, Normalize, ToTensor
@@ -109,7 +123,8 @@ Crop a random part of the image, resize it, and normalize it with the image mean
 >>> _transforms = Compose([RandomResizedCrop(size), ToTensor(), normalize])
 ```
 
-Then create a preprocessing function to apply the transforms and return the `pixel_values` - the inputs to the model - of the image:
+Then create a preprocessing function to apply the transforms and return the `pixel_values` - the
+inputs to the model - of the image:
 
 ```py
 >>> def transforms(examples):
@@ -118,13 +133,18 @@ Then create a preprocessing function to apply the transforms and return the `pix
 ...     return examples
 ```
 
-To apply the preprocessing function over the entire dataset, use 🤗 Datasets [with_transform](https://huggingface.co/docs/datasets/v4.5.0/en/package_reference/main_classes#datasets.Dataset.with_transform) method. The transforms are applied on the fly when you load an element of the dataset:
+To apply the preprocessing function over the entire dataset, use 🤗
+Datasets [with_transform](https://huggingface.co/docs/datasets/v4.5.0/en/package_reference/main_classes#datasets.Dataset.with_transform)
+method. The transforms are applied on the fly when you load an element of the dataset:
 
 ```py
 >>> food = food.with_transform(transforms)
 ```
 
-Now create a batch of examples using [DefaultDataCollator](/docs/transformers/v5.2.0/en/main_classes/data_collator#transformers.DefaultDataCollator). Unlike other data collators in 🤗 Transformers, the `DefaultDataCollator` does not apply additional preprocessing such as padding.
+Now create a batch of examples
+using [DefaultDataCollator](/docs/transformers/v5.2.0/en/main_classes/data_collator#transformers.DefaultDataCollator).
+Unlike other data collators in 🤗 Transformers, the `DefaultDataCollator` does not apply additional
+preprocessing such as padding.
 
 ```py
 >>> from transformers import DefaultDataCollator
@@ -134,9 +154,13 @@ Now create a batch of examples using [DefaultDataCollator](/docs/transformers/v5
 
 ## Evaluate
 
-Including a metric during training is often helpful for evaluating your model's performance. You can quickly load an
-evaluation method with the 🤗 [Evaluate](https://huggingface.co/docs/evaluate/index) library. For this task, load
-the [accuracy](https://huggingface.co/spaces/evaluate-metric/accuracy) metric (see the 🤗 Evaluate [quick tour](https://huggingface.co/docs/evaluate/a_quick_tour) to learn more about how to load and compute a metric):
+Including a metric during training is often helpful for evaluating your model's performance. You can
+quickly load an
+evaluation method with the 🤗 [Evaluate](https://huggingface.co/docs/evaluate/index) library. For
+this task, load
+the [accuracy](https://huggingface.co/spaces/evaluate-metric/accuracy) metric (see the 🤗
+Evaluate [quick tour](https://huggingface.co/docs/evaluate/a_quick_tour) to learn more about how to
+load and compute a metric):
 
 ```py
 >>> import evaluate
@@ -144,7 +168,9 @@ the [accuracy](https://huggingface.co/spaces/evaluate-metric/accuracy) metric (s
 >>> accuracy = evaluate.load("accuracy")
 ```
 
-Then create a function that passes your predictions and labels to [compute](https://huggingface.co/docs/evaluate/v0.4.6/en/package_reference/main_classes#evaluate.EvaluationModule.compute) to calculate the accuracy:
+Then create a function that passes your predictions and labels
+to [compute](https://huggingface.co/docs/evaluate/v0.4.6/en/package_reference/main_classes#evaluate.EvaluationModule.compute)
+to calculate the accuracy:
 
 ```py
 >>> import numpy as np
@@ -155,13 +181,18 @@ Then create a function that passes your predictions and labels to [compute](http
 ...     return accuracy.compute(predictions=predictions, references=labels)
 ```
 
-Your `compute_metrics` function is ready to go now, and you'll return to it when you set up your training.
+Your `compute_metrics` function is ready to go now, and you'll return to it when you set up your
+training.
 
 ## Train
 
-If you aren't familiar with finetuning a model with the [Trainer](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer), take a look at the basic tutorial [here](../training#train-with-pytorch-trainer)!
+If you aren't familiar with finetuning a model with
+the [Trainer](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer), take a look
+at the basic tutorial [here](../training#train-with-pytorch-trainer)!
 
-You're ready to start training your model now! Load ViT with [AutoModelForImageClassification](/docs/transformers/v5.2.0/en/model_doc/auto#transformers.AutoModelForImageClassification). Specify the number of labels along with the number of expected labels, and the label mappings:
+You're ready to start training your model now! Load ViT
+with [AutoModelForImageClassification](/docs/transformers/v5.2.0/en/model_doc/auto#transformers.AutoModelForImageClassification).
+Specify the number of labels along with the number of expected labels, and the label mappings:
 
 ```py
 >>> from transformers import AutoModelForImageClassification, TrainingArguments, Trainer
@@ -176,9 +207,20 @@ You're ready to start training your model now! Load ViT with [AutoModelForImageC
 
 At this point, only three steps remain:
 
-1. Define your training hyperparameters in [TrainingArguments](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.TrainingArguments). It is important you don't remove unused columns because that'll drop the `image` column. Without the `image` column, you can't create `pixel_values`. Set `remove_unused_columns=False` to prevent this behavior! The only other required parameter is `output_dir` which specifies where to save your model. You'll push this model to the Hub by setting `push_to_hub=True` (you need to be signed in to Hugging Face to upload your model). At the end of each epoch, the [Trainer](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer) will evaluate the accuracy and save the training checkpoint.
-2. Pass the training arguments to [Trainer](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer) along with the model, dataset, tokenizer, data collator, and `compute_metrics` function.
-3. Call [train()](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer.train) to finetune your model.
+1. Define your training hyperparameters
+   in [TrainingArguments](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.TrainingArguments).
+   It is important you don't remove unused columns because that'll drop the `image` column. Without
+   the `image` column, you can't create `pixel_values`. Set `remove_unused_columns=False` to prevent
+   this behavior! The only other required parameter is `output_dir` which specifies where to save
+   your model. You'll push this model to the Hub by setting `push_to_hub=True` (you need to be
+   signed in to Hugging Face to upload your model). At the end of each epoch,
+   the [Trainer](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer) will
+   evaluate the accuracy and save the training checkpoint.
+2. Pass the training arguments
+   to [Trainer](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer) along with
+   the model, dataset, tokenizer, data collator, and `compute_metrics` function.
+3. Call [train()](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer.train) to
+   finetune your model.
 
 ```py
 >>> training_args = TrainingArguments(
@@ -213,13 +255,16 @@ At this point, only three steps remain:
 >>> trainer.train()
 ```
 
-Once training is completed, share your model to the Hub with the [push_to_hub()](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer.push_to_hub) method so everyone can use your model:
+Once training is completed, share your model to the Hub with
+the [push_to_hub()](/docs/transformers/v5.2.0/en/main_classes/trainer#transformers.Trainer.push_to_hub)
+method so everyone can use your model:
 
 ```py
 >>> trainer.push_to_hub()
 ```
 
-For a more in-depth example of how to finetune a model for image classification, take a look at the corresponding [PyTorch notebook](https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/image_classification.ipynb).
+For a more in-depth example of how to finetune a model for image classification, take a look at the
+corresponding [PyTorch notebook](https://colab.research.google.com/github/huggingface/notebooks/blob/main/examples/image_classification.ipynb).
 
 ## Inference
 
@@ -232,9 +277,9 @@ Load an image you'd like to run inference on:
 >>> image = ds["image"][0]
 ```
 
-    
-
-The simplest way to try out your finetuned model for inference is to use it in a [pipeline()](/docs/transformers/v5.2.0/en/main_classes/pipelines#transformers.pipeline). Instantiate a `pipeline` for image classification with your model, and pass your image to it:
+The simplest way to try out your finetuned model for inference is to use it in
+a [pipeline()](/docs/transformers/v5.2.0/en/main_classes/pipelines#transformers.pipeline).
+Instantiate a `pipeline` for image classification with your model, and pass your image to it:
 
 ```py
 >>> from transformers import pipeline
@@ -270,7 +315,8 @@ Pass your inputs to the model and return the logits:
 ...     logits = model(**inputs).logits
 ```
 
-Get the predicted label with the highest probability, and use the model's `id2label` mapping to convert it to a label:
+Get the predicted label with the highest probability, and use the model's `id2label` mapping to
+convert it to a label:
 
 ```py
 >>> predicted_label = logits.argmax(-1).item()

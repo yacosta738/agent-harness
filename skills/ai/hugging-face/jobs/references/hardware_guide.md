@@ -2,14 +2,17 @@
 
 Choosing the right hardware (flavor) is critical for cost-effective workloads.
 
-> **Reference:** [HF Jobs Hardware Documentation](https://huggingface.co/docs/hub/en/spaces-config-reference) (updated 07/2025)
+> **Reference:
+** [HF Jobs Hardware Documentation](https://huggingface.co/docs/hub/en/spaces-config-reference) (
+> updated 07/2025)
 
 ## Available Hardware
 
 ### CPU Flavors
-| Flavor | Description | Use Case |
-|--------|-------------|----------|
-| `cpu-basic` | Basic CPU instance | Testing, lightweight scripts |
+
+| Flavor        | Description           | Use Case                            |
+|---------------|-----------------------|-------------------------------------|
+| `cpu-basic`   | Basic CPU instance    | Testing, lightweight scripts        |
 | `cpu-upgrade` | Enhanced CPU instance | Data processing, parallel workloads |
 
 **Use cases:** Data processing, testing scripts, lightweight workloads
@@ -17,27 +20,28 @@ Choosing the right hardware (flavor) is critical for cost-effective workloads.
 
 ### GPU Flavors
 
-| Flavor | GPU | VRAM | Use Case |
-|--------|-----|------|----------|
-| `t4-small` | NVIDIA T4 | 16GB | <1B models, demos, quick tests |
-| `t4-medium` | NVIDIA T4 | 16GB | 1-3B models, development |
-| `l4x1` | NVIDIA L4 | 24GB | 3-7B models, efficient workloads |
-| `l4x4` | 4x NVIDIA L4 | 96GB | Multi-GPU, parallel workloads |
-| `a10g-small` | NVIDIA A10G | 24GB | 3-7B models, production |
-| `a10g-large` | NVIDIA A10G | 24GB | 7-13B models, batch inference |
-| `a10g-largex2` | 2x NVIDIA A10G | 48GB | Multi-GPU, large models |
-| `a10g-largex4` | 4x NVIDIA A10G | 96GB | Multi-GPU, very large models |
-| `a100-large` | NVIDIA A100 | 40GB | 13B+ models, fastest GPU option |
+| Flavor         | GPU            | VRAM | Use Case                         |
+|----------------|----------------|------|----------------------------------|
+| `t4-small`     | NVIDIA T4      | 16GB | <1B models, demos, quick tests   |
+| `t4-medium`    | NVIDIA T4      | 16GB | 1-3B models, development         |
+| `l4x1`         | NVIDIA L4      | 24GB | 3-7B models, efficient workloads |
+| `l4x4`         | 4x NVIDIA L4   | 96GB | Multi-GPU, parallel workloads    |
+| `a10g-small`   | NVIDIA A10G    | 24GB | 3-7B models, production          |
+| `a10g-large`   | NVIDIA A10G    | 24GB | 7-13B models, batch inference    |
+| `a10g-largex2` | 2x NVIDIA A10G | 48GB | Multi-GPU, large models          |
+| `a10g-largex4` | 4x NVIDIA A10G | 96GB | Multi-GPU, very large models     |
+| `a100-large`   | NVIDIA A100    | 40GB | 13B+ models, fastest GPU option  |
 
 ### TPU Flavors
 
-| Flavor | Configuration | Use Case |
-|--------|---------------|----------|
-| `v5e-1x1` | TPU v5e (1x1) | Small TPU workloads |
+| Flavor    | Configuration | Use Case             |
+|-----------|---------------|----------------------|
+| `v5e-1x1` | TPU v5e (1x1) | Small TPU workloads  |
 | `v5e-2x2` | TPU v5e (2x2) | Medium TPU workloads |
-| `v5e-2x4` | TPU v5e (2x4) | Large TPU workloads |
+| `v5e-2x4` | TPU v5e (2x4) | Large TPU workloads  |
 
 **TPU Use Cases:**
+
 - JAX/Flax model training
 - Large-scale inference
 - TPU-optimized workloads
@@ -47,30 +51,35 @@ Choosing the right hardware (flavor) is critical for cost-effective workloads.
 ### By Workload Type
 
 **Data Processing**
+
 - **Recommended:** `cpu-upgrade` or `l4x1`
 - **Use case:** Transform, filter, analyze datasets
 - **Batch size:** Depends on data size
 - **Time:** Varies by dataset size
 
 **Batch Inference**
+
 - **Recommended:** `a10g-large` or `a100-large`
 - **Use case:** Run inference on thousands of samples
 - **Batch size:** 8-32 depending on model
 - **Time:** Depends on number of samples
 
 **Experiments & Benchmarks**
+
 - **Recommended:** `a10g-small` or `a10g-large`
 - **Use case:** Reproducible ML experiments
 - **Batch size:** Varies
 - **Time:** Depends on experiment complexity
 
 **Model Training** (see `model-trainer` skill for details)
+
 - **Recommended:** See model-trainer skill
 - **Use case:** Fine-tuning models
 - **Batch size:** Depends on model size
 - **Time:** Hours to days
 
 **Synthetic Data Generation**
+
 - **Recommended:** `a10g-large` or `a100-large`
 - **Use case:** Generate datasets using LLMs
 - **Batch size:** Depends on generation method
@@ -79,21 +88,25 @@ Choosing the right hardware (flavor) is critical for cost-effective workloads.
 ### By Budget
 
 **Minimal Budget (<$5 total)**
+
 - Use `cpu-basic` or `t4-small`
 - Process small datasets
 - Quick tests and demos
 
 **Small Budget ($5-20)**
+
 - Use `t4-medium` or `a10g-small`
 - Process medium datasets
 - Run experiments
 
 **Medium Budget ($20-50)**
+
 - Use `a10g-small` or `a10g-large`
 - Process large datasets
 - Production workloads
 
 **Large Budget ($50-200)**
+
 - Use `a10g-large` or `a100-large`
 - Large-scale processing
 - Multiple experiments
@@ -101,26 +114,31 @@ Choosing the right hardware (flavor) is critical for cost-effective workloads.
 ### By Model Size (for inference/processing)
 
 **Tiny Models (<1B parameters)**
+
 - **Recommended:** `t4-small`
 - **Example:** Qwen2.5-0.5B, TinyLlama
 - **Batch size:** 8-16
 
 **Small Models (1-3B parameters)**
+
 - **Recommended:** `t4-medium` or `a10g-small`
 - **Example:** Qwen2.5-1.5B, Phi-2
 - **Batch size:** 4-8
 
 **Medium Models (3-7B parameters)**
+
 - **Recommended:** `a10g-small` or `a10g-large`
 - **Example:** Qwen2.5-7B, Mistral-7B
 - **Batch size:** 2-4
 
 **Large Models (7-13B parameters)**
+
 - **Recommended:** `a10g-large` or `a100-large`
 - **Example:** Llama-3-8B
 - **Batch size:** 1-2
 
 **Very Large Models (13B+ parameters)**
+
 - **Recommended:** `a100-large`
 - **Example:** Llama-3-13B, Llama-3-70B
 - **Batch size:** 1
@@ -130,16 +148,19 @@ Choosing the right hardware (flavor) is critical for cost-effective workloads.
 ### Estimating Memory Requirements
 
 **For inference:**
+
 ```
 Memory (GB) ≈ (Model params in billions) × 2-4
 ```
 
 **For training:**
+
 ```
 Memory (GB) ≈ (Model params in billions) × 20 (full) or × 4 (LoRA)
 ```
 
 **Examples:**
+
 - Qwen2.5-0.5B inference: ~1-2GB ✅ fits t4-small
 - Qwen2.5-7B inference: ~14-28GB ✅ fits a10g-large
 - Qwen2.5-7B training: ~140GB ❌ not feasible without LoRA
@@ -160,11 +181,11 @@ If hitting memory limits:
    ```
 
 3. **Use smaller models**
-   - Use quantized models
-   - Use LoRA adapters
+    - Use quantized models
+    - Use LoRA adapters
 
 4. **Upgrade hardware**
-   - cpu → t4 → a10g → a100
+    - cpu → t4 → a10g → a100
 
 ## Cost Estimation
 
@@ -177,16 +198,19 @@ Total Cost = (Hours of runtime) × (Cost per hour)
 ### Example Calculations
 
 **Data processing:**
+
 - Hardware: cpu-upgrade ($0.50/hour)
 - Time: 1 hour
 - Cost: $0.50
 
 **Batch inference:**
+
 - Hardware: a10g-large ($5/hour)
 - Time: 2 hours
 - Cost: $10.00
 
 **Experiments:**
+
 - Hardware: a10g-small ($3.50/hour)
 - Time: 4 hours
 - Cost: $14.00
@@ -205,11 +229,13 @@ Total Cost = (Hours of runtime) × (Cost per hour)
 Multi-GPU flavors automatically distribute workloads:
 
 **Multi-GPU flavors:**
+
 - `l4x4` - 4x L4 GPUs (96GB total VRAM)
 - `a10g-largex2` - 2x A10G GPUs (48GB total VRAM)
 - `a10g-largex4` - 4x A10G GPUs (96GB total VRAM)
 
 **When to use:**
+
 - Large models (>13B parameters)
 - Need faster processing (linear speedup)
 - Large datasets (>100K samples)
@@ -217,6 +243,7 @@ Multi-GPU flavors automatically distribute workloads:
 - Tensor parallelism for inference
 
 **MCP Tool Example:**
+
 ```python
 hf_jobs("uv", {
     "script": "process.py",
@@ -227,6 +254,7 @@ hf_jobs("uv", {
 ```
 
 **CLI Equivalent:**
+
 ```bash
 hf jobs uv run process.py --flavor a10g-largex2 --timeout 4h
 ```
@@ -236,12 +264,14 @@ hf jobs uv run process.py --flavor a10g-largex2 --timeout 4h
 ### CPU vs GPU
 
 **Choose CPU when:**
+
 - No GPU acceleration needed
 - Data processing only
 - Budget constrained
 - Simple workloads
 
 **Choose GPU when:**
+
 - Model inference/training
 - GPU-accelerated libraries
 - Need faster processing
@@ -250,11 +280,13 @@ hf jobs uv run process.py --flavor a10g-largex2 --timeout 4h
 ### a10g vs a100
 
 **Choose a10g when:**
+
 - Model <13B parameters
 - Budget conscious
 - Processing time not critical
 
 **Choose a100 when:**
+
 - Model 13B+ parameters
 - Need fastest processing
 - Memory requirements high
@@ -263,11 +295,13 @@ hf jobs uv run process.py --flavor a10g-largex2 --timeout 4h
 ### Single vs Multi-GPU
 
 **Choose single GPU when:**
+
 - Model <7B parameters
 - Budget constrained
 - Simpler debugging
 
 **Choose multi-GPU when:**
+
 - Model >13B parameters
 - Need faster processing
 - Large batch sizes required

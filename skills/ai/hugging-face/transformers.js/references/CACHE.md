@@ -12,7 +12,8 @@ Complete guide to caching strategies for Transformers.js models across different
 
 ## Overview
 
-Transformers.js models can be large (from a few MB to several GB), so caching is critical for performance. The caching strategy differs based on the environment:
+Transformers.js models can be large (from a few MB to several GB), so caching is critical for
+performance. The caching strategy differs based on the environment:
 
 - **Browser**: Uses the Cache API (browser cache storage)
 - **Node.js**: Uses filesystem cache in `~/.cache/huggingface/`
@@ -36,7 +37,8 @@ Caching is **automatic** and enabled by default. Models are cached after the fir
 
 ### Using the Cache API
 
-In browser environments, Transformers.js uses the [Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache) to store models:
+In browser environments, Transformers.js uses
+the [Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache) to store models:
 
 ```javascript
 import { env, pipeline } from '@huggingface/transformers';
@@ -58,6 +60,7 @@ const classifier = await pipeline('sentiment-analysis');
 ### Cache Location
 
 Browser caches are stored in:
+
 - **Chrome/Edge**: `Cache Storage` in DevTools → Application tab → Cache storage
 - **Firefox**: `about:cache` → Storage
 - **Safari**: Web Inspector → Storage tab
@@ -83,7 +86,8 @@ Browsers impose storage quotas:
 - **Firefox**: ~50% of available disk space
 - **Safari**: ~1GB per origin (prompt for more)
 
-**Tip:** Monitor storage usage with the [Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API):
+**Tip:** Monitor storage usage with
+the [Storage API](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API):
 
 ```javascript
 if ('storage' in navigator && 'estimate' in navigator.storage) {
@@ -116,10 +120,13 @@ const classifier = await pipeline('sentiment-analysis');
 ### Default Cache Location
 
 **Default behavior:**
+
 - Cache directory: `./.cache` (relative to where Node.js process runs)
 - Full default path: `~/.cache/huggingface/` when using Hugging Face tools
 
-**Note:** The statement "Models are cached automatically in `~/.cache/huggingface/`" from performance tips is specific to Hugging Face's Python tooling convention. In Transformers.js for Node.js, the default is `./.cache` unless configured otherwise.
+**Note:** The statement "Models are cached automatically in `~/.cache/huggingface/`" from
+performance tips is specific to Hugging Face's Python tooling convention. In Transformers.js for
+Node.js, the default is `./.cache` unless configured otherwise.
 
 ### Custom Cache Directory
 
@@ -335,5 +342,6 @@ Transformers.js provides flexible caching options:
 6. Pre-download models for production deployments
 
 For more configuration options, see:
+
 - [Configuration Reference](./CONFIGURATION.md)
 - [Pipeline Options](./PIPELINE_OPTIONS.md)

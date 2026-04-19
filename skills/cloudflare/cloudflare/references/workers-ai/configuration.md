@@ -58,6 +58,7 @@ Create API token at: dash.cloudflare.com/profile/api-tokens (Workers AI - Read p
 ## SDK Compatibility
 
 **OpenAI SDK:**
+
 ```typescript
 import OpenAI from 'openai';
 const client = new OpenAI({
@@ -89,9 +90,9 @@ const MODELS = {
 
 ## Troubleshooting
 
-| Error | Fix |
-|-------|-----|
-| `env.AI is undefined` | Check `ai` binding in wrangler.jsonc |
-| Local AI doesn't work | Use `wrangler dev --remote` |
-| Type 'Ai' not found | Install `@cloudflare/workers-types` |
-| @cloudflare/ai package error | Don't install - use native binding |
+| Error                        | Fix                                  |
+|------------------------------|--------------------------------------|
+| `env.AI is undefined`        | Check `ai` binding in wrangler.jsonc |
+| Local AI doesn't work        | Use `wrangler dev --remote`          |
+| Type 'Ai' not found          | Install `@cloudflare/workers-types`  |
+| @cloudflare/ai package error | Don't install - use native binding   |

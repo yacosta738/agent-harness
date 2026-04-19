@@ -2,13 +2,16 @@
 
 ## Overview
 
-Cloudflare Workers Playground is a browser-based sandbox for instantly experimenting with, testing, and deploying Cloudflare Workers without authentication or setup. This skill provides patterns, APIs, and best practices specifically for Workers Playground development.
+Cloudflare Workers Playground is a browser-based sandbox for instantly experimenting with, testing,
+and deploying Cloudflare Workers without authentication or setup. This skill provides patterns,
+APIs, and best practices specifically for Workers Playground development.
 
 **URL:** [workers.cloudflare.com/playground](https://workers.cloudflare.com/playground)
 
 ## ⚠️ Playground Constraints
 
 **Playground is NOT production-equivalent:**
+
 - ✅ Real Workers runtime, instant testing, shareable URLs
 - ❌ No TypeScript (JavaScript only)
 - ❌ No bindings (KV, D1, R2, Durable Objects)
@@ -72,7 +75,8 @@ export default {
 
 1. **[configuration.md](configuration.md)** - Start here: playground setup, constraints, deployment
 2. **[api.md](api.md)** - Core APIs: Request, Response, ExecutionContext, fetch, Cache
-3. **[patterns.md](patterns.md)** - Common use cases: routing, proxying, A/B testing, multi-module code
+3. **[patterns.md](patterns.md)** - Common use cases: routing, proxying, A/B testing, multi-module
+   code
 4. **[gotchas.md](gotchas.md)** - Troubleshooting: errors, browser issues, limits, best practices
 
 ## In This Reference
@@ -85,16 +89,19 @@ export default {
 ## Key Features
 
 **No Setup Required:**
+
 - Open URL and start coding
 - No CLI, no account, no config files
 - Code executes in real Cloudflare Workers runtime
 
 **Instant Preview:**
+
 - Live preview pane with browser tab or HTTP tester
 - Auto-reload on code changes
 - DevTools integration (right-click → Inspect)
 
 **Share & Deploy:**
+
 - Copy Link generates permanent shareable URL
 - Deploy button publishes to production in ~30 seconds
 - Get `*.workers.dev` subdomain immediately
@@ -109,15 +116,15 @@ export default {
 
 ## Limitations vs Production
 
-| Feature | Playground | Production (wrangler) |
-|---------|------------|----------------------|
-| Language | JavaScript only | JS + TypeScript |
-| Bindings | None | KV, D1, R2, DO, AI, etc. |
-| Environment vars | None | Full support |
-| Module format | ES only | ES + Service Worker |
-| CPU time | 10ms (Free plan) | 10ms Free / 50ms Paid |
-| Custom domains | No | Yes |
-| Analytics | No | Yes |
+| Feature          | Playground       | Production (wrangler)    |
+|------------------|------------------|--------------------------|
+| Language         | JavaScript only  | JS + TypeScript          |
+| Bindings         | None             | KV, D1, R2, DO, AI, etc. |
+| Environment vars | None             | Full support             |
+| Module format    | ES only          | ES + Service Worker      |
+| CPU time         | 10ms (Free plan) | 10ms Free / 50ms Paid    |
+| Custom domains   | No               | Yes                      |
+| Analytics        | No               | Yes                      |
 
 ## See Also
 

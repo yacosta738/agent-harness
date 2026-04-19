@@ -4,7 +4,10 @@ Expert guidance for implementing Cloudflare TURN Service in WebRTC applications.
 
 ## Overview
 
-Cloudflare TURN (Traversal Using Relays around NAT) Service is a managed relay service for WebRTC applications. TURN acts as a relay point for traffic between WebRTC clients and SFUs, particularly when direct peer-to-peer communication is obstructed by NATs or firewalls. The service runs on Cloudflare's global anycast network across 310+ cities.
+Cloudflare TURN (Traversal Using Relays around NAT) Service is a managed relay service for WebRTC
+applications. TURN acts as a relay point for traffic between WebRTC clients and SFUs, particularly
+when direct peer-to-peer communication is obstructed by NATs or firewalls. The service runs on
+Cloudflare's global anycast network across 310+ cities.
 
 ## Key Characteristics
 
@@ -16,48 +19,55 @@ Cloudflare TURN (Traversal Using Relays around NAT) Service is a managed relay s
 
 ## In This Reference
 
-| File | Purpose |
-|------|---------|
-| [api.md](./api.md) | Credentials API, TURN key management, types, constraints |
-| [configuration.md](./configuration.md) | Worker setup, wrangler.jsonc, env vars, IP allowlisting |
-| [patterns.md](./patterns.md) | Implementation patterns, use cases, integration examples |
-| [gotchas.md](./gotchas.md) | Troubleshooting, limits, security, common mistakes |
+| File                                   | Purpose                                                  |
+|----------------------------------------|----------------------------------------------------------|
+| [api.md](./api.md)                     | Credentials API, TURN key management, types, constraints |
+| [configuration.md](./configuration.md) | Worker setup, wrangler.jsonc, env vars, IP allowlisting  |
+| [patterns.md](./patterns.md)           | Implementation patterns, use cases, integration examples |
+| [gotchas.md](./gotchas.md)             | Troubleshooting, limits, security, common mistakes       |
 
 ## Reading Order
 
-| Task | Files to Read | Est. Tokens |
-|------|---------------|-------------|
-| Quick start | README only | ~500 |
-| Generate credentials | README → api | ~1300 |
-| Worker integration | README → configuration → patterns | ~2000 |
-| Debug connection | gotchas | ~700 |
-| Security review | api → gotchas | ~1500 |
-| Enterprise firewall | configuration | ~600 |
+| Task                 | Files to Read                     | Est. Tokens |
+|----------------------|-----------------------------------|-------------|
+| Quick start          | README only                       | ~500        |
+| Generate credentials | README → api                      | ~1300       |
+| Worker integration   | README → configuration → patterns | ~2000       |
+| Debug connection     | gotchas                           | ~700        |
+| Security review      | api → gotchas                     | ~1500       |
+| Enterprise firewall  | configuration                     | ~600        |
 
 ## Service Addresses and Ports
 
 ### STUN over UDP
+
 - **Primary**: `stun.cloudflare.com:3478/udp`
 - **Alternate**: `stun.cloudflare.com:53/udp` (blocked by browsers, not recommended)
 
 ### TURN over UDP
+
 - **Primary**: `turn.cloudflare.com:3478/udp`
 - **Alternate**: `turn.cloudflare.com:53/udp` (blocked by browsers)
 
 ### TURN over TCP
+
 - **Primary**: `turn.cloudflare.com:3478/tcp`
 - **Alternate**: `turn.cloudflare.com:80/tcp`
 
 ### TURN over TLS
+
 - **Primary**: `turn.cloudflare.com:5349/tcp`
 - **Alternate**: `turn.cloudflare.com:443/tcp`
 
 ## Quick Start
 
 1. **Create TURN key via API**: see [api.md#create-turn-key](./api.md#create-turn-key)
-2. **Generate credentials**: see [api.md#generate-temporary-credentials](./api.md#generate-temporary-credentials)
-3. **Configure Worker**: see [configuration.md#cloudflare-worker-integration](./configuration.md#cloudflare-worker-integration)
-4. **Implement client**: see [patterns.md#basic-turn-configuration-browser](./patterns.md#basic-turn-configuration-browser)
+2. **Generate credentials**:
+   see [api.md#generate-temporary-credentials](./api.md#generate-temporary-credentials)
+3. **Configure Worker**:
+   see [configuration.md#cloudflare-worker-integration](./configuration.md#cloudflare-worker-integration)
+4. **Implement client**:
+   see [patterns.md#basic-turn-configuration-browser](./patterns.md#basic-turn-configuration-browser)
 
 ## When to Use TURN
 

@@ -50,7 +50,9 @@ chainTo:
 
 # micro — Asynchronous HTTP Microservices
 
-You are an expert in micro, Vercel's lightweight framework for building asynchronous HTTP microservices in Node.js. micro makes it easy to write single-purpose HTTP endpoints with minimal boilerplate.
+You are an expert in micro, Vercel's lightweight framework for building asynchronous HTTP
+microservices in Node.js. micro makes it easy to write single-purpose HTTP endpoints with minimal
+boilerplate.
 
 ## Installation
 
@@ -197,10 +199,12 @@ export default cors(handler)
 
 ## Key Points
 
-1. **Return values are sent as responses** — return strings, objects (auto-serialized to JSON), or Buffers
+1. **Return values are sent as responses** — return strings, objects (auto-serialized to JSON), or
+   Buffers
 2. **Async by default** — handlers can be async functions, errors are caught automatically
 3. **Thrown errors become HTTP errors** — use `createError()` for proper status codes
-4. **No routing built-in** — micro is a single-endpoint server; use a router like `micro-router` for multi-route services
+4. **No routing built-in** — micro is a single-endpoint server; use a router like `micro-router` for
+   multi-route services
 5. **Body parsing is explicit** — use `json()`, `text()`, or `buffer()` to parse request bodies
 6. **Composable** — wrap handlers with higher-order functions for middleware-like behavior
 

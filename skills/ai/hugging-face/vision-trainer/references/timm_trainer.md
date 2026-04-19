@@ -1,10 +1,13 @@
 # Using timm models with Hugging Face Trainer
 
-Transformers has first-class support for timm models via the `TimmWrapper` classes. You can load any timm model and use it directly with the `Trainer` API for image classification. Here's how it works:
+Transformers has first-class support for timm models via the `TimmWrapper` classes. You can load any
+timm model and use it directly with the `Trainer` API for image classification. Here's how it works:
 
 ## Loading a timm model
 
-The `TimmWrapperForImageClassification` class (in `transformers/src/transformers/models/timm_wrapper/modeling_timm_wrapper.py`) wraps timm models so they're fully compatible with the Trainer API. You can load them via the `Auto` classes:
+The `TimmWrapperForImageClassification` class (in
+`transformers/src/transformers/models/timm_wrapper/modeling_timm_wrapper.py`) wraps timm models so
+they're fully compatible with the Trainer API. You can load them via the `Auto` classes:
 
 ```python
 from transformers import AutoModelForImageClassification, AutoImageProcessor, Trainer, TrainingArguments
@@ -21,14 +24,18 @@ model = AutoModelForImageClassification.from_pretrained(
 
 ## Key details
 
-1. **Image processor**: The `TimmWrapperImageProcessor` automatically resolves the correct transforms from timm's config. It exposes both `val_transforms` and `train_transforms` (with augmentations), as noted in the code:
+1. **Image processor**: The `TimmWrapperImageProcessor` automatically resolves the correct
+   transforms from timm's config. It exposes both `val_transforms` and `train_transforms` (with
+   augmentations), as noted in the code:
 
 ```64:65:transformers/src/transformers/models/timm_wrapper/image_processing_timm_wrapper.py
         # useful for training, see examples/pytorch/image-classification/run_image_classification.py
         self.train_transforms = timm.data.create_transform(**self.data_config, is_training=True)
 ```
 
-2. **Loss computation is built-in**: `TimmWrapperForImageClassification.forward()` accepts a `labels` argument and computes cross-entropy loss automatically, which is exactly what Trainer expects:
+2. **Loss computation is built-in**: `TimmWrapperForImageClassification.forward()` accepts a
+   `labels` argument and computes cross-entropy loss automatically, which is exactly what Trainer
+   expects:
 
 ```374:376:transformers/src/transformers/models/timm_wrapper/modeling_timm_wrapper.py
         loss = None
@@ -36,7 +43,8 @@ model = AutoModelForImageClassification.from_pretrained(
             loss = self.loss_function(labels, logits, self.config)
 ```
 
-3. **Returns `ImageClassifierOutput`**: The output format is the standard transformers output, so Trainer handles it seamlessly.
+3. **Returns `ImageClassifierOutput`**: The output format is the standard transformers output, so
+   Trainer handles it seamlessly.
 
 ## Full training example
 
@@ -88,4 +96,6 @@ trainer = Trainer(
 trainer.train()
 ```
 
-Any timm checkpoint on the Hub (prefixed with `timm/`) works out of the box (ResNet, EfficientNet, ViT, ConvNeXt, etc). The wrapper handles all the translation between timm's interface and what Trainer expects.
+Any timm checkpoint on the Hub (prefixed with `timm/`) works out of the box (ResNet, EfficientNet,
+ViT, ConvNeXt, etc). The wrapper handles all the translation between timm's interface and what
+Trainer expects.

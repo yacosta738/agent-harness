@@ -98,11 +98,13 @@ chainTo:
 
 # Authentication Integrations
 
-You are an expert in authentication for Vercel-deployed applications — covering Clerk (native Vercel Marketplace integration), Descope, and Auth0.
+You are an expert in authentication for Vercel-deployed applications — covering Clerk (native Vercel
+Marketplace integration), Descope, and Auth0.
 
 ## Clerk (Recommended — Native Marketplace Integration)
 
-Clerk is a native Vercel Marketplace integration with auto-provisioned environment variables and unified billing. Current SDK: `@clerk/nextjs` v7 (Core 3, March 2026).
+Clerk is a native Vercel Marketplace integration with auto-provisioned environment variables and
+unified billing. Current SDK: `@clerk/nextjs` v7 (Core 3, March 2026).
 
 ### Install via Marketplace
 
@@ -112,6 +114,7 @@ vercel integration add clerk
 ```
 
 Auto-provisioned environment variables:
+
 - `CLERK_SECRET_KEY` — server-side API key
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` — client-side publishable key
 
@@ -376,28 +379,34 @@ export default async function Page() {
 
 ## Decision Matrix
 
-| Need | Recommended | Why |
-|------|------------|-----|
-| Fastest setup on Vercel | Clerk | Native Marketplace, auto-provisioned env vars |
-| Passwordless / social login flows | Descope | Visual flow builder, Marketplace native |
-| Enterprise SSO / SAML / multi-tenant | Auth0 | Deep enterprise identity support |
-| Pre-built UI components | Clerk | Drop-in `<SignIn />`, `<UserButton />` |
-| Vercel unified billing | Clerk or Descope | Both are native Marketplace integrations |
+| Need                                 | Recommended      | Why                                           |
+|--------------------------------------|------------------|-----------------------------------------------|
+| Fastest setup on Vercel              | Clerk            | Native Marketplace, auto-provisioned env vars |
+| Passwordless / social login flows    | Descope          | Visual flow builder, Marketplace native       |
+| Enterprise SSO / SAML / multi-tenant | Auth0            | Deep enterprise identity support              |
+| Pre-built UI components              | Clerk            | Drop-in `<SignIn />`, `<UserButton />`        |
+| Vercel unified billing               | Clerk or Descope | Both are native Marketplace integrations      |
 
 ## Clerk Core 3 Breaking Changes (March 2026)
 
-Clerk provides an upgrade CLI that scans your codebase and applies codemods: `npx @clerk/upgrade`. Requires **Node.js 20.9.0+**.
+Clerk provides an upgrade CLI that scans your codebase and applies codemods: `npx @clerk/upgrade`.
+Requires **Node.js 20.9.0+**.
 
 - **`auth()` is async** — always use `const { userId } = await auth()`, not synchronous
-- **`auth.protect()` moved** — use `await auth.protect()` directly, not from the return value of `auth()`
+- **`auth.protect()` moved** — use `await auth.protect()` directly, not from the return value of
+  `auth()`
 - **`clerkClient()` is async** — use `await clerkClient()` in middleware handlers
 - **`authMiddleware()` removed** — migrate to `clerkMiddleware()`
-- **`@clerk/types` deprecated** — import types from SDK subpath exports: `import type { UserResource } from '@clerk/react/types'` (works from any SDK package)
+- **`@clerk/types` deprecated** — import types from SDK subpath exports:
+  `import type { UserResource } from '@clerk/react/types'` (works from any SDK package)
 - **`ClerkProvider` no longer forces dynamic rendering** — pass the `dynamic` prop if needed
-- **Cache components** — when using Next.js cache components, place `<ClerkProvider>` inside `<body>`, not wrapping `<html>`
-- **Satellite domains** — new `satelliteAutoSync` option skips handshake redirects when no session cookies exist
+- **Cache components** — when using Next.js cache components, place `<ClerkProvider>` inside
+  `<body>`, not wrapping `<html>`
+- **Satellite domains** — new `satelliteAutoSync` option skips handshake redirects when no session
+  cookies exist
 - **Smaller bundles** — React is now shared across framework SDKs (~50KB gzipped savings)
-- **Better offline handling** — `getToken()` now correctly distinguishes signed-out from offline states
+- **Better offline handling** — `getToken()` now correctly distinguishes signed-out from offline
+  states
 
 ## Cross-References
 

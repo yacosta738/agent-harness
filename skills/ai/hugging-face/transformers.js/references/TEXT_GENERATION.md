@@ -35,7 +35,8 @@ await generator.dispose();
 
 ## Streaming
 
-Stream tokens as they're generated for better UX. Once you understand streaming, you can combine it with other features like chat format.
+Stream tokens as they're generated for better UX. Once you understand streaming, you can combine it
+with other features like chat format.
 
 ### Node.js
 
@@ -171,7 +172,8 @@ function StreamingGenerator() {
 
 ## Chat Format
 
-Use structured messages for conversations. Works with both basic generation and streaming (just add `streamer` parameter).
+Use structured messages for conversations. Works with both basic generation and streaming (just add
+`streamer` parameter).
 
 ### Single Turn
 
@@ -244,6 +246,7 @@ await generator(prompt, {
 ### Parameter Effects
 
 **Temperature:**
+
 - Low (0.1-0.5): More focused and deterministic
 - Medium (0.6-0.9): Balanced creativity and coherence
 - High (1.0-2.0): More creative and random
@@ -293,6 +296,7 @@ Browse available text generation models on Hugging Face Hub:
 - **Large models (> 3B params)**: High quality, slower, best for Node.js with `dtype: 'fp16'`
 
 Check model cards for:
+
 - Parameter count and model size
 - Supported languages
 - Benchmark scores

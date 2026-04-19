@@ -111,13 +111,17 @@ chainTo:
 
 **AI generations are expensive, non-reproducible assets. Never discard them.**
 
-Every call to an LLM costs real money and produces unique output that cannot be exactly reproduced. Treat generations like database records — assign an ID, persist immediately, and make them retrievable.
+Every call to an LLM costs real money and produces unique output that cannot be exactly reproduced.
+Treat generations like database records — assign an ID, persist immediately, and make them
+retrievable.
 
 ## Core Rules
 
-1. **Generate an ID before the LLM call** — use `nanoid()` or `createId()` from `@paralleldrive/cuid2`
+1. **Generate an ID before the LLM call** — use `nanoid()` or `createId()` from
+   `@paralleldrive/cuid2`
 2. **Persist every generation** — text and metadata to database, images and files to Vercel Blob
-3. **Make every generation addressable** — URL pattern: `/chat/[id]`, `/generate/[id]`, `/image/[id]`
+3. **Make every generation addressable** — URL pattern: `/chat/[id]`, `/generate/[id]`,
+   `/image/[id]`
 4. **Track metadata** — model name, token usage, estimated cost, timestamp, user ID
 5. **Never stream without saving** — if the user refreshes, the generation must survive
 
@@ -166,7 +170,8 @@ export default async function ChatPage({ params }: { params: Promise<{ id: strin
 }
 ```
 
-This gives you: shareable URLs, back-button support, multi-tab sessions, and generation history for free.
+This gives you: shareable URLs, back-button support, multi-tab sessions, and generation history for
+free.
 
 ## Persistence Schema
 
@@ -190,11 +195,11 @@ export const generations = pgTable("generations", {
 
 ## Storage Strategy
 
-| Data Type | Storage | Why |
-|-----------|---------|-----|
-| Text, metadata, history | Neon Postgres via Drizzle | Queryable, relational, supports search |
-| Generated images & files | Vercel Blob (`@vercel/blob`) | Permanent URLs, CDN-backed, no expiry |
-| Prompt dedup cache | Upstash Redis | Fast lookup, TTL-based expiry |
+| Data Type                | Storage                      | Why                                    |
+|--------------------------|------------------------------|----------------------------------------|
+| Text, metadata, history  | Neon Postgres via Drizzle    | Queryable, relational, supports search |
+| Generated images & files | Vercel Blob (`@vercel/blob`) | Permanent URLs, CDN-backed, no expiry  |
+| Prompt dedup cache       | Upstash Redis                | Fast lookup, TTL-based expiry          |
 
 ## Image Persistence
 
@@ -227,7 +232,8 @@ await db.update(generations)
 
 ## Cost Tracking
 
-Extract usage from every generation and store it. This enables billing, budgeting, and abuse detection:
+Extract usage from every generation and store it. This enables billing, budgeting, and abuse
+detection:
 
 ```ts
 const result = await generateText({ model, prompt });
@@ -268,9 +274,15 @@ await redis.set(cacheKey, generationId, { ex: 3600 }); // 1hr TTL
 
 ## Anti-Patterns
 
-- **Streaming to client without saving** — generation lost on page refresh. Always write to DB as tokens arrive or on completion.
-- **Routes without `[id]` segments** — `/api/chat` with no ID means generations aren't addressable. Use `/chat/[id]`.
-- **Re-generating identical prompts** — check cache first. Same prompt + same model = same cost for no new value.
-- **Ephemeral base64 images** — generated images served inline are lost when the component unmounts. Save to Vercel Blob.
-- **Missing metadata** — always store model name, token counts, and timestamp. You need this for cost tracking and debugging.
-- **Client-only state** — storing generations only in React state or localStorage. Use a database — generations must survive across devices and sessions.
+- **Streaming to client without saving** — generation lost on page refresh. Always write to DB as
+  tokens arrive or on completion.
+- **Routes without `[id]` segments** — `/api/chat` with no ID means generations aren't addressable.
+  Use `/chat/[id]`.
+- **Re-generating identical prompts** — check cache first. Same prompt + same model = same cost for
+  no new value.
+- **Ephemeral base64 images** — generated images served inline are lost when the component unmounts.
+  Save to Vercel Blob.
+- **Missing metadata** — always store model name, token counts, and timestamp. You need this for
+  cost tracking and debugging.
+- **Client-only state** — storing generations only in React state or localStorage. Use a database —
+  generations must survive across devices and sessions.

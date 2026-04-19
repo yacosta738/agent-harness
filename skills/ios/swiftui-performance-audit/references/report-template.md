@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use this structure when reporting SwiftUI performance findings so the user can quickly see the symptom, evidence, likely cause, and next validation step.
+Use this structure when reporting SwiftUI performance findings so the user can quickly see the
+symptom, evidence, likely cause, and next validation step.
 
 ## Template
 

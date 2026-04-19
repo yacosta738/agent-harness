@@ -17,6 +17,7 @@ export function VideoPlayer({ videoId, token }: { videoId: string; token?: strin
 ## Full-Stack Upload Flow
 
 **Backend API (Workers/Pages)**
+
 ```typescript
 import Cloudflare from 'cloudflare';
 
@@ -36,6 +37,7 @@ export default {
 ```
 
 **Frontend component**
+
 ```tsx
 import { useState } from 'react';
 

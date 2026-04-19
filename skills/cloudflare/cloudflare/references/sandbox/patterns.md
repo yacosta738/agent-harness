@@ -75,6 +75,7 @@ export default {
 ```
 
 **Dockerfile**:
+
 ```dockerfile
 FROM docker.io/cloudflare/sandbox:latest
 RUN npm install -g ws
@@ -157,10 +158,6 @@ export default {
   }
 };
 ```
-
-
-
-
 
 ## Multi-Tenant Pattern
 

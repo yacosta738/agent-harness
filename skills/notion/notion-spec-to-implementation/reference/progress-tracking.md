@@ -7,11 +7,13 @@
 For active implementation work:
 
 **What to update**:
+
 - Task status if changed
 - Add progress note to task
 - Update blockers
 
 **When**:
+
 - End of work day
 - After completing significant work
 - When encountering blockers
@@ -21,12 +23,14 @@ For active implementation work:
 For phase/milestone completion:
 
 **What to update**:
+
 - Mark phase complete in plan
 - Add milestone summary
 - Update timeline if needed
 - Report to stakeholders
 
 **When**:
+
 - Phase completion
 - Major deliverable ready
 - Sprint end
@@ -37,11 +41,13 @@ For phase/milestone completion:
 For task state transitions:
 
 **What to update**:
+
 - Task status property
 - Add transition note
 - Notify relevant people
 
 **When**:
+
 - Start work (To Do → In Progress)
 - Ready for review (In Progress → In Review)
 - Complete (In Review → Done)
@@ -218,26 +224,31 @@ Update milestone dates:
 ### Status Definitions
 
 **To Do**: Not started
+
 - Task is ready to begin
 - Dependencies met
 - Assigned (or available)
 
 **In Progress**: Actively being worked
+
 - Work has started
 - Assigned to someone
 - Regular updates expected
 
 **Blocked**: Cannot proceed
+
 - Dependency not met
 - External blocker
 - Waiting on decision/resource
 
 **In Review**: Awaiting review
+
 - Work complete from implementer perspective
 - Needs code review, QA, or approval
 - Reviewers identified
 
 **Done**: Complete
+
 - All acceptance criteria met
 - Reviewed and approved
 - Deployed/delivered

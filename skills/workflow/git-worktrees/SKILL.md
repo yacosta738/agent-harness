@@ -11,6 +11,7 @@ description: Use when working on multiple branches in parallel from the same rep
 split parallel work without stashing, recloning, or mixing branch state.
 
 **Standard convention:**
+
 - branch: `feature/<slug>`, `fix/<slug>`, `chore/<slug>`
 - directory: `../worktrees/<slug>`
 - slug: short, kebab-case, purpose-first
@@ -75,26 +76,26 @@ git branch -d feature/auth-session
 
 ## Quick Reference
 
-| Task | Command |
-|---|---|
-| List worktrees | `git worktree list` |
+| Task                            | Command                                                  |
+|---------------------------------|----------------------------------------------------------|
+| List worktrees                  | `git worktree list`                                      |
 | Create worktree with new branch | `git worktree add ../worktrees/<slug> -b feature/<slug>` |
-| Create from existing branch | `git worktree add ../worktrees/<slug> <branch>` |
-| Show repo root | `git rev-parse --show-toplevel` |
-| Show current branch | `git branch --show-current` |
-| Remove worktree | `git worktree remove ../worktrees/<slug>` |
-| Prune stale metadata | `git worktree prune` |
+| Create from existing branch     | `git worktree add ../worktrees/<slug> <branch>`          |
+| Show repo root                  | `git rev-parse --show-toplevel`                          |
+| Show current branch             | `git branch --show-current`                              |
+| Remove worktree                 | `git worktree remove ../worktrees/<slug>`                |
+| Prune stale metadata            | `git worktree prune`                                     |
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---|---|
-| Editing in the wrong directory | Run `git rev-parse --show-toplevel` and `git branch --show-current` first |
-| Inconsistent worktree names | Always use `../worktrees/<slug>` with kebab-case slugs |
-| Mixing root repo and worktree changes | Treat each worktree as a separate active workspace |
-| Removing a worktree with uncommitted work | Check `git status` before `git worktree remove` |
-| Leaving stale metadata behind | Run `git worktree prune` after removals |
-| Creating from the wrong base branch | Verify current branch before `git worktree add` |
+| Mistake                                   | Fix                                                                       |
+|-------------------------------------------|---------------------------------------------------------------------------|
+| Editing in the wrong directory            | Run `git rev-parse --show-toplevel` and `git branch --show-current` first |
+| Inconsistent worktree names               | Always use `../worktrees/<slug>` with kebab-case slugs                    |
+| Mixing root repo and worktree changes     | Treat each worktree as a separate active workspace                        |
+| Removing a worktree with uncommitted work | Check `git status` before `git worktree remove`                           |
+| Leaving stale metadata behind             | Run `git worktree prune` after removals                                   |
+| Creating from the wrong base branch       | Verify current branch before `git worktree add`                           |
 
 ## Decision Rules
 

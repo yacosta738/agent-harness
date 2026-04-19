@@ -5,6 +5,7 @@ Testing Durable Objects with storage using `vitest-pool-workers`.
 ## Setup
 
 **vitest.config.ts:**
+
 ```typescript
 import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
 

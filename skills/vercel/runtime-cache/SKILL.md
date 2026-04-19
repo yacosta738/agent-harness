@@ -58,11 +58,13 @@ You are an expert in the Vercel Runtime Cache — an ephemeral caching layer for
 
 ## What It Is
 
-The Runtime Cache is a **per-region key-value store** accessible from Vercel Functions, Routing Middleware, and Builds. It supports **tag-based invalidation** for granular cache control.
+The Runtime Cache is a **per-region key-value store** accessible from Vercel Functions, Routing
+Middleware, and Builds. It supports **tag-based invalidation** for granular cache control.
 
 - **Regional**: Each Vercel region has its own isolated cache
 - **Isolated**: Scoped per project AND per deployment environment (`preview` vs `production`)
-- **Persistent across deployments**: Cached data survives new deploys; invalidation via TTL or `expireTag`
+- **Persistent across deployments**: Cached data survives new deploys; invalidation via TTL or
+  `expireTag`
 - **Ephemeral**: Fixed storage limit per project; LRU eviction when full
 - **Framework-agnostic**: Works with any framework via `@vercel/functions`
 
@@ -159,6 +161,7 @@ await dangerouslyDeleteByTag('blog-posts', {
 ```
 
 **Important distinction**:
+
 - `cache.expireTag()` — operates on Runtime Cache only
 - `invalidateByTag()` / `dangerouslyDeleteByTag()` — purges CDN + Runtime + Data caches
 
@@ -187,13 +190,14 @@ async function getData() {
 
 ### Next.js 16 Invalidation APIs
 
-| Function | Context | Behavior |
-|----------|---------|----------|
-| `updateTag(tag)` | Server Actions only | Immediate expiration, read-your-own-writes |
-| `revalidateTag(tag, 'max')` | Server Actions + Route Handlers | Stale-while-revalidate (recommended) |
-| `revalidateTag(tag, { expire: 0 })` | Route Handlers (webhooks) | Immediate expiration from external triggers |
+| Function                            | Context                         | Behavior                                    |
+|-------------------------------------|---------------------------------|---------------------------------------------|
+| `updateTag(tag)`                    | Server Actions only             | Immediate expiration, read-your-own-writes  |
+| `revalidateTag(tag, 'max')`         | Server Actions + Route Handlers | Stale-while-revalidate (recommended)        |
+| `revalidateTag(tag, { expire: 0 })` | Route Handlers (webhooks)       | Immediate expiration from external triggers |
 
-**Important**: Single-argument `revalidateTag(tag)` is deprecated in Next.js 16. Always pass a `cacheLife` profile as the second argument.
+**Important**: Single-argument `revalidateTag(tag)` is deprecated in Next.js 16. Always pass a
+`cacheLife` profile as the second argument.
 
 ### Runtime Cache vs ISR Isolation
 
@@ -245,19 +249,23 @@ return Response.json(product, {
 
 ## Limits
 
-| Property | Limit |
-|----------|-------|
-| Item size | 2 MB |
-| Tags per Runtime Cache item | 64 |
-| Tags per CDN item | 128 |
-| Max tag length | 256 bytes |
-| Tags per bulk REST API call | 16 |
+| Property                    | Limit     |
+|-----------------------------|-----------|
+| Item size                   | 2 MB      |
+| Tags per Runtime Cache item | 64        |
+| Tags per CDN item           | 128       |
+| Max tag length              | 256 bytes |
+| Tags per bulk REST API call | 16        |
 
 Tags are **case-sensitive** and **cannot contain commas**.
 
 ## Observability
 
-Monitor hit rates, invalidation patterns, and storage usage in the Vercel Dashboard under **Observability → Runtime Cache**. The CDN dashboard (March 5, 2026) provides a unified view of global traffic distribution, cache performance metrics, a redesigned purging interface, and **project-level routing** — update response headers or rewrite to external APIs without triggering a new deployment. Project-level routes are available on all plans and take effect instantly.
+Monitor hit rates, invalidation patterns, and storage usage in the Vercel Dashboard under *
+*Observability → Runtime Cache**. The CDN dashboard (March 5, 2026) provides a unified view of
+global traffic distribution, cache performance metrics, a redesigned purging interface, and *
+*project-level routing** — update response headers or rewrite to external APIs without triggering a
+new deployment. Project-level routes are available on all plans and take effect instantly.
 
 ## When to Use
 

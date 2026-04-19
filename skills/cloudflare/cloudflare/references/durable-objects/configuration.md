@@ -54,6 +54,7 @@ await stub.someMethod()  // Data stays in EU
 ```
 
 **Key points:**
+
 - Set at ID creation time, immutable afterward
 - DO instance physically located within jurisdiction
 - Storage and compute guaranteed within boundary
@@ -75,6 +76,7 @@ await stub.someMethod()  // Data stays in EU
 ```
 
 **Migration rules:**
+
 - Tags must be unique and sequential (v1, v2, v3...)
 - No rollback supported (test with `--dry-run` first)
 - Auto-applied on deploy

@@ -2,13 +2,16 @@
 
 ## Intent
 
-Use `Form` for structured settings, grouped inputs, and action rows. This pattern keeps layout, spacing, and accessibility consistent for data entry screens.
+Use `Form` for structured settings, grouped inputs, and action rows. This pattern keeps layout,
+spacing, and accessibility consistent for data entry screens.
 
 ## Core patterns
 
-- Wrap the form in a `NavigationStack` only when it is presented in a sheet or standalone view without an existing navigation context.
+- Wrap the form in a `NavigationStack` only when it is presented in a sheet or standalone view
+  without an existing navigation context.
 - Group related controls into `Section` blocks.
-- Use `.scrollContentBackground(.hidden)` plus a custom background color when you need design-system colors.
+- Use `.scrollContentBackground(.hidden)` plus a custom background color when you need design-system
+  colors.
 - Apply `.formStyle(.grouped)` for grouped styling when appropriate.
 - Use `@FocusState` to manage keyboard focus in input-heavy forms.
 
@@ -87,7 +90,8 @@ struct AddRemoteServerView: View {
 ## Design choices to keep
 
 - Prefer `Form` over custom stacks for settings and input screens.
-- Keep rows tappable by using `.contentShape(Rectangle())` and `.buttonStyle(.plain)` on row buttons.
+- Keep rows tappable by using `.contentShape(Rectangle())` and `.buttonStyle(.plain)` on row
+  buttons.
 - Use list row backgrounds to keep section styling consistent with your theme.
 
 ## Pitfalls

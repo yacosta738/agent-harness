@@ -1,6 +1,7 @@
 # Quick Brief Format
 
 **When to use**:
+
 - Time-sensitive requests
 - Simple topics
 - Status updates
@@ -11,6 +12,7 @@
 **Length**: 200-400 words
 
 **Structure**:
+
 - 3-4 sentence summary
 - 3-5 bullet key points
 - Short action items list

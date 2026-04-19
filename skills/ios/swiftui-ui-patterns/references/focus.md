@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use `@FocusState` to control keyboard focus, chain fields, and coordinate focus across complex forms.
+Use `@FocusState` to control keyboard focus, chain fields, and coordinate focus across complex
+forms.
 
 ## Core patterns
 

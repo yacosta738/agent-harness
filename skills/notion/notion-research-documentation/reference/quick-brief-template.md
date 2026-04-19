@@ -1,6 +1,7 @@
 # Quick Brief Template
 
-Use for fast turnaround requests or simple topics. See [quick-brief-format.md](quick-brief-format.md) for when to use this format.
+Use for fast turnaround requests or simple topics.
+See [quick-brief-format.md](quick-brief-format.md) for when to use this format.
 
 ```markdown
 # [Topic] - Quick Brief

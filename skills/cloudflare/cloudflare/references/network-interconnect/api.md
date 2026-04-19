@@ -12,6 +12,7 @@ Auth: Authorization: Bearer <token>
 ## SDK Namespaces
 
 **Primary (recommended):**
+
 ```typescript
 client.networkInterconnects.interconnects.*
 client.networkInterconnects.cnis.*
@@ -19,6 +20,7 @@ client.networkInterconnects.slots.*
 ```
 
 **Alternate (deprecated):**
+
 ```typescript
 client.magicTransit.cfInterconnects.*
 ```
@@ -40,6 +42,7 @@ DELETE /accounts/{account_id}/cni/interconnects/{icon}
 **Status Values:** `active` | `healthy` | `unhealthy` | `pending` | `down`
 
 **Response Example:**
+
 ```json
 {"result": [{"id": "icon_abc", "name": "prod", "type": "direct", "facility": "EWR1", "speed": "10G", "status": "active"}]}
 ```
@@ -75,7 +78,8 @@ await client.magicTransit.tunnels.update(accountId, tunnelId, {
 });
 ```
 
-Rates: `high` | `medium` | `low`. Types: `request` | `reply`. See [Magic Transit docs](https://developers.cloudflare.com/magic-transit/how-to/configure-tunnel-endpoints/#add-tunnels).
+Rates: `high` | `medium` | `low`. Types: `request` | `reply`.
+See [Magic Transit docs](https://developers.cloudflare.com/magic-transit/how-to/configure-tunnel-endpoints/#add-tunnels).
 
 ## Settings
 
@@ -185,6 +189,7 @@ curl "https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/cni/interconne
 ## Not Available via API
 
 **Missing Capabilities:**
+
 - BGP session state query (use Dashboard or BGP logs)
 - Bandwidth utilization metrics (use external monitoring)
 - Traffic statistics per interconnect

@@ -27,7 +27,8 @@ const validated = EventSchema.parse(rawEvent); // Throws on invalid
 await env.STREAM.send([validated]);
 ```
 
-**Why:** Structured streams drop invalid events silently. Client validation gives immediate feedback.
+**Why:** Structured streams drop invalid events silently. Client validation gives immediate
+feedback.
 
 ## SQL Transform Patterns
 
@@ -58,19 +59,19 @@ await Promise.all([
 ]);
 ```
 
-| Need | Use |
-|------|-----|
-| Long-term storage, SQL queries | Pipelines |
-| Immediate processing, retries | Queues |
-| Both | Fan-out pattern |
+| Need                           | Use             |
+|--------------------------------|-----------------|
+| Long-term storage, SQL queries | Pipelines       |
+| Immediate processing, retries  | Queues          |
+| Both                           | Fan-out pattern |
 
 ## Performance Tuning
 
-| Goal | Config |
-|------|--------|
-| Low latency | `--roll-interval 10` |
-| Query performance | `--roll-interval 300 --roll-size 100` |
-| Cost optimal | `--compression zstd --roll-interval 300` |
+| Goal              | Config                                   |
+|-------------------|------------------------------------------|
+| Low latency       | `--roll-interval 10`                     |
+| Query performance | `--roll-interval 300 --roll-size 100`    |
+| Cost optimal      | `--compression zstd --roll-interval 300` |
 
 ## Schema Evolution
 

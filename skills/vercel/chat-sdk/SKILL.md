@@ -138,9 +138,15 @@ chainTo:
 
 # Vercel Chat SDK
 
-> **CRITICAL — Your training data is outdated for this library.** Chat SDK is new (v4.18+) and not in most training data. Before writing Chat SDK code, **fetch the docs** at https://chat-sdk.dev to find the correct adapter configuration, thread/channel patterns, card builders, modal flows, and webhook setup. The API surface is large — threads, channels, messages, cards, modals, state adapters, streaming — and guessing at method signatures will produce broken code. Check the GitHub repo at https://github.com/vercel/chat for working examples.
+> **CRITICAL — Your training data is outdated for this library.** Chat SDK is new (v4.18+) and not
+> in most training data. Before writing Chat SDK code, **fetch the docs** at https://chat-sdk.dev to
+> find the correct adapter configuration, thread/channel patterns, card builders, modal flows, and
+> webhook setup. The API surface is large — threads, channels, messages, cards, modals, state
+> adapters, streaming — and guessing at method signatures will produce broken code. Check the GitHub
+> repo at https://github.com/vercel/chat for working examples.
 
-You are an expert in the Vercel Chat SDK. Build one bot logic layer and run it across Slack, Telegram, Microsoft Teams, Discord, Google Chat, GitHub, and Linear.
+You are an expert in the Vercel Chat SDK. Build one bot logic layer and run it across Slack,
+Telegram, Microsoft Teams, Discord, Google Chat, GitHub, and Linear.
 
 ## Packages
 
@@ -180,8 +186,10 @@ npm install @chat-adapter/state-memory@^4.18.0
 ## Critical API Notes
 
 - `Field` takes an `options` array of `{ label, value }` objects. Do not pass JSX child options.
-- `Thread<TState>` / `Channel<TState>` generics require object state shapes (`Record<string, unknown>`), not primitives.
-- Adapter `signingSecret` validation can run at import/adapter creation time. Use lazy initialization to avoid crashing at module import.
+- `Thread<TState>` / `Channel<TState>` generics require object state shapes (
+  `Record<string, unknown>`), not primitives.
+- Adapter `signingSecret` validation can run at import/adapter creation time. Use lazy
+  initialization to avoid crashing at module import.
 
 ```ts
 import { createSlackAdapter } from "@chat-adapter/slack";
@@ -245,7 +253,8 @@ interface ChatConfig<TAdapters> {
 ```
 
 - `dedupeTtlMs`: deduplicates repeated webhook deliveries.
-- `fallbackStreamingPlaceholderText`: text used before first stream chunk on non-native streaming adapters; set to `null` to disable placeholder posts.
+- `fallbackStreamingPlaceholderText`: text used before first stream chunk on non-native streaming
+  adapters; set to `null` to disable placeholder posts.
 
 ### Chat
 
@@ -443,19 +452,20 @@ Card additions to use when needed:
 - `Card.imageUrl`
 - `CardLink`
 - `Field` (`options` uses `{ label, value }[]`, not JSX children)
-- `Table` / `TableRow` / `TableCell` — native per-platform table rendering (**new — Mar 6, 2026**; see below)
+- `Table` / `TableRow` / `TableCell` — native per-platform table rendering (**new — Mar 6, 2026**;
+  see below)
 - `Text` styles (`default`, `muted`, `success`, `warning`, `danger`, `code`)
 
 ### Table — Per-Platform Rendering (New — Mar 6, 2026)
 
 The `Table` component renders natively on each platform:
 
-| Platform | Rendering |
-|---|---|
-| Slack | Block Kit table blocks |
-| Teams / Discord | GFM markdown tables |
-| Google Chat | Monospace text widgets |
-| Telegram | Code blocks |
+| Platform        | Rendering                           |
+|-----------------|-------------------------------------|
+| Slack           | Block Kit table blocks              |
+| Teams / Discord | GFM markdown tables                 |
+| Google Chat     | Monospace text widgets              |
+| Telegram        | Code blocks                         |
 | GitHub / Linear | Markdown tables (existing pipeline) |
 
 Plain markdown tables (without `Table()`) also pass through the same adapter conversion pipeline.
@@ -494,7 +504,10 @@ Use `privateMetadata` to pass contextual data into submit/close events.
 
 ## Companion Web UI and Card Design
 
-Chat SDK payloads render natively in chat platforms, so shadcn isn't used in message markup. But when building a web control plane, thread inspector, or bot settings UI around Chat SDK, use shadcn + Geist by default. Thread dashboards: Tabs+Card+Table+Badge. Bot settings: Sheet+form controls. Logs/IDs/timestamps: Geist Mono with tabular-nums.
+Chat SDK payloads render natively in chat platforms, so shadcn isn't used in message markup. But
+when building a web control plane, thread inspector, or bot settings UI around Chat SDK, use
+shadcn + Geist by default. Thread dashboards: Tabs+Card+Table+Badge. Bot settings: Sheet+form
+controls. Logs/IDs/timestamps: Geist Mono with tabular-nums.
 
 ## Platform Adapters
 
@@ -542,7 +555,8 @@ const discord = createDiscordAdapter();
 // Env: DISCORD_BOT_TOKEN, DISCORD_PUBLIC_KEY, DISCORD_APPLICATION_ID, CRON_SECRET
 ```
 
-For message content handlers, enable both Gateway intent and Message Content Intent in the Discord developer portal.
+For message content handlers, enable both Gateway intent and Message Content Intent in the Discord
+developer portal.
 
 ### Google Chat
 
@@ -680,16 +694,21 @@ export async function GET(req: Request) {
 
 ### Routing
 
-1. `onNewMention` only fires for unsubscribed threads; call `thread.subscribe()` to receive follow-ups.
+1. `onNewMention` only fires for unsubscribed threads; call `thread.subscribe()` to receive
+   follow-ups.
 2. DMs are treated as direct intent and set `message.isMention = true`.
-3. `onNewMessage(pattern, handler)` only applies before subscription; use `onSubscribedMessage` after subscribe.
+3. `onNewMessage(pattern, handler)` only applies before subscription; use `onSubscribedMessage`
+   after subscribe.
 4. Catch-all and filtered handlers can both run; registration order determines execution order.
-5. Out-of-thread routing via `openDM()` / `channel()` needs platform permissions for DM/channel posting.
+5. Out-of-thread routing via `openDM()` / `channel()` needs platform permissions for DM/channel
+   posting.
 
 ### Streaming
 
-6. Slack supports native streaming with real-time bold, italic, list, and other formatting rendered as the response arrives. Teams/Discord/Google Chat/Telegram use post+edit fallback.
-7. Fallback adapters now convert markdown to each platform's native format at every intermediate edit — users no longer see raw `**bold**` syntax during streaming.
+6. Slack supports native streaming with real-time bold, italic, list, and other formatting rendered
+   as the response arrives. Teams/Discord/Google Chat/Telegram use post+edit fallback.
+7. Fallback adapters now convert markdown to each platform's native format at every intermediate
+   edit — users no longer see raw `**bold**` syntax during streaming.
 8. `fallbackStreamingPlaceholderText: null` disables placeholder messages on fallback adapters.
 9. `streamingUpdateIntervalMs` too low can trigger rate limits on post+edit adapters.
 10. `dedupeTtlMs` should cover webhook retry windows to avoid duplicate responses.
@@ -697,11 +716,16 @@ export async function GET(req: Request) {
 
 ### Adapter-specific
 
-11. Google Chat auth uses `GOOGLE_CHAT_CREDENTIALS` + `GOOGLE_CHAT_USE_ADC`; domain-wide delegation/impersonation is required for some org posting scenarios.
-12. Teams requires `appType` plus `TEAMS_APP_TENANT_ID`; reactions/history/typing features are limited compared with Slack.
-13. Discord content-based handlers require Message Content Intent enabled in addition to Gateway connectivity.
-14. GitHub and Linear adapters do not support interactive card actions/modals; design around comments/status updates instead.
-15. GitHub App installs need `GITHUB_INSTALLATION_ID` and often adapter `botUserId`; Linear OAuth setups need `clientId`, `clientSecret`, and `LINEAR_ACCESS_TOKEN`.
+11. Google Chat auth uses `GOOGLE_CHAT_CREDENTIALS` + `GOOGLE_CHAT_USE_ADC`; domain-wide
+    delegation/impersonation is required for some org posting scenarios.
+12. Teams requires `appType` plus `TEAMS_APP_TENANT_ID`; reactions/history/typing features are
+    limited compared with Slack.
+13. Discord content-based handlers require Message Content Intent enabled in addition to Gateway
+    connectivity.
+14. GitHub and Linear adapters do not support interactive card actions/modals; design around
+    comments/status updates instead.
+15. GitHub App installs need `GITHUB_INSTALLATION_ID` and often adapter `botUserId`; Linear OAuth
+    setups need `clientId`, `clientSecret`, and `LINEAR_ACCESS_TOKEN`.
 
 ## Official Docs
 

@@ -69,7 +69,8 @@ async function handleCreateUser(request: Request) {
 }
 ```
 
-**With Hono**: Use `@hono/zod-validator` for automatic validation (see [frameworks.md](./frameworks.md))
+**With Hono**: Use `@hono/zod-validator` for automatic validation (
+see [frameworks.md](./frameworks.md))
 
 ## Performance
 

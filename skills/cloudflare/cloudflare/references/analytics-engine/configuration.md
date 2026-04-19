@@ -19,6 +19,7 @@
 ```
 
 Multiple datasets for separate concerns:
+
 ```jsonc
 {
   "analytics_engine_datasets": [
@@ -50,29 +51,29 @@ export default {
 
 ## Data Point Limits
 
-| Field | Limit | SQL Access |
-|-------|-------|------------|
-| blobs | 20 strings, 16KB each | `blob1`...`blob20` |
-| doubles | 20 numbers | `double1`...`double20` |
-| indexes | 1 string, 16KB | `index1` |
+| Field   | Limit                 | SQL Access             |
+|---------|-----------------------|------------------------|
+| blobs   | 20 strings, 16KB each | `blob1`...`blob20`     |
+| doubles | 20 numbers            | `double1`...`double20` |
+| indexes | 1 string, 16KB        | `index1`               |
 
 ## Write Behavior
 
-| Scenario | Behavior |
-|----------|----------|
-| <1M writes/min | All accepted |
-| >1M writes/min | Automatic sampling |
-| Invalid data | Silent failure (check tail logs) |
+| Scenario       | Behavior                         |
+|----------------|----------------------------------|
+| <1M writes/min | All accepted                     |
+| >1M writes/min | Automatic sampling               |
+| Invalid data   | Silent failure (check tail logs) |
 
 **Mitigate sampling:** Pre-aggregate, use multiple datasets, write only critical metrics.
 
 ## Query Limits
 
-| Resource | Limit |
-|----------|-------|
-| Query timeout | 30 seconds |
+| Resource       | Limit             |
+|----------------|-------------------|
+| Query timeout  | 30 seconds        |
 | Data retention | 90 days (default) |
-| Result size | ~10MB |
+| Result size    | ~10MB             |
 
 ## Cost
 

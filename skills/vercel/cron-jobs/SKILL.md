@@ -44,7 +44,8 @@ chainTo:
 
 # Vercel Cron Jobs
 
-You are an expert in Vercel Cron Jobs — scheduled serverless function invocations configured in `vercel.json`.
+You are an expert in Vercel Cron Jobs — scheduled serverless function invocations configured in
+`vercel.json`.
 
 ## Configuration
 
@@ -63,8 +64,10 @@ Cron jobs are defined in the `crons` array of `vercel.json`:
 
 ## Key Rules
 
-1. **Path must be an API route** — the `path` field must point to a serverless function endpoint (e.g., `/api/cron/...`)
-2. **Schedule uses standard cron syntax** — five-field format: `minute hour day-of-month month day-of-week`
+1. **Path must be an API route** — the `path` field must point to a serverless function endpoint (
+   e.g., `/api/cron/...`)
+2. **Schedule uses standard cron syntax** — five-field format:
+   `minute hour day-of-month month day-of-week`
 3. **Verify the request origin** — always check the `Authorization` header matches `CRON_SECRET`:
 
 ```ts

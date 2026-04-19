@@ -21,6 +21,7 @@ filters: {
 ```
 
 **Results Found:**
+
 - "Database Migration Proposal" (Engineering)
 - "Current Database Performance Issues" (Engineering)
 - "Migration Options Analysis" (Architecture)
@@ -40,7 +41,8 @@ Notion:notion-fetch
 id: "database-performance-issues-page-id"
 ```
 
-**Extracted**: Current pain points - slow queries, schema flexibility issues, transaction limitations
+**Extracted**: Current pain points - slow queries, schema flexibility issues, transaction
+limitations
 
 ```
 Notion:notion-fetch
@@ -48,6 +50,7 @@ id: "migration-options-analysis-page-id"
 ```
 
 **Extracted**: Three options analyzed:
+
 1. Stay on MongoDB with optimizations
 2. Migrate to PostgreSQL
 3. Hybrid approach (MongoDB + PostgreSQL)
@@ -62,6 +65,7 @@ id: "previous-migration-postmortem-page-id"
 ### Step 3: Synthesize Pre-Read
 
 **Key Information Identified:**
+
 - **Problem**: MongoDB performance degrading, schema flexibility causing data consistency issues
 - **Options**: Three approaches with different trade-offs
 - **Recommendation**: PostgreSQL migration favored by engineering team
@@ -405,23 +409,27 @@ rich_text: [{
 ## Key Features Demonstrated
 
 ### Context Gathering
+
 - **Targeted search**: Engineering teamspace, recent documents
 - **Multiple perspectives**: Performance data, proposals, analysis, historical lessons
 - **Comprehensive synthesis**: Combined technical, business, and historical context
 
 ### Options Analysis
+
 - **Structured comparison**: Pros/cons for each option
 - **Cost-benefit**: Effort and infrastructure costs included
 - **Risk assessment**: Probability and impact noted
 - **Recommendation**: Clear engineering preference stated
 
 ### Decision Support
+
 - **Discussion topics**: 16 questions organized by theme
 - **Decision framework**: Evaluation criteria defined
 - **Decision makers**: Roles and responsibilities clear
 - **Outcome capture**: Sections ready for decision and actions
 
 ### Meeting Structure
+
 - **Pre-read**: Comprehensive background (can be read in 10 minutes)
 - **Options**: Clear comparison for quick decision
 - **Discussion**: Structured topics prevent rambling

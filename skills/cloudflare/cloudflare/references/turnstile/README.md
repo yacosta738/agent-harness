@@ -1,22 +1,26 @@
 # Cloudflare Turnstile Implementation Skill Reference
 
-Expert guidance for implementing Cloudflare Turnstile - a smart CAPTCHA alternative that protects websites from bots without showing traditional CAPTCHA puzzles.
+Expert guidance for implementing Cloudflare Turnstile - a smart CAPTCHA alternative that protects
+websites from bots without showing traditional CAPTCHA puzzles.
 
 ## Overview
 
-Turnstile is a user-friendly CAPTCHA alternative that runs challenges in the background without user interaction. It validates visitors automatically using signals like browser behavior, device fingerprinting, and machine learning.
+Turnstile is a user-friendly CAPTCHA alternative that runs challenges in the background without user
+interaction. It validates visitors automatically using signals like browser behavior, device
+fingerprinting, and machine learning.
 
 ## Widget Types
 
-| Type | Interaction | Use Case |
-|------|-------------|----------|
-| **Managed** (default) | Shows checkbox when needed | Forms, logins - balance UX and security |
-| **Non-Interactive** | Invisible, runs automatically | Frictionless UX, low-risk actions |
-| **Invisible** | Hidden, triggered programmatically | Pre-clearance, API calls, headless |
+| Type                  | Interaction                        | Use Case                                |
+|-----------------------|------------------------------------|-----------------------------------------|
+| **Managed** (default) | Shows checkbox when needed         | Forms, logins - balance UX and security |
+| **Non-Interactive**   | Invisible, runs automatically      | Frictionless UX, low-risk actions       |
+| **Invisible**         | Hidden, triggered programmatically | Pre-clearance, API calls, headless      |
 
 ## Quick Start
 
 ### Implicit Rendering (HTML-based)
+
 ```html
 <!-- 1. Add script -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -29,6 +33,7 @@ Turnstile is a user-friendly CAPTCHA alternative that runs challenges in the bac
 ```
 
 ### Explicit Rendering (JavaScript-based)
+
 ```html
 <div id="turnstile-container"></div>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
@@ -41,6 +46,7 @@ window.turnstile.render('#turnstile-container', {
 ```
 
 ### Server Validation (Required)
+
 ```javascript
 // Cloudflare Workers
 export default {
@@ -71,12 +77,12 @@ export default {
 
 **Critical for development/testing:**
 
-| Type | Key | Behavior |
-|------|-----|----------|
-| **Site Key (Always Passes)** | `1x00000000000000000000AA` | Widget succeeds, token validates |
-| **Site Key (Always Blocks)** | `2x00000000000000000000AB` | Widget fails visibly |
-| **Site Key (Force Challenge)** | `3x00000000000000000000FF` | Always shows interactive challenge |
-| **Secret Key (Testing)** | `1x0000000000000000000000000000000AA` | Validates test tokens |
+| Type                           | Key                                   | Behavior                           |
+|--------------------------------|---------------------------------------|------------------------------------|
+| **Site Key (Always Passes)**   | `1x00000000000000000000AA`            | Widget succeeds, token validates   |
+| **Site Key (Always Blocks)**   | `2x00000000000000000000AB`            | Widget fails visibly               |
+| **Site Key (Force Challenge)** | `3x00000000000000000000FF`            | Always shows interactive challenge |
+| **Secret Key (Testing)**       | `1x0000000000000000000000000000000AA` | Validates test tokens              |
 
 **Note:** Test keys work on `localhost` and any domain. Do NOT use in production.
 

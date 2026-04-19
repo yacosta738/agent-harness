@@ -1,10 +1,13 @@
 # Token Usage Guide for Hugging Face Jobs
 
-**⚠️ CRITICAL:** Proper token usage is essential for any job that interacts with the Hugging Face Hub.
+**⚠️ CRITICAL:** Proper token usage is essential for any job that interacts with the Hugging Face
+Hub.
 
 ## Overview
 
-Hugging Face tokens are authentication credentials that allow your jobs to interact with the Hub. They're required for:
+Hugging Face tokens are authentication credentials that allow your jobs to interact with the Hub.
+They're required for:
+
 - Pushing models/datasets to Hub
 - Accessing private repositories
 - Creating new repositories
@@ -14,17 +17,20 @@ Hugging Face tokens are authentication credentials that allow your jobs to inter
 ## Token Types
 
 ### Read Token
+
 - **Permissions:** Download models/datasets, read private repos
 - **Use case:** Jobs that only need to download/read content
 - **Creation:** https://huggingface.co/settings/tokens
 
 ### Write Token
+
 - **Permissions:** Push models/datasets, create repos, modify content
 - **Use case:** Jobs that need to upload results (most common)
 - **Creation:** https://huggingface.co/settings/tokens
 - **⚠️ Required for:** Pushing models, datasets, or any uploads
 
 ### Organization Token
+
 - **Permissions:** Act on behalf of an organization
 - **Use case:** Jobs running under organization namespace
 - **Creation:** Organization settings → Tokens
@@ -41,12 +47,14 @@ hf_jobs("uv", {
 ```
 
 **How it works:**
+
 1. `$HF_TOKEN` is a placeholder that gets replaced with your actual token
 2. Uses the token from your logged-in session (`hf auth login`)
 3. Token is encrypted server-side when passed as a secret
 4. Most secure and convenient method
 
 **Benefits:**
+
 - ✅ No token exposure in code
 - ✅ Uses your current login session
 - ✅ Automatically updated if you re-login
@@ -54,10 +62,12 @@ hf_jobs("uv", {
 - ✅ Token encrypted server-side
 
 **Requirements:**
+
 - Must be logged in: `hf auth login` or `hf_whoami()` works
 - Token must have required permissions
 
-**⚠️ CRITICAL:** `$HF_TOKEN` auto-replacement is an `hf_jobs` MCP tool feature ONLY. It does NOT work with `HfApi().run_uv_job()` — see Method 1b below.
+**⚠️ CRITICAL:** `$HF_TOKEN` auto-replacement is an `hf_jobs` MCP tool feature ONLY. It does NOT
+work with `HfApi().run_uv_job()` — see Method 1b below.
 
 ### Method 1b: `HfApi().run_uv_job()` with `get_token()` (Required for Python API)
 
@@ -71,11 +81,13 @@ api.run_uv_job(
 ```
 
 **How it works:**
+
 1. `get_token()` retrieves the token from your logged-in session
 2. The actual token value is passed to the `secrets` parameter
 3. Token is encrypted server-side
 
 **Why `"$HF_TOKEN"` fails with `HfApi().run_uv_job()`:**
+
 - The Python API passes the literal string `"$HF_TOKEN"` (9 characters) as the token
 - The Jobs server receives this invalid string instead of a real token
 - Result: `401 Unauthorized` errors when the script tries to authenticate
@@ -91,11 +103,13 @@ hf_jobs("uv", {
 ```
 
 **When to use:**
+
 - Only if automatic token doesn't work
 - Testing with a specific token
 - Organization tokens (use with caution)
 
 **Security concerns:**
+
 - ❌ Token visible in code/logs
 - ❌ Must manually update if token rotates
 - ❌ Risk of token exposure
@@ -111,11 +125,13 @@ hf_jobs("uv", {
 ```
 
 **Difference from secrets:**
+
 - `env` variables are visible in job logs
 - `secrets` are encrypted server-side
 - Always prefer `secrets` for tokens
 
 **When to use:**
+
 - Only for non-sensitive configuration
 - Never use for tokens (use `secrets` instead)
 
@@ -139,6 +155,7 @@ if not token:
 ### Using with Hugging Face Hub
 
 **Option 1: Explicit token parameter**
+
 ```python
 from huggingface_hub import HfApi
 
@@ -147,6 +164,7 @@ api.upload_file(...)
 ```
 
 **Option 2: Auto-detection (Recommended)**
+
 ```python
 from huggingface_hub import HfApi
 
@@ -156,6 +174,7 @@ api.upload_file(...)
 ```
 
 **Option 3: With transformers/datasets**
+
 ```python
 from transformers import AutoModel
 from datasets import load_dataset
@@ -239,22 +258,26 @@ except Exception as e:
 ### Error: 401 Unauthorized
 
 **Symptoms:**
+
 ```
 401 Client Error: Unauthorized for url: https://huggingface.co/api/...
 ```
 
 **Causes:**
+
 1. Token missing from job
 2. Token invalid or expired
 3. Token not passed correctly
 
 **Solutions:**
+
 1. Add `secrets={"HF_TOKEN": "$HF_TOKEN"}` to job config
 2. Verify `hf_whoami()` works locally
 3. Re-login: `hf auth login`
 4. Check token hasn't expired
 
 **Verification:**
+
 ```python
 # In your script
 import os
@@ -264,22 +287,26 @@ assert "HF_TOKEN" in os.environ, "HF_TOKEN missing!"
 ### Error: 403 Forbidden
 
 **Symptoms:**
+
 ```
 403 Client Error: Forbidden for url: https://huggingface.co/api/...
 ```
 
 **Causes:**
+
 1. Token lacks required permissions (read-only token used for write)
 2. No access to private repository
 3. Organization permissions insufficient
 
 **Solutions:**
+
 1. Ensure token has write permissions
 2. Check token type at https://huggingface.co/settings/tokens
 3. Verify access to target repository
 4. Use organization token if needed
 
 **Check token permissions:**
+
 ```python
 from huggingface_hub import whoami
 
@@ -291,22 +318,26 @@ print(f"Type: {user_info.get('type', 'user')}")
 ### Error: Token not found in environment
 
 **Symptoms:**
+
 ```
 KeyError: 'HF_TOKEN'
 ValueError: HF_TOKEN not found
 ```
 
 **Causes:**
+
 1. `secrets` not passed in job config
 2. Wrong key name (should be `HF_TOKEN`)
 3. Using `env` instead of `secrets`
 
 **Solutions:**
+
 1. Use `secrets={"HF_TOKEN": "$HF_TOKEN"}` (not `env`)
 2. Verify key name is exactly `HF_TOKEN`
 3. Check job config syntax
 
 **Correct configuration:**
+
 ```python
 # ✅ Correct
 hf_jobs("uv", {
@@ -330,23 +361,27 @@ hf_jobs("uv", {
 ### Error: Repository access denied
 
 **Symptoms:**
+
 ```
 403 Client Error: Forbidden
 Repository not found or access denied
 ```
 
 **Causes:**
+
 1. Token doesn't have access to private repo
 2. Repository doesn't exist and can't be created
 3. Wrong namespace
 
 **Solutions:**
+
 1. Use token from account with access
 2. Verify repo visibility (public vs private)
 3. Check namespace matches token owner
 4. Create repo first if needed
 
 **Check repository access:**
+
 ```python
 from huggingface_hub import HfApi
 
@@ -363,6 +398,7 @@ except Exception as e:
 ### 1. Never Commit Tokens
 
 **❌ Bad:**
+
 ```python
 # Never do this!
 token = "hf_abc123xyz..."
@@ -370,6 +406,7 @@ api = HfApi(token=token)
 ```
 
 **✅ Good:**
+
 ```python
 # Use environment variable
 token = os.environ.get("HF_TOKEN")
@@ -379,6 +416,7 @@ api = HfApi(token=token)
 ### 2. Use Secrets, Not Environment Variables
 
 **❌ Bad:**
+
 ```python
 hf_jobs("uv", {
     "script": "...",
@@ -387,6 +425,7 @@ hf_jobs("uv", {
 ```
 
 **✅ Good:**
+
 ```python
 hf_jobs("uv", {
     "script": "...",
@@ -397,6 +436,7 @@ hf_jobs("uv", {
 ### 3. Use Automatic Token Replacement
 
 **❌ Bad:**
+
 ```python
 hf_jobs("uv", {
     "script": "...",
@@ -405,6 +445,7 @@ hf_jobs("uv", {
 ```
 
 **✅ Good:**
+
 ```python
 hf_jobs("uv", {
     "script": "...",
@@ -540,12 +581,14 @@ Before submitting a job that uses Hub:
 ### Common Patterns
 
 **Pattern 1: Auto-detect token**
+
 ```python
 from huggingface_hub import HfApi
 api = HfApi()  # Uses HF_TOKEN from environment
 ```
 
 **Pattern 2: Explicit token**
+
 ```python
 import os
 from huggingface_hub import HfApi
@@ -553,6 +596,7 @@ api = HfApi(token=os.environ.get("HF_TOKEN"))
 ```
 
 **Pattern 3: Verify token**
+
 ```python
 import os
 assert "HF_TOKEN" in os.environ, "HF_TOKEN required!"

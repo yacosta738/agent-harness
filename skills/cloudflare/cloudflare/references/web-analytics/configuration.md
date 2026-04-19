@@ -6,16 +6,17 @@
 
 Dashboard → Web Analytics → Add site → Select hostname → Done
 
-| Injection Option | Description |
-|------------------|-------------|
-| Enable | Auto-inject for all visitors (default) |
-| Enable, excluding EU | No injection for EU (GDPR) |
-| Enable with manual snippet | You add beacon manually |
-| Disable | Pause tracking |
+| Injection Option           | Description                            |
+|----------------------------|----------------------------------------|
+| Enable                     | Auto-inject for all visitors (default) |
+| Enable, excluding EU       | No injection for EU (GDPR)             |
+| Enable with manual snippet | You add beacon manually                |
+| Disable                    | Pause tracking                         |
 
 **Fails if response has:** `Cache-Control: public, no-transform`
 
 **CSP required:**
+
 ```
 script-src https://static.cloudflareinsights.com https://cloudflareinsights.com;
 ```
@@ -65,6 +66,7 @@ Or use environment-specific tokens via env vars.
 ## Rules (Plan-dependent)
 
 Configure in dashboard for:
+
 - **Sample rate** - reduce collection % for high-traffic
 - **Path-based** - different behavior per route
 - **Host-based** - separate tracking per domain

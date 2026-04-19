@@ -1,10 +1,12 @@
 # Cloudflare Durable Objects Storage
 
-Persistent storage API for Durable Objects with SQLite and KV backends, PITR, and automatic concurrency control.
+Persistent storage API for Durable Objects with SQLite and KV backends, PITR, and automatic
+concurrency control.
 
 ## Overview
 
 DO Storage provides:
+
 - SQLite-backed (recommended) or KV-backed
 - SQL API + synchronous/async KV APIs
 - Automatic input/output gates (race-free)
@@ -39,10 +41,10 @@ export class Counter extends DurableObject {
 
 ## Storage Backends
 
-| Backend | Create Method | APIs | PITR |
-|---------|---------------|------|------|
-| SQLite (recommended) | `new_sqlite_classes` | SQL + sync KV + async KV | ✅ |
-| KV (legacy) | `new_classes` | async KV only | ❌ |
+| Backend              | Create Method        | APIs                     | PITR |
+|----------------------|----------------------|--------------------------|------|
+| SQLite (recommended) | `new_sqlite_classes` | SQL + sync KV + async KV | ✅    |
+| KV (legacy)          | `new_classes`        | async KV only            | ❌    |
 
 ## Core APIs
 
@@ -62,9 +64,11 @@ export class Counter extends DurableObject {
 
 ## In This Reference
 
-- [configuration.md](./configuration.md) - wrangler.jsonc migrations, SQLite vs KV setup, RPC binding
+- [configuration.md](./configuration.md) - wrangler.jsonc migrations, SQLite vs KV setup, RPC
+  binding
 - [api.md](./api.md) - SQL exec/cursors, KV methods, storage options, transactions, alarms, PITR
-- [patterns.md](./patterns.md) - Schema migrations, caching, rate limiting, batch processing, parent-child coordination
+- [patterns.md](./patterns.md) - Schema migrations, caching, rate limiting, batch processing,
+  parent-child coordination
 - [gotchas.md](./gotchas.md) - Concurrency gates, INTEGER precision, transaction rules, SQL limits
 - [testing.md](./testing.md) - vitest-pool-workers setup, testing DOs with SQL/alarms/PITR
 

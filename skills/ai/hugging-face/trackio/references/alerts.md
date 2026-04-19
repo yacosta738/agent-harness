@@ -1,8 +1,10 @@
 # Trackio Alerts
 
-Alerts let you flag important training events directly from code. They are the primary mechanism for LLM agents to diagnose runs and iterate autonomously on ML experiments.
+Alerts let you flag important training events directly from code. They are the primary mechanism for
+LLM agents to diagnose runs and iterate autonomously on ML experiments.
 
-Alerts are printed to the terminal, stored in the database, displayed in the dashboard, and optionally sent to webhooks (Slack/Discord).
+Alerts are printed to the terminal, stored in the database, displayed in the dashboard, and
+optionally sent to webhooks (Slack/Discord).
 
 ## Core API
 
@@ -19,15 +21,16 @@ trackio.alert(
 
 ### Alert Levels
 
-| Level | Usage |
-|-------|-------|
-| `trackio.AlertLevel.INFO` | Informational milestones (checkpoints saved, eval completed) |
-| `trackio.AlertLevel.WARN` | Potential issues (loss plateau, low accuracy, high gradient norm) |
-| `trackio.AlertLevel.ERROR` | Critical failures (NaN loss, divergence, OOM) |
+| Level                      | Usage                                                             |
+|----------------------------|-------------------------------------------------------------------|
+| `trackio.AlertLevel.INFO`  | Informational milestones (checkpoints saved, eval completed)      |
+| `trackio.AlertLevel.WARN`  | Potential issues (loss plateau, low accuracy, high gradient norm) |
+| `trackio.AlertLevel.ERROR` | Critical failures (NaN loss, divergence, OOM)                     |
 
 ### Webhook Support
 
-Set a global webhook URL via `trackio.init()` or the `TRACKIO_WEBHOOK_URL` environment variable. Alerts are auto-formatted for Slack and Discord URLs.
+Set a global webhook URL via `trackio.init()` or the `TRACKIO_WEBHOOK_URL` environment variable.
+Alerts are auto-formatted for Slack and Discord URLs.
 
 ```python
 trackio.init(
@@ -48,6 +51,7 @@ trackio.alert(
 ```
 
 Environment variables:
+
 - `TRACKIO_WEBHOOK_URL` — global webhook URL
 - `TRACKIO_WEBHOOK_MIN_LEVEL` — minimum level for webhook delivery (`info`, `warn`, `error`)
 
@@ -129,7 +133,9 @@ trackio.finish()
 
 ### 2. Monitor Alerts
 
-Alerts are automatically printed to the terminal when fired. If the agent is watching the training script's output (e.g. running in the foreground or tailing logs), it will see alerts immediately — no polling needed.
+Alerts are automatically printed to the terminal when fired. If the agent is watching the training
+script's output (e.g. running in the foreground or tailing logs), it will see alerts immediately —
+no polling needed.
 
 For background or detached runs, poll for alerts via CLI:
 
@@ -153,6 +159,7 @@ trackio get metric --project hyperparam-sweep --run run-1 --metric loss --around
 ### 4. React and Iterate
 
 Based on alerts:
+
 - **ERROR alerts** → stop the run, adjust hyperparameters, relaunch
 - **WARN alerts** → inspect metrics with `trackio get snapshot ...`, decide whether to intervene
 - **INFO alerts** → note progress, continue monitoring
@@ -170,7 +177,8 @@ python train.py --lr 5e-5
 
 ## Using Alerts with Transformers / TRL
 
-When using `report_to="trackio"`, you don't control the training loop directly. Use a `TrainerCallback` to fire alerts:
+When using `report_to="trackio"`, you don't control the training loop directly. Use a
+`TrainerCallback` to fire alerts:
 
 ```python
 from transformers import TrainerCallback

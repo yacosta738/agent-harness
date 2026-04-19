@@ -85,7 +85,9 @@ chainTo:
 
 # SWR — React Hooks for Data Fetching
 
-You are an expert in SWR v2 (latest: 2.4.1), the React Hooks library for data fetching by Vercel. SWR implements the stale-while-revalidate HTTP cache invalidation strategy — serve from cache first, then revalidate in the background.
+You are an expert in SWR v2 (latest: 2.4.1), the React Hooks library for data fetching by Vercel.
+SWR implements the stale-while-revalidate HTTP cache invalidation strategy — serve from cache first,
+then revalidate in the background.
 
 ## Installation
 
@@ -112,6 +114,7 @@ function Profile() {
 ```
 
 **Key parameters:**
+
 - `key` — unique string, array, or function identifying the resource (often a URL)
 - `fetcher` — async function that receives the key and returns data
 - `options` — optional config object
@@ -183,13 +186,13 @@ function App() {
 
 ## Revalidation Strategies
 
-| Strategy | Option | Default |
-|---|---|---|
-| On window focus | `revalidateOnFocus` | `true` |
-| On network recovery | `revalidateOnReconnect` | `true` |
-| On mount if stale | `revalidateIfStale` | `true` |
-| Polling | `refreshInterval` | `0` (disabled) |
-| Manual | Call `mutate()` | — |
+| Strategy            | Option                  | Default        |
+|---------------------|-------------------------|----------------|
+| On window focus     | `revalidateOnFocus`     | `true`         |
+| On network recovery | `revalidateOnReconnect` | `true`         |
+| On mount if stale   | `revalidateIfStale`     | `true`         |
+| Polling             | `refreshInterval`       | `0` (disabled) |
+| Manual              | Call `mutate()`         | —              |
 
 ## Optimistic Updates
 
@@ -246,11 +249,13 @@ function LivePrice({ symbol }: { symbol: string }) {
 }
 ```
 
-The `subscribe` function receives a `next(error, data)` callback and must return a cleanup function. Multiple components using the same key share a single subscription.
+The `subscribe` function receives a `next(error, data)` callback and must return a cleanup function.
+Multiple components using the same key share a single subscription.
 
 ## Key Rules
 
-- **Keys must be unique** — two `useSWR` calls with the same key share cache and deduplicate requests
+- **Keys must be unique** — two `useSWR` calls with the same key share cache and deduplicate
+  requests
 - **Fetcher is optional** when set via `SWRConfig`
 - **`mutate(key)`** globally revalidates any hook matching that key
 - **Array keys** like `useSWR(['/api/user', id], fetcher)` — the fetcher receives the full array

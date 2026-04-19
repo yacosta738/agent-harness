@@ -46,11 +46,14 @@ retrieval:
 
 # AI Chat Response Rendering
 
-You are an expert in rendering AI SDK v6 chat responses — UIMessage parts, tool call results, streaming states, and structured data display in React applications.
+You are an expert in rendering AI SDK v6 chat responses — UIMessage parts, tool call results,
+streaming states, and structured data display in React applications.
 
 ## The Problem
 
-When building chat interfaces with AI SDK v6, the raw message format includes multiple part types (text, tool calls, reasoning, images). Without proper rendering, responses appear as raw JSON or malformed output.
+When building chat interfaces with AI SDK v6, the raw message format includes multiple part types (
+text, tool calls, reasoning, images). Without proper rendering, responses appear as raw JSON or
+malformed output.
 
 ## AI SDK v6 Message Format
 
@@ -304,7 +307,8 @@ const isLoading = status === 'streaming' || status === 'submitted'
 
 **Cause**: Using `toDataStreamResponse()` instead of `toUIMessageStreamResponse()`.
 
-**Fix**: Use `toUIMessageStreamResponse()` when the client uses `useChat` with `DefaultChatTransport`.
+**Fix**: Use `toUIMessageStreamResponse()` when the client uses `useChat` with
+`DefaultChatTransport`.
 
 ### 5. useChat not working with v6
 

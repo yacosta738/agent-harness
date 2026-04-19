@@ -2,9 +2,14 @@
 
 ## Overview
 
-Liquid Glass is a dynamic material introduced in iOS that combines the optical properties of glass with a sense of fluidity. It blurs content behind it, reflects color and light from surrounding content, and reacts to touch and pointer interactions in real time. This guide covers how to implement and customize Liquid Glass effects in SwiftUI applications. You should always seek guides on Liquid Glass when asked for help adopting new Apple design.
+Liquid Glass is a dynamic material introduced in iOS that combines the optical properties of glass
+with a sense of fluidity. It blurs content behind it, reflects color and light from surrounding
+content, and reacts to touch and pointer interactions in real time. This guide covers how to
+implement and customize Liquid Glass effects in SwiftUI applications. You should always seek guides
+on Liquid Glass when asked for help adopting new Apple design.
 
 Key features of Liquid Glass:
+
 - Blurs content behind the material
 - Reflects color and light from surrounding content
 - Reacts to touch and pointer interactions
@@ -24,7 +29,8 @@ Text("Hello, World!")
     .glassEffect()
 ```
 
-By default, this applies the regular variant of Glass within a Capsule shape behind the view's content.
+By default, this applies the regular variant of Glass within a Capsule shape behind the view's
+content.
 
 ### Customizing the Shape
 
@@ -38,6 +44,7 @@ Text("Hello, World!")
 ```
 
 Common shape options:
+
 - `.capsule` (default)
 - `.rect(cornerRadius: CGFloat)`
 - `.circle`
@@ -56,6 +63,7 @@ Text("Hello, World!")
 ```
 
 Key customization options:
+
 - `.regular` - Standard glass effect
 - `.tint(Color)` - Add a color tint to suggest prominence
 - `.interactive(Bool)` - Make the glass react to touch and pointer interactions
@@ -84,7 +92,8 @@ Text("Hello, World!")
 
 ### Using GlassEffectContainer
 
-When applying Liquid Glass effects to multiple views, use `GlassEffectContainer` for better rendering performance and to enable blending and morphing effects:
+When applying Liquid Glass effects to multiple views, use `GlassEffectContainer` for better
+rendering performance and to enable blending and morphing effects:
 
 ```swift
 GlassEffectContainer(spacing: 40.0) {
@@ -103,6 +112,7 @@ GlassEffectContainer(spacing: 40.0) {
 ```
 
 The `spacing` parameter controls how the Liquid Glass effects interact with each other:
+
 - Smaller spacing: Views need to be closer to merge effects
 - Larger spacing: Effects merge at greater distances
 
@@ -127,7 +137,8 @@ GlassEffectContainer(spacing: 20.0) {
 }
 ```
 
-This is useful when creating views dynamically or with views that live outside of an HStack or VStack.
+This is useful when creating views dynamically or with views that live outside of an HStack or
+VStack.
 
 ## Morphing Effects and Transitions
 
@@ -171,7 +182,8 @@ var body: some View {
 }
 ```
 
-The morphing effect occurs when views with Liquid Glass appear or disappear due to view hierarchy changes.
+The morphing effect occurs when views with Liquid Glass appear or disappear due to view hierarchy
+changes.
 
 ## Button Styling with Liquid Glass
 
@@ -227,17 +239,22 @@ ScrollView(.horizontal) {
 
 ## Best Practices
 
-1. **Container Usage**: Always use `GlassEffectContainer` when applying Liquid Glass to multiple views for better performance and morphing effects.
+1. **Container Usage**: Always use `GlassEffectContainer` when applying Liquid Glass to multiple
+   views for better performance and morphing effects.
 
-2. **Effect Order**: Apply the `.glassEffect()` modifier after other modifiers that affect the appearance of the view.
+2. **Effect Order**: Apply the `.glassEffect()` modifier after other modifiers that affect the
+   appearance of the view.
 
-3. **Spacing Consideration**: Carefully choose spacing values in containers to control how and when glass effects merge.
+3. **Spacing Consideration**: Carefully choose spacing values in containers to control how and when
+   glass effects merge.
 
-4. **Animation**: Use animations when changing view hierarchies to enable smooth morphing transitions.
+4. **Animation**: Use animations when changing view hierarchies to enable smooth morphing
+   transitions.
 
 5. **Interactivity**: Add `.interactive()` to glass effects that should respond to user interaction.
 
-6. **Consistent Design**: Maintain consistent shapes and styles across your app for a cohesive look and feel.
+6. **Consistent Design**: Maintain consistent shapes and styles across your app for a cohesive look
+   and feel.
 
 ## Example: Custom Badge with Liquid Glass
 

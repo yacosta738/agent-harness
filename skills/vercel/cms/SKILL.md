@@ -86,11 +86,13 @@ chainTo:
 
 # Headless CMS Integration
 
-You are an expert in integrating headless CMS platforms with Vercel-deployed applications — covering Sanity (native Vercel Marketplace), Contentful, DatoCMS, Storyblok, and Builder.io.
+You are an expert in integrating headless CMS platforms with Vercel-deployed applications — covering
+Sanity (native Vercel Marketplace), Contentful, DatoCMS, Storyblok, and Builder.io.
 
 ## Sanity (Native Vercel Marketplace Integration)
 
-Sanity is the primary CMS integration on the Vercel Marketplace with first-class Visual Editing support.
+Sanity is the primary CMS integration on the Vercel Marketplace with first-class Visual Editing
+support.
 
 ### Install via Marketplace
 
@@ -100,6 +102,7 @@ vercel integration add sanity
 ```
 
 Auto-provisioned environment variables:
+
 - `SANITY_PROJECT_ID` — Sanity project identifier
 - `SANITY_DATASET` — dataset name (usually `production`)
 - `SANITY_API_TOKEN` — read/write API token
@@ -182,7 +185,8 @@ export default defineConfig({
 
 ### Live Content with `defineLive()` (next-sanity v12)
 
-Use `defineLive()` for automatic real-time content updates without manual revalidation. In next-sanity v11+, `defineLive` must be imported from the `next-sanity/live` subpath:
+Use `defineLive()` for automatic real-time content updates without manual revalidation. In
+next-sanity v11+, `defineLive` must be imported from the `next-sanity/live` subpath:
 
 ```ts
 // lib/sanity.ts
@@ -220,11 +224,13 @@ export default async function Page() {
 }
 ```
 
-> **Breaking change in v12**: `defineLive({fetchOptions: {revalidate}})` has been removed. `defineLive({stega})` is deprecated.
+> **Breaking change in v12**: `defineLive({fetchOptions: {revalidate}})` has been removed.
+`defineLive({stega})` is deprecated.
 
 ### Visual Editing (Presentation Mode)
 
-Sanity Visual Editing lets content editors click-to-edit content directly on the live site preview. Requires Sanity Studio v5+ (React 19.2) and `@sanity/visual-editing` v5+.
+Sanity Visual Editing lets content editors click-to-edit content directly on the live site preview.
+Requires Sanity Studio v5+ (React 19.2) and `@sanity/visual-editing` v5+.
 
 ```bash
 npm install @sanity/visual-editing
@@ -275,7 +281,8 @@ export async function POST(req: Request) {
 }
 ```
 
-Configure the webhook in Sanity at **Settings → API → Webhooks** pointing to `https://your-site.vercel.app/api/revalidate`.
+Configure the webhook in Sanity at **Settings → API → Webhooks** pointing to
+`https://your-site.vercel.app/api/revalidate`.
 
 ## Contentful
 
@@ -337,16 +344,16 @@ export async function GET(req: Request) {
 
 ## Environment Variables
 
-| Variable | Scope | CMS | Description |
-|----------|-------|-----|-------------|
-| `SANITY_PROJECT_ID` / `NEXT_PUBLIC_SANITY_PROJECT_ID` | Server / Client | Sanity | Project identifier |
-| `SANITY_DATASET` / `NEXT_PUBLIC_SANITY_DATASET` | Server / Client | Sanity | Dataset name |
-| `SANITY_API_TOKEN` | Server | Sanity | Read/write token |
-| `SANITY_REVALIDATE_SECRET` | Server | Sanity | Webhook secret for revalidation |
-| `CONTENTFUL_SPACE_ID` | Server | Contentful | Space identifier |
-| `CONTENTFUL_ACCESS_TOKEN` | Server | Contentful | Delivery API token |
-| `CONTENTFUL_PREVIEW_TOKEN` | Server | Contentful | Preview API token |
-| `DATOCMS_API_TOKEN` | Server | DatoCMS | Read-only API token |
+| Variable                                              | Scope           | CMS        | Description                     |
+|-------------------------------------------------------|-----------------|------------|---------------------------------|
+| `SANITY_PROJECT_ID` / `NEXT_PUBLIC_SANITY_PROJECT_ID` | Server / Client | Sanity     | Project identifier              |
+| `SANITY_DATASET` / `NEXT_PUBLIC_SANITY_DATASET`       | Server / Client | Sanity     | Dataset name                    |
+| `SANITY_API_TOKEN`                                    | Server          | Sanity     | Read/write token                |
+| `SANITY_REVALIDATE_SECRET`                            | Server          | Sanity     | Webhook secret for revalidation |
+| `CONTENTFUL_SPACE_ID`                                 | Server          | Contentful | Space identifier                |
+| `CONTENTFUL_ACCESS_TOKEN`                             | Server          | Contentful | Delivery API token              |
+| `CONTENTFUL_PREVIEW_TOKEN`                            | Server          | Contentful | Preview API token               |
+| `DATOCMS_API_TOKEN`                                   | Server          | DatoCMS    | Read-only API token             |
 
 ## Cross-References
 

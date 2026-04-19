@@ -319,8 +319,10 @@ id: "tasks-database-id"
 ```
 
 **Schema retrieved:**
+
 - Data source: `collection://tasks-db-uuid`
-- Properties: Name (title), Status (select), Priority (select), Related Tasks (relation), Story Points (number), Tags (multi_select)
+- Properties: Name (title), Status (select), Priority (select), Related Tasks (relation), Story
+  Points (number), Tags (multi_select)
 
 ### Step 6: Create Implementation Tasks
 
@@ -432,6 +434,7 @@ new_str: "
 ## Key Features Demonstrated
 
 ### Spec Parsing
+
 - Extracted requirements (functional & non-functional)
 - Identified API endpoints
 - Noted data model
@@ -439,6 +442,7 @@ new_str: "
 - Understood security requirements
 
 ### Implementation Planning
+
 - Broke into logical phases
 - Sequenced work appropriately (foundation → features → testing)
 - Identified dependencies
@@ -446,12 +450,14 @@ new_str: "
 - Created realistic timeline
 
 ### Task Creation
+
 - Generated 20 specific tasks
 - Each task has context, acceptance criteria, technical approach
 - Tasks link to both spec and plan
 - Proper dependencies noted
 
 ### Bidirectional Linking
+
 - Plan links to spec
 - Spec updated to link to plan
 - Tasks link to both

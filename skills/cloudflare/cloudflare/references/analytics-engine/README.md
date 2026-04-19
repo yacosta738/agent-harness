@@ -1,36 +1,40 @@
 # Cloudflare Workers Analytics Engine Reference
 
-Expert guidance for implementing unlimited-cardinality analytics at scale using Cloudflare Workers Analytics Engine.
+Expert guidance for implementing unlimited-cardinality analytics at scale using Cloudflare Workers
+Analytics Engine.
 
 ## What is Analytics Engine?
 
-Time-series analytics database designed for high-cardinality data (millions of unique dimensions). Write data points from Workers, query via SQL API. Use for:
+Time-series analytics database designed for high-cardinality data (millions of unique dimensions).
+Write data points from Workers, query via SQL API. Use for:
+
 - Custom user-facing analytics dashboards
 - Usage-based billing & metering
 - Per-customer/per-feature monitoring
 - High-frequency instrumentation without performance impact
 
-**Key Capability:** Track metrics with unlimited unique values (e.g., millions of user IDs, API keys) without performance degradation.
+**Key Capability:** Track metrics with unlimited unique values (e.g., millions of user IDs, API
+keys) without performance degradation.
 
 ## Core Concepts
 
-| Concept | Description | Example |
-|---------|-------------|---------|
-| **Dataset** | Logical table for related metrics | `api_requests`, `user_events` |
-| **Data Point** | Single measurement with timestamp | One API request's metrics |
-| **Blobs** | String dimensions (max 20) | endpoint, method, status, user_id |
-| **Doubles** | Numeric values (max 20) | latency_ms, request_count, bytes |
-| **Indexes** | Filtered blobs for efficient queries | customer_id, api_key |
+| Concept        | Description                          | Example                           |
+|----------------|--------------------------------------|-----------------------------------|
+| **Dataset**    | Logical table for related metrics    | `api_requests`, `user_events`     |
+| **Data Point** | Single measurement with timestamp    | One API request's metrics         |
+| **Blobs**      | String dimensions (max 20)           | endpoint, method, status, user_id |
+| **Doubles**    | Numeric values (max 20)              | latency_ms, request_count, bytes  |
+| **Indexes**    | Filtered blobs for efficient queries | customer_id, api_key              |
 
 ## Reading Order
 
-| Task | Start Here | Then Read |
-|------|------------|-----------|
-| **First-time setup** | [configuration.md](configuration.md) → [api.md](api.md) → [patterns.md](patterns.md) | |
-| **Writing data** | [api.md](api.md) → [gotchas.md](gotchas.md) (sampling) | |
-| **Querying data** | [api.md](api.md) (SQL API) → [patterns.md](patterns.md) (examples) | |
-| **Debugging** | [gotchas.md](gotchas.md) → [api.md](api.md) (limits) | |
-| **Optimization** | [patterns.md](patterns.md) (anti-patterns) → [gotchas.md](gotchas.md) | |
+| Task                 | Start Here                                                                           | Then Read |
+|----------------------|--------------------------------------------------------------------------------------|-----------|
+| **First-time setup** | [configuration.md](configuration.md) → [api.md](api.md) → [patterns.md](patterns.md) |           |
+| **Writing data**     | [api.md](api.md) → [gotchas.md](gotchas.md) (sampling)                               |           |
+| **Querying data**    | [api.md](api.md) (SQL API) → [patterns.md](patterns.md) (examples)                   |           |
+| **Debugging**        | [gotchas.md](gotchas.md) → [api.md](api.md) (limits)                                 |           |
+| **Optimization**     | [patterns.md](patterns.md) (anti-patterns) → [gotchas.md](gotchas.md)                |           |
 
 ## When to Use Analytics Engine
 
@@ -53,6 +57,7 @@ Alternative scenarios:
 ## Quick Start
 
 1. Add binding to `wrangler.jsonc`:
+
 ```jsonc
 {
   "analytics_engine_datasets": [
@@ -62,6 +67,7 @@ Alternative scenarios:
 ```
 
 2. Write data points (fire-and-forget, no await):
+
 ```typescript
 env.ANALYTICS.writeDataPoint({
   blobs: ["/api/users", "GET", "200"],
@@ -71,6 +77,7 @@ env.ANALYTICS.writeDataPoint({
 ```
 
 3. Query via SQL API (HTTP):
+
 ```sql
 SELECT blob1, SUM(double2) AS total_requests
 FROM my_events

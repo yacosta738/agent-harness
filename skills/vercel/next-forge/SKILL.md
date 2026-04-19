@@ -152,7 +152,9 @@ chainTo:
 
 # next-forge
 
-You are an expert in next-forge v5 — a production-grade Turborepo monorepo starter for SaaS applications, created by Vercel. It wires together 20+ packages (auth, database, payments, email, analytics, observability, security, AI, and more) into a cohesive, deploy-ready monorepo.
+You are an expert in next-forge v5 — a production-grade Turborepo monorepo starter for SaaS
+applications, created by Vercel. It wires together 20+ packages (auth, database, payments, email,
+analytics, observability, security, AI, and more) into a cohesive, deploy-ready monorepo.
 
 ## Monorepo Structure
 
@@ -191,7 +193,8 @@ You are an expert in next-forge v5 — a production-grade Turborepo monorepo sta
 └── biome.jsonc           # Biome via ultracite
 ```
 
-**Key principle**: Packages are self-contained — they do not depend on each other. Apps compose packages.
+**Key principle**: Packages are self-contained — they do not depend on each other. Apps compose
+packages.
 
 ## Getting Started
 
@@ -202,7 +205,8 @@ pnpm migrate                   # prisma format + generate + db push
 pnpm dev                       # Start all apps via turbo
 ```
 
-**Minimum env vars to run locally**: `DATABASE_URL` + Clerk keys + app URLs. Everything else is optional.
+**Minimum env vars to run locally**: `DATABASE_URL` + Clerk keys + app URLs. Everything else is
+optional.
 
 ## Workspace Imports (@repo/*)
 
@@ -269,42 +273,42 @@ export const env = createEnv({ extends: [auth(), database(), payments()] });
 
 ### Env file locations
 
-| File | Purpose |
-|------|---------|
-| `apps/app/.env.local` | Main app env vars |
-| `apps/web/.env.local` | Marketing site |
-| `apps/api/.env.local` | API server |
-| `packages/database/.env` | `DATABASE_URL` |
+| File                     | Purpose           |
+|--------------------------|-------------------|
+| `apps/app/.env.local`    | Main app env vars |
+| `apps/web/.env.local`    | Marketing site    |
+| `apps/api/.env.local`    | API server        |
+| `packages/database/.env` | `DATABASE_URL`    |
 
 ### Required env vars (minimum)
 
-| Var | Package | Required for |
-|-----|---------|-------------|
-| `DATABASE_URL` | database | Any database access |
-| `CLERK_SECRET_KEY` | auth | Authentication |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | auth | Client-side auth |
-| `NEXT_PUBLIC_APP_URL` | — | Cross-app linking |
-| `NEXT_PUBLIC_WEB_URL` | — | Cross-app linking |
-| `NEXT_PUBLIC_API_URL` | — | Cross-app linking |
+| Var                                 | Package  | Required for        |
+|-------------------------------------|----------|---------------------|
+| `DATABASE_URL`                      | database | Any database access |
+| `CLERK_SECRET_KEY`                  | auth     | Authentication      |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | auth     | Client-side auth    |
+| `NEXT_PUBLIC_APP_URL`               | —        | Cross-app linking   |
+| `NEXT_PUBLIC_WEB_URL`               | —        | Cross-app linking   |
+| `NEXT_PUBLIC_API_URL`               | —        | Cross-app linking   |
 
 ### Optional service env vars
 
-| Service | Vars |
-|---------|------|
-| Stripe | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` |
-| Resend | `RESEND_TOKEN`, `RESEND_FROM` |
-| PostHog | `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST` |
-| Sentry | `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT` |
-| BetterStack | `BETTERSTACK_API_KEY`, `BETTERSTACK_URL` |
-| BaseHub | `BASEHUB_TOKEN` |
-| Arcjet | `ARCJET_KEY` |
-| Liveblocks | `LIVEBLOCKS_SECRET` |
-| Knock | `KNOCK_SECRET_API_KEY`, `NEXT_PUBLIC_KNOCK_API_KEY` |
-| Upstash | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` |
-| Vercel Blob | `BLOB_READ_WRITE_TOKEN` |
-| Svix | `SVIX_TOKEN` |
-| OpenAI | `OPENAI_API_KEY` |
-| Feature Flags | `FLAGS_SECRET` |
+| Service       | Vars                                                     |
+|---------------|----------------------------------------------------------|
+| Stripe        | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`             |
+| Resend        | `RESEND_TOKEN`, `RESEND_FROM`                            |
+| PostHog       | `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`    |
+| Sentry        | `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_ORG`, `SENTRY_PROJECT` |
+| BetterStack   | `BETTERSTACK_API_KEY`, `BETTERSTACK_URL`                 |
+| BaseHub       | `BASEHUB_TOKEN`                                          |
+| Arcjet        | `ARCJET_KEY`                                             |
+| Liveblocks    | `LIVEBLOCKS_SECRET`                                      |
+| Knock         | `KNOCK_SECRET_API_KEY`, `NEXT_PUBLIC_KNOCK_API_KEY`      |
+| Upstash       | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`     |
+| Vercel Blob   | `BLOB_READ_WRITE_TOKEN`                                  |
+| Svix          | `SVIX_TOKEN`                                             |
+| OpenAI        | `OPENAI_API_KEY`                                         |
+| Feature Flags | `FLAGS_SECRET`                                           |
 
 ## Middleware / Proxy Pattern
 
@@ -333,22 +337,23 @@ export default compose([clerkMiddleware, i18nMiddleware, arcjetMiddleware, nosec
 
 ## Key Commands
 
-| Command | Purpose |
-|---------|---------|
-| `pnpm dev` | Start all apps |
-| `pnpm dev --filter app` | Start single app |
-| `pnpm build` | Build all |
-| `pnpm migrate` | Prisma format + generate + db push |
-| `pnpm bump-deps` | Update all dependencies |
-| `pnpm bump-ui` | Update shadcn/ui components |
-| `pnpm run boundaries` | Check Turborepo boundaries |
-| `npx next-forge@latest update` | Update next-forge (diff-based) |
-| `npx shadcn@latest add <comp> -c packages/design-system` | Add UI component |
-| `stripe listen --forward-to localhost:3002/webhooks/payments` | Local Stripe webhooks |
+| Command                                                       | Purpose                            |
+|---------------------------------------------------------------|------------------------------------|
+| `pnpm dev`                                                    | Start all apps                     |
+| `pnpm dev --filter app`                                       | Start single app                   |
+| `pnpm build`                                                  | Build all                          |
+| `pnpm migrate`                                                | Prisma format + generate + db push |
+| `pnpm bump-deps`                                              | Update all dependencies            |
+| `pnpm bump-ui`                                                | Update shadcn/ui components        |
+| `pnpm run boundaries`                                         | Check Turborepo boundaries         |
+| `npx next-forge@latest update`                                | Update next-forge (diff-based)     |
+| `npx shadcn@latest add <comp> -c packages/design-system`      | Add UI component                   |
+| `stripe listen --forward-to localhost:3002/webhooks/payments` | Local Stripe webhooks              |
 
 ## Deployment to Vercel
 
-Deploy as **3 separate Vercel projects** (app, api, web), each with Root Directory set to `apps/<name>`:
+Deploy as **3 separate Vercel projects** (app, api, web), each with Root Directory set to
+`apps/<name>`:
 
 1. Create project → set Root Directory to `apps/app`
 2. Add environment variables (use Team Environment Variables to avoid duplication)
@@ -380,18 +385,23 @@ apps/api/
 
 ## Common Gotchas
 
-1. **Env vars are validated at build time** — optional services still require env vars if the package is imported. Remove the import or provide a value.
-2. **Multiple .env file locations** — each app and the database package have separate env files. There is no single root `.env`.
+1. **Env vars are validated at build time** — optional services still require env vars if the
+   package is imported. Remove the import or provide a value.
+2. **Multiple .env file locations** — each app and the database package have separate env files.
+   There is no single root `.env`.
 3. **`pnpm migrate` before first run** — without this, you get "table does not exist" errors.
 4. **Clerk webhooks cannot be tested locally** — need a staging deployment.
 5. **Heavy middleware imports** → edge function >1MB on Vercel. Keep proxy.ts imports light.
 6. **Prisma v7**: use `--config` not `--schema` for `prisma studio`.
-7. **next-forge is a boilerplate, not a library** — updates via `npx next-forge update` need manual merge with your changes.
-8. **`turbo.json` globalEnv** — when adding new env vars used at build time, declare them in `turbo.json` `globalEnv` or they won't invalidate cache.
+7. **next-forge is a boilerplate, not a library** — updates via `npx next-forge update` need manual
+   merge with your changes.
+8. **`turbo.json` globalEnv** — when adding new env vars used at build time, declare them in
+   `turbo.json` `globalEnv` or they won't invalidate cache.
 
 ## Removing Optional Services
 
 To remove an unused service (e.g., Stripe, BaseHub, Liveblocks):
+
 1. Delete the package directory (`packages/<service>/`)
 2. Remove all `@repo/<service>` imports from apps
 3. Remove the `keys()` call from each app's `env.ts`
@@ -400,16 +410,16 @@ To remove an unused service (e.g., Stripe, BaseHub, Liveblocks):
 
 ## Migration Alternatives
 
-| Category | Default | Alternatives |
-|----------|---------|-------------|
-| Auth | Clerk | Auth.js, Better Auth, Supabase Auth |
-| Database | Prisma + Neon | Drizzle, Supabase, PlanetScale, Turso |
-| Payments | Stripe | Lemon Squeezy, Paddle |
-| CMS | BaseHub | Content Collections |
-| Docs | Mintlify | Fumadocs |
-| Feature Flags | Vercel Flags | Hypertune |
-| Storage | Vercel Blob | UploadThing |
-| Formatting | Biome | ESLint |
+| Category      | Default       | Alternatives                          |
+|---------------|---------------|---------------------------------------|
+| Auth          | Clerk         | Auth.js, Better Auth, Supabase Auth   |
+| Database      | Prisma + Neon | Drizzle, Supabase, PlanetScale, Turso |
+| Payments      | Stripe        | Lemon Squeezy, Paddle                 |
+| CMS           | BaseHub       | Content Collections                   |
+| Docs          | Mintlify      | Fumadocs                              |
+| Feature Flags | Vercel Flags  | Hypertune                             |
+| Storage       | Vercel Blob   | UploadThing                           |
+| Formatting    | Biome         | ESLint                                |
 
 ## Cross-references
 

@@ -21,6 +21,7 @@ console.log(result.response);
 ```
 
 **Streaming:**
+
 ```typescript
 const stream = await env.AI.run(model, { messages, stream: true });
 return new Response(stream, { headers: { 'Content-Type': 'text/event-stream' } });
@@ -98,12 +99,12 @@ curl https://api.cloudflare.com/client/v4/accounts/{account_id}/ai/run/@cf/meta/
 
 ## Error Codes
 
-| Code | Meaning | Fix |
-|------|---------|-----|
-| 7502 | Model not found | Check spelling |
-| 7504 | Validation failed | Verify input schema |
-| 7505 | Rate limited | Reduce rate or upgrade |
-| 7506 | Context exceeded | Reduce input size |
+| Code | Meaning           | Fix                    |
+|------|-------------------|------------------------|
+| 7502 | Model not found   | Check spelling         |
+| 7504 | Validation failed | Verify input schema    |
+| 7505 | Rate limited      | Reduce rate or upgrade |
+| 7506 | Context exceeded  | Reduce input size      |
 
 ## Performance Tips
 

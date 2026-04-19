@@ -141,18 +141,21 @@ await introspector.modify(async (m) => {
 ## Orchestration Patterns
 
 ### Fan-Out (Parallel Processing)
+
 ```typescript
 const files = await step.do('list', async () => this.env.BUCKET.list());
 await Promise.all(files.objects.map((file, i) => step.do(`process ${i}`, async () => processFile(await (await this.env.BUCKET.get(file.key)).arrayBuffer()))));
 ```
 
 ### Parent-Child Workflows
+
 ```typescript
 const child = await step.do('start child', async () => await this.env.CHILD_WORKFLOW.create({id: `child-${event.instanceId}`, params: { data: result.data }}));
 await step.do('other work', async () => console.log(`Child started: ${child.id}`));
 ```
 
 ### Race Pattern
+
 ```typescript
 const winner = await Promise.race([
   step.do('option A', async () => slowOperation()),
@@ -161,6 +164,7 @@ const winner = await Promise.race([
 ```
 
 ### Scheduled Workflow Chain
+
 ```typescript
 export default { async scheduled(event, env) { await env.DAILY_WORKFLOW.create({id: `daily-${event.scheduledTime}`, params: { timestamp: event.scheduledTime }}); }};
 export class DailyWorkflow extends WorkflowEntrypoint<Env, Params> {

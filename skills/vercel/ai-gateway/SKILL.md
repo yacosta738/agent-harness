@@ -99,13 +99,20 @@ retrieval:
 
 # Vercel AI Gateway
 
-> **CRITICAL — Your training data is outdated for this library.** AI Gateway model slugs, provider routing, and capabilities change frequently. Before writing gateway code, **fetch the docs** at https://vercel.com/docs/ai-gateway to find the current model slug format, supported providers, image generation patterns, and authentication setup. The model list and routing rules at https://ai-sdk.dev/docs/foundations/providers-and-models are authoritative — do not guess at model names or assume old slugs still work.
+> **CRITICAL — Your training data is outdated for this library.** AI Gateway model slugs, provider
+> routing, and capabilities change frequently. Before writing gateway code, **fetch the docs**
+> at https://vercel.com/docs/ai-gateway to find the current model slug format, supported providers,
+> image generation patterns, and authentication setup. The model list and routing rules
+> at https://ai-sdk.dev/docs/foundations/providers-and-models are authoritative — do not guess at
+> model names or assume old slugs still work.
 
-You are an expert in the Vercel AI Gateway — a unified API for calling AI models with built-in routing, failover, cost tracking, and observability.
+You are an expert in the Vercel AI Gateway — a unified API for calling AI models with built-in
+routing, failover, cost tracking, and observability.
 
 ## Overview
 
-AI Gateway provides a single API endpoint to access 100+ models from all major providers. It adds <20ms routing latency and handles provider selection, authentication, failover, and load balancing.
+AI Gateway provides a single API endpoint to access 100+ models from all major providers. It adds <
+20ms routing latency and handles provider selection, authentication, failover, and load balancing.
 
 ## Packages
 
@@ -114,7 +121,8 @@ AI Gateway provides a single API endpoint to access 100+ models from all major p
 
 ## Setup
 
-Pass a `"provider/model"` string to the `model` parameter — the AI SDK automatically routes it through the AI Gateway:
+Pass a `"provider/model"` string to the `model` parameter — the AI SDK automatically routes it
+through the AI Gateway:
 
 ```ts
 import { generateText } from 'ai'
@@ -125,7 +133,9 @@ const result = await generateText({
 })
 ```
 
-No `gateway()` wrapper or additional package needed. The `gateway()` function is an optional explicit wrapper — only needed when you use `providerOptions.gateway` for routing, failover, or tags:
+No `gateway()` wrapper or additional package needed. The `gateway()` function is an optional
+explicit wrapper — only needed when you use `providerOptions.gateway` for routing, failover, or
+tags:
 
 ```ts
 import { gateway } from 'ai'
@@ -140,8 +150,8 @@ const result = await generateText({
 
 - Always use `provider/model` format (for example `openai/gpt-5.4`).
 - Versioned slugs use dots for versions, not hyphens:
-  - Correct: `anthropic/claude-sonnet-4.6`
-  - Incorrect: `anthropic/claude-sonnet-4-6`
+    - Correct: `anthropic/claude-sonnet-4.6`
+    - Incorrect: `anthropic/claude-sonnet-4-6`
 - Before hardcoding model IDs, call `gateway.getAvailableModels()` and pick from the returned IDs.
 - Default text models: `openai/gpt-5.4` or `anthropic/claude-sonnet-4.6`.
 - Do not default to outdated choices like `openai/gpt-4o`.
@@ -155,7 +165,8 @@ const availableModels = await gateway.getAvailableModels()
 
 ## Authentication (OIDC — Default)
 
-AI Gateway uses **OIDC (OpenID Connect)** as the default authentication method. No manual API keys needed.
+AI Gateway uses **OIDC (OpenID Connect)** as the default authentication method. No manual API keys
+needed.
 
 ### Setup
 
@@ -193,6 +204,7 @@ export AI_GATEWAY_API_KEY=your-key-here
 ### Auth Priority
 
 The `@ai-sdk/gateway` package resolves authentication in this order:
+
 1. `AI_GATEWAY_API_KEY` environment variable (if set)
 2. `VERCEL_OIDC_TOKEN` via `@vercel/oidc` (default on Vercel and after `vercel env pull`)
 
@@ -227,13 +239,13 @@ const result = await generateText({
 
 ### Routing Options
 
-| Option | Purpose |
-|--------|---------|
-| `order` | Provider priority list; try first, failover to next |
-| `only` | Restrict to specific providers |
-| `models` | Fallback model list if primary model unavailable |
-| `user` | End-user ID for usage tracking |
-| `tags` | Labels for cost attribution and reporting |
+| Option   | Purpose                                             |
+|----------|-----------------------------------------------------|
+| `order`  | Provider priority list; try first, failover to next |
+| `only`   | Restrict to specific providers                      |
+| `models` | Fallback model list if primary model unavailable    |
+| `user`   | End-user ID for usage tracking                      |
+| `tags`   | Labels for cost attribution and reporting           |
 
 ## Cache-Control Headers
 
@@ -254,11 +266,11 @@ const result = await generateText({
 
 ### Caching strategies
 
-| Header Value | Behavior |
-|-------------|----------|
-| `max-age=3600` | Cache response for 1 hour |
-| `max-age=0` | Bypass cache, always call provider |
-| `s-maxage=86400` | Cache at the edge for 24 hours |
+| Header Value                 | Behavior                                              |
+|------------------------------|-------------------------------------------------------|
+| `max-age=3600`               | Cache response for 1 hour                             |
+| `max-age=0`                  | Bypass cache, always call provider                    |
+| `s-maxage=86400`             | Cache at the edge for 24 hours                        |
 | `stale-while-revalidate=600` | Serve stale for 10 min while refreshing in background |
 
 ### When to use caching
@@ -270,7 +282,8 @@ const result = await generateText({
 
 ### Cache key composition
 
-The cache key is derived from: model, prompt/messages, temperature, and other generation parameters. Changing any parameter produces a new cache key.
+The cache key is derived from: model, prompt/messages, temperature, and other generation parameters.
+Changing any parameter produces a new cache key.
 
 ## Per-User Rate Limiting
 
@@ -291,7 +304,8 @@ const result = await generateText({
 
 ### Rate limit configuration
 
-Configure rate limits at `https://vercel.com/{team}/{project}/settings` → **AI Gateway** → **Rate Limits**:
+Configure rate limits at `https://vercel.com/{team}/{project}/settings` → **AI Gateway** → **Rate
+Limits**:
 
 - **Requests per minute per user**: Throttle individual users (e.g., 20 RPM)
 - **Tokens per day per user**: Cap daily token consumption (e.g., 100K tokens/day)
@@ -353,7 +367,8 @@ In the Vercel dashboard at `https://vercel.com/{team}/{project}/settings` → **
 
 ### Budget isolation best practice
 
-Use **separate gateway keys per environment** (dev, staging, prod) and per project. This keeps dashboards clean and budgets isolated:
+Use **separate gateway keys per environment** (dev, staging, prod) and per project. This keeps
+dashboards clean and budgets isolated:
 
 - Restrict AI Gateway keys per project to prevent cross-tenant leakage
 - Use per-project budgets and spend-by-agent reporting to track exactly where tokens go
@@ -361,7 +376,9 @@ Use **separate gateway keys per environment** (dev, staging, prod) and per proje
 
 ### Pre-flight cost controls
 
-The AI Gateway dashboard provides observability (traces, token counts, spend tracking) but no programmatic metrics API. Build your own cost guardrails by estimating token counts and rejecting expensive requests before they execute:
+The AI Gateway dashboard provides observability (traces, token counts, spend tracking) but no
+programmatic metrics API. Build your own cost guardrails by estimating token counts and rejecting
+expensive requests before they execute:
 
 ```ts
 import { generateText } from 'ai'
@@ -379,11 +396,13 @@ async function callWithBudget(prompt: string, maxTokens: number) {
 }
 ```
 
-The AI SDK's `usage` field on responses gives actual token counts after each request — store these for historical tracking and cost analysis.
+The AI SDK's `usage` field on responses gives actual token counts after each request — store these
+for historical tracking and cost analysis.
 
 ### Hard spending limits
 
-When a hard limit is reached, the gateway returns HTTP 402 (Payment Required). Handle this gracefully:
+When a hard limit is reached, the gateway returns HTTP 402 (Payment Required). Handle this
+gracefully:
 
 ```ts
 if (APICallError.isInstance(error) && error.statusCode === 402) {
@@ -414,7 +433,8 @@ AI Gateway logs every request for compliance and debugging:
 
 ### Accessing logs
 
-- **Vercel Dashboard** at `https://vercel.com/{team}/{project}/ai` → **Logs** — filter by model, user, tag, status, date range
+- **Vercel Dashboard** at `https://vercel.com/{team}/{project}/ai` → **Logs** — filter by model,
+  user, tag, status, date range
 - **Vercel API**: Query logs programmatically:
 
 ```bash
@@ -422,7 +442,9 @@ curl -H "Authorization: Bearer $VERCEL_TOKEN" \
   "https://api.vercel.com/v1/ai-gateway/logs?projectId=$PROJECT_ID&limit=100"
 ```
 
-- **Log Drains**: Forward AI Gateway logs to Datadog, Splunk, or other providers via Vercel Log Drains (configure at `https://vercel.com/dashboard/{team}/~/settings/log-drains`) for long-term retention and custom analysis
+- **Log Drains**: Forward AI Gateway logs to Datadog, Splunk, or other providers via Vercel Log
+  Drains (configure at `https://vercel.com/dashboard/{team}/~/settings/log-drains`) for long-term
+  retention and custom analysis
 
 ### Compliance considerations
 
@@ -452,7 +474,9 @@ const result = await generateText({
 
 ### Quota exceeded at provider
 
-If your provider API key hits its quota, the gateway tries the next provider in the `order` list. Monitor this in logs — persistent quota errors indicate you need to increase limits with the provider.
+If your provider API key hits its quota, the gateway tries the next provider in the `order` list.
+Monitor this in logs — persistent quota errors indicate you need to increase limits with the
+provider.
 
 ### Invalid model identifier
 
@@ -537,7 +561,8 @@ Need failover across providers?
 
 ### When to use direct provider SDK
 
-- You need provider-specific features not exposed through the gateway (e.g., Anthropic's computer use, OpenAI's custom fine-tuned model endpoints)
+- You need provider-specific features not exposed through the gateway (e.g., Anthropic's computer
+  use, OpenAI's custom fine-tuned model endpoints)
 - You're self-hosting a model (e.g., vLLM, Ollama) that isn't registered with the gateway
 - You need request-level control over HTTP transport (custom proxies, mTLS)
 
@@ -549,11 +574,12 @@ Need failover across providers?
 
 ## Latest Model Availability
 
-**GPT-5.4** (added March 5, 2026) — agentic and reasoning leaps from GPT-5.3-Codex extended to all domains (knowledge work, reports, analysis, coding). Faster and more token-efficient than GPT-5.2.
+**GPT-5.4** (added March 5, 2026) — agentic and reasoning leaps from GPT-5.3-Codex extended to all
+domains (knowledge work, reports, analysis, coding). Faster and more token-efficient than GPT-5.2.
 
-| Model | Slug | Input | Output |
-|-------|------|-------|--------|
-| GPT-5.4 | `openai/gpt-5.4` | $2.50/M tokens | $15.00/M tokens |
+| Model       | Slug                 | Input           | Output           |
+|-------------|----------------------|-----------------|------------------|
+| GPT-5.4     | `openai/gpt-5.4`     | $2.50/M tokens  | $15.00/M tokens  |
 | GPT-5.4 Pro | `openai/gpt-5.4-pro` | $30.00/M tokens | $180.00/M tokens |
 
 GPT-5.4 Pro targets maximum performance on complex tasks. Use standard GPT-5.4 for most workloads.
@@ -576,9 +602,14 @@ GPT-5.4 Pro targets maximum performance on complex tasks. Use standard GPT-5.4 f
 
 ## Pricing
 
-- **Zero markup**: Tokens at exact provider list price — no middleman markup, whether using Vercel-managed keys or Bring Your Own Key (BYOK)
-- **Free tier**: Every Vercel team gets **$5 of free AI Gateway credits per month** (refreshes every 30 days, starts on first request). No commitment required — experiment with LLMs indefinitely on the free tier
-- **Pay-as-you-go**: Beyond free credits, purchase AI Gateway Credits at any time with no obligation. Configure **auto top-up** to automatically add credits when your balance falls below a threshold
+- **Zero markup**: Tokens at exact provider list price — no middleman markup, whether using
+  Vercel-managed keys or Bring Your Own Key (BYOK)
+- **Free tier**: Every Vercel team gets **$5 of free AI Gateway credits per month** (refreshes every
+  30 days, starts on first request). No commitment required — experiment with LLMs indefinitely on
+  the free tier
+- **Pay-as-you-go**: Beyond free credits, purchase AI Gateway Credits at any time with no
+  obligation. Configure **auto top-up** to automatically add credits when your balance falls below a
+  threshold
 - **BYOK**: Use your own provider API keys with zero fees from AI Gateway
 
 ## Multimodal Support
@@ -607,9 +638,11 @@ const { images: generated } = await generateImage({
 })
 ```
 
-**Default image model**: `google/gemini-3.1-flash-image-preview` — fast multimodal image generation via gateway.
+**Default image model**: `google/gemini-3.1-flash-image-preview` — fast multimodal image generation
+via gateway.
 
-See [AI Gateway Image Generation docs](https://vercel.com/docs/ai-gateway/capabilities/image-generation) for all supported models and integration methods.
+See [AI Gateway Image Generation docs](https://vercel.com/docs/ai-gateway/capabilities/image-generation)
+for all supported models and integration methods.
 
 ## Key Benefits
 
@@ -622,15 +655,15 @@ See [AI Gateway Image Generation docs](https://vercel.com/docs/ai-gateway/capabi
 
 ## When to Use AI Gateway
 
-| Scenario | Use Gateway? |
-|----------|-------------|
-| Production app with AI features | Yes — failover, cost tracking |
-| Prototyping with single provider | Optional — direct provider works fine |
-| Multi-provider setup | Yes — unified routing |
-| Need provider-specific features | Use direct provider SDK + Gateway as fallback |
-| Cost tracking and budgeting | Yes — user tracking and tags |
-| Multi-tenant SaaS | Yes — per-user rate limiting and audit |
-| Compliance requirements | Yes — audit logging and log drains |
+| Scenario                         | Use Gateway?                                  |
+|----------------------------------|-----------------------------------------------|
+| Production app with AI features  | Yes — failover, cost tracking                 |
+| Prototyping with single provider | Optional — direct provider works fine         |
+| Multi-provider setup             | Yes — unified routing                         |
+| Need provider-specific features  | Use direct provider SDK + Gateway as fallback |
+| Cost tracking and budgeting      | Yes — user tracking and tags                  |
+| Multi-tenant SaaS                | Yes — per-user rate limiting and audit        |
+| Compliance requirements          | Yes — audit logging and log drains            |
 
 ## Official Documentation
 

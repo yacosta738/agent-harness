@@ -4,15 +4,15 @@
 
 ## Schema
 
-| Property | Type | Options | Purpose |
-|----------|------|---------|---------|
-| **Title** | title | - | "How to [Task]" |
-| **Complexity** | select | Beginner, Intermediate, Advanced | Skill level required |
-| **Time Required** | number | - | Estimated minutes to complete |
-| **Prerequisites** | relation | Links to other guides | Required knowledge |
-| **Category** | select | Development, Deployment, Testing, Tools | Task category |
-| **Last Tested** | date | - | When procedure was verified |
-| **Tags** | multi_select | - | Technology/tool tags |
+| Property          | Type         | Options                                 | Purpose                       |
+|-------------------|--------------|-----------------------------------------|-------------------------------|
+| **Title**         | title        | -                                       | "How to [Task]"               |
+| **Complexity**    | select       | Beginner, Intermediate, Advanced        | Skill level required          |
+| **Time Required** | number       | -                                       | Estimated minutes to complete |
+| **Prerequisites** | relation     | Links to other guides                   | Required knowledge            |
+| **Category**      | select       | Development, Deployment, Testing, Tools | Task category                 |
+| **Last Tested**   | date         | -                                       | When procedure was verified   |
+| **Tags**          | multi_select | -                                       | Technology/tool tags          |
 
 ## Usage
 

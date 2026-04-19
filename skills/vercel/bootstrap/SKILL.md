@@ -69,11 +69,13 @@ retrieval:
 
 # Project Bootstrap Orchestrator
 
-Execute bootstrap in strict order. Do not run migrations or development server until project linking and environment verification are complete.
+Execute bootstrap in strict order. Do not run migrations or development server until project linking
+and environment verification are complete.
 
 ## Rules
 
-- Do not run `db:push`, `db:migrate`, `db:seed`, or `dev` until Vercel linking is complete and env keys are verified.
+- Do not run `db:push`, `db:migrate`, `db:seed`, or `dev` until Vercel linking is complete and env
+  keys are verified.
 - Prefer Vercel-managed provisioning (`vercel integration ...`) for shared resources.
 - Use provider CLIs only as fallback when Vercel integration flow is unavailable.
 - Never echo secret values in terminal output, logs, or summaries.
@@ -133,7 +135,8 @@ vercel env pull .env.local --yes
 
 ### Fallback path 2 (Neon CLI)
 
-Use Neon CLI only when Vercel-managed provisioning is unavailable. After creating resources, add required env vars in Vercel and pull again.
+Use Neon CLI only when Vercel-managed provisioning is unavailable. After creating resources, add
+required env vars in Vercel and pull again.
 
 ## AUTH_SECRET Generation
 
@@ -176,12 +179,15 @@ npm run db:seed
 npm run dev
 ```
 
-Use the repository package manager (`npm`, `pnpm`, `bun`, or `yarn`) and run only scripts that exist in `package.json`.
+Use the repository package manager (`npm`, `pnpm`, `bun`, or `yarn`) and run only scripts that exist
+in `package.json`.
 
 ## UI Baseline for Next.js + shadcn Projects
 
 After linkage and env verification, establish the UI foundation before feature work:
-1. Add a baseline primitive set: `npx shadcn@latest add button card input label textarea select switch tabs dialog alert-dialog sheet dropdown-menu badge separator skeleton table`
+
+1. Add a baseline primitive set:
+   `npx shadcn@latest add button card input label textarea select switch tabs dialog alert-dialog sheet dropdown-menu badge separator skeleton table`
 2. Apply the Geist font fix in `layout.tsx` and `globals.css`.
 3. Confirm the app shell uses `bg-background text-foreground`.
 4. Default to dark mode for product, admin, and AI apps unless the repo is clearly marketing-first.
@@ -195,7 +201,8 @@ Confirm each checkpoint:
 - Postgres integration path completed (Vercel integration, dashboard, or provider CLI fallback).
 - `vercel env pull .env.local --yes` succeeds.
 - Required env key diff is empty.
-- Database command status is recorded (`db:push`, `db:seed`, `db:migrate`, `db:generate` as applicable).
+- Database command status is recorded (`db:push`, `db:seed`, `db:migrate`, `db:generate` as
+  applicable).
 - `dev` command starts without immediate config/auth/env failure.
 
 If verification fails, stop and report exact failing step plus remediation.
@@ -216,18 +223,24 @@ Return a final bootstrap summary in this format:
 
 ## Bootstrap Next Steps
 
-- If env keys are still missing, add the missing keys in Vercel and re-run `vercel env pull .env.local --yes`.
+- If env keys are still missing, add the missing keys in Vercel and re-run
+  `vercel env pull .env.local --yes`.
 - If DB commands fail, fix connectivity/schema issues and re-run only the failed db step.
 - If `dev` fails, resolve runtime errors, then restart with your package manager's `run dev`.
 
 ## next-forge Projects
 
-If the project was scaffolded with `npx next-forge init` (detected by `pnpm-workspace.yaml` + `packages/auth` + `packages/database` + `@repo/*` imports):
+If the project was scaffolded with `npx next-forge init` (detected by `pnpm-workspace.yaml` +
+`packages/auth` + `packages/database` + `@repo/*` imports):
 
-1. Env files are per-app (`apps/app/.env.local`, `apps/web/.env.local`, `apps/api/.env.local`) plus `packages/database/.env`.
-2. Run `pnpm migrate` (not `db:push`) — it runs `prisma format` + `prisma generate` + `prisma db push`.
-3. Minimum env vars: `DATABASE_URL`, `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_WEB_URL`, `NEXT_PUBLIC_API_URL`.
-4. Optional services (Stripe, Resend, PostHog, etc.) can be skipped initially — but remove their `@repo/*` imports from app `env.ts` files to avoid validation errors.
+1. Env files are per-app (`apps/app/.env.local`, `apps/web/.env.local`, `apps/api/.env.local`) plus
+   `packages/database/.env`.
+2. Run `pnpm migrate` (not `db:push`) — it runs `prisma format` + `prisma generate` +
+   `prisma db push`.
+3. Minimum env vars: `DATABASE_URL`, `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`,
+   `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_WEB_URL`, `NEXT_PUBLIC_API_URL`.
+4. Optional services (Stripe, Resend, PostHog, etc.) can be skipped initially — but remove their
+   `@repo/*` imports from app `env.ts` files to avoid validation errors.
 5. Deploy as 3 separate Vercel projects with root directories `apps/app`, `apps/api`, `apps/web`.
 
 => skill: next-forge — Full next-forge monorepo guide

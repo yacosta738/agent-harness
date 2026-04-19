@@ -25,6 +25,7 @@ interface ScheduledController {
 ```
 
 **Prevent retry on failure:**
+
 ```typescript
 export default {
   async scheduled(controller, env, ctx) {
@@ -40,6 +41,7 @@ export default {
 ```
 
 **When to use noRetry():**
+
 - External API failures outside your control (avoid hammering failed services)
 - Rate limit errors (retry would fail again immediately)
 - Duplicate execution detected (idempotency check failed)
@@ -49,12 +51,15 @@ export default {
 ## Handler Parameters
 
 **`controller: ScheduledController`**
+
 - Access cron expression and scheduled time
 
 **`env: Env`**
+
 - All bindings: KV, R2, D1, secrets, service bindings
 
 **`ctx: ExecutionContext`**
+
 - `ctx.waitUntil(promise)` - Extend execution for async tasks (logging, cleanup, external APIs)
 - First `waitUntil` failure recorded in Cron Events
 
@@ -116,6 +121,7 @@ export default {
 ## Testing Handler
 
 **Local development (/__scheduled endpoint):**
+
 ```bash
 # Start dev server
 npx wrangler dev
@@ -128,12 +134,15 @@ curl "http://localhost:8787/__scheduled?cron=0+2+*+*+*&scheduledTime=17040672000
 ```
 
 **Query parameters:**
+
 - `cron` - Required. URL-encoded cron expression (use `+` for spaces)
 - `scheduledTime` - Optional. Unix timestamp in milliseconds (defaults to current time)
 
-**Production security:** The `/__scheduled` endpoint is available in production and can be triggered by anyone. Block it or implement authentication - see [gotchas.md](./gotchas.md#security-concerns)
+**Production security:** The `/__scheduled` endpoint is available in production and can be triggered
+by anyone. Block it or implement authentication - see [gotchas.md](./gotchas.md#security-concerns)
 
 **Unit testing (Vitest):**
+
 ```typescript
 // test/scheduled.test.ts
 import { describe, it, expect } from "vitest";
@@ -159,11 +168,13 @@ describe("Scheduled Handler", () => {
 ## Error Handling
 
 **Automatic retries:**
+
 - Failed cron executions are retried automatically unless `noRetry()` is called
 - Retry happens after a delay (typically minutes)
 - Only first `waitUntil()` failure is recorded in Cron Events
 
 **Best practices:**
+
 ```typescript
 export default {
   async scheduled(controller, env, ctx) {

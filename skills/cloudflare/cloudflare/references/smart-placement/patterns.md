@@ -49,7 +49,8 @@ export default {
 };
 ```
 
-**CRITICAL:** Use fetch-based Service Bindings (shown above). If using RPC with `WorkerEntrypoint`, Smart Placement will NOT optimize those method calls - only `fetch` handlers are affected.
+**CRITICAL:** Use fetch-based Service Bindings (shown above). If using RPC with `WorkerEntrypoint`,
+Smart Placement will NOT optimize those method calls - only `fetch` handlers are affected.
 
 **RPC vs Fetch - CRITICAL:** Smart Placement ONLY works with fetch-based bindings, NOT RPC.
 
@@ -120,9 +121,11 @@ export default {
 
 ## Durable Objects with Smart Placement
 
-**Key principle:** Smart Placement does NOT control WHERE Durable Objects run. DOs always run in their designated region (based on jurisdiction or smart location hints).
+**Key principle:** Smart Placement does NOT control WHERE Durable Objects run. DOs always run in
+their designated region (based on jurisdiction or smart location hints).
 
-**What Smart Placement DOES affect:** The location of the coordinator Worker's `fetch` handler that makes calls to multiple DOs.
+**What Smart Placement DOES affect:** The location of the coordinator Worker's `fetch` handler that
+makes calls to multiple DOs.
 
 **Pattern:** Enable Smart Placement on coordinator Worker that aggregates data from multiple DOs:
 
@@ -165,11 +168,13 @@ export default {
 ```
 
 **When this helps:**
+
 - Worker's `fetch` handler runs closer to DO regions, reducing network latency for multiple DO calls
 - Most beneficial when DOs are geographically concentrated or in specific jurisdictions
 - Helps when coordinator makes many sequential or parallel DO calls
 
 **When this DOESN'T help:**
+
 - DOs are globally distributed (no single optimal Worker location)
 - Worker only calls a single DO
 - DO calls are infrequent or cached

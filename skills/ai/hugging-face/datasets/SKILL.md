@@ -30,9 +30,12 @@ Use this skill to execute read-only Dataset Viewer API calls for dataset explora
 - `Validate dataset`: `/is-valid?dataset=<namespace/repo>`
 - `List subsets and splits`: `/splits?dataset=<namespace/repo>`
 - `Preview first rows`: `/first-rows?dataset=<namespace/repo>&config=<config>&split=<split>`
-- `Paginate rows`: `/rows?dataset=<namespace/repo>&config=<config>&split=<split>&offset=<int>&length=<int>`
-- `Search text`: `/search?dataset=<namespace/repo>&config=<config>&split=<split>&query=<text>&offset=<int>&length=<int>`
-- `Filter with predicates`: `/filter?dataset=<namespace/repo>&config=<config>&split=<split>&where=<predicate>&orderby=<sort>&offset=<int>&length=<int>`
+- `Paginate rows`:
+  `/rows?dataset=<namespace/repo>&config=<config>&split=<split>&offset=<int>&length=<int>`
+- `Search text`:
+  `/search?dataset=<namespace/repo>&config=<config>&split=<split>&query=<text>&offset=<int>&length=<int>`
+- `Filter with predicates`:
+  `/filter?dataset=<namespace/repo>&config=<config>&split=<split>&where=<predicate>&orderby=<sort>&offset=<int>&length=<int>`
 - `List parquet shards`: `/parquet?dataset=<namespace/repo>`
 - `Get size totals`: `/size?dataset=<namespace/repo>`
 - `Get column statistics`: `/statistics?dataset=<namespace/repo>&config=<config>&split=<split>`
@@ -45,7 +48,8 @@ curl "https://datasets-server.huggingface.co/rows?dataset=stanfordnlp/imdb&confi
 curl "https://datasets-server.huggingface.co/rows?dataset=stanfordnlp/imdb&config=plain_text&split=train&offset=100&length=100"
 ```
 
-When pagination is partial, use response fields such as `num_rows_total`, `num_rows_per_page`, and `partial` to drive continuation logic.
+When pagination is partial, use response fields such as `num_rows_total`, `num_rows_per_page`, and
+`partial` to drive continuation logic.
 
 Search/filter notes:
 
@@ -80,7 +84,8 @@ npx -y -p parquetlens -p @parquetlens/sql parquetlens \
 
 ### SQL export
 
-- CSV: `--sql "COPY (SELECT * FROM data LIMIT 1000) TO 'export.csv' (FORMAT CSV, HEADER, DELIMITER ',')"`
+- CSV:
+  `--sql "COPY (SELECT * FROM data LIMIT 1000) TO 'export.csv' (FORMAT CSV, HEADER, DELIMITER ',')"`
 - JSON: `--sql "COPY (SELECT * FROM data LIMIT 1000) TO 'export.json' (FORMAT JSON)"`
 - Parquet: `--sql "COPY (SELECT * FROM data LIMIT 1000) TO 'export.parquet' (FORMAT PARQUET)"`
 
@@ -118,4 +123,5 @@ npx -y @huggingface/hub upload datasets/<namespace>/<repo> ./local/parquet-folde
 npx -y @huggingface/hub upload datasets/<namespace>/<repo> ./local/parquet-folder data --private
 ```
 
-After upload, call `/parquet` to discover `<config>/<split>/<shard>` values for querying with `@~parquet`.
+After upload, call `/parquet` to discover `<config>/<split>/<shard>` values for querying with
+`@~parquet`.

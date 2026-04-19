@@ -64,7 +64,8 @@ Top-level → local dev, `env.preview` → preview, `env.production` → product
 }
 ```
 
-**Note:** If overriding `vars`, `kv_namespaces`, `d1_databases`, etc., ALL must be redefined (non-inheritable)
+**Note:** If overriding `vars`, `kv_namespaces`, `d1_databases`, etc., ALL must be redefined (
+non-inheritable)
 
 ## Local Secrets (.dev.vars)
 
@@ -76,6 +77,7 @@ SECRET_KEY="my-secret-value"
 ```
 
 Accessed via `ctx.env.SECRET_KEY`. Set production secrets:
+
 ```bash
 echo "value" | npx wrangler pages secret put SECRET_KEY --project-name=my-app
 ```
@@ -83,17 +85,20 @@ echo "value" | npx wrangler pages secret put SECRET_KEY --project-name=my-app
 ## Static Config Files
 
 **_routes.json** - Custom routing:
+
 ```json
 { "version": 1, "include": ["/api/*"], "exclude": ["/static/*"] }
 ```
 
 **_headers** - Static headers:
+
 ```
 /static/*
   Cache-Control: public, max-age=31536000
 ```
 
 **_redirects** - Redirects:
+
 ```
 /old  /new  301
 ```

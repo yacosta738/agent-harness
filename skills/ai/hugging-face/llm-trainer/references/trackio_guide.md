@@ -1,8 +1,10 @@
 # Trackio Integration for TRL Training
 
-**Trackio** is an experiment tracking library that provides real-time metrics visualization for remote training on Hugging Face Jobs infrastructure.
+**Trackio** is an experiment tracking library that provides real-time metrics visualization for
+remote training on Hugging Face Jobs infrastructure.
 
 ⚠️ **IMPORTANT**: For Jobs training (remote cloud GPUs):
+
 - Training happens on ephemeral cloud runners (not your local machine)
 - Trackio syncs metrics to a Hugging Face Space for real-time monitoring
 - Without a Space, metrics are lost when the job completes
@@ -11,6 +13,7 @@
 ## Setting Up Trackio for Jobs
 
 **Step 1: Add trackio dependency**
+
 ```python
 # /// script
 # dependencies = [
@@ -23,14 +26,17 @@
 **Step 2: Create a Trackio Space (one-time setup)**
 
 **Option A: Let Trackio auto-create (Recommended)**
-Pass a `space_id` to `trackio.init()` and Trackio will automatically create the Space if it doesn't exist.
+Pass a `space_id` to `trackio.init()` and Trackio will automatically create the Space if it doesn't
+exist.
 
 **Option B: Create manually**
+
 - Create Space via Hub UI at https://huggingface.co/new-space
 - Select Gradio SDK
 - OR use command: `hf repos create my-trackio-dashboard --type space --space-sdk gradio`
 
 **Step 3: Initialize Trackio with space_id**
+
 ```python
 import trackio
 
@@ -46,6 +52,7 @@ trackio.init(
 ```
 
 **Step 4: Configure TRL to use Trackio**
+
 ```python
 SFTConfig(
     report_to="trackio",
@@ -54,6 +61,7 @@ SFTConfig(
 ```
 
 **Step 5: Finish tracking**
+
 ```python
 trainer.train()
 trackio.finish()  # Ensures final metrics are synced
@@ -62,6 +70,7 @@ trackio.finish()  # Ensures final metrics are synced
 ## What Trackio Tracks
 
 Trackio automatically logs:
+
 - ✅ Training loss
 - ✅ Learning rate
 - ✅ GPU utilization
@@ -100,6 +109,7 @@ trackio.init(
 ```
 
 **Key principles:**
+
 - **Space ID**: Use `{username}/trackio` with "trackio" as default space name
 - **Run naming**: Unless otherwise specified, name the run in a way the user will recognize
 - **Config**: Keep minimal - don't automatically capture job metadata unless requested
@@ -107,7 +117,9 @@ trackio.init(
 
 ## Grouping Runs (Optional)
 
-The `group` parameter helps organize related runs together in the dashboard sidebar. This is useful when user is running multiple experiments with different configurations but wants to compare them together:
+The `group` parameter helps organize related runs together in the dashboard sidebar. This is useful
+when user is running multiple experiments with different configurations but wants to compare them
+together:
 
 ```python
 # Example: Group runs by experiment type
@@ -116,7 +128,8 @@ trackio.init(project="my-project", run_name="augmented-run-1", group="augmented"
 trackio.init(project="my-project", run_name="tuned-run-1", group="tuned")
 ```
 
-Runs with the same group name can be grouped together in the sidebar, making it easier to compare related experiments. You can group by any configuration parameter:
+Runs with the same group name can be grouped together in the sidebar, making it easier to compare
+related experiments. You can group by any configuration parameter:
 
 ```python
 # Hyperparameter sweep - group by learning rate
@@ -126,12 +139,12 @@ trackio.init(project="hyperparam-sweep", run_name="lr-0.01-run", group="lr_0.01"
 
 ## Environment Variables for Jobs
 
-You can configure trackio using environment variables instead of passing parameters to `trackio.init()`. This is useful for managing configuration across multiple jobs.
-
-
+You can configure trackio using environment variables instead of passing parameters to
+`trackio.init()`. This is useful for managing configuration across multiple jobs.
 
 **`HF_TOKEN`**
 Required for creating Spaces and writing to datasets (passed via `secrets`):
+
 ```python
 hf_jobs("uv", {
     "script": "...",
@@ -167,11 +180,13 @@ trackio.finish()
 ```
 
 **When to use environment variables:**
+
 - Managing multiple jobs with same configuration
 - Keeping training scripts portable across projects
 - Separating configuration from code
 
 **When to use direct parameters:**
+
 - Single job with specific configuration
 - When clarity in code is preferred
 - When each job has different project/space
@@ -179,6 +194,7 @@ trackio.finish()
 ## Viewing the Dashboard
 
 After starting training:
+
 1. Navigate to the Space: `https://huggingface.co/spaces/username/trackio`
 2. The Gradio dashboard shows all tracked experiments
 3. Filter by project, compare runs, view charts with smoothing

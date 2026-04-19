@@ -28,12 +28,12 @@ interface ForwardableEmailMessage {
 
 **Key Properties:**
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `from` | `string` | Envelope sender (MAIL FROM), not header From |
-| `to` | `string` | Envelope recipient (RCPT TO), not header To |
-| `headers` | `Headers` | Email headers (Subject, From, To, etc.) |
-| `raw` | `ReadableStream` | Raw MIME message (consume once only) |
+| Property  | Type             | Description                                  |
+|-----------|------------------|----------------------------------------------|
+| `from`    | `string`         | Envelope sender (MAIL FROM), not header From |
+| `to`      | `string`         | Envelope recipient (RCPT TO), not header To  |
+| `headers` | `Headers`        | Email headers (Subject, From, To, etc.)      |
+| `raw`     | `ReadableStream` | Raw MIME message (consume once only)         |
 
 **Methods:**
 
@@ -59,7 +59,8 @@ if (spamScore > 5) {
 
 ### Common Headers
 
-`subject`, `from`, `to`, `x-cf-spamh-score` (spam score), `message-id` (deduplication), `dkim-signature` (auth)
+`subject`, `from`, `to`, `x-cf-spamh-score` (spam score), `message-id` (deduplication),
+`dkim-signature` (auth)
 
 ### Envelope vs Header Addresses
 
@@ -76,11 +77,13 @@ message.headers.get("to")   // "Bob <you@yourdomain.com>"
 ```
 
 **Use envelope addresses for:**
+
 - Authentication/SPF checks
 - Routing decisions
 - Bounce handling
 
 **Use header addresses for:**
+
 - Display to users
 - Reply-To logic
 - User-facing filtering
@@ -168,14 +171,14 @@ curl -H "Authorization: Bearer $API_TOKEN" https://api.cloudflare.com/client/v4/
 
 ### Key Endpoints
 
-| Operation | Method | Endpoint |
-|-----------|--------|----------|
-| Enable routing | POST | `/zones/{zone_id}/email/routing/enable` |
-| Disable routing | POST | `/zones/{zone_id}/email/routing/disable` |
-| List rules | GET | `/zones/{zone_id}/email/routing/rules` |
-| Create rule | POST | `/zones/{zone_id}/email/routing/rules` |
-| Verify destination | POST | `/zones/{zone_id}/email/routing/addresses` |
-| List destinations | GET | `/zones/{zone_id}/email/routing/addresses` |
+| Operation          | Method | Endpoint                                   |
+|--------------------|--------|--------------------------------------------|
+| Enable routing     | POST   | `/zones/{zone_id}/email/routing/enable`    |
+| Disable routing    | POST   | `/zones/{zone_id}/email/routing/disable`   |
+| List rules         | GET    | `/zones/{zone_id}/email/routing/rules`     |
+| Create rule        | POST   | `/zones/{zone_id}/email/routing/rules`     |
+| Verify destination | POST   | `/zones/{zone_id}/email/routing/addresses` |
+| List destinations  | GET    | `/zones/{zone_id}/email/routing/addresses` |
 
 ### Create Routing Rule Example
 

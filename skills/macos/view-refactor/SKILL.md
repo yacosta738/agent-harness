@@ -15,7 +15,8 @@ only at the narrow edges where desktop behavior truly requires it.
 
 ### 1) Model scenes explicitly
 
-- Break the app into meaningful scene roots: main window, settings, utility windows, inspectors, or menu bar extras.
+- Break the app into meaningful scene roots: main window, settings, utility windows, inspectors, or
+  menu bar extras.
 - Do not let one giant root view silently own every desktop surface.
 
 ### 2) Keep a predictable file shape
@@ -32,18 +33,25 @@ only at the narrow edges where desktop behavior truly requires it.
 
 ### 2b) Split files by responsibility
 
-- For non-trivial apps, do not keep the full app, all views, models, stores, networking clients, process clients, and helpers in one Swift file.
-- Accept a single Swift file only for tiny throwaway examples or snippets: roughly under 50 lines, one screen, no persistence, no networking/process client, and no reusable models.
+- For non-trivial apps, do not keep the full app, all views, models, stores, networking clients,
+  process clients, and helpers in one Swift file.
+- Accept a single Swift file only for tiny throwaway examples or snippets: roughly under 50 lines,
+  one screen, no persistence, no networking/process client, and no reusable models.
 - Use `App/<AppName>App.swift` for the `@main` app and `AppDelegate` only.
-- Keep `Views/ContentView.swift` focused on root layout and composition; move feature UI into files such as `Views/SidebarView.swift`, `Views/DetailView.swift`, and `Views/ComposerView.swift`.
-- Move value types and selection enums into `Models/*.swift`, stores into `Stores/*.swift`, app-server/network/process clients into `Services/*.swift`, and small formatters/resolvers/extensions into `Support/*.swift`.
+- Keep `Views/ContentView.swift` focused on root layout and composition; move feature UI into files
+  such as `Views/SidebarView.swift`, `Views/DetailView.swift`, and `Views/ComposerView.swift`.
+- Move value types and selection enums into `Models/*.swift`, stores into `Stores/*.swift`,
+  app-server/network/process clients into `Services/*.swift`, and small
+  formatters/resolvers/extensions into `Support/*.swift`.
 - Keep files small and named after the primary type they contain.
 
 ### 3) Prefer dedicated subview types over many computed `some View` fragments
 
-- Extract meaningful desktop sections like sidebar rows, detail panels, inspectors, or toolbar content into focused subviews.
+- Extract meaningful desktop sections like sidebar rows, detail panels, inspectors, or toolbar
+  content into focused subviews.
 - Keep computed `some View` helpers small and rare.
-- Pass explicit data, bindings, and actions into subviews instead of handing down the whole scene model.
+- Pass explicit data, bindings, and actions into subviews instead of handing down the whole scene
+  model.
 
 ### 4) Keep selection and layout stable
 
@@ -60,7 +68,8 @@ only at the narrow edges where desktop behavior truly requires it.
 ### 6) Use scene and app storage intentionally
 
 - Use `@SceneStorage` for per-window ephemeral state when it truly helps restore the scene.
-- Use `@AppStorage` for durable preferences, not transient UI toggles that only matter in one window.
+- Use `@AppStorage` for durable preferences, not transient UI toggles that only matter in one
+  window.
 - Keep scene-owned state close to the scene root.
 
 ### 7) Keep AppKit escape hatches narrow
@@ -71,7 +80,8 @@ only at the narrow edges where desktop behavior truly requires it.
 
 ### 8) Observation usage
 
-- For `@Observable` reference types on modern macOS targets, store them as `@State` in the owning view.
+- For `@Observable` reference types on modern macOS targets, store them as `@State` in the owning
+  view.
 - Pass observables explicitly to children.
 - On older deployment targets, fall back to `@StateObject` and `@ObservedObject` where needed.
 
@@ -83,20 +93,24 @@ only at the narrow edges where desktop behavior truly requires it.
 4. Stabilize the root layout around selection, scenes, and commands rather than top-level branching.
 5. Move action logic, command routing, and toolbar behavior into named helpers or separate types.
 6. Tighten any AppKit bridge so the imperative edge is small and explicit.
-7. Keep behavior intact unless the request explicitly asks for structural and behavioral changes together.
+7. Keep behavior intact unless the request explicitly asks for structural and behavioral changes
+   together.
 
 ## Refactor Checklist
 
 - Split oversized view files before adding more UI.
 - Move pure models, identifiers, and selection enums out of view files.
-- Move `Process`, `URLSession`, app-server, and platform client code out of SwiftUI views into `Services/`.
+- Move `Process`, `URLSession`, app-server, and platform client code out of SwiftUI views into
+  `Services/`.
 - Keep `AppDelegate` and the `@main` app entrypoint minimal.
 - Build after each major split so compile errors stay local.
 
 ## Common Smells
 
-- A root view that mixes window scaffolding, settings, toolbar code, command handling, and detail layout.
-- A single app file that mixes app entrypoint, root layout, feature views, models, stores, service clients, and support extensions.
+- A root view that mixes window scaffolding, settings, toolbar code, command handling, and detail
+  layout.
+- A single app file that mixes app entrypoint, root layout, feature views, models, stores, service
+  clients, and support extensions.
 - iOS-style push navigation forced into a Mac sidebar-detail problem.
 - Several booleans for mutually exclusive inspectors, sheets, or utility windows.
 - AppKit objects passed through many SwiftUI layers without a clear ownership reason.

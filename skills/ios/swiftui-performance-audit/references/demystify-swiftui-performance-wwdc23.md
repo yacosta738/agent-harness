@@ -1,6 +1,7 @@
 # Demystify SwiftUI Performance (WWDC23) (Summary)
 
-Context: WWDC23 session on building a mental model for SwiftUI performance and triaging hangs/hitches.
+Context: WWDC23 session on building a mental model for SwiftUI performance and triaging
+hangs/hitches.
 
 ## Performance loop
 

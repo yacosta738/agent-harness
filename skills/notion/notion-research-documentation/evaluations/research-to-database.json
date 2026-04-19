@@ -1,6 +1,8 @@
 {
   "name": "Research with Database Integration",
-  "skills": ["research-documentation"],
+  "skills": [
+    "research-documentation"
+  ],
   "query": "Research competitor pricing strategies and add to our Research database",
   "expected_behavior": [
     "Searches for competitor and pricing information using Notion:notion-search",

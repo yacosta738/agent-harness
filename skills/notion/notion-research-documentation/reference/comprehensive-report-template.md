@@ -1,6 +1,7 @@
 # Comprehensive Report Template
 
-Use for in-depth research requiring extensive analysis. See [comprehensive-report-format.md](comprehensive-report-format.md) for when to use this format.
+Use for in-depth research requiring extensive analysis.
+See [comprehensive-report-format.md](comprehensive-report-format.md) for when to use this format.
 
 ```markdown
 # [Report Title]

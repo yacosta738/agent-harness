@@ -2,14 +2,14 @@
 
 ## When to Use Which Pattern
 
-| Need | Pattern | ID Strategy |
-|------|---------|-------------|
-| Rate limit per user/IP | Rate Limiting | `idFromName(identifier)` |
-| Mutual exclusion | Distributed Lock | `idFromName(resource)` |
-| >1K req/s throughput | Sharding | `newUniqueId()` or hash |
-| Real-time updates | WebSocket Collab | `idFromName(room)` |
-| User sessions | Session Management | `idFromName(sessionId)` |
-| Background cleanup | Alarm-based | Any |
+| Need                   | Pattern            | ID Strategy              |
+|------------------------|--------------------|--------------------------|
+| Rate limit per user/IP | Rate Limiting      | `idFromName(identifier)` |
+| Mutual exclusion       | Distributed Lock   | `idFromName(resource)`   |
+| >1K req/s throughput   | Sharding           | `newUniqueId()` or hash  |
+| Real-time updates      | WebSocket Collab   | `idFromName(room)`       |
+| User sessions          | Session Management | `idFromName(sessionId)`  |
+| Background cleanup     | Alarm-based        | Any                      |
 
 ## RPC vs fetch()
 
@@ -43,6 +43,7 @@ function hashCode(str: string): number {
 ```
 
 **Decisions:**
+
 - **Shard count**: 10-1000 typical (start with 100, measure, adjust)
 - **Shard key**: User ID, IP, session - must distribute evenly (use hash)
 - **Aggregation**: Coordinator DO or external system (D1, R2)
@@ -110,6 +111,7 @@ async webSocketMessage(ws: WebSocket, msg: string) {
 ### WebSocket Reconnection
 
 **Client-side** (exponential backoff):
+
 ```typescript
 class ResilientWS {
   private delay = 1000;
@@ -124,6 +126,7 @@ class ResilientWS {
 ```
 
 **Server-side** (cleanup on close):
+
 ```typescript
 async webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
   const { userId } = ws.deserializeAttachment();
@@ -188,10 +191,14 @@ async myMethod() {
 
 ## Best Practices
 
-- **Design**: Use `idFromName()` for coordination, `newUniqueId()` for sharding, minimize constructor work
-- **Storage**: Prefer SQLite, batch with transactions, set alarms for cleanup, use PITR before risky ops
-- **Performance**: ~1K req/s per DO max - shard for more, cache in memory, use alarms for deferred work
-- **Reliability**: Handle 503 with retry+backoff, design for cold starts, test migrations with `--dry-run`
+- **Design**: Use `idFromName()` for coordination, `newUniqueId()` for sharding, minimize
+  constructor work
+- **Storage**: Prefer SQLite, batch with transactions, set alarms for cleanup, use PITR before risky
+  ops
+- **Performance**: ~1K req/s per DO max - shard for more, cache in memory, use alarms for deferred
+  work
+- **Reliability**: Handle 503 with retry+backoff, design for cold starts, test migrations with
+  `--dry-run`
 - **Security**: Validate inputs in Workers, rate limit DO creation, use jurisdiction for compliance
 
 ## See Also

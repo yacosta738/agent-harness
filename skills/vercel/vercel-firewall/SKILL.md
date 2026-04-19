@@ -50,7 +50,8 @@ chainTo:
 
 # Vercel Firewall
 
-You are an expert in the Vercel Firewall — a multi-layered security solution with automatic DDoS protection, a customizable Web Application Firewall (WAF), bot management, and rate limiting.
+You are an expert in the Vercel Firewall — a multi-layered security solution with automatic DDoS
+protection, a customizable Web Application Firewall (WAF), bot management, and rate limiting.
 
 ## Architecture & Rule Execution Order
 
@@ -65,7 +66,8 @@ Changes propagate globally in under **300ms**. No redeployment required.
 
 - Layer 3/4 mitigation (automatic, always on)
 - Layer 7 protection (proprietary, tailored to web apps)
-- **Protectd**: Vercel's DoS mitigation infrastructure analyzes ~550K events/sec globally with median mitigation time of **2.5 seconds**
+- **Protectd**: Vercel's DoS mitigation infrastructure analyzes ~550K events/sec globally with
+  median mitigation time of **2.5 seconds**
 - 40x faster detection with real-time stream processing
 - Handles 1B+ suspicious TCP connections per week
 - Proven to mitigate 1.37 Tbps attacks with zero downtime
@@ -100,71 +102,75 @@ No configuration needed — DDoS protection is always active.
 }
 ```
 
-**Logic**: Each object in `conditionGroup` is an **OR** group. Conditions within a single group are **AND**ed. Multiple groups are **OR**ed.
+**Logic**: Each object in `conditionGroup` is an **OR** group. Conditions within a single group are
+**AND**ed. Multiple groups are **OR**ed.
 
 ### Condition Types (25 available)
 
-| Type | Description | Extra Fields |
-|------|-------------|--------------|
-| `path` | URL path | |
-| `method` | HTTP method | |
-| `host` | Hostname | |
-| `ip_address` | Client IP (supports CIDR) | |
-| `user_agent` | User-Agent string | |
-| `header` | Request header value | `key` (header name) |
-| `query` | Query string parameter | `key` (param name) |
-| `cookie` | Cookie value | `key` (cookie name) |
-| `geo_country` | ISO country code (e.g., `US`) | |
-| `geo_continent` | Continent code (e.g., `NA`) | |
-| `geo_country_region` | State/province code | |
-| `geo_city` | City name | |
-| `geo_as_number` | ASN | |
-| `ja4_digest` | JA4 TLS fingerprint | |
-| `ja3_digest` | JA3 TLS fingerprint | |
-| `target_path` | Resolved path after routing | |
-| `route` | Matched route pattern | |
-| `raw_path` | Raw unparsed path | |
-| `region` | Vercel edge region code | |
-| `protocol` | http/https | |
-| `scheme` | URL scheme | |
-| `environment` | Deployment environment | |
-| `bot_name` | Specific bot name | |
-| `bot_category` | Bot category | |
-| `server_action` | Next.js Server Action ID | |
+| Type                 | Description                   | Extra Fields        |
+|----------------------|-------------------------------|---------------------|
+| `path`               | URL path                      |                     |
+| `method`             | HTTP method                   |                     |
+| `host`               | Hostname                      |                     |
+| `ip_address`         | Client IP (supports CIDR)     |                     |
+| `user_agent`         | User-Agent string             |                     |
+| `header`             | Request header value          | `key` (header name) |
+| `query`              | Query string parameter        | `key` (param name)  |
+| `cookie`             | Cookie value                  | `key` (cookie name) |
+| `geo_country`        | ISO country code (e.g., `US`) |                     |
+| `geo_continent`      | Continent code (e.g., `NA`)   |                     |
+| `geo_country_region` | State/province code           |                     |
+| `geo_city`           | City name                     |                     |
+| `geo_as_number`      | ASN                           |                     |
+| `ja4_digest`         | JA4 TLS fingerprint           |                     |
+| `ja3_digest`         | JA3 TLS fingerprint           |                     |
+| `target_path`        | Resolved path after routing   |                     |
+| `route`              | Matched route pattern         |                     |
+| `raw_path`           | Raw unparsed path             |                     |
+| `region`             | Vercel edge region code       |                     |
+| `protocol`           | http/https                    |                     |
+| `scheme`             | URL scheme                    |                     |
+| `environment`        | Deployment environment        |                     |
+| `bot_name`           | Specific bot name             |                     |
+| `bot_category`       | Bot category                  |                     |
+| `server_action`      | Next.js Server Action ID      |                     |
 
 ### Condition Operators
 
-| Op | Meaning |
-|----|---------|
-| `eq` | Equals |
-| `neq` | Not equals |
-| `re` | Regex match |
-| `pre` | Starts with |
-| `suf` | Ends with |
-| `sub` | Contains |
-| `inc` | In array |
-| `ninc` | Not in array |
-| `ex` | Exists |
-| `nex` | Not exists |
+| Op           | Meaning                 |
+|--------------|-------------------------|
+| `eq`         | Equals                  |
+| `neq`        | Not equals              |
+| `re`         | Regex match             |
+| `pre`        | Starts with             |
+| `suf`        | Ends with               |
+| `sub`        | Contains                |
+| `inc`        | In array                |
+| `ninc`       | Not in array            |
+| `ex`         | Exists                  |
+| `nex`        | Not exists              |
 | `gt` / `gte` | Greater than (or equal) |
-| `lt` / `lte` | Less than (or equal) |
+| `lt` / `lte` | Less than (or equal)    |
 
-Additional optional fields: `neg: true` negates the condition, `key` required for `header`/`query`/`cookie` types.
+Additional optional fields: `neg: true` negates the condition, `key` required for `header`/`query`/
+`cookie` types.
 
 ### Mitigation Actions
 
-| Action | Description |
-|--------|-------------|
-| `log` | Log only, allow traffic |
-| `deny` | Block request (403) |
-| `challenge` | JavaScript browser challenge |
-| `bypass` | Skip all subsequent WAF rules |
+| Action       | Description                                       |
+|--------------|---------------------------------------------------|
+| `log`        | Log only, allow traffic                           |
+| `deny`       | Block request (403)                               |
+| `challenge`  | JavaScript browser challenge                      |
+| `bypass`     | Skip all subsequent WAF rules                     |
 | `rate_limit` | Apply rate limiting (requires `rateLimit` config) |
-| `redirect` | Redirect (requires `redirect` config) |
+| `redirect`   | Redirect (requires `redirect` config)             |
 
 ### Persistent Actions
 
-By default each request is evaluated individually. With **persistent actions**, rules are applied to all matching requests for a customizable duration (`actionDuration`), allowing the firewall to remember malicious behavior and block it earlier in the lifecycle.
+By default each request is evaluated individually. With **persistent actions**, rules are applied to
+all matching requests for a customizable duration (`actionDuration`), allowing the firewall to
+remember malicious behavior and block it earlier in the lifecycle.
 
 ### Action Options
 
@@ -364,21 +370,24 @@ By default each request is evaluated individually. With **persistent actions**, 
 
 ### Rate Limit Configuration Options
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `algo` | string | `"fixed_window"` (all plans) or `"token_bucket"` (Enterprise) |
-| `window` | number | Seconds. Min 10, max 600 (Pro), max 3600 (Enterprise) |
-| `limit` | number | Max requests per window |
-| `keys` | array | Count per: `"ip"`, `"ja4"`, `"user_agent"`, custom headers (Enterprise) |
-| `action` | string | When exceeded: `"deny"`, `"log"`, `"challenge"` |
+| Field    | Type   | Description                                                             |
+|----------|--------|-------------------------------------------------------------------------|
+| `algo`   | string | `"fixed_window"` (all plans) or `"token_bucket"` (Enterprise)           |
+| `window` | number | Seconds. Min 10, max 600 (Pro), max 3600 (Enterprise)                   |
+| `limit`  | number | Max requests per window                                                 |
+| `keys`   | array  | Count per: `"ip"`, `"ja4"`, `"user_agent"`, custom headers (Enterprise) |
+| `action` | string | When exceeded: `"deny"`, `"log"`, `"challenge"`                         |
 
-When exceeded with `deny`, returns HTTP 429 with `X-RateLimit-Limit` and `X-RateLimit-Remaining` headers.
+When exceeded with `deny`, returns HTTP 429 with `X-RateLimit-Limit` and `X-RateLimit-Remaining`
+headers.
 
 ## Bot Management
 
 ### Bot Protection (GA — Free on All Plans)
 
-Heuristics-based detection that challenges non-browser bot traffic without disrupting verified webhook providers. Formerly "Bot Filter" during beta — renamed to Bot Protection at GA. Enable in log-only mode first to preview traffic impact:
+Heuristics-based detection that challenges non-browser bot traffic without disrupting verified
+webhook providers. Formerly "Bot Filter" during beta — renamed to Bot Protection at GA. Enable in
+log-only mode first to preview traffic impact:
 
 ```json
 {
@@ -475,12 +484,12 @@ Place this higher in priority than Bot Protection managed rules:
 
 ### IP Rule Actions
 
-| Action | Effect |
-|--------|--------|
-| `deny` | Block the IP |
-| `challenge` | Serve JS challenge |
-| `log` | Log traffic only |
-| `bypass` | Allow through all rules (allowlist) |
+| Action      | Effect                              |
+|-------------|-------------------------------------|
+| `deny`      | Block the IP                        |
+| `challenge` | Serve JS challenge                  |
+| `log`       | Log traffic only                    |
+| `bypass`    | Allow through all rules (allowlist) |
 
 **Note**: `hostname` must match the exact domain. Add separate entries per subdomain.
 
@@ -488,19 +497,19 @@ Place this higher in priority than Bot Protection managed rules:
 
 ### Individual CRS Rules
 
-| ID | Protection |
-|----|-----------|
-| `sqli` | SQL Injection |
-| `xss` | Cross-Site Scripting |
-| `rce` | Remote Code Execution |
-| `lfi` | Local File Inclusion |
-| `rfi` | Remote File Inclusion |
-| `sd` | Scanner Detection |
-| `ma` | Multipart Attack |
-| `php` | PHP-specific exploits |
-| `gen` | Generic attack patterns |
-| `sf` | Session Fixation |
-| `java` | Java-specific exploits |
+| ID     | Protection              |
+|--------|-------------------------|
+| `sqli` | SQL Injection           |
+| `xss`  | Cross-Site Scripting    |
+| `rce`  | Remote Code Execution   |
+| `lfi`  | Local File Inclusion    |
+| `rfi`  | Remote File Inclusion   |
+| `sd`   | Scanner Detection       |
+| `ma`   | Multipart Attack        |
+| `php`  | PHP-specific exploits   |
+| `gen`  | Generic attack patterns |
+| `sf`   | Session Fixation        |
+| `java` | Java-specific exploits  |
 
 ### Enable OWASP Rules
 
@@ -547,28 +556,28 @@ Query params: `?projectId=<id>&teamId=<id>`
 
 ### Endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/v1/security/firewall/config/active` | Read current config |
-| `PATCH` | `/v1/security/firewall/config` | Incremental update (add/remove/update rules) |
-| `PUT` | `/v1/security/firewall/config` | Full config replacement |
-| `POST` | `/v1/security/firewall/bypass` | Create temporary bypass rule |
+| Method  | Path                                  | Description                                  |
+|---------|---------------------------------------|----------------------------------------------|
+| `GET`   | `/v1/security/firewall/config/active` | Read current config                          |
+| `PATCH` | `/v1/security/firewall/config`        | Incremental update (add/remove/update rules) |
+| `PUT`   | `/v1/security/firewall/config`        | Full config replacement                      |
+| `POST`  | `/v1/security/firewall/bypass`        | Create temporary bypass rule                 |
 
 ### PATCH Actions
 
-| Action | Description |
-|--------|-------------|
-| `firewallEnabled` | Enable/disable firewall (value: boolean) |
-| `rules.insert` | Add a custom rule |
-| `rules.update` | Update rule (requires `id`) |
-| `rules.remove` | Delete rule (requires `id`) |
-| `rules.priority` | Reorder rule (requires `id`, value = index) |
-| `ip.insert` | Add IP rule |
-| `ip.update` | Update IP rule |
-| `ip.remove` | Delete IP rule |
-| `crs.update` | Enable/configure OWASP CRS rule |
-| `crs.disable` | Disable entire CRS |
-| `managedRules.update` | Configure managed ruleset |
+| Action                | Description                                 |
+|-----------------------|---------------------------------------------|
+| `firewallEnabled`     | Enable/disable firewall (value: boolean)    |
+| `rules.insert`        | Add a custom rule                           |
+| `rules.update`        | Update rule (requires `id`)                 |
+| `rules.remove`        | Delete rule (requires `id`)                 |
+| `rules.priority`      | Reorder rule (requires `id`, value = index) |
+| `ip.insert`           | Add IP rule                                 |
+| `ip.update`           | Update IP rule                              |
+| `ip.remove`           | Delete IP rule                              |
+| `crs.update`          | Enable/configure OWASP CRS rule             |
+| `crs.disable`         | Disable entire CRS                          |
+| `managedRules.update` | Configure managed ruleset                   |
 
 ### Add a Rule via cURL
 
@@ -670,7 +679,9 @@ Declaratively define firewall rules in `vercel.json` using the `mitigate` key:
 }
 ```
 
-Supported actions in `vercel.json`: `"challenge"`, `"deny"` only. Rate limiting, `log`, and `bypass` require the Vercel Firewall dashboard at `https://vercel.com/{team}/{project}/firewall` or the REST API.
+Supported actions in `vercel.json`: `"challenge"`, `"deny"` only. Rate limiting, `log`, and `bypass`
+require the Vercel Firewall dashboard at `https://vercel.com/{team}/{project}/firewall` or the REST
+API.
 
 ## Attack Challenge Mode
 
@@ -679,25 +690,27 @@ Supported actions in `vercel.json`: `"challenge"`, `"deny"` only. Rate limiting,
 - Legitimate bots (Googlebot, webhook providers) automatically pass through
 - Internal Function-to-Function calls within the same account bypass automatically
 - Blocked requests don't count toward CDN/traffic usage
-- Configured via dashboard only: open `https://vercel.com/{team}/{project}/firewall` → **Bot Management** → **Attack Challenge Mode**
+- Configured via dashboard only: open `https://vercel.com/{team}/{project}/firewall` → **Bot
+  Management** → **Attack Challenge Mode**
 
 ## Plan Availability
 
-| Feature | Hobby | Pro | Enterprise |
-|---------|-------|-----|-----------|
-| DDoS Protection | All | All | All |
-| Custom Rules | 5 | 40 | 1000 |
-| Rate Limiting | 1 rule | 40 rules | 1000 rules |
-| Bot Protection (GA) | Yes | Yes | Yes |
-| OWASP CRS | — | — | Yes |
-| Token Bucket algo | — | — | Yes |
-| Custom rate limit keys | — | — | Yes |
+| Feature                | Hobby  | Pro      | Enterprise |
+|------------------------|--------|----------|------------|
+| DDoS Protection        | All    | All      | All        |
+| Custom Rules           | 5      | 40       | 1000       |
+| Rate Limiting          | 1 rule | 40 rules | 1000 rules |
+| Bot Protection (GA)    | Yes    | Yes      | Yes        |
+| OWASP CRS              | —      | —        | Yes        |
+| Token Bucket algo      | —      | —        | Yes        |
+| Custom rate limit keys | —      | —        | Yes        |
 
 ## Observability
 
 - Security event logs in the Firewall tab
 - **IP enrichment** — hover any IP in the Firewall dashboard to see ASN, location, and metadata
-- Create custom WAF rules directly from dashboard traffic charts (select "Create Custom Rule" from the actions menu)
+- Create custom WAF rules directly from dashboard traffic charts (select "Create Custom Rule" from
+  the actions menu)
 - Linkable to Monitoring queries for investigations
 - DDoS mitigation notifications (alerts on detection)
 - BotID traffic visibility when enabled

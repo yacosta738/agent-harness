@@ -148,6 +148,7 @@ You are an expert in Vercel Functions — the compute layer of the Vercel platfo
 ## Function Types
 
 ### Serverless Functions (Node.js)
+
 - Full Node.js runtime, all npm packages available
 - Default for Next.js API routes, Server Actions, Server Components
 - Cold starts: 800ms–2.5s (with DB connections)
@@ -161,6 +162,7 @@ export async function GET() {
 ```
 
 ### Edge Functions (V8 Isolates)
+
 - Lightweight V8 runtime, Web Standard APIs only
 - Ultra-low cold starts (<1ms globally)
 - Limited API surface (no full Node.js)
@@ -177,36 +179,42 @@ export async function GET() {
 
 ### Bun Runtime (Public Beta)
 
-Add `"bunVersion": "1.x"` to `vercel.json` to run Node.js functions on Bun instead. ~28% lower latency for CPU-bound workloads. Supports Next.js, Express, Hono, Nitro.
+Add `"bunVersion": "1.x"` to `vercel.json` to run Node.js functions on Bun instead. ~28% lower
+latency for CPU-bound workloads. Supports Next.js, Express, Hono, Nitro.
 
 ### Rust Runtime (Public Beta)
 
-Rust functions run on Fluid Compute with HTTP streaming and Active CPU pricing. Built on the community Rust runtime. Supports environment variables up to 64 KB.
+Rust functions run on Fluid Compute with HTTP streaming and Active CPU pricing. Built on the
+community Rust runtime. Supports environment variables up to 64 KB.
 
 ### Node.js 24 LTS
 
-Node.js 24 LTS is now GA on Vercel for both builds and functions. Features V8 13.6, global `URLPattern`, Undici v7 for faster `fetch()`, and npm v11.
+Node.js 24 LTS is now GA on Vercel for both builds and functions. Features V8 13.6, global
+`URLPattern`, Undici v7 for faster `fetch()`, and npm v11.
 
 ### Choosing Runtime
 
-| Need | Runtime | Why |
-|------|---------|-----|
-| Full Node.js APIs, npm packages | `nodejs` | Full compatibility |
-| Lower latency, CPU-bound work | `nodejs` + Bun | ~28% latency reduction |
-| Ultra-low latency, simple logic | `edge` | <1ms cold start, global |
-| Database connections, heavy deps | `nodejs` | Edge lacks full Node.js |
-| Auth/redirect at the edge | `edge` | Fastest response |
-| AI streaming | Either | Both support streaming |
-| Systems-level performance | `rust` (beta) | Native speed, Fluid Compute |
+| Need                             | Runtime        | Why                         |
+|----------------------------------|----------------|-----------------------------|
+| Full Node.js APIs, npm packages  | `nodejs`       | Full compatibility          |
+| Lower latency, CPU-bound work    | `nodejs` + Bun | ~28% latency reduction      |
+| Ultra-low latency, simple logic  | `edge`         | <1ms cold start, global     |
+| Database connections, heavy deps | `nodejs`       | Edge lacks full Node.js     |
+| Auth/redirect at the edge        | `edge`         | Fastest response            |
+| AI streaming                     | Either         | Both support streaming      |
+| Systems-level performance        | `rust` (beta)  | Native speed, Fluid Compute |
 
 ## Fluid Compute
 
 Fluid Compute is the unified execution model for all Vercel Functions (both Node.js and Edge).
 
 Key benefits:
-- **Optimized concurrency**: Multiple invocations on a single instance — up to 85% cost reduction for high-concurrency workloads
+
+- **Optimized concurrency**: Multiple invocations on a single instance — up to 85% cost reduction
+  for high-concurrency workloads
 - **Extended durations**: Default 300s for all plans; up to 800s on Pro/Enterprise
-- **Active CPU pricing**: Charges only while CPU is actively working, not during idle/await time. Enabled by default for all plans. Memory-only periods billed at a significantly lower rate.
+- **Active CPU pricing**: Charges only while CPU is actively working, not during idle/await time.
+  Enabled by default for all plans. Memory-only periods billed at a significantly lower rate.
 - **Background processing**: `waitUntil` / `after` for post-response tasks
 - **Dynamic scaling**: Automatic during traffic spikes
 - **Bytecode caching**: Reduces cold starts via Rust-based runtime with pre-compiled function code
@@ -214,10 +222,10 @@ Key benefits:
 
 ### Instance Sizes
 
-| Size | CPU | Memory |
-|------|-----|--------|
-| Standard (default) | 1 vCPU | 2 GB |
-| Performance | 2 vCPU | 4 GB |
+| Size               | CPU    | Memory |
+|--------------------|--------|--------|
+| Standard (default) | 1 vCPU | 2 GB   |
+| Performance        | 2 vCPU | 4 GB   |
 
 Hobby projects use Standard CPU. The Basic CPU instance has been removed.
 
@@ -282,7 +290,8 @@ export async function POST(req: Request) {
 }
 ```
 
-For AI streaming, use the AI SDK's `toUIMessageStreamResponse()` (for chat UIs with `useChat`) which handles SSE formatting automatically.
+For AI streaming, use the AI SDK's `toUIMessageStreamResponse()` (for chat UIs with `useChat`) which
+handles SSE formatting automatically.
 
 ## Cron Jobs
 
@@ -318,7 +327,8 @@ export async function GET(req: Request) {
 
 ## Configuration via vercel.json
 
-**Deprecation notice**: Support for the legacy `now.json` config file will be removed on **March 31, 2026**. Rename `now.json` to `vercel.json` (no content changes required).
+**Deprecation notice**: Support for the legacy `now.json` config file will be removed on **March 31,
+2026**. Rename `now.json` to `vercel.json` (no content changes required).
 
 ```json
 {
@@ -338,19 +348,23 @@ export async function GET(req: Request) {
 
 All plans now default to 300s execution time with Fluid Compute.
 
-| Plan | Default | Max |
-|------|---------|-----|
-| Hobby | 300s | 300s |
-| Pro | 300s | 800s |
-| Enterprise | 300s | 800s |
+| Plan       | Default | Max  |
+|------------|---------|------|
+| Hobby      | 300s    | 300s |
+| Pro        | 300s    | 800s |
+| Enterprise | 300s    | 800s |
 
 ## Common Pitfalls
 
-1. **Cold starts with DB connections**: Use connection pooling (e.g., Neon's `@neondatabase/serverless`)
-2. **Edge limitations**: No `fs`, no native modules, limited `crypto` — use Node.js runtime if needed
-3. **Timeout exceeded**: Use Fluid Compute for long-running tasks, or Workflow DevKit for very long processes
+1. **Cold starts with DB connections**: Use connection pooling (e.g., Neon's
+   `@neondatabase/serverless`)
+2. **Edge limitations**: No `fs`, no native modules, limited `crypto` — use Node.js runtime if
+   needed
+3. **Timeout exceeded**: Use Fluid Compute for long-running tasks, or Workflow DevKit for very long
+   processes
 4. **Bundle size**: Python runtime supports up to 500MB; Node.js has smaller limits
-5. **Environment variables**: Available in all functions automatically; use `vercel env pull` for local dev
+5. **Environment variables**: Available in all functions automatically; use `vercel env pull` for
+   local dev
 
 ## Function Runtime Diagnostics
 

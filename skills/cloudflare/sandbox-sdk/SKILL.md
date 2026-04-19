@@ -16,14 +16,15 @@ docker info  # Must succeed - Docker required for local dev
 
 ## Retrieval Sources
 
-Your knowledge of the Sandbox SDK may be outdated. **Prefer retrieval over pre-training** for any Sandbox SDK task.
+Your knowledge of the Sandbox SDK may be outdated. **Prefer retrieval over pre-training** for any
+Sandbox SDK task.
 
-| Resource | URL |
-|----------|-----|
-| Docs | https://developers.cloudflare.com/sandbox/ |
-| API Reference | https://developers.cloudflare.com/sandbox/api/ |
-| Examples | https://github.com/cloudflare/sandbox-sdk/tree/main/examples |
-| Get Started | https://developers.cloudflare.com/sandbox/get-started/ |
+| Resource      | URL                                                          |
+|---------------|--------------------------------------------------------------|
+| Docs          | https://developers.cloudflare.com/sandbox/                   |
+| API Reference | https://developers.cloudflare.com/sandbox/api/               |
+| Examples      | https://github.com/cloudflare/sandbox-sdk/tree/main/examples |
+| Get Started   | https://developers.cloudflare.com/sandbox/get-started/       |
 
 When implementing features, fetch the relevant doc page or example first.
 
@@ -55,17 +56,17 @@ export { Sandbox } from '@cloudflare/sandbox';  // Required export
 
 ## Quick Reference
 
-| Task | Method |
-|------|--------|
-| Get sandbox | `getSandbox(env.Sandbox, 'user-123')` |
-| Run command | `await sandbox.exec('python script.py')` |
-| Run code (interpreter) | `await sandbox.runCode(code, { language: 'python' })` |
-| Write file | `await sandbox.writeFile('/workspace/app.py', content)` |
-| Read file | `await sandbox.readFile('/workspace/app.py')` |
-| Create directory | `await sandbox.mkdir('/workspace/src', { recursive: true })` |
-| List files | `await sandbox.listFiles('/workspace')` |
-| Expose port | `await sandbox.exposePort(8080)` |
-| Destroy | `await sandbox.destroy()` |
+| Task                   | Method                                                       |
+|------------------------|--------------------------------------------------------------|
+| Get sandbox            | `getSandbox(env.Sandbox, 'user-123')`                        |
+| Run command            | `await sandbox.exec('python script.py')`                     |
+| Run code (interpreter) | `await sandbox.runCode(code, { language: 'python' })`        |
+| Write file             | `await sandbox.writeFile('/workspace/app.py', content)`      |
+| Read file              | `await sandbox.readFile('/workspace/app.py')`                |
+| Create directory       | `await sandbox.mkdir('/workspace/src', { recursive: true })` |
+| List files             | `await sandbox.listFiles('/workspace')`                      |
+| Expose port            | `await sandbox.exposePort(8080)`                             |
+| Destroy                | `await sandbox.destroy()`                                    |
 
 ## Core Patterns
 
@@ -104,16 +105,17 @@ const files = await sandbox.listFiles('/workspace/project');
 
 ## When to Use What
 
-| Need | Use | Why |
-|------|-----|-----|
-| Shell commands, scripts | `exec()` | Direct control, streaming |
-| LLM-generated code | `runCode()` | Rich outputs, state persistence |
-| Build/test pipelines | `exec()` | Exit codes, stderr capture |
-| Data analysis | `runCode()` | Charts, tables, pandas |
+| Need                    | Use         | Why                             |
+|-------------------------|-------------|---------------------------------|
+| Shell commands, scripts | `exec()`    | Direct control, streaming       |
+| LLM-generated code      | `runCode()` | Rich outputs, state persistence |
+| Build/test pipelines    | `exec()`    | Exit codes, stderr capture      |
+| Data analysis           | `runCode()` | Charts, tables, pandas          |
 
 ## Extending the Dockerfile
 
-Base image (`docker.io/cloudflare/sandbox:0.7.0`) includes Python 3.11, Node.js 20, and common tools.
+Base image (`docker.io/cloudflare/sandbox:0.7.0`) includes Python 3.11, Node.js 20, and common
+tools.
 
 Add dependencies by extending the Dockerfile:
 
@@ -143,7 +145,8 @@ const { url } = await sandbox.exposePort(8080);
 // Returns preview URL for the service
 ```
 
-**Production requirement**: Preview URLs need a custom domain with wildcard DNS (`*.yourdomain.com`). The `.workers.dev` domain does not support preview URL subdomains.
+**Production requirement**: Preview URLs need a custom domain with wildcard DNS (
+`*.yourdomain.com`). The `.workers.dev` domain does not support preview URL subdomains.
 
 See: https://developers.cloudflare.com/sandbox/guides/expose-services/
 
@@ -173,5 +176,6 @@ See `examples/openai-agents` for complete integration pattern.
 
 ## Detailed References
 
-- **[references/api-quick-ref.md](references/api-quick-ref.md)** - Full API with options and return types
+- **[references/api-quick-ref.md](references/api-quick-ref.md)** - Full API with options and return
+  types
 - **[references/examples.md](references/examples.md)** - Example index with use cases

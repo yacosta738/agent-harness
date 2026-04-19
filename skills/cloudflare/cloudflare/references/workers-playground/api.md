@@ -94,8 +94,8 @@ const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data
 
 ## Limits (Playground = Free Plan)
 
-| Resource | Limit |
-|----------|-------|
-| CPU time | 10ms |
-| Subrequests | 50 |
-| Memory | 128 MB |
+| Resource    | Limit  |
+|-------------|--------|
+| CPU time    | 10ms   |
+| Subrequests | 50     |
+| Memory      | 128 MB |

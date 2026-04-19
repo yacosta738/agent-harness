@@ -40,25 +40,25 @@ SELECT user_id, timestamp, status FROM logs.http_requests;
 
 ### Operators
 
-| Operator | Example |
-|----------|---------|
-| `=`, `!=`, `<`, `<=`, `>`, `>=` | `status = 200` |
-| `LIKE` | `user_agent LIKE '%Chrome%'` |
-| `BETWEEN` | `timestamp BETWEEN '2025-01-01T00:00:00Z' AND '2025-01-31T23:59:59Z'` |
-| `IS NULL`, `IS NOT NULL` | `email IS NOT NULL` |
-| `AND`, `OR` | `status = 200 AND method = 'GET'` |
+| Operator                        | Example                                                               |
+|---------------------------------|-----------------------------------------------------------------------|
+| `=`, `!=`, `<`, `<=`, `>`, `>=` | `status = 200`                                                        |
+| `LIKE`                          | `user_agent LIKE '%Chrome%'`                                          |
+| `BETWEEN`                       | `timestamp BETWEEN '2025-01-01T00:00:00Z' AND '2025-01-31T23:59:59Z'` |
+| `IS NULL`, `IS NOT NULL`        | `email IS NOT NULL`                                                   |
+| `AND`, `OR`                     | `status = 200 AND method = 'GET'`                                     |
 
 Use parentheses for precedence: `(status = 404 OR status = 500) AND method = 'POST'`
 
 ## Aggregation Functions
 
-| Function | Description |
-|----------|-------------|
-| `COUNT(*)` | Count all rows |
-| `COUNT(column)` | Count non-null values |
-| `COUNT(DISTINCT column)` | Count unique values |
-| `SUM(column)`, `AVG(column)` | Numeric aggregations |
-| `MIN(column)`, `MAX(column)` | Min/max values |
+| Function                     | Description           |
+|------------------------------|-----------------------|
+| `COUNT(*)`                   | Count all rows        |
+| `COUNT(column)`              | Count non-null values |
+| `COUNT(DISTINCT column)`     | Count unique values   |
+| `SUM(column)`, `AVG(column)` | Numeric aggregations  |
+| `MIN(column)`, `MAX(column)` | Min/max values        |
 
 ```sql
 -- Multiple aggregations with GROUP BY
@@ -82,6 +82,7 @@ HAVING SUM(amount) > 10000;
 ## ORDER BY Clause
 
 Sort results by:
+
 - **Partition key columns** - Always supported
 - **Aggregation functions** - Supported via shuffle strategy
 
@@ -96,7 +97,8 @@ GROUP BY region
 ORDER BY SUM(amount) DESC;
 ```
 
-**Limitations:** Cannot order by non-partition columns. See [gotchas.md](gotchas.md#order-by-limitations)
+**Limitations:** Cannot order by non-partition columns.
+See [gotchas.md](gotchas.md#order-by-limitations)
 
 ## LIMIT Clause
 
@@ -104,24 +106,24 @@ ORDER BY SUM(amount) DESC;
 SELECT * FROM logs.requests LIMIT 100;
 ```
 
-| Setting | Value |
-|---------|-------|
-| Min | 1 |
-| Max | 10,000 |
-| Default | 500 |
+| Setting | Value  |
+|---------|--------|
+| Min     | 1      |
+| Max     | 10,000 |
+| Default | 500    |
 
 **Always use LIMIT** to enable early termination optimization.
 
 ## Data Types
 
-| Type | SQL Literal | Example |
-|------|-------------|---------|
-| `integer` | Unquoted number | `42`, `-10` |
-| `float` | Decimal number | `3.14`, `-0.5` |
-| `string` | Single quotes | `'hello'`, `'GET'` |
-| `boolean` | Keyword | `true`, `false` |
-| `timestamp` | RFC3339 string | `'2025-01-01T00:00:00Z'` |
-| `date` | ISO 8601 date | `'2025-01-01'` |
+| Type        | SQL Literal     | Example                  |
+|-------------|-----------------|--------------------------|
+| `integer`   | Unquoted number | `42`, `-10`              |
+| `float`     | Decimal number  | `3.14`, `-0.5`           |
+| `string`    | Single quotes   | `'hello'`, `'GET'`       |
+| `boolean`   | Keyword         | `true`, `false`          |
+| `timestamp` | RFC3339 string  | `'2025-01-01T00:00:00Z'` |
+| `date`      | ISO 8601 date   | `'2025-01-01'`           |
 
 ### Type Safety
 

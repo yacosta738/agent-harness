@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use `List` for feed-style content and settings-style rows where built-in row reuse, selection, and accessibility matter.
+Use `List` for feed-style content and settings-style rows where built-in row reuse, selection, and
+accessibility matter.
 
 ## Core patterns
 

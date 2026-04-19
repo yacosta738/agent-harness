@@ -1,6 +1,7 @@
 # Logging Metrics with Trackio
 
-**Trackio** is a lightweight, free experiment tracking library from Hugging Face. It provides a wandb-compatible API for logging metrics with local-first design.
+**Trackio** is a lightweight, free experiment tracking library from Hugging Face. It provides a
+wandb-compatible API for logging metrics with local-first design.
 
 - **GitHub**: [gradio-app/trackio](https://github.com/gradio-app/trackio)
 - **Docs**: [huggingface.co/docs/trackio](https://huggingface.co/docs/trackio/index)
@@ -37,13 +38,13 @@ trackio.finish()
 
 ### Key Functions
 
-| Function | Purpose |
-|----------|---------|
-| `trackio.init(...)` | Start a new tracking run |
+| Function            | Purpose                                         |
+|---------------------|-------------------------------------------------|
+| `trackio.init(...)` | Start a new tracking run                        |
 | `trackio.log(dict)` | Log metrics (called repeatedly during training) |
-| `trackio.finish()` | Finalize run and ensure all metrics are saved |
-| `trackio.show()` | Launch the local dashboard |
-| `trackio.sync(...)` | Sync local project to HF Space |
+| `trackio.finish()`  | Finalize run and ensure all metrics are saved   |
+| `trackio.show()`    | Launch the local dashboard                      |
+| `trackio.sync(...)` | Sync local project to HF Space                  |
 
 ## trackio.init() Parameters
 
@@ -73,6 +74,7 @@ trackio.show()
 ```
 
 Or from terminal:
+
 ```bash
 trackio show --project my-project
 ```
@@ -88,7 +90,8 @@ trackio.init(
 )
 ```
 
-⚠️ **For remote training** (cloud GPUs, HF Jobs, etc.): Always use `space_id` since local storage is lost when the instance terminates.
+⚠️ **For remote training** (cloud GPUs, HF Jobs, etc.): Always use `space_id` since local storage is
+lost when the instance terminates.
 
 ### Sync Local to Remote
 
@@ -138,6 +141,7 @@ trackio.finish()
 ## What Gets Logged
 
 With TRL/Transformers integration, trackio automatically captures:
+
 - Training loss
 - Learning rate
 - Eval metrics
@@ -199,6 +203,7 @@ Embed Space dashboards in websites with query parameters:
 ```
 
 Query parameters:
+
 - `project`: Filter to specific project
 - `metrics`: Comma-separated metric names to show
 - `sidebar`: `hidden` or `collapsed`

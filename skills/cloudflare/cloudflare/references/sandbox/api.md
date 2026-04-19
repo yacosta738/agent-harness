@@ -152,7 +152,8 @@ await sandbox.writeFile('/data/output.txt', 'result');
 await sandbox.unmountBucket('/data');
 ```
 
-**Note**: Bucket mounting only works in production. Mounted buckets are sandbox-scoped (visible to all sessions in that sandbox).
+**Note**: Bucket mounting only works in production. Mounted buckets are sandbox-scoped (visible to
+all sessions in that sandbox).
 
 ## Lifecycle Management
 

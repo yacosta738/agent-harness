@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use this when the app benefits from a stable sidebar-detail layout, optional supplementary content, or an inspector panel.
+Use this when the app benefits from a stable sidebar-detail layout, optional supplementary content,
+or an inspector panel.
 
 ## Core patterns
 
@@ -34,5 +35,7 @@ struct LibraryRootView: View {
 ## Pitfalls
 
 - Avoid swapping the whole root layout with top-level conditionals when selection changes.
-- Avoid hiding too much detail behind modal sheets when an inspector or secondary column would fit better.
-- If the layout requires AppKit split view delegation or advanced window coordination, use `appkit-interop`.
+- Avoid hiding too much detail behind modal sheets when an inspector or secondary column would fit
+  better.
+- If the layout requires AppKit split view delegation or advanced window coordination, use
+  `appkit-interop`.

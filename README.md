@@ -222,18 +222,18 @@ commands/
 
 Process skills that apply to any project or stack.
 
-| Skill                       | When to load                                              |
-|-----------------------------|-----------------------------------------------------------|
-| `brainstorming`             | Before any creative work — features, components, behavior |
-| `systematic-debugging`      | Debugging unknown or complex failures                     |
-| `test-driven-development`   | Writing tests before implementation                       |
-| `verification-before-completion` | Validating work before marking done                  |
-| `writing-plans`             | Creating implementation plans                             |
-| `writing-skills`            | Creating or editing OpenCode skills (TDD for docs)        |
-| `dispatching-parallel-agents` | Running independent tasks concurrently                  |
-| `receiving-code-review`     | Processing PR review feedback                             |
-| `requesting-code-review`    | Preparing code for review                                 |
-| `git-worktrees`             | Parallel branch work with safe Git worktree conventions   |
+| Skill                            | When to load                                              |
+|----------------------------------|-----------------------------------------------------------|
+| `brainstorming`                  | Before any creative work — features, components, behavior |
+| `systematic-debugging`           | Debugging unknown or complex failures                     |
+| `test-driven-development`        | Writing tests before implementation                       |
+| `verification-before-completion` | Validating work before marking done                       |
+| `writing-plans`                  | Creating implementation plans                             |
+| `writing-skills`                 | Creating or editing OpenCode skills (TDD for docs)        |
+| `dispatching-parallel-agents`    | Running independent tasks concurrently                    |
+| `receiving-code-review`          | Processing PR review feedback                             |
+| `requesting-code-review`         | Preparing code for review                                 |
+| `git-worktrees`                  | Parallel branch work with safe Git worktree conventions   |
 
 ### `sdd/` — Spec-Driven Development (9 + shared)
 
@@ -254,71 +254,71 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 
 **Core platform**
 
-| Skill | Covers |
-|---|---|
-| `nextjs` | App Router, Server Components, Server Actions, Cache Components |
-| `vercel-functions` | Serverless, Edge, Fluid Compute, streaming, Cron Jobs |
-| `vercel-cli` | All CLI commands, MCP integration, marketplace discovery |
-| `vercel-api` | REST API — projects, deployments, env vars, domains, logs |
-| `deployments-cicd` | Deploy, promote, rollback, CI workflow files |
-| `observability` | Web Analytics, Speed Insights, logs, Drains, OpenTelemetry |
-| `vercel-storage` | Blob, Edge Config, Neon Postgres, Upstash Redis |
-| `routing-middleware` | Request interception, rewrites, redirects — Edge/Node/Bun |
-| `runtime-cache` | Per-region KV cache, tag-based invalidation |
-| `env-vars` | .env files, `vercel env` commands, OIDC tokens |
-| `turbopack` | Next.js bundler, HMR, config |
-| `turborepo` | Monorepo orchestration, remote caching, `--affected` |
+| Skill                | Covers                                                          |
+|----------------------|-----------------------------------------------------------------|
+| `nextjs`             | App Router, Server Components, Server Actions, Cache Components |
+| `vercel-functions`   | Serverless, Edge, Fluid Compute, streaming, Cron Jobs           |
+| `vercel-cli`         | All CLI commands, MCP integration, marketplace discovery        |
+| `vercel-api`         | REST API — projects, deployments, env vars, domains, logs       |
+| `deployments-cicd`   | Deploy, promote, rollback, CI workflow files                    |
+| `observability`      | Web Analytics, Speed Insights, logs, Drains, OpenTelemetry      |
+| `vercel-storage`     | Blob, Edge Config, Neon Postgres, Upstash Redis                 |
+| `routing-middleware` | Request interception, rewrites, redirects — Edge/Node/Bun       |
+| `runtime-cache`      | Per-region KV cache, tag-based invalidation                     |
+| `env-vars`           | .env files, `vercel env` commands, OIDC tokens                  |
+| `turbopack`          | Next.js bundler, HMR, config                                    |
+| `turborepo`          | Monorepo orchestration, remote caching, `--affected`            |
 
 **AI / Agents**
 
-| Skill | Covers |
-|---|---|
-| `ai-sdk` | AI SDK v6 — text/object generation, streaming, tool calling, MCP |
-| `ai-gateway` | 100+ model routing, failover, cost tracking |
-| `ai-elements` | Pre-built React components for AI interfaces |
-| `ai-generation-persistence` | Persisting AI-generated content |
-| `chat-sdk` | Slack, Telegram, Teams, Discord, Google Chat bots |
-| `vercel-agent` | AI code review, incident investigation |
-| `vercel-ai-architect` | Architecture decisions — AI SDK, providers, MCP, agents |
-| `agent-browser` | Browser automation for dev server verification and testing |
-| `agent-browser-verify` | Verifying browser agent output |
-| `workflow` | Durable execution, DurableAgent, steps, pause/resume |
-| `investigation-mode` | Systematic incident investigation workflow |
-| `json-render` | AI chat response rendering — UIMessage parts, streaming states |
-| `verification` | Output verification patterns |
+| Skill                       | Covers                                                           |
+|-----------------------------|------------------------------------------------------------------|
+| `ai-sdk`                    | AI SDK v6 — text/object generation, streaming, tool calling, MCP |
+| `ai-gateway`                | 100+ model routing, failover, cost tracking                      |
+| `ai-elements`               | Pre-built React components for AI interfaces                     |
+| `ai-generation-persistence` | Persisting AI-generated content                                  |
+| `chat-sdk`                  | Slack, Telegram, Teams, Discord, Google Chat bots                |
+| `vercel-agent`              | AI code review, incident investigation                           |
+| `vercel-ai-architect`       | Architecture decisions — AI SDK, providers, MCP, agents          |
+| `agent-browser`             | Browser automation for dev server verification and testing       |
+| `agent-browser-verify`      | Verifying browser agent output                                   |
+| `workflow`                  | Durable execution, DurableAgent, steps, pause/resume             |
+| `investigation-mode`        | Systematic incident investigation workflow                       |
+| `json-render`               | AI chat response rendering — UIMessage parts, streaming states   |
+| `verification`              | Output verification patterns                                     |
 
 **Infrastructure / Security**
 
-| Skill | Covers |
-|---|---|
-| `vercel-firewall` | DDoS, WAF, rate limiting, bot filter |
-| `vercel-flags` | Feature flags, Flags Explorer, A/B testing |
-| `vercel-queues` | Durable event streaming, retries, delayed delivery |
-| `vercel-sandbox` | Firecracker microVMs for untrusted/AI-generated code |
-| `vercel-services` | Vercel service integrations |
-| `sign-in-with-vercel` | OAuth 2.0/OIDC via Vercel accounts |
-| `cron-jobs` | Cron job configuration and scheduling |
+| Skill                 | Covers                                               |
+|-----------------------|------------------------------------------------------|
+| `vercel-firewall`     | DDoS, WAF, rate limiting, bot filter                 |
+| `vercel-flags`        | Feature flags, Flags Explorer, A/B testing           |
+| `vercel-queues`       | Durable event streaming, retries, delayed delivery   |
+| `vercel-sandbox`      | Firecracker microVMs for untrusted/AI-generated code |
+| `vercel-services`     | Vercel service integrations                          |
+| `sign-in-with-vercel` | OAuth 2.0/OIDC via Vercel accounts                   |
+| `cron-jobs`           | Cron job configuration and scheduling                |
 
 **Auth / Payments / Email / CMS**
 
-| Skill | Covers |
-|---|---|
-| `auth` | Clerk, Descope, Auth0 with Next.js |
-| `payments` | Stripe via Vercel Marketplace |
-| `email` | Resend + React Email, domain verification |
-| `cms` | Sanity, Contentful, DatoCMS, Storyblok, Builder.io |
+| Skill      | Covers                                             |
+|------------|----------------------------------------------------|
+| `auth`     | Clerk, Descope, Auth0 with Next.js                 |
+| `payments` | Stripe via Vercel Marketplace                      |
+| `email`    | Resend + React Email, domain verification          |
+| `cms`      | Sanity, Contentful, DatoCMS, Storyblok, Builder.io |
 
 **UI / Frontend**
 
-| Skill | Covers |
-|---|---|
-| `shadcn` | shadcn/ui CLI, component installation, custom registries |
-| `react-best-practices` | React patterns and anti-patterns |
-| `swr` | Data fetching and revalidation |
-| `satori` | OG image generation at the edge |
-| `geist` | Geist font and design system |
-| `geistdocs` | Geist documentation patterns |
-| `v0-dev` | AI code generation, GitHub integration |
+| Skill                  | Covers                                                   |
+|------------------------|----------------------------------------------------------|
+| `shadcn`               | shadcn/ui CLI, component installation, custom registries |
+| `react-best-practices` | React patterns and anti-patterns                         |
+| `swr`                  | Data fetching and revalidation                           |
+| `satori`               | OG image generation at the edge                          |
+| `geist`                | Geist font and design system                             |
+| `geistdocs`            | Geist documentation patterns                             |
+| `v0-dev`               | AI code generation, GitHub integration                   |
 
 **Other**
 
@@ -327,68 +327,68 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 
 ### `cloudflare/` — Cloudflare platform (8)
 
-| Skill | Covers |
-|---|---|
-| `cloudflare` | Platform overview — Workers, Pages, KV, D1, R2 |
-| `wrangler` | CLI — deploy, dev, KV, R2, D1, secrets |
-| `workers-best-practices` | Streaming, floating promises, global state, observability |
-| `durable-objects` | Stateful coordination, RPC, SQLite, WebSockets, alarms |
-| `agents-sdk` | Stateful agents, Workflows, React hooks |
-| `building-ai-agent-on-cloudflare` | End-to-end AI agent on Workers |
-| `building-mcp-server-on-cloudflare` | Remote MCP server with OAuth |
-| `sandbox-sdk` | Cloudflare sandboxed execution |
+| Skill                               | Covers                                                    |
+|-------------------------------------|-----------------------------------------------------------|
+| `cloudflare`                        | Platform overview — Workers, Pages, KV, D1, R2            |
+| `wrangler`                          | CLI — deploy, dev, KV, R2, D1, secrets                    |
+| `workers-best-practices`            | Streaming, floating promises, global state, observability |
+| `durable-objects`                   | Stateful coordination, RPC, SQLite, WebSockets, alarms    |
+| `agents-sdk`                        | Stateful agents, Workflows, React hooks                   |
+| `building-ai-agent-on-cloudflare`   | End-to-end AI agent on Workers                            |
+| `building-mcp-server-on-cloudflare` | Remote MCP server with OAuth                              |
+| `sandbox-sdk`                       | Cloudflare sandboxed execution                            |
 
 ### `github/` — GitHub workflow (8)
 
-| Skill | Covers |
-|---|---|
-| `github` | General triage, PR/issue orientation |
+| Skill                 | Covers                                       |
+|-----------------------|----------------------------------------------|
+| `github`              | General triage, PR/issue orientation         |
 | `gh-address-comments` | Unresolved review threads, requested changes |
-| `gh-fix-ci` | Failing GitHub Actions — log inspection, fix |
-| `github-actions` | Workflow authoring, caching, matrix, secrets |
-| `yeet` | Commit → push → draft PR flow |
-| `pr-creator` | PR templates and standards |
-| `pinned-tag` | Pin Actions to commit SHAs (security) |
-| `coderabbit-review` | CodeRabbit AI review configuration |
+| `gh-fix-ci`           | Failing GitHub Actions — log inspection, fix |
+| `github-actions`      | Workflow authoring, caching, matrix, secrets |
+| `yeet`                | Commit → push → draft PR flow                |
+| `pr-creator`          | PR templates and standards                   |
+| `pinned-tag`          | Pin Actions to commit SHAs (security)        |
+| `coderabbit-review`   | CodeRabbit AI review configuration           |
 
 ### `ios/` — iOS / SwiftUI (6)
 
-| Skill | Covers |
-|---|---|
-| `ios-app-intents` | App Intents framework |
-| `ios-debugger-agent` | Xcode debugging, crash analysis |
-| `swiftui-liquid-glass` | Liquid Glass material (iOS 26) |
-| `swiftui-performance-audit` | SwiftUI rendering and performance |
-| `swiftui-ui-patterns` | Reusable SwiftUI patterns and components |
-| `swiftui-view-refactor` | View decomposition and refactoring |
+| Skill                       | Covers                                   |
+|-----------------------------|------------------------------------------|
+| `ios-app-intents`           | App Intents framework                    |
+| `ios-debugger-agent`        | Xcode debugging, crash analysis          |
+| `swiftui-liquid-glass`      | Liquid Glass material (iOS 26)           |
+| `swiftui-performance-audit` | SwiftUI rendering and performance        |
+| `swiftui-ui-patterns`       | Reusable SwiftUI patterns and components |
+| `swiftui-view-refactor`     | View decomposition and refactoring       |
 
 ### `macos/` — macOS native (11)
 
-| Skill | Covers |
-|---|---|
-| `appkit-interop` | AppKit ↔ SwiftUI bridging |
-| `build-run-debug` | Xcode build, run, debug workflow |
-| `liquid-glass` | Liquid Glass material (macOS 26) |
+| Skill                    | Covers                               |
+|--------------------------|--------------------------------------|
+| `appkit-interop`         | AppKit ↔ SwiftUI bridging            |
+| `build-run-debug`        | Xcode build, run, debug workflow     |
+| `liquid-glass`           | Liquid Glass material (macOS 26)     |
 | `packaging-notarization` | App packaging and Apple notarization |
-| `signing-entitlements` | Code signing and entitlements |
-| `swiftpm-macos` | Swift Package Manager for macOS |
-| `swiftui-patterns` | macOS-specific SwiftUI patterns |
-| `telemetry` | App telemetry and analytics |
-| `test-triage` | Test failure diagnosis |
-| `view-refactor` | macOS view decomposition |
-| `window-management` | NSWindow, multi-window, scenes |
+| `signing-entitlements`   | Code signing and entitlements        |
+| `swiftpm-macos`          | Swift Package Manager for macOS      |
+| `swiftui-patterns`       | macOS-specific SwiftUI patterns      |
+| `telemetry`              | App telemetry and analytics          |
+| `test-triage`            | Test failure diagnosis               |
+| `view-refactor`          | macOS view decomposition             |
+| `window-management`      | NSWindow, multi-window, scenes       |
 
 ### `web/` — Web quality & standards (8)
 
-| Skill | Covers |
-|---|---|
-| `accessibility` | WCAG 2.1 audit and fixes |
-| `best-practices` | Security, compatibility, code quality |
-| `core-web-vitals` | LCP, INP, CLS optimization |
-| `frontend-design` | Production-grade UI, high design quality |
-| `markdown-a11y` | Accessible documentation (GitHub guidelines) |
-| `performance` | Load time, bundle size, lazy loading |
-| `seo` | Meta tags, structured data, sitemaps |
+| Skill               | Covers                                              |
+|---------------------|-----------------------------------------------------|
+| `accessibility`     | WCAG 2.1 audit and fixes                            |
+| `best-practices`    | Security, compatibility, code quality               |
+| `core-web-vitals`   | LCP, INP, CLS optimization                          |
+| `frontend-design`   | Production-grade UI, high design quality            |
+| `markdown-a11y`     | Accessible documentation (GitHub guidelines)        |
+| `performance`       | Load time, bundle size, lazy loading                |
+| `seo`               | Meta tags, structured data, sitemaps                |
 | `web-quality-audit` | Lighthouse — performance, a11y, SEO, best practices |
 
 ### `notion/` — Notion workflows (4)
@@ -430,22 +430,22 @@ references/
 
 ## MCP Servers
 
-| Server          | Status   | Purpose                            |
-|-----------------|----------|------------------------------------|
-| Context7        | Enabled  | Up-to-date library documentation   |
-| GitHub Grep     | Enabled  | Search code across GitHub repos    |
-| Chrome DevTools | Enabled  | Browser automation and debugging   |
-| Playwright      | Enabled  | Browser testing                    |
-| JetBrains       | Enabled  | IDE integration                    |
-| GitHub          | Disabled | GitHub Copilot API                 |
-| Cloudflare API  | Disabled | Cloudflare MCP and platform APIs   |
-| Ahrefs          | Disabled | SEO analysis                       |
-| Magic Patterns  | Disabled | Design patterns                    |
-| Stitch          | Disabled | Google Stitch API                  |
-| Linear          | Disabled | Linear project management          |
-| Notion          | Disabled | Notion API                         |
-| SonarQube       | Disabled | Code quality analysis              |
-| MarkItDown      | Disabled | Document conversion                |
+| Server          | Status   | Purpose                          |
+|-----------------|----------|----------------------------------|
+| Context7        | Enabled  | Up-to-date library documentation |
+| GitHub Grep     | Enabled  | Search code across GitHub repos  |
+| Chrome DevTools | Enabled  | Browser automation and debugging |
+| Playwright      | Enabled  | Browser testing                  |
+| JetBrains       | Enabled  | IDE integration                  |
+| GitHub          | Disabled | GitHub Copilot API               |
+| Cloudflare API  | Disabled | Cloudflare MCP and platform APIs |
+| Ahrefs          | Disabled | SEO analysis                     |
+| Magic Patterns  | Disabled | Design patterns                  |
+| Stitch          | Disabled | Google Stitch API                |
+| Linear          | Disabled | Linear project management        |
+| Notion          | Disabled | Notion API                       |
+| SonarQube       | Disabled | Code quality analysis            |
+| MarkItDown      | Disabled | Document conversion              |
 
 ---
 
@@ -465,10 +465,10 @@ Read:
 
 ## Themes
 
-| Theme          | Primary    | Secondary  | Accent     |
-|----------------|------------|------------|------------|
-| Aura Dark      | `#a277ff`  | `#61ffca`  | `#ffca85`  |
-| Aura Dark Soft | `#8464c6`  | `#54c59f`  | `#c7a06f`  |
+| Theme          | Primary   | Secondary | Accent    |
+|----------------|-----------|-----------|-----------|
+| Aura Dark      | `#a277ff` | `#61ffca` | `#ffca85` |
+| Aura Dark Soft | `#8464c6` | `#54c59f` | `#c7a06f` |
 
 ---
 

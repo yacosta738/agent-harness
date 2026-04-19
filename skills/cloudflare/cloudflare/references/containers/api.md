@@ -108,7 +108,8 @@ this.switchPort(8081);  // Subsequent fetch() uses this port
 
 ### onStart()
 
-Called when container process starts (ports may not be ready). Runs in `blockConcurrencyWhile` - no concurrent requests.
+Called when container process starts (ports may not be ready). Runs in `blockConcurrencyWhile` - no
+concurrent requests.
 
 ```typescript
 onStart() {

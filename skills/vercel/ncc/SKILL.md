@@ -46,11 +46,14 @@ chainTo:
 
 # @vercel/ncc — Node.js Compiler Collection
 
-You are an expert in `@vercel/ncc`, Vercel's simple CLI for compiling a Node.js module into a single file, together with all its dependencies.
+You are an expert in `@vercel/ncc`, Vercel's simple CLI for compiling a Node.js module into a single
+file, together with all its dependencies.
 
 ## Overview
 
-ncc bundles a Node.js application and all of its `node_modules` into a single output file. This is ideal for:
+ncc bundles a Node.js application and all of its `node_modules` into a single output file. This is
+ideal for:
+
 - **Serverless functions** — deploy a single file instead of `node_modules`
 - **CLI tools** — distribute a self-contained executable
 - **Docker images** — reduce image size by eliminating `node_modules`
@@ -79,19 +82,19 @@ ncc run input.js
 
 ## CLI Options
 
-| Flag | Description |
-|---|---|
-| `-o, --out [dir]` | Output directory (default: `dist`) |
-| `-m, --minify` | Minify the output |
-| `-s, --source-map` | Generate source maps |
-| `-a, --asset-builds` | Build nested JS assets recursively |
+| Flag                   | Description                            |
+|------------------------|----------------------------------------|
+| `-o, --out [dir]`      | Output directory (default: `dist`)     |
+| `-m, --minify`         | Minify the output                      |
+| `-s, --source-map`     | Generate source maps                   |
+| `-a, --asset-builds`   | Build nested JS assets recursively     |
 | `-e, --external [mod]` | Keep module as external (don't bundle) |
-| `-w, --watch` | Watch mode — rebuild on changes |
-| `-t, --transpile-only` | Skip TypeScript type checking |
-| `--license [file]` | Output licenses to a file |
-| `-q, --quiet` | Suppress non-error output |
-| `--no-cache` | Skip the build cache |
-| `--no-asset-builds` | Skip nested JS asset builds |
+| `-w, --watch`          | Watch mode — rebuild on changes        |
+| `-t, --transpile-only` | Skip TypeScript type checking          |
+| `--license [file]`     | Output licenses to a file              |
+| `-q, --quiet`          | Suppress non-error output              |
+| `--no-cache`           | Skip the build cache                   |
+| `--no-asset-builds`    | Skip nested JS asset builds            |
 
 ## package.json Integration
 
@@ -134,11 +137,13 @@ ncc build input.js -e aws-sdk
 ncc build input.js -e aws-sdk -e sharp
 ```
 
-For serverless environments where the runtime provides certain modules (like AWS Lambda's `aws-sdk`), mark them as external.
+For serverless environments where the runtime provides certain modules (like AWS Lambda's
+`aws-sdk`), mark them as external.
 
 ## Static Assets
 
-ncc handles non-JS assets (`.json`, `.node`, binary files) by copying them to the output directory alongside the compiled JS file. They are referenced correctly at runtime.
+ncc handles non-JS assets (`.json`, `.node`, binary files) by copying them to the output directory
+alongside the compiled JS file. They are referenced correctly at runtime.
 
 ## Common Patterns
 
@@ -167,7 +172,8 @@ ncc build api/handler.ts -o .output/ -m --no-cache
 ncc build src/index.ts -o dist/ -m --license licenses.txt
 ```
 
-GitHub Actions require all dependencies bundled — ncc is the recommended bundler for custom JS/TS actions.
+GitHub Actions require all dependencies bundled — ncc is the recommended bundler for custom JS/TS
+actions.
 
 ## Key Points
 

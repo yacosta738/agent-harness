@@ -15,7 +15,8 @@ Use this when SwiftUI scenes are not enough for the required macOS window or pan
 
 - Prefer SwiftUI `Window`, `WindowGroup`, and `openWindow` first.
 - Use AppKit only for window features SwiftUI does not expose cleanly.
-- Keep file open/save panels behind a small service or helper instead of scattering panel setup throughout the view tree.
+- Keep file open/save panels behind a small service or helper instead of scattering panel setup
+  throughout the view tree.
 
 ## Example: open panel
 

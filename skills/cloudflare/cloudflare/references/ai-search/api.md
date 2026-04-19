@@ -70,11 +70,11 @@ return new Response(stream, { headers: { "Content-Type": "text/event-stream" } }
 
 ## Error Types
 
-| Error | Cause |
-|-------|-------|
-| `AutoRAGNotFoundError` | Instance doesn't exist |
-| `AutoRAGUnauthorizedError` | Invalid/missing token |
-| `AutoRAGValidationError` | Invalid parameters |
+| Error                      | Cause                  |
+|----------------------------|------------------------|
+| `AutoRAGNotFoundError`     | Instance doesn't exist |
+| `AutoRAGUnauthorizedError` | Invalid/missing token  |
+| `AutoRAGValidationError`   | Invalid parameters     |
 
 ## REST API
 

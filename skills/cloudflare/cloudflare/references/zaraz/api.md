@@ -32,7 +32,8 @@ zaraz.ecommerce('Order Completed', {
 });
 ```
 
-**Events:** `Product Viewed`, `Product Added`, `Product Removed`, `Cart Viewed`, `Checkout Started`, `Order Completed`
+**Events:** `Product Viewed`, `Product Added`, `Product Removed`, `Cart Viewed`, `Checkout Started`,
+`Order Completed`
 
 Tools auto-map to GA4, Facebook CAPI, etc.
 
@@ -61,7 +62,8 @@ zaraz.consent.addEventListener('consentChanged', () => {
 });
 ```
 
-**Flow:** Configure purposes in dashboard → Map tools to purposes → Show modal/set programmatically → Tools fire when allowed
+**Flow:** Configure purposes in dashboard → Map tools to purposes → Show modal/set
+programmatically → Tools fire when allowed
 
 ## zaraz.debug
 

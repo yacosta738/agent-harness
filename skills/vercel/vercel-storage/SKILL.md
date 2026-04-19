@@ -169,16 +169,21 @@ retrieval:
 
 # Vercel Storage
 
-You are an expert in Vercel's storage options. Know which products are active, which are sunset, and when to use each.
+You are an expert in Vercel's storage options. Know which products are active, which are sunset, and
+when to use each.
 
 ## Provider Choice for Bootstrap
 
 Choose storage provisioning paths in this order:
 
-1. **Preferred**: Vercel-managed Neon/Upstash through the Vercel Marketplace (`vercel integration add ...` or dashboard). This path auto-provisions accounts/resources and injects environment variables into the linked Vercel project.
-2. **Fallback**: Provider CLI/manual provisioning only when Marketplace is unavailable or you must use an existing external account.
+1. **Preferred**: Vercel-managed Neon/Upstash through the Vercel Marketplace (
+   `vercel integration add ...` or dashboard). This path auto-provisions accounts/resources and
+   injects environment variables into the linked Vercel project.
+2. **Fallback**: Provider CLI/manual provisioning only when Marketplace is unavailable or you must
+   use an existing external account.
 
-When using fallback/manual provisioning, you must add/sync environment variables yourself and then re-run `vercel env pull .env.local --yes` locally.
+When using fallback/manual provisioning, you must add/sync environment variables yourself and then
+re-run `vercel env pull .env.local --yes` locally.
 
 ## Active First-Party Storage
 
@@ -228,15 +233,20 @@ if (response.statusCode === 304) {
 await del('images/photo.jpg')
 ```
 
-**Private Storage** (public beta): Use `access: 'private'` for files that should not be publicly accessible. Read them back with `get()`. Do NOT use private access for files that need to be served publicly — it leads to slow delivery and high egress costs.
+**Private Storage** (public beta): Use `access: 'private'` for files that should not be publicly
+accessible. Read them back with `get()`. Do NOT use private access for files that need to be served
+publicly — it leads to slow delivery and high egress costs.
 
-**Blob Data Transfer**: Vercel Blob uses two delivery strategies — **Fast Data Transfer** (94 cities, latency-optimized) and **Blob Data Transfer** (18 hubs, volume-optimized for large assets). The system automatically routes via the optimal path.
+**Blob Data Transfer**: Vercel Blob uses two delivery strategies — **Fast Data Transfer** (94
+cities, latency-optimized) and **Blob Data Transfer** (18 hubs, volume-optimized for large assets).
+The system automatically routes via the optimal path.
 
 **Use when**: Media files, user uploads, documents, any large unstructured data.
 
 ### Vercel Edge Config — Global Configuration
 
-Ultra-low-latency key-value store for application configuration. Not a database — designed for config data that must be read instantly at the edge.
+Ultra-low-latency key-value store for application configuration. Not a database — designed for
+config data that must be read instantly at the edge.
 
 ```bash
 npm install @vercel/edge-config
@@ -255,11 +265,14 @@ const config = await getAll(['feature-new-ui', 'ab-test-variant', 'redirect-rule
 const exists = await has('maintenance-mode')
 ```
 
-**Use when**: Feature flags, A/B testing config, dynamic routing rules, maintenance mode toggles. Anything that must be read at the edge with near-zero latency.
+**Use when**: Feature flags, A/B testing config, dynamic routing rules, maintenance mode toggles.
+Anything that must be read at the edge with near-zero latency.
 
-**Do NOT use for**: User data, session state, frequently written data. Edge Config is optimized for reads, not writes.
+**Do NOT use for**: User data, session state, frequently written data. Edge Config is optimized for
+reads, not writes.
 
-**Next.js 16**: `@vercel/edge-config@^1.4.3` supports `cacheComponents` and the renamed `proxy.ts` (formerly `middleware.ts`).
+**Next.js 16**: `@vercel/edge-config@^1.4.3` supports `cacheComponents` and the renamed `proxy.ts` (
+formerly `middleware.ts`).
 
 ## Marketplace Storage (Partner-Provided)
 
@@ -269,7 +282,8 @@ These packages no longer exist as first-party Vercel products. Use the marketpla
 
 ### Neon Postgres (replaces @vercel/postgres)
 
-Serverless Postgres with branching, auto-scaling, and connection pooling. The driver is GA at `@neondatabase/serverless@^1.0.2` and requires **Node.js 19+**.
+Serverless Postgres with branching, auto-scaling, and connection pooling. The driver is GA at
+`@neondatabase/serverless@^1.0.2` and requires **Node.js 19+**.
 
 ```bash
 npm install @neondatabase/serverless
@@ -290,7 +304,9 @@ const sql = neon(process.env.DATABASE_URL!)
 const db = drizzle(sql)
 ```
 
-**Build-time safety**: The `neon()` call above throws if `DATABASE_URL` is not set. Since Next.js evaluates top-level module code at build time, this will crash `next build` when env vars aren't yet configured (e.g., first deploy before Marketplace provisioning). Use lazy initialization:
+**Build-time safety**: The `neon()` call above throws if `DATABASE_URL` is not set. Since Next.js
+evaluates top-level module code at build time, this will crash `next build` when env vars aren't yet
+configured (e.g., first deploy before Marketplace provisioning). Use lazy initialization:
 
 ```ts
 // src/db/index.ts — lazy initialization (safe for build time)
@@ -311,9 +327,14 @@ export function getDb() {
 }
 ```
 
-**WARNING: Do NOT use JavaScript `Proxy` wrappers around the DB client.** A common pattern is wrapping `db` in a `Proxy` for lazy initialization. This breaks libraries like NextAuth/Auth.js that inspect the DB adapter object (e.g., checking method existence, iterating properties). The Proxy intercepts those checks and breaks the auth request chain, causing hangs with no error. Use a plain `getDb()` function or a simple module-level lazy `let` instead.
+**WARNING: Do NOT use JavaScript `Proxy` wrappers around the DB client.** A common pattern is
+wrapping `db` in a `Proxy` for lazy initialization. This breaks libraries like NextAuth/Auth.js that
+inspect the DB adapter object (e.g., checking method existence, iterating properties). The Proxy
+intercepts those checks and breaks the auth request chain, causing hangs with no error. Use a plain
+`getDb()` function or a simple module-level lazy `let` instead.
 
-**Drizzle Kit migrations**: `drizzle-kit` and `tsx` do NOT auto-load `.env.local`. Source env vars manually or use `dotenv`:
+**Drizzle Kit migrations**: `drizzle-kit` and `tsx` do NOT auto-load `.env.local`. Source env vars
+manually or use `dotenv`:
 
 ```bash
 # Option 1: Source env vars before running
@@ -325,15 +346,18 @@ npx dotenv -e .env.local -- npx drizzle-kit push
 npx dotenv -e .env.local -- npx tsx scripts/seed.ts
 ```
 
-This applies to any Node script that needs Vercel-provisioned env vars — only Next.js auto-loads `.env.local`.
+This applies to any Node script that needs Vercel-provisioned env vars — only Next.js auto-loads
+`.env.local`.
 
 Install via Vercel Marketplace for automatic environment variable provisioning.
 
 #### Neon CLI Fallback Notes
 
-If you use Neon CLI as the fallback path, account/project setup is managed on Neon directly instead of through Vercel Marketplace automation.
+If you use Neon CLI as the fallback path, account/project setup is managed on Neon directly instead
+of through Vercel Marketplace automation.
 
-For **Vercel-managed Neon projects**, CLI operations require a **Neon API key**; do not rely on normal browser-auth login flow alone.
+For **Vercel-managed Neon projects**, CLI operations require a **Neon API key**; do not rely on
+normal browser-auth login flow alone.
 
 ### Upstash Redis (replaces @vercel/kv)
 
@@ -365,7 +389,8 @@ Install via Vercel Marketplace for automatic environment variable provisioning.
 
 ### Supabase (Marketplace Native)
 
-Full Postgres database with built-in auth, realtime subscriptions, and storage. Native Vercel Marketplace integration.
+Full Postgres database with built-in auth, realtime subscriptions, and storage. Native Vercel
+Marketplace integration.
 
 ```bash
 npm install @supabase/supabase-js @supabase/ssr
@@ -464,23 +489,24 @@ Install via Vercel Marketplace: `vercel integration add turso`
 
 ## Storage Decision Matrix
 
-| Need | Use | Package |
-|------|-----|---------|
-| File uploads, media, documents | Vercel Blob | `@vercel/blob` |
-| Feature flags, A/B config | Edge Config | `@vercel/edge-config` |
-| Relational data, SQL queries | Neon Postgres | `@neondatabase/serverless` |
-| Key-value cache, sessions, rate limiting | Upstash Redis | `@upstash/redis` |
-| Postgres + auth + realtime + storage | Supabase | `@supabase/supabase-js` |
-| Type-safe ORM with migrations | Prisma | `@prisma/client` |
-| Document database, flexible schemas | MongoDB Atlas | `mongodb` |
-| Reactive backend with real-time sync | Convex | `convex` |
-| Edge-native SQLite with replicas | Turso | `@libsql/client` |
-| Full-text search | Neon Postgres (pg_trgm) or Elasticsearch (Marketplace) | varies |
-| Vector embeddings | Neon Postgres (pgvector) or Pinecone (Marketplace) | varies |
+| Need                                     | Use                                                    | Package                    |
+|------------------------------------------|--------------------------------------------------------|----------------------------|
+| File uploads, media, documents           | Vercel Blob                                            | `@vercel/blob`             |
+| Feature flags, A/B config                | Edge Config                                            | `@vercel/edge-config`      |
+| Relational data, SQL queries             | Neon Postgres                                          | `@neondatabase/serverless` |
+| Key-value cache, sessions, rate limiting | Upstash Redis                                          | `@upstash/redis`           |
+| Postgres + auth + realtime + storage     | Supabase                                               | `@supabase/supabase-js`    |
+| Type-safe ORM with migrations            | Prisma                                                 | `@prisma/client`           |
+| Document database, flexible schemas      | MongoDB Atlas                                          | `mongodb`                  |
+| Reactive backend with real-time sync     | Convex                                                 | `convex`                   |
+| Edge-native SQLite with replicas         | Turso                                                  | `@libsql/client`           |
+| Full-text search                         | Neon Postgres (pg_trgm) or Elasticsearch (Marketplace) | varies                     |
+| Vector embeddings                        | Neon Postgres (pgvector) or Pinecone (Marketplace)     | varies                     |
 
 ## Migration Guide
 
 ### From @vercel/postgres → Neon
+
 ```diff
 - import { sql } from '@vercel/postgres'
 + import { neon } from '@neondatabase/serverless'
@@ -488,9 +514,11 @@ Install via Vercel Marketplace: `vercel integration add turso`
 
 ```
 
-**Drop-in replacement**: For minimal migration effort, use `@neondatabase/vercel-postgres-compat` which provides API-compatible wrappers for `@vercel/postgres` imports.
+**Drop-in replacement**: For minimal migration effort, use `@neondatabase/vercel-postgres-compat`
+which provides API-compatible wrappers for `@vercel/postgres` imports.
 
 ### From @vercel/kv → Upstash Redis
+
 ```diff
 - import { kv } from '@vercel/kv'
 - await kv.set('key', 'value')
@@ -514,13 +542,16 @@ vercel integration add upstash
 vercel integration list
 ```
 
-Browse additional storage options at the [Vercel Marketplace](https://vercel.com/marketplace). Installing via the CLI or dashboard (`https://vercel.com/dashboard/{team}/integrations`) automatically provisions accounts, creates databases, and sets environment variables.
+Browse additional storage options at the [Vercel Marketplace](https://vercel.com/marketplace).
+Installing via the CLI or dashboard (`https://vercel.com/dashboard/{team}/integrations`)
+automatically provisions accounts, creates databases, and sets environment variables.
 
 ## Official Documentation
 
 - [Vercel Storage](https://vercel.com/docs/storage)
 - [Vercel Blob](https://vercel.com/docs/vercel-blob)
 - [Edge Config](https://vercel.com/docs/edge-config)
-- [Vercel Marketplace](https://vercel.com/marketplace) — Neon, Upstash, and other storage integrations
+- [Vercel Marketplace](https://vercel.com/marketplace) — Neon, Upstash, and other storage
+  integrations
 - [Integrations](https://vercel.com/docs/integrations)
 - [GitHub: Vercel Storage](https://github.com/vercel/storage)

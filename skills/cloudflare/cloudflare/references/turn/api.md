@@ -34,6 +34,7 @@ Content-Type: application/json
 ```
 
 **Response includes**:
+
 - `uid`: Key identifier
 - `key`: The actual secret key (only returned on creation—save immediately)
 - `name`: Human-readable name
@@ -71,11 +72,12 @@ Content-Type: application/json
 
 ### Credential Constraints
 
-| Parameter | Min | Max | Default | Notes |
-|-----------|-----|-----|---------|-------|
-| ttl | 1 | 172800 (48hrs) | varies | API rejects values >172800 |
+| Parameter | Min | Max            | Default | Notes                      |
+|-----------|-----|----------------|---------|----------------------------|
+| ttl       | 1   | 172800 (48hrs) | varies  | API rejects values >172800 |
 
-**CRITICAL**: Maximum TTL is 48 hours (172800 seconds). API will reject requests exceeding this limit.
+**CRITICAL**: Maximum TTL is 48 hours (172800 seconds). API will reject requests exceeding this
+limit.
 
 ### Response Schema
 
@@ -97,7 +99,8 @@ Content-Type: application/json
 }
 ```
 
-**Port 53 Warning**: Filter port 53 URLs for browser clients—blocked by Chrome/Firefox. See [gotchas.md](./gotchas.md#using-port-53-in-browsers).
+**Port 53 Warning**: Filter port 53 URLs for browser clients—blocked by Chrome/Firefox.
+See [gotchas.md](./gotchas.md#using-port-53-in-browsers).
 
 ## Revoke Credentials
 

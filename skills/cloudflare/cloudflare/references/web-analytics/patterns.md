@@ -32,11 +32,11 @@ await task(); await new Promise(r => setTimeout(r, 0)); await task2();
 // Move to Web Worker for heavy computation
 ```
 
-| Metric | Good | Poor |
-|--------|------|------|
-| LCP | ≤2.5s | >4s |
-| INP | ≤200ms | >500ms |
-| CLS | ≤0.1 | >0.25 |
+| Metric | Good   | Poor   |
+|--------|--------|--------|
+| LCP    | ≤2.5s  | >4s    |
+| INP    | ≤200ms | >500ms |
+| CLS    | ≤0.1   | >0.25  |
 
 ## GDPR Consent
 

@@ -1,6 +1,8 @@
 {
   "name": "Save Conversation to Wiki",
-  "skills": ["knowledge-capture"],
+  "skills": [
+    "knowledge-capture"
+  ],
   "query": "Save this conversation about deploying our application to production to the team wiki",
   "context": "Preceding conversation contains discussion about deployment process, including steps, gotchas, and best practices",
   "expected_behavior": [

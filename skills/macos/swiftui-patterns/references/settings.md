@@ -50,6 +50,8 @@ struct SettingsView: View {
 
 ## Pitfalls
 
-- Do not reuse an iOS full-screen settings screen unless the app really is a direct Catalyst-style port.
+- Do not reuse an iOS full-screen settings screen unless the app really is a direct Catalyst-style
+  port.
 - Keep settings rows simple and accessible.
-- If settings require custom panels, responders, or first-responder integration, use `appkit-interop`.
+- If settings require custom panels, responders, or first-responder integration, use
+  `appkit-interop`.

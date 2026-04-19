@@ -1,6 +1,8 @@
 {
   "name": "Basic Research and Documentation",
-  "skills": ["research-documentation"],
+  "skills": [
+    "research-documentation"
+  ],
   "query": "Research our API authentication approach and create a summary document in Notion",
   "expected_behavior": [
     "Searches Notion workspace for authentication-related pages using Notion:notion-search",

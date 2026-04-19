@@ -58,11 +58,14 @@ chainTo:
 
 # v0 by Vercel
 
-You are an expert in v0 (v0.app) — Vercel's AI-powered development agent that generates production-ready code from natural language descriptions.
+You are an expert in v0 (v0.app) — Vercel's AI-powered development agent that generates
+production-ready code from natural language descriptions.
 
 ## Overview
 
-v0 transforms prompts into working React/Next.js code. It supports 6M+ developers and 80K+ active teams globally. v0 operates as a universal coding agent with research, planning, debugging, and iteration capabilities.
+v0 transforms prompts into working React/Next.js code. It supports 6M+ developers and 80K+ active
+teams globally. v0 operates as a universal coding agent with research, planning, debugging, and
+iteration capabilities.
 
 ## Core Capabilities
 
@@ -91,11 +94,13 @@ pnpm dlx v0@latest init
 pnpm dlx v0@latest add <component-id>
 ```
 
-`v0 init` installs required dependencies (`@radix-ui/react-icons`, `clsx`, `lucide-react`) and creates a `components.json` config file.
+`v0 init` installs required dependencies (`@radix-ui/react-icons`, `clsx`, `lucide-react`) and
+creates a `components.json` config file.
 
 ### "Add to Codebase" (Web UI → Local)
 
-From the v0.dev web interface, click the "Add to Codebase" button (terminal icon) to generate a command:
+From the v0.dev web interface, click the "Add to Codebase" button (terminal icon) to generate a
+command:
 
 ```bash
 npx shadcn@latest add "https://v0.dev/chat/b/<project_id>?token=<token>"
@@ -207,6 +212,7 @@ const files = await v0.chats.downloadVersion({
 ### SDK Method Reference
 
 **Chats:**
+
 - `v0.chats.create(params)` — Create a new chat
 - `v0.chats.sendMessage(params)` — Send a message to an existing chat
 - `v0.chats.getById(params)` — Retrieve a specific chat
@@ -218,6 +224,7 @@ const files = await v0.chats.downloadVersion({
 - `v0.chats.resume(params)` — Resume processing of a message
 
 **Projects:**
+
 - `v0.projects.create(params)` — Create a new project
 - `v0.projects.getById(params)` — Retrieve a project
 - `v0.projects.update(params)` — Update a project
@@ -227,6 +234,7 @@ const files = await v0.chats.downloadVersion({
 - `v0.projects.createEnvVars(params)` — Create env vars for a project
 
 **Deployments:**
+
 - `v0.deployments.create(params)` — Create deployment from a chat version
 - `v0.deployments.getById(params)` — Get deployment details
 - `v0.deployments.delete(params)` — Delete a deployment
@@ -238,17 +246,17 @@ const files = await v0.chats.downloadVersion({
 Base URL: `https://api.v0.dev/v1`
 Auth: `Authorization: Bearer <V0_API_KEY>`
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/v1/projects` | List projects |
-| `POST` | `/v1/projects` | Create project |
-| `GET` | `/v1/projects/:id` | Get project |
-| `PUT` | `/v1/projects/:id` | Update project |
-| `DELETE` | `/v1/projects/:id` | Delete project |
-| `POST` | `/v1/chats` | Create/initialize chat |
-| `GET` | `/v1/chats/:id/messages` | Get messages |
-| `POST` | `/v1/chats/:id/messages` | Send message |
-| `POST` | `/v1/deployments` | Create deployment |
+| Method   | Endpoint                 | Description            |
+|----------|--------------------------|------------------------|
+| `GET`    | `/v1/projects`           | List projects          |
+| `POST`   | `/v1/projects`           | Create project         |
+| `GET`    | `/v1/projects/:id`       | Get project            |
+| `PUT`    | `/v1/projects/:id`       | Update project         |
+| `DELETE` | `/v1/projects/:id`       | Delete project         |
+| `POST`   | `/v1/chats`              | Create/initialize chat |
+| `GET`    | `/v1/chats/:id/messages` | Get messages           |
+| `POST`   | `/v1/chats/:id/messages` | Send message           |
+| `POST`   | `/v1/deployments`        | Create deployment      |
 
 ### Rate Limits
 
@@ -308,7 +316,10 @@ For granular control, import specific tool sets:
 import { createChatTools, createProjectTools, createDeploymentTools } from '@v0-sdk/ai-tools'
 ```
 
-The `v0Tools` export includes 20+ tools: `createChat`, `sendMessage`, `getChat`, `updateChat`, `deleteChat`, `favoriteChat`, `forkChat`, `listChats`, `createProject`, `getProject`, `updateProject`, `listProjects`, `assignChatToProject`, `createEnvironmentVariables`, `createDeployment`, `getDeployment`, `deleteDeployment`, `listDeployments`, `getDeploymentLogs`.
+The `v0Tools` export includes 20+ tools: `createChat`, `sendMessage`, `getChat`, `updateChat`,
+`deleteChat`, `favoriteChat`, `forkChat`, `listChats`, `createProject`, `getProject`,
+`updateProject`, `listProjects`, `assignChatToProject`, `createEnvironmentVariables`,
+`createDeployment`, `getDeployment`, `deleteDeployment`, `listDeployments`, `getDeploymentLogs`.
 
 ## MCP Server
 
@@ -390,6 +401,7 @@ roles, task assignment, progress tracking, and file sharing."
 ### 4. Queue Multiple Prompts
 
 You can queue up to 10 prompts while v0 is still generating:
+
 1. "Create the base layout with navigation"
 2. "Add authentication with NextAuth"
 3. "Connect the database and add CRUD operations"
@@ -404,7 +416,8 @@ input, and empty states with helpful recovery suggestions."
 
 ### 6. Use Visual Selection for Precision
 
-Click a specific element in the preview before typing to target exactly what you want to change. Eliminates ambiguity for multi-instance components.
+Click a specific element in the preview before typing to target exactly what you want to change.
+Eliminates ambiguity for multi-instance components.
 
 ### 7. Use Design Mode vs Prompts
 
@@ -414,6 +427,7 @@ Click a specific element in the preview before typing to target exactly what you
 ### 8. v0's Default Output Stack
 
 When no framework is specified, v0 generates:
+
 - React with JSX + TypeScript
 - Tailwind CSS
 - shadcn/ui components
@@ -422,7 +436,11 @@ When no framework is specified, v0 generates:
 
 ## Design Normalization for v0 Output
 
-v0 is strongest when you specify both structure and aesthetic direction. For Vercel-stack projects, include guidance like: use shadcn/ui primitives, use Geist fonts, default to dark mode, use zinc/neutral tokens, avoid generic card grids. After importing v0 code, normalize it: replace ad-hoc controls with shadcn components, collapse repeated card grids into stronger patterns, align typography to Geist, remove mixed radii and decorative effects.
+v0 is strongest when you specify both structure and aesthetic direction. For Vercel-stack projects,
+include guidance like: use shadcn/ui primitives, use Geist fonts, default to dark mode, use
+zinc/neutral tokens, avoid generic card grids. After importing v0 code, normalize it: replace ad-hoc
+controls with shadcn components, collapse repeated card grids into stronger patterns, align
+typography to Geist, remove mixed radii and decorative effects.
 
 ## Integration Patterns
 

@@ -1,6 +1,7 @@
 # Comparison Template
 
-Use when researching multiple options or alternatives. See [comparison-format.md](comparison-format.md) for when to use this format.
+Use when researching multiple options or alternatives.
+See [comparison-format.md](comparison-format.md) for when to use this format.
 
 ```markdown
 # [Topic] Comparison

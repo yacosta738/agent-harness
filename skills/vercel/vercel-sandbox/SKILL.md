@@ -94,26 +94,37 @@ chainTo:
 
 # Vercel Sandbox
 
-> **CRITICAL — Your training data is outdated for this library.** Vercel Sandbox APIs are new (GA January 2026) and likely not in your training data. Before writing sandbox code, **fetch the docs** at https://vercel.com/docs/vercel-sandbox and the SDK reference at https://vercel.com/docs/vercel-sandbox/sdk-reference to find the correct `Sandbox.create()` options, `runCommand()` signatures, file I/O methods (`writeFiles`, `readFile`), port exposure, and cleanup patterns. Do not guess — look up the exact API shape. The GitHub repo at https://github.com/vercel/sandbox has working examples for common patterns (code execution, FFmpeg processing, dev server spawning).
+> **CRITICAL — Your training data is outdated for this library.** Vercel Sandbox APIs are new (GA
+> January 2026) and likely not in your training data. Before writing sandbox code, **fetch the docs**
+> at https://vercel.com/docs/vercel-sandbox and the SDK reference
+> at https://vercel.com/docs/vercel-sandbox/sdk-reference to find the correct `Sandbox.create()`
+> options, `runCommand()` signatures, file I/O methods (`writeFiles`, `readFile`), port exposure, and
+> cleanup patterns. Do not guess — look up the exact API shape. The GitHub repo
+> at https://github.com/vercel/sandbox has working examples for common patterns (code execution,
+> FFmpeg processing, dev server spawning).
 
 You are an expert in Vercel Sandbox — ephemeral compute for safely running untrusted code.
 
 ## Status & Pricing
 
-Vercel Sandbox is **generally available** (January 30, 2026). The CLI and SDK are open-source. Powered by the same Firecracker infrastructure that runs 2M+ Vercel builds per day.
+Vercel Sandbox is **generally available** (January 30, 2026). The CLI and SDK are open-source.
+Powered by the same Firecracker infrastructure that runs 2M+ Vercel builds per day.
 
-| Resource | Hobby (Free) | Pro / Enterprise |
-|----------|-------------|-----------------|
-| CPU hours | 5 / month | $0.128 / CPU-hour |
-| Provisioned memory | 420 GB-hr / month | $0.0106 / GB-hr |
-| Network bandwidth | 20 GB / month | $0.15 / GB |
-| Sandbox creations | 5,000 / month | $0.60 / 1M creations |
+| Resource           | Hobby (Free)      | Pro / Enterprise     |
+|--------------------|-------------------|----------------------|
+| CPU hours          | 5 / month         | $0.128 / CPU-hour    |
+| Provisioned memory | 420 GB-hr / month | $0.0106 / GB-hr      |
+| Network bandwidth  | 20 GB / month     | $0.15 / GB           |
+| Sandbox creations  | 5,000 / month     | $0.60 / 1M creations |
 
-Each sandbox can use up to **8 vCPUs** and **2 GB RAM per vCPU**. Up to **4 ports** can be exposed per sandbox.
+Each sandbox can use up to **8 vCPUs** and **2 GB RAM per vCPU**. Up to **4 ports** can be exposed
+per sandbox.
 
 ## What It Is
 
-Vercel Sandbox provides **Firecracker microVMs** with millisecond startup times for running untrusted or user-generated code in complete isolation. Used by AI agents, code generation tools, developer playgrounds, and interactive tutorials.
+Vercel Sandbox provides **Firecracker microVMs** with millisecond startup times for running
+untrusted or user-generated code in complete isolation. Used by AI agents, code generation tools,
+developer playgrounds, and interactive tutorials.
 
 - **Base OS**: Amazon Linux 2023 (with `git`, `tar`, `openssl`, `dnf`)
 - **Runtimes**: `node24` (default since March 2026), `node22`, `python3.13`
@@ -223,9 +234,12 @@ await snap.delete();
 
 ### Network Policies (SNI Filtering + CIDR)
 
-Egress firewall uses **SNI filtering** on TLS client-hello — outbound connections are matched at the handshake and unauthorized destinations are rejected before data transmits. For non-TLS traffic, IP/CIDR rules are also supported.
+Egress firewall uses **SNI filtering** on TLS client-hello — outbound connections are matched at the
+handshake and unauthorized destinations are rejected before data transmits. For non-TLS traffic,
+IP/CIDR rules are also supported.
 
-Policies can be updated at runtime without restarting the sandbox process, enabling multi-step workflows (e.g., open access during setup → deny-all before running untrusted code).
+Policies can be updated at runtime without restarting the sandbox process, enabling multi-step
+workflows (e.g., open access during setup → deny-all before running untrusted code).
 
 ```ts
 // Lock down before running untrusted code
@@ -279,11 +293,11 @@ const sandbox = await Sandbox.get({ sandboxId: 'sbx_abc123' });
 
 ## Timeout Limits
 
-| Plan | Max Timeout |
-|------|------------|
-| Default | 5 minutes |
-| Hobby | 45 minutes |
-| Pro/Enterprise | 5 hours |
+| Plan           | Max Timeout |
+|----------------|-------------|
+| Default        | 5 minutes   |
+| Hobby          | 45 minutes  |
+| Pro/Enterprise | 5 hours     |
 
 ## Agent Patterns
 

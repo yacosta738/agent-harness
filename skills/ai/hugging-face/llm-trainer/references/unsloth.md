@@ -1,6 +1,8 @@
 # Unsloth: Fast Fine-Tuning with Memory Optimization
 
-**Unsloth** is a fine-tuning library that provides ~2x faster training and ~60% less VRAM usage for LLM training. It's particularly useful when working with limited GPU memory or when speed is critical.
+**Unsloth** is a fine-tuning library that provides ~2x faster training and ~60% less VRAM usage for
+LLM training. It's particularly useful when working with limited GPU memory or when speed is
+critical.
 
 - **GitHub**: [unslothai/unsloth](https://github.com/unslothai/unsloth)
 - **Docs**: [unsloth.ai/docs](https://unsloth.ai/docs)
@@ -9,20 +11,22 @@
 
 Use Unsloth if instructed to do so, or one of the following use cases applies:
 
-| Use Case | Recommendation |
-|----------|----------------|
-| Standard text LLM fine-tuning | TRL is sufficient, but Unsloth is faster |
-| Limited GPU memory | **Use Unsloth** - 60% less VRAM |
-| Need maximum speed | **Use Unsloth** - 2x faster |
-| Large models (>13B) | **Use Unsloth** - memory efficiency critical |
+| Use Case                      | Recommendation                               |
+|-------------------------------|----------------------------------------------|
+| Standard text LLM fine-tuning | TRL is sufficient, but Unsloth is faster     |
+| Limited GPU memory            | **Use Unsloth** - 60% less VRAM              |
+| Need maximum speed            | **Use Unsloth** - 2x faster                  |
+| Large models (>13B)           | **Use Unsloth** - memory efficiency critical |
 
 ## Supported Models
 
 Unsloth supports many popular models including:
+
 - **Text LLMs**: Llama 3/3.1/3.2/3.3, Qwen 2.5/3, Mistral, Phi-4, Gemma 2/3, LFM2/2.5
 - **Vision LLMs**: Qwen3-VL, Gemma 3, Llama 3.2 Vision, Pixtral
 
 Use Unsloth's pre-optimized model variants when available:
+
 ```python
 # Unsloth-optimized models load faster and use less memory
 model_id = "unsloth/LFM2.5-1.2B-Instruct"      # 4-bit quantized
@@ -94,6 +98,7 @@ trainer.train()
 For LFM2.5 inference, use these recommended generation parameters:
 
 **Instruct models:**
+
 ```python
 temperature = 0.1
 top_k = 50
@@ -102,6 +107,7 @@ repetition_penalty = 1.05
 ```
 
 **Thinking models:**
+
 ```python
 temperature = 0.05
 top_k = 50
@@ -171,18 +177,19 @@ trainer.train()
 
 ## Key Differences from Standard TRL
 
-| Aspect | Standard TRL | Unsloth |
-|--------|--------------|---------|
-| Model loading | `AutoModelForCausalLM.from_pretrained()` | `FastLanguageModel.from_pretrained()` |
-| LoRA setup | `PeftModel` / `LoraConfig` | `FastLanguageModel.get_peft_model()` |
-| VLM loading | Limited support | `FastVisionModel.from_pretrained()` |
-| VLM collator | Manual | `UnslothVisionDataCollator` |
-| Memory usage | Standard | ~60% less |
-| Training speed | Standard | ~2x faster |
+| Aspect         | Standard TRL                             | Unsloth                               |
+|----------------|------------------------------------------|---------------------------------------|
+| Model loading  | `AutoModelForCausalLM.from_pretrained()` | `FastLanguageModel.from_pretrained()` |
+| LoRA setup     | `PeftModel` / `LoraConfig`               | `FastLanguageModel.get_peft_model()`  |
+| VLM loading    | Limited support                          | `FastVisionModel.from_pretrained()`   |
+| VLM collator   | Manual                                   | `UnslothVisionDataCollator`           |
+| Memory usage   | Standard                                 | ~60% less                             |
+| Training speed | Standard                                 | ~2x faster                            |
 
 ## VLM Dataset Format
 
 VLM datasets should have:
+
 - `images`: List of PIL images or image paths
 - `messages`: Conversation format with image references
 
@@ -255,6 +262,7 @@ model.save_pretrained_gguf("./gguf", tokenizer, quantization_method="q4_k_m")
 For Qwen3-VL models, use these recommended settings:
 
 **Instruct models:**
+
 ```python
 temperature = 0.7
 top_p = 0.8
@@ -262,6 +270,7 @@ presence_penalty = 1.5
 ```
 
 **Thinking models:**
+
 ```python
 temperature = 1.0
 top_p = 0.95
@@ -272,14 +281,15 @@ presence_penalty = 0.0
 
 | Model | Min VRAM (Unsloth 4-bit) | Recommended GPU |
 |-------|--------------------------|-----------------|
-| 2B-4B | 8GB | T4, L4 |
-| 7B-8B | 16GB | A10G, L4x4 |
-| 13B | 24GB | A10G-large |
-| 30B+ | 48GB+ | A100 |
+| 2B-4B | 8GB                      | T4, L4          |
+| 7B-8B | 16GB                     | A10G, L4x4      |
+| 13B   | 24GB                     | A10G-large      |
+| 30B+  | 48GB+                    | A100            |
 
 ## Example: Full VLM Training Script
 
 See `scripts/unsloth_sft_example.py` for a complete production-ready example that includes:
+
 - Unsloth VLM setup
 - Streaming dataset support
 - Trackio monitoring
@@ -287,6 +297,7 @@ See `scripts/unsloth_sft_example.py` for a complete production-ready example tha
 - CLI arguments
 
 Run locally:
+
 ```bash
 uv run scripts/unsloth_sft_example.py \
     --dataset trl-lib/Capybara \
@@ -295,6 +306,7 @@ uv run scripts/unsloth_sft_example.py \
 ```
 
 Run on HF Jobs:
+
 ```python
 hf_jobs("uv", {
     "script": "<script content>",

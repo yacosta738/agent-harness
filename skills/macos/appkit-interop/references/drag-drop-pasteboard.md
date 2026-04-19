@@ -2,7 +2,8 @@
 
 ## Intent
 
-Use this when desktop drag/drop or pasteboard behavior exceeds what plain SwiftUI modifiers cover comfortably.
+Use this when desktop drag/drop or pasteboard behavior exceeds what plain SwiftUI modifiers cover
+comfortably.
 
 ## Good fits
 
@@ -14,7 +15,8 @@ Use this when desktop drag/drop or pasteboard behavior exceeds what plain SwiftU
 ## Core patterns
 
 - Start with SwiftUI drag/drop APIs when they already cover the use case.
-- Drop to AppKit when you need `NSPasteboard`, custom pasteboard types, or older AppKit delegate flows.
+- Drop to AppKit when you need `NSPasteboard`, custom pasteboard types, or older AppKit delegate
+  flows.
 - Keep data conversion at the boundary instead of leaking AppKit types through the whole feature.
 
 ## Pitfalls

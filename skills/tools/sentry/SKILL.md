@@ -3,27 +3,32 @@ name: "sentry"
 description: "Use when the user asks to inspect Sentry issues or events, summarize recent production errors, or pull basic Sentry health data via the Sentry API; perform read-only queries with the bundled script and require `SENTRY_AUTH_TOKEN`."
 ---
 
-
 # Sentry (Read-only Observability)
 
 ## Quick start
 
-- If not already authenticated, ask the user to provide a valid `SENTRY_AUTH_TOKEN` (read-only scopes such as `project:read`, `event:read`) or to log in and create one before running commands.
+- If not already authenticated, ask the user to provide a valid `SENTRY_AUTH_TOKEN` (read-only
+  scopes such as `project:read`, `event:read`) or to log in and create one before running commands.
 - Set `SENTRY_AUTH_TOKEN` as an env var.
 - Optional defaults: `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_BASE_URL`.
-- Defaults: org/project `{your-org}`/`{your-project}`, time range `24h`, environment `prod`, limit 20 (max 50).
+- Defaults: org/project `{your-org}`/`{your-project}`, time range `24h`, environment `prod`, limit
+  20 (max 50).
 - Always call the Sentry API (no heuristics, no caching).
 
 If the token is missing, give the user these steps:
+
 1. Create a Sentry auth token: https://sentry.io/settings/account/api/auth-tokens/
 2. Create a token with read-only scopes such as `project:read`, `event:read`, and `org:read`.
 3. Set `SENTRY_AUTH_TOKEN` as an environment variable in their system.
 4. Offer to guide them through setting the environment variable for their OS/shell if needed.
-- Never ask the user to paste the full token in chat. Ask them to set it locally and confirm when ready.
+
+- Never ask the user to paste the full token in chat. Ask them to set it locally and confirm when
+  ready.
 
 ## Core tasks (use bundled script)
 
-Use `scripts/sentry_api.py` for deterministic API calls. It handles pagination and retries once on transient errors.
+Use `scripts/sentry_api.py` for deterministic API calls. It handles pagination and retries once on
+transient errors.
 
 ## Bundled script path
 
@@ -33,7 +38,8 @@ Use the bundled script from this repo copy of the skill:
 export SENTRY_API="editors/agents/opencode/skills/sentry/scripts/sentry_api.py"
 ```
 
-If the working directory differs, resolve the same `skills/sentry/scripts/sentry_api.py` path relative to this installed skill directory.
+If the working directory differs, resolve the same `skills/sentry/scripts/sentry_api.py` path
+relative to this installed skill directory.
 
 ### 1) List issues (ordered by most recent)
 
@@ -113,7 +119,8 @@ Always use these endpoints (GET only):
 
 ## Output formatting rules
 
-- Issue list: show title, short_id, status, first_seen, last_seen, count, environments, top_tags; order by most recent.
+- Issue list: show title, short_id, status, first_seen, last_seen, count, environments, top_tags;
+  order by most recent.
 - Event detail: include culprit, timestamp, environment, release, url.
 - If no results, state explicitly.
 - Redact PII in output (emails, IPs). Do not print raw stack traces.

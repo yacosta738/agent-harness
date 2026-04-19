@@ -2,7 +2,8 @@
 
 ## Intent
 
-Provide a lightweight, customizable multi-column layout for iPad/macOS without relying on `NavigationSplitView`.
+Provide a lightweight, customizable multi-column layout for iPad/macOS without relying on
+`NavigationSplitView`.
 
 ## Custom split column pattern (manual HStack)
 
@@ -49,7 +50,9 @@ struct AppView: View {
 
 ## Alternative: NavigationSplitView
 
-`NavigationSplitView` can handle sidebar + detail + supplementary columns for you, but is harder to customize in cases like:\n- a dedicated notification column independent of selection,\n- custom sizing, or\n- different toolbar behaviors per column.
+`NavigationSplitView` can handle sidebar + detail + supplementary columns for you, but is harder to
+customize in cases like:\n- a dedicated notification column independent of selection,\n- custom
+sizing, or\n- different toolbar behaviors per column.
 
 ```swift
 @MainActor

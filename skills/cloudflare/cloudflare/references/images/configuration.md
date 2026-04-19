@@ -155,6 +155,7 @@ https://imagedelivery.net/{account_hash}/{image_id}/thumbnail
 Generate at: Dashboard → My Profile → API Tokens
 
 Required permissions:
+
 - Account → Cloudflare Images → Edit
 
 ```bash

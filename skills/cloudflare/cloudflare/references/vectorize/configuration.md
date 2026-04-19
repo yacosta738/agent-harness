@@ -34,11 +34,11 @@ wrangler vectorize create-metadata-index my-index --property-name=category --typ
 wrangler vectorize create-metadata-index my-index --property-name=price --type=number
 ```
 
-| Type | Use For |
-|------|---------|
-| `string` | Categories, tags (first 64 bytes indexed) |
-| `number` | Prices, timestamps |
-| `boolean` | Flags |
+| Type      | Use For                                   |
+|-----------|-------------------------------------------|
+| `string`  | Categories, tags (first 64 bytes indexed) |
+| `number`  | Prices, timestamps                        |
+| `boolean` | Flags                                     |
 
 ## CLI Commands
 
@@ -70,6 +70,7 @@ wrangler vectorize delete-metadata-index <index-name> --property-name=field
 ## Cardinality Best Practice
 
 Bucket high-cardinality data:
+
 ```typescript
 // ❌ Millisecond timestamps
 metadata: { timestamp: Date.now() }
