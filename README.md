@@ -218,7 +218,7 @@ commands/
 
 136 skills organized in 14 groups. Each group maps to an ecosystem or practice area.
 
-### `workflow/` — Development methodology (9)
+### `workflow/` — Development methodology (10)
 
 Process skills that apply to any project or stack.
 
@@ -233,6 +233,7 @@ Process skills that apply to any project or stack.
 | `dispatching-parallel-agents` | Running independent tasks concurrently                  |
 | `receiving-code-review`     | Processing PR review feedback                             |
 | `requesting-code-review`    | Preparing code for review                                 |
+| `git-worktrees`             | Parallel branch work with safe Git worktree conventions   |
 
 ### `sdd/` — Spec-Driven Development (9 + shared)
 
