@@ -29,10 +29,10 @@ You MUST create a task for each of these items and complete them in order:
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
 3. **Propose 2-3 approaches** — with trade-offs and your recommendation
 4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md` and commit
+5. **Write design doc** — if OpenSpec/SDD is active, save to `openspec/changes/{change-name}/design.md`; otherwise save to `docs/plans/YYYY-MM-DD-<topic>-design.md`; commit only when your workflow/policies require it
 6. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope
 7. **User reviews written spec** — ask user to review the spec file before proceeding
-8. **Transition to implementation** — invoke `writing-plans` skill to create implementation plan
+8. **Transition to implementation** — if OpenSpec/SDD is active, continue with `sdd-tasks`; otherwise invoke `writing-plans` to create implementation plan
 
 ## The Process
 
@@ -79,8 +79,9 @@ You MUST create a task for each of these items and complete them in order:
 
 **Documentation:**
 
-- Write the validated design (spec) to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Commit the design document to git
+- If OpenSpec/SDD is active, write the validated design to `openspec/changes/{change-name}/design.md`
+- Otherwise, write it to `docs/plans/YYYY-MM-DD-<topic>-design.md`
+- Commit only when your workflow/policies require it
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
@@ -96,15 +97,16 @@ Fix any issues inline before asking the user to review.
 **User Review Gate:**
 After the spec review loop passes, ask the user to review the written spec before proceeding:
 
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make
+> "Spec written to `<path>`. Please review it and let me know if you want to make
 > any changes before we start writing out the implementation plan."
 
 Wait for the user's response. Only proceed once the user approves.
 
 **Implementation:**
 
-- Invoke the `writing-plans` skill to create a detailed implementation plan
-- Do NOT invoke any other skill. `writing-plans` is the next step.
+- If OpenSpec/SDD is active, continue with `sdd-tasks`
+- Otherwise, invoke the `writing-plans` skill to create a detailed implementation plan
+- In non-SDD mode, do NOT invoke any other skill. `writing-plans` is the next step.
 
 ## Key Principles
 
