@@ -365,8 +365,8 @@
       }
     }
   },
-"provider": {
-  "ollama": {
+  "provider": {
+    "ollama": {
       "models": {
         "kimi-k2.5:cloud": {
           "_launch": true,
@@ -401,7 +401,7 @@
     },
     "rook": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "OmniRoute",
+      "name": "rook",
       "options": {
         "baseURL": "http://127.0.0.1:20128/v1",
         "apiKey": "sk-e0978fe78bf93881-e0ef27-4eacec29"
@@ -424,11 +424,45 @@
         },
         "kimi/kimi-k2.5": {
           "name": "kimi/kimi-k2.5"
-        }, 
-        "gg-brain":{
+        },
+        "gg-brain": {
           "name": "gg-brain"
         },
-        "writer":{
+        "writer": {
+          "name": "writer"
+        }
+      }
+    },
+    "rook-remote": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "rook-remote",
+      "options": {
+        "baseURL": "http://corvus.taile8c6a.ts.net:20128/v1",
+        "apiKey": "sk-e0978fe78bf93881-e0ef27-4eacec29"
+      },
+      "models": {
+        "cx/gpt-5.4": {
+          "name": "cx/gpt-5.4"
+        },
+        "ollamacloud/qwen3.5:397b": {
+          "name": "ollamacloud/qwen3.5:397b"
+        },
+        "qw/qwen3-coder-flash": {
+          "name": "qw/qwen3-coder-flash"
+        },
+        "codex": {
+          "name": "codex"
+        },
+        "free-stack": {
+          "name": "free-stack"
+        },
+        "kimi/kimi-k2.5": {
+          "name": "kimi/kimi-k2.5"
+        },
+        "gg-brain": {
+          "name": "gg-brain"
+        },
+        "writer": {
           "name": "writer"
         }
       }
