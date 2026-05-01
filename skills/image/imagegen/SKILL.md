@@ -26,13 +26,15 @@ isometric technical blueprint**. Think StrikeOps mission control, not startup Sa
 ## Design System
 
 ### Philosophy
+
 Monochromatic darkness with surgical precision. Everything looks like it was built
 inside a classified government terminal or a cyberpunk ops center. Minimal color —
 when color appears, it's intentional and restrained.
 
 ### Color Palette
+
 | Role | Value | Usage |
-|---|---|---|
+| --- | --- | --- |
 | Background | `#000000` / `#080808` | Pure or near-pure black canvas — always |
 | Primary text | `#FFFFFF` | All main labels, titles, data |
 | Secondary text | `#888888` / `#666666` | Metadata, timestamps, subtitles |
@@ -46,6 +48,7 @@ when color appears, it's intentional and restrained.
 (dim red/green) and must be desaturated — never vibrant or neon.
 
 ### Typography
+
 - **Primary font**: Monospace only — IBM Plex Mono, JetBrains Mono, or Courier New
 - **Uppercase dominance**: Section headers, labels, column headers — ALL CAPS with
   wide letter-spacing
@@ -54,6 +57,7 @@ when color appears, it's intentional and restrained.
 - **Watermark**: Small monospace text at bottom corners — name, role, site — understated
 
 ### Layout & Grid
+
 - **Dense, information-rich**: Dashboards and tables where every pixel is utilized
 - **Panel-based composition**: Content in clearly bordered rectangular panels —
   like a multi-monitor ops center
@@ -62,6 +66,7 @@ when color appears, it's intentional and restrained.
 - **Scanline overlay**: Optional very faint horizontal lines — adds CRT texture
 
 ### Visual Elements
+
 - **Data tables**: Monospaced, full-width rows. Column headers ALL CAPS.
 - **Terminal/log panels**: `>` prompt, timestamps in `YYYY-MM-DD HH:MM UTC`, status codes
 - **Wireframe 3D diagrams**: Isometric layered architecture — white outlines only,
@@ -71,6 +76,7 @@ when color appears, it's intentional and restrained.
 - **Sphere / globe wireframe**: White wireframe geodesic — elegant data motif
 
 ### Decorative Patterns
+
 - **Background text**: Faint repeated technical strings (hashes, coordinates,
   commit IDs) at 5–10% opacity
 - **Corner frames**: Thin bracket marks on panel corners
@@ -80,8 +86,9 @@ when color appears, it's intentional and restrained.
 ---
 
 ## Aspect Ratios by Use Case
+
 | Content Type | Ratio | Resolution |
-|---|---|---|
+| --- | --- | --- |
 | Blog post header | 16:9 | 1920×1080 |
 | LinkedIn post | 1.91:1 | 1200×628 |
 | LinkedIn square | 1:1 | 1200×1200 |
@@ -95,7 +102,9 @@ when color appears, it's intentional and restrained.
 ## Workflow
 
 ### Step 1 — Clarify (if missing info)
+
 Ask only what's needed:
+
 - **Topic / concept**: what should the image communicate?
 - **Use case**: blog header, LinkedIn post, YouTube thumbnail, poster?
 - **Key data or sections**: specific metrics, steps, or diagrams to include?
@@ -105,7 +114,7 @@ If the user's request already answers these, skip directly to Step 2.
 ### Step 2 — Pick the Layout Pattern
 
 | Pattern | When to Use |
-|---|---|
+| --- | --- |
 | **Mission Dashboard** | Multi-metric overview, KPIs, system/agent status |
 | **Ops Table** | List of items with status, priority, timestamps |
 | **Process Monitor** | Single operation in progress — transfer, build, deploy |
@@ -115,7 +124,7 @@ If the user's request already answers these, skip directly to Step 2.
 
 ### Step 3 — Build the Prompt
 
-```
+```text
 PROMPT TEMPLATE:
 
 Create a [LAYOUT PATTERN] style technical infographic for [USE CASE] about [TOPIC].
@@ -168,7 +177,7 @@ a different layout pattern if the content suits multiple approaches.
 ## Composition Patterns by Topic
 
 | Topic Category | Layout Pattern | Key Visual Elements |
-|---|---|---|
+| --- | --- | --- |
 | CI/CD, automation | Process Monitor + Terminal Log | Pipeline steps as table rows, status badges, log feed |
 | APIs, integrations | Ops Table | Endpoint list, method/status/response-time columns |
 | Databases, storage | Dashboard | Storage KPIs, query log panel, transfer progress |
@@ -185,9 +194,10 @@ a different layout pattern if the content suits multiple approaches.
 ## Examples
 
 ### Example 1 — Blog Header (Semantic Release)
+>
 > User: "Generate a blog header about Semantic Release and Conventional Commits"
 
-```
+```text
 Create a Mission Dashboard style technical infographic for a blog post header
 about Semantic Release and Conventional Commits automation.
 
@@ -221,9 +231,10 @@ AVOID: Color, gradients, neon, rounded fonts, SaaS aesthetics.
 ```
 
 ### Example 2 — LinkedIn Post (Bloom Filters)
+>
 > User: "LinkedIn image about Bloom Filters"
 
-```
+```text
 Create an Architecture Poster style technical infographic for a LinkedIn post
 about Bloom Filters — probabilistic data structures.
 

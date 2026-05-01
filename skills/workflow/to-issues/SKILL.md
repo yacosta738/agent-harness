@@ -1,17 +1,23 @@
 ---
 name: to-issues
-description: Use when converting a plan, spec, PRD, design, or brainstorming output into implementation issues for Linear, GitHub Issues, or a local tracker.
+description: Use when converting a plan, spec, PRD, design, or brainstorming
+  output into implementation issues for Linear, GitHub Issues, or a local
+  tracker.
 ---
 
 # To Issues
 
-Convert a plan into independently grabbable issues using **vertical slices**. This skill is tracker-agnostic: publish to Linear, GitHub Issues, or a local markdown tracker depending on the project.
+Convert a plan into independently grabbable issues using **vertical slices**.
+This skill is tracker-agnostic: publish to Linear, GitHub Issues, or a local
+markdown tracker depending on the project.
 
 ## Core Rule
 
 Break work into **tracer-bullet vertical slices**, not horizontal layers.
 
-A good issue delivers a narrow but complete path through the system and is independently demoable or verifiable. Prefer many thin issues over a few thick ones.
+A good issue delivers a narrow but complete path through the system and is
+independently demoable or verifiable. Prefer many thin issues over a few thick
+ones.
 
 ## When to Use
 
@@ -20,9 +26,12 @@ Use when the user asks to:
 - Convert a plan/spec/PRD into issues or tickets.
 - Create implementation tasks for Linear or GitHub.
 - Break work into agent-ready slices.
-- Prepare backlog items from a temporary plan in `tmp/plans/` or durable SDD artifacts in `openspec/changes/`.
+- Prepare backlog items from a temporary plan in `tmp/plans/` or durable SDD
+  artifacts in `openspec/changes/`.
 
-Do NOT use this instead of SDD. If the source material is vague, missing requirements, or contains unresolved architecture decisions, stop and recommend `brainstorming` for temporary work or SDD for durable product/architecture work.
+Do NOT use this instead of SDD. If the source material is vague, missing
+requirements, or contains unresolved architecture decisions, stop and recommend
+`brainstorming` for temporary work or SDD for durable product/architecture work.
 
 ## Process
 
@@ -35,7 +44,9 @@ Read the source material fully:
 - `openspec/changes/**` SDD artifacts.
 - Existing Linear/GitHub issue if the user provides a URL or identifier.
 
-If codebase context affects issue titles or scope, explore enough to use the project's domain language. Check `CONTEXT.md`, `CONTEXT-MAP.md`, and relevant ADRs when present.
+If codebase context affects issue titles or scope, explore enough to use the
+project's domain language. Check `CONTEXT.md`, `CONTEXT-MAP.md`, and relevant
+ADRs when present.
 
 ### 2. Select Tracker
 
@@ -45,87 +56,103 @@ Determine where issues should be created:
 - **GitHub Issues**: use GitHub/`gh` workflows.
 - **Local tracker**: write markdown files under a user-approved path.
 
-If the tracker is unclear, ask exactly one question: "Which tracker should these issues go to: Linear, GitHub Issues, or local markdown?"
+If the tracker is unclear, ask exactly one question: "Which tracker should these
+issues go to: Linear, GitHub Issues, or local markdown?"
 
-### 3. Draft Vertical Slices
+### 3. Slice Vertically
 
-For each slice, classify:
+For each feature or requirement, identify the thinnest vertical slice that:
 
-- **Type**: `AFK` or `HITL`
-  - `AFK`: agent can implement without human judgment after issue creation.
-  - `HITL`: requires human decision, design review, credentials, manual QA, or product judgment.
-- **Blocked by**: real dependencies only.
-- **Behavior covered**: the user-visible or system-visible capability.
+- Touches all relevant layers (UI, API, data, tests).
+- Is independently demoable or verifiable.
+- Can be implemented and merged without blocking other slices.
 
-Vertical slice rules:
+**Good vertical slice:**
 
-- Each slice cuts through all required layers for one narrow behavior.
-- A completed slice is demoable or verifiable by itself.
-- Avoid "create DB schema", "add API", "build UI" as separate issues unless each is independently useful.
-- Prefer thin issues that can be done and verified independently.
+> Add login form that validates email format and shows error message.
 
-### 4. Review Breakdown With User
+**Bad horizontal slice:**
 
-Present a numbered list before publishing anything:
+> Build authentication service (no UI, no verification path).
 
-```md
-1. [AFK] Title
-   Behavior: ...
-   Blocked by: None / #...
-   Acceptance: ...
-```
+### 4. Draft Issue Bodies
 
-Ask the user to confirm:
-
-- Is granularity too coarse or too fine?
-- Are dependencies correct?
-- Should any slices be merged or split?
-- Are `AFK`/`HITL` classifications correct?
-
-Do not publish until the user approves the breakdown.
-
-### 5. Publish Issues
-
-Create issues in dependency order (blockers first). Use the tracker-specific tools and preserve existing project conventions for labels/statuses.
-
-Issue body template:
+For each slice, draft:
 
 ```md
-## Parent
+## Goal
 
-<Parent issue/spec/plan reference, if any>
+[One sentence: what this issue delivers]
 
-## What to build
+## Acceptance Criteria
 
-<Concise vertical-slice behavior. Describe end-to-end behavior, not layer-by-layer implementation.>
+- [ ] [Observable behavior 1]
+- [ ] [Observable behavior 2]
+- [ ] [Observable behavior 3]
 
-## Type
+## Scope
 
-AFK | HITL
+**In scope:**
 
-## Acceptance criteria
+- [What this issue includes]
 
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+**Out of scope:**
 
-## Blocked by
+- [What this issue explicitly does NOT include]
 
-None - can start immediately
+## Verification
+
+[How to verify this issue is complete]
 ```
 
-Rules:
+### 5. Present for Approval
 
-- Use domain language, not internal jargon, unless internal terms are the domain language.
-- Avoid stale file paths unless the issue is explicitly for a known file-level refactor.
-- Do not close or modify parent issues unless the user explicitly asks.
-- Do not invent labels/statuses. If the project has triage labels, use them; otherwise ask before creating new ones.
+Show the user:
 
-## Output
+```markdown
+## Proposed Issues
 
-After publishing, summarize:
+### Issue 1: [Title]
 
-- Issues created with URLs/IDs.
-- Dependency order.
-- Which issues are `AFK` vs `HITL`.
-- Any unresolved assumptions or follow-up decisions.
+[Draft body]
+
+### Issue 2: [Title]
+
+[Draft body]
+
+...
+
+**Tracker**: [Linear | GitHub Issues | Local markdown]
+
+Ready to create?
+```
+
+Wait for approval before creating.
+
+### 6. Create Issues
+
+Once approved:
+
+- **Linear**: use Linear tools/skill.
+- **GitHub Issues**: use GitHub/`gh` workflows.
+- **Local markdown**: write to the user-approved tracker path.
+
+Confirm issues were created and provide IDs/URLs.
+
+## Anti-Patterns
+
+**Don't:**
+
+- Create horizontal layer issues (backend-only, frontend-only).
+- Create issues without acceptance criteria.
+- Create issues without verification steps.
+- File issues without user approval.
+- Skip codebase exploration when domain language matters.
+
+**Do:**
+
+- Slice vertically through all layers.
+- Make each issue independently demoable.
+- Use project domain language in titles and bodies.
+- Wait for approval before creating.
+- Provide issue IDs/URLs after creation.

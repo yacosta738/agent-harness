@@ -107,7 +107,7 @@ export async function cleanupSession(session: Session) {
 afterEach(() => cleanupSession(session));
 ```
 
-### Gate Function
+### Gate Function: Test-Only Methods
 
 ```
 BEFORE adding any method to production class:
@@ -159,7 +159,7 @@ test('detects duplicate server', () => {
 });
 ```
 
-### Gate Function
+### Gate Function: Mocking Decisions
 
 ```
 BEFORE mocking any method:
@@ -222,7 +222,7 @@ const mockResponse = {
 };
 ```
 
-### Gate Function
+### Gate Function: Mock Response Completeness
 
 ```
 BEFORE creating mock responses:

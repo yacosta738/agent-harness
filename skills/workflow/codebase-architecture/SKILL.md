@@ -1,94 +1,199 @@
 ---
 name: codebase-architecture
-description: Use when the user asks to improve architecture, refactor complex areas, reduce technical debt, consolidate shallow modules, reduce tight coupling, design cleaner interfaces, or make the codebase more testable.
+description: Use when the user asks to improve architecture, refactor complex
+  areas, reduce technical debt, consolidate shallow modules, reduce tight
+  coupling, design cleaner interfaces, or make the codebase more testable.
 ---
 
 # Codebase Architecture Audit & Improvement
 
-Use this skill to identify architectural friction and propose **deepening opportunities** — refactoring paths that turn shallow modules into deep, high-leverage modules. 
+Use this skill to identify architectural friction and propose **deepening
+opportunities** — refactoring paths that turn shallow modules into deep,
+high-leverage modules.
 
 The primary goals are testability, isolation, and AI-navigability.
 
 ## 1. Glossary (Strict Vocabulary)
 
-Use these terms exactly. Consistent language is crucial to avoid ambiguity. Do not substitute with generic terms like "component," "service," or "API".
+Use these terms exactly. Consistent language is crucial to avoid ambiguity. Do
+not substitute with generic terms like "component," "service," or "API".
 
-- **Module**: Anything with an interface and an implementation (function, class, package, slice).
-- **Interface**: Everything a caller must know to use the module correctly (types, invariants, ordering constraints, error modes, configuration). Not just the type signature.
+- **Module**: Anything with an interface and an implementation (function, class,
+  package, slice).
+- **Interface**: Everything a caller must know to use the module correctly
+  (types, invariants, ordering constraints, error modes, configuration). Not
+  just the type signature.
 - **Implementation**: The code inside a module.
-- **Depth**: Leverage at the interface. A module is **deep** when a large amount of behavior sits behind a small interface. A module is **shallow** when the interface is nearly as complex as the implementation.
-- **Seam**: A place where you can alter behavior without editing in that place. The location where an interface lives.
-- **Adapter**: A concrete thing that satisfies an interface at a seam (describes a role, not substance).
+- **Depth**: Leverage at the interface. A module is **deep** when a large amount
+  of behavior sits behind a small interface. A module is **shallow** when the
+  interface is nearly as complex as the implementation.
+- **Seam**: A place where you can alter behavior without editing in that place.
+  The location where an interface lives.
+- **Adapter**: A concrete thing that satisfies an interface at a seam (describes
+  a role, not substance).
 - **Leverage**: What callers get from depth.
-- **Locality**: What maintainers get from depth (change, bugs, and knowledge concentrate in one place).
+- **Locality**: What maintainers get from depth (change, bugs, and knowledge
+  concentrate in one place).
 
 ### Core Principles
-- **The Deletion Test**: Imagine deleting the module. If complexity vanishes, it was a shallow pass-through. If complexity reappears across N callers, it was earning its keep (deep).
-- **The interface is the test surface**. If a test has to change when internal implementation changes, it is testing past the interface.
-- **One adapter = hypothetical seam. Two adapters = real seam.** Don't introduce an interface/port unless at least two adapters (e.g., production + test) are justified.
 
-## 2. Process: Explore & Audit
+- **The Deletion Test**: Imagine deleting the module. If complexity vanishes, it
+  was a shallow pass-through.
+- **The Seam Test**: Can you swap the implementation without touching callers? If
+  not, the interface leaks.
+- **The Test Harness Test**: Can you test the module in isolation? If not, it's
+  coupled.
 
-1. **Read Domain Language**: Check for `CONTEXT.md`, `CONTEXT-MAP.md`, or the project's domain glossary. Read any ADRs (`docs/adr/`) in the affected area. You MUST use the project's domain language to name concepts.
-2. **Explore organic friction**: Look for:
-   - Where understanding one concept requires bouncing between many small modules.
-   - Where modules are **shallow**.
-   - Where pure functions were extracted just for testing, but real bugs hide in how they are called (poor **locality**).
-   - Tightly coupled modules that leak across their seams.
-   - Code that is hard to test through its current interface.
-3. **Apply the deletion test** to suspected shallow modules.
+## 2. Audit Workflow
 
-## 3. Present Candidates
+### Step 1: Map the Modules
 
-Present a numbered list of deepening opportunities to the user. For each candidate, show:
+Identify the major modules in the area of concern. For each module, note:
 
-- **Files**: Which files/modules are involved.
-- **Problem**: Why the current architecture causes friction (use exact terminology).
-- **Solution**: Plain English description of what would change.
-- **Benefits**: Explained in terms of locality, leverage, and testability.
+- Its interface (what callers see)
+- Its implementation (what it does internally)
+- Its dependencies (what it calls)
 
-*Note on ADRs*: If a candidate contradicts an existing ADR, flag it clearly ("contradicts ADR-XXX but worth reopening because..."). 
+### Step 2: Measure Depth
 
-**Do NOT propose interfaces yet.** Ask the user: *"Which of these would you like to explore?"*
+For each module, ask:
 
-## 4. Deepening Strategy (Once a candidate is chosen)
+- **Interface complexity**: How much must a caller know?
+- **Implementation complexity**: How much does the module do?
+- **Depth ratio**: Implementation complexity / Interface complexity
 
-When assessing how to deepen the chosen module, classify its dependencies to determine the testing strategy:
+High-depth modules are good. Low-depth modules are candidates for deepening.
 
-1. **In-process**: Pure computation/memory. Merge modules, test directly. No adapter needed.
-2. **Local-substitutable**: DBs/filesystems with local test stand-ins (e.g., in-memory SQLite). Deepen and test with the stand-in.
-3. **Remote but owned (Ports & Adapters)**: Internal microservices/APIs. Define a **port** (interface) at the **seam**. The deep module owns logic; transport is injected as an **adapter** (HTTP for prod, in-memory for tests).
-4. **True external**: 3rd-party services (Stripe, Twilio). Inject as a port; tests provide a mock adapter.
+### Step 3: Identify Shallow Modules
 
-## 5. Interface Design (Design It Twice)
+Look for:
 
-When the user wants to explore alternative interfaces for the chosen module, use parallel exploration:
+- **Pass-through modules**: Functions that just call another function with minor
+  transformation.
+- **Configuration wrappers**: Modules that exist only to hold config.
+- **Getter/setter classes**: Classes that are just bags of fields.
+- **Orchestrators**: Modules that coordinate other modules but add no logic.
 
-1. **Frame the problem**: Show constraints and dependencies briefly.
-2. **Generate options**: Propose 2-3 **radically different** interface designs. Minor variations do not count.
-   - Option A: Minimize interface (1-3 entry points, max leverage).
-   - Option B: Maximize flexibility (support many use cases).
-   - Option C: Optimize for the default/most common caller.
-   - Option D (if useful): Move the seam completely elsewhere.
-3. **Present and Compare**: Compare them by **depth**, **locality**, **seam placement**, ease of correct use, and ease of misuse.
-4. **Recommend**: Give a strong, opinionated recommendation of which design is best and why.
-5. **Do not implement during interface design**. This phase is about shape, trade-offs, and caller experience only.
+### Step 4: Propose Deepening
 
-## 6. Refactor Execution Planning
+For each shallow module, propose one of:
 
-When the user approves an architecture/refactor direction, plan execution as tiny safe commits:
+- **Inline it**: If it adds no value, delete it and move logic to caller.
+- **Absorb it**: Merge it into a deeper neighbor module.
+- **Deepen it**: Add more behavior behind the same interface.
+- **Reframe it**: Change the interface to hide more implementation.
 
-- Each commit must leave the codebase working.
-- Separate behavior-preserving refactors from behavior changes.
-- Move code before changing behavior when possible.
-- Load/use `test-driven-development` for behavior changes or regression tests.
-- Prefer reversible steps: rename → extract → move → deepen → delete obsolete tests.
-- Delete shallow-module unit tests only after equivalent behavior is covered through the deepened module's interface.
+## 3. Deepening Patterns
 
-## 7. Execution & Side Effects
+### Pattern: Inline Pass-Through
 
-Once the design is approved, transition to implementation:
+**Before:**
 
-- If **OpenSpec/SDD** is active, convert the design into a proposal/spec using the SDD workflow (`sdd-propose`, `sdd-spec`, `sdd-tasks`).
-- If you had to invent a new domain term, update `CONTEXT.md` (ask user first).
-- If the decision is hard-to-reverse, surprising, and a real trade-off, offer to write an ADR.
+```typescript
+function getUser(id: string) {
+  return userRepository.findById(id);
+}
+```
+
+**After:** Delete `getUser`, call `userRepository.findById` directly.
+
+### Pattern: Absorb Configuration
+
+**Before:**
+
+```typescript
+class EmailConfig {
+  host: string;
+  port: number;
+}
+
+class EmailSender {
+  constructor(private config: EmailConfig) {}
+  send(to: string, body: string) { /* ... */ }
+}
+```
+
+**After:**
+
+```typescript
+class EmailSender {
+  constructor(private host: string, private port: number) {}
+  send(to: string, body: string) { /* ... */ }
+}
+```
+
+### Pattern: Deepen by Adding Behavior
+
+**Before:**
+
+```typescript
+function validateEmail(email: string): boolean {
+  return /\S+@\S+\.\S+/.test(email);
+}
+```
+
+**After:**
+
+```typescript
+function validateEmail(email: string): { valid: boolean; reason?: string } {
+  if (!email) return { valid: false, reason: "Email is required" };
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    return { valid: false, reason: "Invalid email format" };
+  }
+  return { valid: true };
+}
+```
+
+### Pattern: Reframe Interface to Hide Implementation
+
+**Before:**
+
+```typescript
+interface UserRepository {
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  findByUsername(username: string): Promise<User | null>;
+}
+```
+
+**After:**
+
+```typescript
+interface UserRepository {
+  find(criteria: { id?: string; email?: string; username?: string }):
+    Promise<User | null>;
+}
+```
+
+## 4. Output Format
+
+Present findings as:
+
+```markdown
+## Architecture Audit: [Area Name]
+
+### Shallow Modules Identified
+
+1. **[Module Name]**
+   - Interface: [brief description]
+   - Implementation: [brief description]
+   - Depth: Low (interface ~= implementation)
+   - Recommendation: [Inline | Absorb | Deepen | Reframe]
+
+### Deepening Opportunities
+
+1. **[Opportunity Name]**
+   - Current state: [description]
+   - Proposed state: [description]
+   - Benefit: [testability | isolation | leverage]
+   - Effort: [Low | Medium | High]
+```
+
+## 5. When NOT to Deepen
+
+- **Stable, well-understood pass-throughs**: If a module is a stable adapter
+  between two systems, leave it.
+- **Framework requirements**: If the framework demands a certain structure, don't
+  fight it.
+- **Performance-critical paths**: If inlining would hurt performance, keep the
+  module.

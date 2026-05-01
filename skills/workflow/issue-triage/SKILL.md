@@ -1,21 +1,27 @@
 ---
 name: issue-triage
-description: Use when reviewing, classifying, updating, or preparing issues in Linear, GitHub Issues, or a local tracker.
+description: Use when reviewing, classifying, updating, or preparing issues in
+  Linear, GitHub Issues, or a local tracker.
 ---
 
 # Issue Triage
 
-Move issues through a clear triage state machine so humans and agents know what needs attention, what is blocked, and what is ready to implement.
+Move issues through a clear triage state machine so humans and agents know what
+needs attention, what is blocked, and what is ready to implement.
 
-This skill is tracker-agnostic. Use Linear, GitHub Issues, or local markdown depending on the project.
+This skill is tracker-agnostic. Use Linear, GitHub Issues, or local markdown
+depending on the project.
 
 ## Core Rule
 
-Do not turn vague issues into agent work. A `ready-for-agent` issue must be specific, reproducible/verifiable, scoped, and free of unresolved product or architecture decisions.
+Do not turn vague issues into agent work. A `ready-for-agent` issue must be
+specific, reproducible/verifiable, scoped, and free of unresolved product or
+architecture decisions.
 
 ## Canonical Roles
 
-Use these canonical roles internally, even if the tracker uses different labels/statuses.
+Use these canonical roles internally, even if the tracker uses different
+labels/statuses.
 
 ### Category
 
@@ -27,18 +33,22 @@ Use these canonical roles internally, even if the tracker uses different labels/
 - `needs-triage` — maintainer review needed.
 - `needs-info` — waiting on reporter or stakeholder.
 - `ready-for-agent` — specified enough for an AFK agent.
-- `ready-for-human` — requires human judgment, credentials, manual QA, or product decision.
+- `ready-for-human` — requires human judgment, credentials, manual QA, or
+  product decision.
 - `wontfix` — intentionally not actioned.
 
-Every triaged issue should have exactly one category and one state. If labels/statuses conflict, stop and ask before changing anything.
+Every triaged issue should have exactly one category and one state. If
+labels/statuses conflict, stop and ask before changing anything.
 
 ## Tracker Selection
 
-- **Linear**: use Linear tools/skill; consider `linear-pm` for multi-issue workflows.
+- **Linear**: use Linear tools/skill; consider `linear-pm` for multi-issue
+  workflows.
 - **GitHub Issues**: use GitHub/`gh` workflows.
 - **Local**: read/write markdown in the user-approved tracker path.
 
-Do not invent labels/statuses. Map canonical roles to existing project conventions; ask before creating new labels/statuses.
+Do not invent labels/statuses. Map canonical roles to existing project
+conventions; ask before creating new labels/statuses.
 
 ## Show What Needs Attention
 
@@ -51,103 +61,89 @@ When asked what needs triage, present buckets:
 
 Show counts and a one-line summary per issue. Let the maintainer pick.
 
-## Triage a Specific Issue
+## Triage Decision Tree
 
-### 1. Gather Context
+For each issue:
 
-Read the full issue:
+### 1. Is it clear what is being reported?
 
-- body
-- comments
-- labels/status
-- author/reporter
-- dates
-- linked issues/PRs
-- previous triage notes
+- **No** → `needs-info`. Ask reporter for reproduction steps, expected vs actual
+  behavior, or clarification.
+- **Yes** → continue.
 
-If relevant, explore the codebase for domain language and likely affected behavior. Check `CONTEXT.md`, `CONTEXT-MAP.md`, and ADRs when present.
+### 2. Is it a bug or enhancement?
 
-### 2. Recommend Category + State
+- **Bug** → category: `bug`.
+- **Enhancement** → category: `enhancement`.
 
-Present:
+### 3. Is it actionable without human judgment?
 
-- Recommended category.
-- Recommended state.
-- Reasoning.
-- What evidence is missing, if any.
+Ask:
 
-Wait for maintainer direction before applying changes unless the user explicitly asked for an automatic batch triage.
+- Does it require a product decision? (priority, scope, UX direction)
+- Does it require credentials or manual QA?
+- Does it require architectural design or exploration?
 
-### 3. Reproduce Bugs Before Grilling
+- **Yes to any** → state: `ready-for-human`.
+- **No** → continue.
 
-For `bug` issues, attempt reproduction before asking many questions:
+### 4. Is it scoped and verifiable?
 
-- Follow reporter steps.
-- Run relevant tests/commands if safe.
-- Trace likely code paths if needed.
-- Report: reproduced, not reproduced, or insufficient detail.
+- **Bug**: Can an agent reproduce it and verify the fix?
+- **Enhancement**: Is the acceptance criteria clear enough for an agent to
+  implement and test?
 
-If you need to debug/fix, switch to `systematic-debugging`. Triage does not fix bugs.
+- **No** → state: `needs-info` or `ready-for-human` (depending on who can
+  clarify).
+- **Yes** → state: `ready-for-agent`.
 
-### 4. Clarify Only What Blocks Triage
+## Preparing an Issue for Agent Work
 
-If information is missing, ask precise questions. Avoid vague "please provide more info" comments.
+Before marking `ready-for-agent`, ensure:
 
-`needs-info` comment template:
+### For Bugs
 
-```md
-## Triage notes
+- **Reproduction steps** are explicit.
+- **Expected vs actual behavior** is clear.
+- **Environment** is specified (if relevant).
+- **Verification criteria** is stated (how to confirm it's fixed).
 
-**What we established:**
+### For Enhancements
 
-- ...
+- **Acceptance criteria** are explicit.
+- **Scope** is bounded (what is in, what is out).
+- **Test strategy** is clear (how to verify it works).
 
-**What we still need:**
+If any of these are missing, move to `needs-info` or `ready-for-human`.
 
-- Specific question 1
-- Specific question 2
+## Output Format
+
+When triaging, present:
+
+```markdown
+## Triage Summary
+
+### Issue: [Title]
+
+- **Current state**: [current labels/status]
+- **Proposed state**: [new labels/status]
+- **Reason**: [why this state]
+- **Next action**: [who does what]
 ```
 
-### 5. Prepare Agent Briefs
+## Anti-Patterns
 
-For `ready-for-agent`, add a durable brief:
+**Don't:**
 
-```md
-## Agent brief
+- Mark vague issues as `ready-for-agent`.
+- Invent new labels/statuses without asking.
+- Triage issues that require product decisions as `ready-for-agent`.
+- Skip verification criteria for bugs.
+- Skip acceptance criteria for enhancements.
 
-**Goal:** ...
+**Do:**
 
-**Current behavior:** ...
-
-**Expected behavior:** ...
-
-**Acceptance criteria:**
-
-- [ ] ...
-
-**Verification:**
-
-- Command/manual check: ...
-
-**Constraints:**
-
-- ...
-```
-
-If implementation requires behavior changes, mention that the implementer must load/use `test-driven-development`.
-
-## State Outcomes
-
-- `ready-for-agent`: issue has clear goal, acceptance criteria, verification, and no unresolved decisions.
-- `ready-for-human`: issue is clear but requires judgment, credentials, manual validation, or product decision.
-- `needs-info`: concrete missing information blocks progress.
-- `wontfix`: explain why respectfully. If the reason is durable, record it in project docs or a local out-of-scope note if the project uses one.
-
-## Output
-
-After triage, summarize:
-
-- Changed labels/statuses.
-- Comments/briefs posted.
-- Remaining blockers.
-- Recommended next action.
+- Ask for clarification when needed.
+- Map canonical roles to existing project conventions.
+- Present triage decisions for maintainer approval.
+- Ensure `ready-for-agent` issues are truly actionable.

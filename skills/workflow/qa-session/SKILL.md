@@ -1,21 +1,28 @@
 ---
 name: qa-session
-description: Use when the user wants to report bugs conversationally, run a manual QA session, capture product issues, or turn observed problems into tracker issues.
+description: Use when the user wants to report bugs conversationally, run a
+  manual QA session, capture product issues, or turn observed problems into
+  tracker issues.
 ---
 
 # QA Session
 
-Run an interactive QA session where the user reports problems and you convert them into clear, durable issues. This skill captures bugs and product gaps; it does not fix them.
+Run an interactive QA session where the user reports problems and you convert
+them into clear, durable issues. This skill captures bugs and product gaps; it
+does not fix them.
 
 ## Core Rule
 
-Write issues from the user's perspective, focused on observable behavior. Do not cite implementation details unless the issue is explicitly internal/developer-facing.
+Write issues from the user's perspective, focused on observable behavior. Do not
+cite implementation details unless the issue is explicitly internal/developer-
+facing.
 
 ## For Each Reported Issue
 
 ### 1. Listen and Lightly Clarify
 
-Let the user describe the problem naturally. Ask at most 2-3 short questions, focused on:
+Let the user describe the problem naturally. Ask at most 2-3 short questions,
+focused on:
 
 - What happened?
 - What did you expect instead?
@@ -33,7 +40,8 @@ If codebase context helps write a better issue, explore lightly to understand:
 - relevant product area
 - whether one report is actually multiple independent issues
 
-Do NOT debug or implement a fix. If the user wants a fix, switch to `systematic-debugging` after filing or confirming the issue.
+Do NOT debug or implement a fix. If the user wants a fix, switch to
+`systematic-debugging` after filing or confirming the issue.
 
 ### 3. Decide Single Issue vs Breakdown
 
@@ -44,7 +52,8 @@ Break into multiple issues when:
 - Different areas or user flows are affected.
 - One issue would become too broad to verify.
 
-Keep as one issue when the symptoms describe one behavior failure with one clear verification path.
+Keep as one issue when the symptoms describe one behavior failure with one clear
+verification path.
 
 ### 4. Choose Tracker
 
@@ -54,7 +63,8 @@ Use the tracker requested by the user or project:
 - GitHub Issues
 - Local markdown
 
-If unclear, ask exactly one question: "Where should I file these QA issues: Linear, GitHub Issues, or local markdown?"
+If unclear, ask exactly one question: "Where should I file these QA issues:
+Linear, GitHub Issues, or local markdown?"
 
 ### 5. Draft Issue Body
 
@@ -63,61 +73,88 @@ Use this template:
 ```md
 ## What happened
 
-<Actual observable behavior.>
+[Observable behavior from user's perspective]
 
 ## What I expected
 
-<Expected behavior from the user's perspective.>
+[Expected behavior from user's perspective]
 
 ## Steps to reproduce
 
-1. ...
-2. ...
-3. ...
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
 
-## Impact
+## Environment (if relevant)
 
-<Who is affected and how severe it is.>
+- Browser/OS/Device: [if applicable]
+- Version: [if applicable]
 
 ## Additional context
 
-<Relevant observations, environment, screenshots/logs if provided. Avoid stale file paths.>
+[Any other relevant details]
 ```
 
-For breakdown issues, add:
+### 6. Present Draft for Approval
 
-```md
-## Parent
+Show the user:
 
-<Parent issue/session reference>
+```markdown
+## Proposed Issue: [Title]
 
-## Blocked by
+[Draft body]
 
-None - can start immediately
+**Tracker**: [Linear | GitHub Issues | Local markdown]
+**Labels/State**: [if applicable]
+
+Ready to file?
 ```
 
-## Rules for Durable QA Issues
+Wait for approval before filing.
 
-- No stale file paths or line numbers unless the issue is developer-internal.
-- Use domain language, not implementation jargon.
-- Reproduction steps are mandatory for bugs unless impossible; if missing, mark as `needs-info`.
-- Keep each issue readable in 30 seconds.
-- Prefer behavior and acceptance criteria over proposed fixes.
-- If behavior changes are required, implementation should load/use `test-driven-development`.
+### 7. File the Issue
 
-## Session Loop
+Once approved:
 
-After filing or drafting each issue, summarize its title and tracker URL/ID, then ask:
+- **Linear**: use Linear tools/skill.
+- **GitHub Issues**: use GitHub/`gh` workflows.
+- **Local markdown**: write to the user-approved tracker path.
 
-> "Next issue, or are we done?"
+Confirm the issue was filed and provide the issue ID/URL.
 
-Continue until the user says the QA session is done.
+## Session Summary
 
-## Output
+At the end of the session, present:
 
-At the end, provide:
+```markdown
+## QA Session Summary
 
-- Issues created/drafted.
-- Which ones need more info.
-- Which ones are likely `ready-for-agent` vs `ready-for-human`.
-- Any recommended follow-up triage using `issue-triage`.
+- **Issues filed**: [count]
+- **Tracker**: [Linear | GitHub Issues | Local markdown]
+
+### Filed Issues
+
+1. [Issue ID/URL]: [Title]
+2. [Issue ID/URL]: [Title]
+...
+
+Next: Would you like me to investigate or fix any of these?
+```
+
+## Anti-Patterns
+
+**Don't:**
+
+- Debug or implement fixes during QA session.
+- Over-interview the user with 10+ clarifying questions.
+- File issues without user approval.
+- Cite implementation details in user-facing issue bodies.
+- Combine independent symptoms into one issue.
+
+**Do:**
+
+- Listen first, clarify lightly.
+- Write from the user's perspective.
+- Break down multi-symptom reports when appropriate.
+- Wait for approval before filing.
+- Offer to investigate/fix after filing.

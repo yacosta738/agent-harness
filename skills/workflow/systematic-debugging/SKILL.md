@@ -15,7 +15,7 @@ Random fixes waste time and create new bugs. Quick patches mask underlying issue
 
 ## The Iron Law
 
-```
+```text
 NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
 ```
 
@@ -55,6 +55,7 @@ You MUST complete each phase before proceeding to the next.
 **This is the most critical step.** Before guessing or tracing, you MUST have a fast, deterministic, agent-runnable pass/fail signal. If you don't have one, no amount of staring at code will save you. Be aggressive. Be creative. Refuse to give up.
 
 Ways to construct a loop (in order of preference):
+
 1. **Failing test** at whatever seam reaches the bug (unit, integration, e2e).
 2. **Curl/HTTP script** against a running dev server.
 3. **CLI invocation** with a fixture input, diffing stdout.
@@ -92,7 +93,8 @@ If you cannot build a loop, stop and say so explicitly. Do NOT proceed to hypoth
    **WHEN system has multiple components (CI → build → signing, API → service → database):**
 
    **BEFORE proposing fixes, add diagnostic instrumentation:**
-   ```
+
+   ```text
    For EACH component boundary:
      - Log what data enters component
      - Log what data exits component
@@ -105,6 +107,7 @@ If you cannot build a loop, stop and say so explicitly. Do NOT proceed to hypoth
    ```
 
    **Example (multi-layer system):**
+
    ```bash
    # Layer 1: Workflow
    echo "=== Secrets available in workflow: ==="
