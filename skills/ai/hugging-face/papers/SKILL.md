@@ -134,9 +134,9 @@ curl "https://huggingface.co/api/settings/papers/claim" \
 
 - Endpoint: `POST /api/settings/papers/claim`
 - Body:
-    - `paperId` (string, required): arXiv paper identifier being claimed
-    - `claimAuthorId` (string): author entry on the paper being claimed, 24-char hex ID
-    - `targetUserId` (string): HF user who should receive the claim, 24-char hex ID
+  - `paperId` (string, required): arXiv paper identifier being claimed
+  - `claimAuthorId` (string): author entry on the paper being claimed, 24-char hex ID
+  - `targetUserId` (string): HF user who should receive the claim, 24-char hex ID
 - Response: paper authorship claim result, including the claimed paper ID
 
 #### Get daily papers
@@ -150,13 +150,13 @@ curl -s -H "Authorization: Bearer $HF_TOKEN" \
 
 - Endpoint: `GET /api/daily_papers`
 - Query parameters:
-    - `p` (integer): page number
-    - `limit` (integer): number of results, between 1 and 100
-    - `date` (string): RFC 3339 full-date, for example `2017-07-21`
-    - `week` (string): ISO week, for example `2024-W03`
-    - `month` (string): month value, for example `2024-01`
-    - `submitter` (string): filter by submitter
-    - `sort` (enum): `publishedAt` or `trending`
+  - `p` (integer): page number
+  - `limit` (integer): number of results, between 1 and 100
+  - `date` (string): RFC 3339 full-date, for example `2017-07-21`
+  - `week` (string): ISO week, for example `2024-W03`
+  - `month` (string): month value, for example `2024-01`
+  - `submitter` (string): filter by submitter
+  - `sort` (enum): `publishedAt` or `trending`
 - Response: list of daily papers
 
 #### List papers
@@ -170,8 +170,8 @@ curl -s -H "Authorization: Bearer $HF_TOKEN" \
 
 - Endpoint: `GET /api/papers`
 - Query parameters:
-    - `cursor` (string): pagination cursor
-    - `limit` (integer): number of results, between 1 and 100
+  - `cursor` (string): pagination cursor
+  - `limit` (integer): number of results, between 1 and 100
 - Response: list of papers
 
 #### Search papers
@@ -187,8 +187,8 @@ This searches over the paper title, authors, and content.
 
 - Endpoint: `GET /api/papers/search`
 - Query parameters:
-    - `q` (string): search query, max length 250
-    - `limit` (integer): number of results, between 1 and 120
+  - `q` (string): search query, max length 250
+  - `limit` (integer): number of results, between 1 and 120
 - Response: matching papers
 
 #### Index a paper
@@ -207,7 +207,7 @@ curl "https://huggingface.co/api/papers/index" \
 
 - Endpoint: `POST /api/papers/index`
 - Body:
-    - `arxivId` (string, required): arXiv ID to index, for example `2301.00001`
+  - `arxivId` (string, required): arXiv ID to index, for example `2301.00001`
 - Pattern: `^\d{4}\.\d{4,5}$`
 - Response: empty JSON object on success
 
@@ -230,11 +230,11 @@ curl "https://huggingface.co/api/papers/{PAPER_OBJECT_ID}/links" \
 
 - Endpoint: `POST /api/papers/{paperId}/links`
 - Path parameters:
-    - `paperId` (string, required): Hugging Face paper object ID
+  - `paperId` (string, required): Hugging Face paper object ID
 - Body:
-    - `githubRepo` (string, nullable): GitHub repository URL
-    - `organizationId` (string, nullable): organization ID, 24-char hex ID
-    - `projectPage` (string, nullable): project page URL
+  - `githubRepo` (string, nullable): GitHub repository URL
+  - `organizationId` (string, nullable): organization ID, 24-char hex ID
+  - `projectPage` (string, nullable): project page URL
 - Response: empty JSON object on success
 
 ## Error Handling
@@ -250,8 +250,8 @@ If the Hugging Face paper page does not contain enough detail for the user's que
 
 - Check the regular paper page at `https://huggingface.co/papers/{PAPER_ID}`
 - Fall back to the arXiv page or PDF for the original source:
-    - `https://arxiv.org/abs/{PAPER_ID}`
-    - `https://arxiv.org/pdf/{PAPER_ID}`
+  - `https://arxiv.org/abs/{PAPER_ID}`
+  - `https://arxiv.org/pdf/{PAPER_ID}`
 
 ## Notes
 

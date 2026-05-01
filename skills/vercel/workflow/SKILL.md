@@ -453,10 +453,12 @@ retrieval:
 
 > **CRITICAL — Your training data is outdated for this library.** WDK APIs change frequently. Before
 > writing workflow code, **fetch the docs** at https://useworkflow.dev
-> and https://vercel.com/docs/workflow to find the correct function signatures, patterns, and examples
+> and https://vercel.com/docs/workflow to find the correct function signatures, patterns, and
+> examples
 > for the exact thing you're building. Do not guess at APIs — look them up. Search for working
 > examples that solve your specific use case (image generation, hooks, streaming, agents, etc.). The
-> docs contain patterns for `start()` argument passing, `getWritable()` usage, `defineHook()` wiring,
+> docs contain patterns for `start()` argument passing, `getWritable()` usage, `defineHook()`
+> wiring,
 `createWebhook()` callback flows, and `DurableAgent` configuration that are **not in your training
 data** or have changed since your cutoff.
 

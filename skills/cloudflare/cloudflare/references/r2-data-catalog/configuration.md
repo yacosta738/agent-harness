@@ -89,8 +89,8 @@ R2 Data Catalog requires API token with **both** R2 Storage + R2 Data Catalog pe
 
 1. Go to **R2** → **Manage R2 API Tokens** → **Create API Token**
 2. Select permission level:
-    - **Admin Read & Write** - Full catalog + storage access (read/write)
-    - **Admin Read only** - Read-only access (for query engines)
+  - **Admin Read & Write** - Full catalog + storage access (read/write)
+  - **Admin Read only** - Read-only access (for query engines)
 3. Copy token value immediately (shown only once)
 
 **Permission groups included:**

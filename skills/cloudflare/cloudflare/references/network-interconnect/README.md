@@ -30,6 +30,7 @@ Private, high-performance connectivity to Cloudflare's network. **Enterprise-onl
 - IPv4 /24+ or IPv6 /48+ prefixes
 - BGP ASN for v1
 -
+
 See [locations PDF](https://developers.cloudflare.com/network-interconnect/static/cni-locations-2026-01.pdf)
 
 ## Specs

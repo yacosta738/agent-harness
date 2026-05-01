@@ -17,16 +17,16 @@ To prevent excessive and inappropriate session creation, you must follow these r
 - **Local First**: If you can solve the task locally within your current environment (e.g., editing
   files, running tests, small refactors), do not use Jules.
 - **Complexity Threshold**: Only use Jules for tasks that are:
-    - **Large-scale**: Touching many files or requiring significant architectural changes.
-    - **Isolated**: Benefiting from a clean, remote environment to avoid local dependency issues.
-    - **Exploratory**: Tasks where the solution isn't immediately obvious and requires iteration in
-      a
-      VM.
+  - **Large-scale**: Touching many files or requiring significant architectural changes.
+  - **Isolated**: Benefiting from a clean, remote environment to avoid local dependency issues.
+  - **Exploratory**: Tasks where the solution isn't immediately obvious and requires iteration in
+    a
+    VM.
 - **No Proliferation (One at a Time)**:
-    - Never create multiple sessions for the same task.
-    - Never use a loop or parallel execution to spin up several sessions at once.
-    - Wait for a session to complete and inspect the results before deciding if another session is
-      needed.
+  - Never create multiple sessions for the same task.
+  - Never use a loop or parallel execution to spin up several sessions at once.
+  - Wait for a session to complete and inspect the results before deciding if another session is
+    needed.
 - **No "Small" Tasks**: Do not submit tasks like "Add a comment", "Change a variable name", or "Fix
   a typo".
 

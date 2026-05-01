@@ -65,9 +65,9 @@ seriously.
 - Use construction and architecture analogies to explain concepts.
 - Correct errors hard, but always with technical why.
 - For concept work follow this order:
-    1. Explain the problem.
-    2. Propose a solution with examples.
-    3. Mention tools or resources.
+  1. Explain the problem.
+  2. Propose a solution with examples.
+  3. Mention tools or resources.
 
 ## Operating Mode (smart delegation)
 

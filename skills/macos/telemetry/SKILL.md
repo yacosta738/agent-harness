@@ -44,34 +44,34 @@ Use feature-specific categories like `Windowing`, `Commands`, `MenuBar`, `Sideba
 ## Workflow
 
 1. Identify the behavior that needs observability.
-    - Window open/close
-    - Sidebar or inspector selection changes
-    - Menu or keyboard command actions
-    - Menu bar extra actions
-    - Background load/sync/import events
-    - Error and recovery paths
+  - Window open/close
+  - Sidebar or inspector selection changes
+  - Menu or keyboard command actions
+  - Menu bar extra actions
+  - Background load/sync/import events
+  - Error and recovery paths
 
 2. Add the smallest useful instrumentation.
-    - Create one `Logger` per feature area or type.
-    - Log action boundaries and key state transitions.
-    - Prefer one high-signal line per user action over noisy value dumps.
+  - Create one `Logger` per feature area or type.
+  - Log action boundaries and key state transitions.
+  - Prefer one high-signal line per user action over noisy value dumps.
 
 3. Build and run the app.
-    - Use `build-run-debug` for the build/run loop.
-    - If `script/build_and_run.sh` exists, prefer `./script/build_and_run.sh --telemetry` for live
-      telemetry checks or `./script/build_and_run.sh --logs` for broader process logs.
-    - Exercise the UI or command path that should emit telemetry.
+  - Use `build-run-debug` for the build/run loop.
+  - If `script/build_and_run.sh` exists, prefer `./script/build_and_run.sh --telemetry` for live
+    telemetry checks or `./script/build_and_run.sh --logs` for broader process logs.
+  - Exercise the UI or command path that should emit telemetry.
 
 4. Read runtime logs and verify the event fired.
-    - Use Console.app with a process/subsystem filter when that is the fastest manual check.
-    - Use `log stream --style compact --predicate 'process == "AppName"'` for live terminal
-      verification.
-    - Prefer tighter predicates when you know the subsystem/category:
-      `log stream --style compact --predicate 'subsystem == "com.example.app" && category == "Sidebar"'`
+  - Use Console.app with a process/subsystem filter when that is the fastest manual check.
+  - Use `log stream --style compact --predicate 'process == "AppName"'` for live terminal
+    verification.
+  - Prefer tighter predicates when you know the subsystem/category:
+    `log stream --style compact --predicate 'subsystem == "com.example.app" && category == "Sidebar"'`
 
 5. Tighten or remove instrumentation.
-    - If the event fires, keep only the logs that remain useful for future debugging.
-    - If it does not fire, move the log closer to the suspected control path and rerun.
+  - If the event fires, keep only the logs that remain useful for future debugging.
+  - If it does not fire, move the log closer to the suspected control path and rerun.
 
 ## Verification Checklist
 

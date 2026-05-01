@@ -26,26 +26,29 @@ isometric technical blueprint**. Think StrikeOps mission control, not startup Sa
 ## Design System
 
 ### Philosophy
+
 Monochromatic darkness with surgical precision. Everything looks like it was built
 inside a classified government terminal or a cyberpunk ops center. Minimal color —
 when color appears, it's intentional and restrained.
 
 ### Color Palette
-| Role | Value | Usage |
-|---|---|---|
-| Background | `#000000` / `#080808` | Pure or near-pure black canvas — always |
-| Primary text | `#FFFFFF` | All main labels, titles, data |
-| Secondary text | `#888888` / `#666666` | Metadata, timestamps, subtitles |
-| UI borders/lines | `#222222` / `#333333` | Grid lines, table borders, dividers |
-| Danger/alert accent | dim red `#FF4444` | Only for errors, failure states |
-| Success accent | dim green `#44FF88` | Only for success/completed states |
-| Active/selected | Inverted block (`#FFFFFF` bg, `#000000` text) | Nav active state, selected rows |
-| Wireframe/blueprint | `#FFFFFF` at 15–40% opacity | 3D isometric diagrams, layer outlines |
+
+| Role                | Value                                         | Usage                                   |
+|---------------------|-----------------------------------------------|-----------------------------------------|
+| Background          | `#000000` / `#080808`                         | Pure or near-pure black canvas — always |
+| Primary text        | `#FFFFFF`                                     | All main labels, titles, data           |
+| Secondary text      | `#888888` / `#666666`                         | Metadata, timestamps, subtitles         |
+| UI borders/lines    | `#222222` / `#333333`                         | Grid lines, table borders, dividers     |
+| Danger/alert accent | dim red `#FF4444`                             | Only for errors, failure states         |
+| Success accent      | dim green `#44FF88`                           | Only for success/completed states       |
+| Active/selected     | Inverted block (`#FFFFFF` bg, `#000000` text) | Nav active state, selected rows         |
+| Wireframe/blueprint | `#FFFFFF` at 15–40% opacity                   | 3D isometric diagrams, layer outlines   |
 
 **Rule**: The palette is black + white. Color only enters for status indicators
 (dim red/green) and must be desaturated — never vibrant or neon.
 
 ### Typography
+
 - **Primary font**: Monospace only — IBM Plex Mono, JetBrains Mono, or Courier New
 - **Uppercase dominance**: Section headers, labels, column headers — ALL CAPS with
   wide letter-spacing
@@ -54,6 +57,7 @@ when color appears, it's intentional and restrained.
 - **Watermark**: Small monospace text at bottom corners — name, role, site — understated
 
 ### Layout & Grid
+
 - **Dense, information-rich**: Dashboards and tables where every pixel is utilized
 - **Panel-based composition**: Content in clearly bordered rectangular panels —
   like a multi-monitor ops center
@@ -62,6 +66,7 @@ when color appears, it's intentional and restrained.
 - **Scanline overlay**: Optional very faint horizontal lines — adds CRT texture
 
 ### Visual Elements
+
 - **Data tables**: Monospaced, full-width rows. Column headers ALL CAPS.
 - **Terminal/log panels**: `>` prompt, timestamps in `YYYY-MM-DD HH:MM UTC`, status codes
 - **Wireframe 3D diagrams**: Isometric layered architecture — white outlines only,
@@ -71,6 +76,7 @@ when color appears, it's intentional and restrained.
 - **Sphere / globe wireframe**: White wireframe geodesic — elegant data motif
 
 ### Decorative Patterns
+
 - **Background text**: Faint repeated technical strings (hashes, coordinates,
   commit IDs) at 5–10% opacity
 - **Corner frames**: Thin bracket marks on panel corners
@@ -80,22 +86,25 @@ when color appears, it's intentional and restrained.
 ---
 
 ## Aspect Ratios by Use Case
-| Content Type | Ratio | Resolution |
-|---|---|---|
-| Blog post header | 16:9 | 1920×1080 |
-| LinkedIn post | 1.91:1 | 1200×628 |
-| LinkedIn square | 1:1 | 1200×1200 |
-| YouTube thumbnail | 16:9 | 1280×720 |
-| Twitter/X card | 2:1 | 1200×600 |
-| Poster / infographic | 16:10 | 1920×1200 |
-| OG image (default) | 16:9 | 1200×630 |
+
+| Content Type         | Ratio  | Resolution |
+|----------------------|--------|------------|
+| Blog post header     | 16:9   | 1920×1080  |
+| LinkedIn post        | 1.91:1 | 1200×628   |
+| LinkedIn square      | 1:1    | 1200×1200  |
+| YouTube thumbnail    | 16:9   | 1280×720   |
+| Twitter/X card       | 2:1    | 1200×600   |
+| Poster / infographic | 16:10  | 1920×1200  |
+| OG image (default)   | 16:9   | 1200×630   |
 
 ---
 
 ## Workflow
 
 ### Step 1 — Clarify (if missing info)
+
 Ask only what's needed:
+
 - **Topic / concept**: what should the image communicate?
 - **Use case**: blog header, LinkedIn post, YouTube thumbnail, poster?
 - **Key data or sections**: specific metrics, steps, or diagrams to include?
@@ -104,15 +113,15 @@ If the user's request already answers these, skip directly to Step 2.
 
 ### Step 2 — Pick the Layout Pattern
 
-| Pattern | When to Use |
-|---|---|
-| **Mission Dashboard** | Multi-metric overview, KPIs, system/agent status |
-| **Ops Table** | List of items with status, priority, timestamps |
-| **Process Monitor** | Single operation in progress — transfer, build, deploy |
-| **Architecture Poster** | Technical architecture, layered systems, tech stack |
-| **Terminal Log** | Sequential events, activity feed, comms/chat log |
-| **RPG Character Card** | Personal brand, bio, skills as stats, career milestones |
-| **Hybrid** | Two or more panels combined for complex topics |
+| Pattern                 | When to Use                                             |
+|-------------------------|---------------------------------------------------------|
+| **Mission Dashboard**   | Multi-metric overview, KPIs, system/agent status        |
+| **Ops Table**           | List of items with status, priority, timestamps         |
+| **Process Monitor**     | Single operation in progress — transfer, build, deploy  |
+| **Architecture Poster** | Technical architecture, layered systems, tech stack     |
+| **Terminal Log**        | Sequential events, activity feed, comms/chat log        |
+| **RPG Character Card**  | Personal brand, bio, skills as stats, career milestones |
+| **Hybrid**              | Two or more panels combined for complex topics          |
 
 ### Step 3 — Build the Prompt
 
@@ -176,17 +185,17 @@ pixel-art energy and stat bars.
 
 Derived from yunielacosta.com dark mode CSS variables:
 
-| Role | Hex | CSS var |
-|---|---|---|
-| Background (deep) | `#0a192f` | `--color-background` |
-| Background (card) | `#112240` | `--color-background-secondary` |
-| Background (surface) | `#172a45` | `--color-background-surface` |
-| Background (elevated) | `#1e3951` | `--color-background-tertiary` |
-| Border | `#233554` | `--color-border` |
-| Border hover | `#a8b2d1` | `--color-border-hover` |
-| Primary accent | `#64ffda` | `--color-brand-accent` (teal/mint) |
-| Text primary | `#e2e8f0` | `--color-foreground` |
-| Text muted | `#8892b0` | `--color-foreground-subtle` |
+| Role                  | Hex       | CSS var                            |
+|-----------------------|-----------|------------------------------------|
+| Background (deep)     | `#0a192f` | `--color-background`               |
+| Background (card)     | `#112240` | `--color-background-secondary`     |
+| Background (surface)  | `#172a45` | `--color-background-surface`       |
+| Background (elevated) | `#1e3951` | `--color-background-tertiary`      |
+| Border                | `#233554` | `--color-border`                   |
+| Border hover          | `#a8b2d1` | `--color-border-hover`             |
+| Primary accent        | `#64ffda` | `--color-brand-accent` (teal/mint) |
+| Text primary          | `#e2e8f0` | `--color-foreground`               |
+| Text muted            | `#8892b0` | `--color-foreground-subtle`        |
 
 **Key rule for RPG Card**: The accent `#64ffda` (teal-mint) replaces the white
 of the terminal layouts. It appears on: stat bars, highlighted values, skill
@@ -227,6 +236,7 @@ badges, level indicators, and section header icons.
 ### RPG Card Design Rules
 
 **Typography**:
+
 - Title/name: large pixel-style or bold display font — heavy weight
 - Section headers: small caps or ALL CAPS with teal `#64ffda` left border or icon
 - Body text: clean sans-serif (Inter or similar) at small size — this layout
@@ -234,23 +244,27 @@ badges, level indicators, and section header icons.
 - Role badge: pill with teal border `#64ffda`, dark bg `#112240`
 
 **Stat bars**:
+
 - Filled portion: `#64ffda` (teal) — segmented block style `████░░░`
 - Empty portion: `#233554` (border color) — same segmented blocks
 - Label left, number right, bar center
 - Pixel/retro rendering preferred — not smooth gradients
 
 **Panels/cards**:
+
 - Background: `#112240` with `#233554` border
 - Elevated sections: `#172a45`
 - Corner radius: 4–6px max — slight rounding unlike terminal layouts
 - Section icons: small pixel-art or flat icons in `#64ffda`
 
 **KPI Achievement row**:
+
 - Large number in `#64ffda`, descriptor below in `#8892b0`
 - Icon above each KPI (pixel trophy, building, star, etc.)
 - Separated by subtle dividers
 
 **Decorative elements**:
+
 - HUD/game UI elements: health hearts (♥), XP bar, level badge
 - Pixel grid or star field as background texture at low opacity
 - Corner bracket marks in `#64ffda` — very subtle
@@ -303,25 +317,26 @@ AVOID:
 
 ## Composition Patterns by Topic
 
-| Topic Category | Layout Pattern | Key Visual Elements |
-|---|---|---|
-| CI/CD, automation | Process Monitor + Terminal Log | Pipeline steps as table rows, status badges, log feed |
-| APIs, integrations | Ops Table | Endpoint list, method/status/response-time columns |
-| Databases, storage | Dashboard | Storage KPIs, query log panel, transfer progress |
-| Security, auth | Mission Dashboard | Agent/key list, encrypted comms panel, alert log |
-| AI / ML | Architecture Poster | Isometric layer diagram, model → output flow |
-| Software architecture | Architecture Poster | 3D wireframe layer breakdown, data flow panel |
-| Git, version control | Ops Table + Terminal Log | Commit list as table, branch activity log |
-| Performance, speed | Process Monitor | Speed metric, progress bars (█ chars), ETA countdown |
-| Observability | Mission Dashboard | Trace timeline, KPI panels, activity log |
-| Career / personal brand | RPG Character Card | Stat bars for skills, level/rank, experience timeline, KPI achievements |
-| Speaker / author bio | RPG Character Card | Avatar portrait, talk topics as stats, past events as XP log |
+| Topic Category          | Layout Pattern                 | Key Visual Elements                                                     |
+|-------------------------|--------------------------------|-------------------------------------------------------------------------|
+| CI/CD, automation       | Process Monitor + Terminal Log | Pipeline steps as table rows, status badges, log feed                   |
+| APIs, integrations      | Ops Table                      | Endpoint list, method/status/response-time columns                      |
+| Databases, storage      | Dashboard                      | Storage KPIs, query log panel, transfer progress                        |
+| Security, auth          | Mission Dashboard              | Agent/key list, encrypted comms panel, alert log                        |
+| AI / ML                 | Architecture Poster            | Isometric layer diagram, model → output flow                            |
+| Software architecture   | Architecture Poster            | 3D wireframe layer breakdown, data flow panel                           |
+| Git, version control    | Ops Table + Terminal Log       | Commit list as table, branch activity log                               |
+| Performance, speed      | Process Monitor                | Speed metric, progress bars (█ chars), ETA countdown                    |
+| Observability           | Mission Dashboard              | Trace timeline, KPI panels, activity log                                |
+| Career / personal brand | RPG Character Card             | Stat bars for skills, level/rank, experience timeline, KPI achievements |
+| Speaker / author bio    | RPG Character Card             | Avatar portrait, talk topics as stats, past events as XP log            |
 
 ---
 
 ## Examples
 
 ### Example 1 — Blog Header (Semantic Release)
+
 > User: "Generate a blog header about Semantic Release and Conventional Commits"
 
 ```
@@ -358,6 +373,7 @@ AVOID: Color, gradients, neon, rounded fonts, SaaS aesthetics.
 ```
 
 ### Example 2 — LinkedIn Post (Bloom Filters)
+
 > User: "LinkedIn image about Bloom Filters"
 
 ```
@@ -391,6 +407,7 @@ AVOID: Color fills, gradients, icons, sans-serif fonts.
 ```
 
 ### Example 3 — RPG Character Card (Personal Brand)
+
 > User: "Crea una infografía de perfil personal estilo RPG card"
 
 ```

@@ -15,25 +15,25 @@ repository's standards.
 Follow these steps to create a Pull Request:
 
 1. **Locate Template**: Search for a pull request template in the repository.
-    - Check `.github/pull_request_template.md`
-    - Check `.github/PULL_REQUEST_TEMPLATE.md`
-    - If multiple templates exist (e.g., in `.github/PULL_REQUEST_TEMPLATE/`),
-      ask the user which one to use or select the most appropriate one based on
-      the context (e.g., `bug_fix.md` vs `feature.md`).
+  - Check `.github/pull_request_template.md`
+  - Check `.github/PULL_REQUEST_TEMPLATE.md`
+  - If multiple templates exist (e.g., in `.github/PULL_REQUEST_TEMPLATE/`),
+    ask the user which one to use or select the most appropriate one based on
+    the context (e.g., `bug_fix.md` vs `feature.md`).
 
 2. **Read Template**: Read the content of the identified template file.
 
 3. **Draft Description**: Create a PR description that strictly follows the
    template's structure.
-    - **Headings**: Keep all headings from the template.
-    - **Checklists**: Review each item. Mark with `[x]` if completed. If an item
-      is not applicable, leave it unchecked or mark as `[ ]` (depending on the
-      template's instructions) or remove it if the template allows flexibility
-      (but prefer keeping it unchecked for transparency).
-    - **Content**: Fill in the sections with clear, concise summaries of your
-      changes.
-    - **Related Issues**: Link any issues fixed or related to this PR (e.g.,
-      "Fixes #123").
+  - **Headings**: Keep all headings from the template.
+  - **Checklists**: Review each item. Mark with `[x]` if completed. If an item
+    is not applicable, leave it unchecked or mark as `[ ]` (depending on the
+    template's instructions) or remove it if the template allows flexibility
+    (but prefer keeping it unchecked for transparency).
+  - **Content**: Fill in the sections with clear, concise summaries of your
+    changes.
+  - **Related Issues**: Link any issues fixed or related to this PR (e.g.,
+    "Fixes #123").
 
 4. **Create PR**: Use the `gh` CLI to create the PR. To avoid shell escaping
    issues with multi-line Markdown, write the description to a temporary file
@@ -47,17 +47,17 @@ Follow these steps to create a Pull Request:
     rm <temp_file_path>
     ```
 
-    - **Title**: Use a semantic PR title following
-      [Conventional Commits](https://www.conventionalcommits.org/) style when the
-      repository supports it (e.g., `feat(ui): add new button`,
-      `fix(core): resolve crash`, `chore(ci): update workflow permissions`).
+  - **Title**: Use a semantic PR title following
+    [Conventional Commits](https://www.conventionalcommits.org/) style when the
+    repository supports it (e.g., `feat(ui): add new button`,
+    `fix(core): resolve crash`, `chore(ci): update workflow permissions`).
 
 5. **Align Semantics**: Keep branch name, commit message, and PR title aligned in
    intent.
-    - Good alignment: `feat/search-shortcuts` → `feat: add search shortcuts` →
-      `feat: add search shortcuts`
-    - Avoid mixing intents like `chore/...` branch with `feat:` PR title unless
-      the actual scope changed and you explicitly renamed the branch strategy.
+  - Good alignment: `feat/search-shortcuts` → `feat: add search shortcuts` →
+    `feat: add search shortcuts`
+  - Avoid mixing intents like `chore/...` branch with `feat:` PR title unless
+    the actual scope changed and you explicitly renamed the branch strategy.
 
 ## Principles
 

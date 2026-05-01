@@ -191,7 +191,7 @@ If hitting memory limits:
    ```
 
 6. **Upgrade to larger GPU**
-    - t4 → a10g → a100
+  - t4 → a10g → a100
 
 ## Cost Estimation
 

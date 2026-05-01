@@ -1,6 +1,7 @@
 # Preguntas de Descubrimiento por Categoria
 
-Este documento contiene las preguntas que el SKILL debe formular al contribuyente para identificar posibles deducciones que no aparecen en el borrador o que requieren acción manual.
+Este documento contiene las preguntas que el SKILL debe formular al contribuyente para identificar
+posibles deducciones que no aparecen en el borrador o que requieren acción manual.
 
 ---
 
@@ -23,7 +24,8 @@ Este documento contiene las preguntas que el SKILL debe formular al contribuyent
 12. Tienes hipoteca? La contrataste antes del 01/01/2013?
 13. Has comprado vivienda en 2025?
 14. Has vendido alguna vivienda en 2025?
-15. Tienes inmuebles que no son tu vivienda habitual? (segundas residencias, locales, plazas de garaje)
+15. Tienes inmuebles que no son tu vivienda habitual? (segundas residencias, locales, plazas de
+    garaje)
 16. Tienes inmuebles alquilados? A que precio?
 17. Has realizado obras de mejora, rehabilitación o eficiencia energética?
 18. Tienes viviendas vacias que has puesto en alquiler este ano?

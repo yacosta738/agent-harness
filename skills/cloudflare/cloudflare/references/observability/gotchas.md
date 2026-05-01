@@ -112,8 +112,8 @@ await fetch('https://api.example.com', {
 ### Workers Traces
 
 - **GA Pricing (starts March 1, 2026):**
-    - $0.10 per 1M trace spans captured
-    - Retention: 14 days included
+  - $0.10 per 1M trace spans captured
+  - Retention: 14 days included
 - **Free tier:** 10M trace spans/month
 - **Note:** Beta usage (before March 1, 2026) is free
 

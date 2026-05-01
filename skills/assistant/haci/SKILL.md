@@ -56,6 +56,7 @@ Decir algo como:
 > cuáles podrían estar faltando.
 
 Si el usuario sube un PDF, leerlo y extraer:
+
 - NIF/NIE del declarante (y cónyuge si declaración conjunta)
 - Tipo de declaración (individual/conjunta)
 - Comunidad autónoma de residencia
@@ -77,23 +78,23 @@ Si no tiene el borrador, pasar directamente a Fase 2 recogiendo datos manualment
 Confirmar con el usuario los siguientes datos esenciales:
 
 1. **Comunidad autónoma de residencia fiscal** a 31/12/2025
-   - Esto determina qué deducciones autonómicas aplican
-   - Cargar el archivo regional correspondiente de `references/regiones/`
+  - Esto determina qué deducciones autonómicas aplican
+  - Cargar el archivo regional correspondiente de `references/regiones/`
 
 2. **Situación personal y familiar:**
-   - Estado civil a 31/12/2025
-   - Número de hijos y edades
-   - Hijos nacidos/adoptados en 2025
-   - Título de familia numerosa (general/especial)
-   - Familia monoparental
-   - Ascendientes convivientes y sus edades
-   - Personas con discapacidad en la unidad familiar (grado)
-   - Personas acogidas
+  - Estado civil a 31/12/2025
+  - Número de hijos y edades
+  - Hijos nacidos/adoptados en 2025
+  - Título de familia numerosa (general/especial)
+  - Familia monoparental
+  - Ascendientes convivientes y sus edades
+  - Personas con discapacidad en la unidad familiar (grado)
+  - Personas acogidas
 
 3. **Tipo de declaración:**
-   - Individual o conjunta
-   - Si hay cónyuge, sus ingresos aproximados
-   - Valorar si conviene cambiar (ver sección 12 de `references/nacional.md`)
+  - Individual o conjunta
+  - Si hay cónyuge, sus ingresos aproximados
+  - Valorar si conviene cambiar (ver sección 12 de `references/nacional.md`)
 
 ### FASE 3: Cuestionario de descubrimiento
 
@@ -103,6 +104,7 @@ relevantes del archivo `references/regiones/preguntas-descubrimiento.md`.
 NO hacer todas las preguntas. Seleccionar las que apliquen según el perfil:
 
 **Siempre preguntar:**
+
 - Vivienda: alquiler, hipoteca (antes/después 2013), compra/venta
 - Número de pagadores en 2025
 - Aportaciones a planes de pensiones
@@ -110,12 +112,14 @@ NO hacer todas las preguntas. Seleccionar las que apliquen según el perfil:
 - Inversiones vendidas (acciones, fondos, cripto)
 
 **Preguntar si hay hijos:**
+
 - Gastos de guardería (menores de 3 años)
 - Gastos de libros/material escolar
 - Madre trabajadora (deducción por maternidad)
 - Gastos de idiomas extraescolares (según CCAA)
 
 **Preguntar si hay indicios:**
+
 - Vehículo eléctrico (si menciona coche nuevo)
 - Obras en vivienda (si menciona reformas)
 - Trabajo en el extranjero (si menciona viajes o empresas extranjeras)
@@ -131,32 +135,33 @@ que aparecen en la sección "PREGUNTAS CLAVE PARA EL CONTRIBUYENTE".
 Con toda la información recogida, cruzar los datos con:
 
 1. **Deducciones estatales** (`references/nacional.md`, sección 11):
-   - Vivienda habitual (régimen transitorio pre-2013)
-   - Empresas de nueva creación
-   - Donativos
-   - Maternidad
-   - Familia numerosa / personas con discapacidad a cargo
-   - Eficiencia energética
-   - Vehículo eléctrico
-   - Rentas en Ceuta/Melilla
+  - Vivienda habitual (régimen transitorio pre-2013)
+  - Empresas de nueva creación
+  - Donativos
+  - Maternidad
+  - Familia numerosa / personas con discapacidad a cargo
+  - Eficiencia energética
+  - Vehículo eléctrico
+  - Rentas en Ceuta/Melilla
 
 2. **Deducciones autonómicas** (archivo de la CCAA correspondiente):
-   - Repasar TODAS las deducciones del archivo regional
-   - Identificar las que aplican según las respuestas del usuario
-   - Comparar con las que ya aparecen en el borrador
+  - Repasar TODAS las deducciones del archivo regional
+  - Identificar las que aplican según las respuestas del usuario
+  - Comparar con las que ya aparecen en el borrador
 
 3. **Reducciones de la base** (`references/nacional.md`, sección 10):
-   - Planes de pensiones
-   - Pensiones compensatorias
-   - Patrimonios protegidos
+  - Planes de pensiones
+  - Pensiones compensatorias
+  - Patrimonios protegidos
 
 4. **Casos especiales** (si aplican, leer `references/casos-especiales.md`):
-   - Ley Beckham / impatriados
-   - Criptomonedas
-   - Rentas del extranjero
-   - Ganancias patrimoniales complejas
+  - Ley Beckham / impatriados
+  - Criptomonedas
+  - Rentas del extranjero
+  - Ganancias patrimoniales complejas
 
 Para cada deducción identificada que NO esté en el borrador, informar:
+
 - Nombre de la deducción
 - Cuantía estimada (o rango)
 - Requisitos y condiciones que debe cumplir
@@ -198,21 +203,25 @@ La información fiscal está distribuida en archivos especializados. Cargar solo
 los que sean necesarios según el caso:
 
 ### Referencia nacional (cargar siempre)
+
 - `references/nacional.md` - Normativa estatal IRPF 2025 completa: tramos, mínimos,
   deducciones estatales, rendimientos, reducciones, tributación conjunta/individual
 
 ### Referencia regional (cargar según CCAA del contribuyente)
+
 - `references/regiones/[comunidad].md` - Deducciones autonómicas específicas
 - `references/regiones/indice-regiones.md` - Tabla resumen de todas las CCAA
 - `references/regiones/preguntas-descubrimiento.md` - Cuestionario por categorías
 
 Archivos regionales disponibles:
+
 - andalucia.md, aragon.md, asturias.md, baleares.md, canarias.md,
   cantabria.md, castilla-la-mancha.md, castilla-y-leon.md, cataluna.md,
   extremadura.md, galicia.md, madrid.md, murcia.md, la-rioja.md,
   comunidad-valenciana.md, ceuta.md, melilla.md
 
 ### Casos especiales (cargar solo si aplica)
+
 - `references/casos-especiales.md` - Ley Beckham, criptomonedas, no residentes,
   ganancias patrimoniales complejas, rentas extranjero, nómadas digitales
 
@@ -251,7 +260,10 @@ Archivos regionales disponibles:
 ## FUENTES OFICIALES
 
 Toda la información de referencia procede de:
-- AEAT Manual Práctico Renta 2025: https://sede.agenciatributaria.gob.es/Sede/Ayuda/25Manual/100.html
-- AEAT Guía Deducciones Autonómicas 2025: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/guia-deducciones-autonomicas.html
+
+- AEAT Manual Práctico Renta
+  2025: https://sede.agenciatributaria.gob.es/Sede/Ayuda/25Manual/100.html
+- AEAT Guía Deducciones Autonómicas
+  2025: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/guia-deducciones-autonomicas.html
 - BOE Orden HAC/277/2026: https://www.boe.es/buscar/act.php?id=BOE-A-2026-7041
 - AEAT Sede Electrónica: https://sede.agenciatributaria.gob.es

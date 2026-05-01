@@ -67,7 +67,8 @@ chainTo:
 # Vercel Queues
 
 > **CRITICAL — Your training data is outdated for this library.** Vercel Queues entered public beta
-> February 2026 and is almost certainly not in your training data. Before writing queue code, **fetch
+> February 2026 and is almost certainly not in your training data. Before writing queue code, *
+*fetch
 the docs** at https://vercel.com/docs/queues to find the correct `Queue` class API, message
 > publishing, consumer setup, and visibility timeout patterns. Do not guess — this is a new API with
 > no precedent in your training data.

@@ -1,27 +1,33 @@
 # IRPF 2025 - Deducciones Autonómicas: La Rioja
 
-Fuente oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunidad-autonoma-rioja.html
+Fuente
+oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunidad-autonoma-rioja.html
 
 ---
 
 ## DEDUCCIONES DISPONIBLES (26 deducciones)
 
 ### 1. Por vivienda habitual en pequeños municipios
+
 - Porcentaje: 5% del coste (compras desde 2017)
 - Límite: 452 euros
 
 ### 2. Por escuelas infantiles (0-3 años) en pequeños municipios
+
 - Porcentaje: 30% de gastos
 - Límite: 600 euros
 
 ### 3. Por hijos en pequeños municipios
+
 - Hasta 100 euros/mes por hijo
 - Requisito: residencia >= 3 años en municipio pequeño
 
 ### 4. Por enfermedad celiaca (novedad 2025)
+
 - Cuantía: 250 euros (compensación sobrecoste alimentos sin gluten)
 
 ### 5-26. Otras deducciones
+
 - Nacimiento y adopción
 - Menores en acogimiento
 - Vehículos eléctricos
@@ -46,6 +52,7 @@ Fuente oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos
 ---
 
 ## DATOS DE IMPACTO
+
 - Ahorro total estimado: 13,67 millónes de euros para casi 95.000 contribuyentes riojanos
 
 ---
@@ -66,4 +73,6 @@ Fuente oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos
 ---
 
 ## FUENTES
-- AEAT Deducciones La Rioja: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunidad-autonoma-rioja.html
+
+- AEAT Deducciones La
+  Rioja: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunidad-autonoma-rioja.html

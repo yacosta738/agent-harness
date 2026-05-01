@@ -14,10 +14,10 @@ leakage.
 ## Preflight
 
 1. **CLI available?** — Confirm `vercel` is on PATH.
-    - If missing: `npm i -g vercel` (or `pnpm add -g vercel` / `bun add -g vercel`).
+  - If missing: `npm i -g vercel` (or `pnpm add -g vercel` / `bun add -g vercel`).
 2. **Project linked?** — Check for `.vercel/project.json` in the current directory or nearest
    parent.
-    - If not found: run `vercel link` interactively, then re-run `/env`.
+  - If not found: run `vercel link` interactively, then re-run `/env`.
 3. **Detect environment files** — Check for `.env`, `.env.local`, `.env.production.local`,
    `.env.development.local` in the project root. Note which exist for the diff subcommand.
 

@@ -79,10 +79,10 @@ architectural constraint.
 
 - ✅ **Affects:** `fetch` event handlers ONLY (the default export's fetch method)
 - ❌ **Does NOT affect:**
-    - RPC methods (Service Bindings with `WorkerEntrypoint` - see example below)
-    - Named entrypoints (exports other than `default`)
-    - Workers without `fetch` handlers
-    - Queue consumers, scheduled handlers, or other event types
+  - RPC methods (Service Bindings with `WorkerEntrypoint` - see example below)
+  - Named entrypoints (exports other than `default`)
+  - Workers without `fetch` handlers
+  - Queue consumers, scheduled handlers, or other event types
 
 **Example - Smart Placement ONLY affects `fetch`:**
 

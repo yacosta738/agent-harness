@@ -68,10 +68,10 @@ Research & Documentation evaluations should verify:
 ### Format Selection
 
 - Chooses correct format based on scope and depth:
-    - **Research Summary**: Quick overview with key findings
-    - **Comprehensive Report**: Deep analysis with multiple sections
-    - **Quick Brief**: Fast facts and takeaways
-    - **Comparison**: Side-by-side analysis
+  - **Research Summary**: Quick overview with key findings
+  - **Comprehensive Report**: Deep analysis with multiple sections
+  - **Quick Brief**: Fast facts and takeaways
+  - **Comparison**: Side-by-side analysis
 - Applies format structure consistently
 - Uses appropriate sections and headings
 

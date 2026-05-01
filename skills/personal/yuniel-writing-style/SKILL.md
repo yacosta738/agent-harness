@@ -5,7 +5,9 @@ description: "Write and edit technical articles following Yuniel Acosta's person
 
 # Yuniel Writing Style Skill
 
-This skill turns any technical topic into an article that sounds like Yuniel: honest, direct, opinionated, and accessible. The goal is for any reader — from a senior engineer to someone just entering the tech world — to understand and enjoy the content.
+This skill turns any technical topic into an article that sounds like Yuniel: honest, direct,
+opinionated, and accessible. The goal is for any reader — from a senior engineer to someone just
+entering the tech world — to understand and enjoy the content.
 
 Read this document fully before writing or editing. It's short. Worth it.
 
@@ -16,6 +18,7 @@ Read this document fully before writing or editing. It's short. Worth it.
 ### Step 1: Clarify the core idea
 
 Before writing, confirm two things with the user if not already clear:
+
 - What is the **single main point** of the article?
 - Who is the **primary reader**: a senior technical audience, a general tech audience, or mixed?
 
@@ -60,7 +63,9 @@ Always follow this 5-phase structure. It's a skeleton, not a rigid template:
 
 Divide the article into sections based on its headings and content blocks.
 
-Think of the article as a **directed acyclic graph**: some pieces of information depend on other pieces being understood first. Map those dependencies. Make sure no section assumes knowledge that hasn't been introduced yet.
+Think of the article as a **directed acyclic graph**: some pieces of information depend on other
+pieces being understood first. Map those dependencies. Make sure no section assumes knowledge that
+hasn't been introduced yet.
 
 Present the proposed section structure to the user and confirm before proceeding.
 
@@ -79,6 +84,7 @@ Present each rewritten section to the user before moving to the next.
 ### Step 3: Final pass
 
 After all sections are done, do one final read-through:
+
 - Does section order respect information dependencies?
 - Does the article have a clear single main point?
 - Run the quality checklist in Section 9.
@@ -92,19 +98,20 @@ Yuniel writes for **two readers simultaneously**:
 - **The technical reader:** wants precision, real references, concrete examples, zero condescension.
 - **The beginner:** needs context, analogies, and not to be abandoned when a new term appears.
 
-The solution isn't to dumb things down — it's to **explain the technical without making the reader feel less intelligent**.
+The solution isn't to dumb things down — it's to **explain the technical without making the reader
+feel less intelligent**.
 
 ---
 
 ## 2. Tone and voice
 
-| Trait | How it applies |
-|---|---|
-| First person singular | "When I installed...", "What I didn't expect...", "I was surprised that..." |
-| Honest about friction | Admits when something was hard, frustrating, or counterintuitive |
-| Anticipates objections | Names what the reader is thinking before they think it |
-| No technical arrogance | Never assumes the reader should already know something |
-| Has opinions | Takes a stance. Is not artificially neutral. |
+| Trait                  | How it applies                                                              |
+|------------------------|-----------------------------------------------------------------------------|
+| First person singular  | "When I installed...", "What I didn't expect...", "I was surprised that..." |
+| Honest about friction  | Admits when something was hard, frustrating, or counterintuitive            |
+| Anticipates objections | Names what the reader is thinking before they think it                      |
+| No technical arrogance | Never assumes the reader should already know something                      |
+| Has opinions           | Takes a stance. Is not artificially neutral.                                |
 
 **Right tone:** "It was pretty frustrating in those first few days. I won't lie."
 **Wrong tone:** "This process may present certain challenges for some users."
@@ -113,9 +120,14 @@ The solution isn't to dumb things down — it's to **explain the technical witho
 
 ## 3. Vocabulary
 
-- **Keep technical terms in their original form** when translating them would be awkward: *dotfiles*, *raster*, *dataset*, *verbose*, *buffer*, *plugin*, *build*, *deploy*, *branch*, *commit*, *runtime*.
-- **Mix technical register with conversational expressions:** "that changed everything", "honestly", "look", "the thing is", "turns out".
-- **Never use these AI filler phrases:** "It's important to note that", "It's worth mentioning", "In conclusion we can affirm", "Without a doubt", "In the realm of", "This underscores the importance of".
+- **Keep technical terms in their original form** when translating them would be awkward:
+  *dotfiles*, *raster*, *dataset*, *verbose*, *buffer*, *plugin*, *build*, *deploy*, *branch*,
+  *commit*, *runtime*.
+- **Mix technical register with conversational expressions:** "that changed everything", "
+  honestly", "look", "the thing is", "turns out".
+- **Never use these AI filler phrases:** "It's important to note that", "It's worth mentioning", "In
+  conclusion we can affirm", "Without a doubt", "In the realm of", "This underscores the importance
+  of".
 - **Explain terms inline**, not in footnotes or long parenthetical asides.
 
 ---
@@ -124,7 +136,8 @@ The solution isn't to dumb things down — it's to **explain the technical witho
 
 ### The alternation rule
 
-Alternate short punchy sentences with longer reflective ones. Never three sentences of the same length in a row.
+Alternate short punchy sentences with longer reflective ones. Never three sentences of the same
+length in a row.
 
 ```
 RIGHT:
@@ -140,10 +153,14 @@ It is recommended to evaluate available alternatives."
 ```
 
 ### Human connectors (use these)
-`since` · `because` · `which means` · `the thing is` · `turns out` · `look` · `honestly` · `that said` · `even though` · `and yet`
+
+`since` · `because` · `which means` · `the thing is` · `turns out` · `look` · `honestly` ·
+`that said` · `even though` · `and yet`
 
 ### AI connectors (avoid these)
-Repeated `furthermore` · `nevertheless` · mechanical `firstly / secondly / thirdly` · `moreover` · `it should be noted that` · `this highlights`
+
+Repeated `furthermore` · `nevertheless` · mechanical `firstly / secondly / thirdly` · `moreover` ·
+`it should be noted that` · `this highlights`
 
 ---
 
@@ -152,7 +169,8 @@ Repeated `furthermore` · `nevertheless` · mechanical `firstly / secondly / thi
 - **Max 240 characters per paragraph.** If it's longer, find the natural pause and split.
 - Each paragraph carries **one idea**. Two ideas means two paragraphs.
 - Never open three consecutive paragraphs with the same word or structure.
-- Subheadings must be **specific**, not generic. "The configuration problem" beats "Configuration". "Why I switched" beats "Background".
+- Subheadings must be **specific**, not generic. "The configuration problem" beats "
+  Configuration". "Why I switched" beats "Background".
 
 ---
 
@@ -161,6 +179,7 @@ Repeated `furthermore` · `nevertheless` · mechanical `firstly / secondly / thi
 These patterns immediately signal auto-generated text:
 
 ### Structure
+
 - NO paragraphs of identical or very similar length
 - NO lists of exactly 3 or exactly 5 points with no narrative reason
 - NO excessive symmetry: intro → 3 points → conclusion
@@ -168,6 +187,7 @@ These patterns immediately signal auto-generated text:
 - NO opening the article with a definition ("X is a tool that...")
 
 ### Phrases
+
 - NO "It's important to note that..."
 - NO "In today's fast-paced world of technology..."
 - NO "As we can see..."
@@ -177,6 +197,7 @@ These patterns immediately signal auto-generated text:
 - NO "This article will explore..." in the intro
 
 ### Tone
+
 - NO artificial neutrality: having no opinion on anything
 - NO vague anecdotes: "many users have experienced..."
 - NO unsupported claims: "this is the best solution available"
@@ -187,26 +208,35 @@ These patterns immediately signal auto-generated text:
 ## 7. Active techniques to sound human
 
 ### 7.1 Anticipate what the reader is thinking
+
 Before a hard or counterintuitive point, name it:
 > "I know that sounds like a lot of work. And it is, at first."
 
 ### 7.2 Admit your own limitations
+
 > "My nvim-dap setup for Kotlin was pretty manual. It took longer than I expected."
 
 ### 7.3 Use second person to create connection
-> "When you're navigating between files without ever lifting your hands off the keyboard, something shifts."
+
+> "When you're navigating between files without ever lifting your hands off the keyboard, something
+> shifts."
 
 ### 7.4 Break the reader's expectation
+
 After explaining something positive, add the real counterpart:
-> "All of this sounds great on paper. The reality is that for the first month I used Neovim for everything except what I actually needed to get done fast."
+> "All of this sounds great on paper. The reality is that for the first month I used Neovim for
+> everything except what I actually needed to get done fast."
 
 ### 7.5 Concrete anchors, never vague claims
+
 - WRONG: "Performance improves noticeably."
 - RIGHT: "Execution time dropped from 9.95 to 6.11 seconds on the same hardware."
 
 ### 7.6 The "thinking out loud" move
+
 Occasionally let the reasoning process show:
-> "At this point I had two options. I could keep fighting the configuration, or accept that Mason was the right call. I went with Mason."
+> "At this point I had two options. I could keep fighting the configuration, or accept that Mason
+> was the right call. I went with Mason."
 
 ---
 
@@ -219,7 +249,8 @@ When a technical term appears for the first time, apply this inline pattern:
 ```
 
 Example:
-> "Lazygit — a visual git client that runs inside the terminal — let me handle branches and commits without ever leaving the editor."
+> "Lazygit — a visual git client that runs inside the terminal — let me handle branches and commits
+> without ever leaving the editor."
 
 You don't need to explain everything. Only what's essential to keep reading.
 

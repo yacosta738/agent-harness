@@ -1,37 +1,44 @@
 # IRPF 2025 - Deducciones Autonómicas: Comunitat Valenciana
 
-Fuente oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunitat-valenciana.html
+Fuente
+oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunitat-valenciana.html
 
 ---
 
 ## DEDUCCIONES DISPONIBLES (41 deducciones - la comunidad con más deducciones)
 
 ### 1. Por nacimiento/adopción/acogimiento
+
 - Primer hijo: 600 euros
 - Segundo hijo: 750 euros
 - Tercero y sucesivos: 900 euros
 - Límite renta: suma bases <= 30.000 euros (individual) o <= 47.000 euros (conjunta)
 
 ### 2. Por alquiler de vivienda
+
 - Porcentaje: 5% de rentas por alquiler (renta <= precio referencia privada)
 - Base máxima: 3.300 euros
 
 ### 3. Por gastos sanitarios
+
 - Límites de renta ampliados a 60.000 euros (individual) y 78.000 euros (conjunta)
 - Salud mental: hasta 150 euros (30% de gastos)
 - Enfermedades cronicas/raras: hasta 100 euros
 
 ### 4. Por actividades deportivas
+
 - Porcentaje: 30% de gastos
 - Límite: 150 euros
 - Mayores de 75 años o discapacidad >= 65%: hasta 100%
 
 ### 5. Por inversión en empresas
+
 - Porcentaje: 30% de inversión
 - Límite: 6.600 euros
 - Incremento 15% en pymes/municipios despoblamiento/emergentes (máximo 15.000 euros)
 
 ### 6-41. Otras deducciones (amplio catálogo)
+
 - Nacimientos/adopciones múltiples
 - Personas con discapacidad
 - Familia numerosa/monoparental
@@ -77,4 +84,6 @@ Fuente oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos
 ---
 
 ## FUENTES
-- AEAT Deducciones C. Valenciana: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunitat-valenciana.html
+
+- AEAT Deducciones C.
+  Valenciana: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/manuales-practicos/irpf-2025-deducciones-autonomicas/comunitat-valenciana.html

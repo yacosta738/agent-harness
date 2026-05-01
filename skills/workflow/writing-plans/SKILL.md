@@ -12,7 +12,8 @@ questionable taste. Document everything they need to know: which files to touch 
 testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized
 tasks. DRY. YAGNI. TDD. Frequent commits.
 
-**Required:** When the plan includes code behavior changes, load/use `test-driven-development` while drafting test-first steps.
+**Required:** When the plan includes code behavior changes, load/use `test-driven-development` while
+drafting test-first steps.
 
 Assume they are a skilled developer, but know almost nothing about our toolset or problem domain.
 Assume they don't know good test design very well.
@@ -22,8 +23,10 @@ Assume they don't know good test design very well.
 **Save plans to:** `tmp/plans/YYYY-MM-DD-<feature-name>.md`
 
 - (User preferences for plan location override this default)
-- Ensure `tmp/` is present in `.gitignore` because these tactical plans are temporary session artifacts, not long-term project documentation.
-- If the task needs durable specs or long-term architectural record, stop and recommend the SDD workflow instead.
+- Ensure `tmp/` is present in `.gitignore` because these tactical plans are temporary session
+  artifacts, not long-term project documentation.
+- If the task needs durable specs or long-term architectural record, stop and recommend the SDD
+  workflow instead.
 
 ## Scope Check
 

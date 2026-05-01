@@ -44,23 +44,23 @@ there is a repo-search flow that may not exist.
 ## Routing Rules
 
 1. Resolve the operating context first:
-    - If the user provides a repository, PR number, issue number, or URL, use that.
-    - If the request is about "this branch" or "the current PR", resolve local git context and use
-      `gh` only as needed to discover the branch PR.
-    - If the repository is still ambiguous after local inspection, ask for the repo identifier.
+  - If the user provides a repository, PR number, issue number, or URL, use that.
+  - If the request is about "this branch" or "the current PR", resolve local git context and use
+    `gh` only as needed to discover the branch PR.
+  - If the repository is still ambiguous after local inspection, ask for the repo identifier.
 2. Classify the request before taking action:
-    - `repo or PR triage`: summarize PRs, issues, patches, comments, labels, reactions, or
-      repository state
-    - `review follow-up`: unresolved review threads, requested changes, or inline review feedback
-    - `CI debugging`: failing checks, Actions logs, or CI root-cause analysis
-    - `publish changes`: create or switch branches, stage changes, commit, push, and open a draft PR
+  - `repo or PR triage`: summarize PRs, issues, patches, comments, labels, reactions, or
+    repository state
+  - `review follow-up`: unresolved review threads, requested changes, or inline review feedback
+  - `CI debugging`: failing checks, Actions logs, or CI root-cause analysis
+  - `publish changes`: create or switch branches, stage changes, commit, push, and open a draft PR
 3. Route to the specialist skill as soon as the category is clear:
-    - Review comments and requested changes: `../gh-address-comments/SKILL.md`
-    - Failing GitHub Actions checks: `../gh-fix-ci/SKILL.md`
-    - Commit, push, and open PR: `../yeet/SKILL.md`
+  - Review comments and requested changes: `../gh-address-comments/SKILL.md`
+  - Failing GitHub Actions checks: `../gh-fix-ci/SKILL.md`
+  - Commit, push, and open PR: `../yeet/SKILL.md`
 4. Keep the hybrid model consistent after routing:
-    - connector first for PR and issue data
-    - local `git` and `gh` only for the specific gaps the connector does not cover
+  - connector first for PR and issue data
+  - local `git` and `gh` only for the specific gaps the connector does not cover
 
 ## Default Workflow
 

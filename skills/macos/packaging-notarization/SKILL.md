@@ -14,23 +14,23 @@ hardened runtime, or distribution validation.
 ## Workflow
 
 1. Confirm the distribution goal.
-    - Local archive validation
-    - Signed distributable app
-    - Notarization troubleshooting
+  - Local archive validation
+  - Signed distributable app
+  - Notarization troubleshooting
 
 2. Inspect the artifact.
-    - Validate app bundle structure.
-    - Check nested frameworks, helper tools, and entitlements.
+  - Validate app bundle structure.
+  - Check nested frameworks, helper tools, and entitlements.
 
 3. Inspect signing and runtime prerequisites.
-    - Hardened runtime
-    - Signing identity
-    - Nested code signatures
-    - Required entitlements
+  - Hardened runtime
+  - Signing identity
+  - Nested code signatures
+  - Required entitlements
 
 4. Explain notarization readiness or failure.
-    - Separate packaging issues from trust-policy symptoms.
-    - Point to the minimum follow-up validation commands.
+  - Separate packaging issues from trust-policy symptoms.
+  - Point to the minimum follow-up validation commands.
 
 ## Guardrails
 

@@ -78,9 +78,9 @@ Before starting any training job, verify:
 - Must have an **`image` column** (PIL images) and a **`mask` column** (binary ground-truth
   segmentation mask)
 - Must have a **prompt** — either:
-    - A **`prompt` column** with JSON containing `{"bbox": [x0,y0,x1,y1]}` or `{"point": [x,y]}`
-    - OR a dedicated **`bbox`** column with `[x0,y0,x1,y1]` values
-    - OR a dedicated **`point`** column with `[x,y]` or `[[x,y],...]` values
+  - A **`prompt` column** with JSON containing `{"bbox": [x0,y0,x1,y1]}` or `{"point": [x,y]}`
+  - OR a dedicated **`bbox`** column with `[x0,y0,x1,y1]` values
+  - OR a dedicated **`point`** column with `[x,y]` or `[[x,y],...]` values
 - Bboxes should be in **xyxy** format (absolute pixel coordinates)
 - Example dataset: `merve/MicroMat-mini` (image matting with bbox prompts)
 - **ALWAYS validate unknown datasets** before GPU training (see Dataset Validation section)

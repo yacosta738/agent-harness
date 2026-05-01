@@ -52,41 +52,46 @@ You MUST complete each phase before proceeding to the next.
 
 ### Phase 0: Build a Deterministic Feedback Loop
 
-**This is the most critical step.** Before guessing or tracing, you MUST have a fast, deterministic, agent-runnable pass/fail signal. If you don't have one, no amount of staring at code will save you. Be aggressive. Be creative. Refuse to give up.
+**This is the most critical step.** Before guessing or tracing, you MUST have a fast, deterministic,
+agent-runnable pass/fail signal. If you don't have one, no amount of staring at code will save you.
+Be aggressive. Be creative. Refuse to give up.
 
 Ways to construct a loop (in order of preference):
 
 1. **Failing test** at whatever seam reaches the bug (unit, integration, e2e).
 2. **Curl/HTTP script** against a running dev server.
 3. **CLI invocation** with a fixture input, diffing stdout.
-4. **Throwaway harness**: Spin up a minimal subset of the system (one service, mocked deps) that exercises the code path.
+4. **Throwaway harness**: Spin up a minimal subset of the system (one service, mocked deps) that
+   exercises the code path.
 5. **Differential loop**: Run the same input through old-version vs new-version and diff outputs.
 
-*For non-deterministic bugs (flakes):* The goal is a higher reproduction rate. Loop the trigger 100x, add stress, narrow timing windows. A 50%-flake is debuggable; a 1% flake is not.
+*For non-deterministic bugs (flakes):* The goal is a higher reproduction rate. Loop the trigger
+100x, add stress, narrow timing windows. A 50%-flake is debuggable; a 1% flake is not.
 
-If you cannot build a loop, stop and say so explicitly. Do NOT proceed to hypothesize without a loop.
+If you cannot build a loop, stop and say so explicitly. Do NOT proceed to hypothesize without a
+loop.
 
 ### Phase 1: Root Cause Investigation
 
 **BEFORE attempting ANY fix:**
 
 1. **Read Error Messages Carefully**
-    - Don't skip past errors or warnings
-    - They often contain the exact solution
-    - Read stack traces completely
-    - Note line numbers, file paths, error codes
+  - Don't skip past errors or warnings
+  - They often contain the exact solution
+  - Read stack traces completely
+  - Note line numbers, file paths, error codes
 
 2. **Reproduce Consistently**
-    - Can you trigger it reliably?
-    - What are the exact steps?
-    - Does it happen every time?
-    - If not reproducible → gather more data, don't guess
+  - Can you trigger it reliably?
+  - What are the exact steps?
+  - Does it happen every time?
+  - If not reproducible → gather more data, don't guess
 
 3. **Check Recent Changes**
-    - What changed that could cause this?
-    - Git diff, recent commits
-    - New dependencies, config changes
-    - Environmental differences
+  - What changed that could cause this?
+  - Git diff, recent commits
+  - New dependencies, config changes
+  - Environmental differences
 
 4. **Gather Evidence in Multi-Component Systems**
 
@@ -135,98 +140,105 @@ If you cannot build a loop, stop and say so explicitly. Do NOT proceed to hypoth
    See `root-cause-tracing.md` in this directory for the complete backward tracing technique.
 
    **Quick version:**
-    - Where does bad value originate?
-    - What called this with bad value?
-    - Keep tracing up until you find the source
-    - Fix at source, not at symptom
+  - Where does bad value originate?
+  - What called this with bad value?
+  - Keep tracing up until you find the source
+  - Fix at source, not at symptom
 
 ### Phase 2: Pattern Analysis
 
 **Find the pattern before fixing:**
 
 1. **Find Working Examples**
-    - Locate similar working code in same codebase
-    - What works that's similar to what's broken?
+  - Locate similar working code in same codebase
+  - What works that's similar to what's broken?
 
 2. **Compare Against References**
-    - If implementing pattern, read reference implementation COMPLETELY
-    - Don't skim - read every line
-    - Understand the pattern fully before applying
+  - If implementing pattern, read reference implementation COMPLETELY
+  - Don't skim - read every line
+  - Understand the pattern fully before applying
 
 3. **Identify Differences**
-    - What's different between working and broken?
-    - List every difference, however small
-    - Don't assume "that can't matter"
+  - What's different between working and broken?
+  - List every difference, however small
+  - Don't assume "that can't matter"
 
 4. **Understand Dependencies**
-    - What other components does this need?
-    - What settings, config, environment?
-    - What assumptions does it make?
+  - What other components does this need?
+  - What settings, config, environment?
+  - What assumptions does it make?
 
 ### Phase 3: Hypothesis and Testing
 
 **Scientific method:**
 
 1. **Form 3-5 Ranked Hypotheses**
-    - Generate multiple hypotheses BEFORE testing any of them (single-hypothesis generation anchors you on the first plausible idea).
-    - Each hypothesis MUST be **falsifiable**: "If X is the cause, then changing Y will make the bug disappear."
-    - Present the ranked list to the user before testing (they may have domain knowledge that re-ranks them instantly).
+  - Generate multiple hypotheses BEFORE testing any of them (single-hypothesis generation anchors
+    you on the first plausible idea).
+  - Each hypothesis MUST be **falsifiable**: "If X is the cause, then changing Y will make the bug
+    disappear."
+  - Present the ranked list to the user before testing (they may have domain knowledge that re-ranks
+    them instantly).
 
 2. **Instrument One Variable at a Time**
-    - Make the SMALLEST possible change to test the hypothesis.
-    - **Tag every debug log** with a unique prefix (e.g., `[DEBUG-a4f2]`). Cleanup at the end becomes a single grep.
-    - *Perf branch*: For performance regressions, logs are usually wrong. Establish a baseline measurement first (timing harness, profiler, query plan), then bisect.
+  - Make the SMALLEST possible change to test the hypothesis.
+  - **Tag every debug log** with a unique prefix (e.g., `[DEBUG-a4f2]`). Cleanup at the end becomes
+    a single grep.
+  - *Perf branch*: For performance regressions, logs are usually wrong. Establish a baseline
+    measurement first (timing harness, profiler, query plan), then bisect.
 
 3. **Verify Before Continuing**
-    - Did it work? Yes → Phase 4
-    - Didn't work? Form NEW hypothesis
-    - DON'T add more fixes on top
+  - Did it work? Yes → Phase 4
+  - Didn't work? Form NEW hypothesis
+  - DON'T add more fixes on top
 
 4. **When You Don't Know**
-    - Say "I don't understand X"
-    - Don't pretend to know
-    - Ask for help
-    - Research more
+  - Say "I don't understand X"
+  - Don't pretend to know
+  - Ask for help
+  - Research more
 
 ### Phase 4: Implementation & Cleanup
 
 **Fix the root cause, not the symptom:**
 
 1. **Create Failing Test Case (Regression Test)**
-    - Write the regression test *before* the fix, but ONLY if there is a correct seam for it.
-    - If the only available seam is too shallow (e.g., unit test that can't replicate the chain that triggered the bug), it gives false confidence.
-    - **If no correct seam exists, that itself is the finding.** Document the architectural limitation. Do not force a bad test.
+  - Write the regression test *before* the fix, but ONLY if there is a correct seam for it.
+  - If the only available seam is too shallow (e.g., unit test that can't replicate the chain that
+    triggered the bug), it gives false confidence.
+  - **If no correct seam exists, that itself is the finding.** Document the architectural
+    limitation. Do not force a bad test.
 
 2. **Implement Single Fix**
-    - Address the root cause identified
-    - ONE change at a time
-    - No "while I'm here" improvements
-    - No bundled refactoring
+  - Address the root cause identified
+  - ONE change at a time
+  - No "while I'm here" improvements
+  - No bundled refactoring
 
 3. **Verify Fix & Cleanup**
-    - Does the Phase 0 loop now pass?
-    - Are ALL `[DEBUG-...]` instrumentation logs removed?
-    - Are throwaway prototypes deleted?
-    - Is the correct hypothesis stated in the commit message?
+  - Does the Phase 0 loop now pass?
+  - Are ALL `[DEBUG-...]` instrumentation logs removed?
+  - Are throwaway prototypes deleted?
+  - Is the correct hypothesis stated in the commit message?
 
 4. **If Fix Doesn't Work**
-    - STOP
-    - Count: How many fixes have you tried?
-    - If < 3: Return to Phase 1, re-analyze with new information
-    - **If ≥ 3: STOP and question the architecture (step 5 below)**
-    - DON'T attempt Fix #4 without architectural discussion
+  - STOP
+  - Count: How many fixes have you tried?
+  - If < 3: Return to Phase 1, re-analyze with new information
+  - **If ≥ 3: STOP and question the architecture (step 5 below)**
+  - DON'T attempt Fix #4 without architectural discussion
 
 5. **If 3+ Fixes Failed: Question Architecture**
 
    **Pattern indicating architectural problem:**
-    - Each fix reveals new shared state/coupling/problem in different place
-    - Fixes require "massive refactoring" to implement
-    - Each fix creates new symptoms elsewhere
+  - Each fix reveals new shared state/coupling/problem in different place
+  - Fixes require "massive refactoring" to implement
+  - Each fix creates new symptoms elsewhere
 
    **STOP and question fundamentals:**
-    - Is this pattern fundamentally sound?
-    - Are we "sticking with it through sheer inertia"?
-    - Should we refactor architecture vs. continue fixing symptoms?
+  - Is this pattern fundamentally sound?
+  - Are we "sticking with it through sheer inertia"?
+  - Should we refactor architecture vs. continue fixing symptoms?
 
    **Discuss with your human partner before attempting more fixes**
 

@@ -24,28 +24,28 @@ the source of truth, while AppKit handles the imperative edge.
 ## Workflow
 
 1. Name the capability gap precisely.
-    - Window behavior
-    - Text system behavior
-    - Menu validation
-    - Drag and drop
-    - File open/save panels
-    - First responder control
+  - Window behavior
+  - Text system behavior
+  - Menu validation
+  - Drag and drop
+  - File open/save panels
+  - First responder control
 
 2. Pick the smallest boundary that solves it.
-    - Avoid porting a whole screen to AppKit when one wrapped control or coordinator would do.
+  - Avoid porting a whole screen to AppKit when one wrapped control or coordinator would do.
 
 3. Keep ownership explicit.
-    - SwiftUI owns value state, selection, and observable models.
-    - AppKit objects stay inside the representable, coordinator, or bridge object.
+  - SwiftUI owns value state, selection, and observable models.
+  - AppKit objects stay inside the representable, coordinator, or bridge object.
 
 4. Expose a narrow interface back to SwiftUI.
-    - Bindings for editable state
-    - Small callbacks for events
-    - Focused bridge services only when necessary
+  - Bindings for editable state
+  - Small callbacks for events
+  - Focused bridge services only when necessary
 
 5. Validate lifecycle assumptions.
-    - SwiftUI may recreate representables.
-    - Coordinators exist to hold delegate and target-action glue, not as a second app architecture.
+  - SwiftUI may recreate representables.
+  - Coordinators exist to hold delegate and target-action glue, not as a second app architecture.
 
 ## References
 

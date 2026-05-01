@@ -401,8 +401,10 @@ setup.
 | **Web Analytics**  | Custom drain endpoint only                            | Requires manual drain creation via REST API or Dashboard (`https://vercel.com/dashboard/{team}/~/settings/log-drains`) |
 
 > **Key distinction:** When you install an observability vendor via the Marketplace, it
-> auto-configures drains for **logs and traces** only. Speed Insights and Web Analytics data require a
-> separate, manually configured drain pointing to a custom endpoint. See `⤳ skill: observability` for
+> auto-configures drains for **logs and traces** only. Speed Insights and Web Analytics data require
+> a
+> separate, manually configured drain pointing to a custom endpoint. See `⤳ skill: observability`
+> for
 > drain setup details.
 
 ### Agentic Flow: Observability Vendor Setup

@@ -83,12 +83,12 @@ Browse available Transformers.js models on Hugging Face Hub:
 
 - **All models**: https://huggingface.co/models?library=transformers.js&sort=trending
 - **By task**: Add `pipeline_tag` parameter
-    - Text
-      generation: https://huggingface.co/models?pipeline_tag=text-generation&library=transformers.js&sort=trending
-    - Image
-      classification: https://huggingface.co/models?pipeline_tag=image-classification&library=transformers.js&sort=trending
-    - Speech
-      recognition: https://huggingface.co/models?pipeline_tag=automatic-speech-recognition&library=transformers.js&sort=trending
+  - Text
+    generation: https://huggingface.co/models?pipeline_tag=text-generation&library=transformers.js&sort=trending
+  - Image
+    classification: https://huggingface.co/models?pipeline_tag=image-classification&library=transformers.js&sort=trending
+  - Speech
+    recognition: https://huggingface.co/models?pipeline_tag=automatic-speech-recognition&library=transformers.js&sort=trending
 
 **Tip:** Filter by task type, sort by trending/downloads, and check model cards for performance
 metrics and usage examples.

@@ -60,15 +60,15 @@ If `nvidia-smi` is unavailable, either:
 # Core Workflow
 
 1. Choose the evaluation framework.
-    - Use `inspect-ai` when you want explicit task control and inspect-native flows.
-    - Use `lighteval` when the benchmark is naturally expressed as a lighteval task string,
-      especially leaderboard-style tasks.
+  - Use `inspect-ai` when you want explicit task control and inspect-native flows.
+  - Use `lighteval` when the benchmark is naturally expressed as a lighteval task string,
+    especially leaderboard-style tasks.
 2. Choose the inference backend.
-    - Prefer `vllm` for throughput on supported architectures.
-    - Use Hugging Face Transformers (`--backend hf`) or `accelerate` as compatibility fallbacks.
+  - Prefer `vllm` for throughput on supported architectures.
+  - Use Hugging Face Transformers (`--backend hf`) or `accelerate` as compatibility fallbacks.
 3. Start with a smoke test.
-    - `inspect-ai`: add `--limit 10` or similar.
-    - `lighteval`: add `--max-samples 10`.
+  - `inspect-ai`: add `--limit 10` or similar.
+  - `lighteval`: add `--max-samples 10`.
 4. Scale up only after the smoke test passes.
 5. If the user wants remote execution, hand off to `hugging-face-jobs` with the same script + args.
 
@@ -201,17 +201,17 @@ For smoke tests, prefer cheaper local runs plus `--limit` or `--max-samples`.
 # Troubleshooting
 
 - CUDA or vLLM OOM:
-    - reduce `--batch-size`
-    - reduce `--gpu-memory-utilization`
-    - switch to a smaller model for the smoke test
-    - if necessary, hand off to `hugging-face-jobs`
+  - reduce `--batch-size`
+  - reduce `--gpu-memory-utilization`
+  - switch to a smaller model for the smoke test
+  - if necessary, hand off to `hugging-face-jobs`
 - Model unsupported by `vllm`:
-    - switch to `--backend hf` for `inspect-ai`
-    - switch to `--backend accelerate` for `lighteval`
+  - switch to `--backend hf` for `inspect-ai`
+  - switch to `--backend accelerate` for `lighteval`
 - Gated/private repo access fails:
-    - verify `HF_TOKEN`
+  - verify `HF_TOKEN`
 - Custom model code required:
-    - add `--trust-remote-code`
+  - add `--trust-remote-code`
 
 # Examples
 

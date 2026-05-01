@@ -114,9 +114,11 @@ e.g. `hf auth whoami`.
 - `hf endpoints catalog list` — List available Catalog models.
 - `hf endpoints delete NAME` — Delete an Inference Endpoint permanently. `[--namespace TEXT --yes]`
 -
+
 `hf endpoints deploy NAME --repo TEXT --framework TEXT --accelerator TEXT --instance-size TEXT --instance-type TEXT --region TEXT --vendor TEXT` —
 Deploy an Inference Endpoint from a Hub repository.
 `[--namespace TEXT --task TEXT --min-replica INTEGER --max-replica INTEGER --scale-to-zero-timeout INTEGER --scaling-metric CHOICE --scaling-threshold FLOAT]`
+
 - `hf endpoints describe NAME` — Get information about an existing endpoint. `[--namespace TEXT]`
 - `hf endpoints list` — Lists all Inference Endpoints for the given namespace.
   `[--namespace TEXT --format CHOICE --quiet]`

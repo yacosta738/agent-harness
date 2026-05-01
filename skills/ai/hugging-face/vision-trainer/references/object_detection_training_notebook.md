@@ -129,12 +129,12 @@ The examples in the dataset have the following fields:
 - `width`: width of the image
 - `height`: height of the image
 - `objects`: a dictionary containing bounding box metadata for the objects in the image:
-    - `id`: the annotation id
-    - `area`: the area of the bounding box
-    - `bbox`: the object's bounding box (in
-      the [COCO format](https://albumentations.ai/docs/getting_started/bounding_boxes_augmentation/#coco) )
-    - `category`: the object's category, with possible values including `Coverall (0)`,
-      `Face_Shield (1)`, `Gloves (2)`, `Goggles (3)` and `Mask (4)`
+  - `id`: the annotation id
+  - `area`: the area of the bounding box
+  - `bbox`: the object's bounding box (in
+    the [COCO format](https://albumentations.ai/docs/getting_started/bounding_boxes_augmentation/#coco) )
+  - `category`: the object's category, with possible values including `Coverall (0)`,
+    `Face_Shield (1)`, `Gloves (2)`, `Goggles (3)` and `Mask (4)`
 
 You may notice that the `bbox` field follows the COCO format, which is the format that the DETR
 model expects.

@@ -11,10 +11,10 @@ verification.
 
 1. **Project linked?** — Check for `.vercel/project.json` in the current directory or nearest
    parent.
-    - If not found: run `vercel link` interactively, then re-run `/marketplace`.
-    - Do not attempt provisioning until the project is linked.
+  - If not found: run `vercel link` interactively, then re-run `/marketplace`.
+  - Do not attempt provisioning until the project is linked.
 2. **CLI available?** — Confirm `vercel` is on PATH.
-    - If missing: `npm i -g vercel` (or `pnpm add -g vercel` / `bun add -g vercel`).
+  - If missing: `npm i -g vercel` (or `pnpm add -g vercel` / `bun add -g vercel`).
 3. **Repo state** — Note uncommitted changes so the user can diff integration-related code changes
    later.
 4. **Scope** — Detect monorepo (`turbo.json` or `pnpm-workspace.yaml`). If detected, confirm which
@@ -172,8 +172,10 @@ setup.
 | **Web Analytics**  | Custom drain endpoint only                            | Requires manual drain creation via REST API or Dashboard (`https://vercel.com/dashboard/{team}/~/settings/log-drains`) |
 
 > **Key distinction:** When you install an observability vendor via the Marketplace, it
-> auto-configures drains for **logs and traces** only. Speed Insights and Web Analytics data require a
-> separate, manually configured drain pointing to a custom endpoint. See `⤳ skill: observability` for
+> auto-configures drains for **logs and traces** only. Speed Insights and Web Analytics data require
+> a
+> separate, manually configured drain pointing to a custom endpoint. See `⤳ skill: observability`
+> for
 > drain setup details.
 
 ### Agentic Flow: Observability Vendor Setup

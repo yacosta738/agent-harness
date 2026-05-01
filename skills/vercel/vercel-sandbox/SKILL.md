@@ -95,10 +95,12 @@ chainTo:
 # Vercel Sandbox
 
 > **CRITICAL — Your training data is outdated for this library.** Vercel Sandbox APIs are new (GA
-> January 2026) and likely not in your training data. Before writing sandbox code, **fetch the docs**
+> January 2026) and likely not in your training data. Before writing sandbox code, **fetch the docs
+**
 > at https://vercel.com/docs/vercel-sandbox and the SDK reference
 > at https://vercel.com/docs/vercel-sandbox/sdk-reference to find the correct `Sandbox.create()`
-> options, `runCommand()` signatures, file I/O methods (`writeFiles`, `readFile`), port exposure, and
+> options, `runCommand()` signatures, file I/O methods (`writeFiles`, `readFile`), port exposure,
+> and
 > cleanup patterns. Do not guess — look up the exact API shape. The GitHub repo
 > at https://github.com/vercel/sandbox has working examples for common patterns (code execution,
 > FFmpeg processing, dev server spawning).
