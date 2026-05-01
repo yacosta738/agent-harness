@@ -108,6 +108,14 @@
       ],
       "enabled": true
     },
+    "semgrep": {
+      "type": "local",
+      "command": [
+        "semgrep",
+        "mcp"
+      ],
+      "enabled": true
+    },
     "cloudflare-api": {
       "type": "remote",
       "url": "https://mcp.cloudflare.com/mcp",
