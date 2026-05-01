@@ -272,6 +272,7 @@
       "description": "Archive completed change artifacts",
       "hidden": true,
       "mode": "subagent",
+      "model": "free-stack",
       "prompt": "You are an SDD executor for the archive phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-archive/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,

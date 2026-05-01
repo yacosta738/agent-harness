@@ -7,11 +7,13 @@ description: "You MUST use this before any creative work - creating features, bu
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
+**Use this skill for complex tasks that DO NOT require a full Spec-Driven Development (SDD) cycle** (like scripts, isolated utilities, spikes, or focused DevOps tasks). If the work is a substantial feature, use the standard SDD workflow (`sdd-new` / `sdd-explore`) instead.
+
 Start by understanding the current project context, then ask questions one at a time to refine the
 idea. Once you understand what you're building, present the design and get user approval.
 
 <HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it.
 </HARD-GATE>
 
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
@@ -25,14 +27,16 @@ approval.
 
 You MUST create a task for each of these items and complete them in order:
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-3. **Propose 2-3 approaches** — with trade-offs and your recommendation
-4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — if OpenSpec/SDD is active, save to `openspec/changes/{change-name}/design.md`; otherwise save to `docs/plans/YYYY-MM-DD-<topic>-design.md`; commit only when your workflow/policies require it
-6. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope
-7. **User reviews written spec** — ask user to review the spec file before proceeding
-8. **Transition to implementation** — if OpenSpec/SDD is active, continue with `sdd-tasks`; otherwise invoke `writing-plans` to create implementation plan
+1. **Explore project context** — check files, docs, recent commits, `CONTEXT.md`, and ADRs (`docs/adr/`)
+2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria. **Always provide your recommended answer** to reduce cognitive load on the user.
+3. **Challenge terminology** — if the user uses fuzzy terms or contradicts `CONTEXT.md`, challenge them and propose canonical terms.
+4. **Propose 2-3 approaches** — with trade-offs and your recommendation
+5. **Present design** — in sections scaled to their complexity, get user approval after each section
+6. **Capture domain language** — if a new term is defined during the conversation, offer to update `CONTEXT.md`. If the decision is hard-to-reverse and surprising, offer to write an ADR.
+7. **Write design doc** — save the design to `tmp/plans/YYYY-MM-DD-<topic>-design.md` (make sure `tmp/` is in `.gitignore`). These are ephemeral session guides, not long-term documentation.
+8. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope
+9. **User reviews written spec** — ask user to review the spec file before proceeding
+10. **Transition to implementation** — invoke `writing-plans` to create the tactical implementation plan
 
 ## The Process
 
@@ -52,6 +56,13 @@ You MUST create a task for each of these items and complete them in order:
 - Propose 2-3 different approaches with trade-offs
 - Present options conversationally with your recommendation and reasoning
 - Lead with your recommended option and explain why
+
+**Domain language and ADR discipline:**
+
+- Use `CONTEXT.md` or `CONTEXT-MAP.md` if present to understand the project's ubiquitous language.
+- When the user uses a term that conflicts with `CONTEXT.md`, call it out immediately.
+- When the user uses vague terms, propose a precise canonical term.
+- Only offer to create an ADR (`docs/adr/`) when a decision is: 1) Hard to reverse, 2) Surprising without context, AND 3) The result of a real trade-off. Skip ADRs for trivial choices.
 
 **Presenting the design:**
 
@@ -79,9 +90,9 @@ You MUST create a task for each of these items and complete them in order:
 
 **Documentation:**
 
-- If OpenSpec/SDD is active, write the validated design to `openspec/changes/{change-name}/design.md`
-- Otherwise, write it to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Commit only when your workflow/policies require it
+- Write the validated design to a temporary location: `tmp/plans/YYYY-MM-DD-<topic>-design.md`
+- *Note*: Ensure the `tmp/` folder is added to `.gitignore`. These plans are meant to guide the current session, not act as permanent project artifacts. If the work requires permanent documentation, use the SDD workflow instead.
+- This path is configurable by the user, but defaults to `tmp/plans/`.
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
@@ -104,9 +115,8 @@ Wait for the user's response. Only proceed once the user approves.
 
 **Implementation:**
 
-- If OpenSpec/SDD is active, continue with `sdd-tasks`
-- Otherwise, invoke the `writing-plans` skill to create a detailed implementation plan
-- In non-SDD mode, do NOT invoke any other skill. `writing-plans` is the next step.
+- Invoke the `writing-plans` skill to create a detailed tactical implementation plan in `tmp/plans/`.
+- If, during brainstorming, the scope is discovered to require durable specs, multi-phase architecture decisions, or cross-cutting product behavior, STOP and recommend switching to the SDD workflow instead of continuing with temporary plans.
 
 ## Key Principles
 

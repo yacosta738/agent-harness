@@ -15,7 +15,7 @@ write the skill (documentation), watch tests pass (agent complies), and refactor
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the
 skill teaches the right thing.
 
-**REQUIRED BACKGROUND:** Understand `test-driven-development` skill before using this one.
+**REQUIRED BACKGROUND:** Load/use `test-driven-development` before using this one.
 Same RED-GREEN-REFACTOR cycle, applied to documentation.
 
 ## What is a Skill?

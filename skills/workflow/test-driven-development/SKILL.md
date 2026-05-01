@@ -47,6 +47,28 @@ Write code before the test? Delete it. Start over.
 
 Implement fresh from tests. Period.
 
+## Anti-Pattern: Horizontal Slices
+
+**DO NOT write all tests first, then all implementation.** This is "horizontal slicing" - treating RED as "write all tests" and GREEN as "write all code."
+
+This produces **crap tests**:
+- Tests written in bulk test *imagined* behavior, not *actual* behavior.
+- You end up testing the *shape* of things (data structures, signatures) rather than user-facing behavior.
+- You outrun your headlights, committing to test structure before understanding the implementation.
+
+**Correct approach**: Vertical slices via tracer bullets. One test → one implementation → repeat.
+
+```
+WRONG (horizontal):
+  RED:   test1, test2, test3
+  GREEN: impl1, impl2, impl3
+
+RIGHT (vertical):
+  RED→GREEN: test1→impl1
+  RED→GREEN: test2→impl2
+  RED→GREEN: test3→impl3
+```
+
 ## Red-Green-Refactor
 
 ```dot
@@ -71,9 +93,9 @@ digraph tdd_cycle {
 }
 ```
 
-### RED - Write Failing Test
+### RED - Write Failing Test (Tracer Bullet)
 
-Write one minimal test showing what should happen.
+Write one minimal test showing what should happen. **This test should exercise real code paths through public APIs.** Tests should describe *what* the system does, not *how* it does it. They should survive refactors because they don't care about internal structure.
 
 <Good>
 ```typescript

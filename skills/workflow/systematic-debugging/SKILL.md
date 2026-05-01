@@ -50,6 +50,21 @@ Use for ANY technical issue:
 
 You MUST complete each phase before proceeding to the next.
 
+### Phase 0: Build a Deterministic Feedback Loop
+
+**This is the most critical step.** Before guessing or tracing, you MUST have a fast, deterministic, agent-runnable pass/fail signal. If you don't have one, no amount of staring at code will save you. Be aggressive. Be creative. Refuse to give up.
+
+Ways to construct a loop (in order of preference):
+1. **Failing test** at whatever seam reaches the bug (unit, integration, e2e).
+2. **Curl/HTTP script** against a running dev server.
+3. **CLI invocation** with a fixture input, diffing stdout.
+4. **Throwaway harness**: Spin up a minimal subset of the system (one service, mocked deps) that exercises the code path.
+5. **Differential loop**: Run the same input through old-version vs new-version and diff outputs.
+
+*For non-deterministic bugs (flakes):* The goal is a higher reproduction rate. Loop the trigger 100x, add stress, narrow timing windows. A 50%-flake is debuggable; a 1% flake is not.
+
+If you cannot build a loop, stop and say so explicitly. Do NOT proceed to hypothesize without a loop.
+
 ### Phase 1: Root Cause Investigation
 
 **BEFORE attempting ANY fix:**
@@ -149,15 +164,15 @@ You MUST complete each phase before proceeding to the next.
 
 **Scientific method:**
 
-1. **Form Single Hypothesis**
-    - State clearly: "I think X is the root cause because Y"
-    - Write it down
-    - Be specific, not vague
+1. **Form 3-5 Ranked Hypotheses**
+    - Generate multiple hypotheses BEFORE testing any of them (single-hypothesis generation anchors you on the first plausible idea).
+    - Each hypothesis MUST be **falsifiable**: "If X is the cause, then changing Y will make the bug disappear."
+    - Present the ranked list to the user before testing (they may have domain knowledge that re-ranks them instantly).
 
-2. **Test Minimally**
-    - Make the SMALLEST possible change to test hypothesis
-    - One variable at a time
-    - Don't fix multiple things at once
+2. **Instrument One Variable at a Time**
+    - Make the SMALLEST possible change to test the hypothesis.
+    - **Tag every debug log** with a unique prefix (e.g., `[DEBUG-a4f2]`). Cleanup at the end becomes a single grep.
+    - *Perf branch*: For performance regressions, logs are usually wrong. Establish a baseline measurement first (timing harness, profiler, query plan), then bisect.
 
 3. **Verify Before Continuing**
     - Did it work? Yes → Phase 4
@@ -170,16 +185,14 @@ You MUST complete each phase before proceeding to the next.
     - Ask for help
     - Research more
 
-### Phase 4: Implementation
+### Phase 4: Implementation & Cleanup
 
 **Fix the root cause, not the symptom:**
 
-1. **Create Failing Test Case**
-    - Simplest possible reproduction
-    - Automated test if possible
-    - One-off test script if no framework
-    - MUST have before fixing
-    - Use the `superpowers:test-driven-development` skill for writing proper failing tests
+1. **Create Failing Test Case (Regression Test)**
+    - Write the regression test *before* the fix, but ONLY if there is a correct seam for it.
+    - If the only available seam is too shallow (e.g., unit test that can't replicate the chain that triggered the bug), it gives false confidence.
+    - **If no correct seam exists, that itself is the finding.** Document the architectural limitation. Do not force a bad test.
 
 2. **Implement Single Fix**
     - Address the root cause identified
@@ -187,10 +200,11 @@ You MUST complete each phase before proceeding to the next.
     - No "while I'm here" improvements
     - No bundled refactoring
 
-3. **Verify Fix**
-    - Test passes now?
-    - No other tests broken?
-    - Issue actually resolved?
+3. **Verify Fix & Cleanup**
+    - Does the Phase 0 loop now pass?
+    - Are ALL `[DEBUG-...]` instrumentation logs removed?
+    - Are throwaway prototypes deleted?
+    - Is the correct hypothesis stated in the commit message?
 
 4. **If Fix Doesn't Work**
     - STOP
@@ -290,8 +304,8 @@ These techniques are part of systematic debugging and available in this director
 
 **Related skills:**
 
-- **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
-- **superpowers:verification-before-completion** - Verify fix worked before claiming success
+- **`test-driven-development`** - Load/use before creating the failing regression test in Phase 4.
+- **`verification-before-completion`** - Verify fix worked before claiming success.
 
 ## Real-World Impact
 
