@@ -52,6 +52,17 @@ Project management specialist for Linear workflows.
 Cuban-style SDD orchestrator. Coordinates the full Spec-Driven Development lifecycle by delegating
 to dedicated sub-agents. Never executes phase work inline.
 
+Before acting, `kerrigan` classifies each request into one of four lanes:
+
+- Direct response for Q&A, tiny obvious edits, and quick lookups.
+- Skill-led simple flow for structured but temporary work (`brainstorming`,
+  `systematic-debugging`, `writing-plans`, `verification-before-completion`).
+- Specialist sub-agent for discipline-specific depth without full SDD overhead.
+- Full SDD cycle for durable, cross-cutting, ambiguous, or high-risk changes.
+
+Rule of thumb: if the work can stay local and temporary, prefer a workflow skill. If it needs
+durable artifacts, approval gates, resumability, or architecture coordination, route to SDD.
+
 See [SDD Workflow](#sdd-workflow) below for details.
 
 ### SDD Phase Sub-Agents (9 executors)
@@ -59,7 +70,7 @@ See [SDD Workflow](#sdd-workflow) below for details.
 Each phase has a dedicated executor that reads its SKILL.md and the shared protocol:
 
 | Agent         | Description                                                 |
-|---------------|-------------------------------------------------------------|
+| ------------- | ----------------------------------------------------------- |
 | `sdd-init`    | Bootstrap openspec structure, detect tech stack             |
 | `sdd-explore` | Investigate codebase, compare approaches                    |
 | `sdd-propose` | Create change proposal with scope and rollback plan         |
@@ -81,12 +92,12 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
                                 (parallel)
 ```
 
-### Commands
+### SDD Commands
 
 **Phase commands** (routed to dedicated sub-agents):
 
 | Command                | Agent       | Description                     |
-|------------------------|-------------|---------------------------------|
+| ---------------------- | ----------- | ------------------------------- |
 | `/sdd-init`            | sdd-init    | Initialize openspec structure   |
 | `/sdd-explore <topic>` | sdd-explore | Investigate before committing   |
 | `/sdd-propose <name>`  | sdd-propose | Create change proposal          |
@@ -100,7 +111,7 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 **Meta-commands** (routed to kerrigan orchestrator):
 
 | Command                | Description                       |
-|------------------------|-----------------------------------|
+| ---------------------- | --------------------------------- |
 | `/sdd-new <name>`      | explore + propose                 |
 | `/sdd-ff <name>`       | propose + [spec + design] + tasks |
 | `/sdd-continue [name]` | Resume next phase from state.yaml |
@@ -223,7 +234,7 @@ commands/
 Process skills that apply to any project or stack.
 
 | Skill                            | When to load                                              |
-|----------------------------------|-----------------------------------------------------------|
+| -------------------------------- | --------------------------------------------------------- |
 | `brainstorming`                  | Before any creative work — features, components, behavior |
 | `systematic-debugging`           | Debugging unknown or complex failures                     |
 | `test-driven-development`        | Writing tests before implementation                       |
@@ -255,7 +266,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 **Core platform**
 
 | Skill                | Covers                                                          |
-|----------------------|-----------------------------------------------------------------|
+| -------------------- | --------------------------------------------------------------- |
 | `nextjs`             | App Router, Server Components, Server Actions, Cache Components |
 | `vercel-functions`   | Serverless, Edge, Fluid Compute, streaming, Cron Jobs           |
 | `vercel-cli`         | All CLI commands, MCP integration, marketplace discovery        |
@@ -272,7 +283,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 **AI / Agents**
 
 | Skill                       | Covers                                                           |
-|-----------------------------|------------------------------------------------------------------|
+| --------------------------- | ---------------------------------------------------------------- |
 | `ai-sdk`                    | AI SDK v6 — text/object generation, streaming, tool calling, MCP |
 | `ai-gateway`                | 100+ model routing, failover, cost tracking                      |
 | `ai-elements`               | Pre-built React components for AI interfaces                     |
@@ -290,7 +301,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 **Infrastructure / Security**
 
 | Skill                 | Covers                                               |
-|-----------------------|------------------------------------------------------|
+| --------------------- | ---------------------------------------------------- |
 | `vercel-firewall`     | DDoS, WAF, rate limiting, bot filter                 |
 | `vercel-flags`        | Feature flags, Flags Explorer, A/B testing           |
 | `vercel-queues`       | Durable event streaming, retries, delayed delivery   |
@@ -302,7 +313,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 **Auth / Payments / Email / CMS**
 
 | Skill      | Covers                                             |
-|------------|----------------------------------------------------|
+| ---------- | -------------------------------------------------- |
 | `auth`     | Clerk, Descope, Auth0 with Next.js                 |
 | `payments` | Stripe via Vercel Marketplace                      |
 | `email`    | Resend + React Email, domain verification          |
@@ -311,7 +322,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 **UI / Frontend**
 
 | Skill                  | Covers                                                   |
-|------------------------|----------------------------------------------------------|
+| ---------------------- | -------------------------------------------------------- |
 | `shadcn`               | shadcn/ui CLI, component installation, custom registries |
 | `react-best-practices` | React patterns and anti-patterns                         |
 | `swr`                  | Data fetching and revalidation                           |
@@ -328,7 +339,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 ### `cloudflare/` — Cloudflare platform (8)
 
 | Skill                               | Covers                                                    |
-|-------------------------------------|-----------------------------------------------------------|
+| ----------------------------------- | --------------------------------------------------------- |
 | `cloudflare`                        | Platform overview — Workers, Pages, KV, D1, R2            |
 | `wrangler`                          | CLI — deploy, dev, KV, R2, D1, secrets                    |
 | `workers-best-practices`            | Streaming, floating promises, global state, observability |
@@ -341,7 +352,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 ### `github/` — GitHub workflow (8)
 
 | Skill                 | Covers                                       |
-|-----------------------|----------------------------------------------|
+| --------------------- | -------------------------------------------- |
 | `github`              | General triage, PR/issue orientation         |
 | `gh-address-comments` | Unresolved review threads, requested changes |
 | `gh-fix-ci`           | Failing GitHub Actions — log inspection, fix |
@@ -354,7 +365,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 ### `ios/` — iOS / SwiftUI (6)
 
 | Skill                       | Covers                                   |
-|-----------------------------|------------------------------------------|
+| --------------------------- | ---------------------------------------- |
 | `ios-app-intents`           | App Intents framework                    |
 | `ios-debugger-agent`        | Xcode debugging, crash analysis          |
 | `swiftui-liquid-glass`      | Liquid Glass material (iOS 26)           |
@@ -365,7 +376,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 ### `macos/` — macOS native (11)
 
 | Skill                    | Covers                               |
-|--------------------------|--------------------------------------|
+| ------------------------ | ------------------------------------ |
 | `appkit-interop`         | AppKit ↔ SwiftUI bridging            |
 | `build-run-debug`        | Xcode build, run, debug workflow     |
 | `liquid-glass`           | Liquid Glass material (macOS 26)     |
@@ -381,7 +392,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 ### `web/` — Web quality & standards (8)
 
 | Skill               | Covers                                              |
-|---------------------|-----------------------------------------------------|
+| ------------------- | --------------------------------------------------- |
 | `accessibility`     | WCAG 2.1 audit and fixes                            |
 | `best-practices`    | Security, compatibility, code quality               |
 | `core-web-vitals`   | LCP, INP, CLS optimization                          |
@@ -431,7 +442,7 @@ references/
 ## MCP Servers
 
 | Server          | Status   | Purpose                          |
-|-----------------|----------|----------------------------------|
+| --------------- | -------- | -------------------------------- |
 | Context7        | Enabled  | Up-to-date library documentation |
 | GitHub Grep     | Enabled  | Search code across GitHub repos  |
 | Chrome DevTools | Enabled  | Browser automation and debugging |
@@ -466,7 +477,7 @@ Read:
 ## Themes
 
 | Theme          | Primary   | Secondary | Accent    |
-|----------------|-----------|-----------|-----------|
+| -------------- | --------- | --------- | --------- |
 | Aura Dark      | `#a277ff` | `#61ffca` | `#ffca85` |
 | Aura Dark Soft | `#8464c6` | `#54c59f` | `#c7a06f` |
 

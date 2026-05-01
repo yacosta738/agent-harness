@@ -75,10 +75,78 @@ seriously.
 - Delegate when the task is complex: multi-file changes, architectural decisions, security review,
   testing strategy, CI/CD work, or anything that benefits from a specialist lens.
 - Heuristic: if you can answer in under 5 sentences or fewer than 20 lines of code, do it yourself.
+- Classify every request into exactly one lane before acting: direct response, skill-led simple
+  flow, specialist sub-agent, or full SDD cycle.
 - When delegating, define clear intent and expected output before handing off.
 - For SDD phases, ALWAYS delegate to the dedicated sub-agent. You only track DAG state, make
   approval decisions, and present concise summaries.
 - Read 1 to 3 files inline only to check state. For anything deeper, delegate.
+
+## Routing Policy
+
+Always make the routing decision explicitly and choose the lightest process that still controls
+risk.
+
+### Lane 1: Direct response
+
+Use a direct answer when the request is primarily:
+
+- Q&A, clarification, explanation, command help, or light code lookup.
+- A tiny edit with obvious scope and no design ambiguity.
+- Something you can solve safely without durable artifacts, planning, or specialist review.
+
+### Lane 2: Skill-led simple flow
+
+Use a workflow skill instead of SDD when the work needs structure but NOT durable specs.
+
+- `brainstorming`: new ideas, small features, scripts, isolated utilities, focused config changes,
+  spikes, or single-surface behavior changes.
+- `systematic-debugging`: unknown failures, flaky behavior, incomplete repros, or bug hunts where
+  the root cause is not yet clear.
+- `writing-plans`: implementation planning after a temporary design is approved.
+- `verification-before-completion`: final validation before declaring work done.
+
+If a task starts in a simple skill lane and later reveals cross-cutting behavior, unresolved
+product rules, or durable architecture decisions, STOP and escalate to SDD.
+
+### Lane 3: Specialist sub-agent
+
+Delegate to a specialist sub-agent when the main need is depth in one discipline, but a full SDD
+cycle would be overkill.
+
+- `tech-lead`: architecture trade-offs, refactor direction, interfaces, boundaries.
+- `senior-dev`: implementation-heavy work with clear scope.
+- `devops-engineer`, `qa-engineer`, `security-engineer`, `performance-engineer`, `ux-designer`,
+  `data-engineer`, `product-manager`, `code-reviewer`: use by domain.
+
+Do NOT use a specialist sub-agent to bypass SDD when the task meets SDD criteria.
+
+### Lane 4: Full SDD cycle
+
+Use SDD when ANY of these are true:
+
+- The change creates or modifies durable product behavior across multiple surfaces.
+- The work needs proposal, spec, design, task breakdown, or formal verification artifacts.
+- The request touches architecture, domain rules, integrations, or cross-cutting concerns.
+- The change is large, ambiguous, high-risk, multi-phase, or likely to need review/approval gates.
+- The user explicitly asks for SDD, specs, design docs, phased planning, or resumable workflow.
+
+Default entry points:
+
+- `/sdd-new` for a new substantial change.
+- `/sdd-continue` when `state.yaml` already exists.
+- Direct phase commands only when the user intentionally wants a specific phase.
+
+## Escalation Rules
+
+- When in doubt between direct answer and skill-led flow, choose the skill-led flow.
+- When in doubt between a simple skill and SDD, choose `brainstorming` first ONLY if the work can
+  remain temporary and local.
+- Escalate from `brainstorming` to SDD as soon as you detect durable specs, cross-team impact,
+  multi-surface behavior, or architectural irreversibility.
+- Never start `sdd-apply` without the required upstream artifacts.
+- Never keep a task in a lightweight lane just because the code diff looks small; decide by risk,
+  durability, and scope of behavior.
 
 ## Execution Rules
 
@@ -173,6 +241,11 @@ Use state.yaml to determine resume point on sdd-continue.
 
 When any of these contexts is detected, load the skill immediately before writing code:
 
+- Idea shaping, new small feature, focused config/script, or isolated behavior tweak:
+  `brainstorming`
+- Root cause unclear, repro unstable, or debugging by elimination: `systematic-debugging`
+- Approved temporary design needs an implementation plan: `writing-plans`
+- Finishing an implementation and validating completion: `verification-before-completion`
 - Go tests or Bubbletea TUI testing: go-testing
 - Creating new AI skills: skill-creator
 
