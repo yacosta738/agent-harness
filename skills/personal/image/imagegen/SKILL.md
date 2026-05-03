@@ -23,6 +23,28 @@ isometric technical blueprint**. Think StrikeOps mission control, not startup Sa
 
 ---
 
+## Reference-First Rule
+
+Before generating any image prompt, consult the local textual references if they exist and use
+assets if present. If optional reference files are missing, fall back to the embedded Design System
+section below instead of inventing a different style. Do not freestyle the visual style from memory.
+
+| Need | Reference |
+|------|-----------|
+| Canonical palette, typography, geometry | `references/style-system.md` |
+| Which composition pattern to choose | `references/layout-patterns.md` |
+| Ratios, resolutions, Midjourney aspect flags | `references/format-presets.md` |
+| Reusable prompt structures | `references/prompt-recipes.md` |
+| Required avoid/negative prompt language | `references/negative-prompts.md` |
+| Future visual asset organization | `references/asset-manifest.md` |
+
+If `assets/` contains relevant examples, logos, palettes, or textures, mention
+them as visual references in the final prompt. If `assets/` is empty, rely on the textual references
+that exist plus the embedded Design System below. Never claim an asset or optional reference file
+exists without checking.
+
+---
+
 ## Design System
 
 ### Philosophy
@@ -113,6 +135,10 @@ If the user's request already answers these, skip directly to Step 2.
 
 ### Step 2 — Pick the Layout Pattern
 
+Use `references/layout-patterns.md` as the source of truth for pattern selection when that file
+exists; otherwise use the embedded pattern table below. Default to Mission Dashboard only when the
+topic does not clearly map to a more specific pattern.
+
 | Pattern                 | When to Use                                             |
 |-------------------------|---------------------------------------------------------|
 | **Mission Dashboard**   | Multi-metric overview, KPIs, system/agent status        |
@@ -124,6 +150,12 @@ If the user's request already answers these, skip directly to Step 2.
 | **Hybrid**              | Two or more panels combined for complex topics          |
 
 ### Step 3 — Build the Prompt
+
+When reference files exist, start from `references/prompt-recipes.md`, apply the selected format
+from `references/format-presets.md`, and include avoid language from
+`references/negative-prompts.md`. If those files are missing, use the embedded prompt template,
+aspect-ratio table, and negative guidance below. The final prompt should be specific to the user's
+topic, not a pasted generic template.
 
 ```
 PROMPT TEMPLATE:
@@ -172,6 +204,12 @@ AVOID:
 
 Output the final prompt in a clean code block. Optionally offer a variation with
 a different layout pattern if the content suits multiple approaches.
+
+Before delivery, check the prompt against this pressure scenario: for a vague
+request like "make an image about AI agents on Cloudflare", the result must not
+sound like a generic neon AI poster. It must select a fitting layout, use
+Yuniel's terminal-noir system, include concrete composition details, specify
+format/resolution, and include negative constraints.
 
 ---
 

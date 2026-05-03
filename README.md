@@ -3,7 +3,7 @@
 Custom agent configuration for [OpenCode](https://opencode.ai) — Cuban-style fullstack architect,
 project management, and a full Spec-Driven Development (SDD) pipeline.
 
-**136 skills · 21 commands · 15 MCP servers · 1 ecosystem reference**
+**Skills auto-discovered from `skills/` · 21 commands · MCP servers configured in `opencode.json` · ecosystem references in `references/`**
 
 ---
 
@@ -12,20 +12,19 @@ project management, and a full Spec-Driven Development (SDD) pipeline.
 ```
 opencode.json
 ├── Agents
-│   ├── kuko (primary)          — Fullstack architect, mentor, orchestrator
+│   ├── kerrigan (all)          — Fullstack architect, mentor, SDD orchestrator
 │   ├── linear-pm (subagent)    — Linear issue/sprint management
-│   ├── kerrigan (all)          — SDD orchestrator (coordinates, never executes)
 │   └── sdd-{phase} (subagent)  — 9 dedicated SDD phase executors
 ├── MCP Servers                  — External tool integrations
 ├── Permissions                  — Tiered access control
-└── Skills                       — 136 reusable instruction sets in 14 groups
+└── Skills                       — auto-discovered reusable instruction sets
 ```
 
 ---
 
 ## Agents
 
-### Kuko (Primary)
+### Kerrigan (Primary)
 
 Cuban fullstack architect (15+ years). Warm, direct, practical. Solves first, explains after.
 
@@ -47,10 +46,10 @@ Project management specialist for Linear workflows.
 - Priorities: P0 (Critical) > P1 (High) > P2 (Medium) > P3 (Low)
 - States: Backlog > Todo > In Progress > In Review > Done
 
-### SDD Kerrigan (Orchestrator)
+### SDD Orchestration
 
-Cuban-style SDD orchestrator. Coordinates the full Spec-Driven Development lifecycle by delegating
-to dedicated sub-agents. Never executes phase work inline.
+Kerrigan also coordinates the full Spec-Driven Development lifecycle by delegating to dedicated
+sub-agents. It never executes phase work inline.
 
 Before acting, `kerrigan` classifies each request into one of four lanes:
 
@@ -227,7 +226,9 @@ commands/
 
 ## Skills
 
-136 skills organized in 14 groups. Each group maps to an ecosystem or practice area.
+Skills are auto-discovered from `skills/**/SKILL.md`. Avoid treating the count below as a fixed
+contract: this ecosystem grows frequently, so the filesystem is the source of truth. Each group maps
+to an ecosystem or practice area.
 
 ### `workflow/` — Development methodology (10)
 
@@ -494,7 +495,7 @@ editors/agents/opencode/
 │   ├── sdd-*.md           ← SDD phase + meta commands (12)
 │   ├── vercel-*.md        ← Vercel operations (5)
 │   └── *.md               ← Standalone (4)
-├── skills/                ← 136 skills in 14 groups
+├── skills/                ← auto-discovered skills grouped by ecosystem/practice
 │   ├── ai/
 │   ├── android/
 │   ├── cloudflare/

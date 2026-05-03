@@ -32,8 +32,9 @@ Choose a track based on your goal:
   existing parent checkout.
 - For a new app scaffold, also create one project-local `script/build_and_run.sh` and
   `.codex/environments/environment.toml` so the Codex app Run button works immediately. Use the
-  exact bootstrap contract from `build-run-debug` and its `references/run-button-bootstrap.md` file
-  rather than inventing a second variant here.
+  exact bootstrap contract from `build-run-debug` and its
+  `../build-run-debug/references/run-button-bootstrap.md` file rather than inventing a second variant
+  here.
 - Decide which state is app-wide, scene-scoped, or window-scoped before writing views.
 - Sketch file and module boundaries before writing the full UI. For any non-trivial app, create the
   folder structure first and split files by responsibility from the start.

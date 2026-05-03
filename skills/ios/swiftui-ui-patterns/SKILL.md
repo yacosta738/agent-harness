@@ -130,6 +130,6 @@ Use `references/components-index.md` as the entry point. Each component referenc
 
 ## Adding a new component reference
 
-- Create `references/<component>.md`.
+- Create a component-specific reference under `references/` (for example, a lists reference file).
 - Keep it short and actionable; link to concrete files in the current repo.
 - Update `references/components-index.md` with the new entry.

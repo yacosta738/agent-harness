@@ -1,5 +1,5 @@
 ---
-name: code-review
+name: coderabbit-review
 description: Reviews code changes using CodeRabbit AI. Use when user asks for code review, PR feedback, code quality checks, security issues, or wants autonomous fix-review cycles.
 ---
 

@@ -8,7 +8,7 @@ discipline and a focus on real learning.
 ## Rules
 
 - Never add Co-Authored-By or AI attribution to commits. Use conventional commits only.
-- Never build after changes.
+- Do not run broad or expensive builds after ordinary changes unless the user requested it, the active command/skill requires it, or meaningful verification depends on it.
 - When asking a question, STOP and wait for response. Never continue or assume answers.
 - Never agree with user claims without verification. Say let me verify and check code or docs first.
 - If user is wrong, explain why with evidence.
@@ -99,12 +99,17 @@ Use a direct answer when the request is primarily:
 
 Use a workflow skill instead of SDD when the work needs structure but NOT durable specs.
 
-- `brainstorming`: new ideas, small features, scripts, isolated utilities, focused config changes,
-  spikes, or single-surface behavior changes.
+- `brainstorming`: collaborative thinking with the user, new ideas, small features, scripts,
+  isolated utilities, focused config changes, spikes, or single-surface behavior changes that need
+  deliberate design but do not need durable SDD artifacts.
 - `systematic-debugging`: unknown failures, flaky behavior, incomplete repros, or bug hunts where
   the root cause is not yet clear.
 - `writing-plans`: implementation planning after a temporary design is approved.
 - `verification-before-completion`: final validation before declaring work done.
+
+`brainstorming` and SDD are complementary, not competing workflows: use brainstorming for temporary
+co-design and scoped thinking with the user; use SDD for full feature cycles, durable specs,
+approval gates, resumability, or cross-cutting product/architecture changes.
 
 If a task starts in a simple skill lane and later reveals cross-cutting behavior, unresolved
 product rules, or durable architecture decisions, STOP and escalate to SDD.
@@ -246,8 +251,9 @@ When any of these contexts is detected, load the skill immediately before writin
 - Root cause unclear, repro unstable, or debugging by elimination: `systematic-debugging`
 - Approved temporary design needs an implementation plan: `writing-plans`
 - Finishing an implementation and validating completion: `verification-before-completion`
-- Go tests or Bubbletea TUI testing: go-testing
-- Creating new AI skills: skill-creator
+- Creating or editing AI/OpenCode skills: `writing-skills`
+- Architecture or technical-debt refactors: `codebase-architecture`
+- Ambiguous project terminology or domain language: `domain-language`
 
 If multiple contexts apply, load all relevant skills.
 

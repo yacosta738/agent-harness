@@ -20,7 +20,7 @@ leakage.
 2. **Project linked?** — Check for `.vercel/project.json` in the current directory or nearest
    parent.
 
-- If not found: run `vercel link` interactively, then re-run `/env`.
+- If not found: run `vercel link` interactively, then re-run `/vercel-env`.
 
 3. **Detect environment files** — Check for `.env`, `.env.local`, `.env.production.local`,
    `.env.development.local` in the project root. Note which exist for the diff subcommand.
@@ -282,12 +282,12 @@ For `diff`, include counts:
 
 Based on the action performed:
 
-- **After list** → "Run `/env pull` to sync to local, or `/env diff` to compare local vs Vercel."
-- **After pull** → "Restart your dev server to pick up the new variables. Run `/env diff` to verify
+- **After list** → "Run `/vercel-env pull` to sync to local, or `/vercel-env diff` to compare local vs Vercel."
+- **After pull** → "Restart your dev server to pick up the new variables. Run `/vercel-env diff` to verify
   sync."
-- **After add** → "Run `/deploy` to make the new variable available in your next deployment. For
+- **After add** → "Run `/vercel-deploy` to make the new variable available in your next deployment. For
   production, the variable is available immediately on the next request."
 - **After remove** → "The variable is removed. If your app depends on it, update your code or add a
-  replacement. Consider redeploying with `/deploy`."
-- **After diff** → "Add missing variables with `/env add <NAME>`, or pull from Vercel with
-  `/env pull` to sync."
+  replacement. Consider redeploying with `/vercel-deploy`."
+- **After diff** → "Add missing variables with `/vercel-env add <NAME>`, or pull from Vercel with
+  `/vercel-env pull` to sync."

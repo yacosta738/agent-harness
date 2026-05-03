@@ -14,7 +14,7 @@ and build status.
 - **If found**: read `projectId` and `orgId` to confirm linkage. Print project name.
 - **If not found**: print a clear message:
   > This project is not linked to Vercel. Run `vercel link` to connect it, then re-run
-  `/status`.
+  `/vercel-status`.
   Stop here — remaining steps require a linked project.
 
 2. Verify `vercel` CLI is available on PATH. If missing, suggest `npm i -g vercel`.
@@ -267,11 +267,11 @@ Present the diagnostic report:
 
 Based on the diagnostic results, suggest relevant actions:
 
-- **Build errors** → "Run `/deploy` to trigger a fresh build, or check `vercel logs <url>` for
+- **Build errors** → "Run `/vercel-deploy` to trigger a fresh build, or check `vercel logs <url>` for
   details."
-- **Missing env vars** → "Run `/env list` to review, or `/env pull` to sync locally."
+- **Missing env vars** → "Run `/vercel-env list` to review, or `/vercel-env pull` to sync locally."
 - **DNS not configured** → "Update your domain DNS records. See the Vercel domains dashboard."
-- **No deployments** → "Run `/deploy` to create your first deployment."
+- **No deployments** → "Run `/vercel-deploy` to create your first deployment."
 - **Stale deployment** → "Your latest deployment is over 7 days old. Consider redeploying."
 - **No vercel.json** → "Add a `vercel.json` if you need custom build, function, or routing
   configuration."

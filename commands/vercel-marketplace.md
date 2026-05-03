@@ -12,7 +12,7 @@ verification.
 1. **Project linked?** — Check for `.vercel/project.json` in the current directory or nearest
    parent.
 
-- If not found: run `vercel link` interactively, then re-run `/marketplace`.
+- If not found: run `vercel link` interactively, then re-run `/vercel-marketplace`.
 - Do not attempt provisioning until the project is linked.
 
 2. **CLI available?** — Confirm `vercel` is on PATH.
@@ -320,10 +320,10 @@ Present a structured result block:
 
 Based on the outcome:
 
-- **Installed successfully** → "Run `/deploy` to deploy with the new integration. Your environment
+- **Installed successfully** → "Run `/vercel-deploy` to deploy with the new integration. Your environment
   variables are already configured on Vercel."
 - **Env vars missing** → "Provision the missing variables via the Vercel dashboard or
-  `vercel integration add <name>`, then re-run `/marketplace <name>` to continue setup."
+  `vercel integration add <name>`, then re-run `/vercel-marketplace <name>` to continue setup."
 - **CLI handed off to dashboard** → "Run `vercel integration open <name>` to complete the provider
   web step, then resume from env verification."
 - **Drain not auto-created** → "Create a drain manually via the REST API. See
@@ -332,6 +332,6 @@ Based on the outcome:
   they are not auto-configured by vendor installs. See `⤳ skill: observability`."
 - **Health check failed** → "Review the error above. Common fixes: copy env vars to `.env.local`
   with `vercel env pull`, check SDK version compatibility, verify network access."
-- **Want another integration?** → "Run `/marketplace` again to browse available integrations."
+- **Want another integration?** → "Run `/vercel-marketplace` again to browse available integrations."
 - **Review changes** → "Run `git diff` to review all integration-related code changes before
   committing."

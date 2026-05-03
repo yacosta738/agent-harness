@@ -1,8 +1,6 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features,
-  building components, adding functionality, or modifying behavior. Explores user
-  intent, requirements and design before implementation."
+description: "Use for collaborative thinking and non-trivial scoped work that needs design but not a full SDD cycle. Explores user intent, requirements, and approach before implementation."
 ---
 
 # Brainstorming Ideas Into Designs
@@ -10,10 +8,12 @@ description: "You MUST use this before any creative work - creating features,
 Help turn ideas into fully formed designs and specs through natural
 collaborative dialogue.
 
-**Use this skill for complex tasks that DO NOT require a full Spec-Driven
-Development (SDD) cycle** (like scripts, isolated utilities, spikes, or focused
-DevOps tasks). If the work is a substantial feature, use the standard SDD
-workflow (`sdd-new` / `sdd-explore`) instead.
+**Use this skill for collaborative thinking and complex tasks that DO NOT require a full
+Spec-Driven Development (SDD) cycle** (like scripts, isolated utilities, spikes, focused
+DevOps tasks, or scoped design decisions you want to think through with the user). If the work is a
+substantial feature or needs durable artifacts, approval gates, resumability, cross-cutting product
+rules, or long-term architecture records, use the standard SDD workflow (`sdd-new` / `sdd-explore`)
+instead.
 
 Start by understanding the current project context, then ask questions one at a
 time to refine the idea. Once you understand what you're building, present the
@@ -25,10 +25,14 @@ and the user has approved it.
 
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
-Every project goes through this process. A todo list, a single-function utility,
-a config change — all of them. "Simple" projects are where unexamined
-assumptions cause the most wasted work. The design can be short (a few sentences
-for truly simple projects), but you MUST present it and get approval.
+Every non-trivial scoped effort that needs thinking goes through this process: a utility, a focused
+config change, a script, or a small behavior change. "Simple" projects are where unexamined
+assumptions cause the most wasted work. The design can be short (a few sentences for truly simple
+projects), but you MUST present it and get approval.
+
+Skip this skill for purely mechanical edits, typo fixes, read-only lookups, command explanations, or
+changes where the user already provided an explicit accepted design. If the work grows into a full
+feature cycle, stop and escalate to SDD instead of stretching brainstorming into durable specs.
 
 ## Checklist
 

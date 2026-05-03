@@ -18,7 +18,7 @@ Run these checks before any deployment. Stop on failure and print actionable gui
 2. **Project linked?** — Check for `.vercel/project.json` in the current directory or nearest
    parent.
 
-- If not found: run `vercel link` interactively, then re-run `/deploy`.
+- If not found: run `vercel link` interactively, then re-run `/vercel-deploy`.
 
 3. **Monorepo detection** — Look for `turbo.json` or `pnpm-workspace.yaml` at the repo root.
 
@@ -211,17 +211,17 @@ For production deploys, also include:
 <!-- Sourced from deployments-cicd skill: Deploy Next Steps -->
 Based on the deployment outcome:
 
-- **Success (preview)** → "Visit the preview URL to verify. When ready, run `/deploy prod` to
+- **Success (preview)** → "Visit the preview URL to verify. When ready, run `/vercel-deploy prod` to
   promote to production."
-- **Success (production)** → "Your production site is live. Run `/status` to see the full project
+- **Success (production)** → "Your production site is live. Run `/vercel-status` to see the full project
   overview."
 - **Build error** → "Check the build logs above. Common fixes: verify `build` script in
-  package.json, check for missing env vars with `/env list`, ensure dependencies are installed."
-- **Missing env vars** → "Run `/env pull` to sync environment variables locally, or `/env list` to
+  package.json, check for missing env vars with `/vercel-env list`, ensure dependencies are installed."
+- **Missing env vars** → "Run `/vercel-env pull` to sync environment variables locally, or `/vercel-env list` to
   review what's configured on Vercel."
 - **Monorepo issues** → "Ensure the correct project root is configured in Vercel project settings.
   Check `vercel.json` for `rootDirectory`."
 - **Post-deploy errors detected** → "Review errors above. Check `vercel logs <url> --level error`
   for details. If drains are configured, correlate with external monitoring."
 - **No monitoring configured** → "Set up drains or install an error tracking integration before the
-  next production deploy. Run `/status` for a full observability diagnostic."
+  next production deploy. Run `/vercel-status` for a full observability diagnostic."

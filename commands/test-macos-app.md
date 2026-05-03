@@ -1,3 +1,7 @@
+---
+description: Run the smallest meaningful macOS test scope and classify failures.
+---
+
 # /test-macos-app
 
 Run the smallest meaningful macOS test scope first and explain failures by category.

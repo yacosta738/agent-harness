@@ -1,3 +1,7 @@
+---
+description: Build, run, debug, or verify a local macOS app through the canonical project script.
+---
+
 # /build-and-run-macos-app
 
 Create or update the project-local macOS `build_and_run.sh` script, wire the
@@ -23,7 +27,7 @@ Codex app Run button, then use that script as the default build/run entrypoint.
    create a project-local `.app` bundle and launch it with `/usr/bin/open -n`.
 5. Support optional script flags for `--debug`, `--logs`, `--telemetry`, and `--verify`.
 6. Follow the canonical bootstrap contract in
-   `../skills/build-run-debug/references/run-button-bootstrap.md` for the exact script shape and
+   `../skills/macos/build-run-debug/references/run-button-bootstrap.md` for the exact script shape and
    `.codex/environments/environment.toml` format.
 7. Run the script in the requested mode and summarize any build, script, or launch failure.
 
