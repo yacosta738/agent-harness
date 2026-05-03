@@ -160,9 +160,11 @@ When `push_to_hub=True`:
 1. **Model weights** - Final trained parameters
 2. **Image processor** - Associated preprocessing configuration
 3. **Configuration** - Model config (config.json) including:
-  - Number of labels/classes
-  - Architecture details (backbone, num_queries, etc.)
-  - Label mappings (id2label, label2id)
+
+- Number of labels/classes
+- Architecture details (backbone, num_queries, etc.)
+- Label mappings (id2label, label2id)
+
 4. **Training arguments** - Hyperparameters used
 5. **Model card** - Auto-generated documentation
 6. **Checkpoints** - If `save_strategy="steps"` enabled
@@ -414,14 +416,17 @@ image_processor.push_to_hub("username/model-name", token="hf_abc123...")
 6. **Set appropriate `save_total_limit`** to avoid excessive checkpoints
 7. **Use descriptive repo names** (e.g., `detr-cppe5` not `detector1`)
 8. **Add model card** with:
-  - Training dataset
-  - Evaluation metrics (mAP, IoU)
-  - Example usage code
-  - Limitations
+
+- Training dataset
+- Evaluation metrics (mAP, IoU)
+- Example usage code
+- Limitations
+
 9. **Tag models appropriately**:
-  - `object-detection`
-  - Architecture: `detr`, `yolos`, `deta`
-  - Dataset: `coco`, `voc`, `cppe-5`
+
+- `object-detection`
+- Architecture: `detr`, `yolos`, `deta`
+- Dataset: `coco`, `voc`, `cppe-5`
 
 ## Monitoring Push Progress
 

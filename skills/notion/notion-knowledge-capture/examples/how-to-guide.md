@@ -68,17 +68,20 @@ Production deployment using GitHub Actions with zero-downtime rolling updates.
    ```
 
 3. **Trigger deployment**
-  - GitHub Actions auto-starts from tag push
-  - Monitor: https://github.com/org/repo/actions
+
+- GitHub Actions auto-starts from tag push
+- Monitor: https://github.com/org/repo/actions
 
 4. **Database migrations** (if needed)
-  - Auto-run in GitHub Actions
-  - Check logs for completion
+
+- Auto-run in GitHub Actions
+- Check logs for completion
 
 5. **Verify deployment**
-  - Wait for health checks (2-3 min)
-  - Test key endpoints
-  - Check error rates in Datadog
+
+- Wait for health checks (2-3 min)
+- Test key endpoints
+- Check error rates in Datadog
 
 ## Verification Checklist
 

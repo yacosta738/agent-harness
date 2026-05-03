@@ -73,13 +73,13 @@ Model -> Message -> Update -> View
 
 Keep responsibilities separate:
 
-| Layer | Owns | Avoid |
-| --- | --- | --- |
-| `App` / model | State, selections, mode, loaded data | Terminal I/O |
-| `Message` / action enum | User and system events | Rendering details |
-| `update` | State transitions | Drawing widgets |
-| `view` / `ui` | Layout and widgets | Mutating app state |
-| `tui` / terminal module | raw mode, alternate screen, cleanup | Business rules |
+| Layer                   | Owns                                 | Avoid              |
+|-------------------------|--------------------------------------|--------------------|
+| `App` / model           | State, selections, mode, loaded data | Terminal I/O       |
+| `Message` / action enum | User and system events               | Rendering details  |
+| `update`                | State transitions                    | Drawing widgets    |
+| `view` / `ui`           | Layout and widgets                   | Mutating app state |
+| `tui` / terminal module | raw mode, alternate screen, cleanup  | Business rules     |
 
 ```rust
 struct App {
@@ -211,7 +211,8 @@ Guidelines:
 - Prefer semantic contrast over hardcoded white/black.
 - Use `.dim()` for secondary text, `.red()` for errors, `.yellow()` sparingly for warnings.
 - Keep status bars and help bars one line when possible.
-- Avoid allocating or recomputing expensive display data every frame; precompute in update/background tasks.
+- Avoid allocating or recomputing expensive display data every frame; precompute in
+  update/background tasks.
 
 ## Terminal Safety and Errors
 
@@ -241,20 +242,21 @@ fn install_terminal_panic_hook() {
 
 Rules:
 
-- No `unwrap()` / `expect()` outside tests unless a value is a compile-time invariant and documented.
+- No `unwrap()` / `expect()` outside tests unless a value is a compile-time invariant and
+  documented.
 - Use `color-eyre` context with `.wrap_err(...)` at I/O boundaries.
 - Cleanup must happen on normal exit and panic paths.
 
 ## Common Mistakes
 
-| Mistake | Fix |
-| --- | --- |
-| Mutating app state inside render code | Move mutation to `update`; render from immutable state |
-| Handling `q`, arrows, and modes in many files | Centralize event-to-message mapping |
-| Recreating heavy widgets/data every frame | Cache derived data and update it only when state changes |
-| Forgetting raw-mode cleanup on panic | Install a panic hook and isolate terminal lifecycle |
-| Hardcoding fixed widths | Use `Constraint::Fill`, percentages, and graceful truncation |
-| Using a TUI for a one-shot command | Build a normal CLI instead |
+| Mistake                                       | Fix                                                          |
+|-----------------------------------------------|--------------------------------------------------------------|
+| Mutating app state inside render code         | Move mutation to `update`; render from immutable state       |
+| Handling `q`, arrows, and modes in many files | Centralize event-to-message mapping                          |
+| Recreating heavy widgets/data every frame     | Cache derived data and update it only when state changes     |
+| Forgetting raw-mode cleanup on panic          | Install a panic hook and isolate terminal lifecycle          |
+| Hardcoding fixed widths                       | Use `Constraint::Fill`, percentages, and graceful truncation |
+| Using a TUI for a one-shot command            | Build a normal CLI instead                                   |
 
 ## Verification Checklist
 

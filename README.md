@@ -441,23 +441,23 @@ references/
 
 ## MCP Servers
 
-| Server          | Status   | Purpose                          |
-|-----------------|----------|----------------------------------|
-| Context7        | Enabled  | Up-to-date library documentation |
-| GitHub Grep     | Enabled  | Search code across GitHub repos  |
-| Chrome DevTools | Enabled  | Browser automation and debugging |
-| Playwright      | Enabled  | Browser testing                  |
+| Server          | Status   | Purpose                            |
+|-----------------|----------|------------------------------------|
+| Context7        | Enabled  | Up-to-date library documentation   |
+| GitHub Grep     | Enabled  | Search code across GitHub repos    |
+| Chrome DevTools | Enabled  | Browser automation and debugging   |
+| Playwright      | Enabled  | Browser testing                    |
 | Semgrep         | Enabled  | Static analysis and security scans |
-| JetBrains       | Enabled  | IDE integration                  |
-| GitHub          | Disabled | GitHub Copilot API               |
-| Cloudflare API  | Disabled | Cloudflare MCP and platform APIs |
-| Ahrefs          | Disabled | SEO analysis                     |
-| Magic Patterns  | Disabled | Design patterns                  |
-| Stitch          | Disabled | Google Stitch API                |
-| Linear          | Disabled | Linear project management        |
-| Notion          | Disabled | Notion API                       |
-| SonarQube       | Disabled | Code quality analysis            |
-| MarkItDown      | Disabled | Document conversion              |
+| JetBrains       | Enabled  | IDE integration                    |
+| GitHub          | Disabled | GitHub Copilot API                 |
+| Cloudflare API  | Disabled | Cloudflare MCP and platform APIs   |
+| Ahrefs          | Disabled | SEO analysis                       |
+| Magic Patterns  | Disabled | Design patterns                    |
+| Stitch          | Disabled | Google Stitch API                  |
+| Linear          | Disabled | Linear project management          |
+| Notion          | Disabled | Notion API                         |
+| SonarQube       | Disabled | Code quality analysis              |
+| MarkItDown      | Disabled | Document conversion                |
 
 ---
 

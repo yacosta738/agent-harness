@@ -12,16 +12,24 @@ production confirmation, and post-deploy verification.
 Run these checks before any deployment. Stop on failure and print actionable guidance.
 
 1. **CLI available?** — Confirm `vercel` is on PATH.
-  - If missing: `npm i -g vercel` (or `pnpm add -g vercel` / `bun add -g vercel`).
+
+- If missing: `npm i -g vercel` (or `pnpm add -g vercel` / `bun add -g vercel`).
+
 2. **Project linked?** — Check for `.vercel/project.json` in the current directory or nearest
    parent.
-  - If not found: run `vercel link` interactively, then re-run `/deploy`.
+
+- If not found: run `vercel link` interactively, then re-run `/deploy`.
+
 3. **Monorepo detection** — Look for `turbo.json` or `pnpm-workspace.yaml` at the repo root.
-  - If detected: confirm which package is targeted. If ambiguous, ask the user before proceeding.
+
+- If detected: confirm which package is targeted. If ambiguous, ask the user before proceeding.
+
 4. **Uncommitted changes** — Run `git status --porcelain`.
-  - If output is non-empty: warn the user that uncommitted changes will **not** be included in the
-    deploy. Ask whether to continue or commit first.
-  - If not a git repo, skip this check.
+
+- If output is non-empty: warn the user that uncommitted changes will **not** be included in the
+  deploy. Ask whether to continue or commit first.
+- If not a git repo, skip this check.
+
 5. **Observability preflight** (production deploys only) —
 
 <!-- Sourced from observability skill: Drains > Deploy Preflight Observability -->

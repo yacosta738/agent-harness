@@ -40,10 +40,11 @@ applicable; monitor Cloudflare changelog for Smart Shield updates.
 1. Check API token has `Zone:Argo Smart Routing:Edit` permission
 2. Verify `editable: true` in GET response before attempting PATCH
 3. If `editable: false`, check:
-  - Billing configured for account
-  - Zone plan includes Argo (Enterprise+)
-  - No active zone holds or suspensions
-  - API token has correct scopes
+
+- Billing configured for account
+- Zone plan includes Argo (Enterprise+)
+- No active zone holds or suspensions
+- API token has correct scopes
 
 ### `editable: false` Error
 

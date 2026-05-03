@@ -10,11 +10,13 @@ and build status.
 ## Preflight
 
 1. Check for `.vercel/project.json` in the current directory (or nearest parent).
-  - **If found**: read `projectId` and `orgId` to confirm linkage. Print project name.
-  - **If not found**: print a clear message:
-    > This project is not linked to Vercel. Run `vercel link` to connect it, then re-run
-    `/status`.
-    Stop here — remaining steps require a linked project.
+
+- **If found**: read `projectId` and `orgId` to confirm linkage. Print project name.
+- **If not found**: print a clear message:
+  > This project is not linked to Vercel. Run `vercel link` to connect it, then re-run
+  `/status`.
+  Stop here — remaining steps require a linked project.
+
 2. Verify `vercel` CLI is available on PATH. If missing, suggest `npm i -g vercel`.
 3. Detect monorepo markers (`turbo.json`, `pnpm-workspace.yaml`). If present, note which package
    scope is active.

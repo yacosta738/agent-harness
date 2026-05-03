@@ -16,33 +16,44 @@ Run all `gh` commands with elevated network access. If CLI auth is required, con
 ## Workflow
 
 1. Resolve the PR.
-  - If the user provides a repository and PR number or URL, use that directly.
-  - If the request is about the current branch PR, use local git context plus `gh auth status` and
-    `gh pr view --json number,url` to resolve it.
+
+- If the user provides a repository and PR number or URL, use that directly.
+- If the request is about the current branch PR, use local git context plus `gh auth status` and
+  `gh pr view --json number,url` to resolve it.
+
 2. Inspect review context with thread-aware reads.
-  - Use the configured GitHub integration to fetch PR metadata and patch context when the repo and
-    PR are known.
-  - Use the bundled `scripts/fetch_comments.py` workflow whenever the task depends on unresolved
-    review threads, inline review locations, or resolution state. That script fetches
-    `reviewThreads`, `isResolved`, `isOutdated`, and file and line anchors that the connector
-    comment surface does not preserve.
-  - Use connector-only comment reads only for lightweight top-level PR comment summaries.
+
+- Use the configured GitHub integration to fetch PR metadata and patch context when the repo and
+  PR are known.
+- Use the bundled `scripts/fetch_comments.py` workflow whenever the task depends on unresolved
+  review threads, inline review locations, or resolution state. That script fetches
+  `reviewThreads`, `isResolved`, `isOutdated`, and file and line anchors that the connector
+  comment surface does not preserve.
+- Use connector-only comment reads only for lightweight top-level PR comment summaries.
+
 3. Cluster actionable review threads.
-  - Group comments by file or behavior area.
-  - Separate actionable change requests from informational comments, approvals, already-resolved
-    threads, and duplicates.
+
+- Group comments by file or behavior area.
+- Separate actionable change requests from informational comments, approvals, already-resolved
+  threads, and duplicates.
+
 4. Confirm scope before editing.
-  - Present numbered actionable threads with a one-line summary of the required change.
-  - If the user did not ask to fix everything, ask which threads to address.
-  - If the user asks to fix everything, interpret that as all unresolved actionable threads and
-    call out anything ambiguous.
+
+- Present numbered actionable threads with a one-line summary of the required change.
+- If the user did not ask to fix everything, ask which threads to address.
+- If the user asks to fix everything, interpret that as all unresolved actionable threads and
+  call out anything ambiguous.
+
 5. Implement the selected fixes locally.
-  - Keep each code change traceable back to the thread or feedback cluster it addresses.
-  - If a comment calls for explanation rather than code, draft the response rather than forcing a
-    code change.
+
+- Keep each code change traceable back to the thread or feedback cluster it addresses.
+- If a comment calls for explanation rather than code, draft the response rather than forcing a
+  code change.
+
 6. Summarize the result.
-  - List which threads were addressed, which were intentionally left open, and what tests or
-    checks support the change.
+
+- List which threads were addressed, which were intentionally left open, and what tests or
+  checks support the change.
 
 ## Write Safety
 

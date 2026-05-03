@@ -172,12 +172,14 @@ Valid: plain objects, arrays, strings, numbers, booleans, null, `ArrayBuffer`, `
 1. **Retrieve** — fetch latest workers types, wrangler schema, and best practices page
 2. **Read full files** — not just diffs; context matters for binding access patterns
 3. **Categorize code** — determines what to check:
-  - **Illustrative** (concept demo, comments for most logic): verify correct API names and
-    realistic signatures
-  - **Demonstrative** (functional snippet, would work in context): verify syntax, correct APIs,
-    correct binding access
-  - **Executable** (standalone, runs without modification): verify compiles, runs, includes
-    imports and config
+
+- **Illustrative** (concept demo, comments for most logic): verify correct API names and
+  realistic signatures
+- **Demonstrative** (functional snippet, would work in context): verify syntax, correct APIs,
+  correct binding access
+- **Executable** (standalone, runs without modification): verify compiles, runs, includes
+  imports and config
+
 4. **Check types** — binding access pattern, handler signatures, no `any`, no unsafe casts
 5. **Check config** — compatibility_date, nodejs_compat, observability, secrets, binding-code
    consistency

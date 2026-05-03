@@ -36,35 +36,45 @@ This workflow is hybrid:
 ## Workflow
 
 1. Confirm intended scope.
-  - Run `git status -sb` and inspect the diff before staging.
-  - If the working tree contains unrelated changes, do not default to `git add -A`. Ask the user
-    which files belong in the PR.
+
+- Run `git status -sb` and inspect the diff before staging.
+- If the working tree contains unrelated changes, do not default to `git add -A`. Ask the user
+  which files belong in the PR.
+
 2. Determine the branch strategy.
-  - If on `main`, `master`, or another default branch, create a semantic branch such as
-    `feat/{description}`, `fix/{description}`, or `chore/{description}`.
-  - Otherwise stay on the current branch.
+
+- If on `main`, `master`, or another default branch, create a semantic branch such as
+  `feat/{description}`, `fix/{description}`, or `chore/{description}`.
+- Otherwise stay on the current branch.
+
 3. Stage only the intended changes.
-  - Prefer explicit file paths when the worktree is mixed.
-  - Use `git add -A` only when the user has confirmed the whole worktree belongs in scope.
+
+- Prefer explicit file paths when the worktree is mixed.
+- Use `git add -A` only when the user has confirmed the whole worktree belongs in scope.
+
 4. Commit with a Conventional Commit message aligned to the branch and PR intent.
 5. Run the most relevant checks available if they have not already been run.
-  - If checks fail due to missing dependencies or tools, install what is needed and rerun once.
+
+- If checks fail due to missing dependencies or tools, install what is needed and rerun once.
+
 6. Push with tracking: `git push -u origin $(git branch --show-current)`.
 7. Open a draft PR.
-  - Prefer the configured GitHub integration for PR creation after the push succeeds.
-  - Use a semantic PR title matching the Conventional Commit style used for the change.
-  - Derive `repository_full_name` from the remote, for example by normalizing
-    `git remote get-url origin` or by using `gh repo view --json nameWithOwner`.
-  - Derive `head_branch` from `git branch --show-current`.
-  - Derive `base_branch` from the user request when specified; otherwise use the remote default
-    branch, for example via `gh repo view --json defaultBranchRef`.
-  - If the branch is being pushed from a fork or the PR target differs from the remote that was
-    just pushed, prefer `gh pr create` fallback because the connector PR creation flow expects one
-    repository target and may not encode cross-repo head semantics cleanly.
-  - If connector-based PR creation cannot infer the repository or branch cleanly, fall back to
-    `gh pr create --draft --fill --head $(git branch --show-current)`.
-  - Write the PR body to a temp file with real newlines when using CLI fallback so the markdown
-    renders cleanly.
+
+- Prefer the configured GitHub integration for PR creation after the push succeeds.
+- Use a semantic PR title matching the Conventional Commit style used for the change.
+- Derive `repository_full_name` from the remote, for example by normalizing
+  `git remote get-url origin` or by using `gh repo view --json nameWithOwner`.
+- Derive `head_branch` from `git branch --show-current`.
+- Derive `base_branch` from the user request when specified; otherwise use the remote default
+  branch, for example via `gh repo view --json defaultBranchRef`.
+- If the branch is being pushed from a fork or the PR target differs from the remote that was
+  just pushed, prefer `gh pr create` fallback because the connector PR creation flow expects one
+  repository target and may not encode cross-repo head semantics cleanly.
+- If connector-based PR creation cannot infer the repository or branch cleanly, fall back to
+  `gh pr create --draft --fill --head $(git branch --show-current)`.
+- Write the PR body to a temp file with real newlines when using CLI fallback so the markdown
+  renders cleanly.
+
 8. Summarize the result with branch name, commit, PR target, validation, and anything the user still
    needs to confirm.
 

@@ -14,27 +14,31 @@ hardened runtime confusion, or trust-policy rejection.
 ## Workflow
 
 1. Inspect the bundle or binary.
-  - Locate the `.app` or executable.
-  - Identify the main binary inside `Contents/MacOS/`.
+
+- Locate the `.app` or executable.
+- Identify the main binary inside `Contents/MacOS/`.
 
 2. Read signing details.
-  - Use `codesign -dvvv --entitlements :- <path>`.
-  - Use `spctl -a -vv <path>` when Gatekeeper behavior matters.
-  - Use `plutil -p` for entitlements or Info.plist inspection.
+
+- Use `codesign -dvvv --entitlements :- <path>`.
+- Use `spctl -a -vv <path>` when Gatekeeper behavior matters.
+- Use `plutil -p` for entitlements or Info.plist inspection.
 
 3. Classify the failure.
-  - Unsigned or ad hoc signed
-  - Wrong identity
-  - Entitlement mismatch
-  - Hardened runtime issue
-  - App Sandbox issue
-  - Nested code signing issue
-  - Distribution/notarization prerequisite issue
+
+- Unsigned or ad hoc signed
+- Wrong identity
+- Entitlement mismatch
+- Hardened runtime issue
+- App Sandbox issue
+- Nested code signing issue
+- Distribution/notarization prerequisite issue
 
 4. Explain the minimum fix path.
-  - Say exactly what is wrong.
-  - Show the shortest set of validation or repair commands.
-  - Distinguish local development problems from distribution problems.
+
+- Say exactly what is wrong.
+- Show the shortest set of validation or repair commands.
+- Distinguish local development problems from distribution problems.
 
 ## Useful Commands
 

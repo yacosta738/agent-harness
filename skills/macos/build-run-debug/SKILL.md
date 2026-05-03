@@ -31,85 +31,93 @@ simulator-specific workflows onto pure macOS tasks.
 ## Workflow
 
 1. Discover the project shape.
-  - Check whether the workspace is already inside a git repo with
-    `git rev-parse --is-inside-work-tree`.
-  - If no git repo is present, run `git init` at the project/workspace root before building so
-    Codex app git-backed features are available. Never run `git init` inside a nested subdirectory
-    when the current workspace already belongs to a parent repo.
-  - Look for `.xcworkspace`, `.xcodeproj`, and `Package.swift`.
-  - If more than one candidate exists, explain the default choice and the ambiguity.
+
+- Check whether the workspace is already inside a git repo with
+  `git rev-parse --is-inside-work-tree`.
+- If no git repo is present, run `git init` at the project/workspace root before building so
+  Codex app git-backed features are available. Never run `git init` inside a nested subdirectory
+  when the current workspace already belongs to a parent repo.
+- Look for `.xcworkspace`, `.xcodeproj`, and `Package.swift`.
+- If more than one candidate exists, explain the default choice and the ambiguity.
 
 2. Resolve the runnable target and process name.
-  - For Xcode, list schemes and prefer the app-producing scheme unless the user names another one.
-  - For SwiftPM, identify executable products when possible.
-  - Split SwiftPM launch handling by product type:
-    - use raw executable launch only for true command-line tools,
-    - use a generated project-local `.app` bundle for AppKit/SwiftUI GUI apps.
-  - Determine the app/process name to kill before relaunching.
+
+- For Xcode, list schemes and prefer the app-producing scheme unless the user names another one.
+- For SwiftPM, identify executable products when possible.
+- Split SwiftPM launch handling by product type:
+  - use raw executable launch only for true command-line tools,
+  - use a generated project-local `.app` bundle for AppKit/SwiftUI GUI apps.
+- Determine the app/process name to kill before relaunching.
 
 3. Create or update `script/build_and_run.sh`.
-  - Make the script project-specific and executable.
-  - It should always:
-    1. stop the existing running app/process if present,
-    2. build the macOS target,
-    3. launch the freshly built app or executable.
-  - Add optional flags for debugging/log inspection:
-    - `--debug` to launch under `lldb` or attach the debugger
-    - `--logs` to stream process logs after launch
-    - `--telemetry` to stream unified logs filtered to the app subsystem/category
-    - `--verify` to launch the app and confirm the process exists with `pgrep -x <AppName>`
-  - Keep the default no-flag path simple: kill, build, run.
-  - Prefer writing one script that owns this workflow instead of repeatedly asking the agent to
-    manually run `swift build`, locate the artifact, then invoke an ad hoc run command.
-  - For SwiftPM GUI apps, make the script build the product, create `dist/<AppName>.app`, copy the
-    binary to `Contents/MacOS/<AppName>`, generate a minimal `Contents/Info.plist` with
-    `CFBundlePackageType=APPL`, `CFBundleExecutable`, `CFBundleIdentifier`, `CFBundleName`,
-    `LSMinimumSystemVersion`, and `NSPrincipalClass=NSApplication`, then launch with
-    `/usr/bin/open -n <bundle>`.
-  - For SwiftPM GUI `--logs` and `--telemetry`, launch the bundle with `/usr/bin/open -n` first,
-    then stream unified logs with `/usr/bin/log stream --info ...`.
-  - Do not recommend direct SwiftPM executable launch for AppKit/SwiftUI GUI apps.
-  - Use `references/run-button-bootstrap.md` as the canonical source for the
-    script shape and exact environment file format. Do not fork a second
-    authoritative snippet in another skill or command.
-  - Keep the run script outside app source. It belongs in `script/build_and_run.sh`, not in
-    `App/`, `Views/`, `Models/`, `Stores/`, `Services/`, or `Support/`.
+
+- Make the script project-specific and executable.
+- It should always:
+  1. stop the existing running app/process if present,
+  2. build the macOS target,
+  3. launch the freshly built app or executable.
+- Add optional flags for debugging/log inspection:
+  - `--debug` to launch under `lldb` or attach the debugger
+  - `--logs` to stream process logs after launch
+  - `--telemetry` to stream unified logs filtered to the app subsystem/category
+  - `--verify` to launch the app and confirm the process exists with `pgrep -x <AppName>`
+- Keep the default no-flag path simple: kill, build, run.
+- Prefer writing one script that owns this workflow instead of repeatedly asking the agent to
+  manually run `swift build`, locate the artifact, then invoke an ad hoc run command.
+- For SwiftPM GUI apps, make the script build the product, create `dist/<AppName>.app`, copy the
+  binary to `Contents/MacOS/<AppName>`, generate a minimal `Contents/Info.plist` with
+  `CFBundlePackageType=APPL`, `CFBundleExecutable`, `CFBundleIdentifier`, `CFBundleName`,
+  `LSMinimumSystemVersion`, and `NSPrincipalClass=NSApplication`, then launch with
+  `/usr/bin/open -n <bundle>`.
+- For SwiftPM GUI `--logs` and `--telemetry`, launch the bundle with `/usr/bin/open -n` first,
+  then stream unified logs with `/usr/bin/log stream --info ...`.
+- Do not recommend direct SwiftPM executable launch for AppKit/SwiftUI GUI apps.
+- Use `references/run-button-bootstrap.md` as the canonical source for the
+  script shape and exact environment file format. Do not fork a second
+  authoritative snippet in another skill or command.
+- Keep the run script outside app source. It belongs in `script/build_and_run.sh`, not in
+  `App/`, `Views/`, `Models/`, `Stores/`, `Services/`, or `Support/`.
 
 4. Write `.codex/environments/environment.toml` at the project root once the script exists.
-  - Use this exact placement: `.codex/environments/environment.toml`.
-  - Use the exact action shape in `references/run-button-bootstrap.md`.
-  - This file is what gives the user a Codex app Run button wired to the script.
-  - If the project already has this file, update the `Run` action command to point at
-    `./script/build_and_run.sh` instead of creating a duplicate action.
-  - Keep this Codex environment config separate from Swift app source files.
+
+- Use this exact placement: `.codex/environments/environment.toml`.
+- Use the exact action shape in `references/run-button-bootstrap.md`.
+- This file is what gives the user a Codex app Run button wired to the script.
+- If the project already has this file, update the `Run` action command to point at
+  `./script/build_and_run.sh` instead of creating a duplicate action.
+- Keep this Codex environment config separate from Swift app source files.
 
 5. Build and run through the script.
-  - Default to `./script/build_and_run.sh`.
-  - Use `./script/build_and_run.sh --debug`, `--logs`, `--telemetry`, or `--verify` when the user
-    asks for debugger/log/telemetry/process verification support.
+
+- Default to `./script/build_and_run.sh`.
+- Use `./script/build_and_run.sh --debug`, `--logs`, `--telemetry`, or `--verify` when the user
+  asks for debugger/log/telemetry/process verification support.
 
 6. Summarize failures correctly.
-  - Classify the blocker as compiler, linker, signing, build settings, missing SDK/toolchain,
-    script bug, or runtime launch.
-  - Quote the smallest useful error snippet and explain what it means.
+
+- Classify the blocker as compiler, linker, signing, build settings, missing SDK/toolchain,
+  script bug, or runtime launch.
+- Quote the smallest useful error snippet and explain what it means.
 
 7. Debug the right way.
-  - Use the script's `--logs` or `--telemetry` mode for config, entitlement, sandbox, and
-    action-event verification.
-  - For SwiftPM GUI apps, if the app bundle launches but its window still does not come forward,
-    check whether the entrypoint needs `NSApp.setActivationPolicy(.regular)` and
-    `NSApp.activate(ignoringOtherApps: true)`.
-  - Use the script's `--debug` mode or direct `lldb` if symbolized crash debugging is needed.
-  - If the user needs to instrument and verify specific window, sidebar, menu, or menu bar
-    actions, switch to `telemetry`.
-  - Keep evidence tight and user-facing.
+
+- Use the script's `--logs` or `--telemetry` mode for config, entitlement, sandbox, and
+  action-event verification.
+- For SwiftPM GUI apps, if the app bundle launches but its window still does not come forward,
+  check whether the entrypoint needs `NSApp.setActivationPolicy(.regular)` and
+  `NSApp.activate(ignoringOtherApps: true)`.
+- Use the script's `--debug` mode or direct `lldb` if symbolized crash debugging is needed.
+- If the user needs to instrument and verify specific window, sidebar, menu, or menu bar
+  actions, switch to `telemetry`.
+- Keep evidence tight and user-facing.
 
 8. Use Xcode-aware MCP tooling only when it helps.
-  - If the user explicitly asks for XcodeBuildMCP and it is already available, prefer it over ad
-    hoc setup.
-  - Use the MCP for Xcode-aware discovery or debug/logging workflows when the available tool
-    surface clearly matches the task.
-  - Fall back to shell commands immediately when the MCP does not provide a clean macOS path.
+
+- If the user explicitly asks for XcodeBuildMCP and it is already available, prefer it over ad
+  hoc setup.
+- Use the MCP for Xcode-aware discovery or debug/logging workflows when the available tool
+  surface clearly matches the task.
+- Fall back to shell commands immediately when the MCP does not provide a clean macOS path.
 
 ## Preferred Commands
 

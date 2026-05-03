@@ -151,13 +151,15 @@ set if you need a specific value.
    ```
 
 3. **Verify field names:**
-  - **SFT:** Needs "messages" field (conversational), OR "text" field, OR "prompt"/"completion"
-  - **DPO:** Needs "chosen" and "rejected" fields
-  - **GRPO:** Needs prompt-only format
+
+- **SFT:** Needs "messages" field (conversational), OR "text" field, OR "prompt"/"completion"
+- **DPO:** Needs "chosen" and "rejected" fields
+- **GRPO:** Needs prompt-only format
 
 4. **Check dataset split:**
-  - Ensure split exists (e.g., `split="train"`)
-  - Preview dataset: `load_dataset("name", split="train[:5]")`
+
+- Ensure split exists (e.g., `split="train"`)
+- Preview dataset: `load_dataset("name", split="train[:5]")`
 
 ## Import/Module Errors
 
@@ -177,9 +179,10 @@ set if you need a specific value.
    ```
 
 2. **Verify exact format:**
-  - Must have `# ///` delimiters (with space after `#`)
-  - Dependencies must be valid PyPI package names
-  - Check spelling and version constraints
+
+- Must have `# ///` delimiters (with space after `#`)
+- Dependencies must be valid PyPI package names
+- Check spelling and version constraints
 
 3. **Test locally first:**
    ```bash
@@ -198,9 +201,10 @@ set if you need a specific value.
    ```
 
 2. **Check token permissions:**
-  - Go to https://huggingface.co/settings/tokens
-  - Ensure token has "write" permission
-  - Token must not be "read-only"
+
+- Go to https://huggingface.co/settings/tokens
+- Ensure token has "write" permission
+- Token must not be "read-only"
 
 3. **Verify token in job:**
    ```python
@@ -208,9 +212,10 @@ set if you need a specific value.
    ```
 
 4. **Check repo permissions:**
-  - User must have write access to target repo
-  - If org repo, user must be member with write access
-  - Repo must exist or user must have permission to create
+
+- User must have write access to target repo
+- If org repo, user must be member with write access
+- Repo must exist or user must have permission to create
 
 ## Job Stuck or Not Starting
 
@@ -298,9 +303,10 @@ If issues persist:
    ```
 
 3. **Review related guides:**
-  - `references/hub_saving.md` - Hub authentication issues
-  - `references/hardware_guide.md` - Hardware selection and specs
-  - `references/training_patterns.md` - Eval dataset requirements
-  - SKILL.md "Working with Scripts" section - Script format and URL issues
+
+- `references/hub_saving.md` - Hub authentication issues
+- `references/hardware_guide.md` - Hardware selection and specs
+- `references/training_patterns.md` - Eval dataset requirements
+- SKILL.md "Working with Scripts" section - Script format and URL issues
 
 4. **Ask in HF forums:** https://discuss.huggingface.co/

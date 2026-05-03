@@ -181,11 +181,13 @@ If hitting memory limits:
    ```
 
 3. **Use smaller models**
-  - Use quantized models
-  - Use LoRA adapters
+
+- Use quantized models
+- Use LoRA adapters
 
 4. **Upgrade hardware**
-  - cpu → t4 → a10g → a100
+
+- cpu → t4 → a10g → a100
 
 ## Cost Estimation
 

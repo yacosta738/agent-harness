@@ -307,6 +307,7 @@ si resulta a devolver).
 ### 8.4. Obligación de declarar bienes en el extranjero
 
 El incumplimiento de la obligación de presentar el Modelo 720 conlleva sanciones, aunque el TJUE (
+
 2022) declaró desproporcionadas las sanciones originales y se han moderado.
 
 ---

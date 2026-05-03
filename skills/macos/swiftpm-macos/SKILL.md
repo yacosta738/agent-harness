@@ -13,27 +13,32 @@ the fastest path to a reproducible result.
 ## Workflow
 
 1. Inspect the package.
-  - Read `Package.swift`.
-  - Identify executable, library, and test products.
+
+- Read `Package.swift`.
+- Identify executable, library, and test products.
 
 2. Build with SwiftPM.
-  - Use `swift build` by default.
-  - Use release mode only when the user explicitly needs it.
+
+- Use `swift build` by default.
+- Use release mode only when the user explicitly needs it.
 
 3. Run the right product.
-  - Use `swift run <product>` when an executable exists.
-  - If multiple executables exist, explain the default choice.
+
+- Use `swift run <product>` when an executable exists.
+- If multiple executables exist, explain the default choice.
 
 4. Test narrowly.
-  - Use `swift test`.
-  - Apply filters when a specific test target or case is known.
+
+- Use `swift test`.
+- Apply filters when a specific test target or case is known.
 
 5. Summarize failures.
-  - Module/import resolution
-  - Package graph or dependency issue
-  - Linker failure
-  - Runtime failure
-  - Test regression
+
+- Module/import resolution
+- Package graph or dependency issue
+- Linker failure
+- Runtime failure
+- Test regression
 
 ## Guardrails
 
