@@ -1,6 +1,6 @@
 ---
 name: double-blind-review
-description: Use when the user asks for adversarial dual review, doble review, two independent reviewers, blind judges, or high-confidence review before merge
+description: Use when the user asks for adversarial dual review, double review, two independent reviewers, blind judges, high-confidence review before merge, judgment day, review by parts, incremental review, layered review, staged review, review before release, review before merge, review before deploy, architecture review, security review, or any high-risk review
 ---
 
 # Double Blind Review
@@ -17,9 +17,14 @@ but does not review the code itself.
 
 Use when:
 
-- User asks for adversarial review, dual review, doble review, blind judges, or high-confidence
+- User asks for adversarial review, dual review, double review, blind judges, or high-confidence
   review.
-- A feature, refactor, architecture change, or risky fix needs stronger review than one reviewer.
+- User says "judgment day", "final judgment", or similar — treat as a full double-blind pass.
+- User asks for "review by parts", "incremental review", "staged review", or "layered review" — run
+  the protocol per part/layer in sequence; each part gets its own two blind reviewers.
+- User asks for review before release, before merge, or before deploy on a high-risk change.
+- A feature, refactor, architecture change, security-sensitive change, or risky fix needs stronger
+  review than one reviewer.
 - The cost of a missed bug is higher than running two review rounds.
 
 Do not use when:
@@ -137,11 +142,8 @@ ESCALATED — after 2 fix iterations, reviewers still report issues.
 
 ## Language
 
-- Spanish input: respond in Cuban Spanish. Suggested status phrases: "Revisión doble iniciada", "los
-  dos revisores van en paralelo", "coinciden en este punto", "aprobado", "escalado para revisión
-  humana".
-- English input: use direct review language: "Double blind review initiated", "both reviewers are
-  running in parallel", "confirmed finding", "approved", "escalated for human review".
+Use direct review language: "Double blind review initiated", "both reviewers are running in
+parallel", "confirmed finding", "approved", "escalated for human review".
 
 ## Common Mistakes
 
