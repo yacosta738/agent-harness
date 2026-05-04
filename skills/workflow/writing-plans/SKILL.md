@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use when creating a tactical, temporary implementation plan from approved requirements before touching code; not for creating or replacing SDD artifacts
 ---
 
 # Writing Plans
@@ -10,10 +10,11 @@ description: Use when you have a spec or requirements for a multi-step task, bef
 Write comprehensive implementation plans assuming the engineer has zero context for our codebase and
 questionable taste. Document everything they need to know: which files to touch for each task, code,
 testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized
-tasks. DRY. YAGNI. TDD. Frequent commits.
+tasks. DRY. YAGNI. TDD. Frequent review checkpoints; commits only when explicitly requested.
 
 **Required:** When the plan includes code behavior changes, load/use `test-driven-development` while
-drafting test-first steps.
+drafting test-first steps. Use `work-unit-commits` to group implementation steps by deliverable
+behavior, and use `reviewable-pr-slices` when the plan may produce a large PR.
 
 Assume they are a skilled developer, but know almost nothing about our toolset or problem domain.
 Assume they don't know good test design very well.
@@ -34,6 +35,8 @@ If the spec covers multiple independent subsystems, it should have been broken i
 specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per
 subsystem. Each plan should produce working, testable software on its own.
 
+If the planned output may exceed the repository's review budget, default 400 changed lines, add a review-slicing note: proposed stacked PRs, feature branch chain, or explicit size exception. Do this before implementation, not after the PR is already too large.
+
 ## File Structure
 
 Before defining tasks, map out which files will be created or modified and what each one is
@@ -49,7 +52,7 @@ responsible for. This is where decomposition decisions get locked in.
   the plan is reasonable.
 
 This structure informs the task decomposition. Each task should produce self-contained changes that
-make sense independently.
+make sense independently. Prefer work-unit tasks: each task should deliver a behavior, fix, migration, or documentation unit with its verification, not a horizontal layer like "models" or "tests" alone.
 
 ## Bite-Sized Task Granularity
 
@@ -59,7 +62,7 @@ make sense independently.
 - "Run it to make sure it fails" - step
 - "Implement the minimal code to make the test pass" - step
 - "Run the tests and make sure they pass" - step
-- "Commit" - step
+- "Commit checkpoint, only if the user explicitly requested commits" - optional step
 
 ## Plan Document Header
 
@@ -116,12 +119,16 @@ def function(input):
 Run: `pytest tests/path/test.py::test_name -v`
 Expected: PASS
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Commit checkpoint, only if explicitly requested**
+
+If the user asked for commits, stage only this work unit and commit it:
 
 ```bash
 git add tests/path/test.py src/path/file.py
 git commit -m "feat: add specific feature"
 ```
+
+If the user did not ask for commits, use this as a review checkpoint instead.
 ````
 
 ## No Placeholders
@@ -141,7 +148,8 @@ write them:
 - Exact file paths always
 - Complete code in every step — if a step changes code, show the code
 - Exact commands with expected output
-- DRY, YAGNI, TDD, frequent commits
+- DRY, YAGNI, TDD, work-unit checkpoints; commits only when explicitly requested
+- Tests and docs stay beside the behavior they verify or explain
 
 ## Self-Review
 

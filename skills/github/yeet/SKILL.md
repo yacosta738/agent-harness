@@ -1,6 +1,6 @@
 ---
 name: "yeet"
-description: "Publish local changes to GitHub by confirming scope, committing intentionally, pushing the branch, and opening a draft PR through the configured GitHub integration, with `gh` used only as a fallback where connector coverage is insufficient."
+description: Use when the user explicitly asks to publish local changes to GitHub end-to-end, including commit, push, and draft PR creation.
 ---
 
 # GitHub Publish Changes
@@ -10,13 +10,10 @@ description: "Publish local changes to GitHub by confirming scope, committing in
 Use this skill only when the user explicitly wants the full publish flow from the local checkout:
 branch setup if needed, staging, commit, push, and opening a pull request.
 
-This workflow is hybrid:
+This workflow uses local Git and GitHub CLI:
 
 - Use local `git` for branch creation, staging, commit, and push.
-- Prefer the configured GitHub integration for pull request creation after the branch is on the
-  remote.
-- Use `gh` as a fallback for current-branch PR discovery, auth checks, or PR creation when the
-  connector path cannot infer the repository or head branch cleanly.
+- Use `gh` for GitHub PR discovery, auth checks, metadata, and PR creation.
 
 ## Prerequisites
 
@@ -33,6 +30,12 @@ This workflow is hybrid:
 - PR title: semantic title matching the change intent, for example
   `feat: add Cloudflare skills integration` or `fix: correct Sentry skill script path`.
 
+## Related Skills
+
+- Use `work-unit-commits` before staging when the worktree contains multiple behaviors, tests, or docs.
+- Use `reviewable-pr-slices` before pushing/opening a PR when the diff may approach or exceed the review budget, default 400 changed lines.
+- Use `cognitive-doc-design` when drafting a non-trivial PR body.
+
 ## Workflow
 
 1. Confirm intended scope.
@@ -45,37 +48,36 @@ This workflow is hybrid:
 
 - If on `main`, `master`, or another default branch, create a semantic branch such as
   `feat/{description}`, `fix/{description}`, or `chore/{description}`.
-- Otherwise stay on the current branch.
+- Otherwise inspect upstream/remote status for the current branch. If it already tracks a remote branch that may contain shared work, ask before committing or pushing to it.
 
 3. Stage only the intended changes.
 
 - Prefer explicit file paths when the worktree is mixed.
 - Use `git add -A` only when the user has confirmed the whole worktree belongs in scope.
+- Stage by deliverable work unit, not by file type. Keep tests and docs beside the behavior they verify or explain.
 
 4. Commit with a Conventional Commit message aligned to the branch and PR intent.
 5. Run the most relevant checks available if they have not already been run.
 
-- If checks fail due to missing dependencies or tools, install what is needed and rerun once.
+- If checks fail due to missing dependencies or tools, report the missing requirement and ask before installing anything that changes the environment, global tools, or lockfiles.
 
-6. Push with tracking: `git push -u origin $(git branch --show-current)`.
-7. Open a draft PR.
+6. Check review budget before publishing.
 
-- Prefer the configured GitHub integration for PR creation after the push succeeds.
+- Determine the PR base branch from the user request when specified; otherwise use the remote default branch, for example via `gh repo view --json defaultBranchRef`.
+- Fetch or otherwise resolve the remote base branch before measuring.
+- Inspect changed lines against the remote PR base, for example `git diff --shortstat origin/<base>...HEAD`, or use trusted PR metadata if the branch already exists remotely.
+- If the PR approaches or exceeds the repository budget, default 400 changed lines, stop, load `reviewable-pr-slices`, and ask whether to split with stacked PRs, use a feature branch chain, or proceed with an explicit size exception.
+
+7. Push with tracking: `git push -u origin "$(git branch --show-current)"`.
+8. Open a draft PR.
+
+- Use `gh pr create --draft` for PR creation after the push succeeds unless the user explicitly requested ready-for-review.
 - Use a semantic PR title matching the Conventional Commit style used for the change.
-- Derive `repository_full_name` from the remote, for example by normalizing
-  `git remote get-url origin` or by using `gh repo view --json nameWithOwner`.
+- Derive the repository from the remote, for example with `gh repo view --json nameWithOwner`.
 - Derive `head_branch` from `git branch --show-current`.
-- Derive `base_branch` from the user request when specified; otherwise use the remote default
-  branch, for example via `gh repo view --json defaultBranchRef`.
-- If the branch is being pushed from a fork or the PR target differs from the remote that was
-  just pushed, prefer `gh pr create` fallback because the connector PR creation flow expects one
-  repository target and may not encode cross-repo head semantics cleanly.
-- If connector-based PR creation cannot infer the repository or branch cleanly, fall back to
-  `gh pr create --draft --fill --head $(git branch --show-current)`.
-- Write the PR body to a temp file with real newlines when using CLI fallback so the markdown
-  renders cleanly.
+- Write the PR body to a temp file with real newlines so the markdown renders cleanly.
 
-8. Summarize the result with branch name, commit, PR target, validation, and anything the user still
+9. Summarize the result with branch name, commit, PR target, validation, review-budget status, and anything the user still
    needs to confirm.
 
 ## Write Safety
