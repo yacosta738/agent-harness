@@ -1,18 +1,19 @@
 # Format Presets Reference
 
-Choose the output format from the user's target channel. If missing, ask one concise question. If the user says "blog header" or "post image", use the defaults below.
+Choose the output format from the user's target channel. If missing, ask one concise question. If
+the user says "blog header" or "post image", use the defaults below.
 
-| Use Case | Ratio | Resolution | Notes |
-|---|---:|---:|---|
-| Blog post header | 16:9 | 1920×1080 | Best for article hero images |
-| OG image default | 16:9-ish | 1200×630 | Good fallback for web/social sharing |
-| LinkedIn feed wide | 1.91:1 | 1200×628 | Link-preview style |
-| LinkedIn square | 1:1 | 1200×1200 | Feed-native square post |
-| LinkedIn portrait | 4:5 | 1080×1350 | Strong mobile feed presence |
-| YouTube thumbnail | 16:9 | 1280×720 | Needs larger title/contrast |
-| Twitter/X card | 2:1 | 1200×600 | Wide and compact |
-| Poster / infographic | 16:10 | 1920×1200 | More room for multiple panels |
-| Story / vertical poster | 9:16 | 1080×1920 | Mobile-first, use fewer panels |
+| Use Case                |    Ratio | Resolution | Notes                                |
+|-------------------------|---------:|-----------:|--------------------------------------|
+| Blog post header        |     16:9 |  1920×1080 | Best for article hero images         |
+| OG image default        | 16:9-ish |   1200×630 | Good fallback for web/social sharing |
+| LinkedIn feed wide      |   1.91:1 |   1200×628 | Link-preview style                   |
+| LinkedIn square         |      1:1 |  1200×1200 | Feed-native square post              |
+| LinkedIn portrait       |      4:5 |  1080×1350 | Strong mobile feed presence          |
+| YouTube thumbnail       |     16:9 |   1280×720 | Needs larger title/contrast          |
+| Twitter/X card          |      2:1 |   1200×600 | Wide and compact                     |
+| Poster / infographic    |    16:10 |  1920×1200 | More room for multiple panels        |
+| Story / vertical poster |     9:16 |  1080×1920 | Mobile-first, use fewer panels       |
 
 ## Defaults
 

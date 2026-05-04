@@ -213,11 +213,14 @@ Based on the deployment outcome:
 
 - **Success (preview)** → "Visit the preview URL to verify. When ready, run `/vercel-deploy prod` to
   promote to production."
-- **Success (production)** → "Your production site is live. Run `/vercel-status` to see the full project
+- **Success (production)** → "Your production site is live. Run `/vercel-status` to see the full
+  project
   overview."
 - **Build error** → "Check the build logs above. Common fixes: verify `build` script in
-  package.json, check for missing env vars with `/vercel-env list`, ensure dependencies are installed."
-- **Missing env vars** → "Run `/vercel-env pull` to sync environment variables locally, or `/vercel-env list` to
+  package.json, check for missing env vars with `/vercel-env list`, ensure dependencies are
+  installed."
+- **Missing env vars** → "Run `/vercel-env pull` to sync environment variables locally, or
+  `/vercel-env list` to
   review what's configured on Vercel."
 - **Monorepo issues** → "Ensure the correct project root is configured in Vercel project settings.
   Check `vercel.json` for `rootDirectory`."

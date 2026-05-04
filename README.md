@@ -3,7 +3,8 @@
 Custom agent configuration for [OpenCode](https://opencode.ai) — Cuban-style fullstack architect,
 project management, and a full Spec-Driven Development (SDD) pipeline.
 
-**Skills auto-discovered from `skills/` · 21 commands · MCP servers configured in `opencode.json` · ecosystem references in `references/`**
+**Skills auto-discovered from `skills/` · 21 commands · MCP servers configured in `opencode.json` ·
+ecosystem references in `references/`**
 
 ---
 

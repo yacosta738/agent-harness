@@ -36,6 +36,10 @@ From the orchestrator:
 
 Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
+Also apply the compact rules from `reviewable-pr-slices` and `work-unit-commits`. Implementation
+must honor the delivery strategy recorded in `tasks.md` and must not silently turn a forecasted
+large change into one oversized PR.
+
 ### Step 2: Read Context
 
 Before writing ANY code:
@@ -45,7 +49,22 @@ Before writing ANY code:
 3. Read existing code in affected files — understand current patterns
 4. Check the project's coding conventions from `config.yaml`
 
-### Step 3: Detect Implementation Mode
+### Step 3: Check Review Workload Gate
+
+Before writing code, read the `Review Workload Forecast` in `tasks.md`.
+
+- If forecast is **High** and the delivery strategy is `stacked-prs` or `feature-branch-chain`,
+  implement only the user-approved slice or assigned task batch.
+- If forecast is **High** and the delivery strategy is `size-exception-needed`, STOP unless the
+  prompt or tasks explicitly records that the user/maintainer approved the exception.
+- If forecast is **High** but no delivery strategy has been approved, STOP and return
+  `status: blocked`; ask the orchestrator to get the user's choice.
+- If the assigned batch no longer looks reviewable because implementation will likely exceed the
+  budget, STOP and report the need to rebalance slices.
+- Keep code, tests, and docs together by work unit. Do not implement all code first and leave
+  tests/docs for a later unrelated batch.
+
+### Step 4: Detect Implementation Mode
 
 Before writing code, determine if the project uses TDD:
 
@@ -56,11 +75,11 @@ Detect TDD mode from (in priority order):
 ├── Existing test patterns in the codebase (test files alongside source)
 └── Default: standard mode (write code first, then verify)
 
-IF TDD mode is detected → use Step 2a (TDD Workflow)
-IF standard mode → use Step 2b (Standard Workflow)
+IF TDD mode is detected → use TDD Workflow
+IF standard mode → use Standard Workflow
 ```
 
-### Step 3a: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
+### Step 4a: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
 
 When TDD is active, EVERY task follows this cycle:
 
@@ -105,7 +124,7 @@ Detect test runner from:
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`,
 `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
 
-### Step 3b: Implement Tasks (Standard Workflow)
+### Step 4b: Implement Tasks (Standard Workflow)
 
 When TDD is not active:
 
@@ -120,7 +139,7 @@ FOR EACH TASK:
 └── Note any issues or deviations
 ```
 
-### Step 4: Mark Tasks Complete
+### Step 5: Mark Tasks Complete
 
 Update `tasks.md` — change `- [ ]` to `- [x]` for completed tasks:
 
@@ -132,14 +151,14 @@ Update `tasks.md` — change `- [ ]` to `- [x]` for completed tasks:
 - [ ] 1.3 Add auth routes to `internal/server/server.go`  ← still pending
 ```
 
-### Step 5: Persist Progress
+### Step 6: Persist Progress
 
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../_shared/sdd-phase-common.md`. Update `tasks.md` with `[x]` marks as
 you complete each task.
 
-### Step 6: Return Summary
+### Step 7: Return Summary
 
 Return to the orchestrator:
 
@@ -158,6 +177,12 @@ Return to the orchestrator:
 |------|--------|---------------|
 | `path/to/file.ext` | Created | {brief description} |
 | `path/to/other.ext` | Modified | {brief description} |
+
+### Review Workload
+- **Forecast from tasks.md**: {Low | Medium | High}
+- **Delivery strategy**: {single-pr | stacked-prs | feature-branch-chain | size-exception | not set}
+- **Implemented slice/batch**: {scope implemented}
+- **Budget concern**: {None | Needs rebalance | Needs user decision}
 
 ### Tests (TDD mode only)
 | Task | Test File | RED (fail) | GREEN (pass) | REFACTOR |
@@ -192,11 +217,14 @@ If none, say "None."}
 - If you discover the design is wrong or incomplete, NOTE IT in your return summary — don't silently
   deviate
 - If a task is blocked by something unexpected, STOP and report back
+- If Review Workload Forecast is High without approved delivery strategy, STOP before writing code
 - NEVER implement tasks that weren't assigned to you
 - Load and follow any relevant coding skills for the project stack (e.g., react-19, typescript,
   django-drf, tdd, pytest, vitest) if available in the user's skill set
 - Apply any `rules.apply` from `openspec/config.yaml`
-- If TDD mode is detected (Step 2), ALWAYS follow the RED → GREEN → REFACTOR cycle — never skip
+- Keep implementation batches aligned with work-unit commits: behavior, tests, and docs stay
+  together
+- If TDD mode is detected (Step 4), ALWAYS follow the RED → GREEN → REFACTOR cycle — never skip
   RED (writing the failing test first)
 - When running tests during TDD, run ONLY the relevant test file/suite, not the entire test suite (
   for speed)

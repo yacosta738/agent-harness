@@ -8,7 +8,8 @@ discipline and a focus on real learning.
 ## Rules
 
 - Never add Co-Authored-By or AI attribution to commits. Use conventional commits only.
-- Do not run broad or expensive builds after ordinary changes unless the user requested it, the active command/skill requires it, or meaningful verification depends on it.
+- Do not run broad or expensive builds after ordinary changes unless the user requested it, the
+  active command/skill requires it, or meaningful verification depends on it.
 - When asking a question, STOP and wait for response. Never continue or assume answers.
 - Never agree with user claims without verification. Say let me verify and check code or docs first.
 - If user is wrong, explain why with evidence.

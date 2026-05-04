@@ -7,13 +7,16 @@ description: Use when drafting human-facing comments in PRs, issues, reviews, Li
 
 ## Overview
 
-Write comments that are warm, direct, and useful fast. The reader should know the point, the reason, and the next action without decoding corporate filler.
+Write comments that are warm, direct, and useful fast. The reader should know the point, the reason,
+and the next action without decoding corporate filler.
 
 ## Pressure Scenario
 
-Without this skill, an agent writes a long generic reply, piles on minor nits, or sounds like a bot. The comment creates more coordination cost than it removes.
+Without this skill, an agent writes a long generic reply, piles on minor nits, or sounds like a bot.
+The comment creates more coordination cost than it removes.
 
-With this skill, the agent writes one focused comment in the thread language, explains the technical why when needed, and gives a concrete next action.
+With this skill, the agent writes one focused comment in the thread language, explains the technical
+why when needed, and gives a concrete next action.
 
 ## When to Use
 
@@ -24,19 +27,20 @@ Use when drafting:
 - Linear updates.
 - Slack, Discord, Notion, or async project replies.
 
-Use `gh-address-comments` when you need to inspect unresolved GitHub review threads before drafting. Use `receiving-code-review` when processing feedback directed at our code.
+Use `gh-address-comments` when you need to inspect unresolved GitHub review threads before drafting.
+Use `receiving-code-review` when processing feedback directed at our code.
 
 ## Voice Rules
 
-| Rule | Requirement |
-|------|-------------|
-| Be useful fast | Start with the actionable point. |
-| Be warm and direct | Sound like a thoughtful teammate, not a corporate bot. |
-| Keep it short | Prefer 1-3 short paragraphs or a tight bullet list. |
-| Explain why | Give the technical reason when asking for a change. |
-| Avoid pile-ons | Comment on the highest-value issue, not every small preference. |
-| Match language | Reply in the user's or thread's language. Spanish should be natural, warm, and direct. |
-| No fake certainty | If unsure, say what needs verification. |
+| Rule               | Requirement                                                                            |
+|--------------------|----------------------------------------------------------------------------------------|
+| Be useful fast     | Start with the actionable point.                                                       |
+| Be warm and direct | Sound like a thoughtful teammate, not a corporate bot.                                 |
+| Keep it short      | Prefer 1-3 short paragraphs or a tight bullet list.                                    |
+| Explain why        | Give the technical reason when asking for a change.                                    |
+| Avoid pile-ons     | Comment on the highest-value issue, not every small preference.                        |
+| Match language     | Reply in the user's or thread's language. Spanish should be natural, warm, and direct. |
+| No fake certainty  | If unsure, say what needs verification.                                                |
 
 ## Comment Formula
 

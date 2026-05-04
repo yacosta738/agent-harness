@@ -1,6 +1,7 @@
 # Asset Manifest
 
-This skill currently uses textual references only. The `assets/` folders are prepared for future visual inputs.
+This skill currently uses textual references only. The `assets/` folders are prepared for future
+visual inputs.
 
 ## Directory Layout
 
@@ -17,7 +18,8 @@ assets/
 1. Check whether relevant assets exist before generating a visual prompt.
 2. If assets exist, mention them as visual references in the generated prompt.
 3. Do not invent that an asset exists. If the folder is empty, rely on textual references.
-4. Preserve the canonical style system unless the user explicitly asks for a different campaign style.
+4. Preserve the canonical style system unless the user explicitly asks for a different campaign
+   style.
 
 ## Naming Convention
 

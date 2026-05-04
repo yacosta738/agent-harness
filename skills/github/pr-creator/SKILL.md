@@ -10,9 +10,11 @@ repository's standards.
 
 ## Related Skills
 
-- Use `reviewable-pr-slices` before opening a PR when the diff may approach or exceed the repository's review budget, default 400 changed lines.
+- Use `reviewable-pr-slices` before opening a PR when the diff may approach or exceed the
+  repository's review budget, default 400 changed lines.
 - Use `cognitive-doc-design` when drafting dense PR descriptions or review notes.
-- Use `work-unit-commits` when deciding whether the PR should be split into multiple commits or slices.
+- Use `work-unit-commits` when deciding whether the PR should be split into multiple commits or
+  slices.
 
 ## Workflow
 
@@ -44,7 +46,12 @@ Follow these steps to create a Pull Request:
 - **Related Issues**: Link any issues fixed or related to this PR (e.g.,
   "Fixes #123").
 
-4. **Check Review Budget**: Before creating the PR, resolve the intended base and head branches, then inspect the diff size against the PR base. If the size cannot be measured, surface the blocker and get explicit user approval before continuing. Treat roughly 300+ changed lines as approaching the default 400-line budget. If the planned PR approaches or exceeds the repository budget, stop, load `reviewable-pr-slices`, present the split/exception options, and wait for user or maintainer approval.
+4. **Check Review Budget**: Before creating the PR, resolve the intended base and head branches,
+   then inspect the diff size against the PR base. If the size cannot be measured, surface the
+   blocker and get explicit user approval before continuing. Treat roughly 300+ changed lines as
+   approaching the default 400-line budget. If the planned PR approaches or exceeds the repository
+   budget, stop, load `reviewable-pr-slices`, present the split/exception options, and wait for user
+   or maintainer approval.
 
 5. **Create PR**: Use the `gh` CLI to create the PR. To avoid shell escaping
    issues with multi-line Markdown, write the description to a temporary file

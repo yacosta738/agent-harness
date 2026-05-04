@@ -35,7 +35,9 @@ If the spec covers multiple independent subsystems, it should have been broken i
 specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per
 subsystem. Each plan should produce working, testable software on its own.
 
-If the planned output may exceed the repository's review budget, default 400 changed lines, add a review-slicing note: proposed stacked PRs, feature branch chain, or explicit size exception. Do this before implementation, not after the PR is already too large.
+If the planned output may exceed the repository's review budget, default 400 changed lines, add a
+review-slicing note: proposed stacked PRs, feature branch chain, or explicit size exception. Do this
+before implementation, not after the PR is already too large.
 
 ## File Structure
 
@@ -52,7 +54,9 @@ responsible for. This is where decomposition decisions get locked in.
   the plan is reasonable.
 
 This structure informs the task decomposition. Each task should produce self-contained changes that
-make sense independently. Prefer work-unit tasks: each task should deliver a behavior, fix, migration, or documentation unit with its verification, not a horizontal layer like "models" or "tests" alone.
+make sense independently. Prefer work-unit tasks: each task should deliver a behavior, fix,
+migration, or documentation unit with its verification, not a horizontal layer like "models" or "
+tests" alone.
 
 ## Bite-Sized Task Granularity
 

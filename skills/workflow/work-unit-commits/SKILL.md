@@ -7,11 +7,14 @@ description: Use when preparing commits, staging changes, splitting review work,
 
 ## Overview
 
-Commit by deliverable work unit, not by file type. A good commit leaves the repository in a coherent state and tells a reviewer one clear story.
+Commit by deliverable work unit, not by file type. A good commit leaves the repository in a coherent
+state and tells a reviewer one clear story.
 
 ## Pressure Scenario
 
-Without this skill, an agent preparing commits for a feature that touches domain code, UI, tests, and docs tends to create horizontal commits like `models`, `services`, `tests`, and `docs`. That makes review and rollback harder because no commit proves a complete behavior.
+Without this skill, an agent preparing commits for a feature that touches domain code, UI, tests,
+and docs tends to create horizontal commits like `models`, `services`, `tests`, and `docs`. That
+makes review and rollback harder because no commit proves a complete behavior.
 
 With this skill, the agent groups code, tests, and docs by the behavior or fix they deliver.
 
@@ -24,18 +27,19 @@ Use when:
 - Applying an implementation plan or SDD task list.
 - Deciding whether tests/docs belong with a code change.
 
-Do not use this to justify committing without explicit user request. Commit safety rules still apply.
+Do not use this to justify committing without explicit user request. Commit safety rules still
+apply.
 
 ## Core Rules
 
-| Rule | Requirement |
-|------|-------------|
-| Commit by work unit | One commit delivers one behavior, fix, migration, refactor, or docs unit. |
-| Do not commit by file type | Avoid separate `models`, `services`, `tests`, `docs` commits when none stands alone. |
-| Keep tests with code | Tests belong in the same commit as the behavior they verify. |
-| Keep docs with visible changes | User-facing docs belong with the feature or workflow they explain. |
-| Preserve rollback | Reverting the commit should not remove unrelated work. |
-| Tell the why | The commit message explains the outcome, not the file list. |
+| Rule                           | Requirement                                                                          |
+|--------------------------------|--------------------------------------------------------------------------------------|
+| Commit by work unit            | One commit delivers one behavior, fix, migration, refactor, or docs unit.            |
+| Do not commit by file type     | Avoid separate `models`, `services`, `tests`, `docs` commits when none stands alone. |
+| Keep tests with code           | Tests belong in the same commit as the behavior they verify.                         |
+| Keep docs with visible changes | User-facing docs belong with the feature or workflow they explain.                   |
+| Preserve rollback              | Reverting the commit should not remove unrelated work.                               |
+| Tell the why                   | The commit message explains the outcome, not the file list.                          |
 
 ## Quick Check
 
@@ -49,12 +53,12 @@ Before staging or committing, confirm:
 
 ## Better Splits
 
-| Weak split | Better work-unit split |
-|------------|------------------------|
-| `add models` | `feat(auth): validate tokens with tests` |
+| Weak split     | Better work-unit split                         |
+|----------------|------------------------------------------------|
+| `add models`   | `feat(auth): validate tokens with tests`       |
 | `add services` | `feat(auth): wire token validation into login` |
-| `add tests` | Tests included beside each behavior commit |
-| `update docs` | Docs included with the user-visible change |
+| `add tests`    | Tests included beside each behavior commit     |
+| `update docs`  | Docs included with the user-visible change     |
 
 ## Related Skills
 

@@ -29,14 +29,14 @@ Before generating any image prompt, consult the local textual references if they
 assets if present. If optional reference files are missing, fall back to the embedded Design System
 section below instead of inventing a different style. Do not freestyle the visual style from memory.
 
-| Need | Reference |
-|------|-----------|
-| Canonical palette, typography, geometry | `references/style-system.md` |
-| Which composition pattern to choose | `references/layout-patterns.md` |
-| Ratios, resolutions, Midjourney aspect flags | `references/format-presets.md` |
-| Reusable prompt structures | `references/prompt-recipes.md` |
-| Required avoid/negative prompt language | `references/negative-prompts.md` |
-| Future visual asset organization | `references/asset-manifest.md` |
+| Need                                         | Reference                        |
+|----------------------------------------------|----------------------------------|
+| Canonical palette, typography, geometry      | `references/style-system.md`     |
+| Which composition pattern to choose          | `references/layout-patterns.md`  |
+| Ratios, resolutions, Midjourney aspect flags | `references/format-presets.md`   |
+| Reusable prompt structures                   | `references/prompt-recipes.md`   |
+| Required avoid/negative prompt language      | `references/negative-prompts.md` |
+| Future visual asset organization             | `references/asset-manifest.md`   |
 
 If `assets/` contains relevant examples, logos, palettes, or textures, mention
 them as visual references in the final prompt. If `assets/` is empty, rely on the textual references

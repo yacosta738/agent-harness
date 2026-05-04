@@ -34,6 +34,10 @@ From the orchestrator:
 
 Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
+Also apply the compact rules from `reviewable-pr-slices` and `work-unit-commits` when breaking down
+implementation work. SDD task planning must forecast review workload before any `sdd-apply`
+implementation starts.
+
 ### Step 2: Analyze the Design
 
 From the design document, identify:
@@ -59,6 +63,16 @@ openspec/changes/{change-name}/
 ```markdown
 # Tasks: {Change Title}
 
+## Review Workload Forecast
+
+| Field | Value |
+|-------|-------|
+| Review budget | 400 changed lines unless project config says otherwise |
+| Estimated workload | Low / Medium / High |
+| Chained PRs recommended | Yes / No |
+| Proposed delivery strategy | single-pr / stacked-prs / feature-branch-chain / size-exception-needed |
+| Work-unit balance | <how tasks map to reviewable work units> |
+
 ## Phase 1: {Phase Name} (e.g., Infrastructure / Foundation)
 
 - [ ] 1.1 {Concrete action — what file, what change}
@@ -83,6 +97,23 @@ openspec/changes/{change-name}/
 - [ ] 4.1 {Update docs/comments}
 - [ ] 4.2 {Remove temporary code}
 ```
+
+### Review Workload Forecast Rules
+
+Before writing phases, estimate the implementation review load from the design's file changes,
+specs, testing scope, migrations, docs, and expected integration surface.
+
+Use this heuristic:
+
+| Risk   | Signal                                                                           | Required action                                                                                                                   |
+|--------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Low    | Small, single-surface change                                                     | `single-pr`; keep work-unit commits.                                                                                              |
+| Medium | Multi-file or uncertain diff, likely 300-400 changed lines                       | `single-pr`; warn that commits must stay slice-ready.                                                                             |
+| High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | `stacked-prs`, `feature-branch-chain`, or `size-exception-needed`; report that orchestrator must ask the user before `sdd-apply`. |
+
+Balance proposed slices by deliverable work units: each slice should include behavior, tests, and
+docs needed to review it. Do not balance by horizontal layers like "models", "routes", "tests"
+unless that layer is itself a complete deliverable.
 
 ### Task Writing Rules
 
@@ -143,11 +174,18 @@ Return to the orchestrator:
 | Phase 3 | {N} | {Phase name} |
 | Total | {N} | |
 
+### Review Workload Forecast
+- **Budget**: {budget} changed lines
+- **Estimated workload**: {Low | Medium | High}
+- **Chained PRs recommended**: {Yes | No}
+- **Proposed delivery strategy**: {single-pr | stacked-prs | feature-branch-chain | size-exception-needed}
+- **Work-unit balance**: {brief rationale}
+
 ### Implementation Order
 {Brief description of the recommended order and why}
 
 ### Next Step
-Ready for implementation (sdd-apply).
+{Ready for implementation (sdd-apply) | Blocked until user chooses stacked PRs, feature branch chain, or size exception.}
 ```
 
 ## Rules
@@ -156,11 +194,12 @@ Ready for implementation (sdd-apply).
 - Tasks MUST be ordered by dependency — Phase 1 tasks shouldn't depend on Phase 2
 - Testing tasks should reference specific scenarios from the specs
 - Each task should be completable in ONE session (if a task feels too big, split it)
+- Tasks MUST be grouped so they can become work-unit commits or PR slices if review workload is High
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `openspec/config.yaml`
 - If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task (
   make it pass) → REFACTOR task (clean up)
-- **Size budget**: Tasks artifact MUST be under 530 words. Each task: 1-2 lines max. Use checklist
-  format, not paragraphs.
+- **Size budget**: Tasks artifact SHOULD stay under 650 words including the Review Workload
+  Forecast. Each task: 1-2 lines max. Use checklist format, not paragraphs.
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

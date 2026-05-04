@@ -6,19 +6,20 @@ Canonical visual identity for Yuniel's image prompts.
 
 **Classified ops terminal × hacker dashboard × isometric technical blueprint.**
 
-The image should feel operational, precise, and technical. It should not feel like a generic startup landing page, a glossy AI poster, or a colorful SaaS dashboard.
+The image should feel operational, precise, and technical. It should not feel like a generic startup
+landing page, a glossy AI poster, or a colorful SaaS dashboard.
 
 ## Default Terminal Palette
 
-| Role | Value | Rule |
-|---|---:|---|
-| Background | `#000000`, `#080808` | Always dark, usually pure black |
-| Primary text | `#FFFFFF` | Main titles, labels, data |
-| Secondary text | `#888888`, `#666666` | Metadata, timestamps, secondary labels |
-| Borders/grid | `#222222`, `#333333` | Hairline panels, tables, dividers |
-| Success | `#44FF88` dim green | Status only, never decorative |
-| Danger | `#FF4444` dim red | Errors/failures only |
-| Blueprint lines | white at 15–40% opacity | Isometric diagrams, layer outlines |
+| Role            |                   Value | Rule                                   |
+|-----------------|------------------------:|----------------------------------------|
+| Background      |    `#000000`, `#080808` | Always dark, usually pure black        |
+| Primary text    |               `#FFFFFF` | Main titles, labels, data              |
+| Secondary text  |    `#888888`, `#666666` | Metadata, timestamps, secondary labels |
+| Borders/grid    |    `#222222`, `#333333` | Hairline panels, tables, dividers      |
+| Success         |     `#44FF88` dim green | Status only, never decorative          |
+| Danger          |       `#FF4444` dim red | Errors/failures only                   |
+| Blueprint lines | white at 15–40% opacity | Isometric diagrams, layer outlines     |
 
 **Default rule:** black + white + gray. Use red/green only as status semantics.
 
@@ -49,7 +50,8 @@ Use the navy/teal personal-brand palette instead of pure black terminal monochro
 - Accent: `#64ffda`
 - Text: `#e2e8f0`, `#8892b0`
 
-This is the only pattern that allows slight rounding, clean sans body text, pixel HUD elements, and stronger color presence.
+This is the only pattern that allows slight rounding, clean sans body text, pixel HUD elements, and
+stronger color presence.
 
 ## Brand Consistency Check
 

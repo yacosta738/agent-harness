@@ -1,6 +1,7 @@
 # Prompt Recipes Reference
 
-Use these recipes as starting points. Always adapt topic-specific content; do not paste placeholders into final prompts.
+Use these recipes as starting points. Always adapt topic-specific content; do not paste placeholders
+into final prompts.
 
 ## Blog Header Recipe
 

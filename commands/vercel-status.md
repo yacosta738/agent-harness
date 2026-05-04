@@ -267,7 +267,8 @@ Present the diagnostic report:
 
 Based on the diagnostic results, suggest relevant actions:
 
-- **Build errors** → "Run `/vercel-deploy` to trigger a fresh build, or check `vercel logs <url>` for
+- **Build errors** → "Run `/vercel-deploy` to trigger a fresh build, or check `vercel logs <url>`
+  for
   details."
 - **Missing env vars** → "Run `/vercel-env list` to review, or `/vercel-env pull` to sync locally."
 - **DNS not configured** → "Update your domain DNS records. See the Vercel domains dashboard."

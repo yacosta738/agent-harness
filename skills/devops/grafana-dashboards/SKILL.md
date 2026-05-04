@@ -381,7 +381,8 @@ resource "grafana_folder" "monitoring" {
 - `assets/api-dashboard.json` - API monitoring dashboard
 - `assets/infrastructure-dashboard.json` - Infrastructure dashboard
 - `assets/database-dashboard.json` - Database monitoring dashboard
-- Optional dashboard design guide under `references/` if present; if missing, use the design principles embedded in this skill.
+- Optional dashboard design guide under `references/` if present; if missing, use the design
+  principles embedded in this skill.
 
 ## Related Skills
 

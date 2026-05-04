@@ -282,10 +282,13 @@ For `diff`, include counts:
 
 Based on the action performed:
 
-- **After list** → "Run `/vercel-env pull` to sync to local, or `/vercel-env diff` to compare local vs Vercel."
-- **After pull** → "Restart your dev server to pick up the new variables. Run `/vercel-env diff` to verify
+- **After list** → "Run `/vercel-env pull` to sync to local, or `/vercel-env diff` to compare local
+  vs Vercel."
+- **After pull** → "Restart your dev server to pick up the new variables. Run `/vercel-env diff` to
+  verify
   sync."
-- **After add** → "Run `/vercel-deploy` to make the new variable available in your next deployment. For
+- **After add** → "Run `/vercel-deploy` to make the new variable available in your next deployment.
+  For
   production, the variable is available immediately on the next request."
 - **After remove** → "The variable is removed. If your app depends on it, update your code or add a
   replacement. Consider redeploying with `/vercel-deploy`."

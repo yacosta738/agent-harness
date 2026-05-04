@@ -39,11 +39,11 @@ large empty whitespace.
 
 ## Common Failure Corrections
 
-| If the draft says... | Replace with... |
-|---|---|
-| futuristic neon AI dashboard | classified monochrome ops terminal |
-| colorful gradient background | pure black background with faint scanlines |
-| modern SaaS cards | sharp rectangular command panels |
-| friendly icons | wireframe symbols, ASCII badges, status labels |
-| elegant sans-serif | monospace technical typography |
-| vibrant accent colors | dim semantic red/green status indicators only |
+| If the draft says...         | Replace with...                                |
+|------------------------------|------------------------------------------------|
+| futuristic neon AI dashboard | classified monochrome ops terminal             |
+| colorful gradient background | pure black background with faint scanlines     |
+| modern SaaS cards            | sharp rectangular command panels               |
+| friendly icons               | wireframe symbols, ASCII badges, status labels |
+| elegant sans-serif           | monospace technical typography                 |
+| vibrant accent colors        | dim semantic red/green status indicators only  |
