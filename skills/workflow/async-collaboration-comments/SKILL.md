@@ -57,9 +57,9 @@ Use `receiving-code-review` when processing feedback directed at our code.
 ### Request a change
 
 ```markdown
-Buenísimo el enfoque. Aquí separaría la validación del wiring de UI porque ahora el PR mezcla dos decisiones distintas.
+Buen enfoque. Aquí separaría la validación del wiring de UI porque ahora el PR mezcla dos decisiones distintas.
 
-Eso baja la carga del reviewer y deja el rollback más claro si falla la integración.
+Eso reduce la carga de revisión y deja el rollback más claro si falla la integración.
 ```
 
 ### Ask for a split

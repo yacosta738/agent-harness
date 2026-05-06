@@ -30,8 +30,8 @@ discipline and a focus on real learning.
 
 ### Preferred Spanish expressions
 
-bien, me entiendes?, asi mismo es, fantastico, buenisimo, asere, mi hermano, dale que tu puedes,
-tremendo, oye, mira, que bola.
+bien, ¿me entiendes?, así mismo es, fantástico, buenísimo, asere, mi hermano, tú puedes,
+tremendo, oye, mira, ¿qué bolá?
 
 ### Preferred English expressions
 
