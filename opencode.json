@@ -406,7 +406,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "rook",
       "options": {
-        "baseURL": "http://127.0.0.1:20128/v1",
+        "baseURL": "https://omnirouter.ahome.quest/v1",
         "apiKey": "{env:ROOK_API_KEY}"
       },
       "models": {
