@@ -54,12 +54,15 @@ agent instances find and apply effective approaches.
 
 ## Directory Structure
 
-```
+```text
 skills/
-  skill-name/
-    SKILL.md              # Main reference (required)
-    supporting-file.*     # Only if needed for heavy reference or reusable tools
+  category/
+    skill-name/
+      SKILL.md              # Main reference (required)
+      supporting-file.*     # Only if needed for heavy reference or reusable tools
 ```
+
+`category` groups related skills (for example: `workflow`, `debugging`, `deployment`).
 
 ## SKILL.md Frontmatter
 

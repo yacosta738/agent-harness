@@ -39,7 +39,7 @@ feature cycle, stop and escalate to SDD instead of stretching brainstorming into
 You MUST create a task for each of these items and complete them in order:
 
 1. **Explore project context** — check files, docs, recent commits, `CONTEXT.md`,
-   and ADRs (`docs/adr/`)
+   and ADRs (`tmp/adr/`)
 2. **Ask clarifying questions** — one at a time, understand purpose/constraints/
    success criteria. **Always provide your recommended answer** to reduce
    cognitive load on the user.
@@ -75,7 +75,7 @@ You MUST create a task for each of these items and complete them in order:
 - When the user uses a term that conflicts with `CONTEXT.md`, call it out
   immediately.
 - When the user uses vague terms, propose a precise canonical term.
-- Only offer to create an ADR (`docs/adr/`) when a decision is: 1) Hard to
+- Only offer to create an ADR (`tmp/adr/`) when a decision is: 1) Hard to
   reverse, 2) Surprising without context, AND 3) The result of a real trade-off.
   Skip ADRs for trivial choices.
 
