@@ -4,7 +4,7 @@
   "plugin": [
     "opencode-anthropic-login-via-cli@latest",
     "opencode-gemini-auth@latest",
-    "@warp-dot-dev/opencode-warp"
+    "@warp-dot-dev/opencode-warp@0.1.5"
   ],
   "permission": {
     "bash": {
@@ -192,6 +192,11 @@
       ],
       "type": "local",
       "enabled": true
+    },
+     "vercel": {
+      "type": "remote",
+      "url": "https://mcp.vercel.com",
+      "enabled": false
     }
   },
   "agent": {
