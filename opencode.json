@@ -2,46 +2,44 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
   "plugin": [
+    "opencode-wakatime",
     "opencode-anthropic-login-via-cli@latest",
     "opencode-gemini-auth@latest",
     "@warp-dot-dev/opencode-warp@0.1.5"
   ],
   "permission": {
     "bash": {
-      "git status*": "allow",
-      "git diff*": "allow",
-      "git log*": "allow",
-      "git branch*": "allow",
-      "git add *": "allow",
-      "npm *": "allow",
-      "pnpm *": "allow",
-      "yarn *": "allow",
-      "bun *": "allow",
-      "node *": "allow",
-      "python *": "allow",
-      "pytest *": "allow",
-      "go test *": "allow",
-      "cargo test *": "allow",
+      "*": "allow",
       "git commit *": "ask",
-      "git push *": "ask",
       "git push": "ask",
+      "git push *": "ask",
       "git push --force *": "ask",
       "git rebase *": "ask",
-      "git reset --hard *": "ask",
-      "*": "ask"
+      "git reset --hard *": "ask"
     },
     "read": {
       "*": "allow",
-      "**/editors/agents/opencode/skills/sdd/_shared/**": "allow",
-      "*.env": "deny",
-      "*.env.*": "deny",
+      "**/*.key": "deny",
+      "**/*.pem": "deny",
+      "**/.aws/credentials": "deny",
+      "**/.config/gh/hosts.yml": "deny",
+      "**/.credentials/**": "deny",
       "**/.env": "deny",
       "**/.env.*": "deny",
+      "**/.ssh/**": "deny",
+      "**/Library/Keychains/**": "deny",
+      "**/credentials.json": "deny",
       "**/secrets/**": "deny",
-      "**/credentials.json": "deny"
+      "*.env": "deny",
+      "*.env.*": "deny"
     }
   },
   "mcp": {
+    "engram": {
+      "command": ["engram", "mcp", "--tools=agent"],
+      "enabled": true,
+      "type": "local"
+    },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
@@ -191,25 +189,72 @@
         "http://localhost:64342/sse"
       ],
       "type": "local",
-      "enabled": true
+      "enabled": false
     },
-     "vercel": {
+    "vercel": {
       "type": "remote",
       "url": "https://mcp.vercel.com",
       "enabled": false
+    },
+    "TestSprite": {
+      "type": "local",
+      "command": [
+        "npx",
+        "@testsprite/testsprite-mcp@latest"
+      ],
+      "environment": {
+        "API_KEY": "{env:TESTSPRITE_API_KEY}"
+      },
+      "enabled": false
+    },
+    "GitGuardianDeveloper": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "git+https://github.com/GitGuardian/gg-mcp.git",
+        "developer-mcp-server"
+      ],
+      "enabled": false
+    },
+    "socket-mcp": {
+      "type": "remote",
+      "url": "https://mcp.socket.dev/",
+      "enabled": true
     }
   },
   "agent": {
     "kerrigan": {
-      "mode": "all",
+      "mode": "primary",
       "description": "Fullstack architect and SDD orchestrator - Cuban style, warm mentor",
       "prompt": "{file:./AGENTS.md}",
+      "permission": {
+        "task": {
+          "*": "deny",
+          "jd-fix-agent": "allow",
+          "jd-judge-a": "allow",
+          "jd-judge-b": "allow",
+          "sdd-apply": "allow",
+          "sdd-archive": "allow",
+          "sdd-design": "allow",
+          "sdd-explore": "allow",
+          "sdd-init": "allow",
+          "sdd-onboard": "allow",
+          "sdd-propose": "allow",
+          "sdd-spec": "allow",
+          "sdd-tasks": "allow",
+          "sdd-verify": "allow"
+        }
+      },
       "tools": {
         "read": true,
         "search": true,
         "bash": true,
         "write": true,
-        "edit": true
+        "edit": true,
+        "delegate": true,
+        "delegation_read": true,
+        "delegation_list": true
       },
       "subagents": {
         "tech-lead": {
@@ -267,7 +312,7 @@
       "description": "Implement code changes from task definitions",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the apply phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-apply/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the apply phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-apply.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -279,8 +324,7 @@
       "description": "Archive completed change artifacts",
       "hidden": true,
       "mode": "subagent",
-      "model": "rook/free-stack",
-      "prompt": "You are an SDD executor for the archive phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-archive/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the archive phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-archive.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -292,7 +336,7 @@
       "description": "Create technical design from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the design phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-design/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the design phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-design.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -304,7 +348,7 @@
       "description": "Investigate codebase and think through ideas",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the explore phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-explore/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the explore phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-explore.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -316,7 +360,7 @@
       "description": "Bootstrap SDD context and project configuration",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the init phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-init/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the init phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-init.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -328,7 +372,7 @@
       "description": "Create change proposals from explorations",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the propose phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-propose/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the propose phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-propose.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -340,7 +384,7 @@
       "description": "Write detailed specifications from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the spec phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-spec/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the spec phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-spec.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -352,7 +396,7 @@
       "description": "Break down specs and designs into implementation tasks",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the tasks phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-tasks/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the tasks phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-tasks.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
       "tools": {
         "bash": true,
         "edit": true,
@@ -364,7 +408,51 @@
       "description": "Validate implementation against specs",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "You are an SDD executor for the verify phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your skill file at ~/.config/opencode/skills/sdd/sdd-verify/SKILL.md and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then follow their instructions exactly.",
+      "prompt": "You are an SDD executor for the verify phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-verify.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
+    },
+    "scalpel": {
+      "description": "Surgical fix agent for judgment-day protocol",
+      "hidden": false,
+      "mode": "subagent",
+      "prompt": "{file:./prompts/scalpel.md}",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "read": true,
+        "write": true
+      }
+    },
+    "lens": {
+      "description": "Adversarial code reviewer — blind judge A for judgment-day protocol",
+      "hidden": false,
+      "mode": "subagent",
+      "prompt": "{file:./prompts/lens.md}",
+      "tools": {
+        "bash": true,
+        "read": true
+      }
+    },
+    "mirror": {
+      "description": "Adversarial code reviewer — blind judge B for judgment-day protocol",
+      "hidden": false,
+      "mode": "subagent",
+      "prompt": "{file:./prompts/mirror.md}",
+      "tools": {
+        "bash": true,
+        "read": true
+      }
+    },
+    "sdd-onboard": {
+      "description": "Guide users through the full SDD cycle using their real codebase",
+      "hidden": false,
+      "mode": "subagent",
+      "prompt": "{file:./prompts/sdd/sdd-onboard.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -415,29 +503,23 @@
         "apiKey": "{env:ROOK_API_KEY}"
       },
       "models": {
-        "cx/gpt-5.4": {
-          "name": "cx/gpt-5.4"
+        "auto/best-coding": {
+          "name": "auto/best-coding"
         },
-        "ollamacloud/qwen3.5:397b": {
-          "name": "ollamacloud/qwen3.5:397b"
-        },
-        "qw/qwen3-coder-flash": {
-          "name": "qw/qwen3-coder-flash"
-        },
-        "codex": {
-          "name": "codex"
+        "coding": {
+          "name": "coding"
         },
         "free-stack": {
           "name": "free-stack"
-        },
-        "kimi/kimi-k2.5": {
-          "name": "kimi/kimi-k2.5"
         },
         "gg-brain": {
           "name": "gg-brain"
         },
         "writer": {
           "name": "writer"
+        },
+        "ftk": {
+          "name": "ftk"
         }
       }
     }
