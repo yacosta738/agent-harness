@@ -3,9 +3,8 @@
   "autoupdate": true,
   "plugin": [
     "opencode-wakatime",
-    "opencode-anthropic-login-via-cli@latest",
     "opencode-gemini-auth@latest",
-    "@warp-dot-dev/opencode-warp@0.1.5"
+    "@warp-dot-dev/opencode-warp"
   ],
   "permission": {
     "bash": {
@@ -220,6 +219,15 @@
     "socket-mcp": {
       "type": "remote",
       "url": "https://mcp.socket.dev/",
+      "enabled": true
+    },
+    "codegraph": {
+      "type": "local",
+      "command": [
+        "codegraph",
+        "serve",
+        "--mcp"
+      ],
       "enabled": true
     }
   },
