@@ -64,24 +64,9 @@ Before writing code, read the `Review Workload Forecast` in `tasks.md`.
 - Keep code, tests, and docs together by work unit. Do not implement all code first and leave
   tests/docs for a later unrelated batch.
 
-### Step 4: Detect Implementation Mode
+### Step 4: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
 
-Before writing code, determine if the project uses TDD:
-
-```
-Detect TDD mode from (in priority order):
-├── openspec/config.yaml → rules.apply.tdd (true/false — highest priority)
-├── User's installed skills (e.g., tdd/SKILL.md exists)
-├── Existing test patterns in the codebase (test files alongside source)
-└── Default: standard mode (write code first, then verify)
-
-IF TDD mode is detected → use TDD Workflow
-IF standard mode → use Standard Workflow
-```
-
-### Step 4a: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
-
-When TDD is active, EVERY task follows this cycle:
+TDD IS MANDATORY. EVERY task follows this cycle — no exceptions:
 
 ```
 FOR EACH TASK:
@@ -121,23 +106,11 @@ Detect test runner from:
 └── Fallback: report that tests couldn't be run automatically
 ```
 
+If no test runner is found, STOP and report `status: blocked` — TDD requires a test runner to
+confirm RED (fail) and GREEN (pass) for every task.
+
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`,
 `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
-
-### Step 4b: Implement Tasks (Standard Workflow)
-
-When TDD is not active:
-
-```
-FOR EACH TASK:
-├── Read the task description
-├── Read relevant spec scenarios (these are your acceptance criteria)
-├── Read the design decisions (these constrain your approach)
-├── Read existing code patterns (match the project's style)
-├── Write the code
-├── Mark task as complete [x] in tasks.md
-└── Note any issues or deviations
-```
 
 ### Step 5: Mark Tasks Complete
 
@@ -166,7 +139,7 @@ Return to the orchestrator:
 ## Implementation Progress
 
 **Change**: {change-name}
-**Mode**: {TDD | Standard}
+**Mode**: Strict TDD (RED→GREEN→REFACTOR)
 
 ### Completed Tasks
 - [x] {task 1.1 description}
@@ -184,13 +157,13 @@ Return to the orchestrator:
 - **Implemented slice/batch**: {scope implemented}
 - **Budget concern**: {None | Needs rebalance | Needs user decision}
 
-### Tests (TDD mode only)
+### RED→GREEN→REFACTOR Evidence
 | Task | Test File | RED (fail) | GREEN (pass) | REFACTOR |
 |------|-----------|------------|--------------|----------|
 | 1.1 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 | 1.2 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 
-{Omit this section if standard mode was used.}
+**TDD compliance**: All tasks followed RED→GREEN→REFACTOR cycle. No code was written without a failing test first.
 
 ### Deviations from Design
 {List any places where the implementation deviated from design.md and why.
@@ -224,8 +197,19 @@ If none, say "None."}
 - Apply any `rules.apply` from `openspec/config.yaml`
 - Keep implementation batches aligned with work-unit commits: behavior, tests, and docs stay
   together
-- If TDD mode is detected (Step 4), ALWAYS follow the RED → GREEN → REFACTOR cycle — never skip
-  RED (writing the failing test first)
-- When running tests during TDD, run ONLY the relevant test file/suite, not the entire test suite (
-  for speed)
+- TDD is MANDATORY. ALWAYS follow the RED → GREEN → REFACTOR cycle — never skip
+  RED (writing the failing test first). Standard Mode does not exist. If you detect code written
+  before tests, STOP and delete the code — start over with the failing test first.
+- **Fast feedback during TDD is OK; final claims are not.**
+  - During the RED→GREEN→REFACTOR cycle of a single task, it is fine to run a single test file
+    or `--tests 'pattern'` for speed and signal.
+  - However, to mark `apply_outcome=PASS` in `state.yaml` or to claim "tests green" in your
+    return summary, you MUST have run the BROADER task invocation at least once without a
+    `--tests` filter (e.g. the full module's `test` / `postgresIntegrationTest` task, or the
+    justfile recipe such as `just backend-test-fast` / `just backend-test-postgres`). Filtered
+    runs hide regressions like JVM class-name collisions, Spring context wiring conflicts, and
+    bean duplicate-registration errors that only surface during full classpath scans.
+  - The full (unfiltered) invocation MUST be listed by name in `apply-progress.md` under
+    "Commands Run" with its exit code and test counts. If you did not run it, do not claim
+    green.
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

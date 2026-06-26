@@ -90,24 +90,9 @@ Before starting work, check for existing apply-progress:
 
 **CRITICAL**: If the orchestrator told you previous progress exists, you MUST read it. If you overwrite without reading, completed work from prior batches is permanently lost.
 
-### Step 3: Detect Implementation Mode
+### Step 3: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
 
-Before writing code, determine if the project uses TDD:
-
-```
-Detect TDD mode from (in priority order):
-├── openspec/config.yaml → rules.apply.tdd (true/false — highest priority)
-├── User's installed skills (e.g., tdd/SKILL.md exists)
-├── Existing test patterns in the codebase (test files alongside source)
-└── Default: standard mode (write code first, then verify)
-
-IF TDD mode is detected → use TDD Workflow
-IF standard mode → use Standard Workflow
-```
-
-### Step 4a: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
-
-When TDD is active, EVERY task follows this cycle:
+TDD IS MANDATORY. EVERY task follows this cycle — no exceptions:
 
 ```
 FOR EACH TASK:
@@ -144,27 +129,15 @@ Detect test runner from:
 ├── package.json → scripts.test
 ├── pyproject.toml / pytest.ini → pytest
 ├── Makefile → make test
-└── Fallback: report that tests couldn't be run automatically
+└── Fallback: STOP — TDD requires a test runner to confirm RED and GREEN
 ```
+
+If no test runner is found, return `status: blocked` and report that the project needs a test
+runner configured before sdd-apply can proceed.
 
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`, `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
 
-### Step 4b: Implement Tasks (Standard Workflow)
-
-When TDD is not active:
-
-```
-FOR EACH TASK:
-├── Read the task description
-├── Read relevant spec scenarios (these are your acceptance criteria)
-├── Read the design decisions (these constrain your approach)
-├── Read existing code patterns (match the project's style)
-├── Write the code
-├── Mark task as complete [x] in tasks.md
-└── Note any issues or deviations
-```
-
-### Step 5: Mark Tasks Complete
+### Step 4: Mark Tasks Complete
 
 Update `tasks.md` — change `- [ ]` to `- [x]` for completed tasks:
 
@@ -201,7 +174,7 @@ Return to the orchestrator:
 ## Implementation Progress
 
 **Change**: {change-name}
-**Mode**: {Strict TDD | Standard}
+**Mode**: Strict TDD (RED→GREEN→REFACTOR)
 
 ### Completed Tasks
 - [x] {task 1.1 description}
@@ -239,6 +212,9 @@ If none, say "None."}
 
 - ALWAYS read specs before implementing — specs are your acceptance criteria
 - ALWAYS follow the design decisions — don't freelance a different approach
+- TDD is MANDATORY. ALWAYS follow RED → GREEN → REFACTOR. Standard Mode does not exist.
+- If you detect code written before tests, STOP and delete the code — start with the failing test first.
+- If no test runner is configured, STOP and report `status: blocked` — TDD cannot execute without one.
 - ALWAYS match existing code patterns and conventions in the project
 - In `openspec` mode, mark tasks complete in `tasks.md` AS you go, not at the end
 - If you discover the design is wrong or incomplete, NOTE IT in your return summary — don't silently deviate

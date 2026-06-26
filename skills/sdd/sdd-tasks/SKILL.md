@@ -81,16 +81,20 @@ openspec/changes/{change-name}/
 
 ## Phase 2: {Phase Name} (e.g., Core Implementation)
 
-- [ ] 2.1 {Concrete action}
-- [ ] 2.2 {Concrete action}
-- [ ] 2.3 {Concrete action}
-- [ ] 2.4 {Concrete action}
+Each implementation task is split into RED→GREEN→REFACTOR per TDD:
 
-## Phase 3: {Phase Name} (e.g., Testing / Verification)
+- [ ] 2.1 RED: Write failing test for {component/behavior}
+- [ ] 2.2 GREEN: Implement minimum code to pass
+- [ ] 2.3 REFACTOR: Clean up, verify tests still pass
+- [ ] 2.4 RED: Write failing test for {next behavior}
+- [ ] 2.5 GREEN: Implement minimum code to pass
+- [ ] 2.6 REFACTOR: Clean up, verify tests still pass
 
-- [ ] 3.1 {Write tests for ...}
-- [ ] 3.2 {Write tests for ...}
-- [ ] 3.3 {Verify integration between ...}
+## Phase 3: {Phase Name} (e.g., Integration / E2E Testing)
+
+- [ ] 3.1 RED: Write failing integration test for {scenario}
+- [ ] 3.2 GREEN: Wire components to pass
+- [ ] 3.3 REFACTOR: Clean up wiring
 
 ## Phase 4: {Phase Name} (e.g., Cleanup / Documentation)
 
@@ -119,12 +123,13 @@ unless that layer is itself a complete deliverable.
 
 Each task MUST be:
 
-| Criteria       | Example ✅                                                  | Anti-example ❌          |
-|----------------|------------------------------------------------------------|-------------------------|
-| **Specific**   | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth"              |
-| **Actionable** | "Add `ValidateToken()` method to `AuthService`"            | "Handle tokens"         |
-| **Verifiable** | "Test: `POST /login` returns 401 without token"            | "Make sure it works"    |
-| **Small**      | One file or one logical unit of work                       | "Implement the feature" |
+| Criteria        | Example ✅                                                  | Anti-example ❌          |
+|-----------------|------------------------------------------------------------|-------------------------|
+| **Specific**    | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth"              |
+| **Actionable**  | "Add `ValidateToken()` method to `AuthService`"            | "Handle tokens"         |
+| **Verifiable**  | "Test: `POST /login` returns 401 without token"            | "Make sure it works"    |
+| **Small**       | One file or one logical unit of work                       | "Implement the feature" |
+| **TDD-split**   | Split into RED→GREEN→REFACTOR per behavior                 | Bundle test + impl together |
 
 ### Phase Organization Guidelines
 
@@ -142,6 +147,7 @@ Phase 3: Integration / Wiring
   └─ Make everything work together
 
 Phase 4: Testing
+  └─ RED tasks: write failing tests first
   └─ Unit tests, integration tests, e2e tests
   └─ Verify against spec scenarios
 
@@ -198,8 +204,11 @@ Return to the orchestrator:
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `openspec/config.yaml`
-- If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task (
-  make it pass) → REFACTOR task (clean up)
+- TDD IS MANDATORY. Each implementation task MUST be split into:
+  - RED task: write the failing test FIRST
+  - GREEN task: write minimum code to pass
+  - REFACTOR task: clean up without changing behavior
+  Do NOT bundle implementation and testing into a single task — that hides the TDD cycle.
 - **Size budget**: Tasks artifact SHOULD stay under 650 words including the Review Workload
   Forecast. Each task: 1-2 lines max. Use checklist format, not paragraphs.
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

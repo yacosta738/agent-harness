@@ -47,7 +47,18 @@ Use Task tool with superpowers:code-reviewer type, fill template at `code-review
 - `{HEAD_SHA}` - Ending commit
 - `{DESCRIPTION}` - Brief summary
 
-**3. Act on feedback:**
+**3. Instruct the reviewer to use the 4R rubric:**
+
+Load `four-r-review` and require findings to be evaluated through:
+
+- **R1 Risk** — production/security/blast-radius impact
+- **R2 Readability** — clarity, complexity, maintainability
+- **R3 Reliability** — tests, edge cases, error handling, timeouts
+- **R4 Resilience** — retries, backoff, graceful degradation, observability
+
+The reviewer should not stop at style comments. They must explicitly look for ship-risk, proof of correctness, and dependency failure behavior.
+
+**4. Act on feedback:**
 
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
@@ -70,6 +81,7 @@ HEAD_SHA=$(git rev-parse HEAD)
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
+  REVIEW_RUBRIC: Load `four-r-review` and report findings across R1 Risk, R2 Readability, R3 Reliability, R4 Resilience
 
 [Subagent returns]:
   Strengths: Clean architecture, real tests
@@ -99,6 +111,22 @@ You: [Fix progress indicators]
 
 - Review before merge
 - Review when stuck
+
+## Reviewer Prompt Add-on
+
+Include this instruction in the reviewer prompt:
+
+```text
+Load skill: four-r-review
+Review the target using the 4R rubric.
+For each meaningful finding, classify it primarily under:
+- R1 Risk
+- R2 Readability
+- R3 Reliability
+- R4 Resilience
+Call out severity separately: CRITICAL, WARNING, or SUGGESTION.
+Do not give style-only feedback if there is unresolved ship-risk, missing test evidence, or cascade-failure risk.
+```
 
 ## Red Flags
 

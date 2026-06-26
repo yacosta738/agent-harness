@@ -92,7 +92,38 @@ Search for test files related to the change
 └── Flag: WARNING if scenarios lack tests, SUGGESTION if coverage could improve
 ```
 
-### Step 5b: Run Tests (Real Execution)
+### Step 5a: Audit TDD Compliance (Mandatory)
+
+Verify that TDD was followed during implementation, not just that tests exist:
+
+```
+Search for evidence of TDD compliance:
+├── Read sdd-apply return summaries (if persisted in apply-progress)
+│   └── Check that RED→GREEN→REFACTOR was completed for each task
+├── Read tasks.md — check that tasks were implemented with tests alongside
+├── Check commit history (if available):
+│   ├── `git log --oneline` for the affected files
+│   └── Look for patterns: test file committed before or with implementation
+├── For each test file related to the change:
+│   ├── Run `git log --diff-filter=A --name-only --format=""` on test files
+│   └── Check if test commit precedes or is paired with implementation commit
+└── If git history is unavailable (squash merge, no history):
+    └── Check apply-progress artifact for explicit RED→GREEN→REFACTOR records
+
+Flag:
+├── CRITICAL if there is evidence that implementation was written before tests
+│   (code committed first, then tests added after)
+├── WARNING if TDD compliance cannot be verified (no git history, no apply-progress)
+├── WARNING if tests exist but RED (failing) phase was never verified
+└── PASS if RED→GREEN→REFACTOR evidence is confirmed per task
+```
+
+**Why this matters**: Tests that exist are not proof of TDD. The RED phase (watching the test fail)
+is what proves the test actually tests the right behavior. Without it, passing tests could be
+testing the wrong thing or be biased by implementation.
+
+Evidence of TDD failure (code before tests) is a CRITICAL finding — report it as a quality risk
+even if tests pass.
 
 Detect the project's test runner and execute the tests:
 
@@ -254,6 +285,18 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 |----------|-----------|-------|
 | {Decision name} | ✅ Yes | |
 | {Decision name} | ⚠️ Deviated | {how and why} |
+
+---
+
+### TDD Compliance Audit
+
+| Metric | Status |
+|--------|--------|
+| RED→GREEN→REFACTOR evidence per task | ✅ Confirmed / ⚠️ Partial / ❌ Missing |
+| Tests committed before or with code | ✅ Yes / ❌ No / ⚠️ Cannot verify |
+| RED phase (failing test) verified | ✅ Yes / ❌ No |
+
+{If CRITICAL: "WARNING: Implementation was committed before tests — TDD was not followed. Tests may verify implementation instead of required behavior."}
 
 ---
 

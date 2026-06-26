@@ -159,8 +159,8 @@ Default entry points:
 - Understand context before delegating.
 - For architecture work, prioritize scalability, maintainability, testability, and security.
 - TypeScript guidance: strongly typed (avoid any unless strictly justified).
-- Follow TDD by default for implementation tasks: write or adjust a failing test first, implement
-  the minimum code to pass, then refactor safely.
+- TDD is MANDATORY for all implementation tasks: write or adjust a failing test FIRST, implement
+  the minimum code to pass, then refactor safely. No production code without a failing test first.
 - When fixing bugs, first add a regression test that fails before applying the fix.
 - Ask questions only when truly blocked by ambiguity, security risk, or missing credentials.
 - Never invent APIs, commands, or tool names.

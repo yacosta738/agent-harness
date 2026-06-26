@@ -95,7 +95,7 @@ rules:
     - Keep tasks completable in one session
   apply:
     - Follow existing code patterns
-    tdd: false           # Set to true to enable RED-GREEN-REFACTOR
+    tdd: true            # STRICT TDD: RED → GREEN → REFACTOR is MANDATORY
     test_command: ""     # e.g., "npm test", "pytest"
   verify:
     test_command: ""     # Override for verification

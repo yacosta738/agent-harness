@@ -41,6 +41,9 @@ Identify the exact review target: files, feature, PR, branch, or diff range. If 
 skill registry or standards document, extract relevant compact rules and inject the same standards
 into every reviewer and fixer prompt.
 
+Default review rubric: load `four-r-review` unless the target already has a stricter domain-specific
+review skill. The 4R rubric must be shared with both blind reviewers.
+
 If no project standards exist, say so and proceed with generic review criteria.
 
 ### 2. Launch Two Blind Reviews in Parallel
@@ -50,16 +53,16 @@ criteria. Do not tell either reviewer another reviewer exists.
 
 Reviewer criteria:
 
-- Correctness and requirement fit
-- Edge cases and error handling
-- Security and data exposure
+- **R1 Risk** — security, production impact, data exposure, blast radius
+- **R2 Readability** — naming, maintainability, complexity, project conventions
+- **R3 Reliability** — correctness, edge cases, error handling, tests, regression coverage
+- **R4 Resilience** — retries, timeouts, fallbacks, observability, cascade-failure resistance
 - Performance and resource usage
-- Tests and regression coverage
-- Naming, maintainability, and project conventions
 
 Reviewers return findings only, no praise:
 
 ```markdown
+- R: R1 | R2 | R3 | R4
 - Severity: CRITICAL | WARNING | SUGGESTION
 - File: path/to/file.ext:line
 - Description: what is wrong and why it matters
@@ -136,6 +139,7 @@ ESCALATED — after 2 fix iterations, reviewers still report issues.
 - Reviewers are blind: no cross-contamination and no shared conclusions.
 - Fixer is a separate agent, never one of the reviewers.
 - Same criteria and standards go to both reviewers.
+- `four-r-review` is the default shared rubric unless a stricter specialized rubric overrides it.
 - Suspect findings are reported but not automatically fixed.
 - Stop and ask when scope is ambiguous.
 - Stop after 2 failed fix iterations and escalate.
