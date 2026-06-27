@@ -4,7 +4,8 @@
   "plugin": [
     "opencode-wakatime",
     "opencode-gemini-auth@latest",
-    "@warp-dot-dev/opencode-warp"
+    "@warp-dot-dev/opencode-warp",
+    "openpencil-skill@git+https://github.com/zseven-w/openpencil-skill.git"
   ],
   "permission": {
     "bash": {
@@ -229,6 +230,14 @@
         "--mcp"
       ],
       "enabled": true
+    },
+    "openpencil": {
+      "type": "local",
+      "command": ["openpencil-mcp"],
+      "enabled": true,
+      "env": {
+        "OPENPENCIL_MCP_ROOT": "{env:HOME}/Dev"
+      }
     }
   },
   "agent": {
