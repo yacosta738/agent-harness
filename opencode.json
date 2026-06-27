@@ -65,16 +65,6 @@
       ],
       "enabled": false
     },
-    "magic-patterns": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "mcp-remote",
-        "https://mcp.magicpatterns.com/mcp"
-      ],
-      "enabled": false
-    },
     "stitch": {
       "type": "remote",
       "url": "https://stitch.googleapis.com/mcp",
@@ -194,17 +184,6 @@
     "vercel": {
       "type": "remote",
       "url": "https://mcp.vercel.com",
-      "enabled": false
-    },
-    "TestSprite": {
-      "type": "local",
-      "command": [
-        "npx",
-        "@testsprite/testsprite-mcp@latest"
-      ],
-      "environment": {
-        "API_KEY": "{env:TESTSPRITE_API_KEY}"
-      },
       "enabled": false
     },
     "GitGuardianDeveloper": {
