@@ -213,10 +213,7 @@
     "openpencil": {
       "type": "local",
       "command": ["openpencil-mcp"],
-      "enabled": true,
-      "env": {
-        "OPENPENCIL_MCP_ROOT": "{env:HOME}/Dev"
-      }
+      "enabled": true
     }
   },
   "agent": {
@@ -224,6 +221,7 @@
       "mode": "primary",
       "description": "Fullstack architect and SDD orchestrator - Cuban style, warm mentor",
       "prompt": "{file:./AGENTS.md}",
+      "model": "rook/gg-brain",
       "permission": {
         "task": {
           "*": "deny",
