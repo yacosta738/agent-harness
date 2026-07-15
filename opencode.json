@@ -500,6 +500,15 @@
         "auto/best-coding": {
           "name": "auto/best-coding"
         },
+        "auto/coding":{
+          "name": "auto/coding"
+        },
+        "auto/best-reasoning":{
+          "name": "auto/best-reasoning"
+        },
+        "auto/best-vision":{
+          "name": "auto/best-vision"
+        },
         "coding": {
           "name": "coding"
         },
