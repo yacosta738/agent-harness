@@ -36,7 +36,11 @@
   },
   "mcp": {
     "engram": {
-      "command": ["engram", "mcp", "--tools=agent"],
+      "command": [
+        "engram",
+        "mcp",
+        "--tools=agent"
+      ],
       "enabled": true,
       "type": "local"
     },
@@ -212,8 +216,15 @@
     },
     "openpencil": {
       "type": "local",
-      "command": ["openpencil-mcp"],
+      "command": [
+        "openpencil-mcp"
+      ],
       "enabled": true
+    },
+    "resend": {
+      "type": "remote",
+      "url": "https://mcp.resend.com/mcp",
+      "enabled": false
     }
   },
   "agent": {
@@ -456,39 +467,6 @@
     }
   },
   "provider": {
-    "ollama": {
-      "models": {
-        "kimi-k2.5:cloud": {
-          "_launch": true,
-          "limit": {
-            "context": 262144,
-            "output": 262144
-          },
-          "name": "kimi-k2.5:cloud"
-        },
-        "kimi-k2.6:cloud": {
-          "_launch": true,
-          "name": "kimi-k2.6:cloud"
-        },
-        "minimax-m2.5:cloud": {
-          "_launch": true,
-          "limit": {
-            "context": 204800,
-            "output": 128000
-          },
-          "name": "minimax-m2.5:cloud"
-        },
-        "minimax-m2.7:cloud": {
-          "_launch": true,
-          "name": "minimax-m2.7:cloud"
-        }
-      },
-      "name": "Ollama",
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "http://127.0.0.1:11434/v1"
-      }
-    },
     "rook": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "rook",
@@ -500,13 +478,13 @@
         "auto/best-coding": {
           "name": "auto/best-coding"
         },
-        "auto/coding":{
+        "auto/coding": {
           "name": "auto/coding"
         },
-        "auto/best-reasoning":{
+        "auto/best-reasoning": {
           "name": "auto/best-reasoning"
         },
-        "auto/best-vision":{
+        "auto/best-vision": {
           "name": "auto/best-vision"
         },
         "coding": {
@@ -514,6 +492,9 @@
         },
         "free-stack": {
           "name": "free-stack"
+        },
+        "null": {
+          "name": "null"
         },
         "gg-brain": {
           "name": "gg-brain"
