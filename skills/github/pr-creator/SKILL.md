@@ -15,8 +15,41 @@ repository's standards.
 - Use `cognitive-doc-design` when drafting dense PR descriptions or review notes.
 - Use `work-unit-commits` when deciding whether the PR should be split into multiple commits or
   slices.
+- Use `github-stacked-prs` when the approved strategy is `github-stacked-prs`; it owns Stack state,
+  while this skill owns template-compliant PR content.
+- Preserve `feature-branch-chain` as a separate workflow and never infer it from a GitHub Stack.
 
 ## Workflow
+
+For a Stack layer, require a complete work-unit record before drafting: `chain_strategy`,
+`trunk`, `parent_branch`, `base`, `head`, `position`, total layers, issue reference, and optional
+Linear URL. The bottom layer's `base` is the trunk; each higher layer's `base` is the immediate
+parent branch. Stop on a wrong or ambiguous base/head, duplicate PR, dirty state, or missing layer
+scope rather than guessing.
+
+After the repository template, append this section without replacing any template heading:
+
+```markdown
+## Chain Context
+
+| Field | Value |
+|---|---|
+| Strategy | `github-stacked-prs` / `feature-branch-chain` / `single-pr` / `size-exception` |
+| Chain | <name> |
+| Position | <N of total> |
+| Base | `<base>` |
+| Head | `<head>` |
+| Depends on | <PR/issue/link or "None"> |
+| Follow-up | <next PR or "None"> |
+| Review budget | <changed lines> / <budget> |
+| Issue | <#N or "None"> |
+| Linear | <URL or "None"> |
+| Starts at | <state this builds on> |
+| Ends with | <standalone result delivered> |
+```
+
+Use `Related #N` for informational issue traceability and `Fixes #N` only for intentional closure.
+Linear is metadata only; Git/GitHub own branch, PR, Stack, synchronization, and merge state.
 
 Follow these steps to create a Pull Request:
 
@@ -50,8 +83,8 @@ Follow these steps to create a Pull Request:
    then inspect the diff size against the PR base. If the size cannot be measured, surface the
    blocker and get explicit user approval before continuing. Treat roughly 300+ changed lines as
    approaching the default 400-line budget. If the planned PR approaches or exceeds the repository
-   budget, stop, load `reviewable-pr-slices`, present the split/exception options, and wait for user
-   or maintainer approval.
+   budget, stop, load `reviewable-pr-slices`, and require the canonical `github-stacked-prs`,
+   `feature-branch-chain`, or explicitly approved `size-exception` strategy before continuing.
 
 5. **Create PR**: Use the `gh` CLI to create the PR. To avoid shell escaping
    issues with multi-line Markdown, write the description to a temporary file

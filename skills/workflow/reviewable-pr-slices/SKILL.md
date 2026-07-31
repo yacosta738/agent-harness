@@ -1,6 +1,6 @@
 ---
 name: reviewable-pr-slices
-description: Use when a change or pull request may be too large to review comfortably, when planning stacked PRs, chained PRs, tracker PRs, or size exceptions.
+description: Use when a change or pull request may be too large to review comfortably, when planning GitHub Stacked PRs, feature-branch chains, single PRs, or size exceptions.
 ---
 
 # Reviewable PR Slices
@@ -17,8 +17,8 @@ code dominate the diff, report them separately but do not hide them.
 Without this skill, an agent opens one large PR with 900 changed lines because the code is complete
 and tests pass. Reviewers then skim, miss defects, or ask for a late split.
 
-With this skill, the agent detects review-budget risk before publishing and asks whether to use
-stacked PRs, a feature branch chain, or an explicit size exception.
+With this skill, the agent detects review-budget risk before publishing and selects exactly one
+canonical strategy: `github-stacked-prs`, `feature-branch-chain`, `single-pr`, or `size-exception`.
 
 ## When to Use
 
@@ -28,7 +28,7 @@ Use when:
   or any uncertain multi-surface diff, as approaching the default 400-line budget.
 - SDD tasks or an implementation plan forecast a large diff.
 - A reviewer asks to split a PR.
-- Work needs stacked PRs, chained PRs, or a tracker PR.
+- Work needs GitHub Stacked PRs or the separate `feature-branch-chain` tracker workflow.
 
 Do not use for tiny, single-purpose changes comfortably under budget.
 
@@ -41,8 +41,9 @@ Do not use for tiny, single-purpose changes comfortably under budget.
 | Autonomous slices     | Each PR has one deliverable scope, verification, and reasonable rollback.        |
 | Work-unit balance     | Balance slices around deliverable work units, not file types or phases alone.    |
 | Explicit boundaries   | State start, end, dependencies, follow-up, and out-of-scope work.                |
-| One strategy          | Do not mix stacked PRs and feature-branch tracker patterns in one chain.         |
-| Exception is explicit | Use a size exception only with user or maintainer approval and rationale.        |
+| Canonical strategy     | Choose exactly `github-stacked-prs`, `feature-branch-chain`, `single-pr`, or `size-exception`. |
+| One strategy           | Do not mix GitHub Stack state and feature-branch tracker patterns in one chain.          |
+| Exception is explicit  | Use `size-exception` only with user or maintainer approval and rationale.                  |
 
 ## SDD Integration
 
@@ -58,8 +59,8 @@ During `sdd-tasks`, add a **Review Workload Forecast** to `tasks.md`:
 | Review budget | 400 changed lines |
 | Estimated workload | Low / Medium / High |
 | Chained PRs recommended | Yes / No |
-| Proposed slice strategy | single-pr / stacked-prs / feature-branch-chain / size-exception-needed |
-| Work-unit balance | <brief explanation of how tasks map to reviewable work units> |
+| Chain strategy | github-stacked-prs / feature-branch-chain / single-pr / size-exception |
+| Work-unit balance | <how each deliverable maps to one reviewable layer> |
 ```
 
 Use this heuristic:
@@ -68,29 +69,32 @@ Use this heuristic:
 |--------|----------------------------------------------------------------------------------|-----------------------------------------------------|
 | Low    | Small, single-surface change                                                     | Keep one PR with work-unit commits.                 |
 | Medium | Multi-file or uncertain diff, likely 300-400 changed lines                       | Warn and keep commits slice-ready.                  |
-| High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | Stop before `sdd-apply` and ask for chain strategy. |
+| High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | Stop before `sdd-apply` and require `github-stacked-prs`, `feature-branch-chain`, or approved `size-exception`. |
 
 During `sdd-apply`, implement only the approved slice or task batch. If implementation grows beyond
 the forecast, stop and report that the review budget needs a new split decision.
 
 ## Strategy Choice
 
-When over budget or forecast as High risk, ask the user to choose:
+When over budget or forecast as High risk, require one explicit canonical strategy:
 
 ```text
-This SDD change may exceed the 400-line review budget. How do you want to deliver it?
+This SDD change may exceed the 400-line review budget. Choose one:
 
-1. Stacked PRs balanced by work-unit commits
-   First slice targets the base branch; each later slice targets the previous slice branch. Faster, but partial work may reach the base branch as slices land.
+1. github-stacked-prs
+   GitHub Stack state; bottom PR targets the trunk and each child targets the immediately lower branch.
 
-2. Feature branch chain with tracker PR, balanced by work-unit commits
-   Child PRs target an integration branch. Safer integration, more branch management.
+2. feature-branch-chain
+   Separate integration/tracker branch; child PRs target the previous work-unit branch and never use GitHub Stack metadata.
 
-3. Size exception
-   Keep one PR with documented rationale.
+3. single-pr
+   One ordinary PR only when the diff is within budget.
+
+4. size-exception
+   One over-budget PR with explicit user/maintainer approval and documented rationale.
 ```
 
-Stop after asking. Do not assume.
+Do not interpret `stacked-prs` or `stacked-to-main`; stop and require `sdd-tasks` regeneration.
 
 ## Chain Context for PR Bodies
 
@@ -122,8 +126,9 @@ main
 
 ## Integration Points
 
-- Use `sdd-tasks` to forecast workload and record the recommended delivery strategy.
-- Use `sdd-apply` to implement only the approved slice or batch, not the whole change by inertia.
-- Use `work-unit-commits` to form balanced slices before PR creation.
-- Use `pr-creator` to preserve repository templates.
-- Use `yeet` only after scope and branch strategy are confirmed.
+- Use `sdd-tasks` to forecast workload, record dependency layers, and record the canonical strategy.
+- Use `sdd-apply` to implement only the assigned layer, or the full approved `size-exception` unit.
+- Use `work-unit-commits` to keep each layer coherent before PR creation.
+- Use `github-stacked-prs` for GitHub Stack mechanics; this skill does not own `gh stack`.
+- Use `pr-creator` to preserve repository templates and per-layer metadata.
+- Use `yeet` only after scope, authorization, and branch strategy are confirmed.

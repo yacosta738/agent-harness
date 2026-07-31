@@ -351,7 +351,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 | `building-mcp-server-on-cloudflare` | Remote MCP server with OAuth                              |
 | `sandbox-sdk`                       | Cloudflare sandboxed execution                            |
 
-### `github/` — GitHub workflow (8)
+### `github/` — GitHub workflow (9)
 
 | Skill                 | Covers                                       |
 |-----------------------|----------------------------------------------|
@@ -361,6 +361,7 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 | `github-actions`      | Workflow authoring, caching, matrix, secrets |
 | `yeet`                | Commit → push → draft PR flow                |
 | `pr-creator`          | PR templates and standards                   |
+| `github-stacked-prs`  | Official `gh stack` layers, sync, and merge  |
 | `pinned-tag`          | Pin Actions to commit SHAs (security)        |
 | `coderabbit-review`   | CodeRabbit AI review configuration           |
 
@@ -430,6 +431,30 @@ Complete Vercel platform coverage. Ecosystem reference: `references/vercel-ecosy
 `android-emulator-qa` — Emulator QA with Python scripts for UI tree analysis
 
 ---
+
+## GitHub Stacked PRs
+
+Use `github-stacked-prs` only for the official GitHub Stack model. GitHub Stacked PRs
+(`github/gh-stack`) is a public-preview feature subject to change, so safe stops and inspection
+gates are mandatory. The canonical strategy values are
+`github-stacked-prs`, `feature-branch-chain`, `single-pr`, and `size-exception`; `feature-branch-chain`
+remains a separate tracker/integration-branch workflow. The bottom Stack PR targets the trunk and
+each higher PR targets the immediately lower branch. GitHub/Git own Stack state; issue and Linear
+links are metadata only.
+
+The skill detects prerequisites without changing the machine. If GitHub CLI or `github/gh-stack` is
+missing, follow the printed manual commands:
+
+```bash
+brew install gh
+# or install GitHub CLI using https://cli.github.com/
+gh extension install github/gh-stack
+# optional official agent guidance:
+gh skill install github/gh-stack
+```
+
+It never installs extensions or skills automatically. Do not use the ambiguous legacy values
+`stacked-prs` or `stacked-to-main` as strategy values; regenerate SDD tasks instead.
 
 ## References
 

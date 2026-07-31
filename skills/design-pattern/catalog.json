@@ -1,0 +1,140 @@
+{
+  "version": "1.0.0",
+  "language": "English",
+  "implementationFocus": "Kotlin/JVM",
+  "source": "https://refactoring.guru/design-patterns/catalog",
+  "patterns": [
+    {
+      "name": "Factory Method",
+      "slug": "factory-method",
+      "category": "Creational",
+      "path": "factory-method/SKILL.md"
+    },
+    {
+      "name": "Abstract Factory",
+      "slug": "abstract-factory",
+      "category": "Creational",
+      "path": "abstract-factory/SKILL.md"
+    },
+    {
+      "name": "Builder",
+      "slug": "builder",
+      "category": "Creational",
+      "path": "builder/SKILL.md"
+    },
+    {
+      "name": "Prototype",
+      "slug": "prototype",
+      "category": "Creational",
+      "path": "prototype/SKILL.md"
+    },
+    {
+      "name": "Singleton",
+      "slug": "singleton",
+      "category": "Creational",
+      "path": "singleton/SKILL.md"
+    },
+    {
+      "name": "Adapter",
+      "slug": "adapter",
+      "category": "Structural",
+      "path": "adapter/SKILL.md"
+    },
+    {
+      "name": "Bridge",
+      "slug": "bridge",
+      "category": "Structural",
+      "path": "bridge/SKILL.md"
+    },
+    {
+      "name": "Composite",
+      "slug": "composite",
+      "category": "Structural",
+      "path": "composite/SKILL.md"
+    },
+    {
+      "name": "Decorator",
+      "slug": "decorator",
+      "category": "Structural",
+      "path": "decorator/SKILL.md"
+    },
+    {
+      "name": "Facade",
+      "slug": "facade",
+      "category": "Structural",
+      "path": "facade/SKILL.md"
+    },
+    {
+      "name": "Flyweight",
+      "slug": "flyweight",
+      "category": "Structural",
+      "path": "flyweight/SKILL.md"
+    },
+    {
+      "name": "Proxy",
+      "slug": "proxy",
+      "category": "Structural",
+      "path": "proxy/SKILL.md"
+    },
+    {
+      "name": "Chain of Responsibility",
+      "slug": "chain-of-responsibility",
+      "category": "Behavioral",
+      "path": "chain-of-responsibility/SKILL.md"
+    },
+    {
+      "name": "Command",
+      "slug": "command",
+      "category": "Behavioral",
+      "path": "command/SKILL.md"
+    },
+    {
+      "name": "Iterator",
+      "slug": "iterator",
+      "category": "Behavioral",
+      "path": "iterator/SKILL.md"
+    },
+    {
+      "name": "Mediator",
+      "slug": "mediator",
+      "category": "Behavioral",
+      "path": "mediator/SKILL.md"
+    },
+    {
+      "name": "Memento",
+      "slug": "memento",
+      "category": "Behavioral",
+      "path": "memento/SKILL.md"
+    },
+    {
+      "name": "Observer",
+      "slug": "observer",
+      "category": "Behavioral",
+      "path": "observer/SKILL.md"
+    },
+    {
+      "name": "State",
+      "slug": "state",
+      "category": "Behavioral",
+      "path": "state/SKILL.md"
+    },
+    {
+      "name": "Strategy",
+      "slug": "strategy",
+      "category": "Behavioral",
+      "path": "strategy/SKILL.md"
+    },
+    {
+      "name": "Template Method",
+      "slug": "template-method",
+      "category": "Behavioral",
+      "path": "template-method/SKILL.md"
+    },
+    {
+      "name": "Visitor",
+      "slug": "visitor",
+      "category": "Behavioral",
+      "path": "visitor/SKILL.md"
+    }
+  ]
+}

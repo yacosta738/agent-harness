@@ -68,15 +68,19 @@ If the forecast says any of the following:
 
 Then you MUST confirm the orchestrator/user provided a resolved delivery path:
 
-1. **`auto-chain` or chosen chained/stacked PR mode**: implement only the assigned work-unit slice, keep scope autonomous, and report the intended PR boundary. Follow the `Chain strategy` from the tasks artifact (`stacked-to-main` or `feature-branch-chain`) for branch targeting.
-2. **`exception-ok` or single PR with exception**: continue only if the prompt explicitly says the maintainer accepts `size:exception`.
+1. **`auto-chain` or chosen chain mode**: implement only the assigned dependency-ordered layer, keep scope autonomous, and report `trunk`, `parent_branch`, `base`, `branch`, and `position`. For `github-stacked-prs`, the bottom layer targets the trunk and each higher layer targets the immediately lower branch. For `feature-branch-chain`, use its separately approved integration/tracker base and never use Stack metadata.
+2. **`exception-ok` or explicit `size-exception`**: continue only because the prompt explicitly records maintainer acceptance of the full coherent delivery unit.
 3. **`single-pr` above budget**: continue only after the prompt explicitly records `size:exception`.
 
 Also check for `Chain strategy` in the tasks artifact. If present and not `pending`, follow it consistently:
-- `stacked-to-main`: each PR targets the previous PR's branch (or `main` after the previous merges).
-- `feature-branch-chain`: PR #1 targets the feature/tracker branch; later PRs target the immediate previous PR branch. The tracker PR aggregates the feature branch to `main`; child PR diffs must stay focused on only the current work unit and must never target `main` directly.
+- `github-stacked-prs`: the bottom PR targets the trunk, normally `main`; every higher PR targets the immediately lower branch. Never target the trunk from a higher layer.
+- `feature-branch-chain`: PR #1 targets the separately approved feature/tracker branch; later PRs target the immediate previous work-unit branch. Never use GitHub Stack metadata.
+- `single-pr` and `size-exception`: no chain topology; record the explicit base and scope.
+- `stacked-prs` or `stacked-to-main`: stop and require canonical strategy regeneration.
 
-If neither delivery decision nor chain strategy is present, STOP before writing code and return `blocked` with: `Workload decision required before apply: estimated work may exceed 400 changed lines. Ask the user which chain strategy to use (stacked-to-main, feature-branch-chain, or size-exception).`
+Before implementation, stop on missing/stale layer metadata, dirty worktree, interrupted operation, wrong base/head, ambiguous branch/PR state, or scope outside the assigned layer.
+
+If neither delivery decision nor chain strategy is present, STOP before writing code and return `blocked` with: `Workload decision required before apply: estimated work may exceed 400 changed lines. Ask the user which chain strategy to use (github-stacked-prs, feature-branch-chain, single-pr, or size-exception).`
 
 #### Step 2b: Read Previous Apply-Progress (if exists)
 
@@ -90,7 +94,14 @@ Before starting work, check for existing apply-progress:
 
 **CRITICAL**: If the orchestrator told you previous progress exists, you MUST read it. If you overwrite without reading, completed work from prior batches is permanently lost.
 
-### Step 3: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
+### Step 3: Validate the Assigned Layer
+
+For `github-stacked-prs`, verify the dependency order and layer metadata before mutation. The
+bottom layer's base MUST be the trunk; every child base MUST be the immediate parent branch. A
+`feature-branch-chain` uses its own integration/tracker base. `single-pr` and `size-exception` use one
+explicit base. Stop rather than widening scope or guessing.
+
+### Step 4: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
 
 TDD IS MANDATORY. EVERY task follows this cycle — no exceptions:
 
@@ -137,7 +148,7 @@ runner configured before sdd-apply can proceed.
 
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`, `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
 
-### Step 4: Mark Tasks Complete
+### Step 5: Mark Tasks Complete
 
 Update `tasks.md` — change `- [ ]` to `- [x]` for completed tasks:
 
@@ -174,7 +185,7 @@ Return to the orchestrator:
 ## Implementation Progress
 
 **Change**: {change-name}
-**Mode**: Strict TDD (RED→GREEN→REFACTOR)
+**Mode**: Documentation pressure scenarios + static validation (no executable project test runner)
 
 ### Completed Tasks
 - [x] {task 1.1 description}
@@ -188,7 +199,8 @@ Return to the orchestrator:
 
 ### Review Workload
 - **Forecast from tasks.md**: {Low | Medium | High}
-- **Delivery strategy**: {single-pr | stacked-prs | feature-branch-chain | size-exception | not set}
+- **Chain strategy**: {github-stacked-prs | feature-branch-chain | single-pr | size-exception | not set}
+- **Layer boundary**: {trunk, parent_branch, base, branch, position, issue/Linear metadata}
 - **Implemented slice/batch**: {scope implemented}
 - **Budget concern**: {None | Needs rebalance | Needs user decision}
 

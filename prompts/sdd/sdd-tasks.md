@@ -80,11 +80,11 @@ openspec/changes/{change-name}/
 | Chained PRs recommended | Yes / No |
 | Suggested split | <single PR or PR 1 → PR 2 → PR 3> |
 | Delivery strategy | <ask-on-risk / auto-chain / single-pr / exception-ok> |
-| Chain strategy | <stacked-to-main / feature-branch-chain / size-exception / pending> |
+| Chain strategy | <github-stacked-prs / feature-branch-chain / single-pr / size-exception / pending> |
 
 Decision needed before apply: <Yes|No>
 Chained PRs recommended: <Yes|No>
-Chain strategy: <stacked-to-main|feature-branch-chain|size-exception|pending>
+Chain strategy: <github-stacked-prs|feature-branch-chain|single-pr|size-exception|pending>
 400-line budget risk: <Low|Medium|High>
 
 ### Suggested Work Units
@@ -142,13 +142,14 @@ If the estimate is **High** or likely above 400 lines:
 2. Split tasks into **work units** that can become chained or stacked PRs.
 3. Each suggested PR must have a clear start, clear finish, verification, and autonomous scope.
 4. **Ask the user which chain strategy to use** (this is a team decision):
-   - **Stacked PRs to main** — each PR merges to main in order. Fast iteration, fix on the go. Best for speed-first teams and independent slices.
-   - **Feature Branch Chain** — the feature/tracker branch accumulates the final integration; PR #1 targets the tracker branch, later PRs target the immediate previous PR branch so each child diff stays focused. Only the tracker merges to main. Best for rollback control and coordinated releases.
-   - **size:exception** — keep it as a single PR with maintainer approval. Best for generated code, migrations, or vendor diffs.
+   - **github-stacked-prs** — GitHub Stack state; the bottom PR targets the trunk and each higher PR targets the immediately lower branch.
+   - **feature-branch-chain** — the feature/tracker branch accumulates the final integration; child PRs target the immediate previous work-unit branch and never use GitHub Stack metadata.
+   - **single-pr** — one ordinary PR when the diff is within budget.
+   - **size-exception** — keep the full coherent change as one over-budget delivery with explicit maintainer approval.
 5. Cache the user's choice and set `Decision needed before apply` from delivery strategy:
    - `ask-on-risk`: `Yes` — orchestrator asks before apply.
    - `auto-chain`: `No` — orchestrator proceeds with the first slice using the chosen chain strategy.
-   - `single-pr`: `Yes` — orchestrator must require `size:exception` before apply.
+    - `single-pr`: `Yes` — orchestrator must require an explicit `size-exception` approval before apply.
    - `exception-ok`: `No` — maintainer has accepted `size:exception`.
 
 Do not bury this in prose. Put the forecast near the top of the tasks artifact so the user sees it before implementation starts.
@@ -158,13 +159,28 @@ The forecast MUST include these exact plain-text lines so downstream guards can 
 ```text
 Decision needed before apply: Yes|No
 Chained PRs recommended: Yes|No
-Chain strategy: stacked-to-main|feature-branch-chain|size-exception|pending
+Chain strategy: github-stacked-prs|feature-branch-chain|single-pr|size-exception|pending
 400-line budget risk: Low|Medium|High
 ```
 
 You may keep the table for readability, but the plain-text lines are the guard contract.
 
-For `feature-branch-chain`, suggested work units SHOULD name the intended base boundary: PR #1 base = feature/tracker branch; PR #2 base = PR #1 branch; PR #3 base = PR #2 branch. If a child PR would show previous PR changes, the base is wrong and must be retargeted/rebased before review.
+For `github-stacked-prs`, suggested work units MUST name `trunk`, `parent_branch`, `base`, `branch`,
+`position`, and issue/Linear metadata. PR #1 base = trunk; PR #2 base = PR #1 branch; PR #3 base = PR #2
+branch. A higher layer targeting the trunk is invalid. For `feature-branch-chain`, PR #1 base = the
+separately approved feature/tracker branch; later PRs target the immediate previous branch. If a child
+PR shows previous PR changes, the base is wrong and must be retargeted/rebased before review.
+
+### Dependency Layer Contract
+
+For `github-stacked-prs`, task work units MUST be dependency-ordered and record `trunk`,
+`parent_branch`, `base`, `branch`, `position`, and issue/Linear metadata. The bottom layer targets
+the trunk, normally `main`; every higher layer targets its immediate lower branch. Cycles, missing
+dependencies, unclear ownership, or a higher layer targeting the trunk MUST block apply.
+
+`feature-branch-chain` remains a separate integration/tracker-branch workflow and MUST NOT use GitHub
+Stack metadata. `single-pr` has one explicit base. `size-exception` is one coherent delivery unit and
+MUST include the explicit approval and rationale.
 
 ### Phase Organization Guidelines
 

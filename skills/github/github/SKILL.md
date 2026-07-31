@@ -57,12 +57,15 @@ there is a repo-search flow that may not exist.
 - `review follow-up`: unresolved review threads, requested changes, or inline review feedback
 - `CI debugging`: failing checks, Actions logs, or CI root-cause analysis
 - `publish changes`: create or switch branches, stage changes, commit, push, and open a draft PR
+- `GitHub Stacked PRs`: dependency-ordered Stack layers, `gh stack`, base/head invariants, sync, or bottom-up merge
 
-3. Route to the specialist skill as soon as the category is clear:
+3. Route to the specialist skill as soon as the category is clear. Stack operations are never handled as generic PR triage:
 
 - Review comments and requested changes: `../gh-address-comments/SKILL.md`
 - Failing GitHub Actions checks: `../gh-fix-ci/SKILL.md`
+- GitHub Stack topology, `gh stack`, or Stack synchronization: `../github-stacked-prs/SKILL.md`
 - Commit, push, and open PR: `../yeet/SKILL.md`
+- Feature/tracker branch chain: retain the separate `feature-branch-chain` workflow; do not route it to GitHub Stack mechanics
 
 4. Keep the hybrid model consistent after routing:
 

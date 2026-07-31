@@ -70,8 +70,8 @@ openspec/changes/{change-name}/
 | Review budget | 400 changed lines unless project config says otherwise |
 | Estimated workload | Low / Medium / High |
 | Chained PRs recommended | Yes / No |
-| Proposed delivery strategy | single-pr / stacked-prs / feature-branch-chain / size-exception-needed |
-| Work-unit balance | <how tasks map to reviewable work units> |
+| Chain strategy | github-stacked-prs / feature-branch-chain / single-pr / size-exception |
+| Work-unit balance | <how tasks map to dependency-ordered reviewable layers> |
 
 ## Phase 1: {Phase Name} (e.g., Infrastructure / Foundation)
 
@@ -113,7 +113,7 @@ Use this heuristic:
 |--------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
 | Low    | Small, single-surface change                                                     | `single-pr`; keep work-unit commits.                                                                                              |
 | Medium | Multi-file or uncertain diff, likely 300-400 changed lines                       | `single-pr`; warn that commits must stay slice-ready.                                                                             |
-| High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | `stacked-prs`, `feature-branch-chain`, or `size-exception-needed`; report that orchestrator must ask the user before `sdd-apply`. |
+| High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | `github-stacked-prs`, `feature-branch-chain`, or approved `size-exception`; record a dependency-ordered layer boundary before `sdd-apply`. |
 
 Balance proposed slices by deliverable work units: each slice should include behavior, tests, and
 docs needed to review it. Do not balance by horizontal layers like "models", "routes", "tests"
@@ -184,7 +184,7 @@ Return to the orchestrator:
 - **Budget**: {budget} changed lines
 - **Estimated workload**: {Low | Medium | High}
 - **Chained PRs recommended**: {Yes | No}
-- **Proposed delivery strategy**: {single-pr | stacked-prs | feature-branch-chain | size-exception-needed}
+- **Chain strategy**: {github-stacked-prs | feature-branch-chain | single-pr | size-exception}
 - **Work-unit balance**: {brief rationale}
 
 ### Implementation Order
@@ -200,7 +200,10 @@ Return to the orchestrator:
 - Tasks MUST be ordered by dependency — Phase 1 tasks shouldn't depend on Phase 2
 - Testing tasks should reference specific scenarios from the specs
 - Each task should be completable in ONE session (if a task feels too big, split it)
-- Tasks MUST be grouped so they can become work-unit commits or PR slices if review workload is High
+- Tasks MUST be grouped into dependency-ordered work-unit layers so they can become coherent commits or PR slices if review workload is High
+- For `github-stacked-prs`, every layer MUST record `trunk`, `parent_branch`, `base`, `branch`, `position`, and issue/Linear metadata when available; only the bottom layer targets the trunk
+- For `feature-branch-chain`, record its separately approved integration/tracker base; never substitute GitHub Stack metadata
+- A `size-exception` MUST state the explicit approval and rationale before apply
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `openspec/config.yaml`

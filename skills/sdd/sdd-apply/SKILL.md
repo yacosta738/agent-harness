@@ -53,16 +53,22 @@ Before writing ANY code:
 
 Before writing code, read the `Review Workload Forecast` in `tasks.md`.
 
-- If forecast is **High** and the delivery strategy is `stacked-prs` or `feature-branch-chain`,
-  implement only the user-approved slice or assigned task batch.
-- If forecast is **High** and the delivery strategy is `size-exception-needed`, STOP unless the
-  prompt or tasks explicitly records that the user/maintainer approved the exception.
-- If forecast is **High** but no delivery strategy has been approved, STOP and return
+- If forecast is **High** and the chain strategy is `github-stacked-prs` or `feature-branch-chain`,
+  implement only the assigned dependency-ordered layer and record its branch/base boundary.
+- If forecast is **High** and the chain strategy is `size-exception`, continue only because the
+  prompt explicitly records maintainer approval for the full coherent delivery unit.
+- If forecast is **High** but no canonical strategy has been approved, STOP and return
   `status: blocked`; ask the orchestrator to get the user's choice.
+
 - If the assigned batch no longer looks reviewable because implementation will likely exceed the
   budget, STOP and report the need to rebalance slices.
 - Keep code, tests, and docs together by work unit. Do not implement all code first and leave
   tests/docs for a later unrelated batch.
+
+Before mutation, validate the assigned layer metadata: `trunk`, `parent_branch`, `base`, `branch`,
+`position`, and issue/Linear references when available. For `github-stacked-prs`, only the bottom
+layer may use the trunk as `base`; every higher layer MUST use its immediate parent branch. Stop on
+missing, stale, ambiguous, or legacy strategy values, dirty state, or scope outside the assigned layer.
 
 ### Step 4: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
 
@@ -139,7 +145,7 @@ Return to the orchestrator:
 ## Implementation Progress
 
 **Change**: {change-name}
-**Mode**: Strict TDD (RED→GREEN→REFACTOR)
+**Mode**: Documentation pressure scenarios + static validation (no executable project test runner)
 
 ### Completed Tasks
 - [x] {task 1.1 description}
@@ -153,7 +159,8 @@ Return to the orchestrator:
 
 ### Review Workload
 - **Forecast from tasks.md**: {Low | Medium | High}
-- **Delivery strategy**: {single-pr | stacked-prs | feature-branch-chain | size-exception | not set}
+- **Chain strategy**: {github-stacked-prs | feature-branch-chain | single-pr | size-exception | not set}
+- **Layer boundary**: {trunk, parent_branch, base, branch, position, issue/Linear metadata}
 - **Implemented slice/batch**: {scope implemented}
 - **Budget concern**: {None | Needs rebalance | Needs user decision}
 

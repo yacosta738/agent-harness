@@ -36,9 +36,34 @@ This workflow uses local Git and GitHub CLI:
   docs.
 - Use `reviewable-pr-slices` before pushing/opening a PR when the diff may approach or exceed the
   review budget, default 400 changed lines.
+- Use `github-stacked-prs` when the approved strategy is `github-stacked-prs`; it owns Stack detection,
+  topology, push/link/sync/rebase/merge mechanics. `yeet` retains authorization and scope checks.
+- Preserve `feature-branch-chain` as a separate workflow; do not invoke `gh stack` for it.
 - Use `cognitive-doc-design` when drafting a non-trivial PR body.
 
 ## Workflow
+
+### Stack handoff
+
+If `chain_strategy` is `github-stacked-prs`, first hand off to `github-stacked-prs` for detection-only
+preflight and layer validation. Do not stage, commit, push, rebase, or create a PR until it reports
+that `gh >= 2.90`, `github/gh-stack`, authentication, clean state, one repository/remote, linear
+history, and unambiguous Stack/PR state are ready. Missing prerequisites produce these manual
+commands and a stop; `yeet` never installs them:
+
+```bash
+brew install gh
+# or install GitHub CLI using https://cli.github.com/
+gh extension install github/gh-stack
+# optional official agent guidance:
+gh skill install github/gh-stack
+```
+
+After preflight, `yeet` still requires explicit authorization for staging, commit, push, and PR
+creation. Use `gh stack push` for an authorized Stack push, then let `pr-creator` create template-
+compliant per-layer PRs and `gh stack link` them. Never use `gh stack submit` by default because its
+interactive/editor path can bypass repository-specific templates; use it only as an explicitly
+verified escape hatch.
 
 1. Confirm intended scope.
 
@@ -75,8 +100,9 @@ This workflow uses local Git and GitHub CLI:
   `git diff --shortstat origin/<base>...HEAD`, or use trusted PR metadata if the branch already
   exists remotely.
 - If the PR approaches or exceeds the repository budget, default 400 changed lines, stop, load
-  `reviewable-pr-slices`, and ask whether to split with stacked PRs, use a feature branch chain, or
-  proceed with an explicit size exception.
+  `reviewable-pr-slices`, and require one canonical strategy: `github-stacked-prs`,
+  `feature-branch-chain`, or explicitly approved `size-exception`.
+- Never use the ambiguous legacy values `stacked-prs` or `stacked-to-main` as strategy values.
 
 7. Push with tracking: `git push -u origin "$(git branch --show-current)"`.
 8. Open a draft PR.
