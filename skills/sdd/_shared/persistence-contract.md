@@ -68,3 +68,77 @@ checking which artifact files exist in the change directory.
 The orchestrator may also pass `detail_level`: `concise | standard | deep`.
 This controls output verbosity but does NOT affect what gets persisted — always persist the full
 artifact.
+
+## Sub-Agent Context Rules
+
+Sub-agents launch with a fresh context and NO access to the orchestrator's instructions or memory
+protocol.
+
+**Who reads, who writes:**
+
+| Scenario | Reads | Writes |
+|----------|-------|--------|
+| Non-SDD (general task) | Orchestrator searches engram, passes summary in prompt | Sub-agent saves discoveries via `mem_save` |
+| SDD (phase with dependencies) | Sub-agent reads artifacts from filesystem | Sub-agent writes its artifact to filesystem |
+| SDD (phase without dependencies, e.g. explore) | Nobody reads prior artifacts | Sub-agent writes its artifact to filesystem |
+
+**Why this split:**
+- Orchestrator reads for non-SDD: it knows what context is relevant; sub-agents doing their own
+  searches waste tokens on irrelevant results.
+- Sub-agents read for SDD: SDD artifacts are large; inlining them in the orchestrator prompt would
+  consume the entire context window.
+- Sub-agents always write: they have the complete detail; nuance is lost by the time results flow
+  back to the orchestrator.
+
+## Sub-Agent Response Ordering
+
+When a sub-agent persists artifacts (via file writes or `mem_save`), the persistence MUST happen
+BEFORE the final text response. The sub-agent's absolute last output must be text, never a tool
+call.
+
+**Why**: The Task tool returns the sub-agent's final output to the parent. If the sub-agent ends
+with a tool call, the parent receives only the tool result — the sub-agent's text analysis is lost.
+
+Sub-agents must NOT call `mem_session_summary` — that's reserved for top-level agents only.
+
+## Orchestrator Prompt Instructions for Sub-Agents
+
+### Non-SDD delegations:
+
+```
+PERSISTENCE (MANDATORY):
+If you make important discoveries, decisions, or fix bugs, you MUST save them to engram before
+returning:
+  mem_save(title: "{short description}", type: "{decision|bugfix|discovery|pattern}",
+           project: "{project}", capture_prompt: false,
+           content: "{What, Why, Where, Learned}")
+Do NOT return without saving what you learned. This is how the team builds persistent knowledge.
+```
+
+### SDD delegations:
+
+```
+Artifact store mode: openspec
+Read artifacts from: openspec/changes/{change-name}/
+Write artifacts to: openspec/changes/{change-name}/
+
+PERSISTENCE NOTE:
+- Write all artifacts to the filesystem (openspec paths).
+- If you discover non-obvious insights, also call mem_save with capture_prompt: false.
+- Your FINAL output must be TEXT (the return envelope), not a tool call.
+```
+
+## Skill Registry
+
+The orchestrator pre-resolves skill paths and injects them as `## Skills to load before work` or
+`## Project Standards (auto-resolved)` in the launch prompt. Sub-agents read those exact files or
+apply those rules before task-specific work.
+
+To generate/update the registry: run the `skill-registry` skill or `sdd-init`.
+
+Sub-agent skill loading priority:
+1. `## Project Standards (auto-resolved)` block → apply directly (no file reads needed)
+2. `## Skills to load before work` block → read those exact `SKILL.md` files
+3. `SKILL: Load` instructions → fallback
+4. `.atl/skill-registry.md` → last resort
+5. None found → proceed without project skills (not an error)
