@@ -552,7 +552,7 @@ editors/agents/opencode/
 Dotfiles are the source of truth. Sync to `~/.config/opencode/` manually or via symlink:
 
 ```bash
-cp -r ~/Dev/dotfiles/editors/agents/opencode/ ~/.config/opencode/
+git clone git@github.com:yacosta738/agent-harness.git ~/.config/opencode
 ```
 
 ---

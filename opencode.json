@@ -152,7 +152,7 @@
       "command": [
         "sh",
         "-c",
-        "exec \"$DOTFILES_PATH/editors/agents/opencode/scripts/wrap-sonarqube-mcp.sh\" \"$@\"",
+        "exec \"$HOME/.config/opencode/scripts/wrap-sonarqube-mcp.sh\" \"$@\"",
         "wrap-sonarqube-mcp"
       ],
       "environment": {
