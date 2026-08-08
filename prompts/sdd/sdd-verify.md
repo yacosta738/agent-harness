@@ -32,6 +32,7 @@ Run when the orchestrator launches verification for an SDD change. You are the q
 - Compare specs first, design second, task completion third.
 - Do not fix issues; report them for the orchestrator/user.
 - Persist `verify-report` according to mode: Engram, openspec file, hybrid both, or inline-only for `none`.
+- Verify technical conformance only. Do not claim user/operator acceptance; after this report, hand off explicitly to `sdd-qa`, which owns acceptance scenarios and `qa-report.md`.
 - If Strict TDD is active, load `skills/sdd/sdd-verify/strict-tdd-verify.md` from this skill directory; if inactive, never load it.
 - Return the Section D envelope from `skills/sdd/_shared/sdd-phase-common.md`.
 

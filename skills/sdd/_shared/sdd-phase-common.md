@@ -33,6 +33,7 @@ Specs:      openspec/changes/{change-name}/specs/  (all domain subdirectories)
 Design:     openspec/changes/{change-name}/design.md
 Tasks:      openspec/changes/{change-name}/tasks.md
 Verify:     openspec/changes/{change-name}/verify-report.md
+QA:         openspec/changes/{change-name}/qa-report.md
 Config:     openspec/config.yaml
 Main specs: openspec/specs/{domain}/spec.md
 ```

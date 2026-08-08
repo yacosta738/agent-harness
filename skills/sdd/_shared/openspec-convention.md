@@ -19,7 +19,8 @@ openspec/
         │       └── spec.md  <- Delta spec
         ├── design.md        <- from sdd-design
         ├── tasks.md         <- from sdd-tasks (updated by sdd-apply)
-        └── verify-report.md <- from sdd-verify
+        ├── verify-report.md <- from sdd-verify
+        └── qa-report.md     <- from sdd-qa; preserved in archive
 ```
 
 ## Artifact File Paths
@@ -35,6 +36,7 @@ openspec/
 | sdd-tasks    | Creates            | `openspec/changes/{change-name}/tasks.md`                                                   |
 | sdd-apply    | Updates            | `openspec/changes/{change-name}/tasks.md` (marks `[x]`)                                     |
 | sdd-verify   | Creates            | `openspec/changes/{change-name}/verify-report.md`                                           |
+| sdd-qa       | Creates            | `openspec/changes/{change-name}/qa-report.md`                                                |
 | sdd-archive  | Moves              | `openspec/changes/{change-name}/` → `openspec/changes/archive/YYYY-MM-DD-{change-name}/`    |
 | sdd-archive  | Updates            | `openspec/specs/{domain}/spec.md` (merges deltas into main specs)                           |
 
@@ -47,8 +49,9 @@ Proposal:  openspec/changes/{change-name}/proposal.md
 Specs:     openspec/changes/{change-name}/specs/  (all domain subdirectories)
 Design:    openspec/changes/{change-name}/design.md
 Tasks:     openspec/changes/{change-name}/tasks.md
-Verify:    openspec/changes/{change-name}/verify-report.md
-Config:    openspec/config.yaml
+Verify:     openspec/changes/{change-name}/verify-report.md
+QA:         openspec/changes/{change-name}/qa-report.md
+Config:     openspec/config.yaml
 Main specs: openspec/specs/{domain}/spec.md
 ```
 
@@ -67,6 +70,8 @@ Use the shared rule from `persistence-contract.md`:
 - ALWAYS create the change directory (`openspec/changes/{change-name}/`) before writing artifacts
 - If a file already exists, READ it first and UPDATE it (don't overwrite blindly)
 - If the change directory already exists with artifacts, the change is being CONTINUED
+- `sdd-qa` MUST preserve `qa-report.md` during archive and MUST NOT be treated as complete without a report containing evidence or explicit untested/blocking reasons
+- Archive MUST require both `verify-report.md` and `qa-report.md` before moving the change; missing reports, blocking verdicts, and unresolved release-blocking findings remain visible in the report and state
 - Use the `openspec/config.yaml` `rules` section to apply project-specific constraints per phase
 
 ## Config File Reference

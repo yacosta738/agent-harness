@@ -253,6 +253,7 @@
           "jd-judge-b": "allow",
           "sdd-apply": "allow",
           "sdd-archive": "allow",
+          "sdd-qa": "allow",
           "sdd-design": "allow",
           "sdd-explore": "allow",
           "sdd-init": "allow",
@@ -345,6 +346,17 @@
       "tools": {
         "bash": true,
         "edit": true,
+        "read": true,
+        "write": true
+      }
+    },
+    "sdd-qa": {
+      "description": "Run capability-driven acceptance QA and write qa-report.md",
+      "hidden": true,
+      "mode": "subagent",
+      "prompt": "You are an SDD executor for the QA phase, not the orchestrator. Do this phase's work yourself. Do NOT delegate, Do NOT call task/delegate, and Do NOT launch sub-agents. Read your prompt file at {file:./prompts/sdd/sdd-qa.md} and the shared protocol at {file:./skills/sdd/_shared/sdd-phase-common.md} FIRST, then follow their instructions exactly.",
+      "tools": {
+        "bash": true,
         "read": true,
         "write": true
       }

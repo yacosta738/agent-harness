@@ -199,7 +199,7 @@ Here's what we built together:
 - {list of files}
 
 **The SDD cycle in one line**:
-explore → propose → spec → design → tasks → apply → verify → archive
+explore → propose → spec → design → tasks → apply → verify → qa → archive
 
 **When to use SDD**: Any change where you want to agree on WHAT before writing code.
 Small tweaks? Just code. Features, APIs, architecture decisions? SDD first.
