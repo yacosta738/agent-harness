@@ -3,7 +3,7 @@
 Custom agent configuration for [OpenCode](https://opencode.ai) — Cuban-style fullstack architect,
 project management, and a full Spec-Driven Development (SDD) pipeline.
 
-**Skills auto-discovered from `skills/` · 21 commands · MCP servers configured in `opencode.json` ·
+**Skills auto-discovered from `skills/` · 22 commands · MCP servers configured in `opencode.json` ·
 ecosystem references in `references/`**
 
 ---
@@ -15,7 +15,7 @@ opencode.json
 ├── Agents
 │   ├── kerrigan (all)          — Fullstack architect, mentor, SDD orchestrator
 │   ├── linear-pm (subagent)    — Linear issue/sprint management
-│   └── sdd-{phase} (subagent)  — 9 dedicated SDD phase executors
+│   └── sdd-{phase} (subagent)  — 10 dedicated SDD phase executors
 ├── MCP Servers                  — External tool integrations
 ├── Permissions                  — Tiered access control
 └── Skills                       — auto-discovered reusable instruction sets
@@ -65,7 +65,7 @@ durable artifacts, approval gates, resumability, or architecture coordination, r
 
 See [SDD Workflow](#sdd-workflow) below for details.
 
-### SDD Phase Sub-Agents (9 executors)
+### SDD Phase Sub-Agents (10 executors)
 
 Each phase has a dedicated executor that reads its SKILL.md and the shared protocol:
 
@@ -78,8 +78,9 @@ Each phase has a dedicated executor that reads its SKILL.md and the shared proto
 | `sdd-design`  | Technical design with architecture decisions                |
 | `sdd-tasks`   | Break down into phased implementation checklist             |
 | `sdd-apply`   | Implement code (supports TDD RED-GREEN-REFACTOR)            |
-| `sdd-verify`  | Quality gate — real test execution + spec compliance matrix |
-| `sdd-archive` | Sync delta specs to main specs, move to archive             |
+| `sdd-verify`  | Quality gate — technical execution + spec compliance matrix |
+| `sdd-qa`      | Capability-driven acceptance evidence and `qa-report.md`   |
+| `sdd-archive` | Two-report gate, sync delta specs, move to archive         |
 
 ---
 
@@ -88,7 +89,7 @@ Each phase has a dedicated executor that reads its SKILL.md and the shared proto
 ### Phase DAG
 
 ```
-init → explore → propose → [spec + design] → tasks → apply → verify → archive
+init → explore → propose → [spec + design] → tasks → apply → verify → qa → archive
                                 (parallel)
 ```
 
@@ -105,8 +106,9 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 | `/sdd-design`          | sdd-design  | Create technical design         |
 | `/sdd-tasks`           | sdd-tasks   | Break down into tasks           |
 | `/sdd-apply`           | sdd-apply   | Implement (TDD when configured) |
-| `/sdd-verify`          | sdd-verify  | Validate against specs          |
-| `/sdd-archive`         | sdd-archive | Close the cycle                 |
+| `/sdd-verify`          | sdd-verify  | Validate technical conformance |
+| `/sdd-qa`              | sdd-qa      | Run acceptance QA and persist evidence |
+| `/sdd-archive`         | sdd-archive | Close the cycle after two-report gate |
 
 **Meta-commands** (routed to kerrigan orchestrator):
 
@@ -134,13 +136,18 @@ openspec/
         ├── specs/
         ├── design.md
         ├── tasks.md
-        └── verify-report.md
+        ├── verify-report.md
+        └── qa-report.md
 ```
 
 ### Quality Gates
 
 - No `apply` without proposal + spec + design + tasks
-- No `archive` unless verify is PASS or PASS WITH WARNINGS (no CRITICAL issues)
+- `verify` owns technical conformance; `qa` owns observable user/operator acceptance
+- QA verdicts are `PASS`, `PASS WITH WARNINGS`, `FAIL`, `BLOCKED`, or `NOT TESTED`; findings use `CRITICAL`, `P0`, `P1`, `P2`, or `P3`
+- No `archive` unless both `verify-report.md` and `qa-report.md` exist, verification is PASS or PASS WITH WARNINGS, QA policy allows release, and no unresolved CRITICAL/P0/P1 findings remain
+- Acceptance-relevant `BLOCKED`/`NOT TESTED` blocks archive; docs/config-only exceptions require explicit rationale and visible warning
+- This repository has no application under test or general test runner: harness smoke checks cannot claim product acceptance; QA must record `NOT TESTED` or `BLOCKED` with evidence
 
 ---
 
@@ -205,6 +212,7 @@ commands/
 │   ├── sdd-tasks.md
 │   ├── sdd-apply.md
 │   ├── sdd-verify.md
+│   ├── sdd-qa.md
 │   └── sdd-archive.md
 ├── SDD meta
 │   ├── sdd-new.md
@@ -248,7 +256,7 @@ Process skills that apply to any project or stack.
 | `requesting-code-review`         | Preparing code for review                                 |
 | `git-worktrees`                  | Parallel branch work with safe Git worktree conventions   |
 
-### `sdd/` — Spec-Driven Development (9 + shared)
+### `sdd/` — Spec-Driven Development (10 + shared)
 
 ```
 sdd/
@@ -258,7 +266,7 @@ sdd/
 │   └── openspec-convention.md
 ├── sdd-init/    sdd-explore/    sdd-propose/
 ├── sdd-spec/    sdd-design/     sdd-tasks/
-├── sdd-apply/   sdd-verify/     sdd-archive/
+├── sdd-apply/   sdd-verify/     sdd-qa/     sdd-archive/
 ```
 
 ### `vercel/` — Vercel ecosystem (48)

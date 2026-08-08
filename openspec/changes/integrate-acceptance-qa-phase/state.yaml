@@ -1,0 +1,5 @@
+change: integrate-acceptance-qa-phase
+current_phase: verify
+completed: [explore, propose, spec, design, tasks, apply, verify]
+next: qa
+updated: 2026-08-08

@@ -37,7 +37,7 @@ From the orchestrator:
 > Follow **Section B** (retrieval) and **Section C** (persistence) from `skills/sdd/_shared/sdd-phase-common.md`.
 
 - **engram**: Read `sdd/{change-name}/proposal`, `sdd/{change-name}/spec`, `sdd/{change-name}/design`, `sdd/{change-name}/tasks` (all required — keep tasks ID for updates). Mark tasks complete via `mem_update(id: {tasks-observation-id}, content: "...")`. Save progress as `sdd/{change-name}/apply-progress`.
-- **openspec**: Read and follow `skills/sdd/_shared/openspec-convention.md`. Update `tasks.md` with `[x]` marks.
+- **openspec**: Read and follow `skills/sdd/_shared/openspec-convention.md`. Update `tasks.md` with `[x]` marks. Persist apply progress in the change folder when the phase requires a durable handoff.
 - **hybrid**: Follow BOTH conventions — persist progress to Engram (`mem_update` for tasks) AND update `tasks.md` with `[x]` marks on filesystem.
 - **none**: Return progress only. Do not update project artifacts.
 
@@ -143,8 +143,7 @@ Detect test runner from:
 └── Fallback: STOP — TDD requires a test runner to confirm RED and GREEN
 ```
 
-If no test runner is found, return `status: blocked` and report that the project needs a test
-runner configured before sdd-apply can proceed.
+If no test runner is found, follow the repository's configured exception: do not invent a runner or fixture app, use focused JSON/YAML/Markdown/path smoke checks where possible, and explicitly report that RED→GREEN→REFACTOR evidence cannot be claimed. For this repository, continue the documentation/configuration slice while recording the no-runner limitation.
 
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`, `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
 
@@ -219,6 +218,10 @@ If none, say "None."}
 ### Status
 {N}/{total} tasks complete. {Ready for next batch / Ready for verify / Blocked by X}
 ```
+
+## Apply Handoff to QA
+
+Apply implements only the assigned task slice and must not claim user/operator acceptance. After apply, `sdd-verify` owns technical conformance and hands its `verify-report.md` to `sdd-qa`; QA independently resolves capabilities and writes `qa-report.md`. Apply may record handoff context, but it MUST NOT duplicate acceptance checks or fabricate product evidence.
 
 ## Rules
 

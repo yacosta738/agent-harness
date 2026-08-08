@@ -32,6 +32,8 @@ From the orchestrator:
 
 ## What to Do
 
+Apply is implementation-only. It MUST NOT claim product or operator acceptance. After technical verification, `sdd-verify` hands off to `sdd-qa`, which resolves capabilities and persists `qa-report.md`; apply may provide context but must not duplicate those acceptance checks.
+
 ### Step 1: Load Skills
 
 Follow **Section A** from `../_shared/sdd-phase-common.md`.
@@ -112,8 +114,7 @@ Detect test runner from:
 └── Fallback: report that tests couldn't be run automatically
 ```
 
-If no test runner is found, STOP and report `status: blocked` — TDD requires a test runner to
-confirm RED (fail) and GREEN (pass) for every task.
+If no test runner is found, follow the repository's configured exception: do not invent a runner or fixture app, use focused JSON/YAML/Markdown/path smoke checks where possible, and explicitly report that RED→GREEN→REFACTOR evidence cannot be claimed. For this repository, continue the documentation/configuration slice while recording the no-runner limitation.
 
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`,
 `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
@@ -170,7 +171,7 @@ Return to the orchestrator:
 | 1.1 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 | 1.2 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 
-**TDD compliance**: All tasks followed RED→GREEN→REFACTOR cycle. No code was written without a failing test first.
+**TDD compliance**: Not claimed. This repository has no test runner; only focused JSON/YAML/Markdown/path smoke checks were executed.
 
 ### Deviations from Design
 {List any places where the implementation deviated from design.md and why.
@@ -204,7 +205,7 @@ If none, say "None."}
 - Apply any `rules.apply` from `openspec/config.yaml`
 - Keep implementation batches aligned with work-unit commits: behavior, tests, and docs stay
   together
-- TDD is MANDATORY. ALWAYS follow the RED → GREEN → REFACTOR cycle — never skip
+- TDD is mandatory when a runner exists; when no runner exists, do not invent one and explicitly report that RED → GREEN → REFACTOR evidence is unavailable
   RED (writing the failing test first). Standard Mode does not exist. If you detect code written
   before tests, STOP and delete the code — start over with the failing test first.
 - **Fast feedback during TDD is OK; final claims are not.**

@@ -26,8 +26,7 @@ From the orchestrator:
 > Follow **Section B** (retrieval) and **Section C** (persistence) from
 `../_shared/sdd-phase-common.md`.
 
-- **openspec**: Read and follow `../_shared/openspec-convention.md`. Perform merge and archive
-  folder moves.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Require both `verify-report.md` and `qa-report.md`, evaluate the acceptance release gate, then perform merge and archive folder moves.
 
 ## What to Do
 
@@ -35,7 +34,11 @@ From the orchestrator:
 
 Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
-### Step 2: Sync Delta Specs to Main Specs
+### Step 2: Validate the Two-Report Acceptance Gate
+
+The lifecycle is `apply → verify → qa → archive`. Before syncing or moving the change, require both `verify-report.md` and `qa-report.md` at the change root. Verification must be `PASS` or `PASS WITH WARNINGS`; block missing reports, failed verification, QA `FAIL`, unresolved `CRITICAL`/P0/P1 findings, and acceptance-relevant `BLOCKED`/`NOT TESTED`. Documentation/config-only changes may proceed only with an explicit rationale and visible warning; preserve the original QA verdict and evidence. P2/P3 findings are warnings unless configuration says otherwise.
+
+### Step 3: Sync Delta Specs to Main Specs
 
 For each delta spec in `openspec/changes/{change-name}/specs/`:
 
@@ -66,7 +69,7 @@ openspec/changes/{change-name}/specs/{domain}/spec.md
   → openspec/specs/{domain}/spec.md
 ```
 
-### Step 3: Move to Archive
+### Step 4: Move to Archive
 
 Move the entire change folder to archive with date prefix:
 
@@ -77,7 +80,7 @@ openspec/changes/{change-name}/
 
 Use today's date in ISO format (e.g., `2026-02-16`).
 
-### Step 4: Verify Archive
+### Step 5: Verify Archive
 
 Confirm:
 
@@ -106,6 +109,8 @@ Return to the orchestrator:
 - specs/ ✅
 - design.md ✅
 - tasks.md ✅ ({N}/{N} tasks complete)
+- verify-report.md ✅
+- qa-report.md ✅ (preserved acceptance evidence)
 
 ### Source of Truth Updated
 The following specs now reflect the new behavior:
@@ -118,7 +123,8 @@ Ready for the next change.
 
 ## Rules
 
-- NEVER archive a change that has CRITICAL issues in its verification report
+- NEVER archive a change with missing reports, failed verification, QA `FAIL`, or unresolved `CRITICAL`, `P0`, or `P1` findings
+- Acceptance-relevant QA `BLOCKED`/`NOT TESTED` blocks archive unless config permits a documented non-runtime exception; preserve the original verdict
 - ALWAYS sync delta specs BEFORE moving to archive
 - When merging into existing specs, PRESERVE requirements not mentioned in the delta
 - Use ISO date format (YYYY-MM-DD) for archive folder prefix

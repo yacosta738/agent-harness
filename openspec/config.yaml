@@ -1,0 +1,84 @@
+schema: spec-driven
+
+context: |
+  Tech stack: OpenCode configuration repository; JSON agent/MCP config, Markdown prompts/skills, Bash and Node.js utilities.
+  Architecture: File-based agent configuration with routed SDD phase executors, reusable skills, prompts, commands, plugins, and MCP integrations.
+  Testing: No repository test runner or test suite detected; manual command/script smoke checks only.
+  Style: Markdown frontmatter, JSON configuration, shell strict mode, Node.js CommonJS/ES modules; no repo-wide linter or formatter detected.
+  Persistence: OpenSpec filesystem artifacts; Engram MCP is configured but this phase writes the canonical artifacts here.
+  Strict TDD: false (no test runner detected; implementation phases must report the limitation).
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected modules/packages
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+    - Include the review workload forecast and exact 400-line guard lines before apply
+  apply:
+    - Follow existing code patterns and conventions
+    - Load relevant coding skills for the project stack
+    - Do not claim TDD compliance unless a runner becomes available and RED-GREEN-REFACTOR evidence is recorded
+  verify:
+    - Run tests if test infrastructure exists
+    - Compare implementation against every spec scenario
+    - Report unavailable test/build/coverage tooling explicitly
+    - Hand off technical conformance to sdd-qa; do not claim product acceptance
+  qa:
+    required_for:
+      - acceptance-relevant
+      - runtime
+      - product
+    verdicts:
+      - PASS
+      - PASS WITH WARNINGS
+      - FAIL
+      - BLOCKED
+      - NOT TESTED
+    finding_severity:
+      - CRITICAL
+      - P0
+      - P1
+      - P2
+      - P3
+    block_on:
+      - FAIL
+      - CRITICAL
+      - P0
+      - P1
+    blocked_policy: block_acceptance_relevant_allow_documentation_configuration_exception
+    not_tested_policy: block_acceptance_relevant_allow_documentation_configuration_exception
+    static_inspection_verdict: prohibited
+    guidance:
+      - Persist qa-report.md with target, environment, capability decisions, scenarios, evidence, untested scope, findings, verdict, rationale, and limitations
+      - Static inspection MUST NOT produce PASS
+      - Use NOT TESTED when no target or executable capability exists and BLOCKED for external constraints
+      - Do not modify code or claim product acceptance for this harness
+  archive:
+    require_reports: true
+    require_qa: true
+    block_on:
+      - missing_verify_report
+      - missing_qa_report
+      - verify_FAIL
+      - qa_FAIL
+      - unresolved_CRITICAL
+      - unresolved_P0
+      - unresolved_P1
+      - acceptance_relevant_BLOCKED
+      - acceptance_relevant_NOT_TESTED
+    allow_non_runtime_exception: true
+    exception_scope:
+      - documentation
+      - configuration
+    warning_on_exception: true
+    guidance:
+      - Warn before merging destructive deltas (large removals)

@@ -30,7 +30,8 @@ From the orchestrator:
 `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`. Save to
-  `openspec/changes/{change-name}/verify-report.md`.
+  `openspec/changes/{change-name}/verify-report.md`. This is technical conformance only; hand off to
+  `sdd-qa` for independent observable acceptance and `qa-report.md`.
 
 ## What to Do
 

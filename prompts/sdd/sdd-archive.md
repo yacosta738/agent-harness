@@ -34,7 +34,7 @@ From the orchestrator:
 
 > Follow **Section B** (retrieval) and **Section C** (persistence) from `skills/sdd/_shared/sdd-phase-common.md`.
 
-- **engram**: Read `sdd/{change-name}/proposal`, `sdd/{change-name}/spec`, `sdd/{change-name}/design`, `sdd/{change-name}/tasks`, `sdd/{change-name}/verify-report` (all required). Record all observation IDs in the archive report for traceability. Save as `sdd/{change-name}/archive-report`.
+- **engram**: Read `sdd/{change-name}/proposal`, `sdd/{change-name}/spec`, `sdd/{change-name}/design`, `sdd/{change-name}/tasks`, `sdd/{change-name}/verify-report`, and `sdd/{change-name}/qa-report` (all required). Record all observation IDs in the archive report for traceability. Save as `sdd/{change-name}/archive-report`.
 - **openspec**: Read and follow `skills/sdd/_shared/openspec-convention.md`. Perform merge and archive folder moves.
 - **hybrid**: Follow BOTH conventions — persist archive report to Engram (with observation IDs) AND perform filesystem merge + archive folder moves.
 - **none**: Return closure summary only. Do not perform archive file operations.
@@ -44,7 +44,11 @@ From the orchestrator:
 ### Step 1: Load Skills
 Follow **Section A** from `skills/sdd/_shared/sdd-phase-common.md`.
 
-### Step 2: Sync Delta Specs to Main Specs
+### Step 2: Validate the Two-Report Acceptance Gate
+
+The lifecycle is `apply → verify → qa → archive`. Before syncing or moving anything, require both `verify-report.md` and `qa-report.md` at the change root. Verification must be `PASS` or `PASS WITH WARNINGS`; reject missing reports, QA `FAIL`, unresolved `CRITICAL`/P0/P1 findings, and failed verification. Acceptance-relevant `BLOCKED` or `NOT TESTED` normally blocks release. A documentation/configuration-only change MAY proceed only with an explicit rationale and visible warning; preserve the original QA verdict and evidence. P2/P3 findings are warnings unless `openspec/config.yaml` says otherwise. Never select archive before this gate is satisfied.
+
+## Step 3: Sync Delta Specs to Main Specs
 
 **IF mode is `engram`:** Skip filesystem sync — artifacts live in Engram only. The archive report (Step 5) records all observation IDs for traceability.
 
@@ -78,7 +82,7 @@ openspec/changes/{change-name}/specs/{domain}/spec.md
   → openspec/specs/{domain}/spec.md
 ```
 
-### Step 3: Move to Archive
+### Step 4: Move to Archive
 
 **IF mode is `engram`:** Skip — there are no `openspec/` directories to move. The archive report in Engram serves as the audit trail.
 
@@ -93,7 +97,7 @@ openspec/changes/{change-name}/
 
 Use today's date in ISO format (e.g., `2026-02-16`).
 
-### Step 4: Verify Archive
+### Step 5: Verify Archive
 
 **IF mode is `openspec` or `hybrid`:** Confirm:
 - [ ] Main specs updated correctly
@@ -105,7 +109,7 @@ Use today's date in ISO format (e.g., `2026-02-16`).
 
 **IF mode is `none`:** Skip verification — no persisted artifacts.
 
-### Step 5: Persist Archive Report
+### Step 6: Persist Archive Report
 
 **This step is MANDATORY — do NOT skip it.**
 
@@ -114,7 +118,7 @@ Follow **Section C** from `skills/sdd/_shared/sdd-phase-common.md`.
 - topic_key: `sdd/{change-name}/archive-report`
 - type: `architecture`
 
-### Step 6: Return Summary
+### Step 7: Return Summary
 
 Return to the orchestrator:
 
@@ -134,6 +138,8 @@ Return to the orchestrator:
 - specs/ ✅
 - design.md ✅
 - tasks.md ✅ ({N}/{N} tasks complete)
+- verify-report.md ✅
+- qa-report.md ✅ (preserved acceptance evidence)
 
 ### Source of Truth Updated
 The following specs now reflect the new behavior:
@@ -146,7 +152,8 @@ Ready for the next change.
 
 ## Rules
 
-- NEVER archive a change that has CRITICAL issues in its verification report
+- NEVER archive a change with a missing `verify-report.md` or `qa-report.md`, failed verification, QA `FAIL`, or unresolved `CRITICAL`, `P0`, or `P1` finding
+- Acceptance-relevant QA `BLOCKED`/`NOT TESTED` blocks archive unless the config policy permits a documented non-runtime exception; preserve the original verdict
 - ALWAYS sync delta specs BEFORE moving to archive
 - When merging into existing specs, PRESERVE requirements not mentioned in the delta
 - Use ISO date format (YYYY-MM-DD) for archive folder prefix

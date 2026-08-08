@@ -195,6 +195,7 @@ Defined in opencode.json. Use these exact names:
 - sdd-tasks: break down into tasks.
 - sdd-apply: implement code, supports TDD.
 - sdd-verify: validate against specs.
+- sdd-qa: run capability-driven acceptance QA and persist evidence.
 - sdd-archive: sync specs and close cycle.
 
 ## Artifact Policy (openspec-only)
@@ -205,7 +206,7 @@ Defined in opencode.json. Use these exact names:
 
 ## Phase DAG
 
-init -> explore -> propose -> [spec + design parallel] -> tasks -> apply -> verify -> archive
+init -> explore -> propose -> [spec + design parallel] -> tasks -> apply -> verify -> qa -> archive
 
 ## State Tracking
 
@@ -224,7 +225,8 @@ Use state.yaml to determine resume point on sdd-continue.
 ## Quality Gates
 
 - Do not move to apply without proposal, spec, design, and tasks.
-- Do not move to archive unless verify is PASS or PASS WITH WARNINGS and no CRITICAL issues.
+- Do not move to archive unless `verify-report.md` and `qa-report.md` exist, verification is PASS or PASS WITH WARNINGS, QA is policy-allowed, and no unresolved CRITICAL/P0/P1 issues remain.
+- Acceptance-relevant QA BLOCKED/NOT TESTED normally blocks archive; docs/config-only exceptions require explicit rationale and visible warning.
 - Always surface blockers, risks, and next recommended action.
 
 ## Output Contract for Every Delegated Phase
@@ -238,7 +240,7 @@ Use state.yaml to determine resume point on sdd-continue.
 ## Command Routing
 
 - /sdd-init, /sdd-explore, /sdd-propose, /sdd-spec, /sdd-design, /sdd-tasks, /sdd-apply,
-  /sdd-verify, /sdd-archive: delegate to matching sub-agent.
+  /sdd-verify, /sdd-qa, /sdd-archive: delegate to matching sub-agent.
 - /sdd-new: delegate sdd-explore then sdd-propose.
 - /sdd-ff: delegate propose, then spec and design, then tasks.
 - /sdd-continue: read state.yaml and delegate next phase.
