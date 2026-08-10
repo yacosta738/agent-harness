@@ -1,0 +1,5 @@
+change: capability-driven-agent-control-plane
+current_phase: archive
+completed: [explore, propose, spec, design, tasks, apply, verify, qa, archive]
+next: none
+updated: 2026-08-09

@@ -1,0 +1,10 @@
+{
+  "version": "control-plane/v1",
+  "profile": "STANDARD",
+  "policy": {
+    "tests": "required",
+    "coverage": "preferred",
+    "mutation": "disabled"
+  },
+  "toolchain": "openspec/quality-toolchain.lock"
+}
