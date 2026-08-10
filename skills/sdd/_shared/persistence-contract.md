@@ -140,5 +140,5 @@ Sub-agent skill loading priority:
 1. `## Project Standards (auto-resolved)` block → apply directly (no file reads needed)
 2. `## Skills to load before work` block → read those exact `SKILL.md` files
 3. `SKILL: Load` instructions → fallback
-4. `.atl/skill-registry.md` → last resort
+4. `.agents/skill-registry.md` → last resort
 5. None found → proceed without project skills (not an error)

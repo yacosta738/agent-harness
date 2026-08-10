@@ -74,6 +74,14 @@ Use the shared rule from `persistence-contract.md`:
 - Archive MUST require both `verify-report.md` and `qa-report.md` before moving the change; missing reports, blocking verdicts, and unresolved release-blocking findings remain visible in the report and state
 - Use the `openspec/config.yaml` `rules` section to apply project-specific constraints per phase
 
+## Deterministic Runner Adapter
+
+Projects may opt into `openspec/quality-runner.json` (`quality-runner/v1`) and the standalone
+`scripts/sdd-quality-runner.mjs`. Consumers must retain runner envelope identity, status, reason, redacted
+evidence, and artifact references. Missing/disabled runner configuration is an explicit `fallback`, not a pass.
+The standalone `scripts/sdd-fsm.mjs` owns legal state transitions when enabled; prompt flow remains a compatibility
+adapter only and must not claim deterministic enforcement when the FSM is unavailable.
+
 ## Config File Reference
 
 ```yaml

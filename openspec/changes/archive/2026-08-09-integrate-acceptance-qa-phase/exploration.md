@@ -26,7 +26,7 @@ QA must be capability-driven. Depending on the target and environment, it may us
 - `skills/tools/webapp-testing/SKILL.md`, `skills/vercel/agent-browser/SKILL.md`, `skills/vercel/agent-browser-verify/SKILL.md`, `skills/vercel/verification/SKILL.md`, `skills/workflow/qa-session/SKILL.md`, and accessibility/web-quality skills — existing capabilities to compose or reference; they should not be duplicated inside the SDD phase.
 - `openspec/config.yaml` — needs QA/archive rules, report semantics, and the project limitation that this repository has no general test runner; strict TDD is already disabled.
 - `openspec/changes/{change-name}/state.yaml` — orchestrator-managed recovery state must be able to represent `qa` as the next phase and prevent archive from being selected before a QA report exists.
-- `.atl/skill-registry.md` and prompt/skill references — generated/operational guidance needs to avoid path and contract drift when the new executor is added.
+- `.agents/skill-registry.md` and prompt/skill references — generated/operational guidance needs to avoid path and contract drift when the new executor is added.
 
 ### Approaches
 1. **Dedicated capability-driven `sdd-qa` phase** — add a first-class executor, command, prompt/skill, `qa-report.md`, DAG transition `apply → verify → qa → archive`, and archive gate. The executor resolves the best available QA capability for the change and records a result of `PASS`, `PASS WITH WARNINGS`, `FAIL`, `BLOCKED`, or `NOT TESTED` with concrete evidence.
@@ -57,7 +57,7 @@ The implementation should update the canonical convention and all lifecycle docu
 - **False confidence:** treating static inspection or a missing target as acceptance success would defeat the purpose of the new phase; enforce explicit `NOT TESTED`/`BLOCKED` outcomes.
 - **Archive deadlock:** requiring a browser or product environment for every config/documentation change could make the pipeline unusable; use change-surface/risk policy and an explicit exception rationale.
 - **Capability drift:** available skills and MCP servers vary by project/environment; resolve capabilities at execution time and record what was actually available and used.
-- **Prompt/contract drift:** commands, prompts, skills, README, and `.atl/skill-registry.md` currently have overlapping but not identical contracts and path conventions; the change must update all sources of truth consistently.
+- **Prompt/contract drift:** commands, prompts, skills, README, and `.agents/skill-registry.md` currently have overlapping but not identical contracts and path conventions; the change must update all sources of truth consistently.
 - **State recovery gaps:** if `state.yaml` only knows the old DAG, `sdd-continue` may skip QA or repeatedly select archive; add artifact-based fallback and explicit QA completion semantics.
 - **Scope creep in verification:** adding acceptance logic directly to `sdd-verify` would make the technical gate harder to reason about and could duplicate existing browser skills.
 - **No application under test in this repository:** validation of this harness can prove registration, routing, artifact, and policy behavior, but cannot prove a real product acceptance flow without a target project.
@@ -72,4 +72,4 @@ Yes. The orchestrator can proceed to proposal with the dedicated-phase recommend
 **Artifacts**: `openspec/changes/integrate-acceptance-qa-phase/exploration.md`
 **Next Recommended**: `sdd-propose`
 **Risks**: Capability availability, archive policy for `NOT TESTED`/`BLOCKED`, state-recovery drift, and the absence of an application-under-test in this repository.
-**Skill Resolution**: `fallback-registry` — applied the repository’s `.atl/skill-registry.md` compact rules and the SDD exploration/shared OpenSpec contracts.
+**Skill Resolution**: `fallback-registry` — applied the repository’s `.agents/skill-registry.md` compact rules and the SDD exploration/shared OpenSpec contracts.

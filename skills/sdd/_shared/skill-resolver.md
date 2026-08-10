@@ -19,7 +19,7 @@ creating project artifacts. Skip only for purely mechanical commands.
 
 Resolution order:
 1. Use the session cache if present.
-2. Read `.atl/skill-registry.md` from the project root.
+2. Read `.agents/skill-registry.md` from the project root.
 3. No registry found → proceed without project skills and note it in the delegation.
 
 ### Step 2: Match Relevant Skills
@@ -66,7 +66,7 @@ Sub-agents MUST report `skill_resolution` in their return envelope:
 
 - `paths-injected` — received exact skill paths from the delegator and loaded them
 - `compact-rules` — received pre-digested Project Standards block
-- `fallback-registry` — no paths/rules received, self-loaded from `.atl/skill-registry.md`
+- `fallback-registry` — no paths/rules received, self-loaded from `.agents/skill-registry.md`
 - `fallback-path` — loaded an explicit fallback path
 - `none` — no skills loaded
 
