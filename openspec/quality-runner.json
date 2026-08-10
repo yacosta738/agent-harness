@@ -1,0 +1,6 @@
+{
+  "version": "quality-runner/v1",
+  "enabled": false,
+  "control_plane": { "enabled": false, "policy": "openspec/config.yaml", "toolchain_lock": "openspec/quality-toolchain.lock" },
+  "capabilities": {}
+}

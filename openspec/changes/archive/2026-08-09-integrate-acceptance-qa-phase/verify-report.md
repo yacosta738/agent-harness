@@ -19,7 +19,7 @@ Read before judging implementation:
 - `openspec/changes/integrate-acceptance-qa-phase/apply-progress.md`
 - `openspec/changes/integrate-acceptance-qa-phase/state.yaml`
 - `openspec/config.yaml`
-- `.atl/skill-registry.md`
+- `.agents/skill-registry.md`
 
 The changed source/configuration and phase-contract files were also inspected: `opencode.json`, `AGENTS.md`, `README.md`, `commands/sdd-continue.md`, `commands/sdd-qa.md`, `prompts/sdd/sdd-apply.md`, `prompts/sdd/sdd-archive.md`, `prompts/sdd/sdd-onboard.md`, `prompts/sdd/sdd-qa.md`, `prompts/sdd/sdd-verify.md`, `skills/sdd/_shared/openspec-convention.md`, `skills/sdd/_shared/sdd-phase-common.md`, `skills/sdd/sdd-apply/SKILL.md`, `skills/sdd/sdd-archive/SKILL.md`, `skills/sdd/sdd-qa/SKILL.md`, and `skills/sdd/sdd-verify/SKILL.md`.
 

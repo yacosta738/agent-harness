@@ -1,0 +1,12 @@
+[
+  {
+    "filePath": "src/broken.js",
+    "errorCount": 2,
+    "warningCount": 1,
+    "messages": [
+      { "ruleId": "no-undef", "severity": 2, "message": "x is not defined", "line": 1, "column": 1 },
+      { "ruleId": "eqeqeq", "severity": 2, "message": "Expected strict equality", "line": 2, "column": 3 },
+      { "ruleId": "no-console", "severity": 1, "message": "Unexpected console statement", "line": 3, "column": 1 }
+    ]
+  }
+]

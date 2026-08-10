@@ -33,6 +33,14 @@ From the orchestrator:
   `openspec/changes/{change-name}/verify-report.md`. This is technical conformance only; hand off to
   `sdd-qa` for independent observable acceptance and `qa-report.md`.
 
+### Runner evidence
+
+When the project opts into `openspec/quality-runner.json`, run the standalone runner and retain its
+versioned envelope in the verification evidence. Do not discover or substitute stack commands. Preserve
+the configured command/cwd, exit code, parser result, status, reason, redacted output, and artifact paths.
+Map no manifest or a disabled runner to an explicit `fallback` limitation; never report that as deterministic
+enforcement or as a passing result.
+
 ## What to Do
 
 ### Step 1: Load Skills

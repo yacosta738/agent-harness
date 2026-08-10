@@ -149,6 +149,26 @@ openspec/
 - Acceptance-relevant `BLOCKED`/`NOT TESTED` blocks archive; docs/config-only exceptions require explicit rationale and visible warning
 - This repository has no application under test or general test runner: harness smoke checks cannot claim product acceptance; QA must record `NOT TESTED` or `BLOCKED` with evidence
 
+### Deterministic quality runner and FSM (opt-in)
+
+Projects can explicitly configure `openspec/quality-runner.json` (`quality-runner/v1`) and run:
+
+```sh
+node scripts/sdd-quality-runner.mjs run --project /path/to/project --json
+node scripts/sdd-fsm.mjs transition --project /path/to/project --change change-name --to verify --idempotency-key request-1
+```
+
+The runner uses project-declared argv by default, requires a reasoned shell opt-in, isolates environment
+variables, enforces project-root paths, timeouts, output/artifact limits, redaction, parser/exit policy,
+and writes JSON plus human evidence under the configured run directory. It supports arbitrary stacks and
+does not infer npm, pytest, or another familiar tool. Missing or disabled configuration is `UNAVAILABLE` or
+`NOT TESTED`, never `PASS`.
+
+The FSM validates the documented SDD graph, parallel spec/design completion, verify/QA/archive gates,
+legacy state fields, revision/idempotency, lock ownership, and atomic state writes. Prompt flow remains a
+visible `fallback` adapter when the standalone tools are disabled or unavailable; it is not deterministic
+enforcement. No OpenCode plugin hooks are required by this first implementation.
+
 ---
 
 ## Commands

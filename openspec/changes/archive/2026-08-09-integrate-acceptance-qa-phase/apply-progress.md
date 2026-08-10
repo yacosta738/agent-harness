@@ -18,7 +18,7 @@
 - [x] 3.2 Added archive two-report and severity/exception gate to archive prompt and skill.
 - [x] 3.3 Added QA verdict, severity, required-report, blocked/not-tested, and exception policy to `openspec/config.yaml`; strict TDD remains disabled.
 - [x] 4.1 Updated README phase count, DAG, command list, artifact tree, quality gates, and no-runner/no-product-target limitation.
-- [x] 4.2 Updated `.atl/skill-registry.md` for QA routing, report contract, and capability-driven limitations.
+- [x] 4.2 Updated `.agents/skill-registry.md` for QA routing, report contract, and capability-driven limitations.
 - [x] 5.1 Ran focused Node JSON/path smoke validation and Markdown contract checks.
 - [x] 5.2 Parsed YAML with available tooling and checked state/config recovery semantics.
 - [x] 5.3 Recorded that the repository has no general test runner and no application under test; product acceptance is not claimed.
@@ -50,7 +50,7 @@ This repository has no package manifest, test script, pytest configuration, Make
 - `commands/sdd-continue.md`
 - `AGENTS.md`
 - `README.md`
-- `.atl/skill-registry.md`
+- `.agents/skill-registry.md`
 - `openspec/config.yaml`
 - `openspec/changes/integrate-acceptance-qa-phase/state.yaml`
 - `openspec/changes/integrate-acceptance-qa-phase/tasks.md`

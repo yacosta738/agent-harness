@@ -43,7 +43,7 @@ Chain strategy: single-pr
 ## Phase 4: Documentation / Registry
 
 - [x] 4.1 Update `README.md` phase count, DAG, commands, artifact tree, quality gates, and no-runner limitation; reference reusable browser/manual capabilities rather than duplicating them.
-- [x] 4.2 Update `.atl/skill-registry.md` and prompt/skill indexes for `sdd-qa`, `qa-report.md`, and capability-driven limitations; remove stale nine-executor references.
+- [x] 4.2 Update `.agents/skill-registry.md` and prompt/skill indexes for `sdd-qa`, `qa-report.md`, and capability-driven limitations; remove stale nine-executor references.
 
 ## Phase 5: Validation
 

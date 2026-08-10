@@ -1,0 +1,5 @@
+{
+  "scope": "changed-files",
+  "expected": ["src/clean.js", "src/other.js"],
+  "reported": ["src/clean.js", "src/other.js"]
+}

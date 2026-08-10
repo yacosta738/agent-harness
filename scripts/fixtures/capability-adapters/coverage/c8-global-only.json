@@ -1,0 +1,10 @@
+{
+  "version": "c8-summary/v1",
+  "scope": "global",
+  "summary": {
+    "lines": {"total": 500, "covered": 460, "pct": 92.0},
+    "statements": {"total": 520, "covered": 480, "pct": 92.3},
+    "functions": {"total": 80, "covered": 75, "pct": 93.75},
+    "branches": {"total": 100, "covered": 90, "pct": 90.0}
+  }
+}

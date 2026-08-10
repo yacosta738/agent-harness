@@ -1,0 +1,26 @@
+{
+  "version": "c8-summary/v1",
+  "scope": "per-file",
+  "summary": {
+    "lines": {"total": 240, "covered": 232, "pct": 96.66},
+    "statements": {"total": 260, "covered": 252, "pct": 96.92},
+    "functions": {"total": 40, "covered": 39, "pct": 97.5},
+    "branches": {"total": 60, "covered": 55, "pct": 91.66}
+  },
+  "files": [
+    {
+      "path": "src/covered.js",
+      "lines": {"total": 100, "covered": 100, "pct": 100.0},
+      "statements": {"total": 110, "covered": 110, "pct": 100.0},
+      "functions": {"total": 20, "covered": 20, "pct": 100.0},
+      "branches": {"total": 30, "covered": 30, "pct": 100.0}
+    },
+    {
+      "path": "src/partial.js",
+      "lines": {"total": 140, "covered": 132, "pct": 94.28},
+      "statements": {"total": 150, "covered": 142, "pct": 94.66},
+      "functions": {"total": 20, "covered": 19, "pct": 95.0},
+      "branches": {"total": 30, "covered": 25, "pct": 83.33}
+    }
+  ]
+}

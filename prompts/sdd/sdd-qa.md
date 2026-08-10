@@ -27,6 +27,10 @@ Discover available browser, API, data, accessibility, responsive, locale, persis
 
 Every scenario MUST be `PASS`, `FAIL`, `BLOCKED`, or `NOT TESTED` and include evidence or a reason. A target, credentials, permissions, or environment constraint produces `BLOCKED`; no target or executable capability produces `NOT TESTED`. Static inspection MUST NOT produce `PASS` or `PASS WITH WARNINGS`. QA MUST NOT modify source code or fix findings.
 
+When runner envelopes exist, preserve their `status`, `reason`, and evidence reference. Map runner `UNAVAILABLE`
+to QA `NOT TESTED`, external execution prevention to `BLOCKED`, and runner `FAIL` to `FAIL`; prose cannot override
+those results. If the runner/FSM is unavailable, visibly record `fallback` and its limitation.
+
 ## Required report
 
 Write `openspec/changes/{change-name}/qa-report.md` with:

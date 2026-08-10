@@ -82,3 +82,21 @@ rules:
     warning_on_exception: true
     guidance:
       - Warn before merging destructive deltas (large removals)
+
+quality_runner:
+  enabled: false
+  manifest: openspec/quality-runner.json
+  fallback: visible
+
+control_plane:
+  enabled: false
+  policy: openspec/config.yaml
+  toolchain_lock: openspec/quality-toolchain.lock
+  profile: STANDARD
+  capabilities: {}
+
+workflow_fsm:
+  enabled: false
+  state_file: state.yaml
+  require_revision: true
+  lock_ttl_ms: 300000

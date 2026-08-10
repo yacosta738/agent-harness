@@ -1,0 +1,16 @@
+{
+  "version": "capability-registry/v1",
+  "entries": [
+    {
+      "id": "tests/node",
+      "metric": "tests",
+      "provider": "node-test",
+      "provider_version": "24.16.0",
+      "digest": "sha256:1ee75375e33b94fc34b3b19aede049e11dae90efb63b374dc96d6bdace70c4b8",
+      "adapter": "tests/node",
+      "semantics": "provider-defined/v1",
+      "scopes": ["project", "changed-files"],
+      "policy": "required"
+    }
+  ]
+}

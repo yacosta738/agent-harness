@@ -8,6 +8,9 @@ Follow the SDD Kerrigan workflow to continue the active change.
 WORKFLOW:
 
 1. Read `openspec/changes/{argument}/state.yaml` to determine current progress
+   - When available, run `node scripts/sdd-fsm.mjs inspect --project {workdir} --change {argument}` or consume its
+     machine-readable transition result before selecting a phase. The FSM is the authority for legal transitions;
+     prompt reasoning is only an adapter.
 2. If no state.yaml, check which artifacts exist (proposal.md, specs/, design.md, tasks.md,
    verify-report.md, qa-report.md)
 3. Determine the next phase based on the dependency graph:
@@ -26,6 +29,11 @@ CONTEXT:
 - Current project: {project}
 - Change name: {argument}
 - Artifact store mode: openspec
+
+FALLBACK:
+
+- If `sdd-fsm.mjs` is disabled or unavailable, continue with the existing prompt-driven flow but visibly mark
+  the handoff/report as `fallback`; do not claim deterministic enforcement or convert unavailable evidence to PASS.
 
 CRITICAL: Do NOT execute phase work inline — delegate to the dedicated sub-agents defined in
 opencode.json. Update state.yaml after each phase completes.

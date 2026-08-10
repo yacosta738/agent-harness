@@ -31,6 +31,7 @@ Generated during SDD initialization for `agent-harness` on 2026-08-07.
 - `sdd-tasks` must include the review workload forecast and exact plain-text guard lines before apply.
 - `sdd-apply` must not claim RED→GREEN→REFACTOR evidence while no test runner exists; report the limitation and use focused manual checks where appropriate.
 - Keep work units coherent; if a planned change may exceed 400 changed lines, choose a canonical chained-PR or approved exception strategy before apply.
+- The opt-in `quality-runner/v1` manifest and standalone SDD FSM are deterministic evidence/state adapters; absent tools are visible `fallback`/`UNAVAILABLE`/`NOT TESTED`, never an inferred pass.
 - For OpenCode configuration changes, preserve existing agent permissions, MCP enablement, and self-contained relative file references unless a proposal explicitly changes them.
 
 ## Relevant Skills

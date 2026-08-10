@@ -64,7 +64,7 @@ sequenceDiagram
 | `AGENTS.md`, `README.md`, `commands/sdd-continue.md` | Modify | DAG, state recovery, gates, and phase documentation. |
 | `prompts/sdd/sdd-apply.md`, `sdd-verify.md`, `sdd-archive.md` | Modify | Handoff, separation, and two-report gate. |
 | `openspec/config.yaml` | Modify | QA verdict, required-surface, exception, and archive policy knobs. |
-| `.atl/skill-registry.md` | Modify | Index executor and reusable QA capability references. |
+| `.agents/skill-registry.md` | Modify | Index executor and reusable QA capability references. |
 
 ## Interfaces / Contracts
 

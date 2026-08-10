@@ -1,0 +1,9 @@
+{
+  "version": "coverage/v1",
+  "scope": "global",
+  "totals": {
+    "lines": {"found": 500, "hit": 460, "pct": 92.0},
+    "conditions": {"found": 100, "hit": 90, "pct": 90.0},
+    "statements": {"found": 520, "hit": 480, "pct": 92.3}
+  }
+}

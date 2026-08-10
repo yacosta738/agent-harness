@@ -1,0 +1,5 @@
+change: fixture
+current_phase: qa
+completed: [init, explore, propose, spec, design, tasks, apply, verify, qa]
+next: archive
+updated: 2026-08-09

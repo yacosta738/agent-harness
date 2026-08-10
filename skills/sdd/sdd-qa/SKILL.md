@@ -52,6 +52,11 @@ Record every relevant capability as `available`, `selected`, `rejected`, or `una
 
 If there is no suitable target or executable capability, the final verdict MUST be `NOT TESTED`. Static inspection alone MUST NOT produce `PASS` or `PASS WITH WARNINGS`. If a suitable path is prevented by credentials, environment, permissions, or another external constraint, record the scenario as `BLOCKED` with constraint evidence.
 
+Runner envelopes are evidence inputs, not prose suggestions: preserve identity, status, reason, redacted
+evidence, and artifact reference. Map `UNAVAILABLE` to `NOT TESTED`, external prevention to `BLOCKED`, and
+runner `FAIL` to `FAIL`. If runner/FSM execution is disabled or unavailable, include the literal `fallback`
+mode and limitation; do not claim deterministic enforcement.
+
 ## Coverage Rules
 
 For each applicable acceptance risk, consider and record the result or non-applicability rationale for:

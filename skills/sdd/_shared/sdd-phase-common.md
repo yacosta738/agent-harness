@@ -15,7 +15,7 @@ unless the phase skill explicitly says to stop and report a blocker.
 2. If no Project Standards block was provided, check for `SKILL: Load` instructions. If present,
    load those exact skill files.
 3. If neither was provided, check for a skill registry:
-   a. Read `.atl/skill-registry.md` from the project root if it exists.
+   a. Read `.agents/skill-registry.md` from the project root if it exists.
    b. From the registry's **Compact Rules** section, apply rules whose triggers match your current
    task.
 4. If no registry exists, proceed with your phase skill only.
@@ -97,7 +97,7 @@ result — your text response (the actual analysis) is lost.
 The return envelope MUST include `skill_resolution` reporting how skills were loaded:
 
 - `paths-injected` — received exact skill paths from orchestrator and loaded them
-- `fallback-registry` — no paths received, self-loaded from `.atl/skill-registry.md`
+- `fallback-registry` — no paths received, self-loaded from `.agents/skill-registry.md`
 - `fallback-path` — loaded via explicit `SKILL: Load` instruction
 - `none` — no project skills loaded (proceed with phase skill only)
 
