@@ -1,0 +1,15 @@
+{
+  "version": "capability-registry/v1",
+  "entries": [
+    {
+      "id": "tests/node",
+      "metric": "tests",
+      "provider": "node-test",
+      "provider_version": "24.16.0",
+      "adapter": "tests/node",
+      "semantics": "provider-defined/v1",
+      "scopes": ["project"],
+      "policy": "required"
+    }
+  ]
+}

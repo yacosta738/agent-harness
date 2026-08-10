@@ -1,0 +1,5 @@
+{
+  "version": "c8-summary/v1",
+  "scope": "per-file",
+  "summary": {"lines": {"total": 100, "covered": 95, "pct": 95.0}}
+}

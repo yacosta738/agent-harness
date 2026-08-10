@@ -1,0 +1,3 @@
+{
+  "_comment": "Represents an incomplete v1 envelope that must surface as BLOCKED/legacy_identity_unavailable after upgrade. The test passes a runtime-built object instead of loading this file; this fixture documents the contract."
+}

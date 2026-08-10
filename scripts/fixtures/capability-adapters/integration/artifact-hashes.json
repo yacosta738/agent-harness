@@ -1,0 +1,3 @@
+{
+  "_comment": "Documents artifact-hash contract: each adapter-declared artifact path resolves inside the project root, gets a SHA256 hash via hashArtifact, and is recorded under metrics.artifacts with status AVAILABLE/UNAVAILABLE. Hashes must be lowercase 64-char hex; missing files surface as UNAVAILABLE."
+}

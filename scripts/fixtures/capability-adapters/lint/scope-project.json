@@ -1,0 +1,5 @@
+{
+  "scope": "project",
+  "expected": ["src/clean.js"],
+  "reported": ["src/clean.js"]
+}
