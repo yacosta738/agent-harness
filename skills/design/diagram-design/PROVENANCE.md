@@ -8,11 +8,11 @@
 - **Upstream skill subpath:** `skills/diagram-design/`
 - **Local path:** `skills/design/diagram-design/`
 - **Snapshot date:** `2026-08-14`
-- **Snapshot status:** Slice 1 of 6 — identity and licensing metadata only; this is **not a complete snapshot**.
+- **Snapshot status:** Slice 2 of 6 — identity/licensing metadata and the complete `references/**` tree are present; `scripts/**` and `assets/**` remain pending, so this is **not a complete snapshot**.
 
-`SKILL.md` is copied byte-for-byte from the pinned upstream commit. This slice intentionally does
-not copy the skill's `references/**`, `scripts/**`, or `assets/**` trees. Those families remain
-pending dependency-ordered slices and are explicitly represented as pending in
+`SKILL.md` is copied byte-for-byte from the pinned upstream commit. This slice adds the complete
+`references/**` tree byte-for-byte. The skill's `scripts/**` and `assets/**` trees remain pending in
+later dependency-ordered slices and are explicitly represented as pending in
 `SNAPSHOT-MANIFEST.sha256`.
 
 ## Refresh policy
@@ -44,6 +44,6 @@ The following upstream content is deliberately not vendored into this local skil
   carried forward in the local `THIRD-PARTY-NOTICES.md` without inventing additional license terms.
 
 The following are **pending, not permanently excluded**: upstream
-`skills/diagram-design/references/**`, `skills/diagram-design/scripts/**`, and
-`skills/diagram-design/assets/**`. They are intentionally absent from slice 1 and MUST be added in
-their assigned later slices before the overall change can claim a complete snapshot.
+`skills/diagram-design/scripts/**` and `skills/diagram-design/assets/**`. They are intentionally absent
+from slices 1 and 2 and MUST be added in their assigned later slices before the overall change can
+claim a complete snapshot.

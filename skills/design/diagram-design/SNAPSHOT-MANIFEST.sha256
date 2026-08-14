@@ -2,16 +2,54 @@
 # Source: https://github.com/cathrynlavery/diagram-design
 # Commit: a5e3978088cf89c7caff5c20cabd99fbc2a301de
 # Version: 2.3.5
-# Status: PARTIAL — slice 1/6 only; this is not a complete snapshot.
+# Status: PARTIAL — slice 2/6; references/** is present, while scripts/** and assets/** remain pending.
 # Format: SHA-256  SIZE_BYTES  PATH
 # SNAPSHOT-MANIFEST.sha256 is intentionally excluded from its own entries.
 
 40930c119b3f785c019e13e0b63b57260cceff5738711cf6da2b5a4f79f0abc8  37406  skills/design/diagram-design/SKILL.md
 bb7e12e91fecef43024111123ff784cec6c485585561d8b552557c0173b3ed29  1071   skills/design/diagram-design/LICENSE
-cf8c5356be2e662d258dc8fa846f1d53fa3061cf1fac50854e384e7c5f862b1e  2668   skills/design/diagram-design/PROVENANCE.md
+5affbe242304e535c9fa570f4e84ed357e6d356e0d3707b70c18796f21aece17  2726   skills/design/diagram-design/PROVENANCE.md
 22f5afcea56373e84d7f7eff93d8d4d6e4b81c5375bb1c996e78b91e53fa0b37  2706   skills/design/diagram-design/THIRD-PARTY-NOTICES.md
+24ce83341aee976680cb69d43b2afab40efcfa97edcd394e5b17183eb58fc94a  11815  skills/design/diagram-design/references/animation.md
+75f6fbcafe53899fadfa10ace59a6338f81e96ad5069a0b03513cba8ad65aa7a  7878   skills/design/diagram-design/references/export.md
+106d29f5501fe39d423f9145c04ab1e1ffa747d6cd453ee8ffa58a604413c4c5  13059  skills/design/diagram-design/references/import-drawio.md
+491ff83440fc995401b5ba20f63325f976732bf1669003c1840b4137072cc274  8605   skills/design/diagram-design/references/import-mermaid.md
+dcbf1ff0eeb938127dc2f89dfc08c8a2d2fcee4d09b4681103c52ff87aa0f6e9  12613  skills/design/diagram-design/references/onboarding.md
+d8fa916f523b99ada083a652f4440d3f0d086a8af61ae333bac50153338f42a3  10629  skills/design/diagram-design/references/output-spec.md
+f78cac0af423ead9b74926fa669e9227efc21f15d0f51ea46bc93e79c55a121a  1708   skills/design/diagram-design/references/primitive-annotation.md
+bb4a97f27c1bff90107ce54429c89196eba971af982998a9bf4214a0c7570f06  106768 skills/design/diagram-design/references/primitive-icons.md
+8859f0d70c10f46f59817cb348346e7fb9e1609b70a4a513d297b8c850c866a4  1700   skills/design/diagram-design/references/primitive-sketchy.md
+7b52c2fb229c822a60b0061caa64ae6a68aacd4f1c22a1a98d1d0eaaa2333b55  3915   skills/design/diagram-design/references/primitive-terminal.md
+6df3d41cafea6a0f16f8921a50af732e34f6172d4ba6fb9f05ec8f92bc27e472  10296  skills/design/diagram-design/references/semantic-patterns.md
+0ec2cf45e44d09c89040cda1b3e35fc1eb3702ed1d920a05c9577a0b42133f6b  8560   skills/design/diagram-design/references/style-guide.md
+cb5672b5c69cbe24a0b18d144f8b2e4507a124ebb0dbc0bc898ceafb27612caa  5001   skills/design/diagram-design/references/type-architecture.md
+6ccd07efe40e2e0ab85eda5aa274c55b03236f17f532625a0235c7d9cce8cc01  2790   skills/design/diagram-design/references/type-bar.md
+9453c838d2ea7fc199659a369475b3141234e51921d4d4282fac8af9765effc7  21284  skills/design/diagram-design/references/type-data-flow.md
+d808c354591ec9b751c662efd187ba4920b1861d4a484d8548f4efcb9d897987  22247  skills/design/diagram-design/references/type-dp-integration.md
+209f4870ec19d90eff1ab80ecfe0062f3a5075c3b666b1a3a900a27260ba8832  19086  skills/design/diagram-design/references/type-dp-security-matrix.md
+61ee3643c9e3a1e2c3a329640132ede2c193bfabaebbbb5fa486be800b6afa29  1119   skills/design/diagram-design/references/type-er.md
+c2af5e2b849255ae4859125db7b101b74bfb9b201204725c1e83fac51a98ebab  1079   skills/design/diagram-design/references/type-flowchart.md
+83a84cdd4b2880debd9e602f1d27ffc54197a6c783eb46228711641956f858ee  2468   skills/design/diagram-design/references/type-gantt.md
+035a0eac7d4b38452a324d9421457400dfe1a109d43f6acd377ba2c47f873a89  26254  skills/design/diagram-design/references/type-high-level.md
+ac3ceb94c4e8083130d5373654e150f1c9b3f0a5e3857a00c8e251f1086bf7b1  29984  skills/design/diagram-design/references/type-it-state.md
+393a65464f1189a2244c989a7448a8be5446d5932c907bbdba57d10997729534  1535   skills/design/diagram-design/references/type-layers.md
+31e51069ede341fa9992fcc34c12888651bbcfdb8c10c560c7790d050d138177  2333   skills/design/diagram-design/references/type-line.md
+c7e98b8eda1e6d6904920f4d96310745deb0651920e9d531c8f40e54304ab60d  12609  skills/design/diagram-design/references/type-loop.md
+a1af03521adb53431766a559e05c984ee07871fd3cf495cf63146999f56f6f42  22226  skills/design/diagram-design/references/type-medallion.md
+e8c61323d96cd085e52750e90a989f9ad321600da6814b8926502b4484aced31  1392   skills/design/diagram-design/references/type-nested.md
+9905c67d6cf884f4537b9f86f893e6a90b4dc4134ff8bf8ce6187d151efbd6ab  3082   skills/design/diagram-design/references/type-org-chart.md
+46fe29384b5004a7e79c21f093ed2724e58f258e543f45ed64f871bed6d31eda  28588  skills/design/diagram-design/references/type-process.md
+a07536682478832fbf552aaa066dc827eaa1a072c538766387c8b900ae7add38  1783   skills/design/diagram-design/references/type-pyramid.md
+2346caba0370beaf8b33efd5d9a3e24f3d555b7160a3d523d9d07a37ce6c353a  6254   skills/design/diagram-design/references/type-quadrant.md
+8379b0313afbfdbb5a641c98f8ac6668419b4add6cea0749a646365fad02c1d3  5592   skills/design/diagram-design/references/type-radar.md
+8c09a935f990ae2455d40962793aade3b9a14f7ec5c12e4f15ad0770cdaf8b38  2299   skills/design/diagram-design/references/type-scatter.md
+21c3ef9a491068e871aae99f035883d3c982255df97db1effaf0c3301f562865  6686   skills/design/diagram-design/references/type-sequence.md
+7fed5690161e6f75d510cf89d1e989885b2d900fdadca5116e7f5b49ad8529a5  1112   skills/design/diagram-design/references/type-state.md
+4b689b9dd72078dc76fd2fbb1eb6c0bf0304fee667ae7cd56fab5f19b535f250  991    skills/design/diagram-design/references/type-swimlane.md
+9102e61347b17b303eafad52d4f8941d507faf889d9316ed0325e5e0f0ba01ca  1065   skills/design/diagram-design/references/type-timeline.md
+cde49c571463bfbb3b91a5ba6abf91a4eb00f1deadc717947a9584fca189e57b  1248   skills/design/diagram-design/references/type-tree.md
+f8d5d4f0506160e0502f932140306b12d25adea1d1f6f319fb38c2345b0c6b42  1654   skills/design/diagram-design/references/type-venn.md
 
-# PENDING — not present in slice 1; do not interpret this manifest as complete.
-# - skills/design/diagram-design/references/**
+# PENDING — not present in slice 2; do not interpret this manifest as complete.
 # - skills/design/diagram-design/scripts/**
 # - skills/design/diagram-design/assets/**
