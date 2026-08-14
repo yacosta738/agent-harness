@@ -8,12 +8,20 @@
 - **Upstream skill subpath:** `skills/diagram-design/`
 - **Local path:** `skills/design/diagram-design/`
 - **Snapshot date:** `2026-08-14`
-- **Snapshot status:** Slice 2 of 6 — identity/licensing metadata and the complete `references/**` tree are present; `scripts/**` and `assets/**` remain pending, so this is **not a complete snapshot**.
+- **Snapshot status:** Slice 3 of 6 — identity/licensing metadata, the complete `references/**` tree, and the complete `scripts/**` tree are present; `assets/**` remains pending, so this is **not a complete snapshot**.
 
 `SKILL.md` is copied byte-for-byte from the pinned upstream commit. This slice adds the complete
-`references/**` tree byte-for-byte. The skill's `scripts/**` and `assets/**` trees remain pending in
-later dependency-ordered slices and are explicitly represented as pending in
+`references/**` and `scripts/**` trees byte-for-byte. The skill's `assets/**` tree remains pending in
+the next dependency-ordered slice and is explicitly represented as pending in
 `SNAPSHOT-MANIFEST.sha256`.
+
+## Runtime expectations for slice 3
+
+- `scripts/drawio_extract.py`, `scripts/mermaid_extract.py`, and `scripts/self_check.py` require
+  Python 3 and use only the Python standard library; this integration adds no dependencies.
+- `self_check.py` can validate static HTML without the pending asset family, but motion-controller
+  validation requires `assets/template-motion.html`. That asset-dependent check remains pending
+  until slice 4/6 and MUST be reported as an honest limitation rather than treated as a pass.
 
 ## Refresh policy
 
@@ -44,6 +52,5 @@ The following upstream content is deliberately not vendored into this local skil
   carried forward in the local `THIRD-PARTY-NOTICES.md` without inventing additional license terms.
 
 The following are **pending, not permanently excluded**: upstream
-`skills/diagram-design/scripts/**` and `skills/diagram-design/assets/**`. They are intentionally absent
-from slices 1 and 2 and MUST be added in their assigned later slices before the overall change can
-claim a complete snapshot.
+`skills/diagram-design/assets/**`. It is intentionally absent from slices 1–3 and MUST be added in
+its assigned later slice before the overall change can claim a complete snapshot.

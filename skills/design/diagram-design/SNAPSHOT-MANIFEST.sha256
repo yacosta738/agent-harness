@@ -2,13 +2,13 @@
 # Source: https://github.com/cathrynlavery/diagram-design
 # Commit: a5e3978088cf89c7caff5c20cabd99fbc2a301de
 # Version: 2.3.5
-# Status: PARTIAL — slice 2/6; references/** is present, while scripts/** and assets/** remain pending.
+# Status: PARTIAL — slice 3/6; references/** and scripts/** are present, while assets/** remains pending.
 # Format: SHA-256  SIZE_BYTES  PATH
 # SNAPSHOT-MANIFEST.sha256 is intentionally excluded from its own entries.
 
 40930c119b3f785c019e13e0b63b57260cceff5738711cf6da2b5a4f79f0abc8  37406  skills/design/diagram-design/SKILL.md
 bb7e12e91fecef43024111123ff784cec6c485585561d8b552557c0173b3ed29  1071   skills/design/diagram-design/LICENSE
-5affbe242304e535c9fa570f4e84ed357e6d356e0d3707b70c18796f21aece17  2726   skills/design/diagram-design/PROVENANCE.md
+24a4e6bd5211fdc7ab172e08bdb8ba035f99fd71c2f8b35bcf9d0679b81c6966  3214   skills/design/diagram-design/PROVENANCE.md
 22f5afcea56373e84d7f7eff93d8d4d6e4b81c5375bb1c996e78b91e53fa0b37  2706   skills/design/diagram-design/THIRD-PARTY-NOTICES.md
 24ce83341aee976680cb69d43b2afab40efcfa97edcd394e5b17183eb58fc94a  11815  skills/design/diagram-design/references/animation.md
 75f6fbcafe53899fadfa10ace59a6338f81e96ad5069a0b03513cba8ad65aa7a  7878   skills/design/diagram-design/references/export.md
@@ -49,7 +49,9 @@ a07536682478832fbf552aaa066dc827eaa1a072c538766387c8b900ae7add38  1783   skills/
 9102e61347b17b303eafad52d4f8941d507faf889d9316ed0325e5e0f0ba01ca  1065   skills/design/diagram-design/references/type-timeline.md
 cde49c571463bfbb3b91a5ba6abf91a4eb00f1deadc717947a9584fca189e57b  1248   skills/design/diagram-design/references/type-tree.md
 f8d5d4f0506160e0502f932140306b12d25adea1d1f6f319fb38c2345b0c6b42  1654   skills/design/diagram-design/references/type-venn.md
+a262c2515c81a54e67b1ea71178da5e1784b813e9f8b16efa70c6bd994bcf1d6  30127  skills/design/diagram-design/scripts/drawio_extract.py
+297ff6a8042c33d33df72ac4384bf666b2ab045f74030269adb45a89a7a2e0f8  45536  skills/design/diagram-design/scripts/mermaid_extract.py
+5bb48bdd41378a5bde2cfae64363316e8435ba63a72f9a1e062ff0018d6ba0c7  16772  skills/design/diagram-design/scripts/self_check.py
 
-# PENDING — not present in slice 2; do not interpret this manifest as complete.
-# - skills/design/diagram-design/scripts/**
+# PENDING — not present in slice 3; do not interpret this manifest as complete.
 # - skills/design/diagram-design/assets/**
