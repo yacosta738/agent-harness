@@ -1,0 +1,17 @@
+# Diagram Design snapshot manifest
+# Source: https://github.com/cathrynlavery/diagram-design
+# Commit: a5e3978088cf89c7caff5c20cabd99fbc2a301de
+# Version: 2.3.5
+# Status: PARTIAL — slice 1/6 only; this is not a complete snapshot.
+# Format: SHA-256  SIZE_BYTES  PATH
+# SNAPSHOT-MANIFEST.sha256 is intentionally excluded from its own entries.
+
+40930c119b3f785c019e13e0b63b57260cceff5738711cf6da2b5a4f79f0abc8  37406  skills/design/diagram-design/SKILL.md
+bb7e12e91fecef43024111123ff784cec6c485585561d8b552557c0173b3ed29  1071   skills/design/diagram-design/LICENSE
+cf8c5356be2e662d258dc8fa846f1d53fa3061cf1fac50854e384e7c5f862b1e  2668   skills/design/diagram-design/PROVENANCE.md
+22f5afcea56373e84d7f7eff93d8d4d6e4b81c5375bb1c996e78b91e53fa0b37  2706   skills/design/diagram-design/THIRD-PARTY-NOTICES.md
+
+# PENDING — not present in slice 1; do not interpret this manifest as complete.
+# - skills/design/diagram-design/references/**
+# - skills/design/diagram-design/scripts/**
+# - skills/design/diagram-design/assets/**
