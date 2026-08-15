@@ -4,12 +4,12 @@ Generated during SDD initialization for `agent-harness` on 2026-08-07.
 
 ## Scan Summary
 
-- **Project**: `/Users/acosta/Dev/agent-harness`
+- **Project**: `/Users/acosta/Dev/agent-swarm/agent-harness`
 - **Project skill root**: `skills/**/SKILL.md`
 - **User skill roots consulted**: `~/.config/opencode/skills/**/SKILL.md`, `~/.claude/skills/**/SKILL.md`
 - **Deduplication**: project skills are listed as the repository source of truth; user-installed SDD guidance is used by the executor prompt.
 - **Excluded from this registry**: `sdd-*` entries are documented in the SDD configuration and phase prompts; `_shared` protocol files are not task skills.
-- **Indexed skills**: 188 non-SDD project skill documents.
+- **Indexed skills**: 203 non-SDD project skill documents.
 - **Registry contract**: this file is an index and compact routing guide; each exact `SKILL.md` remains the source of truth.
 - **Persistence**: OpenSpec filesystem artifacts; Engram MCP is configured in `opencode.json`.
 
@@ -59,7 +59,36 @@ Generated during SDD initialization for `agent-harness` on 2026-08-07.
 
 ## Full Inventory
 
-The repository currently contains 198 tracked `skills/**/SKILL.md` files. The 10 SDD phase skill files are covered by the SDD setup above; the remaining 188 reusable project skills are indexed by their exact paths below.
+The repository currently contains 213 tracked `skills/**/SKILL.md` files. The 10 SDD phase skill
+files are covered by the SDD setup above; the remaining 203 reusable project skills are indexed by
+their exact paths below.
+
+## Diagram Design Integration
+
+- **Skill path:** `skills/design/diagram-design/SKILL.md`; required local resources are its complete
+  `references/**`, `scripts/**`, and `assets/**` trees plus `PROVENANCE.md`, `LICENSE`,
+  `THIRD-PARTY-NOTICES.md`, and `SNAPSHOT-MANIFEST.sha256`.
+- **Pin/provenance:** upstream URL `https://github.com/cathrynlavery/diagram-design`, commit
+  `a5e3978088cf89c7caff5c20cabd99fbc2a301de`, upstream version `2.3.5`, upstream skill subpath
+  `skills/diagram-design/`, local path `skills/design/diagram-design/`; frontmatter metadata is
+  version `2.3`.
+- **Capability:** 27 visual types, semantic patterns, local Mermaid/draw.io extraction, and
+  HTML/SVG/PNG/HTML+PNG export. The complete type and pattern references remain relative to the
+  pinned skill and are not copied from upstream README or marketplace manifests.
+- **Command adapters:** `/diagram-export`, `/diagram-import-drawio`, and `/diagram-import-mermaid`.
+  Each has an explicit `$ARGUMENTS` contract, safe output path validation, stable status/error
+  fields, and a fidelity ledger for imports.
+- **Safe/offline boundary:** local checked-in resources only; no shell evaluation, remote URLs,
+  implicit execution, fetch, refresh, install, browser download, or source mutation. The upstream
+  repository is intentionally not an `opencode.json` plugin URL because no verified OpenCode plugin
+  contract exists.
+- **Optional tooling:** Python 3 standard-library scripts handle extraction/self-check. PNG and
+  HTML+PNG additionally require Python Playwright and launchable local Chromium; missing tools are
+  `UNAVAILABLE`/`BLOCKED`, with no installation or format substitution.
+- **Validation/no-TDD boundary:** no repository test runner or suite exists. Validate paths,
+  frontmatter, relative links, pin/manifest/docs consistency, unchanged `opencode.json`, and
+  packaged Python smoke checks; record manual/static evidence only and make no RED→GREEN→REFACTOR
+  or product-acceptance claim.
 
 ### AI
 
@@ -122,6 +151,26 @@ The repository currently contains 198 tracked `skills/**/SKILL.md` files. The 10
 - `skills/devops/grafana-dashboards/SKILL.md`
 - `skills/devops/makefile/SKILL.md`
 - `skills/devops/sql-optimization-patterns/SKILL.md`
+
+### Design
+
+- `skills/design/brandkit/SKILL.md`
+- `skills/design/design-taste-frontend/SKILL.md`
+- `skills/design/diagram-design/SKILL.md` — pinned upstream `cathrynlavery/diagram-design` v2.3.5,
+  commit `a5e3978088cf89c7caff5c20cabd99fbc2a301de`; local path and frontmatter name are both
+  `diagram-design`.
+- `skills/design/full-output-enforcement/SKILL.md`
+- `skills/design/gpt-taste/SKILL.md`
+- `skills/design/high-end-visual-design/SKILL.md`
+- `skills/design/image-to-code/SKILL.md`
+- `skills/design/imagegen-frontend-mobile/SKILL.md`
+- `skills/design/imagegen-frontend-web/SKILL.md`
+- `skills/design/impeccable/SKILL.md`
+- `skills/design/industrial-brutalist-ui/SKILL.md`
+- `skills/design/minimalist-ui/SKILL.md`
+- `skills/design/open-pencil/SKILL.md`
+- `skills/design/redesign-existing-projects/SKILL.md`
+- `skills/design/stitch-design-taste/SKILL.md`
 
 ### GitHub
 
