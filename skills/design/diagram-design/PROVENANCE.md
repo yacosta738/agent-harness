@@ -8,20 +8,22 @@
 - **Upstream skill subpath:** `skills/diagram-design/`
 - **Local path:** `skills/design/diagram-design/`
 - **Snapshot date:** `2026-08-14`
-- **Snapshot status:** Slice 3 of 6 — identity/licensing metadata, the complete `references/**` tree, and the complete `scripts/**` tree are present; `assets/**` remains pending, so this is **not a complete snapshot**.
+- **Snapshot status:** Slice 4 of 6 — identity/licensing metadata and the complete `references/**`, `scripts/**`, and `assets/**` trees are present; this is a complete skill snapshot. Only client-specific and upstream repository content outside the Agent Skill, listed below, remains excluded.
 
-`SKILL.md` is copied byte-for-byte from the pinned upstream commit. This slice adds the complete
-`references/**` and `scripts/**` trees byte-for-byte. The skill's `assets/**` tree remains pending in
-the next dependency-ordered slice and is explicitly represented as pending in
-`SNAPSHOT-MANIFEST.sha256`.
+`SKILL.md` is copied byte-for-byte from the pinned upstream commit. The complete `references/**`,
+`scripts/**`, and `assets/**` trees are also copied byte-for-byte, preserving the upstream relative
+paths and file modes. The snapshot is complete for the Agent Skill subtree; its manifest records
+every present skill, metadata, reference, script, and asset file.
 
-## Runtime expectations for slice 3
+## Runtime expectations for the complete snapshot
 
 - `scripts/drawio_extract.py`, `scripts/mermaid_extract.py`, and `scripts/self_check.py` require
   Python 3 and use only the Python standard library; this integration adds no dependencies.
-- `self_check.py` can validate static HTML without the pending asset family, but motion-controller
-  validation requires `assets/template-motion.html`. That asset-dependent check remains pending
-  until slice 4/6 and MUST be reported as an honest limitation rather than treated as a pass.
+- `self_check.py` can validate static HTML and motion-aware HTML. Motion-controller validation uses
+  the canonical `assets/template-motion.html`, which is present in this complete snapshot.
+- The templates, examples, gallery, and icon assets are local static resources. Browser/Playwright
+  capabilities remain optional and MUST be reported when unavailable; no tool is installed or
+  fetched implicitly.
 
 ## Refresh policy
 
@@ -51,6 +53,6 @@ The following upstream content is deliberately not vendored into this local skil
 - **The upstream root third-party index:** `THIRD_PARTY_LICENSES.md`; its source attributions are
   carried forward in the local `THIRD-PARTY-NOTICES.md` without inventing additional license terms.
 
-The following are **pending, not permanently excluded**: upstream
-`skills/diagram-design/assets/**`. It is intentionally absent from slices 1–3 and MUST be added in
-its assigned later slice before the overall change can claim a complete snapshot.
+No `references/**`, `scripts/**`, or `assets/**` subtree remains pending. The only omitted upstream
+content is the client-specific and repository-level material listed above; it is outside the Agent
+Skill subtree and is intentionally not vendored.
