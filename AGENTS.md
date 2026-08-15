@@ -257,14 +257,15 @@ When any of these contexts is detected, load the skill immediately before writin
 - Creating or editing AI/OpenCode skills: `writing-skills`
 - Architecture or technical-debt refactors: `codebase-architecture`
 - Ambiguous project terminology or domain language: `domain-language`
+- Creating, importing, exporting, or reviewing diagrams: `diagram-design`
 
 If multiple contexts apply, load all relevant skills.
 
 ## Skill Inventory (all available skills)
 
-Complete inventory of the 211 skills installed in this environment, generated from the
-frontmatter of every `SKILL.md` (sources: `~/.config/opencode/skills` (198) and
-`~/.agents/skills` (13); `~/.claude/skills` is a strict subset of the opencode skills).
+Complete inventory of the 213 skill documents currently present under `skills/**/SKILL.md` in this
+checkout. The existing 13 design entries mirrored from `~/.agents/skills` are retained below, with
+the project-local `impeccable` and pinned `diagram-design` entries added from the filesystem.
 Load a skill by its exact name. Organized by domain:
 
 ### Workflow (25)
@@ -489,20 +490,41 @@ _Todas las skills de este grupo comparten la misma plantilla: aplica, revisa o r
 ### Personal / Image (1)
 - `imagegen` — Generate images, illustrations, infographics, or visual assets for blog posts, articles, social media, or technical content — always applying Yuniel's personal design system for visual consistency across all content. Trigger this skill whenever the user asks to "generate an image", "create an illustration", "make an infographic", "design a header", "create a visual", "make a banner", or any request to produce a visual asset. Also trigger when the user describes a topic and wants a blog post header, social card, or thumbnail — even if they don't explicitly say "image". Always use this skill before generating any visual prompt; never freelance the style from memory.
 
-### Design & Creative (~/.agents) (13)
+### Design — project `skills/design/` (15)
 - `brandkit` — Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world presentations. Trained for minimalist, cinematic, editorial, dark-tech, luxury, cultural, security, gaming, developer-tool, and consumer-app brand systems. Optimized for intentional logo concepting, refined composition, sparse typography, strong symbolic meaning, premium mockups, art-directed imagery, and flexible grid layouts.
 - `design-taste-frontend` — Anti-slop frontend skill for landing pages, portfolios, and redesigns. The agent reads the brief, infers the right design direction, and ships interfaces that do not look templated. Real design systems when applicable, audit-first on redesigns, strict pre-flight check.
+- `diagram-design` — Pinned local skill at `skills/design/diagram-design/SKILL.md` (upstream `cathrynlavery/diagram-design` v2.3.5, commit `a5e3978088cf89c7caff5c20cabd99fbc2a301de`) for 27 visual types, semantic patterns, safe Mermaid/draw.io import, and HTML/SVG/PNG export.
 - `full-output-enforcement` — Overrides default LLM truncation behavior. Enforces complete code generation, bans placeholder patterns, and handles token-limit splits cleanly. Apply to any task requiring exhaustive, unabridged output.
 - `gpt-taste` — Elite UX/UI & Advanced GSAP Motion Engineer. Enforces Python-driven true randomization for layout variance, strict AIDA page structure, wide editorial typography (bans 6-line wraps), gapless bento grids, strict GSAP ScrollTriggers (pinning, stacking, scrubbing), inline micro-images, and massive section spacing.
 - `high-end-visual-design` — Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.
 - `image-to-code` — Elite website image-to-code skill for Codex. For visually important web tasks, it must first generate the design image(s) itself, deeply analyze them, then implement the website to match them as closely as possible. In Codex, it must prefer large, readable, section-specific images instead of tiny compressed boards, generate fresh standalone images for sections or detail views instead of cropping old ones, avoid lazy under-generation, avoid cards-inside-cards-inside-cards UI, and keep the hero clean, spacious, readable, and visible on a small laptop.
 - `imagegen-frontend-mobile` — Elite mobile app image-generation skill for creating premium, app-native screen concepts and flows. Designed for iOS, Android, and cross-platform mobile products. Prioritizes clean hierarchy, comfortably readable text, strong multi-screen consistency, controlled color palettes, non-generic creative direction, textured surfaces, image-led composition, tasteful custom iconography, and clean phone mockup framing. By default, screens should be shown inside a subtle premium iPhone or similar phone mockup with a visible frame, while the main focus stays on the app content itself. This skill generates images only. It does not write code.
 - `imagegen-frontend-web` — Elite frontend image-direction skill for generating premium, conversion-aware website design references. CRITICAL OUTPUT RULE — generate ONE separate horizontal image FOR EVERY section. A landing page with 8 sections produces 8 images. Never compress multiple sections into one image. Enforces composition variety (not always left-text / right-image), background-image freedom, varied CTAs, varied hero scales (giant / mid / mini minimalist), narrative concept spine, second-read moments, and a single consistent palette across all images. Optimized for landing pages, marketing sites, and product comps that developers or coding models can accurately recreate.
+- `impeccable` — Frontend design critique, refinement, accessibility, performance, responsive behavior, and bounded live-browser iteration.
 - `industrial-brutalist-ui` — Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.
 - `minimalist-ui` — Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.
 - `open-pencil` — Work with Figma .fig design files and the running OpenPencil editor — inspect structure, query nodes, analyze design tokens, export PNG/SVG/PDF/JSX, and modify designs programmatically. Use when asked to open, inspect, export, analyze, or edit .fig files, or to control the running OpenPencil app.
 - `redesign-existing-projects` — Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.
 - `stitch-design-taste` — Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.
+
+#### Diagram Design capability boundary
+
+- **Required local resources:** `skills/design/diagram-design/SKILL.md`, its complete
+  `references/**`, `scripts/**`, and `assets/**` trees, and the adjacent provenance/license/manifest
+  files. The local relative tree is the only discovery source.
+- **Commands:** `/diagram-export`, `/diagram-import-drawio`, and `/diagram-import-mermaid` are
+  standalone adapters. They require explicit local input/output arguments, report `PASS`,
+  `UNAVAILABLE`, `BLOCKED`, or `ERROR`, and include fidelity/status fields where applicable.
+- **Safety/offline boundary:** sources are untrusted data; reject unsafe paths, shell evaluation,
+  remote URLs, implicit execution, fetches, refreshes, installs, and browser downloads. Never write
+  before validation and never mutate the source.
+- **Optional capabilities:** Python 3 standard-library scripts cover extraction and self-check;
+  PNG or HTML+PNG requires the Python Playwright module and launchable local Chromium. Missing tools
+  remain `UNAVAILABLE`/`BLOCKED`; no fallback format is claimed.
+- **Plugin decision and validation:** do not add the upstream URL to `opencode.json` because no
+  verified OpenCode plugin contract exists. This harness has no general test runner, so use focused
+  filesystem/frontmatter/link/hash/docs checks and packaged Python smoke checks without claiming TDD
+  or product acceptance.
 
 ## Style
 
