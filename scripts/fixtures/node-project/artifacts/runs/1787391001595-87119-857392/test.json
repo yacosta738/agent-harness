@@ -1,0 +1,56 @@
+{
+  "version": "quality-runner-result/v1",
+  "run_id": "1787391001595-87119-857392",
+  "capability": {
+    "id": "test",
+    "required": true,
+    "blocking": true
+  },
+  "config": {
+    "path": "openspec/quality-runner.json",
+    "digest": "76cbb692dc9485866bcf80dc09031c5f4be6fd1943d778a610646590f596ea9d"
+  },
+  "command": {
+    "argv": [
+      "node",
+      "-e",
+      "process.stdout.write('node-fixture-pass')"
+    ],
+    "shell": false,
+    "cwd": "."
+  },
+  "execution": {
+    "exit_code": 0,
+    "signal": null,
+    "duration_ms": 36.089584,
+    "timed_out": false,
+    "output_truncated": false
+  },
+  "result": {
+    "status": "PASS",
+    "reason": "policy_satisfied"
+  },
+  "parser": {
+    "type": "none",
+    "accepted": true,
+    "value": null
+  },
+  "threshold": {
+    "accepted": true
+  },
+  "evidence": {
+    "stdout": "node-fixture-pass",
+    "stderr": ""
+  },
+  "artifacts": [],
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.19.0",
+    "hostname_hash": "27f2b128b069c279395a9c2cc54943a654667fe957deb296db9713c70a95bd8a"
+  },
+  "files": {
+    "json": "artifacts/runs/1787391001595-87119-857392/test.json",
+    "human": "artifacts/runs/1787391001595-87119-857392/test.md"
+  }
+}
