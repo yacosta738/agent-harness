@@ -308,6 +308,7 @@ When any of these contexts is detected, load the skill immediately before writin
 - Creating or editing AI/OpenCode skills: `writing-skills`
 - Architecture or technical-debt refactors: `codebase-architecture`
 - Ambiguous project terminology or domain language: `domain-language`
+- Routing decision ambiguous or complexity unclear: `route-assess`
 - Creating, importing, exporting, or reviewing diagrams: `diagram-design`
 - Routing decision ambiguous, complexity unclear, or need structured assessment: `route-assess`
 
