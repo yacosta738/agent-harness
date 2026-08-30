@@ -143,7 +143,58 @@ Default entry points:
 - `/sdd-continue` when `state.yaml` already exists.
 - Direct phase commands only when the user intentionally wants a specific phase.
 
-## Escalation Rules
+## Intake Decision (routing explícito)
+
+**Every request goes through an explicit routing decision before acting.**
+
+For any non-trivial request (not pure Q&A or typo fixes), you MUST:
+
+1. **Assess complexity** using the heuristics below
+2. **State your decision** — tell the user which lane you're taking and why
+3. **Ask if ambiguous** — if the request could be simple OR complex, ask the user to clarify
+
+### Routing Decision Heuristics
+
+Use this table to make the initial routing decision:
+
+| Lane | Criteria | Examples |
+|------|----------|----------|
+| **Direct** | Answer in <5 sentences, <20 lines code, no design ambiguity | "how do I...", explain concept, read-only lookup, typo fix |
+| **RPI (brainstorming)** | Isolated change, single surface, no durable artifacts needed | Add script, update config, focused fix, small behavior tweak |
+| **Specialist** | Single discipline depth needed | Architecture review, security audit, perf analysis |
+| **SDD** | Durable behavior, multi-surface, specs needed | New feature, refactor, integration, cross-cutting |
+
+### When to Ask the User
+
+Ask the user to help route when:
+
+- The request could be a "quick fix" OR the tip of a larger feature
+- You see signs of hidden complexity but aren't sure
+- The user says "quick fix" but the code suggests otherwise
+- You're about to use SDD for something that might be simpler than it looks
+
+**Ask like this:**
+```
+Veo esto como [simple/complejo], ¿me entiendes? 
+- Si es simple → lo resuelvo con un plan directo (brainstorming)
+- Si es complejo → necesitamos SDD completo
+
+¿Vamos por el camino rápido o arrancamos con SDD?
+```
+
+### Routing Memory
+
+**After every routing decision (even direct responses), save it to Engram memory.**
+
+This builds a pattern library of what "simple" vs "complex" means in this project. Use `route-assess` skill for structured assessment, then `mem_save`:
+
+- **type**: `decision`
+- **topic_key**: `routing/{category}` (e.g., `routing/github-actions`, `routing/config-change`, `routing/new-feature`)
+- **content**: brief description of the task, which lane was chosen, and why
+
+Search memory (`mem_search`) proactively when similar requests come in — if you find a past decision, reference it to be consistent.
+
+### Escalation Rules
 
 - When in doubt between direct answer and skill-led flow, choose the skill-led flow.
 - When in doubt between a simple skill and SDD, choose `brainstorming` first ONLY if the work can
@@ -257,6 +308,7 @@ When any of these contexts is detected, load the skill immediately before writin
 - Creating or editing AI/OpenCode skills: `writing-skills`
 - Architecture or technical-debt refactors: `codebase-architecture`
 - Ambiguous project terminology or domain language: `domain-language`
+- Routing decision ambiguous or complexity unclear: `route-assess`
 - Creating, importing, exporting, or reviewing diagrams: `diagram-design`
 
 If multiple contexts apply, load all relevant skills.
