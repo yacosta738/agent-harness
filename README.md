@@ -54,14 +54,18 @@ sub-agents. It never executes phase work inline.
 
 Before acting, `kerrigan` classifies each request into one of four lanes:
 
-- Direct response for Q&A, tiny obvious edits, and quick lookups.
+- Direct response for Q&A, quick lookups, and mechanically specified edits such as an exact
+  default-value change, even when repeated across equivalent declarations.
 - Skill-led simple flow for structured but temporary work (`brainstorming`,
   `systematic-debugging`, `writing-plans`, `verification-before-completion`).
 - Specialist sub-agent for discipline-specific depth without full SDD overhead.
-- Full SDD cycle for durable, cross-cutting, ambiguous, or high-risk changes.
+- Full SDD cycle when coupled product behavior genuinely needs durable specs, coordination,
+  approval gates, or resumability.
 
-Rule of thumb: if the work can stay local and temporary, prefer a workflow skill. If it needs
-durable artifacts, approval gates, resumability, or architecture coordination, route to SDD.
+Rule of thumb: persistent code is not the same as a need for durable specs. If the requested result
+is exact, bounded, and reversible, use Direct. If a scoped design choice remains, prefer a workflow
+skill. Route to SDD only when durable artifacts, approval gates, resumability, or architecture
+coordination are actually needed.
 
 See [SDD Workflow](#sdd-workflow) below for details.
 

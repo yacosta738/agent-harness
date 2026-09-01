@@ -94,6 +94,8 @@ Use a direct answer when the request is primarily:
 
 - Q&A, clarification, explanation, command help, or light code lookup.
 - A tiny edit with obvious scope and no design ambiguity.
+- A mechanical configuration edit where the user supplied the target, the exact value, and the
+  expected result, even when the same declaration must be updated in several equivalent modules.
 - Something you can solve safely without durable artifacts, planning, or specialist review.
 
 ### Lane 2: Skill-led simple flow
@@ -129,13 +131,21 @@ Do NOT use a specialist sub-agent to bypass SDD when the task meets SDD criteria
 
 ### Lane 4: Full SDD cycle
 
-Use SDD when ANY of these are true:
+Use SDD when the request needs durable specification or coordination, as shown by one or more of
+these decisive signals:
 
-- The change creates or modifies durable product behavior across multiple surfaces.
-- The work needs proposal, spec, design, task breakdown, or formal verification artifacts.
+- The change creates or modifies a product contract across multiple coupled surfaces.
+- The work genuinely needs proposal, spec, design, task breakdown, formal verification artifacts,
+  approval gates, or resumability.
 - The request touches architecture, domain rules, integrations, or cross-cutting concerns.
 - The change is large, ambiguous, high-risk, multi-phase, or likely to need review/approval gates.
 - The user explicitly asks for SDD, specs, design docs, phased planning, or resumable workflow.
+
+Persistence in source control is NOT, by itself, a reason to use SDD. A one-line default-value
+change does not become SDD merely because it affects runtime behavior, appears in several repeated
+module declarations, or will remain in the repository. If the target behavior and acceptance
+criteria are already explicit and the change is bounded and reversible, use Direct; use
+`brainstorming` only when a small unresolved design choice remains.
 
 Default entry points:
 
@@ -159,10 +169,14 @@ Use this table to make the initial routing decision:
 
 | Lane | Criteria | Examples |
 |------|----------|----------|
-| **Direct** | Answer in <5 sentences, <20 lines code, no design ambiguity | "how do I...", explain concept, read-only lookup, typo fix |
-| **RPI (brainstorming)** | Isolated change, single surface, no durable artifacts needed | Add script, update config, focused fix, small behavior tweak |
+| **Direct** | Mechanically specified, bounded, reversible, no design ambiguity | Exact default/config value change, typo, read-only lookup |
+| **RPI (brainstorming)** | Scoped change with a real but temporary design choice; no durable spec needed | Add script, choose config semantics, focused fix, small behavior tweak |
 | **Specialist** | Single discipline depth needed | Architecture review, security audit, perf analysis |
-| **SDD** | Durable behavior, multi-surface, specs needed | New feature, refactor, integration, cross-cutting |
+| **SDD** | Durable specification/coordination is needed for coupled behavior | New feature, architectural refactor, integration, cross-cutting contract |
+
+File count and line count are weak signals. Count independently changing behaviors and coupled
+surfaces instead. Repeating the same exact value across several equivalent files is still one
+mechanical change, not a multi-surface feature.
 
 ### When to Ask the User
 
@@ -172,6 +186,9 @@ Ask the user to help route when:
 - You see signs of hidden complexity but aren't sure
 - The user says "quick fix" but the code suggests otherwise
 - You're about to use SDD for something that might be simpler than it looks
+
+Do NOT ask a routing question when the user already supplied the exact target and value and the
+repository check confirms the edit is mechanical. State the Direct decision and proceed.
 
 **Ask like this:**
 ```
@@ -197,13 +214,13 @@ Search memory (`mem_search`) proactively when similar requests come in — if yo
 ### Escalation Rules
 
 - When in doubt between direct answer and skill-led flow, choose the skill-led flow.
-- When in doubt between a simple skill and SDD, choose `brainstorming` first ONLY if the work can
-  remain temporary and local.
+- When in doubt between a simple skill and SDD, choose `brainstorming` first if the work is bounded,
+  understood, reversible, and does not require durable decision artifacts.
 - Escalate from `brainstorming` to SDD as soon as you detect durable specs, cross-team impact,
-  multi-surface behavior, or architectural irreversibility.
+  coupled multi-surface behavior, or architectural irreversibility.
 - Never start `sdd-apply` without the required upstream artifacts.
 - Never keep a task in a lightweight lane just because the code diff looks small; decide by risk,
-  durability, and scope of behavior.
+  need for durable specification, and scope of behavior.
 
 ## Execution Rules
 
@@ -300,7 +317,8 @@ Use state.yaml to determine resume point on sdd-continue.
 
 When any of these contexts is detected, load the skill immediately before writing code:
 
-- Idea shaping, new small feature, focused config/script, or isolated behavior tweak:
+- Idea shaping, new small feature, focused config/script with an unresolved design choice, or
+  isolated behavior tweak:
   `brainstorming`
 - Root cause unclear, repro unstable, or debugging by elimination: `systematic-debugging`
 - Approved temporary design needs an implementation plan: `writing-plans`
