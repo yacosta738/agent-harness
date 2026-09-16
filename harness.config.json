@@ -1,0 +1,8 @@
+{
+  "version": "agent-harness.config/v1",
+  "preset": "recommended",
+  "persona": "kerrigan",
+  "tdd": {
+    "enabled": true
+  }
+}
