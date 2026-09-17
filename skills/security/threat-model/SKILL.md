@@ -29,7 +29,7 @@ The threat model must make obvious:
 ## Inputs
 
 - Repository path or current working repository.
-- Optional `AGENTS.md`, `SECURITY.md`, threat model file, or similar
+- Optional `../../../agents/ORCHESTRATOR.md`, `SECURITY.md`, threat model file, or similar
   authoritative guidance.
 - Optional focus area from the user prompt.
 

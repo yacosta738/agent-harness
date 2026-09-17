@@ -5,27 +5,21 @@
   "allowedLayers": ["portable", "adapter", "runtime"],
   "defaultPreset": "recommended",
   "presetOrder": ["minimal", "recommended", "full"],
-  "compose": {
-    "AGENTS.md": [
-      "portable:AGENTS.md",
-      "overlay:adapters/opencode/AGENTS.overlay.md"
-    ]
-  },
   "components": {
     "core": {
       "include": [
-        "AGENTS.md",
+        "agents/ORCHESTRATOR.md",
+        "agents/acs/WRITING_STYLE.md",
         "README.md",
-        "references/**",
-        "adapters/opencode/**"
+        "harness.config.json",
+        "adapters/opencode/adapter.json",
+        "adapters/opencode/tui.json"
       ]
     },
     "skills": {
       "include": [
         "skills/**",
-        "prompts/**",
-        "commands/**",
-        "references/**"
+        "commands/**"
       ]
     },
     "permissions": {
@@ -35,58 +29,65 @@
     },
     "persona": {
       "include": [
-        "AGENTS.md",
+        "agents/ORCHESTRATOR.md",
+        "agents/acs/WRITING_STYLE.md",
         "adapters/opencode/opencode.json"
       ]
     },
     "delegation": {
       "include": [
         "commands/**/*.md",
-        "prompts/agents/**",
+        "agents/team/**",
+        "agents/linear-pm.md",
         "skills/workflow/**"
       ]
     },
     "engram": {
       "include": [
-        "prompts/**",
-        "references/**"
+        "agents/**",
+        "skills/**"
       ]
     },
     "context7": {
       "include": [
-        "prompts/**",
-        "references/**"
+        "agents/**",
+        "skills/**"
       ]
     },
     "sdd": {
       "include": [
         "commands/sdd-*.md",
-        "prompts/agents/**",
+        "agents/sdd/**",
+        "skills/sdd/**",
         "skills/workflow/**"
       ]
     },
     "rdd": {
       "include": [
-        "scripts/review.mjs",
-        "scripts/review-lib.mjs"
+        "adapters/opencode/scripts/review.mjs",
+        "adapters/opencode/scripts/review-lib.mjs"
       ]
     },
     "judgment-day": {
       "include": [
-        "prompts/**",
+        "agents/lens.md",
+        "agents/mirror.md",
+        "agents/scalpel.md",
         "skills/workflow/double-blind-review/**"
       ]
     },
     "theme": {
       "include": [
-        "themes/**"
+        "adapters/opencode/themes/**",
+        "adapters/opencode/tui.json"
       ]
     },
     "integrations": {
       "include": [
-        "runtime/scripts/**",
-        "themes/**",
-        "adapters/opencode/**"
+        "adapters/opencode/scripts/**",
+        "adapters/opencode/themes/**",
+        "adapters/opencode/plugins/**",
+        "adapters/opencode/tui.json"
       ]
     }
   },

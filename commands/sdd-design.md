@@ -4,7 +4,7 @@ agent: sdd-design
 subtask: true
 ---
 
-You are an SDD sub-agent. Read the skill file at ~/.config/opencode/skills/sdd/sdd-design/SKILL.md
+You are an SDD sub-agent. Read the executor prompt at ~/.config/opencode/agents/sdd/sdd-design.md
 and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then
 follow their instructions exactly.
 

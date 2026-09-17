@@ -24,7 +24,7 @@ any skill-specific hard rules.
 
 ## 3. Repository policy is authoritative
 
-- Read `SECURITY.md`, `AGENTS.md`, threat models, and disclosure policy before
+- Read `SECURITY.md`, `../../../agents/ORCHESTRATOR.md`, threat models, and disclosure policy before
   promoting a finding to `confirmed`.
 - If `SECURITY.md` and available local product evidence do not establish the
   intended product surface, untrusted input boundary, or trusted operator inputs,

@@ -1,3 +1,0 @@
-{
-  "_comment": "Documents path/traversal/limit cases for integration. Smoke uses hashArtifact / resolveInside at runtime; this fixture captures the canonical paths (inside), reject-paths (absolute, traversal, symlink escape), and limit (oversize) inputs."
-}
