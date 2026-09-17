@@ -1,0 +1,98 @@
+{
+  "version": "agent-harness.adapter/v1",
+  "name": "opencode",
+  "defaultTarget": "~/.config/opencode",
+  "allowedLayers": ["portable", "adapter", "runtime"],
+  "defaultPreset": "recommended",
+  "presetOrder": ["minimal", "recommended", "full"],
+  "compose": {
+    "AGENTS.md": [
+      "portable:AGENTS.md",
+      "overlay:adapters/opencode/AGENTS.overlay.md"
+    ]
+  },
+  "components": {
+    "core": {
+      "include": [
+        "AGENTS.md",
+        "README.md",
+        "references/**",
+        "adapters/opencode/**"
+      ]
+    },
+    "skills": {
+      "include": [
+        "skills/**",
+        "prompts/**",
+        "commands/**",
+        "references/**"
+      ]
+    },
+    "permissions": {
+      "include": [
+        "adapters/opencode/opencode.json"
+      ]
+    },
+    "persona": {
+      "include": [
+        "AGENTS.md",
+        "adapters/opencode/opencode.json"
+      ]
+    },
+    "delegation": {
+      "include": [
+        "commands/**/*.md",
+        "prompts/agents/**",
+        "skills/workflow/**"
+      ]
+    },
+    "engram": {
+      "include": [
+        "prompts/**",
+        "references/**"
+      ]
+    },
+    "context7": {
+      "include": [
+        "prompts/**",
+        "references/**"
+      ]
+    },
+    "sdd": {
+      "include": [
+        "commands/sdd-*.md",
+        "prompts/agents/**",
+        "skills/workflow/**"
+      ]
+    },
+    "rdd": {
+      "include": [
+        "scripts/review.mjs",
+        "scripts/review-lib.mjs"
+      ]
+    },
+    "judgment-day": {
+      "include": [
+        "prompts/**",
+        "skills/workflow/double-blind-review/**"
+      ]
+    },
+    "theme": {
+      "include": [
+        "themes/**"
+      ]
+    },
+    "integrations": {
+      "include": [
+        "runtime/scripts/**",
+        "themes/**",
+        "adapters/opencode/**"
+      ]
+    }
+  },
+  "presets": {
+    "minimal": ["core", "skills", "permissions", "persona"],
+    "recommended": ["core", "skills", "permissions", "persona", "delegation", "engram", "context7", "sdd", "rdd", "judgment-day"],
+    "full": ["core", "skills", "permissions", "persona", "delegation", "engram", "context7", "sdd", "rdd", "judgment-day", "theme", "integrations"]
+  }
+}

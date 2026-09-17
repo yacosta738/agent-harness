@@ -648,11 +648,15 @@ editors/agents/opencode/
 
 ## Deployment
 
-Dotfiles are the source of truth. Sync to `~/.config/opencode/` manually or via symlink:
+Keep this repository as the canonical source and render a bundle for OpenCode. Then link the generated bundle into the local OpenCode config directory:
 
 ```bash
-git clone git@github.com:yacosta738/agent-harness.git ~/.config/opencode
+# from the repo root
+node scripts/harness-config.mjs render --adapter opencode --output dist/opencode
+node scripts/harness-config.mjs link --adapter opencode --target ~/.config/opencode
 ```
+
+If `~/.config/opencode` already contains a different setup, move it aside manually before retrying the link. The repo must stay portable and the generated bundle remains in `dist/opencode`, not as a tracked source path.
 
 ---
 

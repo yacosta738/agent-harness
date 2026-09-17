@@ -32,7 +32,11 @@ test('minimal effective tree excludes optional runtime components and source-onl
   await fs.mkdir(path.join(source, 'plugins'), { recursive: true });
   await fs.mkdir(path.join(source, 'docs'), { recursive: true });
   await fs.mkdir(path.join(source, 'themes'), { recursive: true });
-  await fs.writeFile(path.join(source, 'opencode.json'), JSON.stringify({ agent: { kerrigan: {}, 'sdd-apply': {}, lens: {} }, mcp: { engram: {}, context7: {} } }));
+  await fs.mkdir(path.join(source, 'adapters/opencode'), { recursive: true });
+  await fs.writeFile(path.join(source, 'AGENTS.md'), '# portable');
+  await fs.writeFile(path.join(source, 'adapters/opencode/AGENTS.overlay.md'), '# overlay');
+  await fs.writeFile(path.join(source, 'adapters/opencode/adapter.json'), JSON.stringify({ version: 'agent-harness.adapter/v1', name: 'opencode', defaultTarget: '~/.config/opencode', allowedLayers: ['portable', 'adapter', 'runtime'], defaultPreset: 'recommended', presetOrder: ['minimal', 'recommended', 'full'], compose: { 'AGENTS.md': ['portable:AGENTS.md', 'overlay:adapters/opencode/AGENTS.overlay.md'] }, components: { core: { include: ['AGENTS.md', 'adapters/opencode/**'] }, skills: { include: ['skills/**', 'prompts/**', 'commands/**'] }, permissions: { include: ['adapters/opencode/opencode.json'] }, persona: { include: ['AGENTS.md', 'adapters/opencode/opencode.json'] } }, presets: { minimal: ['core', 'skills', 'permissions', 'persona'], recommended: ['core', 'skills', 'permissions', 'persona'], full: ['core', 'skills', 'permissions', 'persona'] } }, null, 2));
+  await fs.writeFile(path.join(source, 'adapters/opencode/opencode.json'), JSON.stringify({ agent: { kerrigan: {}, 'sdd-apply': {}, lens: {} }, mcp: { engram: {}, context7: {} } }));
   await fs.writeFile(path.join(source, 'plugins/engram.ts'), 'plugin');
   await fs.writeFile(path.join(source, 'plugins/wakatime.js'), 'plugin');
   await fs.writeFile(path.join(source, 'themes/dark.json'), '{}');

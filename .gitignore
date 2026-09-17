@@ -1,3 +1,7 @@
+/dist/
+**/.DS_Store
+**/.DS_Store/
+
 # Local tooling indexes (machine-specific, never commit)
 .codegraph/
 
