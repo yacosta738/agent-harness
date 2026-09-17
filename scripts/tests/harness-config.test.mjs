@@ -5,6 +5,27 @@ import path from 'node:path';
 import test from 'node:test';
 import { validateConfig, resolvePreset, renderEffectiveTree, loadHarnessConfig } from '../harness-config-lib.mjs';
 
+test('effective tree preserves the standalone writing style and composes it into Kerrigan prompt', async () => {
+  const source = await fs.mkdtemp(path.join(os.tmpdir(), 'harness-writing-style-'));
+  const out = path.join(source, 'dist/opencode');
+  await fs.writeFile(path.join(source, 'opencode.json'), JSON.stringify({
+    agent: { kerrigan: { prompt: '{file:./AGENTS.md}' } },
+  }));
+  await fs.writeFile(path.join(source, 'AGENTS.md'), '# core\n');
+  await fs.writeFile(path.join(source, 'WRITING_STYLE.md'), '# style\n');
+
+  await renderEffectiveTree(source, out, validateConfig({
+    version: 'agent-harness.config/v1',
+    preset: 'minimal',
+    persona: 'kerrigan',
+    tdd: { enabled: false },
+  }));
+
+  assert.equal(await fs.readFile(path.join(out, 'WRITING_STYLE.md'), 'utf8'), '# style\n');
+  const renderedOpenCode = JSON.parse(await fs.readFile(path.join(out, 'opencode.json'), 'utf8'));
+  assert.equal(renderedOpenCode.agent.kerrigan.prompt, '{file:./AGENTS.md}\n\n{file:./WRITING_STYLE.md}');
+});
+
 test('recommended preset keeps core capabilities and is deterministic', async () => {
   const config = validateConfig({ version: 'agent-harness.config/v1', preset: 'recommended', persona: 'kerrigan', tdd: { enabled: true } });
   assert.equal(config.components.engram, true);
