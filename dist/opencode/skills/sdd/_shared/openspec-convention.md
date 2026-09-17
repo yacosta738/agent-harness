@@ -1,0 +1,130 @@
+# OpenSpec File Convention (shared across all SDD skills)
+
+## Directory Structure
+
+```
+openspec/
+├── config.yaml              <- Project-specific SDD config
+├── specs/                   <- Source of truth (main specs)
+│   └── {domain}/
+│       └── spec.md
+└── changes/                 <- Active changes
+    ├── archive/             <- Completed changes (YYYY-MM-DD-{change-name}/)
+    └── {change-name}/       <- Active change folder
+        ├── state.yaml       <- DAG state (managed by orchestrator)
+        ├── exploration.md   <- (optional) from sdd-explore
+        ├── proposal.md      <- from sdd-propose
+        ├── specs/           <- from sdd-spec
+        │   └── {domain}/
+        │       └── spec.md  <- Delta spec
+        ├── design.md        <- from sdd-design
+        ├── tasks.md         <- from sdd-tasks (updated by sdd-apply)
+        ├── verify-report.md <- from sdd-verify
+        └── qa-report.md     <- from sdd-qa; preserved in archive
+```
+
+## Artifact File Paths
+
+| Skill        | Creates / Reads    | Path                                                                                        |
+|--------------|--------------------|---------------------------------------------------------------------------------------------|
+| orchestrator | Creates/Updates    | `openspec/changes/{change-name}/state.yaml`                                                 |
+| sdd-init     | Creates            | `openspec/config.yaml`, `openspec/specs/`, `openspec/changes/`, `openspec/changes/archive/` |
+| sdd-explore  | Creates (optional) | `openspec/changes/{change-name}/exploration.md`                                             |
+| sdd-propose  | Creates            | `openspec/changes/{change-name}/proposal.md`                                                |
+| sdd-spec     | Creates            | `openspec/changes/{change-name}/specs/{domain}/spec.md`                                     |
+| sdd-design   | Creates            | `openspec/changes/{change-name}/design.md`                                                  |
+| sdd-tasks    | Creates            | `openspec/changes/{change-name}/tasks.md`                                                   |
+| sdd-apply    | Updates            | `openspec/changes/{change-name}/tasks.md` (marks `[x]`)                                     |
+| sdd-verify   | Creates            | `openspec/changes/{change-name}/verify-report.md`                                           |
+| sdd-qa       | Creates            | `openspec/changes/{change-name}/qa-report.md`                                                |
+| sdd-archive  | Moves              | `openspec/changes/{change-name}/` → `openspec/changes/archive/YYYY-MM-DD-{change-name}/`    |
+| sdd-archive  | Updates            | `openspec/specs/{domain}/spec.md` (merges deltas into main specs)                           |
+
+## Reading Artifacts
+
+Each skill reads its dependencies from the filesystem:
+
+```
+Proposal:  openspec/changes/{change-name}/proposal.md
+Specs:     openspec/changes/{change-name}/specs/  (all domain subdirectories)
+Design:    openspec/changes/{change-name}/design.md
+Tasks:     openspec/changes/{change-name}/tasks.md
+Verify:     openspec/changes/{change-name}/verify-report.md
+QA:         openspec/changes/{change-name}/qa-report.md
+Config:     openspec/config.yaml
+Main specs: openspec/specs/{domain}/spec.md
+```
+
+## Resolving the Active Change
+
+Use the shared rule from `persistence-contract.md`:
+
+1. Prefer explicit `Change name: {argument}` from the orchestrator.
+2. Otherwise inspect `openspec/changes/`, excluding `archive/`.
+3. If exactly one active change exists, use it.
+4. If multiple active changes exist, stop and report ambiguity.
+5. If none exist, stop and report that no active change exists.
+
+## Writing Rules
+
+- ALWAYS create the change directory (`openspec/changes/{change-name}/`) before writing artifacts
+- If a file already exists, READ it first and UPDATE it (don't overwrite blindly)
+- If the change directory already exists with artifacts, the change is being CONTINUED
+- `sdd-qa` MUST preserve `qa-report.md` during archive and MUST NOT be treated as complete without a report containing evidence or explicit untested/blocking reasons
+- Archive MUST require both `verify-report.md` and `qa-report.md` before moving the change; missing reports, blocking verdicts, and unresolved release-blocking findings remain visible in the report and state
+- Use the `openspec/config.yaml` `rules` section to apply project-specific constraints per phase
+
+## Deterministic Runner Adapter
+
+Projects may opt into `openspec/quality-runner.json` (`quality-runner/v1`) and the standalone
+`scripts/sdd-quality-runner.mjs`. Consumers must retain runner envelope identity, status, reason, redacted
+evidence, and artifact references. Missing/disabled runner configuration is an explicit `fallback`, not a pass.
+The standalone `scripts/sdd-fsm.mjs` owns legal state transitions when enabled; prompt flow remains a compatibility
+adapter only and must not claim deterministic enforcement when the FSM is unavailable.
+
+## Config File Reference
+
+```yaml
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Tech stack: {detected}
+  Architecture: {detected}
+  Testing: {detected}
+  Style: {detected}
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+    tdd: true            # STRICT TDD: RED → GREEN → REFACTOR is MANDATORY
+    test_command: ""     # e.g., "npm test", "pytest"
+  verify:
+    test_command: ""     # Override for verification
+    build_command: ""    # Override for build check
+    coverage_threshold: 0  # Set > 0 to enable coverage check
+  archive:
+    - Warn before merging destructive deltas
+```
+
+## Archive Structure
+
+When archiving, the change folder moves to:
+
+```
+openspec/changes/archive/YYYY-MM-DD-{change-name}/
+```
+
+Use today's date in ISO format. The archive is an AUDIT TRAIL — never delete or modify archived
+changes.

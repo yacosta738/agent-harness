@@ -1,0 +1,5 @@
+# Local tooling indexes (machine-specific, never commit)
+.codegraph/
+
+# macOS metadata
+.DS_Store

@@ -70,18 +70,20 @@ seriously.
   2. Propose a solution with examples.
   3. Mention tools or resources.
 
-## Operating Mode (smart delegation)
+## Operating Mode (Organic Driven Development)
 
-- Answer simple questions, clarifications, and quick lookups DIRECTLY - no delegation needed.
-- Delegate when the task is complex: multi-file changes, architectural decisions, security review,
-  testing strategy, CI/CD work, or anything that benefits from a specialist lens.
-- Heuristic: if you can answer in under 5 sentences or fewer than 20 lines of code, do it yourself.
-- Classify every request into exactly one lane before acting: direct response, skill-led simple
-  flow, specialist sub-agent, or full SDD cycle.
-- When delegating, define clear intent and expected output before handing off.
-- For SDD phases, ALWAYS delegate to the dedicated sub-agent. You only track DAG state, make
-  approval decisions, and present concise summaries.
-- Read 1 to 3 files inline only to check state. For anything deeper, delegate.
+ODD is the default operating loop for every request: authorize, explore, resolve only the needed
+uncertainty, classify the smallest useful topology, implement, check, and close with evidence.
+Already-understood work stays inline; only work that benefits from fresh context is delegated.
+Formal SDD is an explicit branch, never an automatic escalation.
+
+- Answer simple questions, clarifications, and quick lookups directly.
+- State the selected route before acting: **Direct inline**, **Delegated direct**, or **Explicit SDD**.
+- Delegate only a narrow exploration, writer, checker, or reviewer mission with a defined output.
+- For substantial authorized ODD work, create `odd/tasks/<feature>.md` before the first source write
+  and mirror its current contents to Engram topic `odd/<feature>/tasks`.
+- Report only `Working`, `Checking`, `Ready`, or `Needs your decision` as public progress states.
+- For SDD phases, delegate to the dedicated phase agent and track only DAG state and evidence.
 
 ## Routing Policy
 
@@ -98,9 +100,10 @@ Use a direct answer when the request is primarily:
   expected result, even when the same declaration must be updated in several equivalent modules.
 - Something you can solve safely without durable artifacts, planning, or specialist review.
 
-### Lane 2: Skill-led simple flow
+### Internal ODD skills
 
-Use a workflow skill instead of SDD when the work needs structure but NOT durable specs.
+Use workflow skills inside ODD when they help the current action; they do not enroll the request in
+SDD or create synthetic SDD lifecycle state.
 
 - `brainstorming`: collaborative thinking with the user, new ideas, small features, scripts,
   isolated utilities, focused config changes, spikes, or single-surface behavior changes that need
@@ -110,42 +113,26 @@ Use a workflow skill instead of SDD when the work needs structure but NOT durabl
 - `writing-plans`: implementation planning after a temporary design is approved.
 - `verification-before-completion`: final validation before declaring work done.
 
-`brainstorming` and SDD are complementary, not competing workflows: use brainstorming for temporary
-co-design and scoped thinking with the user; use SDD for full feature cycles, durable specs,
-approval gates, resumability, or cross-cutting product/architecture changes.
+`brainstorming` resolves a small temporary design choice; it is not a mandatory preflight for every
+substantial task. `systematic-debugging` and `verification-before-completion` remain evidence-driven
+skills. If durable coordination becomes necessary, ask for explicit SDD selection.
 
-If a task starts in a simple skill lane and later reveals cross-cutting behavior, unresolved
-product rules, or durable architecture decisions, STOP and escalate to SDD.
+### Route 2: Delegated direct
 
-### Lane 3: Specialist sub-agent
-
-Delegate to a specialist sub-agent when the main need is depth in one discipline, but a full SDD
-cycle would be overkill.
+Delegate when understanding requires broad exploration, a writer must change two or more non-trivial
+files, or a specialist lens materially reduces risk. Delegation is per action and does not change the
+ODD route.
 
 - `tech-lead`: architecture trade-offs, refactor direction, interfaces, boundaries.
 - `senior-dev`: implementation-heavy work with clear scope.
 - `devops-engineer`, `qa-engineer`, `security-engineer`, `performance-engineer`, `ux-designer`,
   `data-engineer`, `product-manager`, `code-reviewer`: use by domain.
 
-Do NOT use a specialist sub-agent to bypass SDD when the task meets SDD criteria.
+### Route 3: Explicit SDD
 
-### Lane 4: Full SDD cycle
-
-Use SDD when the request needs durable specification or coordination, as shown by one or more of
-these decisive signals:
-
-- The change creates or modifies a product contract across multiple coupled surfaces.
-- The work genuinely needs proposal, spec, design, task breakdown, formal verification artifacts,
-  approval gates, or resumability.
-- The request touches architecture, domain rules, integrations, or cross-cutting concerns.
-- The change is large, ambiguous, high-risk, multi-phase, or likely to need review/approval gates.
-- The user explicitly asks for SDD, specs, design docs, phased planning, or resumable workflow.
-
-Persistence in source control is NOT, by itself, a reason to use SDD. A one-line default-value
-change does not become SDD merely because it affects runtime behavior, appears in several repeated
-module declarations, or will remain in the repository. If the target behavior and acceptance
-criteria are already explicit and the change is bounded and reversible, use Direct; use
-`brainstorming` only when a small unresolved design choice remains.
+Use SDD only when the user explicitly requests proposal/spec/design/tasks/verification artifacts or
+accepts a concrete proposal that names the durable coordination problem those artifacts solve.
+Size, risk, ambiguity, architecture, persistence, and file count alone never select SDD.
 
 Default entry points:
 
@@ -155,13 +142,15 @@ Default entry points:
 
 ## Intake Decision (routing explícito)
 
-**Every request goes through an explicit routing decision before acting.**
+**Every request goes through an explicit ODD route decision before acting.**
 
 For any non-trivial request (not pure Q&A or typo fixes), you MUST:
 
-1. **Assess complexity** using the heuristics below
-2. **State your decision** — tell the user which lane you're taking and why
-3. **Ask if ambiguous** — if the request could be simple OR complex, ask the user to clarify
+1. **Authorize** whether the request permits a change; explanation and investigation remain read-only.
+2. **Explore** enough to understand the requested outcome.
+3. **Resolve uncertainty** only when its answer changes scope, safety, or acceptance.
+4. **Classify** Direct, Delegated direct, or Explicit SDD.
+5. **State the route** and create the ODD task document before the first write when substantial.
 
 ### Routing Decision Heuristics
 
@@ -170,9 +159,8 @@ Use this table to make the initial routing decision:
 | Lane | Criteria | Examples |
 |------|----------|----------|
 | **Direct** | Mechanically specified, bounded, reversible, no design ambiguity | Exact default/config value change, typo, read-only lookup |
-| **RPI (brainstorming)** | Scoped change with a real but temporary design choice; no durable spec needed | Add script, choose config semantics, focused fix, small behavior tweak |
-| **Specialist** | Single discipline depth needed | Architecture review, security audit, perf analysis |
-| **SDD** | Durable specification/coordination is needed for coupled behavior | New feature, architectural refactor, integration, cross-cutting contract |
+| **Delegated direct** | Broad exploration, 2+ non-trivial writes, or specialist depth helps | Repository investigation, focused implementation, QA/review |
+| **Explicit SDD** | User requests or accepts durable phase artifacts | Product contract, resumable coordination, formal spec/design cycle |
 
 File count and line count are weak signals. Count independently changing behaviors and coupled
 surfaces instead. Repeating the same exact value across several equivalent files is still one
@@ -190,11 +178,11 @@ Ask the user to help route when:
 Do NOT ask a routing question when the user already supplied the exact target and value and the
 repository check confirms the edit is mechanical. State the Direct decision and proceed.
 
-**Ask like this:**
+**Ask like this only when the outcome or authority is genuinely ambiguous:**
 ```
 Veo esto como [simple/complejo], ¿me entiendes? 
-- Si es simple → lo resuelvo con un plan directo (brainstorming)
-- Si es complejo → necesitamos SDD completo
+- Si es una acción acotada → Direct o Delegated direct
+- Si quieres artefactos formales → seleccionamos SDD explícitamente
 
 ¿Vamos por el camino rápido o arrancamos con SDD?
 ```
@@ -213,11 +201,9 @@ Search memory (`mem_search`) proactively when similar requests come in — if yo
 
 ### Escalation Rules
 
-- When in doubt between direct answer and skill-led flow, choose the skill-led flow.
-- When in doubt between a simple skill and SDD, choose `brainstorming` first if the work is bounded,
-  understood, reversible, and does not require durable decision artifacts.
-- Escalate from `brainstorming` to SDD as soon as you detect durable specs, cross-team impact,
-  coupled multi-surface behavior, or architectural irreversibility.
+- When in doubt between Direct and Delegated direct, choose the smallest route that preserves proof.
+- When in doubt about SDD, remain in ODD and ask only whether the user wants durable phase artifacts.
+- Never infer SDD from size, risk, ambiguity, persistence, architecture, or file count.
 - Never start `sdd-apply` without the required upstream artifacts.
 - Never keep a task in a lightweight lane just because the code diff looks small; decide by risk,
   need for durable specification, and scope of behavior.
@@ -227,8 +213,9 @@ Search memory (`mem_search`) proactively when similar requests come in — if yo
 - Understand context before delegating.
 - For architecture work, prioritize scalability, maintainability, testability, and security.
 - TypeScript guidance: strongly typed (avoid any unless strictly justified).
-- TDD is MANDATORY for all implementation tasks: write or adjust a failing test FIRST, implement
-  the minimum code to pass, then refactor safely. No production code without a failing test first.
+- TDD follows `.agent-harness/config.json` or explicit project/session configuration. When enabled,
+  write a failing test first, then RED → GREEN → REFACTOR; when disabled, run ordinary functional
+  checks and record the selected mode and runner.
 - When fixing bugs, first add a regression test that fails before applying the fix.
 - Ask questions only when truly blocked by ambiguity, security risk, or missing credentials.
 - Never invent APIs, commands, or tool names.
