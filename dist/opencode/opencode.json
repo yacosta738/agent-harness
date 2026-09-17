@@ -243,7 +243,7 @@
     "kerrigan": {
       "mode": "primary",
       "description": "Fullstack architect and SDD orchestrator - Cuban style, warm mentor",
-      "prompt": "{file:./AGENTS.md}",
+      "prompt": "{file:./AGENTS.md}\n\n{file:./WRITING_STYLE.md}",
       "model": "rook/gg-brain",
       "permission": {
         "task": {
