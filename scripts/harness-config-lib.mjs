@@ -59,6 +59,9 @@ export async function renderEffectiveTree(sourceRoot, destination, config) {
   await copyTree(sourceRoot, destination);
   const configPath = path.join(destination, 'opencode.json');
   const opencode = JSON.parse(await fs.readFile(configPath, 'utf8'));
+  if (opencode.agent?.kerrigan?.prompt === '{file:./AGENTS.md}') {
+    opencode.agent.kerrigan.prompt = '{file:./AGENTS.md}\n\n{file:./WRITING_STYLE.md}';
+  }
   const removeAgents = [];
   if (!normalized.components.sdd) removeAgents.push(...Object.keys(opencode.agent ?? {}).filter((name) => name.startsWith('sdd-')));
   if (!normalized.components['judgment-day']) removeAgents.push('lens', 'mirror', 'scalpel');

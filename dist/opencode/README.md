@@ -26,6 +26,12 @@ Read the contracts first:
 Render the selected effective configuration with `node scripts/harness-config.mjs render` and check
 it with `node scripts/harness-config.mjs check`.
 
+### Customize the writing style
+
+Adopters can change Kerrigan's language, preferred expressions, and tone in the root-level
+`WRITING_STYLE.md`. The primary agent loads that file together with `AGENTS.md`; no other harness
+file needs to be edited for voice and communication changes.
+
 ---
 
 ## Architecture Overview
