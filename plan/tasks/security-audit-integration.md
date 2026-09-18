@@ -351,9 +351,9 @@ Expected: 2 changed lines (table row + count).
 **Files:**
 - Modify: nothing (read-only checks)
 
-- [ ] **Step 5.1:** Confirm `check-refs.py` still passes (no new `{file:}` refs added):
+- [ ] **Step 5.1:** Confirm `check-refs.mjs` still passes (no new `{file:}` refs added):
 ```bash
-python3 scripts/check-refs.py
+npm run validate
 ```
 Expected: no `FAIL` lines.
 
@@ -390,8 +390,8 @@ Expected: command exits 0 and prints the expected bundle list (no errors about m
 
 - [ ] **Step 5.5:** Render the bundle and run check-refs in bundle mode:
 ```bash
-scripts/deploy.sh --preset recommended --output dist/opencode 2>&1 | tail -20
-python3 scripts/check-refs.py --root dist/opencode
+npm run deploy -- --preset recommended --output dist/opencode 2>&1 | tail -20
+node scripts/check-refs.mjs --root dist/opencode
 ```
 Expected: deploy exits 0; check-refs exits 0 (all `{file:` paths in the rendered bundle resolve).
 

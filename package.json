@@ -1,0 +1,15 @@
+{
+  "name": "agent-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "deploy": "node scripts/deploy.mjs",
+    "validate": "node scripts/check-refs.mjs",
+    "list": "node scripts/generate-bundle.mjs list",
+    "render": "node scripts/generate-bundle.mjs render"
+  }
+}
