@@ -172,10 +172,20 @@ agent-harness/
 ├── agents/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
 ├── commands/                ← 27 slash commands (13 sdd + 3 diagram + 5 vercel + 6 misc)
 ├── skills/                  ← 211 skills in 19 groups (filesystem = truth)
+├── docs/                    ← Platform-specific setup guides
+│   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
+│   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
 ├── adapters/opencode/       ← opencode.json, tui.json, adapter.json, themes/, plugins/, scripts/
 ├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list presets), deploy.mjs (render+verify)
 └── harness.config.json      ← preset, persona, TDD toggle
 ```
+
+## Platform setup
+
+For platform-specific installation instructions, see:
+
+- [docs/WINDOWS.md](docs/WINDOWS.md) — Windows (PowerShell / cmd)
+- [docs/UNIX.md](docs/UNIX.md) — macOS and Linux
 
 ## Deployment (render bundle + dotter)
 
