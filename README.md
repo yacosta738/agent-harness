@@ -39,10 +39,10 @@ npm run deploy -- --preset recommended
 Deploy keeps this repo canonical and maps it 1:1 onto `~/.config/opencode`, except
 every `adapters/opencode/**` file lands with that prefix stripped (`opencode.json`,
 `tui.json`, `scripts/`, `plugins/`, `themes/` at bundle root — no `adapters/` dir).
-The orchestrator prompt ships as-is at `agents/ORCHESTRATOR.md` (kerrigan loads it
+The orchestrator prompt ships as-is at `prompts` (kerrigan loads it
 via `{file:}`). See [Deployment](#deployment) for the dotter mapping.
 
-To change Kerrigan's voice, edit `agents/acs/WRITING_STYLE.md` — no other file needs touching.
+To change Kerrigan's voice, edit `prompts` — no other file needs touching.
 
 ## Agents
 
@@ -52,10 +52,10 @@ To change Kerrigan's voice, edit `agents/acs/WRITING_STYLE.md` — no other file
   Answers simple questions directly, delegates the rest, challenges bad decisions with evidence.
 - **linear-pm** — Linear issues, sprints, priorities (P0–P3), states
   (Backlog → Todo → In Progress → In Review → Done).
-- **Team specialists** (`agents/team/`, 10) — `tech-lead`, `senior-dev`, `devops-engineer`,
+- **Team specialists** (`prompts`, 10) — `tech-lead`, `senior-dev`, `devops-engineer`,
   `qa-engineer`, `security-engineer`, `performance-engineer`, `ux-designer`, `data-engineer`,
   `product-manager`, `code-reviewer`.
-- **SDD phase executors** (`agents/sdd/`, 11) — `sdd-init`, `sdd-explore`, `sdd-propose`,
+- **SDD phase executors** (`prompts`, 11) — `sdd-init`, `sdd-explore`, `sdd-propose`,
   `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`,
   plus `sdd-onboard`.
 - **Review protocol** — `lens`, `mirror` (blind judges), `scalpel` (surgical fixes only).
@@ -185,7 +185,7 @@ Also in `adapters/opencode/opencode.json`:
 
 ```
 agent-harness/
-├── agents/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
+├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
 ├── commands/                ← 27 slash commands (13 sdd + 3 diagram + 5 vercel + 6 misc)
 ├── skills/                  ← 211 skills in 19 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
@@ -224,7 +224,7 @@ yours; re-render after pulling):
 "editors/agents/agent-harness/dist/opencode/plugins" = "~/.config/opencode/plugins"
 "editors/agents/agent-harness/dist/opencode/themes" = "~/.config/opencode/themes"
 "editors/agents/agent-harness/dist/opencode/scripts" = "~/.config/opencode/scripts"
-"editors/agents/agent-harness/dist/opencode/agents" = "~/.config/opencode/agents"
+"editors/agents/agent-harness/dist/opencode/prompts" = "~/.config/opencode/prompts"
 "editors/agents/agent-harness/dist/opencode/skills" = "~/.config/opencode/skills"
 "editors/agents/agent-harness/dist/opencode/commands" = "~/.config/opencode/commands"
 "editors/agents/agent-harness/dist/opencode/harness.config.json" = "~/.config/opencode/harness.config.json"

@@ -243,7 +243,7 @@
     "kerrigan": {
       "mode": "primary",
       "description": "Fullstack architect and SDD orchestrator - Cuban style, warm mentor",
-      "prompt": "{file:./agents/ORCHESTRATOR.md}\n\n{file:./agents/acs/WRITING_STYLE.md}",
+      "prompt": "{file:./prompts/ORCHESTRATOR.md}\n\n{file:./prompts/acs/WRITING_STYLE.md}",
       "model": "rook/gg-brain",
       "permission": {
         "task": {
@@ -277,50 +277,50 @@
       "subagents": {
         "tech-lead": {
           "description": "Tech Lead - Architecture and technical leadership",
-          "prompt": "{file:./agents/team/tech-lead.md}"
+          "prompt": "{file:./prompts/team/tech-lead.md}"
         },
         "senior-dev": {
           "description": "Senior Developer - Implementation and code quality",
-          "prompt": "{file:./agents/team/senior-dev.md}"
+          "prompt": "{file:./prompts/team/senior-dev.md}"
         },
         "devops-engineer": {
           "description": "DevOps Engineer - CI/CD and Infrastructure",
-          "prompt": "{file:./agents/team/devops-engineer.md}"
+          "prompt": "{file:./prompts/team/devops-engineer.md}"
         },
         "qa-engineer": {
           "description": "QA Engineer - Testing and quality",
-          "prompt": "{file:./agents/team/qa-engineer.md}"
+          "prompt": "{file:./prompts/team/qa-engineer.md}"
         },
         "security-engineer": {
           "description": "Security Engineer - Security and compliance",
-          "prompt": "{file:./agents/team/security-engineer.md}"
+          "prompt": "{file:./prompts/team/security-engineer.md}"
         },
         "product-manager": {
           "description": "Product Manager - Vision and prioritization",
-          "prompt": "{file:./agents/team/product-manager.md}"
+          "prompt": "{file:./prompts/team/product-manager.md}"
         },
         "code-reviewer": {
           "description": "Code Reviewer - Thorough reviews",
-          "prompt": "{file:./agents/team/code-reviewer.md}"
+          "prompt": "{file:./prompts/team/code-reviewer.md}"
         },
         "performance-engineer": {
           "description": "Performance Engineer - Optimization and scalability",
-          "prompt": "{file:./agents/team/performance-engineer.md}"
+          "prompt": "{file:./prompts/team/performance-engineer.md}"
         },
         "ux-designer": {
           "description": "UX Designer - User experience",
-          "prompt": "{file:./agents/team/ux-designer.md}"
+          "prompt": "{file:./prompts/team/ux-designer.md}"
         },
         "data-engineer": {
           "description": "Data Engineer - Data and analytics",
-          "prompt": "{file:./agents/team/data-engineer.md}"
+          "prompt": "{file:./prompts/team/data-engineer.md}"
         }
       }
     },
     "linear-pm": {
       "mode": "subagent",
       "description": "Project management specialist for Linear - manages issues, projects, and tracks progress",
-      "prompt": "{file:./agents/linear-pm.md}",
+      "prompt": "{file:./prompts/linear-pm.md}",
       "tools": {
         "read": true,
         "search": true
@@ -330,7 +330,7 @@
       "description": "Implement code changes from task definitions",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-apply.md}",
+      "prompt": "{file:./prompts/sdd/sdd-apply.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -342,7 +342,7 @@
       "description": "Archive completed change artifacts",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-archive.md}",
+      "prompt": "{file:./prompts/sdd/sdd-archive.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -354,7 +354,7 @@
       "description": "Run capability-driven acceptance QA and write qa-report.md",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-qa.md}",
+      "prompt": "{file:./prompts/sdd/sdd-qa.md}",
       "tools": {
         "bash": true,
         "read": true,
@@ -365,7 +365,7 @@
       "description": "Create technical design from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-design.md}",
+      "prompt": "{file:./prompts/sdd/sdd-design.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -377,7 +377,7 @@
       "description": "Investigate codebase and think through ideas",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-explore.md}",
+      "prompt": "{file:./prompts/sdd/sdd-explore.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -389,7 +389,7 @@
       "description": "Bootstrap SDD context and project configuration",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-init.md}",
+      "prompt": "{file:./prompts/sdd/sdd-init.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -401,7 +401,7 @@
       "description": "Create change proposals from explorations",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-propose.md}",
+      "prompt": "{file:./prompts/sdd/sdd-propose.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -413,7 +413,7 @@
       "description": "Write detailed specifications from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-spec.md}",
+      "prompt": "{file:./prompts/sdd/sdd-spec.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -425,7 +425,7 @@
       "description": "Break down specs and designs into implementation tasks",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-tasks.md}",
+      "prompt": "{file:./prompts/sdd/sdd-tasks.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -437,7 +437,7 @@
       "description": "Validate implementation against specs",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-verify.md}",
+      "prompt": "{file:./prompts/sdd/sdd-verify.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -449,7 +449,7 @@
       "description": "Surgical fix agent for judgment-day protocol",
       "hidden": false,
       "mode": "subagent",
-      "prompt": "{file:./agents/scalpel.md}",
+      "prompt": "{file:./prompts/scalpel.md}",
       "tools": {
         "bash": true,
         "edit": true,
@@ -461,7 +461,7 @@
       "description": "Adversarial code reviewer — blind judge A for judgment-day protocol",
       "hidden": false,
       "mode": "subagent",
-      "prompt": "{file:./agents/lens.md}",
+      "prompt": "{file:./prompts/lens.md}",
       "tools": {
         "bash": true,
         "read": true
@@ -471,7 +471,7 @@
       "description": "Adversarial code reviewer — blind judge B for judgment-day protocol",
       "hidden": false,
       "mode": "subagent",
-      "prompt": "{file:./agents/mirror.md}",
+      "prompt": "{file:./prompts/mirror.md}",
       "tools": {
         "bash": true,
         "read": true
@@ -481,7 +481,7 @@
       "description": "Guide users through the full SDD cycle using their real codebase",
       "hidden": false,
       "mode": "subagent",
-      "prompt": "{file:./agents/sdd/sdd-onboard.md}",
+      "prompt": "{file:./prompts/sdd/sdd-onboard.md}",
       "tools": {
         "bash": true,
         "edit": true,

@@ -8,8 +8,8 @@
   "components": {
     "core": {
       "include": [
-        "agents/ORCHESTRATOR.md",
-        "agents/acs/WRITING_STYLE.md",
+        "prompts/ORCHESTRATOR.md",
+        "prompts/acs/WRITING_STYLE.md",
         "README.md",
         "harness.config.json",
         "adapters/opencode/adapter.json",
@@ -29,35 +29,35 @@
     },
     "persona": {
       "include": [
-        "agents/ORCHESTRATOR.md",
-        "agents/acs/WRITING_STYLE.md",
+        "prompts/ORCHESTRATOR.md",
+        "prompts/acs/WRITING_STYLE.md",
         "adapters/opencode/opencode.json"
       ]
     },
     "delegation": {
       "include": [
         "commands/**/*.md",
-        "agents/team/**",
-        "agents/linear-pm.md",
+        "prompts/team/**",
+        "prompts/linear-pm.md",
         "skills/workflow/**"
       ]
     },
     "engram": {
       "include": [
-        "agents/**",
+        "prompts/**",
         "skills/**"
       ]
     },
     "context7": {
       "include": [
-        "agents/**",
+        "prompts/**",
         "skills/**"
       ]
     },
     "sdd": {
       "include": [
         "commands/sdd-*.md",
-        "agents/sdd/**",
+        "prompts/sdd/**",
         "skills/sdd/**",
         "skills/workflow/**"
       ]
@@ -70,9 +70,9 @@
     },
     "judgment-day": {
       "include": [
-        "agents/lens.md",
-        "agents/mirror.md",
-        "agents/scalpel.md",
+        "prompts/lens.md",
+        "prompts/mirror.md",
+        "prompts/scalpel.md",
         "skills/workflow/double-blind-review/**"
       ]
     },

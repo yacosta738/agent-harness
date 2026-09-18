@@ -79,8 +79,8 @@ export class MyAgent extends Agent<Env> {
 | Import            | Purpose                                     |
 |-------------------|---------------------------------------------|
 | `agents`          | Server-side Agent classes, lifecycle        |
-| `agents/react`    | `useAgent()` hook for WebSocket connections |
-| `agents/ai-react` | `useAgentChat()` hook for AI chat UIs       |
+| `../../../../../prompts`    | `useAgent()` hook for WebSocket connections |
+| `../../../../../prompts` | `useAgentChat()` hook for AI chat UIs       |
 
 ## In This Reference
 

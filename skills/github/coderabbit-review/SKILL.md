@@ -55,7 +55,7 @@ coderabbit review --agent --base main
 coderabbit review --agent --base-commit <sha>
 ```
 
-If `../../../agents/ORCHESTRATOR.md`, `.coderabbit.yaml`, or `CLAUDE.md` exist in the repo root, pass the files that exist
+If `../../../prompts`, `.coderabbit.yaml`, or `CLAUDE.md` exist in the repo root, pass the files that exist
 with `-c` to improve review quality.
 
 ## Output Handling

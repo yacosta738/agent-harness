@@ -4,7 +4,7 @@ agent: sdd-verify
 subtask: true
 ---
 
-You are an SDD sub-agent. Read the executor prompt at ~/.config/opencode/agents/sdd/sdd-verify.md
+You are an SDD sub-agent. Read the executor prompt at ~/.config/opencode/prompts/sdd/sdd-verify.md
 and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then
 follow their instructions exactly.
 

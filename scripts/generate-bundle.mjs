@@ -8,8 +8,8 @@
 // adapters/opencode/** file lands with that prefix stripped
 // (opencode.json, tui.json, scripts/*, plugins/*, themes/*).
 // Everything else keeps its repo-relative path.
-// The orchestrator prompt ships as-is at agents/ORCHESTRATOR.md (no composed
-// AGENTS.md — kerrigan loads it via {file:./agents/ORCHESTRATOR.md}).
+// The orchestrator prompt ships as-is at prompts/ORCHESTRATOR.md (no composed
+// AGENTS.md — kerrigan loads it via {file:./prompts/ORCHESTRATOR.md}).
 // Output is deterministic: sorted files, no timestamps in the manifest.
 
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
