@@ -244,7 +244,6 @@
       "mode": "primary",
       "description": "Fullstack architect and SDD orchestrator - Cuban style, warm mentor",
       "prompt": "{file:./prompts/ORCHESTRATOR.md}\n\n{file:./prompts/acs/WRITING_STYLE.md}",
-      "model": "rook/gg-brain",
       "permission": {
         "task": {
           "*": "deny",
