@@ -157,6 +157,22 @@ for enabled/disabled. Currently wired: Engram (persistent memory), Context7, Git
 disabled-by-default integrations (GitHub, Cloudflare API, Linear, Notion, SonarQube, Vercel,
 Ahrefs, Stitch, etc.). Enable one by flipping `enabled` and providing its env key.
 
+### Custom URLs and providers
+
+Some MCP integrations and the AI provider endpoint accept environment variables for full
+personalization. Copy `.env.example` to `.env.local` and edit:
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `ROOK_BASE_URL` | `https://api.openai.com/v1` | AI router/proxy base URL. Omit or use default to go direct to OpenAI |
+| `N8N_MCP_URL` | `https://n8n.example.com/mcp-server/http` | Your n8n MCP server URL |
+
+**Using your own router or proxy:** Set `ROOK_BASE_URL` to your endpoint. Omit it to use
+the default OpenAI endpoint directly — no custom infrastructure required.
+
+**Disabling custom services:** All custom-service URLs have safe defaults. If you don't set
+`N8N_MCP_URL`, the n8n integration uses a placeholder URL and remains disabled by default anyway.
+
 ## Permissions
 
 Also in `adapters/opencode/opencode.json`:
@@ -203,15 +219,15 @@ Dotter maps the bundle → `~/.config/opencode` (adjust the submodule path to
 yours; re-render after pulling):
 
 ```toml
-"editors/agents/agent-harness/dist/opencode/opencode.json" = "/Users/acosta/.config/opencode/opencode.json"
-"editors/agents/agent-harness/dist/opencode/tui.json" = "/Users/acosta/.config/opencode/tui.json"
-"editors/agents/agent-harness/dist/opencode/plugins" = "/Users/acosta/.config/opencode/plugins"
-"editors/agents/agent-harness/dist/opencode/themes" = "/Users/acosta/.config/opencode/themes"
-"editors/agents/agent-harness/dist/opencode/scripts" = "/Users/acosta/.config/opencode/scripts"
-"editors/agents/agent-harness/dist/opencode/agents" = "/Users/acosta/.config/opencode/agents"
-"editors/agents/agent-harness/dist/opencode/skills" = "/Users/acosta/.config/opencode/skills"
-"editors/agents/agent-harness/dist/opencode/commands" = "/Users/acosta/.config/opencode/commands"
-"editors/agents/agent-harness/dist/opencode/harness.config.json" = "/Users/acosta/.config/opencode/harness.config.json"
+"editors/agents/agent-harness/dist/opencode/opencode.json" = "~/.config/opencode/opencode.json"
+"editors/agents/agent-harness/dist/opencode/tui.json" = "~/.config/opencode/tui.json"
+"editors/agents/agent-harness/dist/opencode/plugins" = "~/.config/opencode/plugins"
+"editors/agents/agent-harness/dist/opencode/themes" = "~/.config/opencode/themes"
+"editors/agents/agent-harness/dist/opencode/scripts" = "~/.config/opencode/scripts"
+"editors/agents/agent-harness/dist/opencode/agents" = "~/.config/opencode/agents"
+"editors/agents/agent-harness/dist/opencode/skills" = "~/.config/opencode/skills"
+"editors/agents/agent-harness/dist/opencode/commands" = "~/.config/opencode/commands"
+"editors/agents/agent-harness/dist/opencode/harness.config.json" = "~/.config/opencode/harness.config.json"
 ```
 
 No-build alternative: symlink the source tree 1:1 instead, stripping the

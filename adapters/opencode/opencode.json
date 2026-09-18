@@ -141,7 +141,7 @@
         "-y",
         "supergateway",
         "--streamableHttp",
-        "https://n8n.ahome.quest/mcp-server/http",
+        "{env:N8N_MCP_URL:-https://n8n.example.com/mcp-server/http}",
         "--header",
         "authorization:Bearer {env:N8N_MCP_AUTH_TOKEN}"
       ],
@@ -170,7 +170,7 @@
         "--rm",
         "-i",
         "-v",
-        "/Users/acosta/Documents:/workdir",
+        "/workdir",
         "markitdown-mcp:latest"
       ],
       "enabled": false
@@ -495,7 +495,7 @@
       "npm": "@ai-sdk/openai-compatible",
       "name": "rook",
       "options": {
-        "baseURL": "https://omnirouter.ahome.quest/v1",
+        "baseURL": "{env:ROOK_BASE_URL:-https://api.openai.com/v1}",
         "apiKey": "{env:ROOK_API_KEY}"
       },
       "models": {

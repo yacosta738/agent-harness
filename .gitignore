@@ -1,9 +1,21 @@
 /dist/
-**/.DS_Store
-**/.DS_Store/
 
 # Local tooling indexes (machine-specific, never commit)
 .codegraph/
 
-# macOS metadata
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Environment
+*.env
+*.env.*
+!.env.example
+*.local
+.local/
+
+# OS
 .DS_Store
+.DS_Store/
+*.log
