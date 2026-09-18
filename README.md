@@ -26,14 +26,14 @@ Receipt-Driven Development (RDD) reviews an immutable candidate but never author
 ## Quick start
 
 ```bash
-# Validate references (opencode.json {file:} paths, adapter.json includes, command paths)
-python3 scripts/check-refs.py
+# Validate references in the live repo
+npm run validate
 
 # List what a preset would deploy
-node scripts/generate-bundle.mjs list --preset recommended
+npm run list -- --preset recommended
 
-# Render + verify the deployable bundle (dist/ is gitignored — required after clone/pull)
-scripts/deploy.sh --preset recommended --output dist/opencode
+# Render + verify the deployable bundle (dist/ is gitignored)
+npm run deploy -- --preset recommended
 ```
 
 Deploy keeps this repo canonical and maps it 1:1 onto `~/.config/opencode`, except
@@ -173,7 +173,7 @@ agent-harness/
 ├── commands/                ← 27 slash commands (13 sdd + 3 diagram + 5 vercel + 6 misc)
 ├── skills/                  ← 211 skills in 19 groups (filesystem = truth)
 ├── adapters/opencode/       ← opencode.json, tui.json, adapter.json, themes/, plugins/, scripts/
-├── scripts/                 ← check-refs.py (validate), generate-bundle.mjs (render/list presets)
+├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list presets), deploy.mjs (render+verify)
 └── harness.config.json      ← preset, persona, TDD toggle
 ```
 
@@ -181,11 +181,11 @@ agent-harness/
 
 The repo is canonical; `dist/` (gitignored by design — generated artifacts
 don't belong in git) is the deployable bundle. Fresh machine sequence:
-clone → `scripts/deploy.sh` → dotter deploy. Re-run `deploy.sh` after every
+clone → `npm run deploy` → dotter deploy. Re-run `npm run deploy` after every
 pull, otherwise dotter symlinks dangle:
 
 ```bash
-scripts/deploy.sh --preset recommended --output dist/opencode
+npm run deploy -- --preset recommended --output dist/opencode
 # = render bundle + verify 27/27 {file:} refs resolve inside it
 ```
 

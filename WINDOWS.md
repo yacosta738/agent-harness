@@ -1,162 +1,63 @@
 # Windows Compatibility
 
-This harness is designed for macOS and Linux. Windows requires extra setup.
+This harness now runs natively on Windows. Only Node.js 18+ is required.
 
-## Quick Summary
+## Requirements
 
-| Script | Language | Windows Support |
-|--------|----------|----------------|
-| `deploy.sh` | Bash | Requires WSL, Git Bash, or Cygwin |
-| `check-refs.py` | Python 3 | Works if Python is installed |
-| `generate-bundle.mjs` | Node.js | Works if Node.js is installed |
+- Node.js 18 or newer: https://nodejs.org/
 
-## Option 1: WSL 2 (Recommended)
+That's it. No WSL, no Git Bash, no Python.
 
-Windows Subsystem for Linux provides the best experience.
+## Quick Start (Windows PowerShell or cmd)
 
-### Setup
-
-1. **Enable WSL 2** (run in PowerShell as Admin):
-   ```powershell
-   wsl --install
-   ```
-
-2. **Restart your machine** when prompted.
-
-3. **Clone the repo inside WSL** (not in `/mnt/c/`):
-   ```bash
-   git clone https://github.com/your-org/agent-harness.git ~/agent-harness
-   cd ~/agent-harness
-   ```
-
-4. **Install dependencies inside WSL**:
-   ```bash
-   sudo apt update
-   sudo apt install python3 nodejs npm git
-   ```
-
-5. **Run the deploy script**:
-   ```bash
-   bash scripts/deploy.sh --preset recommended --output dist/opencode
-   ```
-
-### Why clone inside WSL?
-
-WSL filesystem performance is significantly better for the tools inside it. Accessing Windows files (`/mnt/c/`) from WSL works but is slower.
-
-## Option 2: Git Bash
-
-Git for Windows includes Git Bash, which can run most bash scripts.
-
-### Setup
-
-1. **Install Git for Windows**: https://git-scm.com/download/win
-
-2. **Clone the repo** in your preferred directory.
-
-3. **Install Python 3**: https://www.python.org/downloads/windows/
-
-4. **Install Node.js**: https://nodejs.org/ (LTS recommended)
-
-5. **Run with Git Bash**:
-   ```bash
-   git bash scripts/deploy.sh --preset recommended --output dist/opencode
-   ```
-
-### Known Limitations with Git Bash
-
-- `set -euo pipefail` in `deploy.sh` may behave differently
-- Some bash builtins may not be available
-- Python scripts work, but paths must use forward slashes or be converted
-
-## Option 3: Cygwin
-
-Cygwin provides a POSIX-compatible layer on Windows.
-
-### Setup
-
-1. **Install Cygwin**: https://www.cygwin.com/
-
-2. **Install packages**: `python3`, `nodejs`, `git`, `bash`
-
-3. **Run scripts from Cygwin terminal**.
-
-## Option 4: Docker
-
-If Docker is available, you could containerize the harness.
-
-### Minimal Dockerfile Example
-
-```dockerfile
-FROM node:20-slim
-
-RUN apt-get update && apt-get install -y python3 git bash
-
-WORKDIR /app
-COPY . /app
-
-RUN bash scripts/deploy.sh --preset recommended --output dist/opencode
-
-CMD ["bash"]
+```powershell
+npm run deploy
 ```
 
-Build and run:
-```bash
-docker build -t agent-harness .
-docker run -it agent-harness
-```
-
-## Dependencies Checklist
-
-Before running any script, verify you have:
-
-- [ ] **Python 3.8+**: `python3 --version`
-- [ ] **Node.js 18+**: `node --version`
-- [ ] **Bash 4+**: `bash --version` (or WSL bash)
-
-## Common Issues on Windows
-
-### Python not found
-
-Add Python to your PATH, or use:
-```bash
-py -3 scripts/check-refs.py --root dist/opencode
-```
-
-### Paths with spaces
-
-If your Windows username has spaces (e.g., `C:\Users\Juan Perez\`), either:
-- Create a Windows local user without spaces
-- Clone to a path without spaces like `D:\dev\agent-harness`
-- Use WSL where paths don't have spaces
-
-### Permission denied (deploy.sh)
-
-Run Git Bash as Administrator, or in WSL use:
-```bash
-chmod +x scripts/deploy.sh
-```
-
-## Testing Your Setup
+## Quick Start (macOS / Linux)
 
 ```bash
-# Verify Python
-python3 scripts/check-refs.py
-
-# Verify Node
-node scripts/generate-bundle.mjs list --preset recommended
-
-# Full render
-bash scripts/deploy.sh --preset recommended --output dist/opencode
+npm run deploy
 ```
 
-If all three commands succeed, you're ready to deploy with dotter.
+## What changed
 
-## Next Step: Deploy
+The previous Bash (`deploy.sh`) and Python (`check-refs.py`) entrypoints are
+gone. Everything now goes through Node ESM scripts and `npm run`:
 
-After setup, follow the [README.md](README.md#deployment) deployment instructions:
+| Old | New |
+|-----|-----|
+| `python3 scripts/check-refs.py` | `npm run validate` |
+| `node scripts/generate-bundle.mjs list` | `npm run list` |
+| `node scripts/generate-bundle.mjs render` | `npm run render` |
+| `scripts/deploy.sh --preset X` | `npm run deploy -- --preset X` |
+| `py -3 scripts/check-refs.py --root dist/opencode` | `node scripts/check-refs.mjs --root dist/opencode` |
 
-```bash
-scripts/deploy.sh --preset recommended --output dist/opencode
-# Then run: dotter deploy
-```
+All scripts are pure Node — no shell, no Python. They use forward slashes in
+paths internally (Node handles Windows path resolution natively), so no
+manual conversion is needed.
+
+## Troubleshooting
+
+### `npm` not found
+
+Install Node.js 18 or newer from https://nodejs.org/ — `npm` ships with it.
+After install, open a new terminal so `PATH` updates.
+
+### `npm run deploy` fails with "bundle dir not found" (validate-only mode)
+
+`--validate-only` skips the render step. The bundle must already exist
+(run a regular `npm run deploy` once first, or omit `--validate-only`).
+
+### Path issues on Windows
+
+Paths in commands are POSIX-style (`./agents/ORCHESTRATOR.md`,
+`~/.config/opencode/...`). The harness scripts resolve them with `path.resolve`,
+which maps them to Windows-native paths at runtime — you don't need to
+convert anything.
+
+### dotter mapping is unchanged
+
+The dotter `toml` mappings in `README.md` are path-agnostic; they're
+dotter's job, not the harness's. Re-render with `npm run deploy` after
+every pull.
