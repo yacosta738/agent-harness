@@ -117,7 +117,7 @@ Two standards, split on purpose:
 | Vercel (5) | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace` |
 | Misc (6) | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop` |
 
-## Skills (211)
+## Skills (212)
 
 Auto-discovered from `skills/**/SKILL.md` across 19 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
@@ -139,7 +139,7 @@ trust the filesystem, not this table:
 | `obsidian/` | 5 | CLI, markdown, bases, canvas, defuddle |
 | `devops/` | 4 | Docker, Grafana, Make, SQL optimization |
 | `notion/` | 4 | Capture, meetings, research docs, spec→implementation |
-| `security/` | 4 | Threat model, finding discovery/triage/fix |
+| `security/` | 5 (+12 attack classes) | Orchestrator + threat model, finding discovery/triage/fix; attack-classes library in `_shared/` |
 | `personal/` | 3 | `haci` (IRPF España), `imagegen`, `yuniel-writing-style` |
 | `languages/` | 2 | TypeScript, Rust (Ratatui) |
 | `android/` | 1 | Emulator QA |
