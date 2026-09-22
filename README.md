@@ -154,7 +154,7 @@ It never fetches, installs, or renders remotely; missing PNG/Chromium capability
 
 Configured in `adapters/opencode/opencode.json` (`mcp` key) — that file is the source of truth
 for enabled/disabled. Currently wired: Engram (persistent memory), Context7, GitHub Grep
-(`gh_grep`), Chrome DevTools, Playwright, Semgrep, Socket, Codegraph, OpenPencil — plus
+(`gh_grep`), Chrome DevTools, Playwright, Semgrep, Socket, Codegraph — plus
 disabled-by-default integrations (GitHub, Cloudflare API, Linear, Notion, SonarQube, Vercel,
 Ahrefs, Stitch, etc.). Enable one by flipping `enabled` and providing its env key.
 
