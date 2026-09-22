@@ -36,4 +36,4 @@ Directo en línea. El comportamiento esperado está suficientemente definido y l
 
 ## Estado
 
-En progreso.
+Completado.
