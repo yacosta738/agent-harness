@@ -3,7 +3,7 @@
 //
 // Convention: repo root maps 1:1 to ~/.config/opencode, except
 //   adapters/opencode/opencode.json -> opencode.json
-//   adapters/opencode/tui.json       -> tui.json
+//   adapters/opencode/cli.json      -> cli.json
 // So {file:./...} in opencode.json is resolved target-relative against repo root.
 //
 // Checks (source mode, default):

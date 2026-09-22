@@ -13,7 +13,7 @@
         "README.md",
         "harness.config.json",
         "adapters/opencode/adapter.json",
-        "adapters/opencode/tui.json"
+        "adapters/opencode/cli.json"
       ]
     },
     "skills": {
@@ -79,7 +79,7 @@
     "theme": {
       "include": [
         "adapters/opencode/themes/**",
-        "adapters/opencode/tui.json"
+        "adapters/opencode/cli.json"
       ]
     },
     "integrations": {
@@ -87,7 +87,7 @@
         "adapters/opencode/scripts/**",
         "adapters/opencode/themes/**",
         "adapters/opencode/plugins/**",
-        "adapters/opencode/tui.json"
+        "adapters/opencode/cli.json"
       ]
     }
   },

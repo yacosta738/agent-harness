@@ -38,9 +38,10 @@ npm run deploy -- --preset recommended
 
 Deploy keeps this repo canonical and maps it 1:1 onto `~/.config/opencode`, except
 every `adapters/opencode/**` file lands with that prefix stripped (`opencode.json`,
-`tui.json`, `scripts/`, `plugins/`, `themes/` at bundle root — no `adapters/` dir).
-The orchestrator prompt ships as-is at `prompts` (kerrigan loads it
-via `{file:}`). See [Deployment](#deployment) for the dotter mapping.
+`cli.json`, `scripts/`, `plugins/`, `themes/` at bundle root — no `adapters/` dir).
+The V2 bundle intentionally ships no legacy `tui.json` or unported plugin implementations.
+The orchestrator prompt ships as-is at `prompts` (kerrigan loads it via `{file:}`). See
+[Deployment](#deployment) for the dotter mapping.
 
 To change Kerrigan's voice, edit `prompts` — no other file needs touching.
 
@@ -191,7 +192,7 @@ agent-harness/
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
-├── adapters/opencode/       ← opencode.json, tui.json, adapter.json, themes/, plugins/, scripts/
+├── adapters/opencode/       ← opencode.json, cli.json, adapter.json, themes/, plugins/, scripts/
 ├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list presets), deploy.mjs (render+verify)
 └── harness.config.json      ← preset, persona, TDD toggle
 ```
@@ -220,7 +221,7 @@ yours; re-render after pulling):
 
 ```toml
 "editors/agents/agent-harness/dist/opencode/opencode.json" = "~/.config/opencode/opencode.json"
-"editors/agents/agent-harness/dist/opencode/tui.json" = "~/.config/opencode/tui.json"
+"editors/agents/agent-harness/dist/opencode/cli.json" = "~/.config/opencode/cli.json"
 "editors/agents/agent-harness/dist/opencode/plugins" = "~/.config/opencode/plugins"
 "editors/agents/agent-harness/dist/opencode/themes" = "~/.config/opencode/themes"
 "editors/agents/agent-harness/dist/opencode/scripts" = "~/.config/opencode/scripts"
@@ -231,7 +232,7 @@ yours; re-render after pulling):
 ```
 
 No-build alternative: symlink the source tree 1:1 instead, stripping the
-`adapters/opencode/` prefix by hand (`opencode.json`, `tui.json`, `scripts/`,
+`adapters/opencode/` prefix by hand (`opencode.json`, `cli.json`, `scripts/`,
 `plugins/`, `themes/` land at target root). You lose preset pruning — every
 `{file:}` must resolve, i.e. only `recommended`/`full` content works.
 

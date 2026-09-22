@@ -6,7 +6,7 @@
 //
 // Convention: bundle root mirrors ~/.config/opencode — every
 // adapters/opencode/** file lands with that prefix stripped
-// (opencode.json, tui.json, scripts/*, plugins/*, themes/*).
+// (opencode.json, cli.json, scripts/*, plugins/*, themes/*).
 // Everything else keeps its repo-relative path.
 // The orchestrator prompt ships as-is at prompts/ORCHESTRATOR.md (no composed
 // AGENTS.md — kerrigan loads it via {file:./prompts/ORCHESTRATOR.md}).
@@ -20,8 +20,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ADAPTER_PREFIX = "adapters/opencode/";
 
 // Bundle root mirrors ~/.config/opencode: every adapters/opencode/** file
-// lands with the prefix stripped (opencode.json, tui.json, scripts/*,
-// plugins/*, themes/*, adapter.json). Everything else keeps its repo path.
+// lands with the prefix stripped (opencode.json, cli.json, scripts/*,
+// plugins/*, themes/*, adapter.json). Unsupported V1 plugin files are absent.
 function destFor(repoPath) {
   return repoPath.startsWith(ADAPTER_PREFIX) ? repoPath.slice(ADAPTER_PREFIX.length) : repoPath;
 }
