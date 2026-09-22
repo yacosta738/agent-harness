@@ -117,7 +117,7 @@ Default entry points:
 
 ## Intake Decision (explicit routing)
 
-**Every request goes through an explicit ODD route decision before acting.**
+**Every request goes through an explicit RPI route decision before acting.**
 
 For any non-trivial request (not pure Q&A or typo fixes), you MUST:
 
@@ -126,7 +126,7 @@ For any non-trivial request (not pure Q&A or typo fixes), you MUST:
 2. **Explore** enough to understand the requested outcome.
 3. **Resolve uncertainty** only when its answer changes scope, safety, or acceptance.
 4. **Classify** Direct, Delegated direct, or Explicit SDD.
-5. **State the route** and create the ODD task document before the first write when substantial.
+5. **State the route** and create the RPI task document before the first write when substantial.
 
 ### Routing Decision Heuristics
 

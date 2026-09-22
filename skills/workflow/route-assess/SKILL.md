@@ -5,7 +5,7 @@ description: "Use when routing is genuinely ambiguous between Direct, Delegated 
 
 # Route Assess — Complexity Classification Skill
 
-Help classify an incoming request into the lightest safe ODD route when the routing decision is
+Help classify an incoming request into the lightest safe RPI route when the routing decision is
 ambiguous. Do not use this skill for an exact, mechanical edit with no unresolved design choice;
 classify that as Direct and proceed. SDD is never automatic.
 
@@ -40,7 +40,7 @@ module declarations is one surface. Multiple files alone never force SDD.
 Ask: **"¿Necesitamos una especificación durable para decidir o coordinar este cambio?"**
 
 - Exact requested outcome, no unresolved trade-off → Direct
-- Temporary design reasoning or a scoped choice → brainstorming inside ODD
+- Temporary design reasoning or a scoped choice → brainstorming inside RPI
 - Durable product contract, approval gates, or resumable coordination → ask whether Explicit SDD is wanted
 
 Do not confuse **persistent code** with **a need for durable specification**. Almost every committed
@@ -50,7 +50,7 @@ change persists. Long-term behavior alone is not an SDD signal.
 
 Ask: **"¿Qué pasa si nos equivocamos?"**
 
-- Easy to revert, low blast radius → Direct if no design choice remains; otherwise use internal brainstorming within ODD
+- Easy to revert, low blast radius → Direct if no design choice remains; otherwise use internal brainstorming within RPI
 - Hard to undo, high risk → strengthen verification/review; do not infer SDD
 
 ### Step 4: Coupling Check
@@ -74,7 +74,7 @@ Ask: **"¿Está aislado o depende de otras cosas?"**
 ### SDD Admission Check
 
 Before recommending SDD, name the durable artifact or coordination problem it solves and confirm
-that the user wants it. Otherwise remain in ODD. Never start `sdd-propose` merely because a config
+that the user wants it. Otherwise remain in RPI. Never start `sdd-propose` merely because a config
 value affects runtime behavior, the task is large, or risk is high.
 
 ## Output Format
@@ -141,7 +141,7 @@ content:
 If the user names a variable, supplies its new default, and asks to apply it to all equivalent
 module declarations, route Direct: the edit is mechanically specified, bounded, and reversible.
 Use focused validation, not `sdd-propose`. If the correct default or rollout semantics are still
-undecided, use brainstorming inside ODD to resolve that choice first. Use Explicit SDD only after
+undecided, use brainstorming inside RPI to resolve that choice first. Use Explicit SDD only after
 the user requests or accepts durable artifacts.
 
 If user asks to "update the test step in CI" and you route it as Delegated direct, save:
