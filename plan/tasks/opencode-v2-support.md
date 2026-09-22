@@ -8,12 +8,12 @@ Delegated direct. The change spans plugin configuration, local plugin implementa
 
 ## Tasks
 
-- [x] ODD-001 Identify V1-only OpenCode surfaces and V2-compatible surfaces.
-- [x] ODD-002 Migrate plugin configuration from `plugin` to `plugins`.
-- [x] ODD-003 Remove unported local plugin implementations from the V2 bundle and config.
-- [x] ODD-004 Replace `tui.json` deployment with V2 `cli.json` configuration.
-- [x] ODD-005 Update bundle/reference validation and README deployment instructions.
-- [x] ODD-006 Run focused JSON/reference/plugin syntax checks and record evidence.
+- [x] RPI-001 Identify V1-only OpenCode surfaces and V2-compatible surfaces.
+- [x] RPI-002 Migrate plugin configuration from `plugin` to `plugins`.
+- [x] RPI-003 Remove unported local plugin implementations from the V2 bundle and config.
+- [x] RPI-004 Replace `tui.json` deployment with V2 `cli.json` configuration.
+- [x] RPI-005 Update bundle/reference validation and README deployment instructions.
+- [x] RPI-006 Run focused JSON/reference/plugin syntax checks and record evidence.
 
 ## Acceptance criteria
 
