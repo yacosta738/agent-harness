@@ -21,10 +21,10 @@ debugging, and planning are internal RPI techniques.
 
 When authorized work has two or more meaningful implementation steps or progress worth recovering:
 
-1. Run `node scripts/rpi-task.mjs init "<feature>"` before the first source write.
-2. Keep `rpi/tasks/<feature>.md` concise with stable `RPI-NNN` IDs, acceptance criteria, evidence,
+1. Create `plan/tasks/<feature>.md` before the first source write.
+2. Keep the task document concise with stable `RPI-NNN` IDs, acceptance criteria, evidence,
    progress, and next step.
-3. Run `node scripts/rpi-task.mjs check <slug>` before reporting `Ready`.
-4. Mirror the current document to Engram topic `rpi/<feature>/tasks`.
+3. Record the relevant verification evidence in the task document before reporting `Ready`.
+4. Mirror the current document to Engram topic `plan/<feature>/tasks`.
 
 Small and read-only work creates no RPI artifact.
