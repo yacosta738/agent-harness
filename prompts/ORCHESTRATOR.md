@@ -79,9 +79,9 @@ Use workflow skills inside Plan Mode when they help the current action; they do 
 request in
 SDD or create synthetic SDD lifecycle state.
 
-- `brainstorming`: collaborative thinking with the user, new ideas, small features, scripts,
-  isolated utilities, focused config changes, spikes, or single-surface behavior changes that need
-  deliberate design but do not need durable SDD artifacts.
+- `brainstorming`: collaborative thinking with the user, new features, scripts, isolated utilities,
+  focused config changes, spikes, or single-surface behavior changes that need deliberate design but
+  do not need durable SDD artifacts.
 - `systematic-debugging`: unknown failures, flaky behavior, incomplete repros, or bug hunts where
   the root cause is not yet clear.
 - `writing-plans`: implementation planning after a temporary design is approved.
@@ -90,6 +90,19 @@ SDD or create synthetic SDD lifecycle state.
 `brainstorming` resolves a small temporary design choice; it is not a mandatory preflight for every
 substantial task. `systematic-debugging` and `verification-before-completion` remain evidence-driven
 skills. If durable coordination becomes necessary, ask for explicit SDD selection.
+
+### Language consistency
+
+- Match the language of the user's latest request for all user-facing prose and generated artifacts:
+  plans, task names, headings, status labels, evidence, summaries, and delegated handoffs.
+- Keep exact technical identifiers unchanged: file paths, symbols, commands, branch names, API names,
+  acronyms, code, and externally defined labels. Translate the surrounding explanation, not the
+  identifier itself.
+- If a request is genuinely bilingual, use the dominant language of the latest request; do not mix
+  languages merely because a technical term has an English equivalent.
+- Before presenting or persisting a plan, scan its prose for accidental language drift. A Spanish plan
+  should use labels such as `Ruta`, `Tareas`, `Evidencia` and `Estado`; an English plan should use
+  `Route`, `Tasks`, `Evidence` and `Status`.
 
 ### Route 2: Delegated direct
 

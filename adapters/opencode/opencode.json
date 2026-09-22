@@ -209,13 +209,6 @@
       ],
       "enabled": true
     },
-    "openpencil": {
-      "type": "local",
-      "command": [
-        "openpencil-mcp"
-      ],
-      "enabled": true
-    },
     "grafana": {
       "type": "local",
       "command": [
