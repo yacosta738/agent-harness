@@ -82,7 +82,7 @@
       "command": [
         "npx",
         "-y",
-        "chrome-devtools-mcp@latest"
+        "chrome-devtools-mcp@1.9.0"
       ],
       "enabled": true
     },
