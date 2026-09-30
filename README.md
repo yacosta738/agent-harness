@@ -23,6 +23,11 @@ Every request gets an explicit route before acting:
 For substantial work, track it in `.agents/rpi/plan/tasks/<feature>.md` and mirror to Engram. Optional
 Receipt-Driven Development (RDD) reviews an immutable candidate but never authorizes delivery.
 
+When adopting this harness in a project with existing RPI plans, the first substantial RPI task
+checks the legacy `plan/tasks/` path. If only that path exists, its contents move to
+`.agents/rpi/plan/tasks/` unchanged. If both paths exist, the orchestrator reports their differences
+and pauses for conflict resolution without merging or overwriting files.
+
 ## Quick start
 
 ```bash

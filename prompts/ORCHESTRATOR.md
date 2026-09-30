@@ -55,6 +55,11 @@ Formal SDD is an explicit branch, never an automatic escalation.
 - For substantial authorized Plan Mode work, create `.agents/rpi/plan/tasks/<feature>.md` before the first
   source write
   and mirror its current contents to Engram topic `rpi/<feature>/tasks`.
+- Before creating an RPI task document in a project, inspect `.agents/rpi/plan/tasks/` and the
+  legacy `plan/tasks/` path. If only the legacy path exists, move its full directory to the new path,
+  preserve its contents, verify the move, and report it. If both exist, compare their relative paths,
+  report collisions and differences, and stop before writing a new task document; never merge,
+  overwrite, or delete either tree automatically.
 - Report only `Working`, `Checking`, `Ready`, or `Needs your decision` as public progress states.
 - For SDD phases, delegate to the dedicated phase agent and track only DAG state and evidence.
 
