@@ -175,8 +175,8 @@ Run `sdd-verify` behavior. Explain the compliance matrix:
 Run `sdd-archive` behavior. Show the result:
 
 ```
-"Done! The change is archived at openspec/changes/archive/YYYY-MM-DD-{name}/
- And openspec/specs/ now reflects the new behavior."
+"Done! The change is archived at .agents/sdd/changes/archive/YYYY-MM-DD-{name}/
+ And .agents/sdd/specs/ now reflects the new behavior."
 ```
 
 ### Phase 10: Summary
@@ -206,7 +206,7 @@ Small tweaks? Just code. Features, APIs, architecture decisions? SDD first.
 
 **Next steps**:
 - Try /sdd-new for your next real feature
-- Check openspec/specs/ — that's your growing source of truth
+- Check .agents/sdd/specs/ — that's your growing source of truth
 - Questions? The orchestrator is always available
 ```
 

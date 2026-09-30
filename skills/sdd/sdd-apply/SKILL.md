@@ -107,7 +107,7 @@ Detect the test runner for execution:
 
 ```
 Detect test runner from:
-├── openspec/config.yaml → rules.apply.test_command (highest priority)
+├── .agents/sdd/config.yaml → rules.apply.test_command (highest priority)
 ├── package.json → scripts.test
 ├── pyproject.toml / pytest.ini → pytest
 ├── Makefile → make test
@@ -202,7 +202,7 @@ If none, say "None."}
 - NEVER implement tasks that weren't assigned to you
 - Load and follow any relevant coding skills for the project stack (e.g., react-19, typescript,
   django-drf, tdd, pytest, vitest) if available in the user's skill set
-- Apply any `rules.apply` from `openspec/config.yaml`
+- Apply any `rules.apply` from `.agents/sdd/config.yaml`
 - Keep implementation batches aligned with work-unit commits: behavior, tests, and docs stay
   together
 - TDD is mandatory when a runner exists; when no runner exists, do not invent one and explicitly report that RED → GREEN → REFACTOR evidence is unavailable

@@ -26,13 +26,13 @@ The lifecycle is `apply → verify → qa → archive`. Evaluate observable user
 
 Read the active change artifacts before testing:
 
-- `openspec/changes/{change-name}/proposal.md`
-- `openspec/changes/{change-name}/specs/` (all domains)
-- `openspec/changes/{change-name}/design.md`
-- `openspec/changes/{change-name}/tasks.md`
-- `openspec/changes/{change-name}/verify-report.md` when present
-- `openspec/changes/{change-name}/state.yaml`
-- `openspec/config.yaml`
+- `.agents/sdd/changes/{change-name}/proposal.md`
+- `.agents/sdd/changes/{change-name}/specs/` (all domains)
+- `.agents/sdd/changes/{change-name}/design.md`
+- `.agents/sdd/changes/{change-name}/tasks.md`
+- `.agents/sdd/changes/{change-name}/verify-report.md` when present
+- `.agents/sdd/changes/{change-name}/state.yaml`
+- `.agents/sdd/config.yaml`
 
 Use the proposal capabilities, specifications, design, and target surface as sources of truth. Code inspection can identify the target and inform scenarios, but code MUST NOT be the sole source of acceptance criteria.
 
@@ -71,7 +71,7 @@ Every scenario has exactly one result: `PASS`, `FAIL`, `BLOCKED`, or `NOT TESTED
 
 ## Canonical `qa-report.md`
 
-Persist `openspec/changes/{change-name}/qa-report.md` before returning. Use this structure and keep the evidence auditable:
+Persist `.agents/sdd/changes/{change-name}/qa-report.md` before returning. Use this structure and keep the evidence auditable:
 
 ```markdown
 # Acceptance QA Report: {change-name}

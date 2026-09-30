@@ -45,7 +45,7 @@ Before designing, read the actual code that will be affected:
 Create the design document:
 
 ```
-openspec/changes/{change-name}/
+.agents/sdd/changes/{change-name}/
 ├── proposal.md
 ├── specs/
 └── design.md              ← You create this
@@ -124,7 +124,7 @@ Return to the orchestrator:
 ## Design Created
 
 **Change**: {change-name}
-**Location**: openspec/changes/{change-name}/design.md
+**Location**: .agents/sdd/changes/{change-name}/design.md
 
 ### Summary
 - **Approach**: {one-line technical approach}
@@ -148,7 +148,7 @@ Ready for tasks (sdd-tasks).
 - If you find the codebase uses a pattern different from what you'd recommend, note it but FOLLOW
   the existing pattern unless the change specifically addresses it
 - Keep ASCII diagrams simple — clarity over beauty
-- Apply any `rules.design` from `openspec/config.yaml`
+- Apply any `rules.design` from `.agents/sdd/config.yaml`
 - If you have open questions that BLOCK the design, say so clearly — don't guess
 - Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),
   `artifacts`, `next_recommended`, and `risks`

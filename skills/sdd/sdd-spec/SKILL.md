@@ -38,7 +38,7 @@ domain (e.g., `auth/`, `payments/`, `ui/`).
 
 ### Step 2: Read Existing Specs
 
-If `openspec/specs/{domain}/spec.md` exists, read it to understand CURRENT behavior. Your delta
+If `.agents/sdd/specs/{domain}/spec.md` exists, read it to understand CURRENT behavior. Your delta
 specs describe CHANGES to this behavior.
 
 ### Step 3: Write Delta Specs
@@ -46,7 +46,7 @@ specs describe CHANGES to this behavior.
 Create specs inside the change folder:
 
 ```
-openspec/changes/{change-name}/
+.agents/sdd/changes/{change-name}/
 ├── proposal.md              ← (already exists)
 └── specs/
     └── {domain}/
@@ -156,7 +156,7 @@ Ready for design (sdd-design). If design already exists, ready for tasks (sdd-ta
 - Include both happy path AND edge case scenarios
 - Keep scenarios TESTABLE — someone should be able to write an automated test from each one
 - DO NOT include implementation details in specs — specs describe WHAT, not HOW
-- Apply any `rules.specs` from `openspec/config.yaml`
+- Apply any `rules.specs` from `.agents/sdd/config.yaml`
 - Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),
   `artifacts`, `next_recommended`, and `risks`
 

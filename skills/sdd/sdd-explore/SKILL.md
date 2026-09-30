@@ -33,7 +33,7 @@ The orchestrator will give you:
 
 Before starting, load existing project context and specs:
 
-- Read `openspec/config.yaml` and `openspec/specs/`.
+- Read `.agents/sdd/config.yaml` and `.agents/sdd/specs/`.
 
 ## What to Do
 
@@ -77,7 +77,7 @@ If the orchestrator provided a change name (i.e., this exploration is part of `/
 analysis to:
 
 ```
-openspec/changes/{change-name}/
+.agents/sdd/changes/{change-name}/
 └── exploration.md          ← You create this
 ```
 

@@ -27,7 +27,7 @@ Use when the user asks to:
 - Create implementation tasks for Linear or GitHub.
 - Break work into agent-ready slices.
 - Prepare backlog items from a temporary plan in `tmp/plans/` or durable SDD
-  artifacts in `openspec/changes/`.
+  artifacts in `.agents/sdd/changes/`.
 
 Do NOT use this instead of SDD. If the source material is vague, missing
 requirements, or contains unresolved architecture decisions, stop and recommend
@@ -41,7 +41,7 @@ Read the source material fully:
 
 - Conversation context.
 - `tmp/plans/*.md` temporary plans.
-- `openspec/changes/**` SDD artifacts.
+- `.agents/sdd/changes/**` SDD artifacts.
 - Existing Linear/GitHub issue if the user provides a URL or identifier.
 
 If codebase context affects issue titles or scope, explore enough to use the

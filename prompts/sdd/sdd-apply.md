@@ -136,7 +136,7 @@ Detect the test runner for execution:
 
 ```
 Detect test runner from:
-├── openspec/config.yaml → rules.apply.test_command (highest priority)
+├── .agents/sdd/config.yaml → rules.apply.test_command (highest priority)
 ├── package.json → scripts.test
 ├── pyproject.toml / pytest.ini → pytest
 ├── Makefile → make test
@@ -167,7 +167,7 @@ Follow **Section C** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 - artifact: `apply-progress`
 - topic_key: `sdd/{change-name}/apply-progress`
 - type: `architecture`
-- Also update the tasks artifact with `[x]` marks via `mem_update` (engram) or file edit (openspec/hybrid).
+- Also update the tasks artifact with `[x]` marks via `mem_update` (engram) or file edit (OpenSpec/hybrid).
 
 #### Merge Protocol
 
@@ -239,5 +239,5 @@ Apply implements only the assigned task slice and must not claim user/operator a
 - When applying `size:exception`, state it explicitly in apply-progress and the return summary
 - NEVER implement tasks that weren't assigned to you
 - Skill loading is handled in Step 1 — follow any loaded skills strictly when writing code
-- Apply any `rules.apply` from `openspec/config.yaml`
+- Apply any `rules.apply` from `.agents/sdd/config.yaml`
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.

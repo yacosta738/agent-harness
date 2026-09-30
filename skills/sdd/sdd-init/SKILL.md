@@ -37,7 +37,7 @@ Read the project to understand:
 Create this directory structure:
 
 ```
-openspec/
+.agents/sdd/
 ├── config.yaml              ← Project-specific SDD config
 ├── specs/                   ← Source of truth (empty initially)
 └── changes/                 ← Active changes
@@ -49,7 +49,7 @@ openspec/
 Based on what you detected, create the config when in `openspec` mode:
 
 ```yaml
-# openspec/config.yaml
+# .agents/sdd/config.yaml
 schema: spec-driven
 
 context: |
@@ -94,9 +94,9 @@ Return a structured summary:
 **Persistence**: openspec
 
 ### Structure Created
-- openspec/config.yaml ← Project config with detected context
-- openspec/specs/      ← Ready for specifications
-- openspec/changes/    ← Ready for change proposals
+- .agents/sdd/config.yaml ← Project config with detected context
+- .agents/sdd/specs/      ← Ready for specifications
+- .agents/sdd/changes/    ← Ready for change proposals
 
 ### Next Steps
 Ready for /sdd-explore <topic> or /sdd-new <change-name>.
@@ -106,7 +106,7 @@ Ready for /sdd-explore <topic> or /sdd-new <change-name>.
 
 - NEVER create placeholder spec files - specs are created via sdd-spec during a change
 - ALWAYS detect the real tech stack, don't guess
-- If the project already has an `openspec/` directory, report what exists and ask the orchestrator
+- If the project already has an `.agents/sdd/` directory, report what exists and ask the orchestrator
   if it should be updated
 - Keep config.yaml context CONCISE - no more than 10 lines
 - Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),

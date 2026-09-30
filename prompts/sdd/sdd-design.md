@@ -57,13 +57,13 @@ Before designing, read the actual code that will be affected:
 **IF mode is `openspec` or `hybrid`:** Create the design document:
 
 ```
-openspec/changes/{change-name}/
+.agents/sdd/changes/{change-name}/
 ├── proposal.md
 ├── specs/
 └── design.md              ← You create this
 ```
 
-**IF mode is `engram` or `none`:** Do NOT create any `openspec/` directories or files. Compose the design content in memory — you will persist it in Step 4.
+**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose the design content in memory — you will persist it in Step 4.
 
 #### Design Document Format
 
@@ -147,7 +147,7 @@ Return to the orchestrator:
 ## Design Created
 
 **Change**: {change-name}
-**Location**: `openspec/changes/{change-name}/design.md` (openspec/hybrid) | Engram `sdd/{change-name}/design` (engram) | inline (none)
+**Location**: `.agents/sdd/changes/{change-name}/design.md` (OpenSpec/hybrid) | Engram `sdd/{change-name}/design` (engram) | inline (none)
 
 ### Summary
 - **Approach**: {one-line technical approach}
@@ -170,7 +170,7 @@ Ready for tasks (sdd-tasks).
 - Use the project's ACTUAL patterns and conventions, not generic best practices
 - If you find the codebase uses a pattern different from what you'd recommend, note it but FOLLOW the existing pattern unless the change specifically addresses it
 - Keep ASCII diagrams simple — clarity over beauty
-- Apply any `rules.design` from `openspec/config.yaml`
+- Apply any `rules.design` from `.agents/sdd/config.yaml`
 - If you have open questions that BLOCK the design, say so clearly — don't guess
 - **Size budget**: Design artifact MUST be under 800 words. Architecture decisions as tables (option | tradeoff | decision). Code snippets only for non-obvious patterns.
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.

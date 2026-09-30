@@ -11,7 +11,7 @@ Run these sub-agents in strict sequence:
 1. Delegate to `sdd-propose` — create the proposal
 2. Delegate to `sdd-spec` AND `sdd-design` — run after proposal is ready (parallel if possible)
 3. Delegate to `sdd-tasks` — break down into implementation tasks
-4. Update `openspec/changes/{argument}/state.yaml` after EACH phase completes
+4. Update `.agents/sdd/changes/{argument}/state.yaml` after EACH phase completes
 
 Present a combined summary after ALL phases complete (not between each one).
 

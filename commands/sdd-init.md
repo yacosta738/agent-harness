@@ -1,5 +1,5 @@
 ---
-description: Initialize SDD context — detects stack and creates openspec structure
+description: Initialize SDD context — detects stack and creates the .agents/sdd structure
 agent: sdd-init
 subtask: true
 ---
@@ -15,7 +15,7 @@ CONTEXT:
 - Artifact store mode: openspec
 
 TASK:
-Initialize the SDD context for this project. Detect the tech stack, create the openspec directory
-structure, and generate config.yaml.
+Initialize the SDD context for this project. Detect the tech stack, create the `.agents/sdd`
+directory structure, and generate config.yaml.
 
 Return a structured result with: status, executive_summary, artifacts, next_recommended, and risks.

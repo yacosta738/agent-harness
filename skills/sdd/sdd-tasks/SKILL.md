@@ -51,7 +51,7 @@ From the design document, identify:
 Create the task file:
 
 ```
-openspec/changes/{change-name}/
+.agents/sdd/changes/{change-name}/
 ├── proposal.md
 ├── specs/
 ├── design.md
@@ -160,7 +160,7 @@ Phase 5: Cleanup (if needed)
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to
-`openspec/changes/{change-name}/tasks.md`.
+`.agents/sdd/changes/{change-name}/tasks.md`.
 
 ### Step 5: Return Summary
 
@@ -170,7 +170,7 @@ Return to the orchestrator:
 ## Tasks Created
 
 **Change**: {change-name}
-**Location**: openspec/changes/{change-name}/tasks.md
+**Location**: .agents/sdd/changes/{change-name}/tasks.md
 
 ### Breakdown
 | Phase | Tasks | Focus |
@@ -206,7 +206,7 @@ Return to the orchestrator:
 - A `size-exception` MUST state the explicit approval and rationale before apply
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
-- Apply any `rules.tasks` from `openspec/config.yaml`
+- Apply any `rules.tasks` from `.agents/sdd/config.yaml`
 - TDD IS MANDATORY. Each implementation task MUST be split into:
   - RED task: write the failing test FIRST
   - GREEN task: write minimum code to pass

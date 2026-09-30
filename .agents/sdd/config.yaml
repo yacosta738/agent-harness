@@ -1,0 +1,19 @@
+schema: spec-driven
+
+context: |
+  Project: portable OpenCode agent configuration and harness.
+  Sources of truth: skills/, commands/, prompts/, adapters/, and scripts/.
+  Validation and deployment use the scripts declared in package.json.
+
+rules:
+  proposal:
+    - Identify affected skills, commands, prompts, and deployment behavior.
+    - Include migration and compatibility impact for persisted artifact paths.
+  specs:
+    - Use observable Given/When/Then scenarios.
+  design:
+    - Document affected harness surfaces and the reason for their changes.
+  tasks:
+    - Keep tasks small, ordered, and independently verifiable.
+  apply:
+    - Preserve Markdown frontmatter and JSON conventions used by the harness.
