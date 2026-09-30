@@ -33,7 +33,14 @@ Run this phase when the orchestrator/user asks to initialize SDD in a project. Y
 - Always persist testing capabilities separately as `sdd/{project}/testing-capabilities` or `.agents/sdd/config.yaml` `testing:`.
 - Always build `.agents/skill-registry.md`; also save `skill-registry` to Engram when available.
 - Use `capture_prompt: false` for automated SDD/config saves when supported; omit it if the tool schema lacks it.
-- If `.agents/sdd/` already exists, report what exists and ask before updating it.
+- Inspect both `.agents/sdd/` and the legacy `openspec/` path before initializing.
+- When filesystem persistence is selected and only `openspec/` exists, move that whole directory to
+  `.agents/sdd/`, preserving config, specs, active changes, archives, quality-runner files, and
+  historical artifact contents. Verify the result and report the migration.
+- If both paths exist, do not overwrite, merge, or delete files. Report path collisions and
+  differences, then ask the orchestrator to resolve them before continuing.
+- If `.agents/sdd/` exists without `openspec/`, report what exists and ask before updating it.
+- In `engram` or `none` mode, leave a legacy `openspec/` directory untouched.
 
 ## Decision Gates
 
@@ -49,10 +56,10 @@ Run this phase when the orchestrator/user asks to initialize SDD in a project. Y
 
 ## Execution Steps
 
-1. Inspect project files (`package.json`, `go.mod`, `pyproject.toml`, CI, lint/test config) and summarize stack/conventions.
+1. Inspect project files (`package.json`, `go.mod`, `pyproject.toml`, CI, lint/test config) and both SDD artifact locations; summarize stack/conventions.
 2. Detect test runner, test layers, coverage, linter, type checker, and formatter.
 3. Resolve Strict TDD from agent marker, `.agents/sdd/config.yaml`, detected runner fallback, or no-runner fallback.
-4. Initialize persistence for the resolved mode.
+4. Migrate legacy SDD artifacts when applicable, then initialize persistence for the resolved mode.
 5. Build `.agents/skill-registry.md` using the skill-registry scan rules.
 6. Persist testing capabilities and project context.
 7. Return the structured initialization envelope.

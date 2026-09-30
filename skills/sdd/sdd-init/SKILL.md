@@ -32,6 +32,22 @@ Read the project to understand:
 - Existing conventions (linters, test frameworks, CI)
 - Architecture patterns in use
 
+Also inspect both the canonical `.agents/sdd/` location and the legacy `openspec/` location.
+
+### Step 1.5: Migrate Legacy SDD Artifacts
+
+When the resolved persistence mode includes filesystem artifacts:
+
+- If `openspec/` exists and `.agents/sdd/` does not, move the entire `openspec/` directory to
+  `.agents/sdd/`. Preserve `config.yaml`, `specs/`, active and archived `changes/`, optional
+  quality-runner files, and all artifact contents without rewriting historical documents.
+- Verify the migrated tree and report the source and destination paths.
+- If both directories exist, do not overwrite, merge, or delete anything. Compare their relative
+  paths, report any collisions and differences, then ask the orchestrator to resolve the migration
+  before continuing.
+- If neither directory exists, continue with a fresh bootstrap.
+- In `engram` or `none` mode, leave any legacy `openspec/` directory untouched.
+
 ### Step 2: Initialize Persistence Backend
 
 Create this directory structure:
@@ -106,8 +122,8 @@ Ready for /sdd-explore <topic> or /sdd-new <change-name>.
 
 - NEVER create placeholder spec files - specs are created via sdd-spec during a change
 - ALWAYS detect the real tech stack, don't guess
-- If the project already has an `.agents/sdd/` directory, report what exists and ask the orchestrator
-  if it should be updated
+- If `.agents/sdd/` already exists without a legacy `openspec/`, report what exists and ask the
+  orchestrator before updating it
 - Keep config.yaml context CONCISE - no more than 10 lines
 - Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),
   `artifacts`, `next_recommended`, and `risks`
