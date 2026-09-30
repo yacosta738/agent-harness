@@ -256,7 +256,10 @@ Defined in our configuration. Use these exact names:
 
 - artifact_store.mode is always openspec.
 - Sub-agents persist artifacts under `.agents/sdd/` using the OpenSpec file convention.
-- If `.agents/sdd/` is missing, delegate to sdd-init first.
+- If `.agents/sdd/` is missing or legacy `openspec/` exists, delegate to sdd-init before any other
+  SDD phase, so legacy artifacts are migrated or a conflict is detected.
+- If sdd-init reports a migration conflict, stop the phase DAG. Do not start phase work until the
+  orchestrator and user resolve the conflict and sdd-init completes successfully.
 
 ## Phase DAG
 

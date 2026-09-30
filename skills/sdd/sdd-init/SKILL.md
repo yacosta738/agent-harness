@@ -43,10 +43,28 @@ When the resolved persistence mode includes filesystem artifacts:
   quality-runner files, and all artifact contents without rewriting historical documents.
 - Verify the migrated tree and report the source and destination paths.
 - If both directories exist, do not overwrite, merge, or delete anything. Compare their relative
-  paths, report any collisions and differences, then ask the orchestrator to resolve the migration
-  before continuing.
+  paths, report any collisions and differences, then return `status: blocked` and ask the
+  orchestrator to resolve the migration. Do not initialize persistence or continue to another SDD
+  phase until resolved.
 - If neither directory exists, continue with a fresh bootstrap.
 - In `engram` or `none` mode, leave any legacy `openspec/` directory untouched.
+
+### Resolve Strict TDD
+
+Resolve Strict TDD only after inspecting the artifact locations and migrating the legacy directory
+when filesystem persistence applies. Use this precedence:
+
+1. Explicit agent marker.
+2. Boolean `rules.apply.tdd` in `.agents/sdd/config.yaml`.
+3. Boolean `rules.apply.tdd` in `openspec/config.yaml` when it is the only available SDD config;
+   read it without moving files in `engram` or `none` mode.
+4. Detected test-runner fallback (`true` when a runner exists).
+5. `false` if no runner exists.
+
+An explicit `false` from a marker or config takes precedence over runner detection. In filesystem
+persistence mode, if both SDD directories exist, report the migration conflict and stop before
+resolving or using a config. In `engram` or `none` mode, leave the legacy tree untouched and prefer
+`.agents/sdd/config.yaml` when both configs exist.
 
 ### Step 2: Initialize Persistence Backend
 
