@@ -28,14 +28,14 @@ are fallbacks for backwards compatibility.
 Read artifacts from the filesystem using the paths defined in `openspec-convention.md`:
 
 ```
-Proposal:   openspec/changes/{change-name}/proposal.md
-Specs:      openspec/changes/{change-name}/specs/  (all domain subdirectories)
-Design:     openspec/changes/{change-name}/design.md
-Tasks:      openspec/changes/{change-name}/tasks.md
-Verify:     openspec/changes/{change-name}/verify-report.md
-QA:         openspec/changes/{change-name}/qa-report.md
-Config:     openspec/config.yaml
-Main specs: openspec/specs/{domain}/spec.md
+Proposal:   .agents/sdd/changes/{change-name}/proposal.md
+Specs:      .agents/sdd/changes/{change-name}/specs/  (all domain subdirectories)
+Design:     .agents/sdd/changes/{change-name}/design.md
+Tasks:      .agents/sdd/changes/{change-name}/tasks.md
+Verify:     .agents/sdd/changes/{change-name}/verify-report.md
+QA:         .agents/sdd/changes/{change-name}/qa-report.md
+Config:     .agents/sdd/config.yaml
+Main specs: .agents/sdd/specs/{domain}/spec.md
 ```
 
 If a required artifact is missing, STOP and return `status: blocked` with a clear message about
@@ -71,7 +71,7 @@ Example:
 ```markdown
 **Status**: success
 **Summary**: Proposal created for `{change-name}`. Defined scope, approach, and rollback plan.
-**Artifacts**: `openspec/changes/{change-name}/proposal.md`
+**Artifacts**: `.agents/sdd/changes/{change-name}/proposal.md`
 **Next**: sdd-spec or sdd-design
 **Risks**: None
 **Skill Resolution**: paths-injected — 3 skills (react-19, typescript, tailwind-4)

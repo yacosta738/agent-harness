@@ -20,8 +20,13 @@ Every request gets an explicit route before acting:
 - **Explicit SDD** — only on explicit request or an accepted proposal naming the durable
   coordination problem it solves.
 
-For substantial work, track it in `plan/tasks/<feature>.md` and mirror to Engram. Optional
+For substantial work, track it in `.agents/rpi/plan/tasks/<feature>.md` and mirror to Engram. Optional
 Receipt-Driven Development (RDD) reviews an immutable candidate but never authorizes delivery.
+
+When adopting this harness in a project with existing RPI plans, the first substantial RPI task
+checks the legacy `plan/tasks/` path. If only that path exists, its contents move to
+`.agents/rpi/plan/tasks/` unchanged. If both paths exist, the orchestrator reports their differences
+and pauses for conflict resolution without merging or overwriting files.
 
 ## Quick start
 
@@ -77,7 +82,7 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 
 | Command | Agent | Purpose |
 |---|---|---|
-| `/sdd-init` | sdd-init | Bootstrap openspec structure, detect stack |
+| `/sdd-init` | sdd-init | Bootstrap SDD artifact structure, detect stack |
 | `/sdd-explore` | sdd-explore | Investigate before committing |
 | `/sdd-propose` | sdd-propose | Proposal with scope and rollback |
 | `/sdd-spec` | sdd-spec | Delta specs, Given/When/Then |
@@ -91,9 +96,9 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 | `/sdd-ff` | kerrigan | propose + [spec + design] + tasks |
 | `/sdd-continue` | kerrigan | Resume from `state.yaml` |
 
-Artifacts (mode `openspec`) live under `openspec/changes/<name>/`
+Artifacts (mode `openspec`) live under `.agents/sdd/changes/<name>/`
 (`proposal.md`, `design.md`, `tasks.md`, `verify-report.md`, `qa-report.md`, `state.yaml`)
-with long-lived truth in `openspec/specs/`.
+with long-lived truth in `.agents/sdd/specs/`.
 
 Quality gates:
 

@@ -30,12 +30,12 @@ From the orchestrator:
 `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`. Save to
-  `openspec/changes/{change-name}/verify-report.md`. This is technical conformance only; hand off to
+  `.agents/sdd/changes/{change-name}/verify-report.md`. This is technical conformance only; hand off to
   `sdd-qa` for independent observable acceptance and `qa-report.md`.
 
 ### Runner evidence
 
-When the project opts into `openspec/quality-runner.json`, run the standalone runner and retain its
+When the project opts into `.agents/sdd/quality-runner.json`, run the standalone runner and retain its
 versioned envelope in the verification evidence. Do not discover or substitute stack commands. Preserve
 the configured command/cwd, exit code, parser result, status, reason, redacted output, and artifact paths.
 Map no manifest or a disabled runner to an explicit `fallback` limitation; never report that as deterministic
@@ -138,7 +138,7 @@ Detect the project's test runner and execute the tests:
 
 ```
 Detect test runner from:
-├── openspec/config.yaml → rules.verify.test_command (highest priority)
+├── .agents/sdd/config.yaml → rules.verify.test_command (highest priority)
 ├── package.json → scripts.test
 ├── pyproject.toml / pytest.ini → pytest
 ├── Makefile → make test
@@ -162,7 +162,7 @@ Detect and run the build/type-check command:
 
 ```
 Detect build command from:
-├── openspec/config.yaml → rules.verify.build_command (highest priority)
+├── .agents/sdd/config.yaml → rules.verify.build_command (highest priority)
 ├── package.json → scripts.build → also run tsc --noEmit if tsconfig.json exists
 ├── pyproject.toml → python -m build or equivalent
 ├── Makefile → make build
@@ -180,7 +180,7 @@ Flag: WARNING if there are type errors even with passing build
 
 ### Step 5d: Coverage Validation (Real Execution — if threshold configured)
 
-Run with coverage only if `rules.verify.coverage_threshold` is set in `openspec/config.yaml`:
+Run with coverage only if `rules.verify.coverage_threshold` is set in `.agents/sdd/config.yaml`:
 
 ```
 IF coverage_threshold is configured:
@@ -222,7 +222,7 @@ at runtime. Code existing in the codebase is NOT sufficient evidence.
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../_shared/sdd-phase-common.md`. Write to
-`openspec/changes/{change-name}/verify-report.md`.
+`.agents/sdd/changes/{change-name}/verify-report.md`.
 
 ### Step 8: Return Summary
 
@@ -339,7 +339,7 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 - WARNINGS = should fix but won't block
 - SUGGESTIONS = improvements, not blockers
 - DO NOT fix any issues — only report them. The orchestrator decides what to do.
-- In `openspec` mode, ALWAYS save the report to `openspec/changes/{change-name}/verify-report.md` —
+- In `openspec` mode, ALWAYS save the report to `.agents/sdd/changes/{change-name}/verify-report.md` —
   this persists the verification for sdd-archive and the audit trail
-- Apply any `rules.verify` from `openspec/config.yaml`
+- Apply any `rules.verify` from `.agents/sdd/config.yaml`
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

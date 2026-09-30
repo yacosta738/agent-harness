@@ -50,19 +50,19 @@ Read the proposal's **Capabilities section** — this is your primary contract:
 
 ```
 FOR EACH entry under "New Capabilities":
-├── This becomes a NEW full spec: openspec/specs/<capability-name>/spec.md
+├── This becomes a NEW full spec: .agents/sdd/specs/<capability-name>/spec.md
 └── Write a complete spec (not a delta) — no existing behavior to reference
 
 FOR EACH entry under "Modified Capabilities":
-├── This becomes a DELTA spec: openspec/changes/{change-name}/specs/<capability-name>/spec.md
-└── Read existing openspec/specs/<capability-name>/spec.md first — your delta modifies it
+├── This becomes a DELTA spec: .agents/sdd/changes/{change-name}/specs/<capability-name>/spec.md
+└── Read existing .agents/sdd/specs/<capability-name>/spec.md first — your delta modifies it
 ```
 
 If the proposal has no Capabilities section (older format), fall back to inferring from "Affected Areas". But always prefer the explicit Capabilities mapping when present.
 
 ### Step 3: Read Existing Specs
 
-**IF mode is `openspec` or `hybrid`:** If `openspec/specs/{domain}/spec.md` exists, read it to understand CURRENT behavior. Your delta specs describe CHANGES to this behavior.
+**IF mode is `openspec` or `hybrid`:** If `.agents/sdd/specs/{domain}/spec.md` exists, read it to understand CURRENT behavior. Your delta specs describe CHANGES to this behavior.
 
 **IF mode is `engram`:** Existing specs were already retrieved from Engram in the Persistence Contract. Skip filesystem reads.
 
@@ -73,21 +73,21 @@ If the proposal has no Capabilities section (older format), fall back to inferri
 **IF mode is `openspec` or `hybrid`:** Create specs inside the change folder:
 
 ```
-openspec/changes/{change-name}/
+.agents/sdd/changes/{change-name}/
 ├── proposal.md              ← (already exists)
 └── specs/
     └── {domain}/
         └── spec.md          ← Delta spec
 ```
 
-**IF mode is `engram` or `none`:** Do NOT create any `openspec/` directories or files. Compose the spec content in memory — you will persist it in Step 5.
+**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose the spec content in memory — you will persist it in Step 5.
 
 #### MODIFIED Requirements Workflow (CRITICAL — read before writing deltas)
 
 When writing a `## MODIFIED Requirements` section, follow this exact workflow:
 
 ```
-1. Locate the requirement in openspec/specs/{domain}/spec.md
+1. Locate the requirement in .agents/sdd/specs/{domain}/spec.md
 2. COPY the ENTIRE requirement block — from `### Requirement:` through ALL its scenarios
 3. PASTE it under `## MODIFIED Requirements`
 4. EDIT the copy to reflect the new behavior
@@ -221,7 +221,7 @@ Ready for design (sdd-design). If design already exists, ready for tasks (sdd-ta
 - DO NOT include implementation details in specs — specs describe WHAT, not HOW
 - **MODIFIED requirements MUST be the FULL block** — copy entire requirement + all scenarios from main spec, then edit. Partial MODIFIED blocks lose content at archive time.
 - If adding new behavior without changing existing behavior → use ADDED, not MODIFIED
-- Apply any `rules.specs` from `openspec/config.yaml`
+- Apply any `rules.specs` from `.agents/sdd/config.yaml`
 - **Size budget**: Spec artifact MUST be under 650 words. Prefer requirement tables over narrative descriptions. Each scenario: 3-5 lines max.
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 

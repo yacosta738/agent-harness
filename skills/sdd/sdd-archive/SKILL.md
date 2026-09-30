@@ -40,9 +40,9 @@ The lifecycle is `apply → verify → qa → archive`. Before syncing or moving
 
 ### Step 3: Sync Delta Specs to Main Specs
 
-For each delta spec in `openspec/changes/{change-name}/specs/`:
+For each delta spec in `.agents/sdd/changes/{change-name}/specs/`:
 
-#### If Main Spec Exists (`openspec/specs/{domain}/spec.md`)
+#### If Main Spec Exists (`.agents/sdd/specs/{domain}/spec.md`)
 
 Read the existing main spec and apply the delta:
 
@@ -65,8 +65,8 @@ The delta spec IS a full spec (not a delta). Copy it directly:
 
 ```bash
 # Copy new spec to main specs
-openspec/changes/{change-name}/specs/{domain}/spec.md
-  → openspec/specs/{domain}/spec.md
+.agents/sdd/changes/{change-name}/specs/{domain}/spec.md
+  → .agents/sdd/specs/{domain}/spec.md
 ```
 
 ### Step 4: Move to Archive
@@ -74,8 +74,8 @@ openspec/changes/{change-name}/specs/{domain}/spec.md
 Move the entire change folder to archive with date prefix:
 
 ```
-openspec/changes/{change-name}/
-  → openspec/changes/archive/YYYY-MM-DD-{change-name}/
+.agents/sdd/changes/{change-name}/
+  → .agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/
 ```
 
 Use today's date in ISO format (e.g., `2026-02-16`).
@@ -97,7 +97,7 @@ Return to the orchestrator:
 ## Change Archived
 
 **Change**: {change-name}
-**Archived to**: openspec/changes/archive/{YYYY-MM-DD}-{change-name}/
+**Archived to**: .agents/sdd/changes/archive/{YYYY-MM-DD}-{change-name}/
 
 ### Specs Synced
 | Domain | Action | Details |
@@ -114,7 +114,7 @@ Return to the orchestrator:
 
 ### Source of Truth Updated
 The following specs now reflect the new behavior:
-- `openspec/specs/{domain}/spec.md`
+- `.agents/sdd/specs/{domain}/spec.md`
 
 ### SDD Cycle Complete
 The change has been fully planned, implemented, verified, and archived.
@@ -131,6 +131,6 @@ Ready for the next change.
 - If the merge would be destructive (removing large sections), WARN the orchestrator and ask for
   confirmation
 - The archive is an AUDIT TRAIL — never delete or modify archived changes
-- If `openspec/changes/archive/` doesn't exist, create it
-- Apply any `rules.archive` from `openspec/config.yaml`
+- If `.agents/sdd/changes/archive/` doesn't exist, create it
+- Apply any `rules.archive` from `.agents/sdd/config.yaml`
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

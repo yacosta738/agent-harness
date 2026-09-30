@@ -32,12 +32,46 @@ Read the project to understand:
 - Existing conventions (linters, test frameworks, CI)
 - Architecture patterns in use
 
+Also inspect both the canonical `.agents/sdd/` location and the legacy `openspec/` location.
+
+### Step 1.5: Migrate Legacy SDD Artifacts
+
+When the resolved persistence mode includes filesystem artifacts:
+
+- If `openspec/` exists and `.agents/sdd/` does not, move the entire `openspec/` directory to
+  `.agents/sdd/`. Preserve `config.yaml`, `specs/`, active and archived `changes/`, optional
+  quality-runner files, and all artifact contents without rewriting historical documents.
+- Verify the migrated tree and report the source and destination paths.
+- If both directories exist, do not overwrite, merge, or delete anything. Compare their relative
+  paths, report any collisions and differences, then return `status: blocked` and ask the
+  orchestrator to resolve the migration. Do not initialize persistence or continue to another SDD
+  phase until resolved.
+- If neither directory exists, continue with a fresh bootstrap.
+- In `engram` or `none` mode, leave any legacy `openspec/` directory untouched.
+
+### Resolve Strict TDD
+
+Resolve Strict TDD only after inspecting the artifact locations and migrating the legacy directory
+when filesystem persistence applies. Use this precedence:
+
+1. Explicit agent marker.
+2. Boolean `rules.apply.tdd` in `.agents/sdd/config.yaml`.
+3. Boolean `rules.apply.tdd` in `openspec/config.yaml` when it is the only available SDD config;
+   read it without moving files in `engram` or `none` mode.
+4. Detected test-runner fallback (`true` when a runner exists).
+5. `false` if no runner exists.
+
+An explicit `false` from a marker or config takes precedence over runner detection. In filesystem
+persistence mode, if both SDD directories exist, report the migration conflict and stop before
+resolving or using a config. In `engram` or `none` mode, leave the legacy tree untouched and prefer
+`.agents/sdd/config.yaml` when both configs exist.
+
 ### Step 2: Initialize Persistence Backend
 
 Create this directory structure:
 
 ```
-openspec/
+.agents/sdd/
 ├── config.yaml              ← Project-specific SDD config
 ├── specs/                   ← Source of truth (empty initially)
 └── changes/                 ← Active changes
@@ -49,7 +83,7 @@ openspec/
 Based on what you detected, create the config when in `openspec` mode:
 
 ```yaml
-# openspec/config.yaml
+# .agents/sdd/config.yaml
 schema: spec-driven
 
 context: |
@@ -94,9 +128,9 @@ Return a structured summary:
 **Persistence**: openspec
 
 ### Structure Created
-- openspec/config.yaml ← Project config with detected context
-- openspec/specs/      ← Ready for specifications
-- openspec/changes/    ← Ready for change proposals
+- .agents/sdd/config.yaml ← Project config with detected context
+- .agents/sdd/specs/      ← Ready for specifications
+- .agents/sdd/changes/    ← Ready for change proposals
 
 ### Next Steps
 Ready for /sdd-explore <topic> or /sdd-new <change-name>.
@@ -106,8 +140,8 @@ Ready for /sdd-explore <topic> or /sdd-new <change-name>.
 
 - NEVER create placeholder spec files - specs are created via sdd-spec during a change
 - ALWAYS detect the real tech stack, don't guess
-- If the project already has an `openspec/` directory, report what exists and ask the orchestrator
-  if it should be updated
+- If `.agents/sdd/` already exists without a legacy `openspec/`, report what exists and ask the
+  orchestrator before updating it
 - Keep config.yaml context CONCISE - no more than 10 lines
 - Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),
   `artifacts`, `next_recommended`, and `risks`

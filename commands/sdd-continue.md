@@ -7,7 +7,7 @@ Follow the SDD Kerrigan workflow to continue the active change.
 
 WORKFLOW:
 
-1. Read `openspec/changes/{argument}/state.yaml` to determine current progress
+1. Read `.agents/sdd/changes/{argument}/state.yaml` to determine current progress
    - When available, run `node scripts/sdd-fsm.mjs inspect --project {workdir} --change {argument}` or consume its
      machine-readable transition result before selecting a phase. The FSM is the authority for legal transitions;
      prompt reasoning is only an adapter.

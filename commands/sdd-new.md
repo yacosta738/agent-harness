@@ -7,11 +7,11 @@ Follow the SDD Kerrigan workflow for starting a new change named "{argument}".
 
 WORKFLOW:
 
-1. Create the change directory: `openspec/changes/{argument}/`
+1. Create the change directory: `.agents/sdd/changes/{argument}/`
 2. Delegate to `sdd-explore` sub-agent to investigate the codebase
 3. Present the exploration summary to the user and WAIT for approval
 4. Delegate to `sdd-propose` sub-agent to create a proposal
-5. Update `openspec/changes/{argument}/state.yaml` with completed phases
+5. Update `.agents/sdd/changes/{argument}/state.yaml` with completed phases
 6. Present the proposal summary and ask the user if they want to continue
 
 CONTEXT:

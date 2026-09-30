@@ -9,7 +9,7 @@ and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-commo
 follow their instructions exactly.
 
 The sdd-apply skill supports TDD workflow (RED-GREEN-REFACTOR cycle) when `tdd: true` is configured
-in `openspec/config.yaml`. When TDD is active, write a failing test first, then implement the
+in `.agents/sdd/config.yaml`. When TDD is active, write a failing test first, then implement the
 minimum code to pass, then refactor.
 
 CONTEXT:

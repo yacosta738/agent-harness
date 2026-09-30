@@ -19,7 +19,7 @@ Run in the lifecycle `apply → verify → qa → archive`, after `sdd-verify` a
 
 ## Inputs
 
-Read `proposal.md`, every delta spec, `design.md`, `tasks.md`, `verify-report.md` when present, `state.yaml`, and `openspec/config.yaml`. Resolve the target from the orchestrator and repository context. If no target is supplied, do not invent one.
+Read `proposal.md`, every delta spec, `design.md`, `tasks.md`, `verify-report.md` when present, `state.yaml`, and `.agents/sdd/config.yaml`. Resolve the target from the orchestrator and repository context. If no target is supplied, do not invent one.
 
 ## Capability and scenario contract
 
@@ -33,7 +33,7 @@ those results. If the runner/FSM is unavailable, visibly record `fallback` and i
 
 ## Required report
 
-Write `openspec/changes/{change-name}/qa-report.md` with:
+Write `.agents/sdd/changes/{change-name}/qa-report.md` with:
 
 1. identity (change, mode, phase, date)
 2. source artifacts and technical verification handoff

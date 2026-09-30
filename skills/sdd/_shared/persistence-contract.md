@@ -24,7 +24,7 @@ Default resolution (when orchestrator does not explicitly set a mode):
 When a phase needs a `{change-name}`, resolve it in this order:
 
 1. If the orchestrator passes `Change name: {argument}`, use it.
-2. Otherwise, inspect `openspec/changes/`, excluding `archive/`.
+2. Otherwise, inspect `.agents/sdd/changes/`, excluding `archive/`.
 3. If exactly ONE active change directory exists, use that as the active change.
 4. If more than one active change directory exists, STOP and report ambiguity to the orchestrator.
 5. If no active change directory exists, STOP and report that there is no active change.
@@ -50,7 +50,7 @@ consistently.
 The orchestrator persists DAG state after each phase transition to enable recovery and
 `sdd-continue` resumption.
 
-Write `openspec/changes/{change-name}/state.yaml` after each phase completes:
+Write `.agents/sdd/changes/{change-name}/state.yaml` after each phase completes:
 
 ```yaml
 change: {change-name}
@@ -60,7 +60,7 @@ next: {next phase in DAG}
 updated: {ISO date}
 ```
 
-To recover state: read `openspec/changes/{change-name}/state.yaml`. If missing, fall back to
+To recover state: read `.agents/sdd/changes/{change-name}/state.yaml`. If missing, fall back to
 checking which artifact files exist in the change directory.
 
 ## Detail Level
@@ -119,8 +119,8 @@ Do NOT return without saving what you learned. This is how the team builds persi
 
 ```
 Artifact store mode: openspec
-Read artifacts from: openspec/changes/{change-name}/
-Write artifacts to: openspec/changes/{change-name}/
+Read artifacts from: .agents/sdd/changes/{change-name}/
+Write artifacts to: .agents/sdd/changes/{change-name}/
 
 PERSISTENCE NOTE:
 - Write all artifacts to the filesystem (openspec paths).

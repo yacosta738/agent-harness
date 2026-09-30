@@ -21,10 +21,18 @@ debugging, and planning are internal RPI techniques.
 
 When authorized work has two or more meaningful implementation steps or progress worth recovering:
 
-1. Create `plan/tasks/<feature>.md` before the first source write.
-2. Keep the task document concise with stable `RPI-NNN` IDs, acceptance criteria, evidence,
+1. Before creating a task document, inspect both `.agents/rpi/plan/tasks/` and the legacy
+   `plan/tasks/` location.
+2. If `plan/tasks/` exists and `.agents/rpi/plan/tasks/` does not, move the entire legacy
+   `plan/tasks/` directory to `.agents/rpi/plan/tasks/`, preserve its files without rewriting them,
+   verify the destination, and report the migration. Leave the parent `plan/` directory in place.
+3. If both locations exist, do not merge, overwrite, or delete anything. Compare their relative
+   paths, report collisions and differences, and stop before creating a new task document until the
+   orchestrator resolves the conflict.
+4. Create `.agents/rpi/plan/tasks/<feature>.md` before the first source write.
+5. Keep the task document concise with stable `RPI-NNN` IDs, acceptance criteria, evidence,
    progress, and next step.
-3. Record the relevant verification evidence in the task document before reporting `Ready`.
-4. Mirror the current document to Engram topic `plan/<feature>/tasks`.
+6. Record the relevant verification evidence in the task document before reporting `Ready`.
+7. Mirror the current document to Engram topic `rpi/<feature>/tasks`.
 
 Small and read-only work creates no RPI artifact.

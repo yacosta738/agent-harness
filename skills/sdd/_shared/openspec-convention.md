@@ -3,7 +3,7 @@
 ## Directory Structure
 
 ```
-openspec/
+.agents/sdd/
 ├── config.yaml              <- Project-specific SDD config
 ├── specs/                   <- Source of truth (main specs)
 │   └── {domain}/
@@ -27,32 +27,32 @@ openspec/
 
 | Skill        | Creates / Reads    | Path                                                                                        |
 |--------------|--------------------|---------------------------------------------------------------------------------------------|
-| orchestrator | Creates/Updates    | `openspec/changes/{change-name}/state.yaml`                                                 |
-| sdd-init     | Creates            | `openspec/config.yaml`, `openspec/specs/`, `openspec/changes/`, `openspec/changes/archive/` |
-| sdd-explore  | Creates (optional) | `openspec/changes/{change-name}/exploration.md`                                             |
-| sdd-propose  | Creates            | `openspec/changes/{change-name}/proposal.md`                                                |
-| sdd-spec     | Creates            | `openspec/changes/{change-name}/specs/{domain}/spec.md`                                     |
-| sdd-design   | Creates            | `openspec/changes/{change-name}/design.md`                                                  |
-| sdd-tasks    | Creates            | `openspec/changes/{change-name}/tasks.md`                                                   |
-| sdd-apply    | Updates            | `openspec/changes/{change-name}/tasks.md` (marks `[x]`)                                     |
-| sdd-verify   | Creates            | `openspec/changes/{change-name}/verify-report.md`                                           |
-| sdd-qa       | Creates            | `openspec/changes/{change-name}/qa-report.md`                                                |
-| sdd-archive  | Moves              | `openspec/changes/{change-name}/` → `openspec/changes/archive/YYYY-MM-DD-{change-name}/`    |
-| sdd-archive  | Updates            | `openspec/specs/{domain}/spec.md` (merges deltas into main specs)                           |
+| orchestrator | Creates/Updates    | `.agents/sdd/changes/{change-name}/state.yaml`                                                 |
+| sdd-init     | Creates            | `.agents/sdd/config.yaml`, `.agents/sdd/specs/`, `.agents/sdd/changes/`, `.agents/sdd/changes/archive/` |
+| sdd-explore  | Creates (optional) | `.agents/sdd/changes/{change-name}/exploration.md`                                             |
+| sdd-propose  | Creates            | `.agents/sdd/changes/{change-name}/proposal.md`                                                |
+| sdd-spec     | Creates            | `.agents/sdd/changes/{change-name}/specs/{domain}/spec.md`                                     |
+| sdd-design   | Creates            | `.agents/sdd/changes/{change-name}/design.md`                                                  |
+| sdd-tasks    | Creates            | `.agents/sdd/changes/{change-name}/tasks.md`                                                   |
+| sdd-apply    | Updates            | `.agents/sdd/changes/{change-name}/tasks.md` (marks `[x]`)                                     |
+| sdd-verify   | Creates            | `.agents/sdd/changes/{change-name}/verify-report.md`                                           |
+| sdd-qa       | Creates            | `.agents/sdd/changes/{change-name}/qa-report.md`                                                |
+| sdd-archive  | Moves              | `.agents/sdd/changes/{change-name}/` → `.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/`    |
+| sdd-archive  | Updates            | `.agents/sdd/specs/{domain}/spec.md` (merges deltas into main specs)                           |
 
 ## Reading Artifacts
 
 Each skill reads its dependencies from the filesystem:
 
 ```
-Proposal:  openspec/changes/{change-name}/proposal.md
-Specs:     openspec/changes/{change-name}/specs/  (all domain subdirectories)
-Design:    openspec/changes/{change-name}/design.md
-Tasks:     openspec/changes/{change-name}/tasks.md
-Verify:     openspec/changes/{change-name}/verify-report.md
-QA:         openspec/changes/{change-name}/qa-report.md
-Config:     openspec/config.yaml
-Main specs: openspec/specs/{domain}/spec.md
+Proposal:  .agents/sdd/changes/{change-name}/proposal.md
+Specs:     .agents/sdd/changes/{change-name}/specs/  (all domain subdirectories)
+Design:    .agents/sdd/changes/{change-name}/design.md
+Tasks:     .agents/sdd/changes/{change-name}/tasks.md
+Verify:     .agents/sdd/changes/{change-name}/verify-report.md
+QA:         .agents/sdd/changes/{change-name}/qa-report.md
+Config:     .agents/sdd/config.yaml
+Main specs: .agents/sdd/specs/{domain}/spec.md
 ```
 
 ## Resolving the Active Change
@@ -60,23 +60,23 @@ Main specs: openspec/specs/{domain}/spec.md
 Use the shared rule from `persistence-contract.md`:
 
 1. Prefer explicit `Change name: {argument}` from the orchestrator.
-2. Otherwise inspect `openspec/changes/`, excluding `archive/`.
+2. Otherwise inspect `.agents/sdd/changes/`, excluding `archive/`.
 3. If exactly one active change exists, use it.
 4. If multiple active changes exist, stop and report ambiguity.
 5. If none exist, stop and report that no active change exists.
 
 ## Writing Rules
 
-- ALWAYS create the change directory (`openspec/changes/{change-name}/`) before writing artifacts
+- ALWAYS create the change directory (`.agents/sdd/changes/{change-name}/`) before writing artifacts
 - If a file already exists, READ it first and UPDATE it (don't overwrite blindly)
 - If the change directory already exists with artifacts, the change is being CONTINUED
 - `sdd-qa` MUST preserve `qa-report.md` during archive and MUST NOT be treated as complete without a report containing evidence or explicit untested/blocking reasons
 - Archive MUST require both `verify-report.md` and `qa-report.md` before moving the change; missing reports, blocking verdicts, and unresolved release-blocking findings remain visible in the report and state
-- Use the `openspec/config.yaml` `rules` section to apply project-specific constraints per phase
+- Use the `.agents/sdd/config.yaml` `rules` section to apply project-specific constraints per phase
 
 ## Deterministic Runner Adapter
 
-Projects may opt into `openspec/quality-runner.json` (`quality-runner/v1`) and the standalone
+Projects may opt into `.agents/sdd/quality-runner.json` (`quality-runner/v1`) and the standalone
 `scripts/sdd-quality-runner.mjs`. Consumers must retain runner envelope identity, status, reason, redacted
 evidence, and artifact references. Missing/disabled runner configuration is an explicit `fallback`, not a pass.
 The standalone `scripts/sdd-fsm.mjs` owns legal state transitions when enabled; prompt flow remains a compatibility
@@ -85,7 +85,7 @@ adapter only and must not claim deterministic enforcement when the FSM is unavai
 ## Config File Reference
 
 ```yaml
-# openspec/config.yaml
+# .agents/sdd/config.yaml
 schema: spec-driven
 
 context: |
@@ -123,7 +123,7 @@ rules:
 When archiving, the change folder moves to:
 
 ```
-openspec/changes/archive/YYYY-MM-DD-{change-name}/
+.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/
 ```
 
 Use today's date in ISO format. The archive is an AUDIT TRAIL — never delete or modify archived

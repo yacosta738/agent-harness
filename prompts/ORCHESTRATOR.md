@@ -52,9 +52,14 @@ Formal SDD is an explicit branch, never an automatic escalation.
 - State the selected route before acting: **Direct inline**, **Delegated direct**, or **Explicit
   SDD**.
 - Delegate only a narrow exploration, writer, checker, or reviewer mission with a defined output.
-- For substantial authorized Plan Mode work, create `plan/tasks/<feature>.md` before the first
+- For substantial authorized Plan Mode work, create `.agents/rpi/plan/tasks/<feature>.md` before the first
   source write
-  and mirror its current contents to Engram topic `plan/<feature>/tasks`.
+  and mirror its current contents to Engram topic `rpi/<feature>/tasks`.
+- Before creating an RPI task document in a project, inspect `.agents/rpi/plan/tasks/` and the
+  legacy `plan/tasks/` path. If only the legacy path exists, move its full directory to the new path,
+  preserve its contents, verify the move, and report it. If both exist, compare their relative paths,
+  report collisions and differences, and stop before writing a new task document; never merge,
+  overwrite, or delete either tree automatically.
 - Report only `Working`, `Checking`, `Ready`, or `Needs your decision` as public progress states.
 - For SDD phases, delegate to the dedicated phase agent and track only DAG state and evidence.
 
@@ -247,11 +252,14 @@ Defined in our configuration. Use these exact names:
 - sdd-qa: run capability-driven acceptance QA and persist evidence.
 - sdd-archive: sync specs and close cycle.
 
-## Artifact Policy (openspec-only)
+## Artifact Policy (filesystem-backed)
 
 - artifact_store.mode is always openspec.
-- Sub-agents persist artifacts to openspec convention paths.
-- If openspec structure is missing, delegate to sdd-init first.
+- Sub-agents persist artifacts under `.agents/sdd/` using the OpenSpec file convention.
+- If `.agents/sdd/` is missing or legacy `openspec/` exists, delegate to sdd-init before any other
+  SDD phase, so legacy artifacts are migrated or a conflict is detected.
+- If sdd-init reports a migration conflict, stop the phase DAG. Do not start phase work until the
+  orchestrator and user resolve the conflict and sdd-init completes successfully.
 
 ## Phase DAG
 
@@ -259,7 +267,7 @@ init -> explore -> propose -> [spec + design parallel] -> tasks -> apply -> veri
 
 ## State Tracking
 
-After each completed phase, update openspec/changes/{change-name}/state.yaml:
+After each completed phase, update `.agents/sdd/changes/{change-name}/state.yaml`:
 
 ```yaml
 change: { change-name }

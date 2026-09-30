@@ -36,13 +36,13 @@ From the orchestrator:
 Create the change folder structure:
 
 ```
-openspec/changes/{change-name}/
+.agents/sdd/changes/{change-name}/
 └── proposal.md
 ```
 
 ### Step 2: Read Existing Specs
 
-If `openspec/specs/` has relevant specs, read them to understand current behavior that this change
+If `.agents/sdd/specs/` has relevant specs, read them to understand current behavior that this change
 might affect.
 
 ### Step 3: Write proposal.md
@@ -105,7 +105,7 @@ Return to the orchestrator:
 ## Proposal Created
 
 **Change**: {change-name}
-**Location**: openspec/changes/{change-name}/proposal.md
+**Location**: .agents/sdd/changes/{change-name}/proposal.md
 
 ### Summary
 - **Intent**: {one-line summary}
@@ -125,6 +125,6 @@ Ready for specs (sdd-spec) or design (sdd-design).
 - Every proposal MUST have a rollback plan
 - Every proposal MUST have success criteria
 - Use concrete file paths in "Affected Areas" when possible
-- Apply any `rules.proposal` from `openspec/config.yaml`
+- Apply any `rules.proposal` from `.agents/sdd/config.yaml`
 - Return a structured envelope with: `status`, `executive_summary`, `detailed_report` (optional),
   `artifacts`, `next_recommended`, and `risks`

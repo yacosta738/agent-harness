@@ -67,7 +67,7 @@ with Step 1.
 - Use the cadence in `reference/progress-tracking.md`.
 - Post updates with `reference/progress-update-template.md`; close phases with
   `reference/milestone-summary-template.md`.
-- Keep checklists and status fields in plan/tasks in sync; note blockers and decisions.
+- Keep checklists and status fields in `.agents/rpi/plan/tasks` in sync; note blockers and decisions.
 
 ## References and examples
 
