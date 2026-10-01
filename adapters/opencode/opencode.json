@@ -30,13 +30,14 @@
     }
   },
   "mcp": {
+    "servers": {
     "engram": {
       "command": [
         "engram",
         "mcp",
         "--tools=agent"
       ],
-      "enabled": true,
+      "disabled": false,
       "type": "local"
     },
     "context7": {
@@ -75,7 +76,7 @@
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
-      "enabled": true
+      "disabled": false
     },
     "chrome-devtools": {
       "type": "local",
@@ -84,7 +85,7 @@
         "-y",
         "chrome-devtools-mcp@1.9.0"
       ],
-      "enabled": true
+      "disabled": false
     },
     "playwright": {
       "type": "local",
@@ -93,7 +94,7 @@
         "-y",
         "@playwright/mcp@latest"
       ],
-      "enabled": true
+      "disabled": false
     },
     "semgrep": {
       "type": "local",
@@ -101,7 +102,7 @@
         "semgrep",
         "mcp"
       ],
-      "enabled": true
+      "disabled": false
     },
     "cloudflare-api": {
       "type": "remote",
@@ -198,7 +199,7 @@
     "socket-mcp": {
       "type": "remote",
       "url": "https://mcp.socket.dev/",
-      "enabled": true
+      "disabled": false
     },
     "codegraph": {
       "type": "local",
@@ -207,7 +208,7 @@
         "serve",
         "--mcp"
       ],
-      "enabled": true
+      "disabled": false
     },
     "grafana": {
       "type": "local",
@@ -225,6 +226,7 @@
       "type": "remote",
       "url": "https://mcp.resend.com/mcp",
       "enabled": false
+    }
     }
   },
   "agent": {
