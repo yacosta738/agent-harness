@@ -1,7 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
-  "plugin": ["@wakatime/opencode-wakatime"],
+  "plugin": [
+    "@wakatime/opencode-wakatime"
+  ],
   "permission": {
     "bash": {
       "*": "allow",
@@ -30,30 +32,22 @@
     }
   },
   "mcp": {
-    "servers": {
     "engram": {
       "command": [
         "engram",
         "mcp",
         "--tools=agent"
       ],
-      "disabled": false,
-      "type": "local"
+      "type": "local",
+      "enabled": true
     },
     "context7": {
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "headers": {
         "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
-      }
-    },
-    "github": {
-      "type": "remote",
-      "url": "https://api.githubcopilot.com/mcp/",
-      "enabled": false,
-      "headers": {
-        "Authorization": "Bearer {env:GITHUB_TOKEN}"
-      }
+      },
+      "enabled": true
     },
     "ahrefs": {
       "type": "local",
@@ -76,7 +70,7 @@
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
-      "disabled": false
+      "enabled": true
     },
     "chrome-devtools": {
       "type": "local",
@@ -85,7 +79,7 @@
         "-y",
         "chrome-devtools-mcp@1.9.0"
       ],
-      "disabled": false
+      "enabled": true
     },
     "playwright": {
       "type": "local",
@@ -94,7 +88,7 @@
         "-y",
         "@playwright/mcp@latest"
       ],
-      "disabled": false
+      "enabled": true
     },
     "semgrep": {
       "type": "local",
@@ -102,7 +96,7 @@
         "semgrep",
         "mcp"
       ],
-      "disabled": false
+      "enabled": true
     },
     "cloudflare-api": {
       "type": "remote",
@@ -118,7 +112,7 @@
         "mcp-remote",
         "https://mcp.linear.app/mcp"
       ],
-      "enabled": false
+      "enabled": true
     },
     "notion": {
       "type": "local",
@@ -158,19 +152,6 @@
       },
       "enabled": false
     },
-    "markitdown": {
-      "type": "local",
-      "command": [
-        "docker",
-        "run",
-        "--rm",
-        "-i",
-        "-v",
-        "/workdir",
-        "markitdown-mcp:latest"
-      ],
-      "enabled": false
-    },
     "jetbrains": {
       "command": [
         "npx",
@@ -199,7 +180,7 @@
     "socket-mcp": {
       "type": "remote",
       "url": "https://mcp.socket.dev/",
-      "disabled": false
+      "enabled": false
     },
     "codegraph": {
       "type": "local",
@@ -208,7 +189,7 @@
         "serve",
         "--mcp"
       ],
-      "disabled": false
+      "enabled": false
     },
     "grafana": {
       "type": "local",
@@ -226,7 +207,6 @@
       "type": "remote",
       "url": "https://mcp.resend.com/mcp",
       "enabled": false
-    }
     }
   },
   "agent": {
