@@ -73,14 +73,14 @@
     "gh_grep": {
       "type": "remote",
       "url": "https://mcp.grep.app",
-      "enabled": true
+      "enabled": false
     },
     "chrome-devtools": {
       "type": "local",
       "command": [
         "npx",
         "-y",
-        "chrome-devtools-mcp@1.9.0"
+        "chrome-devtools-mcp@v1.11.0"
       ],
       "enabled": true
     },
@@ -91,7 +91,7 @@
         "-y",
         "@playwright/mcp@latest"
       ],
-      "enabled": true
+      "enabled": false
     },
     "semgrep": {
       "type": "local",
@@ -99,7 +99,7 @@
         "semgrep",
         "mcp"
       ],
-      "enabled": true
+      "enabled": false
     },
     "cloudflare-api": {
       "type": "remote",
@@ -115,7 +115,7 @@
         "mcp-remote",
         "https://mcp.linear.app/mcp"
       ],
-      "enabled": true
+      "enabled": false
     },
     "notion": {
       "type": "local",
