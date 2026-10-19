@@ -10,6 +10,7 @@
       "include": [
         "prompts/ORCHESTRATOR.md",
         "prompts/acs/WRITING_STYLE.md",
+        "prompts/communication/CONTROLLED_LANGUAGE.md",
         "README.md",
         "harness.config.json",
         "adapters/opencode/adapter.json",
@@ -31,6 +32,7 @@
       "include": [
         "prompts/ORCHESTRATOR.md",
         "prompts/acs/WRITING_STYLE.md",
+        "prompts/communication/CONTROLLED_LANGUAGE.md",
         "adapters/opencode/opencode.json"
       ]
     },

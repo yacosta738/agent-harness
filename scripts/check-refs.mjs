@@ -7,7 +7,8 @@
 // So {file:./...} in opencode.json is resolved target-relative against repo root.
 //
 // Checks (source mode, default):
-//   1. opencode.json is valid JSON; every {file:PATH} resolves to an existing file.
+//   1. opencode.json is valid JSON; every {file:PATH} and local instruction path
+//      resolves to a file in the bundle. Global OpenCode paths map to bundle-relative paths.
 //   2. adapter.json is valid JSON; every non-glob include path exists;
 //      every glob prefix (before **) exists as a directory.
 //   3. commands/sdd-*.md absolute ~/.config/opencode/... paths map to repo files.
@@ -22,6 +23,7 @@ import {
   existsSync,
   readdirSync,
   readFileSync,
+  realpathSync,
   statSync,
 } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
@@ -37,17 +39,28 @@ function isInside(parent, child) {
   return rel !== "" && !rel.startsWith("..") && !/^[\\/]/.test(rel);
 }
 
-// Glob match check: returns true if `pattern` (with `*` only; no `**`) matches
-// at least one file under `root`. Mirrors pathlib.Path.glob semantics:
-// `*` matches any chars except the path separator.
+// Glob match check: returns true if `pattern` matches at least one file under `root`.
+// Supports `*`, `?`, and `**` (including the common `**/` recursive-directory form).
 function globHasMatch(root, pattern) {
-  const regexStr =
-    "^" +
-    pattern
-      .replace(/[.+^${}()|[\]\\]/g, "\\$&")
-      .replace(/\*/g, "[^/]*") +
-    "$";
-  const regex = new RegExp(regexStr);
+  let regexSource = "";
+  for (let i = 0; i < pattern.length; i += 1) {
+    const char = pattern[i];
+    if (char === "*") {
+      const recursive = pattern[i + 1] === "*";
+      if (recursive) i += 1;
+      if (recursive && pattern[i + 1] === "/") {
+        i += 1;
+        regexSource += "(?:.*/)?";
+      } else {
+        regexSource += recursive ? ".*" : "[^/]*";
+      }
+    } else if (char === "?") {
+      regexSource += "[^/]";
+    } else {
+      regexSource += char.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+    }
+  }
+  const regex = new RegExp(`^${regexSource}$`);
   let found = false;
   const walk = (absDir, relDir) => {
     if (found) return;
@@ -76,24 +89,111 @@ function fail(msg) {
   console.log(`FAIL: ${msg}`);
 }
 
+function checkLocalInstructionPattern(root, pattern) {
+  if (/[*?]/.test(pattern)) return globHasMatch(root, pattern);
+  const target = resolve(root, pattern);
+  const rootPath = resolve(root);
+  if (!isInside(rootPath, target)) return "outside";
+  try {
+    const rootResolved = realpathSync(rootPath);
+    const actualTarget = realpathSync(target);
+    if (!isInside(rootResolved, actualTarget)) return "outside";
+    return statSync(actualTarget).isFile() ? true : "not-file";
+  } catch {
+    return false;
+  }
+}
+
 function checkOpencodeRefs(root, cfgRel) {
   const cfgPath = join(root, cfgRel);
   const cfg = JSON.parse(readFileSync(cfgPath, "utf8"));
   const blob = JSON.stringify(cfg);
+  const fileRefs = [...blob.matchAll(/\{file:([^}]+)\}/g)].map((m) => m[1]);
+  const instructionRefs = Array.isArray(cfg.instructions) ? cfg.instructions : [];
   const refs = [
-    ...new Set(
-      [...blob.matchAll(/\{file:([^}]+)\}/g)].map((m) => m[1]),
-    ),
-  ].sort();
-  console.log(`${cfgRel}: ${refs.length} unique {file:} refs`);
+    ...new Set([
+      ...fileRefs.map((ref) => ({ ref, kind: "{file:}" })),
+      ...instructionRefs.map((ref) => ({ ref, kind: "instruction" })),
+    ]),
+  ].sort((a, b) => a.ref.localeCompare(b.ref));
+  console.log(`${cfgRel}: ${refs.length} unique instructions and file refs`);
   const rootResolved = resolve(root);
   let ok = 0;
-  for (const ref of refs) {
-    // Python: ref.lstrip("./") strips any leading "." or "/" chars.
-    const stripped = ref.replace(/^[\.\/]+/, "");
+  for (const { ref, kind } of refs) {
+    if (kind === "instruction" && /^https?:\/\//i.test(ref)) {
+      ok += 1;
+      continue;
+    }
+
+    if (kind === "instruction" && ref.startsWith("~/") && !ref.startsWith("~/.config/opencode/")) {
+      const homeRef = ref.slice(2);
+      if (ref.includes("*") || ref.includes("?")) {
+        fail(`instruction '${ref}' is home-relative and cannot be verified as a self-contained bundle reference`);
+      } else {
+        try {
+          if (statSync(resolve(process.env.HOME ?? "", homeRef)).isFile()) {
+            ok += 1;
+          } else {
+            fail(`instruction '${ref}' is not a file`);
+          }
+        } catch {
+          fail(`instruction '${ref}' does not exist under the current home directory`);
+        }
+      }
+      continue;
+    }
+
+    if (kind === "instruction" && !ref.startsWith("~/.config/opencode/")) {
+      const localRef = ref;
+      const result = checkLocalInstructionPattern(root, localRef);
+      if (result === true) {
+        ok += 1;
+      } else if (result === "outside") {
+        fail(`instruction '${ref}' escapes the bundle root`);
+      } else if (result === "not-file") {
+        fail(`instruction '${ref}' is not a file`);
+      } else {
+        fail(`instruction '${ref}' does not resolve to a local file or matching glob`);
+      }
+      continue;
+    }
+
+    // The harness deploys to ~/.config/opencode, so validate these global paths inside the bundle.
+    const bundleRelative = ref.startsWith("~/.config/opencode/")
+      ? ref.slice("~/.config/opencode/".length)
+      : ref;
+    // {file:...} references retain their established config-root resolution.
+    const stripped = kind === "{file:}"
+      ? bundleRelative.replace(/^[\.\/]+/, "")
+      : bundleRelative;
+    if (kind === "instruction" && !isInside(rootResolved, resolve(root, stripped))) {
+      fail(`instruction '${ref}' escapes the bundle root`);
+      continue;
+    }
+    if (kind === "instruction" && /[*?]/.test(stripped)) {
+      if (checkLocalInstructionPattern(root, stripped)) {
+        ok += 1;
+      } else {
+        fail(`instruction glob '${ref}' matches no files in ${root}`);
+      }
+      continue;
+    }
     const target = resolve(join(root, stripped));
     if (!isInside(rootResolved, target)) {
-      fail(`{file:${ref}} escapes root ${root}`);
+      fail(`${kind} '${ref}' escapes root ${root}`);
+      continue;
+    }
+    if (kind === "instruction") {
+      const localResult = checkLocalInstructionPattern(root, stripped);
+      if (localResult === true) {
+        ok += 1;
+      } else if (localResult === "outside") {
+        fail(`instruction '${ref}' escapes the bundle root`);
+      } else if (localResult === "not-file") {
+        fail(`instruction '${ref}' is not a file`);
+      } else {
+        fail(`instruction '${ref}' does not resolve to a local file`);
+      }
       continue;
     }
     let isFile = false;
@@ -112,7 +212,7 @@ function checkOpencodeRefs(root, cfgRel) {
       } catch {
         /* keep shown = target */
       }
-      fail(`{file:${ref}} -> ${shown} MISSING`);
+      fail(`${kind} '${ref}' -> ${shown} MISSING`);
     }
   }
   console.log(`  resolved ${ok}/${refs.length}`);

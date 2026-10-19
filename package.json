@@ -9,6 +9,7 @@
   "scripts": {
     "deploy": "node scripts/deploy.mjs",
     "validate": "node scripts/check-refs.mjs",
+    "test:refs": "node --test tests/check-refs.test.mjs",
     "list": "node scripts/generate-bundle.mjs list",
     "render": "node scripts/generate-bundle.mjs render"
   }

@@ -4,6 +4,9 @@
   "plugin": [
     "@wakatime/opencode-wakatime"
   ],
+  "instructions": [
+    "~/.config/opencode/prompts/communication/CONTROLLED_LANGUAGE.md"
+  ],
   "permission": {
     "bash": {
       "*": "allow",
