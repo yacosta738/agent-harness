@@ -7,7 +7,8 @@
 // So {file:./...} in opencode.json is resolved target-relative against repo root.
 //
 // Checks (source mode, default):
-//   1. opencode.json is valid JSON; every {file:PATH} and instructions path resolves to an existing file.
+//   1. opencode.json is valid JSON; every {file:PATH} and instructions path
+//      resolves to a file in the bundle. Global OpenCode paths map to bundle-relative paths.
 //   2. adapter.json is valid JSON; every non-glob include path exists;
 //      every glob prefix (before **) exists as a directory.
 //   3. commands/sdd-*.md absolute ~/.config/opencode/... paths map to repo files.
@@ -82,16 +83,29 @@ function checkOpencodeRefs(root, cfgRel) {
   const blob = JSON.stringify(cfg);
   const fileRefs = [...blob.matchAll(/\{file:([^}]+)\}/g)].map((m) => m[1]);
   const instructionRefs = Array.isArray(cfg.instructions) ? cfg.instructions : [];
-  const refs = [...new Set([...fileRefs, ...instructionRefs])].sort();
-  console.log(`${cfgRel}: ${refs.length} unique {file:} refs`);
+  const refs = [
+    ...new Set([
+      ...fileRefs.map((ref) => ({ ref, kind: "{file:}" })),
+      ...instructionRefs.map((ref) => ({ ref, kind: "instruction" })),
+    ]),
+  ].sort((a, b) => a.ref.localeCompare(b.ref));
+  console.log(`${cfgRel}: ${refs.length} unique instructions and file refs`);
   const rootResolved = resolve(root);
   let ok = 0;
-  for (const ref of refs) {
-    // Python: ref.lstrip("./") strips any leading "." or "/" chars.
-    const stripped = ref.replace(/^[\.\/]+/, "");
+  for (const { ref, kind } of refs) {
+    // The harness deploys to ~/.config/opencode, so validate global paths inside the bundle.
+    const bundleRelative = ref.startsWith("~/.config/opencode/")
+      ? ref.slice("~/.config/opencode/".length)
+      : ref.startsWith("~/")
+        ? ref.slice(2)
+        : ref;
+    // {file:...} references retain their established config-root resolution.
+    const stripped = kind === "{file:}"
+      ? bundleRelative.replace(/^[\.\/]+/, "")
+      : bundleRelative;
     const target = resolve(join(root, stripped));
     if (!isInside(rootResolved, target)) {
-      fail(`{file:${ref}} escapes root ${root}`);
+      fail(`${kind} '${ref}' escapes root ${root}`);
       continue;
     }
     let isFile = false;
@@ -110,7 +124,7 @@ function checkOpencodeRefs(root, cfgRel) {
       } catch {
         /* keep shown = target */
       }
-      fail(`{file:${ref}} -> ${shown} MISSING`);
+      fail(`${kind} '${ref}' -> ${shown} MISSING`);
     }
   }
   console.log(`  resolved ${ok}/${refs.length}`);

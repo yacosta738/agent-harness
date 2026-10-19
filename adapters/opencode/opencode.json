@@ -5,7 +5,7 @@
     "@wakatime/opencode-wakatime"
   ],
   "instructions": [
-    "prompts/communication/CONTROLLED_LANGUAGE.md"
+    "~/.config/opencode/prompts/communication/CONTROLLED_LANGUAGE.md"
   ],
   "permission": {
     "bash": {
