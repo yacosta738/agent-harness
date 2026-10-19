@@ -10,7 +10,7 @@ Asegurar que OpenCode carga la política STE-inspired desde workspaces que no so
 - [x] RPI-001 Cambiar `instructions` a una ruta global `~/.config/opencode/...` y ajustar `check-refs.mjs` para comprobar el artefacto desplegado.
 - [x] RPI-002 Desplegar la configuración en un destino aislado/prueba y abrir OpenCode desde otro workspace para confirmar la carga global.
 - [x] RPI-003 Ejecutar `npm run validate`, deploy de presets y comprobaciones enfocadas; actualizar evidencia.
-- [ ] RPI-004 Commit y push al branch actual de la PR #20.
+- [x] RPI-004 Commit y push al branch actual de la PR #20.
 
 ## Criterios de aceptación
 - La configuración usa una ruta inequívoca que carga fuera del repositorio.
@@ -29,4 +29,4 @@ Asegurar que OpenCode carga la política STE-inspired desde workspaces que no so
 - Limitación: una prueba inicial interactiva se quedó abierta en el TUI porque Linear MCP expiró; se cerró el proceso y se eliminó el HOME temporal. Logs verifican que OpenCode descubrió el archivo global, pero no se verificó la generación/respuesta de un agente ni una delegación a `tech-lead`.
 
 ## Estado
-Working — la ruta global y su resolución están corregidas; aceptación de descubrimiento confirmada en workspace externo. Falta completar RPI-004: commit y push del arreglo a PR #20. La prueba de conducta de agentes queda pendiente.
+Ready — ruta global corregida, presets validados, checker con caso negativo, descubrimiento de la instrucción confirmado desde workspace externo, y commit `477b264` publicado en PR #20. No se verificó generación/respuesta de un agente ni delegación a `tech-lead`; no hay checks de CI reportados para la rama al momento de actualizar esta evidencia.
