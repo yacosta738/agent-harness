@@ -29,4 +29,4 @@ Asegurar que OpenCode carga la política STE-inspired desde workspaces que no so
 - Limitación: una prueba inicial interactiva se quedó abierta en el TUI porque Linear MCP expiró; se cerró el proceso y se eliminó el HOME temporal. Logs verifican que OpenCode descubrió el archivo global, pero no se verificó la generación/respuesta de un agente ni una delegación a `tech-lead`.
 
 ## Estado
-Ready — ruta global corregida, presets validados, checker con caso negativo, descubrimiento de la instrucción confirmado desde workspace externo, y commit `477b264` publicado en PR #20. No se verificó generación/respuesta de un agente ni delegación a `tech-lead`; no hay checks de CI reportados para la rama al momento de actualizar esta evidencia.
+Ready — ruta global corregida, presets validados, checker con caso negativo, descubrimiento de la instrucción confirmado desde workspace externo, y commits `477b264` y `f0dcc96` publicados en PR #20. No se verificó generación/respuesta de un agente ni delegación a `tech-lead`; no hay checks de CI reportados para la rama al momento de actualizar esta evidencia.
