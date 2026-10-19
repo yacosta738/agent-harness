@@ -23,6 +23,7 @@ import {
   existsSync,
   readdirSync,
   readFileSync,
+  realpathSync,
   statSync,
 } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
@@ -90,7 +91,17 @@ function fail(msg) {
 
 function checkLocalInstructionPattern(root, pattern) {
   if (/[*?]/.test(pattern)) return globHasMatch(root, pattern);
-  return existsSync(join(root, pattern));
+  const target = resolve(root, pattern);
+  const rootPath = resolve(root);
+  if (!isInside(rootPath, target)) return "outside";
+  try {
+    const rootResolved = realpathSync(rootPath);
+    const actualTarget = realpathSync(target);
+    if (!isInside(rootResolved, actualTarget)) return "outside";
+    return statSync(actualTarget).isFile() ? true : "not-file";
+  } catch {
+    return false;
+  }
 }
 
 function checkOpencodeRefs(root, cfgRel) {
@@ -118,18 +129,29 @@ function checkOpencodeRefs(root, cfgRel) {
       const homeRef = ref.slice(2);
       if (ref.includes("*") || ref.includes("?")) {
         fail(`instruction '${ref}' is home-relative and cannot be verified as a self-contained bundle reference`);
-      } else if (existsSync(resolve(process.env.HOME ?? "", homeRef))) {
-        ok += 1;
       } else {
-        fail(`instruction '${ref}' does not exist under the current home directory`);
+        try {
+          if (statSync(resolve(process.env.HOME ?? "", homeRef)).isFile()) {
+            ok += 1;
+          } else {
+            fail(`instruction '${ref}' is not a file`);
+          }
+        } catch {
+          fail(`instruction '${ref}' does not exist under the current home directory`);
+        }
       }
       continue;
     }
 
     if (kind === "instruction" && !ref.startsWith("~/.config/opencode/")) {
       const localRef = ref;
-      if (checkLocalInstructionPattern(root, localRef)) {
+      const result = checkLocalInstructionPattern(root, localRef);
+      if (result === true) {
         ok += 1;
+      } else if (result === "outside") {
+        fail(`instruction '${ref}' escapes the bundle root`);
+      } else if (result === "not-file") {
+        fail(`instruction '${ref}' is not a file`);
       } else {
         fail(`instruction '${ref}' does not resolve to a local file or matching glob`);
       }
@@ -144,6 +166,10 @@ function checkOpencodeRefs(root, cfgRel) {
     const stripped = kind === "{file:}"
       ? bundleRelative.replace(/^[\.\/]+/, "")
       : bundleRelative;
+    if (kind === "instruction" && !isInside(rootResolved, resolve(root, stripped))) {
+      fail(`instruction '${ref}' escapes the bundle root`);
+      continue;
+    }
     if (kind === "instruction" && /[*?]/.test(stripped)) {
       if (checkLocalInstructionPattern(root, stripped)) {
         ok += 1;
@@ -155,6 +181,19 @@ function checkOpencodeRefs(root, cfgRel) {
     const target = resolve(join(root, stripped));
     if (!isInside(rootResolved, target)) {
       fail(`${kind} '${ref}' escapes root ${root}`);
+      continue;
+    }
+    if (kind === "instruction") {
+      const localResult = checkLocalInstructionPattern(root, stripped);
+      if (localResult === true) {
+        ok += 1;
+      } else if (localResult === "outside") {
+        fail(`instruction '${ref}' escapes the bundle root`);
+      } else if (localResult === "not-file") {
+        fail(`instruction '${ref}' is not a file`);
+      } else {
+        fail(`instruction '${ref}' does not resolve to a local file`);
+      }
       continue;
     }
     let isFile = false;

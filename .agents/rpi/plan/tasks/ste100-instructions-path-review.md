@@ -11,6 +11,8 @@ Asegurar que OpenCode carga la política STE-inspired desde workspaces que no so
 - [x] RPI-002 Desplegar la configuración en un destino aislado/prueba y abrir OpenCode desde otro workspace para confirmar la carga global.
 - [x] RPI-003 Ejecutar `npm run validate`, deploy de presets y comprobaciones enfocadas; actualizar evidencia.
 - [x] RPI-004 Commit y push al branch actual de la PR #20.
+- [x] RPI-005 Añadir pruebas negativas para rutas que escapan del bundle, symlinks externos y directorios; validar explícitamente referencias absolutas.
+- [x] RPI-006 Ejecutar pruebas, validador y despliegue recomendado; actualizar evidencia y subir corrección a la PR.
 
 ## Criterios de aceptación
 - La configuración usa una ruta inequívoca que carga fuera del repositorio.
@@ -19,6 +21,7 @@ Asegurar que OpenCode carga la política STE-inspired desde workspaces que no so
 - Los tres presets continúan siendo autocontenidos.
 
 ## Evidencia
+- `npm run test:refs` — PASS; 9 casos cubren globs, URLs, home paths, archivos regulares, escape con `..`, directorios y symlinks externos.
 - `npm run validate` — PASS; 28 referencias de instrucciones/archivos y 38 patrones del adapter.
 - `npm run deploy -- --preset minimal` — PASS; referencias del bundle resuelven 3/3.
 - `npm run deploy -- --preset recommended` — PASS; referencias del bundle resuelven 28/28.
@@ -29,4 +32,4 @@ Asegurar que OpenCode carga la política STE-inspired desde workspaces que no so
 - Limitación: una prueba inicial interactiva se quedó abierta en el TUI porque Linear MCP expiró; se cerró el proceso y se eliminó el HOME temporal. Logs verifican que OpenCode descubrió el archivo global, pero no se verificó la generación/respuesta de un agente ni una delegación a `tech-lead`.
 
 ## Estado
-Ready — ruta global corregida, presets validados, checker con caso negativo, descubrimiento de la instrucción confirmado desde workspace externo, y commits `477b264` y `f0dcc96` publicados en PR #20. No se verificó generación/respuesta de un agente ni delegación a `tech-lead`; no hay checks de CI reportados para la rama al momento de actualizar esta evidencia.
+Ready — rutas locales quedan dentro del bundle y deben ser archivos; los symlinks que escapan también se rechazan. URLs remotas siguen sin ser tratadas como archivos. `npm run test:refs` (9/9), `npm run validate`, deploy `recommended` y `git diff --check` pasan. Falta esperar CI/CodeRabbit tras subir los cambios a la PR #20. No se verificó generación/respuesta de un agente ni delegación a `tech-lead`.
