@@ -50,6 +50,12 @@ The orchestrator prompt ships as-is at `prompts` (kerrigan loads it via `{file:}
 
 To change Kerrigan's voice, edit `prompts` — no other file needs touching.
 
+All OpenCode agents receive the shared communication policy in
+`prompts/communication/CONTROLLED_LANGUAGE.md`. It applies ASD-STE100-inspired
+principles to English technical communication and equivalent clarity principles in
+other languages. It preserves technical meaning, normative terms, and each agent's
+output contract; it does not claim official ASD-STE100 compliance.
+
 ## Agents
 
 16 agents registered in `adapters/opencode/opencode.json`:

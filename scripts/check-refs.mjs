@@ -7,7 +7,7 @@
 // So {file:./...} in opencode.json is resolved target-relative against repo root.
 //
 // Checks (source mode, default):
-//   1. opencode.json is valid JSON; every {file:PATH} resolves to an existing file.
+//   1. opencode.json is valid JSON; every {file:PATH} and instructions path resolves to an existing file.
 //   2. adapter.json is valid JSON; every non-glob include path exists;
 //      every glob prefix (before **) exists as a directory.
 //   3. commands/sdd-*.md absolute ~/.config/opencode/... paths map to repo files.
@@ -80,11 +80,9 @@ function checkOpencodeRefs(root, cfgRel) {
   const cfgPath = join(root, cfgRel);
   const cfg = JSON.parse(readFileSync(cfgPath, "utf8"));
   const blob = JSON.stringify(cfg);
-  const refs = [
-    ...new Set(
-      [...blob.matchAll(/\{file:([^}]+)\}/g)].map((m) => m[1]),
-    ),
-  ].sort();
+  const fileRefs = [...blob.matchAll(/\{file:([^}]+)\}/g)].map((m) => m[1]);
+  const instructionRefs = Array.isArray(cfg.instructions) ? cfg.instructions : [];
+  const refs = [...new Set([...fileRefs, ...instructionRefs])].sort();
   console.log(`${cfgRel}: ${refs.length} unique {file:} refs`);
   const rootResolved = resolve(root);
   let ok = 0;
