@@ -129,7 +129,7 @@ Two standards, split on purpose:
 | Vercel (5) | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace` |
 | Misc (6) | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop` |
 
-## Skills (194)
+## Skills (173)
 
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
@@ -138,7 +138,7 @@ trust the filesystem, not this table:
 |---|---|---|
 | `vercel/` | 48 | Next.js, functions, CLI/API, AI, infra, auth/payments/CMS, UI |
 | `workflow/` | 29 | Brainstorming, debugging, TDD, planning, reviews, worktrees, RPI/RDD, output control |
-| `design-pattern/` | 22 | GoF patterns (adapter, factory, observer, strategy, …) |
+| `design-pattern/` | 1 | Consolidated GoF pattern skill (22 patterns in `references/`) |
 | `design/` | 8 | Brand, frontend taste, diagram-design, imagegen, impeccable, … |
 | `web/` | 11 | A11y, SEO, performance, Core Web Vitals, nothing-design, … |
 | `macos/` | 11 | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry |

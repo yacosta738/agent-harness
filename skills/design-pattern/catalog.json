@@ -8,133 +8,133 @@
       "name": "Factory Method",
       "slug": "factory-method",
       "category": "Creational",
-      "path": "factory-method/SKILL.md"
+      "path": "references/factory-method.md"
     },
     {
       "name": "Abstract Factory",
       "slug": "abstract-factory",
       "category": "Creational",
-      "path": "abstract-factory/SKILL.md"
+      "path": "references/abstract-factory.md"
     },
     {
       "name": "Builder",
       "slug": "builder",
       "category": "Creational",
-      "path": "builder/SKILL.md"
+      "path": "references/builder.md"
     },
     {
       "name": "Prototype",
       "slug": "prototype",
       "category": "Creational",
-      "path": "prototype/SKILL.md"
+      "path": "references/prototype.md"
     },
     {
       "name": "Singleton",
       "slug": "singleton",
       "category": "Creational",
-      "path": "singleton/SKILL.md"
+      "path": "references/singleton.md"
     },
     {
       "name": "Adapter",
       "slug": "adapter",
       "category": "Structural",
-      "path": "adapter/SKILL.md"
+      "path": "references/adapter.md"
     },
     {
       "name": "Bridge",
       "slug": "bridge",
       "category": "Structural",
-      "path": "bridge/SKILL.md"
+      "path": "references/bridge.md"
     },
     {
       "name": "Composite",
       "slug": "composite",
       "category": "Structural",
-      "path": "composite/SKILL.md"
+      "path": "references/composite.md"
     },
     {
       "name": "Decorator",
       "slug": "decorator",
       "category": "Structural",
-      "path": "decorator/SKILL.md"
+      "path": "references/decorator.md"
     },
     {
       "name": "Facade",
       "slug": "facade",
       "category": "Structural",
-      "path": "facade/SKILL.md"
+      "path": "references/facade.md"
     },
     {
       "name": "Flyweight",
       "slug": "flyweight",
       "category": "Structural",
-      "path": "flyweight/SKILL.md"
+      "path": "references/flyweight.md"
     },
     {
       "name": "Proxy",
       "slug": "proxy",
       "category": "Structural",
-      "path": "proxy/SKILL.md"
+      "path": "references/proxy.md"
     },
     {
       "name": "Chain of Responsibility",
       "slug": "chain-of-responsibility",
       "category": "Behavioral",
-      "path": "chain-of-responsibility/SKILL.md"
+      "path": "references/chain-of-responsibility.md"
     },
     {
       "name": "Command",
       "slug": "command",
       "category": "Behavioral",
-      "path": "command/SKILL.md"
+      "path": "references/command.md"
     },
     {
       "name": "Iterator",
       "slug": "iterator",
       "category": "Behavioral",
-      "path": "iterator/SKILL.md"
+      "path": "references/iterator.md"
     },
     {
       "name": "Mediator",
       "slug": "mediator",
       "category": "Behavioral",
-      "path": "mediator/SKILL.md"
+      "path": "references/mediator.md"
     },
     {
       "name": "Memento",
       "slug": "memento",
       "category": "Behavioral",
-      "path": "memento/SKILL.md"
+      "path": "references/memento.md"
     },
     {
       "name": "Observer",
       "slug": "observer",
       "category": "Behavioral",
-      "path": "observer/SKILL.md"
+      "path": "references/observer.md"
     },
     {
       "name": "State",
       "slug": "state",
       "category": "Behavioral",
-      "path": "state/SKILL.md"
+      "path": "references/state.md"
     },
     {
       "name": "Strategy",
       "slug": "strategy",
       "category": "Behavioral",
-      "path": "strategy/SKILL.md"
+      "path": "references/strategy.md"
     },
     {
       "name": "Template Method",
       "slug": "template-method",
       "category": "Behavioral",
-      "path": "template-method/SKILL.md"
+      "path": "references/template-method.md"
     },
     {
       "name": "Visitor",
       "slug": "visitor",
       "category": "Behavioral",
-      "path": "visitor/SKILL.md"
+      "path": "references/visitor.md"
     }
   ]
 }
