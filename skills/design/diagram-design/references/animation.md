@@ -112,15 +112,13 @@ The final-state capture contract is synchronous: `?motion=static`, `<html data-m
 
 PNG and SVG exports are static final-state artifacts unless the user explicitly requests a named step. Before capture, open `?motion=static`, await `document.fonts.ready`, and assert `data-frame="static"`. SVG extraction omits HTML controls and scripts; source-visible semantic markup keeps the result complete.
 
-Run:
+Run the packaged self-check, which needs only Python's standard library:
 
 ```bash
-python3 scripts/verify-motion.py path/to/animated-diagram.html
-python3 scripts/test-verify-motion.py
-python3 scripts/lint-skin.py path/to/animated-diagram.html
+python3 <skill-dir>/scripts/self_check.py path/to/animated-diagram.html
 ```
 
-The verifier checks mode/state declarations, contiguous steps, motion budgets, complete SVG naming, no-JS source visibility, decorative accessibility, the full control set, live status, reduced-motion/print CSS, keyboard handling, page-hide pause, bounded static/test overrides, immediate final-step stop, and exact canonical-controller identity. Its adversarial tests mutate the canonical template to prove each failure is rejected.
+The verifier it does not replace: this snapshot ships no `verify-motion.py`, `test-verify-motion.py`, or `lint-skin.py` — those are tools of the upstream development repository, not part of the Agent Skill subtree. Without them, verify by inspection that the controller is copied verbatim from `template-motion.html`, that mode/state declarations are contiguous and within the motion budget, that every semantic item is present in the static frame, and that print and reduced-motion states resolve to the complete final frame.
 
 Then verify in a browser:
 

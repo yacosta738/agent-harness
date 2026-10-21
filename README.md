@@ -129,24 +129,23 @@ Two standards, split on purpose:
 | Vercel (5) | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace` |
 | Misc (6) | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop` |
 
-## Skills (212)
+## Skills (194)
 
-Auto-discovered from `skills/**/SKILL.md` across 19 groups. Counts drift as the ecosystem grows —
+Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
 
 | Group | # | What |
 |---|---|---|
 | `vercel/` | 48 | Next.js, functions, CLI/API, AI, infra, auth/payments/CMS, UI |
-| `workflow/` | 28 | Brainstorming, debugging, TDD, planning, reviews, worktrees, RPI/RDD |
+| `workflow/` | 29 | Brainstorming, debugging, TDD, planning, reviews, worktrees, RPI/RDD, output control |
 | `design-pattern/` | 22 | GoF patterns (adapter, factory, observer, strategy, …) |
-| `design/` | 15 | Brand, frontend taste, diagram-design, imagegen, impeccable, … |
-| `ai/` | 12 | AI SDK + Hugging Face (datasets, trainers, papers, gradio, …) |
-| `web/` | 12 | A11y, SEO, performance, Core Web Vitals, frontend-design, … |
+| `design/` | 8 | Brand, frontend taste, diagram-design, imagegen, impeccable, … |
+| `web/` | 11 | A11y, SEO, performance, Core Web Vitals, nothing-design, … |
 | `macos/` | 11 | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry |
 | `sdd/` | 10 | One skill per SDD phase + `_shared/` protocol |
 | `github/` | 9 | Actions, PR flow, stacked PRs, CI fixes, reviews, `yeet` |
 | `cloudflare/` | 8 | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox |
-| `tools/` | 7 | Linear, Sentry, webapp-testing, portless, jules-cli, … |
+| `tools/` | 8 | Linear, Sentry, webapp-testing, portless, jules-cli, … |
 | `ios/` | 6 | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor |
 | `obsidian/` | 5 | CLI, markdown, bases, canvas, defuddle |
 | `devops/` | 4 | Docker, Grafana, Make, SQL optimization |
@@ -160,6 +159,10 @@ Notable: `skills/design/diagram-design` is a pinned offline-first snapshot (upst
 2.3.5) with local `references/`, `scripts/`, `assets/` trees and `/diagram-*` command adapters.
 It never fetches, installs, or renders remotely; missing PNG/Chromium capability reports
 `UNAVAILABLE`/`BLOCKED`.
+
+Routing across the 8 design skills — which one to load, which one wins in a conflict, and the
+known install limitations — is in `skills/design/README.md`. Six overlapping design skills were
+archived on 2026-10-21; see `~/Downloads/Other/skills-archive/README.md` for the reason behind each.
 
 ## MCP servers
 

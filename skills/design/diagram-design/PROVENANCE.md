@@ -56,3 +56,18 @@ The following upstream content is deliberately not vendored into this local skil
 No `references/**`, `scripts/**`, or `assets/**` subtree remains pending. The only omitted upstream
 content is the client-specific and repository-level material listed above; it is outside the Agent
 Skill subtree and is intentionally not vendored.
+
+## Local patches
+
+This snapshot is no longer byte-for-byte identical to the pinned commit. Every divergence is
+documentation-only, changes no recipe, limit, token, or connector rule, and exists because the
+pinned text resolves paths that only work inside the upstream repository root:
+
+| File | Change | Reason |
+|---|---|---|
+| `SKILL.md` §6 rule 6 | Replaced `python3 scripts/verify-geometry.py <file>` with an instruction to verify by inspection. | The verifier is upstream root tooling (see *Excluded upstream content*), not part of the skill subtree. |
+| `SKILL.md` §9 checklist | Same replacement for the geometry item; motion item now points at `self_check.py` plus manual checks instead of `verify-motion.py` and the skin linter. | Same cause; both tools are absent from the subtree. |
+| `references/animation.md` | Export-and-verification block now calls the packaged `self_check.py` and states plainly that `verify-motion.py`, `test-verify-motion.py`, and `lint-skin.py` are not shipped. | The original block presented three commands that cannot resolve from an installed skill. |
+
+Upstream report: the skill docs should qualify those three commands as repository-only, the same way
+`SKILL.md` §9 already says "In this repository".
