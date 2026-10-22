@@ -19,14 +19,14 @@ Run a focused review-and-follow-up cycle for one pull request. Continue checking
 2. Read each thread in context and classify it as **applicable**, **not applicable**, or **needs clarification**. Do not dismiss a comment only because it is outdated; verify whether the underlying concern remains relevant.
 3. For applicable feedback, make the smallest safe change within the PR's scope. Add or update a regression test when the feedback identifies a defect. Run the relevant focused checks. Do not commit, push, or expand the scope without the user's request.
 4. For feedback that does not apply, post a concise, evidence-based explanation in that exact GitHub thread, then resolve the thread. State the relevant code or behavior and why the requested change is unnecessary. Do not use a generic response.
-5. For applicable feedback that has been fixed, reply in its thread with a concise summary and verification evidence, then resolve the thread only after confirming the fix is present. If the review convention or permissions do not allow resolving it, report that instead of implying it is resolved.
+5. For applicable feedback that has been fixed, confirm the fix is present on the remote PR head before replying in its thread with a concise summary and verification evidence, then resolve the thread. A change only in the local working tree does not meet this condition: keep the thread unresolved and report it as blocked until the fix is present on the remote PR head. If the review convention or permissions do not allow resolving it, report that instead of implying it is resolved.
 6. If the thread is ambiguous, the fix is unsafe, or it requires a product decision, do not guess. Ask the user and leave the thread unresolved until they decide.
 7. Treat invoking `/pr-watch` as authorization to make in-scope changes and post the necessary replies and resolutions on the identified PR. A request to review only, or any explicit instruction not to write to GitHub, overrides that authorization.
 
 ## Check workflows
 
 1. Inspect all checks and workflow runs associated with the PR. Use `gh pr checks` and, when needed, inspect the relevant workflow run and job logs.
-2. Wait for running checks only until the absolute monitoring deadline. At the deadline, stop monitoring and report any checks still running as pending. If any check fails before the deadline, inspect its logs and determine whether the failure is caused by this PR.
+2. Wait for running checks only until the absolute monitoring deadline. At the deadline, stop monitoring and report any checks still running as pending. When scheduling another pass with the `goal` skill, set its timeout to the time remaining before that deadline. If any check fails before the deadline, inspect its logs and determine whether the failure is caused by this PR.
 3. Fix failures caused by this PR when the fix is within scope, then run the relevant local checks. Do not modify unrelated workflows or code to hide a failure.
 4. For infrastructure, permissions, flaky, or otherwise external failures, do not claim success. Record the check, evidence, and the action required from a maintainer or external system.
 5. A workflow is passing only when GitHub reports a successful conclusion. Skipped or neutral checks are not equivalent to a pass; report them distinctly and explain if they block the PR.
@@ -35,6 +35,7 @@ Run a focused review-and-follow-up cycle for one pull request. Continue checking
 
 - Run a complete initial pass immediately: inspect unresolved feedback, address in-scope items, and inspect the latest workflow status.
 - Unless the stop-early condition below is met, if any thread remains unresolved and is not explicitly marked as blocked pending the user's decision, any workflow is pending/failing, or new activity may have arrived, schedule another full pass in 5 minutes using the `goal` skill. Set its `timeout` to the time remaining before the absolute monitoring deadline.
+- If only threads explicitly blocked pending the user's decision remain, do not reschedule. Use the stop-and-report path and identify the decision needed from the user.
 - Stop at the absolute monitoring deadline. Count the initial pass as the first attempt; allow up to 12 subsequent 5-minute checks within the one-hour limit. Do not schedule checks beyond the deadline.
 - Before each check, refresh PR threads and workflow status. Do not repeat a reply or resolution already completed; verify the current GitHub state first.
 - Stop early only when every review thread is resolved (or explicitly reported as blocked pending the user's decision) and every required workflow check has a successful conclusion. Report any blocked item; do not present blocked work as complete.
