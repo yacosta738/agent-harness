@@ -1,6 +1,6 @@
-The **Language Detector API** is a client-side web API designed to identify the language of a given
-text string. By performing detection locally in the browser, it enhances user privacy and reduces
-the need for heavy external libraries or costly server-side calls.
+# Language Detection
+
+The **Language Detector API** is a client-side web API designed to identify the language of a given text string. By performing detection locally in the browser, it enhances user privacy and reduces the need for heavy external libraries or costly server-side calls.
 
 ## Key Use Cases
 
@@ -22,9 +22,7 @@ the need for heavy external libraries or costly server-side calls.
 
 Check model availability before attempting to instantiate the detector or trigger download.
 
-**MANDATORY:** Instantiating the language detector or triggering a model download with
-`LanguageDetector.create()` **MUST** be initiated by a user gesture (such as a button click) to
-prevent a `NotAllowedError` when the model is in a `downloadable` or `downloading` state.
+**MANDATORY:** Instantiating the language detector or triggering a model download with `LanguageDetector.create()` **MUST** be initiated by a user gesture (such as a button click) to prevent a `NotAllowedError` when the model is in a `downloadable` or `downloading` state.
 
 ```javascript
 // Check if the model is available or downloadable
@@ -45,8 +43,7 @@ if (availability !== 'unavailable') {
 
 ### 2. Running Detection
 
-The API returns a ranked list of potential languages with a confidence score between `0.0` and
-`1.0`.
+The API returns a ranked list of potential languages with a confidence score between `0.0` and `1.0`.
 
 ```javascript
 const someUserText = 'Hallo und herzlich willkommen!';
@@ -70,15 +67,14 @@ Avoid using the detector on very short phrases or single words, as accuracy drop
     allow="language-detector"
   ></iframe>
   ```
-- **Web Workers:** The API is **not** currently available in Web Workers due to Permission Policy
-  complexities.
+- **Web Workers:** The API is **not** currently available in Web Workers due to Permission Policy complexities.
 - **Privacy:** No data is sent to Google or third parties during the detection process.
 
 ## Fallback Strategy
 
-Language detector has limited availability.
-Supported by: Chrome 138 (Jun 2025).
-Unsupported in: Edge, Firefox, and Safari.
+Browser support for Language detector: Limited availability.
+Supported by: Chrome 138 (Jun 2025) and Edge 148 (May 2026).
+Unsupported in: Firefox and Safari.
 
 Before use, check if the `LanguageDetector` object is available in the global scope:
 
@@ -90,11 +86,6 @@ if ('LanguageDetector' in self) {
 }
 ```
 
-If the `LanguageDetector` API is unsupported or availability checks return `'unavailable'`, you must
-gracefully fall back:
-
-1. **Remote API Fallback**: Redirect the detection request to a server endpoint or a cloud API (such
-   as the Vertex AI Gemini API) to identify the language.
-2. **Graceful Degradation**: Disable language detection elements/buttons and inform the user that
-   client-side detection is currently unsupported in this browser, preventing any unhandled
-   exceptions or crashes.
+If the `LanguageDetector` API is unsupported or availability checks return `'unavailable'`, you must gracefully fall back:
+1. **Remote API Fallback**: Redirect the detection request to a server endpoint or a cloud API (such as the Vertex AI Gemini API) to identify the language.
+2. **Graceful Degradation**: Disable language detection elements/buttons and inform the user that client-side detection is currently unsupported in this browser, preventing any unhandled exceptions or crashes.

@@ -1,7 +1,6 @@
-Heavy computations or long loops can block the main thread, causing the page to become unresponsive.
-To prevent this, you should yield control back to the browser periodically. The `scheduler.yield()`
-API allows you to pause a long task and let the browser handle user input or rendering before
-continuing.
+# Break Up Long Tasks
+
+Heavy computations or long loops can block the main thread, causing the page to become unresponsive. To prevent this, you should yield control back to the browser periodically. The `scheduler.yield()` API allows you to pause a long task and let the browser handle user input or rendering before continuing.
 
 ### Breaking up long tasks
 
@@ -16,7 +15,7 @@ async function processLargeArray(items) {
   for (const item of items) {
     // Process the item
     processItem(item);
-
+    
     // MANDATORY: Yield to the main thread periodically to keep the UI
     // responsive. This can be done by checking if the deadline set earlier
     // has been exceeded. When it has been, yield, then reset the deadline
@@ -31,12 +30,11 @@ async function processLargeArray(items) {
 
 ### Fallback strategies
 
-Scheduler API has limited availability.
+Browser support for Scheduler API: Limited availability.
 Supported by: Chrome 129 (Sep 2024), Edge 129 (Sep 2024), and Firefox 142 (Aug 2025).
 Unsupported in: Safari.
 
-Some browsers may not support the `scheduler` API. You MUST implement a fallback using `setTimeout`
-to ensure code executes without breaking.
+Some browsers may not support the `scheduler` API. You MUST implement a fallback using `setTimeout` to ensure code executes without breaking.
 
 #### Fallback for `scheduler.yield()`
 
@@ -47,7 +45,7 @@ async function processLargeArrayWithFallback(items) {
 
   for (const item of items) {
     processItem(item);
-
+    
     // MANDATORY: Yield to the main thread periodically to keep the UI responsive.
     if (performance.now() >= deadline) {
       // DO: Feature detect scheduler.yield
