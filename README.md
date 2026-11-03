@@ -1,7 +1,7 @@
 # Agent Harness
 
-Portable agent configuration for [OpenCode](https://opencode.ai) — Kerrigan, a Cuban-style
-fullstack architect, plus team sub-agents, a Spec-Driven Development (SDD) pipeline, and
+Portable agent configuration for [OpenCode](https://opencode.ai) — Kerrigan, a fullstack architect,
+plus team sub-agents, a Spec-Driven Development (SDD) pipeline, and
 auto-discovered skills and commands.
 
 The filesystem is the source of truth: `skills/**/SKILL.md` for skills, `commands/*.md` for
