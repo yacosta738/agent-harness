@@ -1,13 +1,12 @@
 ---
-description: Monitor a GitHub pull request, address review feedback, and verify all workflows until clear or one hour elapses.
+description: Run one pass on a GitHub pull request, address in-scope review feedback, and report workflow status and remaining blockers.
 ---
 
-# Watch a GitHub pull request
+# Run one GitHub pull request pass
 
-Run a focused review-and-follow-up cycle for one pull request. Continue checking for new review
-feedback and workflow results every 5 minutes, for no more than 1 hour. Record an absolute
-monitoring deadline one hour from the command's start and keep it unchanged across passes. Use the
-`goal` skill to schedule repeated checks; perform the first check immediately.
+Run one complete review-and-follow-up pass for one pull request. This command does not schedule
+future checks or continue in the background. If review threads or workflows remain pending, report
+them with the exact next action; the user can run `/pr-watch` again later.
 
 ## Resolve the pull request
 
@@ -49,10 +48,8 @@ monitoring deadline one hour from the command's start and keep it unchanged acro
 
 1. Inspect all checks and workflow runs associated with the PR. Use `gh pr checks` and, when needed,
    inspect the relevant workflow run and job logs.
-2. Wait for running checks only until the absolute monitoring deadline. At the deadline, stop
-   monitoring and report any checks still running as pending. When scheduling another pass with the
-   `goal` skill, set its timeout to the time remaining before that deadline. If any check fails
-   before the deadline, inspect its logs and determine whether the failure is caused by this PR.
+2. Do not poll or wait for running checks. Report their current state as pending. If a check has
+   failed, inspect its logs and determine whether the failure is caused by this PR.
 3. Fix failures caused by this PR when the fix is within scope, then run the relevant local checks.
    Do not modify unrelated workflows or code to hide a failure.
 4. For infrastructure, permissions, flaky, or otherwise external failures, do not claim success.
@@ -60,28 +57,13 @@ monitoring deadline one hour from the command's start and keep it unchanged acro
 5. A workflow is passing only when GitHub reports a successful conclusion. Skipped or neutral checks
    are not equivalent to a pass; report them distinctly and explain if they block the PR.
 
-## Monitoring loop
+## One-pass execution boundary
 
-- Run a complete initial pass immediately: inspect unresolved feedback, address in-scope items, and
-  inspect the latest workflow status.
-- Unless the stop-early condition below is met, if any thread remains unresolved and is not
-  explicitly marked as blocked pending the user's decision, any workflow is pending/failing, or new
-  activity may have arrived, schedule another full pass in 5 minutes using the `goal` skill. Set its
-  `timeout` to the time remaining before the absolute monitoring deadline.
-- If only threads explicitly blocked pending the user's decision remain, do not reschedule. Use the
-  stop-and-report path and identify the decision needed from the user.
-- Stop at the absolute monitoring deadline. Count the initial pass as the first attempt; allow up to
-  12 subsequent 5-minute checks within the one-hour limit. Do not schedule checks beyond the
-  deadline.
-- Before each check, refresh PR threads and workflow status. Do not repeat a reply or resolution
-  already completed; verify the current GitHub state first.
-- Stop early only when every review thread is resolved (or explicitly reported as blocked pending
-  the user's decision) and every required workflow check has a successful conclusion. Report any
-  blocked item; do not present blocked work as complete.
-- If the runtime cannot keep the monitoring loop active, or reaches its time/attempt limit, stop and
-  report that monitoring ended. List every unresolved thread, pending or failed workflow, what was
-  attempted, and the exact next action. Never claim background monitoring will continue after the
-  command/session ends.
+- Run one complete pass: inspect feedback, make authorized in-scope changes, inspect current workflow
+  results, and report the final state observed during this invocation.
+- Do not schedule another pass, sleep, or claim that monitoring will continue after the command ends.
+- If a thread or workflow remains unresolved, pending, or blocked, list it and state the exact next
+  action. The user can rerun `/pr-watch` to check for later changes.
 
 ## Final report
 

@@ -116,7 +116,7 @@ Quality gates:
 - This repo has no app under test and no general test runner: harness checks cannot claim
   product acceptance. Record `NOT TESTED` / `BLOCKED` with evidence where applicable.
 
-## Commands (28)
+## Commands (26)
 
 Two standards, split on purpose:
 
@@ -129,7 +129,7 @@ Two standards, split on purpose:
 | SDD (13)    | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
 | Diagram (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
 | Vercel (5)  | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace`                                                                                 |
-| Misc (7)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop`, `pr-watch`                                                             |
+| Misc (5)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`                                                                             |
 
 ## Skills (121)
 
@@ -204,7 +204,7 @@ Also in `adapters/opencode/opencode.json`:
 ```
 agent-harness/
 ├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
-├── commands/                ← 28 slash commands (13 sdd + 3 diagram + 5 vercel + 7 misc)
+├── commands/                ← 26 slash commands (13 sdd + 3 diagram + 5 vercel + 5 misc)
 ├── skills/                  ← 121 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
