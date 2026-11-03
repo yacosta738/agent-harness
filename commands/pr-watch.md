@@ -20,6 +20,11 @@ them with the exact next action; the user can run `/pr-watch` again later.
 
 ## Review and address feedback
 
+When a thread requires a new code assessment, load `code-review` and apply all four 4R lenses to the
+relevant code. `/pr-watch` owns GitHub thread replies, resolutions, and workflow checks; it does not
+start a second RDD transaction. Use `/review <PR URL>` when the user requests a complete RDD review
+of the pull request.
+
 1. Inspect all open review threads, including inline comments, thread resolution state, outdated
    state, file paths, and line anchors. Use `gh-address-comments` and its prescribed thread-aware
    GraphQL workflow; do not rely on a flat comment list to determine thread state.

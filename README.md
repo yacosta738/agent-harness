@@ -22,8 +22,8 @@ Every request gets an explicit route before acting:
   coordination problem it solves.
 
 For substantial work, track it in `.agents/rpi/plan/tasks/<feature>.md` and mirror to Engram.
-Optional
-Receipt-Driven Development (RDD) reviews an immutable candidate but never authorizes delivery.
+Every `/review` runs Receipt-Driven Development (RDD) on a materialized candidate snapshot and applies 4R;
+RDD never authorizes delivery.
 
 When adopting this harness in a project with existing RPI plans, the first substantial RPI task
 checks the legacy `plan/tasks/` path. If only that path exists, its contents move to
@@ -116,7 +116,21 @@ Quality gates:
 - This repo has no app under test and no general test runner: harness checks cannot claim
   product acceptance. Record `NOT TESTED` / `BLOCKED` with evidence where applicable.
 
-## Commands (26)
+## Flujo de revisión
+
+`/review <PR URL>` inicia RDD sobre el diff de esa pull request entre su merge base y `head`. Sin
+URL, `/review` inicia RDD sobre el working tree local respecto a `HEAD`. Ambas rutas aplican siempre
+R1 Risk, R2 Readability, R3 Reliability y R4 Resilience. La revisión no autoriza cambios, comentarios
+en GitHub, commits ni push. `/pr-watch` conserva la gestión de hilos y workflows en una sola pasada.
+
+Valida las pruebas del flujo con `npm run test:review`.
+En Windows, las PR con symlinks requieren permiso del sistema para crearlos; si no está disponible,
+`/review` se detiene y no sustituye el candidato por otro.
+Windows no aplica el bit `read-only` de directorios como una ACL que impida agregar entradas. El
+control plane vuelve a verificar el árbol al capturar la revisión y rechaza cambios; para una
+garantía de solo lectura frente a procesos locales concurrentes, usa un entorno Unix.
+
+## Commands (27)
 
 Two standards, split on purpose:
 
@@ -129,7 +143,7 @@ Two standards, split on purpose:
 | SDD (13)    | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
 | Diagram (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
 | Vercel (5)  | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace`                                                                                 |
-| Misc (5)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`                                                                             |
+| Misc (6)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                    |
 
 ## Skills (121)
 
@@ -204,7 +218,7 @@ Also in `adapters/opencode/opencode.json`:
 ```
 agent-harness/
 ├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
-├── commands/                ← 26 slash commands (13 sdd + 3 diagram + 5 vercel + 5 misc)
+├── commands/                ← 27 slash commands (13 sdd + 3 diagram + 5 vercel + 6 misc)
 ├── skills/                  ← 121 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required

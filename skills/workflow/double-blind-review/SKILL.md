@@ -30,7 +30,7 @@ Use when:
 Do not use when:
 
 - The target scope is unclear; ask for files, PR, branch, feature, or diff first.
-- The user only wants a normal code review; use `requesting-code-review` instead.
+- The user only wants a normal code review; use `code-review` or `/review` instead.
 - Reviewers would need to edit shared state concurrently.
 
 ## Protocol

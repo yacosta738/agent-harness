@@ -27,6 +27,9 @@ Do not use when:
 - The task is purely stylistic and low-risk
 - You need domain-specific rules better covered by a specialized skill
 
+When `/review` is the entrypoint, assess all four lenses even for a low-risk or stylistic candidate.
+Mark a lens as not applicable with a reason; do not omit it from the review.
+
 ## Core Pattern
 
 Review every meaningful change through these four lenses, in this order:
