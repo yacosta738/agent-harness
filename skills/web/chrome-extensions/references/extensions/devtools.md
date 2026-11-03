@@ -13,6 +13,7 @@ The devtools page runs ONLY when DevTools is open. It's invisible — its job is
 ## Creating a Panel
 
 `devtools/devtools.html`:
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -23,6 +24,7 @@ The devtools page runs ONLY when DevTools is open. It's invisible — its job is
 ```
 
 `devtools/devtools.js`:
+
 ```js
 chrome.devtools.panels.create(
   'My Panel',                    // Title shown in DevTools tab
@@ -98,5 +100,6 @@ chrome.runtime.onConnect.addListener((port) => {
 
 - DevTools pages exist per-DevTools-window (one per inspected tab)
 - They are destroyed when DevTools closes
-- `chrome.devtools.*` APIs are ONLY available in the devtools page context, not in the service worker
+- `chrome.devtools.*` APIs are ONLY available in the devtools page context, not in the service
+  worker
 - Panels can inject scripts into the inspected page via `chrome.devtools.inspectedWindow.eval()`

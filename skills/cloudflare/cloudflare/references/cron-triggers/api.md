@@ -10,8 +10,8 @@ export default {
 };
 ```
 
-**JavaScript:** Same signature without types
-**Python:** `class Default(WorkerEntrypoint): async def scheduled(self, controller, env, ctx)`
+**JavaScript:** Same signature without types **Python:**
+`class Default(WorkerEntrypoint): async def scheduled(self, controller, env, ctx)`
 
 ## ScheduledController
 
@@ -40,7 +40,7 @@ export default {
 };
 ```
 
-**When to use noRetry():**
+**When to use noRetry ():**
 
 - External API failures outside your control (avoid hammering failed services)
 - Rate limit errors (retry would fail again immediately)

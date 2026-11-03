@@ -10,8 +10,8 @@ optimization, and delivery at scale via Cloudflare's global network.
 - **Transform in Worker?** → [api.md](api.md#workers-binding-api-2026-primary-method) (Workers
   Binding API)
 - **Upload from Worker?** → [api.md](api.md#upload-from-worker) (REST API)
-- **Upload from client?** → [patterns.md](patterns.md#upload-from-client-direct-creator-upload) (
-  Direct Creator Upload)
+- **Upload from client?** → [patterns.md](patterns.md#upload-from-client-direct-creator-upload)
+  (Direct Creator Upload)
 - **Set up variants?** → [configuration.md](configuration.md#variants-configuration)
 - **Serve responsive images?** → [patterns.md](patterns.md#responsive-images)
 - **Add watermarks?** → [patterns.md](patterns.md#watermarking)

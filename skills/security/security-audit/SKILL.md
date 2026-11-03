@@ -46,8 +46,8 @@ starting the complete workflow.
 - `target` (required) — absolute repository root under review.
 - `scope_paths` (optional) — repository-relative paths to limit the audit. Default: full
   repo.
-- `profile` (optional) — one of `quick`, `standard`, `deep`. Default `standard`. See
-  *Run profiles and scope* below.
+- `profile` (optional) — one of `quick`, `standard`, `deep`. Default `standard`. See *Run profiles
+  and scope* below.
 - `budget` (optional) — maximum number of agent invocations across all phases. If unset,
   no hard limit; the orchestrator still applies the strict pre-reconnaissance gate.
 - `output_dir` (optional) — absolute parent directory for new run outputs. Default
@@ -65,15 +65,15 @@ the boundary of the audit.
 This orchestrator's artifact paths derive from `_shared/scan-artifacts.md`. Use those
 base paths verbatim. Map the upstream orchestrator's files into this layout:
 
-| Upstream artifact | This harness path |
-|---|---|
-| `architecture.md` | `<context_dir>/architecture.md` |
-| `coverage-ledger.json` | `<coverage_dir>/coverage_ledger.json` |
-| `findings.json` | `<findings_dir>/findings.json` |
-| `run-metadata.json` | `<scan_dir>/run-metadata.json` |
-| `REPORT.md` | `<scan_dir>/REPORT.md` |
-| `FINDINGS-DETAIL.md` | `<scan_dir>/FINDINGS-DETAIL.md` |
-| `NEEDS-VALIDATION.md` | `<scan_dir>/NEEDS-VALIDATION.md` |
+| Upstream artifact                                     | This harness path                                   |
+|-------------------------------------------------------|-----------------------------------------------------|
+| `architecture.md`                                     | `<context_dir>/architecture.md`                     |
+| `coverage-ledger.json`                                | `<coverage_dir>/coverage_ledger.json`               |
+| `findings.json`                                       | `<findings_dir>/findings.json`                      |
+| `run-metadata.json`                                   | `<scan_dir>/run-metadata.json`                      |
+| `REPORT.md`                                           | `<scan_dir>/REPORT.md`                              |
+| `FINDINGS-DETAIL.md`                                  | `<scan_dir>/FINDINGS-DETAIL.md`                     |
+| `NEEDS-VALIDATION.md`                                 | `<scan_dir>/NEEDS-VALIDATION.md`                    |
 | `<output_dir>/agents/<agent-id>/{scratch,artifacts}/` | `<scan_dir>/agents/<agent-id>/{scratch,artifacts}/` |
 
 `<context_dir>`, `<discovery_dir>`, `<coverage_dir>`, `<reconciliation_dir>`,
@@ -194,8 +194,8 @@ Goal: write the canonical findings artifact and validate it.
 
 Goal: a fresh agent verifies the final source claims for every `confirmed` record.
 
-1. For each `confirmed` record in `findings.json`, dispatch a fresh verifier
-   (`security-engineer` specialist when available, otherwise a `general`-type
+1. For each `confirmed` record in `findings.json`, dispatch a fresh verifier (`security-engineer`
+   specialist when available, otherwise a `general`-type
    sub-agent). The verifier must be a different agent from the one that produced
    the Phase 3 validation report for the same record.
 2. The verifier re-reads the `trace`, `evidence`, and `execution.observed_result` and
@@ -401,8 +401,8 @@ After Phase 6 completes, return:
 - `validator_results` — exit codes and stderr summaries from both validators in
   Phase 4 and Phase 5.
 - `counts` — number of `confirmed`, `needs_validation`, `rejected` records.
-- `next_recommended` — when `run_status: "incomplete"`, the recommended follow-up
-  (larger budget, narrower scope, different profile).
+- `next_recommended` — when `run_status: "incomplete"`, the recommended follow-up (larger budget,
+  narrower scope, different profile).
 
 ## Hard Rules
 

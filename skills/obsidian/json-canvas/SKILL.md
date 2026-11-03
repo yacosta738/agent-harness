@@ -238,8 +238,8 @@ After creating or editing a canvas file, verify:
 7. Color presets are `"1"` through `"6"` or valid hex (e.g., `"#FF0000"`)
 8. JSON is valid and parseable
 
-If validation fails, check for duplicate IDs, dangling edge references, or malformed JSON strings (
-especially unescaped newlines in text content).
+If validation fails, check for duplicate IDs, dangling edge references, or malformed JSON strings
+(especially unescaped newlines in text content).
 
 ## Complete Examples
 

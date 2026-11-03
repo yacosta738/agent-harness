@@ -48,7 +48,7 @@ interface Env {
 
 ## Accessing Bindings
 
-### Method 1: fetch() Handler (Recommended)
+### Method 1: fetch () Handler (Recommended)
 
 ```typescript
 export default {
@@ -91,7 +91,7 @@ addEventListener('fetch', (event) => {
 });
 ```
 
-**Avoid:** Use fetch() handler instead (Method 1).
+**Avoid:** Use fetch () handler instead (Method 1).
 
 ## Type Generation Workflow
 

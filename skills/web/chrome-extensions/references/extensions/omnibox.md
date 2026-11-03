@@ -58,6 +58,7 @@ chrome.omnibox.onInputEntered.addListener((text, disposition) => {
 ## Description Formatting
 
 Suggestions support XML-like formatting:
+
 - `<url>text</url>` — renders as URL style
 - `<match>text</match>` — bold match highlighting
 - `<dim>text</dim>` — dimmed/secondary text
@@ -76,6 +77,7 @@ chrome.omnibox.onInputChanged.addListener((text, suggest) => {
 ## Required host_permissions
 
 If fetching suggestions from an API, declare:
+
 ```json
 {
   "host_permissions": ["https://en.wikipedia.org/*"]

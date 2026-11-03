@@ -27,18 +27,23 @@ From the orchestrator:
 ## Execution and Persistence Contract
 
 > Follow **Section B** (retrieval) and **Section C** (persistence) from
-`../_shared/sdd-phase-common.md`.
+> `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`. Save to
-  `.agents/sdd/changes/{change-name}/verify-report.md`. This is technical conformance only; hand off to
+  `.agents/sdd/changes/{change-name}/verify-report.md`. This is technical conformance only; hand off
+  to
   `sdd-qa` for independent observable acceptance and `qa-report.md`.
 
 ### Runner evidence
 
-When the project opts into `.agents/sdd/quality-runner.json`, run the standalone runner and retain its
-versioned envelope in the verification evidence. Do not discover or substitute stack commands. Preserve
-the configured command/cwd, exit code, parser result, status, reason, redacted output, and artifact paths.
-Map no manifest or a disabled runner to an explicit `fallback` limitation; never report that as deterministic
+When the project opts into `.agents/sdd/quality-runner.json`, run the standalone runner and retain
+its
+versioned envelope in the verification evidence. Do not discover or substitute stack commands.
+Preserve
+the configured command/cwd, exit code, parser result, status, reason, redacted output, and artifact
+paths.
+Map no manifest or a disabled runner to an explicit `fallback` limitation; never report that as
+deterministic
 enforcement or as a passing result.
 
 ## What to Do
@@ -199,7 +204,7 @@ IF coverage_threshold is NOT configured:
 This is the most important step. Cross-reference EVERY spec scenario against the actual test run
 results from Step 4b to build behavioral evidence.
 
-For each scenario from the specs, find which test(s) cover it and what the result was:
+For each scenario from the specs, find which test (s) cover it and what the result was:
 
 ```
 FOR EACH REQUIREMENT in specs/:
@@ -339,7 +344,8 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 - WARNINGS = should fix but won't block
 - SUGGESTIONS = improvements, not blockers
 - DO NOT fix any issues — only report them. The orchestrator decides what to do.
-- In `openspec` mode, ALWAYS save the report to `.agents/sdd/changes/{change-name}/verify-report.md` —
+- In `openspec` mode, ALWAYS save the report to
+  `.agents/sdd/changes/{change-name}/verify-report.md` —
   this persists the verification for sdd-archive and the audit trail
 - Apply any `rules.verify` from `.agents/sdd/config.yaml`
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

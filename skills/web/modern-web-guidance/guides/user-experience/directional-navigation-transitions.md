@@ -1,16 +1,27 @@
-Single Page Applications (SPAs) provide the appearance of navigation by replacing the content of the page without navigating to a new page. By default, the content is simply replaced, without any transitions. Directional transitions can visually reinforce a spatial relationship between views. 
+Single Page Applications (SPAs) provide the appearance of navigation by replacing the content of the
+page without navigating to a new page. By default, the content is simply replaced, without any
+transitions. Directional transitions can visually reinforce a spatial relationship between views.
 
-By sliding new content in from the direction the user is moving you create a mental map of the application structure. For instance, a product site may show a transition to the right for "forward," and to the left for "back", or a slideshow may transition up and down to show next and previous slides.
+By sliding new content in from the direction the user is moving you create a mental map of the
+application structure. For instance, a product site may show a transition to the right for
+"forward," and to the left for "back", or a slideshow may transition up and down to show next and
+previous slides.
 
 ### Implementation Steps
 
-1. **Detect Navigation Direction**: Determine if the user is moving "forward" or "backward" in the application flow. How you detect the direction depends on your use case.
-2. **Trigger Transition with Types**: Pass the direction in a `types` array to `document.startViewTransition()` to categorize the transition.
-3. **Define Directional Animations with CSS**: Use the `:active-view-transition-type()` pseudo-class to apply specific animations based on the navigation type.
+1. **Detect Navigation Direction**: Determine if the user is moving "forward" or "backward" in the
+   application flow. How you detect the direction depends on your use case.
+2. **Trigger Transition with Types**: Pass the direction in a `types` array to
+   `document.startViewTransition()` to categorize the transition.
+3. **Define Directional Animations with CSS**: Use the `:active-view-transition-type()` pseudo-class
+   to apply specific animations based on the navigation type.
 
 ### Defining Keyframes
 
-Define sliding animations to and from each direction. For best performance, animate position changes using the `transform` property or the individual transform properties, `scale`, `rotate`, and `translate`. `opacity` is generally performant as well, but avoid animating other CSS properties without first verifying that they don't trigger layout or painting.
+Define sliding animations to and from each direction. For best performance, animate position changes
+using the `transform` property or the individual transform properties, `scale`, `rotate`, and
+`translate`. `opacity` is generally performant as well, but avoid animating other CSS properties
+without first verifying that they don't trigger layout or painting.
 
 ```css
 /* Slide an element out to the left */
@@ -37,7 +48,8 @@ Define sliding animations to and from each direction. For best performance, anim
 
 ### Set up shared animation settings
 
-Use the `::view-transition-group(root)` selector to apply animation settings that are shared across all transitions.
+Use the `::view-transition-group(root)` selector to apply animation settings that are shared across
+all transitions.
 
 ```css
 ::view-transition-group(root){
@@ -47,7 +59,8 @@ Use the `::view-transition-group(root)` selector to apply animation settings tha
 
 ### Applying Directional Animations
 
-Use the `active-view-transition-type` pseudo-class to target the transition views specifically when the "forward" or "backward" type is active.
+Use the `active-view-transition-type` pseudo-class to target the transition views specifically when
+the "forward" or "backward" type is active.
 
 ```css
 /* MANDATORY: Apply forward animations when the 'forward' type is active */
@@ -81,7 +94,6 @@ document.startViewTransition({
 });
 ```
 
-
 ### Accessibility
 
 Always respect user preferences for reduced motion by disabling or simplifying animations.
@@ -97,11 +109,16 @@ Always respect user preferences for reduced motion by disabling or simplifying a
 ### Fallback strategies
 
 Baseline status for View transitions: Newly available. It's been Baseline since 2025-10-14.
-Supported by: Chrome 111 (Mar 2023), Edge 111 (Mar 2023), Firefox 144 (Oct 2025), and Safari 18 (Sep 2024).
+Supported by: Chrome 111 (Mar 2023), Edge 111 (Mar 2023), Firefox 144 (Oct 2025), and Safari 18 (Sep
+2024).
 Baseline status for Active view transition: Newly available. It's been Baseline since 2026-01-13.
-Supported by: Chrome 125 (May 2024), Edge 125 (May 2024), Firefox 147 (Jan 2026), and Safari 18.2 (Dec 2024).
+Supported by: Chrome 125 (May 2024), Edge 125 (May 2024), Firefox 147 (Jan 2026), and Safari 18.2
+(Dec 2024).
 
-The View Transitions API is a progressive enhancement. In unsupported browsers, `document.startViewTransition` will be `undefined`. You must wrap your navigation logic in a feature detection check to ensure the DOM update still occurs immediately without animation, as shown in this helper function.
+The View Transitions API is a progressive enhancement. In unsupported browsers,
+`document.startViewTransition` will be `undefined`. You must wrap your navigation logic in a feature
+detection check to ensure the DOM update still occurs immediately without animation, as shown in
+this helper function.
 
 ```javascript
 /**

@@ -18,17 +18,21 @@ decided rather than tinted.
 ## 1. What the study measured
 
 - 41% of the studied pages are dark, 59% light. A quarter sit on pure white; 12% on pure black.
-- Schemes, as the panel classed them: monochrome plus one accent 23%, light neutral 22%, dark neutral
-  14%, several flat colours 13%, strictly two-tone 12%, colour carried by photographs 9%, one saturated
+- Schemes, as the panel classed them: monochrome plus one accent 23%, light neutral 22%, dark
+  neutral
+  14%, several flat colours 13%, strictly two-tone 12%, colour carried by photographs 9%, one
+  saturated
   field 6%.
 - Buttons are neutral (black, white, grey) on 52% of sites. A coloured button is a choice, not a
   requirement.
 - Gradient fills appear on 22% of the top-scored sites and 52% of the weak ones; gradient text on 2%
   against 13%.
 - One site in 246 has a terracotta primary button and none has a violet one. Those are colours of
-  generated pages, not of the gallery. Warm off-white grounds do occur (32 sites), nearly always with
+  generated pages, not of the gallery. Warm off-white grounds do occur (32 sites), nearly always
+  with
   a dark or green ink rather than an orange accent.
-- Top-scored sites change the page's field colour between sections more often (a median of two section
+- Top-scored sites change the page's field colour between sections more often (a median of two
+  section
   grounds against one).
 
 ## 2. The roles
@@ -46,7 +50,8 @@ decided rather than tinted.
 ```
 
 Use the tokens for every colour in the build. A raw hex in a component is a second palette starting.
-Do not add greys between the roles: if you need a quieter text, it is `--muted`; if you need a quieter
+Do not add greys between the roles: if you need a quieter text, it is `--muted`; if you need a
+quieter
 surface, it is `--surface`.
 
 ## 3. Proportion
@@ -58,10 +63,12 @@ Decide the shares before colouring anything and check them in the screenshot:
 - **Accent:** under 5% of any screen. It marks the action and at most one other recurring thing. The
   moment it appears in five places it stops meaning "here".
 
-Palettes with fields (flat-loud, pastel) work differently: each section is one field at full strength
+Palettes with fields (flat-loud, pastel) work differently: each section is one field at full
+strength
 and the proportion rule applies inside each section (field, its ink, nothing else).
 
-The accent is not for headings, icons, bullets, borders or underlines unless the direction sheet says
+The accent is not for headings, icons, bullets, borders or underlines unless the direction sheet
+says
 so. A headline is ink.
 
 ## 4. Surfaces without lines or shadows
@@ -77,19 +84,23 @@ With rules and shadows banned, a surface is told apart from the ground by tone a
 - One step is enough. If a panel does not read, increase padding or separate with space before
   reaching for a second tone.
 - Do not nest a panel inside a panel.
-- Images do not need a frame. If a light photograph melts into a light ground, change the crop or set
+- Images do not need a frame. If a light photograph melts into a light ground, change the crop or
+  set
   it on `--surface`, do not outline it.
 - A thick bar (4px or more) in ink or accent is a graphic element, allowed where the direction uses
   it. A 1px line is not.
 
 ## 5. Colour fields
 
-A section that changes the whole ground colour is the strongest colour move available, and it replaces
+A section that changes the whole ground colour is the strongest colour move available, and it
+replaces
 dividers, cards and background decoration at once.
 
 - Fields meet edge to edge with a hard line. Nothing fades.
-- Every field has its own assigned ink from the palette. Never put `--muted` on a coloured field; use
-  the field's ink at full strength, or at 70% opacity for secondary text if it still passes contrast.
+- Every field has its own assigned ink from the palette. Never put `--muted` on a coloured field;
+  use
+  the field's ink at full strength, or at 70% opacity for secondary text if it still passes
+  contrast.
 - Neighbouring fields should differ in lightness, not only in hue, or the page vibrates.
 - Order them like chapters: open strong, rest, surprise, close dark or very light.
 - The page's meta theme colour and the navigation follow the first field.
@@ -107,9 +118,11 @@ dividers, cards and background decoration at once.
 
 - When photographs carry the colour, the interface stays neutral and takes its ink from the darkest
   tone in the imagery.
-- Do not wash a photograph with the brand colour. Either leave it alone, or commit to a real treatment
+- Do not wash a photograph with the brand colour. Either leave it alone, or commit to a real
+  treatment
   for every image on the page (all greyscale, or all untouched).
-- Text over a photograph needs a calm region. If there is none, move the text off the image. A neutral
+- Text over a photograph needs a calm region. If there is none, move the text off the image. A
+  neutral
   scrim (black or the ink colour, 30–55% opacity, flat or fading over the text area only) is the one
   gradient the inspector allows.
 - A flat field sampled from a photograph (its sky, its shadow) makes a section sit with that image.
@@ -137,5 +150,6 @@ about 15%), from a deep green, brown or oxblood ink, from photographs, or from a
 (mustard, tomato red, pink) used flat and with conviction. Warmth is not beige.
 
 If the brand itself owns one of the banned colours, it is the brand's and you keep it: use
-`--keep palette`, pass `--allow palette-purple` (or the relevant rule) to the inspector, and note it in
+`--keep palette`, pass `--allow palette-purple` (or the relevant rule) to the inspector, and note it
+in
 the report.

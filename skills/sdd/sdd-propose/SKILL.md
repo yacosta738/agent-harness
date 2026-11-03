@@ -25,7 +25,7 @@ From the orchestrator:
 ## Execution and Persistence Contract
 
 > Follow **Section B** (retrieval) and **Section C** (persistence) from
-`../_shared/sdd-phase-common.md`.
+> `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`.
 
@@ -42,7 +42,8 @@ Create the change folder structure:
 
 ### Step 2: Read Existing Specs
 
-If `.agents/sdd/specs/` has relevant specs, read them to understand current behavior that this change
+If `.agents/sdd/specs/` has relevant specs, read them to understand current behavior that this
+change
 might affect.
 
 ### Step 3: Write proposal.md

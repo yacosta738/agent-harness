@@ -22,8 +22,8 @@ KV provides:
 | Strong consistency          | → [Durable Objects](../durable-objects/) |
 | SQL queries                 | → [D1](../d1/)                           |
 | Object storage (files)      | → [R2](../r2/)                           |
-| High read, low write volume | → KV ✅                                   |
-| Sub-10ms global reads       | → KV ✅                                   |
+| High read, low write volume | → KV ✅                                  |
+| Sub-10ms global reads       | → KV ✅                                  |
 
 **Quick comparison:**
 

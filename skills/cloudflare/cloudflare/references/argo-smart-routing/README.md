@@ -67,11 +67,11 @@ console.log(`Argo enabled: ${result.value}`);
 
 ## Should I Enable Argo?
 
-| Your Situation                            | Recommendation                     |
-|-------------------------------------------|------------------------------------|
+| Your Situation                            | Recommendation                      |
+|-------------------------------------------|-------------------------------------|
 | Global production app, >1TB/month traffic | ✅ Enable - likely ROI positive     |
 | Enterprise plan, latency-critical APIs    | ✅ Enable - performance matters     |
-| Regional site, <100GB/month traffic       | ⚠️ Evaluate - cost may not justify |
+| Regional site, <100GB/month traffic       | ⚠️ Evaluate - cost may not justify  |
 | Development/staging environment           | ❌ Disable - use in production only |
 | Not yet configured billing                | ❌ Configure billing first          |
 

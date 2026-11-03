@@ -35,8 +35,7 @@ describe("Business logic", () => {
 });
 ```
 
-**Pros:** Fast, simple
-**Cons:** No full runtime, can't test fetch handler
+**Pros:** Fast, simple **Cons:** No full runtime, can't test fetch handler
 
 ## vitest-pool-workers
 
@@ -67,8 +66,7 @@ it("handles fetch", async () => {
 });
 ```
 
-**Pros:** Full runtime, uses wrangler.toml
-**Cons:** Requires Wrangler config
+**Pros:** Full runtime, uses wrangler.toml **Cons:** Requires Wrangler config
 
 ## Miniflare API (node:test)
 

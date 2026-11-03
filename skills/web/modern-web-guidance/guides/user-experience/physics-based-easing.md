@@ -1,17 +1,28 @@
-Traditional CSS easing functions like `ease-in` or `cubic-bezier()` are limited to simple curves, making it impossible to create complex physics-based effects like bounces or springs. The `linear()` timing function solves this by allowing you to provide a series of stops that can approximate complex curves. Transitions and animations are interpolated based on straight lines between the stops, but within enough stops, it can appear smooth.
+Traditional CSS easing functions like `ease-in` or `cubic-bezier()` are limited to simple curves,
+making it impossible to create complex physics-based effects like bounces or springs. The `linear()`
+timing function solves this by allowing you to provide a series of stops that can approximate
+complex curves. Transitions and animations are interpolated based on straight lines between the
+stops, but within enough stops, it can appear smooth.
 
 ### Implementation Steps
 
-1.  **Generate the curve stops:**
-    Manually plotting dozens of points for a spring or bounce is impractical. Use a timing function from an external library, or use a  tool to convert an existing JavaScript easing function or an SVG path into the `linear()` syntax. Optional: store these timing functions as CSS custom properties for reuse throughout your site.
-2.  **Define the timing function:**
-    Apply the generated stops to the `transition-timing-function` or `animation-timing-function` property, or through the `transition` or `animation` shorthands.
-3.  **Adjust the duration:**
-    Unlike JavaScript physics engines where duration is derived from physical properties (mass, stiffness), CSS still requires a fixed `duration`. You may need to adjust the duration to get the intended effect.
+1. **Generate the curve stops:**
+   Manually plotting dozens of points for a spring or bounce is impractical. Use a timing function
+   from an external library, or use a tool to convert an existing JavaScript easing function or an
+   SVG path into the `linear()` syntax. Optional: store these timing functions as CSS custom
+   properties for reuse throughout your site.
+2. **Define the timing function:**
+   Apply the generated stops to the `transition-timing-function` or `animation-timing-function`
+   property, or through the `transition` or `animation` shorthands.
+3. **Adjust the duration:**
+   Unlike JavaScript physics engines where duration is derived from physical properties (mass,
+   stiffness), CSS still requires a fixed `duration`. You may need to adjust the duration to get the
+   intended effect.
 
 ### Example: Spring Easing
 
-This example shows how to use a custom `linear()` function to create a spring effect that overshoots the target value before settling.
+This example shows how to use a custom `linear()` function to create a spring effect that overshoots
+the target value before settling.
 
 ```css
 .spring {
@@ -28,6 +39,7 @@ This example shows how to use a custom `linear()` function to create a spring ef
   scale: 1.2;
 }
 ```
+
 ### Example: Bounce Easing
 
 This example shows how to use a custom `linear()` function to create a bounce effect.
@@ -50,10 +62,15 @@ This example shows how to use a custom `linear()` function to create a bounce ef
 
 ### Key Considerations
 
-*   **Performance:** For the smoothest physics-based animations, apply `linear()` to properties that run on a separate thread, such as `transform` and `opacity`.
-*   **Precision vs. Payload:** While more stops result in a smoother curve, they also increase the size of your CSS. Most generators allow you to "simplify" the curve to find the optimal balance between smoothness and code size.
-*   **Avoid Opacity for Bounces:** Applying bounce easings to `opacity` can cause visually jarring flickering if the value overshoots below 0 or above 1.
-*   **Accessibility:** Complex physics-based animations can be distracting or cause motion sensitivity for some users. Always respect user preferences by reducing or disabling these animations.
+* **Performance:** For the smoothest physics-based animations, apply `linear()` to properties that
+  run on a separate thread, such as `transform` and `opacity`.
+* **Precision vs. Payload:** While more stops result in a smoother curve, they also increase the
+  size of your CSS. Most generators allow you to "simplify" the curve to find the optimal balance
+  between smoothness and code size.
+* **Avoid Opacity for Bounces:** Applying bounce easings to `opacity` can cause visually jarring
+  flickering if the value overshoots below 0 or above 1.
+* **Accessibility:** Complex physics-based animations can be distracting or cause motion sensitivity
+  for some users. Always respect user preferences by reducing or disabling these animations.
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -65,11 +82,15 @@ This example shows how to use a custom `linear()` function to create a bounce ef
 
 ### Fallback strategies
 
-Baseline status for linear() easing: Newly available. It's been Baseline since 2023-12-11.
-Supported by: Chrome 113 (May 2023), Edge 113 (May 2023), Firefox 112 (Apr 2023), and Safari 17.2 (Dec 2023).
+Baseline status for linear () easing: Newly available. It's been Baseline since 2023-12-11.
+Supported by: Chrome 113 (May 2023), Edge 113 (May 2023), Firefox 112 (Apr 2023), and Safari 17.2
+(Dec 2023).
 
 #### CSS Fallback
-For browsers that do not support `linear()`, provide a standard easing function as a fallback. The browser will ignore the `linear()` value if it doesn't recognize it, falling back to the previous valid declaration.
+
+For browsers that do not support `linear()`, provide a standard easing function as a fallback. The
+browser will ignore the `linear()` value if it doesn't recognize it, falling back to the previous
+valid declaration.
 
 ```css
 .element {
@@ -83,10 +104,12 @@ For browsers that do not support `linear()`, provide a standard easing function 
 
 #### JavaScript Library Fallback (Motion/GSAP)
 
-Optional: If a high-fidelity physics animation is critical even in older browsers, use a JavaScript library like **Motion** (motion.dev) or **GSAP** (greensock.com) to handle the animation when `linear()` is unsupported.
+Optional: If a high-fidelity physics animation is critical even in older browsers, use a JavaScript
+library like **Motion** (motion.dev) or **GSAP** (greensock.com) to handle the animation when
+`linear()` is unsupported.
 
-1.  **Detect support:** Use `CSS.supports()` to check if the browser handles the `linear()` function.
-2.  **Conditionally load/apply:** If unsupported, use the library's spring or bounce implementation.
+1. **Detect support:** Use `CSS.supports()` to check if the browser handles the `linear()` function.
+2. **Conditionally load/apply:** If unsupported, use the library's spring or bounce implementation.
 
 ```javascript
 /* Detect if the browser supports the linear() function */

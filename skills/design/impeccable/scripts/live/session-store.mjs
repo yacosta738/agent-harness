@@ -1,10 +1,18 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { getLegacyLiveSessionsDir, getLiveSessionsDir, safeSessionId } from '../lib/impeccable-paths.mjs';
-import { COMPLETED_SESSION_PHASES, GENERATION_FENCED_SESSION_PHASES } from './vocabulary.mjs';
+import {
+  getLegacyLiveSessionsDir,
+  getLiveSessionsDir,
+  safeSessionId
+} from '../lib/impeccable-paths.mjs';
+import {
+  COMPLETED_SESSION_PHASES,
+  GENERATION_FENCED_SESSION_PHASES
+} from './vocabulary.mjs';
 
 const COMPLETED_PHASES = new Set(COMPLETED_SESSION_PHASES);
-export const GENERATION_FENCED_PHASES = new Set(GENERATION_FENCED_SESSION_PHASES);
+export const GENERATION_FENCED_PHASES = new Set(
+    GENERATION_FENCED_SESSION_PHASES);
 
 // The snapshot file carries two bookkeeping fields the snapshot itself does not
 // own: how large the journal was when the snapshot was written, and the next
@@ -21,10 +29,10 @@ const META_NEXT_SEQ = '__nextSeq';
 // its local revision against, so it belongs in a pass that owns resume ordering,
 // not in a caching change.
 
-export function createLiveSessionStore({ cwd = process.cwd(), sessionId } = {}) {
+export function createLiveSessionStore({cwd = process.cwd(), sessionId} = {}) {
   const rootDir = getLiveSessionsDir(cwd);
   const legacyRootDir = getLegacyLiveSessionsDir(cwd);
-  fs.mkdirSync(rootDir, { recursive: true });
+  fs.mkdirSync(rootDir, {recursive: true});
 
   // Derived state per session, keyed by what the journal looked like when it was
   // derived. Publisher/complete helpers append from other processes, so the key
@@ -37,9 +45,13 @@ export function createLiveSessionStore({ cwd = process.cwd(), sessionId } = {}) 
 
   function getReadableJournalPath(id) {
     const primary = getJournalPath(rootDir, id);
-    if (fs.existsSync(primary)) return primary;
+    if (fs.existsSync(primary)) {
+      return primary;
+    }
     const legacy = getJournalPath(legacyRootDir, id);
-    if (fs.existsSync(legacy)) return legacy;
+    if (fs.existsSync(legacy)) {
+      return legacy;
+    }
     return primary;
   }
 
@@ -48,28 +60,35 @@ export function createLiveSessionStore({ cwd = process.cwd(), sessionId } = {}) 
    * journal has not moved, from the snapshot file when that file is provably
    * current, and from a full replay otherwise.
    */
-  function readState(id, { allowSnapshotFile = true } = {}) {
+  function readState(id, {allowSnapshotFile = true} = {}) {
     const journalPath = getReadableJournalPath(id);
     const stat = statOrNull(journalPath);
     const size = stat ? stat.size : -1;
     const mtimeMs = stat ? stat.mtimeMs : -1;
 
     const cached = derived.get(id);
-    if (cached && cached.journalPath === journalPath && cached.size === size && cached.mtimeMs === mtimeMs) {
+    if (cached && cached.journalPath === journalPath && cached.size === size
+        && cached.mtimeMs === mtimeMs) {
       return cached;
     }
 
     if (allowSnapshotFile && stat) {
       const hydrated = readSnapshotFile(getSnapshotPath(rootDir, id), id, size);
       if (hydrated) {
-        const entry = { ...hydrated, journalPath, size, mtimeMs };
+        const entry = {...hydrated, journalPath, size, mtimeMs};
         derived.set(id, entry);
         return entry;
       }
     }
 
     const rebuilt = rebuildSnapshotFromJournal(journalPath, id);
-    const entry = { snapshot: rebuilt.snapshot, nextSeq: rebuilt.nextSeq, journalPath, size, mtimeMs };
+    const entry = {
+      snapshot: rebuilt.snapshot,
+      nextSeq: rebuilt.nextSeq,
+      journalPath,
+      size,
+      mtimeMs
+    };
     derived.set(id, entry);
     return entry;
   }
@@ -78,7 +97,8 @@ export function createLiveSessionStore({ cwd = process.cwd(), sessionId } = {}) 
     const snapshotPath = getSnapshotPath(rootDir, id);
     const journalPath = getReadableJournalPath(id);
     const stat = statOrNull(journalPath);
-    writeSnapshot(snapshotPath, snapshot, { journalBytes: stat ? stat.size : -1, nextSeq });
+    writeSnapshot(snapshotPath, snapshot,
+        {journalBytes: stat ? stat.size : -1, nextSeq});
     derived.set(id, {
       snapshot,
       nextSeq,
@@ -127,9 +147,11 @@ export function createLiveSessionStore({ cwd = process.cwd(), sessionId } = {}) 
      * storage materializes a ghost session in this store.
      */
     has(id) {
-      if (!id || typeof id !== 'string') return false;
+      if (!id || typeof id !== 'string') {
+        return false;
+      }
       return fs.existsSync(getJournalPath(rootDir, id))
-        || fs.existsSync(getJournalPath(legacyRootDir, id));
+          || fs.existsSync(getJournalPath(legacyRootDir, id));
     },
     /**
      * Read-only. `live-status` and `live-resume` call this against a session a
@@ -138,9 +160,14 @@ export function createLiveSessionStore({ cwd = process.cwd(), sessionId } = {}) 
      * Snapshot files are written by appendEvent and by flush().
      */
     getSnapshot(id = sessionId, opts = {}) {
-      if (!id) throw new Error('session id required');
-      const { snapshot } = readState(id);
-      if (!opts.includeCompleted && COMPLETED_PHASES.has(snapshot.phase)) return null;
+      if (!id) {
+        throw new Error('session id required');
+      }
+      const {snapshot} = readState(id);
+      if (!opts.includeCompleted && COMPLETED_PHASES.has(
+          snapshot.phase)) {
+        return null;
+      }
       return snapshot;
     },
     /**
@@ -149,26 +176,32 @@ export function createLiveSessionStore({ cwd = process.cwd(), sessionId } = {}) 
      * processes use; callers that need the state itself should use getSnapshot.
      */
     flush(id = sessionId) {
-      if (!id) throw new Error('session id required');
-      const state = readState(id, { allowSnapshotFile: false });
+      if (!id) {
+        throw new Error('session id required');
+      }
+      const state = readState(id, {allowSnapshotFile: false});
       persist(id, state.snapshot, state.nextSeq);
       return state.snapshot;
     },
     listActiveSessions() {
       const ids = new Set();
       for (const dir of [legacyRootDir, rootDir]) {
-        if (!fs.existsSync(dir)) continue;
+        if (!fs.existsSync(dir)) {
+          continue;
+        }
         for (const name of fs.readdirSync(dir)) {
-          if (name.endsWith('.jsonl')) ids.add(name.slice(0, -'.jsonl'.length));
+          if (name.endsWith('.jsonl')) {
+            ids.add(name.slice(0, -'.jsonl'.length));
+          }
         }
       }
       // Each id goes through readState, so a session whose journal has not moved
       // since it was last derived costs a stat and nothing more. The server calls
       // this on every /status and on every SSE connect.
       return [...ids]
-        .sort()
-        .map((id) => this.getSnapshot(id))
-        .filter(Boolean);
+          .sort()
+          .map((id) => this.getSnapshot(id))
+          .filter(Boolean);
     },
   };
 }
@@ -194,24 +227,40 @@ function readSnapshotFile(snapshotPath, id, journalBytes) {
   } catch {
     return null;
   }
-  if (!parsed || typeof parsed !== 'object') return null;
-  if (parsed[META_JOURNAL_BYTES] !== journalBytes) return null;
-  if (!Number.isInteger(parsed[META_NEXT_SEQ])) return null;
+  if (!parsed || typeof parsed !== 'object') {
+    return null;
+  }
+  if (parsed[META_JOURNAL_BYTES] !== journalBytes) {
+    return null;
+  }
+  if (!Number.isInteger(parsed[META_NEXT_SEQ])) {
+    return null;
+  }
   const nextSeq = parsed[META_NEXT_SEQ];
   delete parsed[META_JOURNAL_BYTES];
   delete parsed[META_NEXT_SEQ];
   // The journal owns identity; a snapshot file copied between session ids is
   // not a reason to answer with the wrong id.
-  if (parsed.id !== id) return null;
-  return { snapshot: { ...baseSnapshot(id), ...parsed }, nextSeq };
+  if (parsed.id !== id) {
+    return null;
+  }
+  return {snapshot: {...baseSnapshot(id), ...parsed}, nextSeq};
 }
 
 function normalizeEvent(event, fallbackId) {
-  if (!event || typeof event !== 'object') throw new Error('event object required');
+  if (!event || typeof event !== 'object') {
+    throw new Error(
+        'event object required');
+  }
   const id = event.id || fallbackId;
-  if (!id || typeof id !== 'string') throw new Error('event id required');
-  if (!event.type || typeof event.type !== 'string') throw new Error('event type required');
-  return { ...event, id };
+  if (!id || typeof id !== 'string') {
+    throw new Error('event id required');
+  }
+  if (!event.type || typeof event.type !== 'string') {
+    throw new Error(
+        'event type required');
+  }
+  return {...event, id};
 }
 
 function getJournalPath(rootDir, id) {
@@ -276,9 +325,15 @@ const MOUNT_FAILURE_HISTORY = 5;
  * the user is looking at something.
  */
 function deriveRenderState(snapshot) {
-  if (snapshot.mountedVariants.length > 0) return 'mounted';
-  if (snapshot.mountFailures.length > 0) return 'failed';
-  if (snapshot.generationCompletedAt) return 'pending';
+  if (snapshot.mountedVariants.length > 0) {
+    return 'mounted';
+  }
+  if (snapshot.mountFailures.length > 0) {
+    return 'failed';
+  }
+  if (snapshot.generationCompletedAt) {
+    return 'pending';
+  }
   return null;
 }
 
@@ -286,16 +341,26 @@ function rebuildSnapshotFromJournal(journalPath, id) {
   let snapshot = baseSnapshot(id);
   const diagnostics = [];
   let nextSeq = 1;
-  if (!fs.existsSync(journalPath)) return { snapshot, diagnostics, nextSeq };
+  if (!fs.existsSync(journalPath)) {
+    return {snapshot, diagnostics, nextSeq};
+  }
 
   const lines = fs.readFileSync(journalPath, 'utf-8').split('\n');
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (!line.trim()) continue;
+    if (!line.trim()) {
+      continue;
+    }
     try {
       const entry = JSON.parse(line);
-      if (!entry || typeof entry !== 'object') throw new Error('entry is not object');
-      if (Number.isInteger(entry.seq)) nextSeq = Math.max(nextSeq, entry.seq + 1);
+      if (!entry || typeof entry !== 'object') {
+        throw new Error(
+            'entry is not object');
+      }
+      if (Number.isInteger(entry.seq)) {
+        nextSeq = Math.max(nextSeq,
+            entry.seq + 1);
+      }
       snapshot = applyEvent(snapshot, entry);
     } catch (err) {
       diagnostics.push({
@@ -306,16 +371,16 @@ function rebuildSnapshotFromJournal(journalPath, id) {
     }
   }
   snapshot.diagnostics = [...snapshot.diagnostics, ...diagnostics];
-  return { snapshot, diagnostics, nextSeq };
+  return {snapshot, diagnostics, nextSeq};
 }
 
 function applyEvent(snapshot, entry) {
   const event = entry.event || entry;
   const next = {
     ...snapshot,
-    paramValues: { ...(snapshot.paramValues || {}) },
-    sourceMarkers: { ...(snapshot.sourceMarkers || {}) },
-    generationTimings: { ...(snapshot.generationTimings || {}) },
+    paramValues: {...(snapshot.paramValues || {})},
+    sourceMarkers: {...(snapshot.sourceMarkers || {})},
+    generationTimings: {...(snapshot.generationTimings || {})},
     variantPlan: snapshot.variantPlan || null,
     annotationArtifacts: [...(snapshot.annotationArtifacts || [])],
     mountedVariants: [...(snapshot.mountedVariants || [])],
@@ -338,15 +403,20 @@ function applyEvent(snapshot, entry) {
       next.mountedVariants = [];
       next.mountFailures = [];
       next.renderState = null;
-      if (event.screenshotPath) upsertArtifact(next.annotationArtifacts, { type: 'screenshot', path: event.screenshotPath });
+      if (event.screenshotPath) {
+        upsertArtifact(next.annotationArtifacts,
+            {type: 'screenshot', path: event.screenshotPath});
+      }
       break;
     case 'variant_plan':
-      if (!next.generationCanceled && !GENERATION_FENCED_PHASES.has(next.phase)) {
+      if (!next.generationCanceled && !GENERATION_FENCED_PHASES.has(
+          next.phase)) {
         next.variantPlan = event.plan ?? next.variantPlan;
       }
       break;
     case 'detector_waivers':
-      if (!next.generationCanceled && !GENERATION_FENCED_PHASES.has(next.phase)) {
+      if (!next.generationCanceled && !GENERATION_FENCED_PHASES.has(
+          next.phase)) {
         next.detectorWaivers = [
           ...(next.detectorWaivers || []),
           ...(Array.isArray(event.waivers) ? event.waivers : []),
@@ -365,7 +435,8 @@ function applyEvent(snapshot, entry) {
     case 'variants_ready':
     case 'agent_done':
       if ((next.generationCanceled || GENERATION_FENCED_PHASES.has(next.phase))
-          && !(event.type === 'agent_done' && event.carbonize === true && next.phase === 'accept_requested')) {
+          && !(event.type === 'agent_done' && event.carbonize === true
+              && next.phase === 'accept_requested')) {
         next.diagnostics.push({
           error: 'late_generation_event_ignored',
           type: event.type,
@@ -373,16 +444,19 @@ function applyEvent(snapshot, entry) {
         });
         break;
       }
-      next.phase = event.carbonize === true ? 'carbonize_required' : 'variants_ready';
+      next.phase = event.carbonize === true ? 'carbonize_required'
+          : 'variants_ready';
       // Durable completion marker: later browser checkpoints (a resumed page
       // reporting phase "generating") regress `phase`, but generation staying
       // finished is monotone — the live server keys missed-`done` redelivery
       // on this field.
-      next.generationCompletedAt = event.at ?? (Date.parse(entry.ts || '') || Date.now());
+      next.generationCompletedAt = event.at ?? (Date.parse(entry.ts || '')
+          || Date.now());
       next.sourceFile = event.sourceFile ?? event.file ?? next.sourceFile;
       next.previewFile = event.previewFile ?? next.previewFile;
       next.previewMode = event.previewMode ?? next.previewMode;
-      next.arrivedVariants = event.arrivedVariants ?? (next.expectedVariants || next.arrivedVariants || 0);
+      next.arrivedVariants = event.arrivedVariants ?? (next.expectedVariants
+          || next.arrivedVariants || 0);
       next.pendingEventSeq = null;
       next.pendingEvent = null;
       if (event.carbonize === true) {
@@ -397,11 +471,16 @@ function applyEvent(snapshot, entry) {
     case 'variant_mounted': {
       const variant = Number(event.variant);
       if (!Number.isInteger(variant) || variant < 1) {
-        next.diagnostics.push({ error: 'malformed_mount_ack', type: event.type, variant: event.variant ?? null });
+        next.diagnostics.push({
+          error: 'malformed_mount_ack',
+          type: event.type,
+          variant: event.variant ?? null
+        });
         break;
       }
       if (!next.mountedVariants.includes(variant)) {
-        next.mountedVariants = [...next.mountedVariants, variant].sort((a, b) => a - b);
+        next.mountedVariants = [...next.mountedVariants, variant].sort(
+            (a, b) => a - b);
       }
       next.renderState = deriveRenderState(next);
       break;
@@ -409,7 +488,11 @@ function applyEvent(snapshot, entry) {
     case 'variant_mount_failed': {
       const variant = Number(event.variant);
       if (!Number.isInteger(variant) || variant < 1) {
-        next.diagnostics.push({ error: 'malformed_mount_ack', type: event.type, variant: event.variant ?? null });
+        next.diagnostics.push({
+          error: 'malformed_mount_ack',
+          type: event.type,
+          variant: event.variant ?? null
+        });
         break;
       }
       next.mountFailures = [
@@ -433,46 +516,64 @@ function applyEvent(snapshot, entry) {
     }
     case 'checkpoint':
       if (next.generationCanceled || GENERATION_FENCED_PHASES.has(next.phase)) {
-        next.diagnostics.push({ error: 'checkpoint_after_terminal_ignored', phase: event.phase ?? null, revision: event.revision ?? null });
+        next.diagnostics.push({
+          error: 'checkpoint_after_terminal_ignored',
+          phase: event.phase ?? null,
+          revision: event.revision ?? null
+        });
         break;
       }
-      {
-        const revisionDomain = event.revisionDomain === 'publication'
-          || (event.reason === 'variants_progress' && !event.owner)
+    {
+      const revisionDomain = event.revisionDomain === 'publication'
+      || (event.reason === 'variants_progress' && !event.owner)
           ? 'publication'
           : 'browser';
-        const revisionField = revisionDomain === 'publication'
+      const revisionField = revisionDomain === 'publication'
           ? 'publicationCheckpointRevision'
           : 'browserCheckpointRevision';
-        const currentRevision = next[revisionField]
+      const currentRevision = next[revisionField]
           ?? (revisionDomain === 'browser' ? next.checkpointRevision : 0)
           ?? 0;
-        if ((event.revision ?? 0) >= currentRevision) {
-          next.phase = event.phase ?? next.phase;
-          next[revisionField] = event.revision ?? currentRevision;
-          if (revisionDomain === 'browser') {
-            next.checkpointRevision = event.revision ?? next.checkpointRevision;
-            next.activeOwner = event.owner ?? next.activeOwner;
-          }
-          next.arrivedVariants = event.arrivedVariants ?? next.arrivedVariants;
-          if (revisionDomain === 'browser') next.visibleVariant = event.visibleVariant ?? next.visibleVariant;
-          next.sourceFile = event.sourceFile ?? next.sourceFile;
-          next.previewFile = event.previewFile ?? next.previewFile;
-          next.previewMode = event.previewMode ?? next.previewMode;
-          if (revisionDomain === 'browser' && event.paramValues) next.paramValues = { ...event.paramValues };
-        } else {
-          next.diagnostics.push({ error: 'stale_checkpoint_ignored', revision: event.revision, revisionDomain });
+      if ((event.revision ?? 0) >= currentRevision) {
+        next.phase = event.phase ?? next.phase;
+        next[revisionField] = event.revision ?? currentRevision;
+        if (revisionDomain === 'browser') {
+          next.checkpointRevision = event.revision ?? next.checkpointRevision;
+          next.activeOwner = event.owner ?? next.activeOwner;
         }
+        next.arrivedVariants = event.arrivedVariants ?? next.arrivedVariants;
+        if (revisionDomain
+            === 'browser') {
+          next.visibleVariant = event.visibleVariant
+              ?? next.visibleVariant;
+        }
+        next.sourceFile = event.sourceFile ?? next.sourceFile;
+        next.previewFile = event.previewFile ?? next.previewFile;
+        next.previewMode = event.previewMode ?? next.previewMode;
+        if (revisionDomain === 'browser'
+            && event.paramValues) {
+          next.paramValues = {...event.paramValues};
+        }
+      } else {
+        next.diagnostics.push({
+          error: 'stale_checkpoint_ignored',
+          revision: event.revision,
+          revisionDomain
+        });
       }
+    }
       break;
     case 'accept':
     case 'accept_intent':
       next.phase = 'accept_requested';
       next.generationCanceled = true;
-      next.generationCanceledAt = event.at ?? (Date.parse(entry.ts || '') || Date.now());
+      next.generationCanceledAt = event.at ?? (Date.parse(entry.ts || '')
+          || Date.now());
       next.cancelReason = 'accept';
       next.visibleVariant = Number(event.variantId ?? next.visibleVariant);
-      if (event.paramValues) next.paramValues = { ...event.paramValues };
+      if (event.paramValues) {
+        next.paramValues = {...event.paramValues};
+      }
       next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
       next.pendingEvent = toPendingEvent(event);
       break;
@@ -506,7 +607,8 @@ function applyEvent(snapshot, entry) {
     case 'discard':
       next.phase = 'discard_requested';
       next.generationCanceled = true;
-      next.generationCanceledAt = event.at ?? (Date.parse(entry.ts || '') || Date.now());
+      next.generationCanceledAt = event.at ?? (Date.parse(entry.ts || '')
+          || Date.now());
       next.cancelReason = 'discard';
       next.pendingEventSeq = entry.seq ?? next.pendingEventSeq;
       next.pendingEvent = toPendingEvent(event);
@@ -526,29 +628,38 @@ function applyEvent(snapshot, entry) {
       break;
     case 'agent_error':
       if (next.generationCanceled && event.sourceEventType === 'generate') {
-        next.diagnostics.push({ error: 'late_generation_event_ignored', type: event.type, phase: next.phase });
+        next.diagnostics.push({
+          error: 'late_generation_event_ignored',
+          type: event.type,
+          phase: next.phase
+        });
         break;
       }
       next.phase = 'agent_error';
       next.pendingEventSeq = null;
       next.pendingEvent = null;
-      next.diagnostics.push({ error: 'agent_error', message: event.message || 'unknown agent error' });
+      next.diagnostics.push({
+        error: 'agent_error',
+        message: event.message || 'unknown agent error'
+      });
       break;
     default:
-      next.diagnostics.push({ error: 'unknown_event_type', type: event.type });
+      next.diagnostics.push({error: 'unknown_event_type', type: event.type});
       break;
   }
   return next;
 }
 
 function toPendingEvent(event) {
-  const pending = { ...event };
+  const pending = {...event};
   delete pending.token;
   return pending;
 }
 
 function upsertArtifact(artifacts, artifact) {
-  if (!artifacts.some((existing) => existing.path === artifact.path && existing.type === artifact.type)) {
+  if (!artifacts.some(
+      (existing) => existing.path === artifact.path && existing.type
+          === artifact.type)) {
     artifacts.push(artifact);
   }
 }

@@ -10,16 +10,17 @@ persistent background pages, you CANNOT rely on in-memory state.
 1. **Never store state in global variables** — treat every event handler as if the SW just started
 2. **Use chrome.storage for all persistent state** — read on demand, write after changes
 3. **Use chrome.alarms for timers** — not setTimeout/setInterval (these die with the SW)
-4. **Use chrome.storage.session for ephemeral session state** — survives SW restart but not browser restart
+4. **Use chrome.storage.session for ephemeral session state** — survives SW restart but not browser
+   restart
 
 ## Storage Tier Selection
 
-| Need | Use |
-|------|-----|
+| Need                                           | Use                                           |
+|------------------------------------------------|-----------------------------------------------|
 | Survives browser restart, syncs across devices | `chrome.storage.sync` (8KB/item, 100KB total) |
-| Survives browser restart, local only | `chrome.storage.local` (10MB default) |
-| Survives SW restart only | `chrome.storage.session` (10MB default) |
-| Never persisted (avoid) | Global variables ❌ |
+| Survives browser restart, local only           | `chrome.storage.local` (10MB default)         |
+| Survives SW restart only                       | `chrome.storage.session` (10MB default)       |
+| Never persisted (avoid)                        | Global variables ❌                           |
 
 ## Pattern: State Read-on-Demand
 

@@ -128,9 +128,9 @@ Runs tests one-by-one, stops at first polluter. See script for usage.
 
 1. `git init` runs in `process.cwd()` ← empty cwd parameter
 2. WorktreeManager called with empty projectDir
-3. Session.create() passed empty string
+3. Session.create () passed empty string
 4. Test accessed `context.tempDir` before beforeEach
-5. setupCoreTest() returns `{ tempDir: '' }` initially
+5. setupCoreTest () returns `{ tempDir: '' }` initially
 
 **Root cause:** Top-level variable initialization accessing empty value
 
@@ -138,7 +138,7 @@ Runs tests one-by-one, stops at first polluter. See script for usage.
 
 **Also added defense-in-depth:**
 
-- Layer 1: Project.create() validates directory
+- Layer 1: Project.create () validates directory
 - Layer 2: WorkspaceManager validates not empty
 - Layer 3: NODE_ENV guard refuses git init outside tmpdir
 - Layer 4: Stack trace logging before git init
@@ -171,10 +171,9 @@ digraph principle {
 
 ## Stack Trace Tips
 
-**In tests:** Use `console.error()` not logger - logger may be suppressed
-**Before operation:** Log before the dangerous operation, not after it fails
-**Include context:** Directory, cwd, environment variables, timestamps
-**Capture stack:** `new Error().stack` shows complete call chain
+**In tests:** Use `console.error()` not logger - logger may be suppressed **Before operation:** Log
+before the dangerous operation, not after it fails **Include context:** Directory, cwd, environment
+variables, timestamps **Capture stack:** `new Error().stack` shows complete call chain
 
 ## Real-World Impact
 

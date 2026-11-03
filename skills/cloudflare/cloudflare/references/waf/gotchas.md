@@ -2,8 +2,7 @@
 
 ## Execution Order
 
-**Problem:** Rules execute in unexpected order
-**Cause:** Misunderstanding phase execution
+**Problem:** Rules execute in unexpected order **Cause:** Misunderstanding phase execution
 **Solution:**
 
 Phases execute sequentially (can't be changed):
@@ -31,9 +30,7 @@ await client.rulesets.create({ phase: 'http_request_firewall_managed', rules: [.
 
 ## Expression Errors
 
-**Problem:** Syntax errors prevent deployment
-**Cause:** Invalid field/operator/syntax
-**Solution:**
+**Problem:** Syntax errors prevent deployment **Cause:** Invalid field/operator/syntax **Solution:**
 
 ```typescript
 // Common mistakes
@@ -47,9 +44,7 @@ Test expressions in Security Events before deploying.
 
 ## Skip Rule Pitfalls
 
-**Problem:** Skip rules don't work as expected
-**Cause:** Misunderstanding skip scope
-**Solution:**
+**Problem:** Skip rules don't work as expected **Cause:** Misunderstanding skip scope **Solution:**
 
 Skip types:
 
@@ -78,8 +73,7 @@ Skip types:
 
 ## Update Replaces All Rules
 
-**Problem:** Updating ruleset deletes other rules
-**Cause:** `update()` replaces entire rule list
+**Problem:** Updating ruleset deletes other rules **Cause:** `update()` replaces entire rule list
 **Solution:**
 
 ```typescript
@@ -101,9 +95,8 @@ await client.rulesets.update({
 
 ## Override Conflicts
 
-**Problem:** Managed ruleset overrides don't apply
-**Cause:** Rule ID doesn't exist or category name incorrect
-**Solution:**
+**Problem:** Managed ruleset overrides don't apply **Cause:** Rule ID doesn't exist or category name
+incorrect **Solution:**
 
 ```typescript
 // List managed ruleset rules to find IDs
@@ -120,9 +113,7 @@ console.log(ruleset.rules.map(r => ({ id: r.id, description: r.description })));
 
 ## False Positives
 
-**Problem:** Legitimate traffic blocked
-**Cause:** Aggressive rules/thresholds
-**Solution:**
+**Problem:** Legitimate traffic blocked **Cause:** Aggressive rules/thresholds **Solution:**
 
 1. Start with log mode: `overrides: { action: 'log' }`
 2. Review Security Events to identify false positives
@@ -130,9 +121,8 @@ console.log(ruleset.rules.map(r => ({ id: r.id, description: r.description })));
 
 ## Rate Limiting NAT Issues
 
-**Problem:** Users behind NAT hit rate limits too quickly
-**Cause:** Multiple users sharing single IP
-**Solution:**
+**Problem:** Users behind NAT hit rate limits too quickly **Cause:** Multiple users sharing single
+IP **Solution:**
 
 Add more characteristics: User-Agent, session cookie, or authorization header
 
@@ -152,9 +142,7 @@ Add more characteristics: User-Agent, session cookie, or authorization header
 
 ## Performance Issues
 
-**Problem:** Increased latency
-**Cause:** Complex expressions, excessive rules
-**Solution:**
+**Problem:** Increased latency **Cause:** Complex expressions, excessive rules **Solution:**
 
 1. Skip static assets early: `action: 'skip'` for `\\.(jpg|css|js)$`
 2. Path-based deployment: Only run managed on `/api` or `/admin`
@@ -181,8 +169,7 @@ Add more characteristics: User-Agent, session cookie, or authorization header
 
 ## API Errors
 
-**Problem:** API calls fail with cryptic errors
-**Cause:** Invalid parameters or permissions
+**Problem:** API calls fail with cryptic errors **Cause:** Invalid parameters or permissions
 **Solution:**
 
 ```typescript

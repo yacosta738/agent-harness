@@ -134,11 +134,11 @@ Click **Deploy** button to move code to production:
 
 ## Browser Compatibility
 
-| Browser     | Status         | Notes                                     |
-|-------------|----------------|-------------------------------------------|
+| Browser     | Status          | Notes                                     |
+|-------------|-----------------|-------------------------------------------|
 | Chrome/Edge | ✅ Full support | Recommended                               |
 | Firefox     | ✅ Full support | Works well                                |
-| Safari      | ⚠️ Broken      | Preview fails with "PreviewRequestFailed" |
+| Safari      | ⚠️ Broken       | Preview fails with "PreviewRequestFailed" |
 
 **Safari users:** Use Chrome, Firefox, or Edge for Workers Playground.
 

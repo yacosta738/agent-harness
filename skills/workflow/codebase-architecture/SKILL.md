@@ -20,8 +20,8 @@ not substitute with generic terms like "component," "service," or "API".
 
 - **Module**: Anything with an interface and an implementation (function, class,
   package, slice).
-- **Interface**: Everything a caller must know to use the module correctly
-  (types, invariants, ordering constraints, error modes, configuration). Not
+- **Interface**: Everything a caller must know to use the module correctly (types, invariants,
+  ordering constraints, error modes, configuration). Not
   just the type signature.
 - **Implementation**: The code inside a module.
 - **Depth**: Leverage at the interface. A module is **deep** when a large amount

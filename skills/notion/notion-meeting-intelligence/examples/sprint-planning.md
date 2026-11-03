@@ -78,9 +78,8 @@ Cross-linked pre-read and agenda, referenced last retro and backlog.
 
 ## Output Summary
 
-**Internal Pre-Read**: Team context, capacity, blockers
-**External Agenda**: Meeting structure, discussion topics
-**Both saved to Notion** and linked to project pages
+**Internal Pre-Read**: Team context, capacity, blockers **External Agenda**: Meeting structure,
+discussion topics **Both saved to Notion** and linked to project pages
 
 ## Key Success Factors
 

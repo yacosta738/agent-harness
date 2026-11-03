@@ -21,8 +21,7 @@ Content-Length header, remove Set-Cookie header, and set `Vary: Accept-Encoding`
 ### "Origin Bandwidth Higher Than Expected"
 
 **Cause:** Cache Reserve fetches **uncompressed** content from origin, even though it serves
-compressed to visitors
-**Solution:**
+compressed to visitors **Solution:**
 
 - If origin charges by bandwidth, factor in uncompressed transfer costs
 - Cache Reserve compresses for visitors automatically (saves visitor bandwidth)
@@ -31,8 +30,7 @@ compressed to visitors
 ### "Cloudflare Images Not Caching with Cache Reserve"
 
 **Cause:** Cloudflare Images with `Vary: Accept` header (format negotiation) is incompatible with
-Cache Reserve
-**Solution:**
+Cache Reserve **Solution:**
 
 - Cache Reserve silently skips images with Vary for format negotiation
 - Original images (non-transformed) may still be eligible
@@ -40,8 +38,8 @@ Cache Reserve
 
 ### "High Class A Operations Costs"
 
-**Cause:** Frequent cache misses, short TTLs, or frequent revalidation
-**Solution:** Increase TTL for stable content (24+ hours), enable Tiered Cache to reduce direct
+**Cause:** Frequent cache misses, short TTLs, or frequent revalidation **Solution:** Increase TTL
+for stable content (24+ hours), enable Tiered Cache to reduce direct
 Cache Reserve misses, or use stale-while-revalidate
 
 ### "Purge Not Working as Expected"
@@ -53,8 +51,7 @@ for complete removal
 ### "O2O (Orange-to-Orange) Assets Not Caching"
 
 **Cause:** Orange-to-Orange (proxied zone requesting another proxied zone on Cloudflare) bypasses
-Cache Reserve
-**Solution:**
+Cache Reserve **Solution:**
 
 - **What is O2O**: Zone A (proxied) → Zone B (proxied), both on Cloudflare
 - **Detection**: Check `cf-cache-status` for `BYPASS` and review request path
@@ -62,8 +59,8 @@ Cache Reserve
 
 ### "Cache Reserve must be OFF before clearing data"
 
-**Cause:** Attempting to clear Cache Reserve data while it's still enabled
-**Solution:** Disable Cache Reserve first, wait briefly for propagation (5s), then clear data (can
+**Cause:** Attempting to clear Cache Reserve data while it's still enabled **Solution:** Disable
+Cache Reserve first, wait briefly for propagation (5s), then clear data (can
 take up to 24 hours)
 
 ## Limits

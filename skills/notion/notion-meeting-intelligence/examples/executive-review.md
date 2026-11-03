@@ -77,9 +77,8 @@ Connected to OKRs, metrics dashboards, and Q1 planning docs.
 
 ## Outputs
 
-**Internal Pre-Read**: Comprehensive context with honest assessment
-**Executive Agenda**: Structured 90-min presentation
-**Both in Notion** with links to supporting data
+**Internal Pre-Read**: Comprehensive context with honest assessment **Executive Agenda**: Structured
+90-min presentation **Both in Notion** with links to supporting data
 
 ## Key Success Factors
 

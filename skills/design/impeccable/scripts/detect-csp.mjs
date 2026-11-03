@@ -42,8 +42,10 @@ const SKIP_DIRS = new Set([
   '.vercel',
 ]);
 
-const SCAN_EXTS = new Set(['.js', '.mjs', '.cjs', '.ts', '.mts', '.cts', '.tsx', '.jsx']);
-const LAYOUT_EXTS = new Set(['.tsx', '.jsx', '.astro', '.vue', '.svelte', '.html']);
+const SCAN_EXTS = new Set(
+    ['.js', '.mjs', '.cjs', '.ts', '.mts', '.cts', '.tsx', '.jsx']);
+const LAYOUT_EXTS = new Set(
+    ['.tsx', '.jsx', '.astro', '.vue', '.svelte', '.html']);
 const MAX_DEPTH = 6;
 const MAX_READ_BYTES = 64 * 1024;
 
@@ -85,13 +87,18 @@ const META_TAG_HINT = /http-equiv\s*=\s*["']Content-Security-Policy["']/i;
  * @returns {{ shape: string|null, signals: string[] }}
  */
 export function detectCsp(cwd = process.cwd()) {
-  const hits = { appendArrays: [], appendString: [], middleware: [], metaTag: [] };
+  const hits = {
+    appendArrays: [],
+    appendString: [],
+    middleware: [],
+    metaTag: []
+  };
 
   walk(cwd, cwd, 0, (absPath, relPath, body) => {
     const ext = path.extname(absPath);
     const base = path.basename(absPath).toLowerCase();
     const isConfig = (name) =>
-      new RegExp('(^|/)' + name + '\\.config\\.').test(relPath);
+        new RegExp('(^|/)' + name + '\\.config\\.').test(relPath);
 
     // === append-arrays candidates ===
 
@@ -133,7 +140,8 @@ export function detectCsp(cwd = process.cwd()) {
 
     // === detect-only shapes ===
 
-    if ((base === 'middleware.ts' || base === 'middleware.js' || base === 'middleware.mjs') &&
+    if ((base === 'middleware.ts' || base === 'middleware.js' || base
+            === 'middleware.mjs') &&
         MIDDLEWARE_HINT.test(body)) {
       hits.middleware.push(relPath);
     }
@@ -147,36 +155,47 @@ export function detectCsp(cwd = process.cwd()) {
   // Structured patches are safer than string splices; runtime and HTML
   // injection patches are less reliable and v1 doesn't auto-apply them.
   if (hits.appendArrays.length > 0) {
-    return { shape: 'append-arrays', signals: hits.appendArrays };
+    return {shape: 'append-arrays', signals: hits.appendArrays};
   }
   if (hits.appendString.length > 0) {
-    return { shape: 'append-string', signals: hits.appendString };
+    return {shape: 'append-string', signals: hits.appendString};
   }
   if (hits.middleware.length > 0) {
-    return { shape: 'middleware', signals: hits.middleware };
+    return {shape: 'middleware', signals: hits.middleware};
   }
   if (hits.metaTag.length > 0) {
-    return { shape: 'meta-tag', signals: hits.metaTag };
+    return {shape: 'meta-tag', signals: hits.metaTag};
   }
-  return { shape: null, signals: [] };
+  return {shape: null, signals: []};
 }
 
 function walk(root, dir, depth, visit) {
-  if (depth > MAX_DEPTH) return;
+  if (depth > MAX_DEPTH) {
+    return;
+  }
   let entries;
-  try { entries = fs.readdirSync(dir, { withFileTypes: true }); }
-  catch { return; }
+  try {
+    entries = fs.readdirSync(dir, {withFileTypes: true});
+  } catch {
+    return;
+  }
 
   for (const entry of entries) {
     const abs = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (SKIP_DIRS.has(entry.name)) continue;
+      if (SKIP_DIRS.has(entry.name)) {
+        continue;
+      }
       walk(root, abs, depth + 1, visit);
       continue;
     }
-    if (!entry.isFile()) continue;
+    if (!entry.isFile()) {
+      continue;
+    }
     const ext = path.extname(entry.name);
-    if (!SCAN_EXTS.has(ext) && !LAYOUT_EXTS.has(ext)) continue;
+    if (!SCAN_EXTS.has(ext) && !LAYOUT_EXTS.has(ext)) {
+      continue;
+    }
     let body;
     try {
       const fd = fs.openSync(abs, 'r');
@@ -184,15 +203,20 @@ function walk(root, dir, depth, visit) {
         const buf = Buffer.alloc(MAX_READ_BYTES);
         const n = fs.readSync(fd, buf, 0, MAX_READ_BYTES, 0);
         body = buf.slice(0, n).toString('utf-8');
-      } finally { fs.closeSync(fd); }
-    } catch { continue; }
+      } finally {
+        fs.closeSync(fd);
+      }
+    } catch {
+      continue;
+    }
     visit(abs, path.relative(root, abs), body);
   }
 }
 
 // CLI mode
 const _running = process.argv[1];
-if (_running?.endsWith('detect-csp.mjs') || _running?.endsWith('detect-csp.mjs/')) {
+if (_running?.endsWith('detect-csp.mjs') || _running?.endsWith(
+    'detect-csp.mjs/')) {
   const result = detectCsp(process.cwd());
   console.log(JSON.stringify(result, null, 2));
 }

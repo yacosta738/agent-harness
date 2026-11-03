@@ -72,9 +72,9 @@ Custom headers pass through but don't affect asset serving.
 
 | Method              | Supported | Response               |
 |---------------------|-----------|------------------------|
-| `GET`               | ✅ Yes     | Asset content          |
-| `HEAD`              | ✅ Yes     | Headers only, no body  |
-| `POST`, `PUT`, etc. | ❌ No      | 405 Method Not Allowed |
+| `GET`               | ✅ Yes    | Asset content          |
+| `HEAD`              | ✅ Yes    | Headers only, no body  |
+| `POST`, `PUT`, etc. | ❌ No     | 405 Method Not Allowed |
 
 ## Response Behavior
 

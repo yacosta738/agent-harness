@@ -4,8 +4,8 @@
 
 ### "Step Timeout"
 
-**Cause:** Step execution exceeding 10 minute default timeout or configured timeout
-**Solution:** Set custom timeout with
+**Cause:** Step execution exceeding 10 minute default timeout or configured timeout **Solution:**
+Set custom timeout with
 `step.do('long operation', {timeout: '30 minutes'}, async () => {...})` or increase CPU limit in
 wrangler.jsonc (max 5min CPU time)
 
@@ -16,8 +16,8 @@ wrangler.jsonc (max 5min CPU time)
 
 ### "Non-Deterministic Step Names"
 
-**Cause:** Using dynamic values like `Date.now()` in step names causes replay issues
-**Solution:** Use deterministic values like `event.instanceId` for step names
+**Cause:** Using dynamic values like `Date.now()` in step names causes replay issues **Solution:**
+Use deterministic values like `event.instanceId` for step names
 
 ### "State Lost in Variables"
 
@@ -33,8 +33,8 @@ wrangler.jsonc (max 5min CPU time)
 
 ### "Large Step Returns Exceeding Limit"
 
-**Cause:** Returning data >1 MiB from step
-**Solution:** Store large data in R2 and return only reference: `{ key: 'r2-object-key' }`
+**Cause:** Returning data >1 MiB from step **Solution:** Store large data in R2 and return only
+reference: `{ key: 'r2-object-key' }`
 
 ### "Step Exceeded CPU Limit But Ran for < 30s"
 
@@ -50,9 +50,9 @@ charged)
 
 ### "Instance ID Collision"
 
-**Cause:** Reusing instance IDs causing conflicts
-**Solution:** Use unique IDs with timestamp: `await env.MY_WORKFLOW.create({ id: \`${userId}-$
-{Date.now()}\`, params: {} })`
+**Cause:** Reusing instance IDs causing conflicts **Solution:** Use unique IDs with timestamp:
+`await env.MY_WORKFLOW.create({ id: \`${userId}-$
+{Date.now ()}\`, params: {} })`
 
 ### "Instance Data Disappeared After Completion"
 
@@ -62,8 +62,8 @@ free / 30 days paid)
 
 ### "Missing await on step.do"
 
-**Cause:** Forgetting to await step.do() causing fire-and-forget behavior
-**Solution:** Always await step operations: `await step.do('task', ...)`
+**Cause:** Forgetting to await step.do () causing fire-and-forget behavior **Solution:** Always
+await step operations: `await step.do('task', ...)`
 
 ## Limits
 

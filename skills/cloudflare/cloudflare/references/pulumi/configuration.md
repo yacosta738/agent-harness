@@ -191,8 +191,8 @@ const deployment = new cloudflare.WorkersDeployment("prod", {
 });
 ```
 
-**When to use:** Blue-green deployments, canary releases, gradual rollouts
-**When NOT to use:** Simple single-version deployments (use WorkerScript)
+**When to use:** Blue-green deployments, canary releases, gradual rollouts **When NOT to use:**
+Simple single-version deployments (use WorkerScript)
 
 ---
 See: [README.md](./README.md), [api.md](./api.md), [patterns.md](./patterns.md), [gotchas.md](./gotchas.md)

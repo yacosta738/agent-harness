@@ -75,9 +75,21 @@
     "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
     "exit_easing": "cubic-bezier(0.4, 0, 0.2, 1)",
     "phrase_samples": [
-      ["Words", "push", "left"],
-      ["Type", "locks", "center"],
-      ["Build", "the", "line"]
+      [
+        "Words",
+        "push",
+        "left"
+      ],
+      [
+        "Type",
+        "locks",
+        "center"
+      ],
+      [
+        "Build",
+        "the",
+        "line"
+      ]
     ]
   },
   "usage_notes": "Layout-aware effect: each incoming word changes the target x-position of the whole line. Best for short three-word phrases; implementation requires measuring word widths and animating existing words to new positions. A small entry and reflow blur helps the push feel smoother without extending the timing."

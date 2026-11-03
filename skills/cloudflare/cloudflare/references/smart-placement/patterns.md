@@ -18,8 +18,8 @@ export default {
 
 ## Frontend + Backend Split (Service Bindings)
 
-**Frontend:** Runs at edge for fast user response
-**Backend:** Smart Placement runs close to database
+**Frontend:** Runs at edge for fast user response **Backend:** Smart Placement runs close to
+database
 
 ```typescript
 // Frontend Worker - routes requests to backend

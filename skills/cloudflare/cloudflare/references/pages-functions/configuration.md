@@ -64,8 +64,8 @@ Top-level → local dev, `env.preview` → preview, `env.production` → product
 }
 ```
 
-**Note:** If overriding `vars`, `kv_namespaces`, `d1_databases`, etc., ALL must be redefined (
-non-inheritable)
+**Note:** If overriding `vars`, `kv_namespaces`, `d1_databases`, etc., ALL must be redefined
+(non-inheritable)
 
 ## Local Secrets (.dev.vars)
 

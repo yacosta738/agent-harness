@@ -49,7 +49,7 @@ env.ANALYTICS.writeDataPoint({
 
 ## Anti-Patterns
 
-| ❌ Wrong                               | ✅ Correct                              |
+| ❌ Wrong                              | ✅ Correct                             |
 |---------------------------------------|----------------------------------------|
 | `await writeDataPoint()`              | `writeDataPoint()` (fire-and-forget)   |
 | `indexes: [method]` (low cardinality) | `blobs: [method]`, `indexes: [userId]` |
@@ -62,7 +62,7 @@ env.ANALYTICS.writeDataPoint({
 1. **Design schema upfront** - Document blob/double/index assignments
 2. **Always include count metric** - `doubles: [latency, 1]` for AVG calculations
 3. **Use enums for blobs** - Consistent values like `Status.SUCCESS`
-4. **Handle sampling** - Use ratios (avg_latency = SUM(latency)/SUM(count))
+4. **Handle sampling** - Use ratios (avg_latency = SUM (latency)/SUM (count))
 5. **Test queries early** - Validate schema before heavy writes
 
 ## Schema Template

@@ -18,6 +18,7 @@ creating project artifacts. Skip only for purely mechanical commands.
 ### Step 1: Obtain the Skill Registry
 
 Resolution order:
+
 1. Use the session cache if present.
 2. Read `.agents/skill-registry.md` from the project root.
 3. No registry found → proceed without project skills and note it in the delegation.
@@ -26,10 +27,10 @@ Resolution order:
 
 Match on two dimensions:
 
-| Context | Match against |
-|---------|---------------|
-| Code/files | Registry trigger/description mentions the language, framework, tool, or path |
-| Task/action | Registry trigger/description mentions actions like PR, review, docs, tests |
+| Context     | Match against                                                                |
+|-------------|------------------------------------------------------------------------------|
+| Code/files  | Registry trigger/description mentions the language, framework, tool, or path |
+| Task/action | Registry trigger/description mentions actions like PR, review, docs, tests   |
 
 Prefer the smallest useful set. If more than five skills match, keep the five most relevant and
 prioritize code context over task context.

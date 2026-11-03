@@ -78,9 +78,21 @@
       "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
       "exit_easing": "cubic-bezier(0.4, 0, 0.2, 1)",
       "phrase_samples": [
-        ["Words", "push", "left"],
-        ["Type", "locks", "center"],
-        ["Build", "the", "line"]
+        [
+          "Words",
+          "push",
+          "left"
+        ],
+        [
+          "Type",
+          "locks",
+          "center"
+        ],
+        [
+          "Build",
+          "the",
+          "line"
+        ]
       ]
     },
     "usage_notes": "Layout-aware effect: each incoming word changes the target x-position of the whole line. Best for short three-word phrases; implementation requires measuring word widths and animating existing words to new positions. A small entry and reflow blur helps the push feel smoother without extending the timing."
@@ -89,9 +101,21 @@
     "content": {
       "sample": "Words push left.",
       "phrases": [
-        ["Words", "push", "left"],
-        ["Type", "locks", "center"],
-        ["Build", "the", "line"]
+        [
+          "Words",
+          "push",
+          "left"
+        ],
+        [
+          "Type",
+          "locks",
+          "center"
+        ],
+        [
+          "Build",
+          "the",
+          "line"
+        ]
       ]
     },
     "content_usage": {
@@ -122,15 +146,29 @@
         "easing": "cubic-bezier(0.2, 0.8, 0.2, 1)",
         "exit_easing": "cubic-bezier(0.4, 0, 0.2, 1)",
         "phrase_samples": [
-          ["Words", "push", "left"],
-          ["Type", "locks", "center"],
-          ["Build", "the", "line"]
+          [
+            "Words",
+            "push",
+            "left"
+          ],
+          [
+            "Type",
+            "locks",
+            "center"
+          ],
+          [
+            "Build",
+            "the",
+            "line"
+          ]
         ]
       },
       "recipe": {
         "id": "kinetic-center-build",
         "summary": "Build a centered horizontal phrase word by word; each incoming word enters from the right and pushes existing words into newly centered positions.",
-        "required_measurements": ["offsetWidth for every word after appending the incoming word"],
+        "required_measurements": [
+          "offsetWidth for every word after appending the incoming word"
+        ],
         "algorithm": [
           "Create a relative kinetic line container using the kinetic-line-host stage preset.",
           "For each phrase word, append an absolutely centered word span.",
@@ -269,7 +307,12 @@
     },
     "playback": {
       "kind": "loop",
-      "cycle": ["build-phrase", "hold", "exit-phrase", "gap"],
+      "cycle": [
+        "build-phrase",
+        "hold",
+        "exit-phrase",
+        "gap"
+      ],
       "replacement_behavior": "phrase-loop",
       "hold_ms": 706,
       "micro_delay_ms": 0,
@@ -314,7 +357,11 @@
         "line_display": "block",
         "transform_origin": "50% 55%",
         "white_space": "pre",
-        "will_change": ["transform", "opacity", "filter"]
+        "will_change": [
+          "transform",
+          "opacity",
+          "filter"
+        ]
       },
       "kinetic_container": {
         "requirement": "Use a relative-positioned inline host large enough for the phrase; exact dimensions belong to the consuming UI.",
@@ -328,7 +375,11 @@
         "top": "50%",
         "white_space": "nowrap",
         "absolute_centered": true,
-        "will_change": ["transform", "opacity", "filter"]
+        "will_change": [
+          "transform",
+          "opacity",
+          "filter"
+        ]
       }
     },
     "rendering_contract": {
@@ -348,7 +399,11 @@
       "content_replacement": "follow renderer recipe algorithm"
     },
     "library_selection": {
-      "supported_adapters": ["waapi", "motion", "gsap"],
+      "supported_adapters": [
+        "waapi",
+        "motion",
+        "gsap"
+      ],
       "aliases": {
         "web animations api": "waapi",
         "waapi": "waapi",

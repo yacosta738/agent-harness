@@ -72,7 +72,11 @@
   "showcase": {
     "content": {
       "sample": "Move with intent.",
-      "samples": ["Move with intent.", "Words glide across.", "Build the rhythm."]
+      "samples": [
+        "Move with intent.",
+        "Words glide across.",
+        "Build the rhythm."
+      ]
     },
     "content_usage": {
       "default_policy": "When applying an effect to an existing heading or text section, preserve the section text. Do not replace user/application copy with showcase sample text unless the user explicitly asks to reproduce the demo copy.",
@@ -109,7 +113,9 @@
         "frame_materialization": {
           "title_transform": "translate3d(x_px, y_px * runtime.y_travel_multiplier, 0) scale(scale)",
           "title_filter": "blur(blur_px)",
-          "word_animation_properties": ["opacity"]
+          "word_animation_properties": [
+            "opacity"
+          ]
         },
         "initial_state": {
           "before_enter": [
@@ -117,7 +123,9 @@
             "Set every non-space word span opacity to build.word_opacity_from before starting any enter tween.",
             "Whitespace spans should preserve layout but do not receive opacity tweens."
           ],
-          "before_exit": ["Set the title element to titleFrame(exit.from)."]
+          "before_exit": [
+            "Set the title element to titleFrame(exit.from)."
+          ]
         },
         "verification": [
           "A GSAP implementation must call gsap.set(wordNodes, { opacity: word_opacity_from }) or assign equivalent inline styles before gsap.to(wordNodes, { opacity: word_opacity_to, ... }).",
@@ -140,7 +148,12 @@
     },
     "playback": {
       "kind": "loop",
-      "cycle": ["enter", "hold", "exit", "gap"],
+      "cycle": [
+        "enter",
+        "hold",
+        "exit",
+        "gap"
+      ],
       "replacement_behavior": "exit-before-enter",
       "hold_ms": 550,
       "micro_delay_ms": 0,
@@ -192,7 +205,11 @@
         "line_display": "block",
         "transform_origin": "50% 55%",
         "white_space": "pre",
-        "will_change": ["transform", "opacity", "filter"]
+        "will_change": [
+          "transform",
+          "opacity",
+          "filter"
+        ]
       }
     },
     "rendering_contract": {
@@ -210,7 +227,11 @@
       "content_replacement": "follow renderer recipe algorithm"
     },
     "library_selection": {
-      "supported_adapters": ["waapi", "motion", "gsap"],
+      "supported_adapters": [
+        "waapi",
+        "motion",
+        "gsap"
+      ],
       "aliases": {
         "web animations api": "waapi",
         "waapi": "waapi",

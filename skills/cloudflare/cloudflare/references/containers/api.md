@@ -22,8 +22,8 @@ export class MyContainer extends Container {
 
 ## Routing
 
-**getByName(id)** - Named instance for session affinity, per-user state
-**getRandom()** - Random instance for load balancing stateless services
+**getByName (id)** - Named instance for session affinity, per-user state **getRandom ()** - Random
+instance for load balancing stateless services
 
 ```typescript
 const container = env.MY_CONTAINER.getByName("user-123");
@@ -32,7 +32,7 @@ const container = env.MY_CONTAINER.getRandom();
 
 ## Startup Methods
 
-### start() - Basic start (8s timeout)
+### start () - Basic start (8s timeout)
 
 ```typescript
 await container.start();
@@ -41,7 +41,7 @@ await container.start({ envVars: { KEY: "value" } });
 
 Returns when **process starts**, NOT when ports ready. Use for fire-and-forget.
 
-### startAndWaitForPorts() - Recommended (20s timeout)
+### startAndWaitForPorts () - Recommended (20s timeout)
 
 ```typescript
 await container.startAndWaitForPorts();  // Uses requiredPorts
@@ -56,7 +56,7 @@ Returns when **ports listening**. Use before HTTP/TCP requests.
 
 **Port resolution:** explicit ports → requiredPorts → defaultPort → port 33
 
-### waitForPort() - Wait for specific port
+### waitForPort () - Wait for specific port
 
 ```typescript
 await container.waitForPort(8080);
@@ -65,7 +65,7 @@ await container.waitForPort(8080, { timeout: 30000 });
 
 ## Communication
 
-### fetch() - HTTP with WebSocket support
+### fetch () - HTTP with WebSocket support
 
 ```typescript
 // ✅ Supports WebSocket upgrades
@@ -78,7 +78,7 @@ const response = await container.fetch("http://container/api", {
 
 **Use for:** All HTTP, especially WebSocket.
 
-### containerFetch() - HTTP only (no WebSocket)
+### containerFetch () - HTTP only (no WebSocket)
 
 ```typescript
 // ❌ No WebSocket support
@@ -98,7 +98,7 @@ if (request.body) await request.body.pipeTo(conn.writable);
 return new Response(conn.readable);
 ```
 
-### switchPort() - Change default port
+### switchPort () - Change default port
 
 ```typescript
 this.switchPort(8081);  // Subsequent fetch() uses this port
@@ -106,7 +106,7 @@ this.switchPort(8081);  // Subsequent fetch() uses this port
 
 ## Lifecycle Hooks
 
-### onStart()
+### onStart ()
 
 Called when container process starts (ports may not be ready). Runs in `blockConcurrencyWhile` - no
 concurrent requests.
@@ -117,7 +117,7 @@ onStart() {
 }
 ```
 
-### onStop()
+### onStop ()
 
 Called when SIGTERM received. 15 minutes until SIGKILL. Use for graceful shutdown.
 
@@ -127,7 +127,7 @@ onStop() {
 }
 ```
 
-### onError()
+### onError ()
 
 Called when container crashes or fails to start.
 
@@ -137,7 +137,7 @@ onError(error: Error) {
 }
 ```
 
-### onActivityExpired()
+### onActivityExpired ()
 
 Called when `sleepAfter` timeout reached. Return `true` to stay alive, `false` to stop.
 

@@ -85,7 +85,7 @@ export default {
 | **Indexing** | Built-in                     | Not applicable               |
 | **Best for** | Knowledge bases, docs        | Simple chat, transformations |
 
-### search() vs aiSearch()
+### search () vs aiSearch ()
 
 | Method       | Returns               | Use When                                |
 |--------------|-----------------------|-----------------------------------------|

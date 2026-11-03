@@ -16,11 +16,16 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-qa` sub-agent, continue with the phase work below. Do NOT delegate, call task/delegate, modify code, or fix findings. You own acceptance evidence and the QA report only.
+If you ARE the `sdd-qa` sub-agent, continue with the phase work below. Do NOT delegate, call
+task/delegate, modify code, or fix findings. You own acceptance evidence and the QA report only.
 
 ## Purpose
 
-The lifecycle is `apply → verify → qa → archive`. Evaluate observable user/operator behavior after technical verification. `sdd-verify` owns requirements, design, task, and available technical-runtime conformance; `sdd-qa` owns acceptance behavior and returns findings for implementation. QA MUST NOT repair code or silently change artifacts outside its report and phase state handoff.
+The lifecycle is `apply → verify → qa → archive`. Evaluate observable user/operator behavior after
+technical verification. `sdd-verify` owns requirements, design, task, and available
+technical-runtime conformance; `sdd-qa` owns acceptance behavior and returns findings for
+implementation. QA MUST NOT repair code or silently change artifacts outside its report and phase
+state handoff.
 
 ## Required Inputs
 
@@ -34,7 +39,9 @@ Read the active change artifacts before testing:
 - `.agents/sdd/changes/{change-name}/state.yaml`
 - `.agents/sdd/config.yaml`
 
-Use the proposal capabilities, specifications, design, and target surface as sources of truth. Code inspection can identify the target and inform scenarios, but code MUST NOT be the sole source of acceptance criteria.
+Use the proposal capabilities, specifications, design, and target surface as sources of truth. Code
+inspection can identify the target and inform scenarios, but code MUST NOT be the sole source of
+acceptance criteria.
 
 ## Capability Resolution
 
@@ -48,18 +55,27 @@ Inspect the target and available tools at runtime. Consider, as applicable:
 - manual or exploratory checks
 - project-specific acceptance capabilities supplied by the orchestrator
 
-Record every relevant capability as `available`, `selected`, `rejected`, or `unavailable`, including the reason. Select the narrowest capability that can produce observable evidence. Do not require browser automation for a non-browser target and do not invent an application-under-test.
+Record every relevant capability as `available`, `selected`, `rejected`, or `unavailable`, including
+the reason. Select the narrowest capability that can produce observable evidence. Do not require
+browser automation for a non-browser target and do not invent an application-under-test.
 
-If there is no suitable target or executable capability, the final verdict MUST be `NOT TESTED`. Static inspection alone MUST NOT produce `PASS` or `PASS WITH WARNINGS`. If a suitable path is prevented by credentials, environment, permissions, or another external constraint, record the scenario as `BLOCKED` with constraint evidence.
+If there is no suitable target or executable capability, the final verdict MUST be `NOT TESTED`.
+Static inspection alone MUST NOT produce `PASS` or `PASS WITH WARNINGS`. If a suitable path is
+prevented by credentials, environment, permissions, or another external constraint, record the
+scenario as `BLOCKED` with constraint evidence.
 
-Runner envelopes are evidence inputs, not prose suggestions: preserve identity, status, reason, redacted
-evidence, and artifact reference. Map `UNAVAILABLE` to `NOT TESTED`, external prevention to `BLOCKED`, and
-runner `FAIL` to `FAIL`. If runner/FSM execution is disabled or unavailable, include the literal `fallback`
+Runner envelopes are evidence inputs, not prose suggestions: preserve identity, status, reason,
+redacted
+evidence, and artifact reference. Map `UNAVAILABLE` to `NOT TESTED`, external prevention to
+`BLOCKED`, and
+runner `FAIL` to `FAIL`. If runner/FSM execution is disabled or unavailable, include the literal
+`fallback`
 mode and limitation; do not claim deterministic enforcement.
 
 ## Coverage Rules
 
-For each applicable acceptance risk, consider and record the result or non-applicability rationale for:
+For each applicable acceptance risk, consider and record the result or non-applicability rationale
+for:
 
 - happy path and user/operator outcome
 - negative and boundary input
@@ -67,11 +83,13 @@ For each applicable acceptance risk, consider and record the result or non-appli
 - unauthorized or security-sensitive behavior
 - browser, responsive, accessibility, locale, persistence, and exploratory behavior when relevant
 
-Every scenario has exactly one result: `PASS`, `FAIL`, `BLOCKED`, or `NOT TESTED`, plus evidence or a reason. Do not duplicate technical conformance checks already owned by `verify`.
+Every scenario has exactly one result: `PASS`, `FAIL`, `BLOCKED`, or `NOT TESTED`, plus evidence or
+a reason. Do not duplicate technical conformance checks already owned by `verify`.
 
 ## Canonical `qa-report.md`
 
-Persist `.agents/sdd/changes/{change-name}/qa-report.md` before returning. Use this structure and keep the evidence auditable:
+Persist `.agents/sdd/changes/{change-name}/qa-report.md` before returning. Use this structure and
+keep the evidence auditable:
 
 ```markdown
 # Acceptance QA Report: {change-name}
@@ -127,13 +145,20 @@ Allowed severities: `CRITICAL`, `P0`, `P1`, `P2`, `P3`.
 - Follow-up for implementation:
 ```
 
-A report is incomplete if it omits target/environment, capability decisions, scenarios, evidence or reasons, untested scope, findings/severity, verdict rationale, or limitations.
+A report is incomplete if it omits target/environment, capability decisions, scenarios, evidence or
+reasons, untested scope, findings/severity, verdict rationale, or limitations.
 
 ## Verdict and Archive Handoff
 
-Use `PASS` only when applicable acceptance scenarios have observable evidence. Use `PASS WITH WARNINGS` only when accepted scenarios pass and remaining findings are non-blocking warnings. Use `FAIL` for observed behavior failures. Use `BLOCKED` for externally prevented testing. Use `NOT TESTED` when no applicable executable target/capability exists.
+Use `PASS` only when applicable acceptance scenarios have observable evidence. Use
+`PASS WITH WARNINGS` only when accepted scenarios pass and remaining findings are non-blocking
+warnings. Use `FAIL` for observed behavior failures. Use `BLOCKED` for externally prevented testing.
+Use `NOT TESTED` when no applicable executable target/capability exists.
 
-Archive requires both `verify-report.md` and `qa-report.md`, rejects missing reports, failed reports, unresolved `CRITICAL`/P0/P1 findings, and normally rejects acceptance-relevant `BLOCKED`/`NOT TESTED`. Documentation/config-only changes may proceed only with an explicit rationale and visible warning; that exception does not change the QA verdict.
+Archive requires both `verify-report.md` and `qa-report.md`, rejects missing reports, failed
+reports, unresolved `CRITICAL`/P0/P1 findings, and normally rejects acceptance-relevant `BLOCKED`/
+`NOT TESTED`. Documentation/config-only changes may proceed only with an explicit rationale and
+visible warning; that exception does not change the QA verdict.
 
 ## Return Envelope
 
@@ -143,6 +168,7 @@ Return text containing:
 - `executive_summary`: 1–3 sentences
 - `detailed_report`: report verdict and evidence summary
 - `artifacts`: the persisted `qa-report.md`
-- `next_recommended`: `sdd-archive` only when the report is complete and policy allows; otherwise the remediation or rerun phase
+- `next_recommended`: `sdd-archive` only when the report is complete and policy allows; otherwise
+  the remediation or rerun phase
 - `risks`: release risks and limitations
 - `skill_resolution`: how skills were loaded

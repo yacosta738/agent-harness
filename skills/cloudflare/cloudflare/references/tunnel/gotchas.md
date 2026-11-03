@@ -4,8 +4,7 @@
 
 ### "Error 1016 (Origin DNS Error)"
 
-**Cause:** Tunnel not running or not connected
-**Solution:**
+**Cause:** Tunnel not running or not connected **Solution:**
 
 ```bash
 cloudflared tunnel info my-tunnel     # Check status
@@ -15,8 +14,7 @@ journalctl -u cloudflared -n 100      # Check logs
 
 ### "Self-signed certificate rejected"
 
-**Cause:** Origin using self-signed certificate
-**Solution:**
+**Cause:** Origin using self-signed certificate **Solution:**
 
 ```yaml
 originRequest:
@@ -26,8 +24,7 @@ originRequest:
 
 ### "Connection timeout"
 
-**Cause:** Origin slow to respond or timeout settings too low
-**Solution:**
+**Cause:** Origin slow to respond or timeout settings too low **Solution:**
 
 ```yaml
 originRequest:
@@ -38,8 +35,7 @@ originRequest:
 
 ### "Tunnel not starting"
 
-**Cause:** Invalid config, missing credentials, or tunnel doesn't exist
-**Solution:**
+**Cause:** Invalid config, missing credentials, or tunnel doesn't exist **Solution:**
 
 ```bash
 cloudflared tunnel ingress validate  # Validate config
@@ -49,8 +45,7 @@ cloudflared tunnel list              # Verify tunnel exists
 
 ### "Connection already registered"
 
-**Cause:** Multiple replicas with same connector ID or stale connection
-**Solution:**
+**Cause:** Multiple replicas with same connector ID or stale connection **Solution:**
 
 ```bash
 # Check active connections
@@ -62,8 +57,7 @@ cloudflared tunnel run my-tunnel
 
 ### "Tunnel credentials rotated but connections fail"
 
-**Cause:** Old cloudflared processes using expired credentials
-**Solution:**
+**Cause:** Old cloudflared processes using expired credentials **Solution:**
 
 ```bash
 # Stop all cloudflared processes

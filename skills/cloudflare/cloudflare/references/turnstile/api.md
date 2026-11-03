@@ -116,8 +116,7 @@ type UnsupportedCallback = () => void;
 
 ### Request
 
-**Method:** POST
-**Content-Type:** `application/json` or `application/x-www-form-urlencoded`
+**Method:** POST **Content-Type:** `application/json` or `application/x-www-form-urlencoded`
 
 ```typescript
 interface SiteverifyRequest {

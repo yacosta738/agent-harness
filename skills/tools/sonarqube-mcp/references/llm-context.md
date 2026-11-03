@@ -1,6 +1,7 @@
 # SonarQube MCP — LLM Tool Selection Guide
 
-Optimized context for LLM agents to select the right MCP tool, map parameters, and interpret responses efficiently.
+Optimized context for LLM agents to select the right MCP tool, map parameters, and interpret
+responses efficiently.
 
 ## Tool Selection Decision Tree
 
@@ -35,11 +36,14 @@ User wants to...
 
 **Optional:** `pullRequest` (string, PR number as string)
 
-> Note: No `branch` parameter exists on this tool. Without `pullRequest` or `analysisId`, the default branch status is returned.
+> Note: No `branch` parameter exists on this tool. Without `pullRequest` or `analysisId`, the
+> default branch status is returned.
 
 **Key output fields:**
+
 - `projectStatus.status` — `"OK"` or `"ERROR"` (or `"WARN"` in older versions)
-- `projectStatus.conditions[]` — array of conditions, each with `metricKey`, `status`, `actualValue`, `errorThreshold`, `comparator`
+- `projectStatus.conditions[]` — array of conditions, each with `metricKey`, `status`,
+  `actualValue`, `errorThreshold`, `comparator`
 
 **When to use:** Before merge decisions, deployment gates, release checks.
 
@@ -52,6 +56,7 @@ User wants to...
 **All parameters optional** — omit `projects` to search all accessible projects.
 
 **Key parameters:**
+
 - `projects` — `["project-key-1", "project-key-2"]`
 - `severities` — `["BLOCKER", "HIGH", "MEDIUM", "LOW", "INFO"]`
 - `pullRequestId` — string (PR number), not integer
@@ -59,8 +64,10 @@ User wants to...
 - `ps` — page size (default: 100, max: 500)
 
 **Key output fields per issue:**
+
 - `key` — unique issue ID (used in `change_sonar_issue_status`)
-- `rule` — rule key (used in `show_rule`); note: field is named `ruleKey` in `analyze_code_snippet` responses
+- `rule` — rule key (used in `show_rule`); note: field is named `ruleKey` in `analyze_code_snippet`
+  responses
 - `severity` — legacy severity value
 - `status` — current issue status (display only; use `change_sonar_issue_status` to change it)
 - `message` — human-readable description
@@ -69,7 +76,8 @@ User wants to...
 - `component` — file path within the project
 - `startLine`, `endLine` — location in the file
 
-**Pagination:** Check `paging.total` and `paging.pageSize` in response; iterate `p` while `paging.pageIndex * paging.pageSize < paging.total`.
+**Pagination:** Check `paging.total` and `paging.pageSize` in response; iterate `p` while
+`paging.pageIndex * paging.pageSize < paging.total`.
 
 **When to use:** Issue triage, PR review, sprint cleanup, security audits.
 
@@ -81,12 +89,16 @@ User wants to...
 
 **Required:** `projectKey`, `fileContent` (full file content as string)
 
-**Optional:** `language` (always specify for best accuracy), `codeSnippet` (narrow results to a sub-range of the file)
+**Optional:** `language` (always specify for best accuracy), `codeSnippet` (narrow results to a
+sub-range of the file)
 
-**Language values:** `javascript`, `typescript`, `python`, `java`, `go`, `php`, `cs` (C#), `cpp`, `kotlin`, `ruby`, `scala`, `swift`
+**Language values:** `javascript`, `typescript`, `python`, `java`, `go`, `php`, `cs` (C#), `cpp`,
+`kotlin`, `ruby`, `scala`, `swift`
 
 **Key output fields per issue:**
-- `ruleKey` — use with `show_rule` for explanation (note: `rule` in `search_sonar_issues_in_projects`, `ruleKey` here)
+
+- `ruleKey` — use with `show_rule` for explanation (note: `rule` in
+  `search_sonar_issues_in_projects`, `ruleKey` here)
 - `severity` — issue severity
 - `cleanCodeAttribute` — clean code attribute
 - `impacts` — object mapping quality dimension to severity level
@@ -94,6 +106,7 @@ User wants to...
 - `quickFixes` — boolean, whether a quick fix is available
 
 **Limitations:**
+
 - Analyzes file content in isolation, without full project context
 - Some rules require cross-file analysis and will not fire
 - Results may differ slightly from full CI analysis
@@ -108,11 +121,13 @@ User wants to...
 
 **Required:** `key` in format `<language>:<rule-id>`
 
-**Language prefixes:** `java`, `javascript`, `typescript`, `python`, `go`, `php`, `cs`, `cpp`, `kotlin`, `ruby`
+**Language prefixes:** `java`, `javascript`, `typescript`, `python`, `go`, `php`, `cs`, `cpp`,
+`kotlin`, `ruby`
 
 **Examples:** `java:S2068`, `typescript:S1082`, `python:S5659`, `go:S4036`
 
 **Key output fields:**
+
 - `name` — human-readable rule name
 - `type` — `BUG`, `VULNERABILITY`, `CODE_SMELL`, `SECURITY_HOTSPOT`
 - `severity` — legacy severity
@@ -121,7 +136,8 @@ User wants to...
 - `remediationEffort` — time estimate for fix (e.g., `"30min"`)
 - `codeExamples` — array with `noncompliant` and `compliant` code examples
 
-**When to use:** After finding an unfamiliar rule key, before dismissing an issue, for developer education.
+**When to use:** After finding an unfamiliar rule key, before dismissing an issue, for developer
+education.
 
 ---
 
@@ -137,7 +153,8 @@ User wants to...
 
 **Common metric key groups:**
 
-*Overall health:* `bugs`, `vulnerabilities`, `code_smells`, `coverage`, `duplicated_lines_density`, `ncloc`
+*Overall health:* `bugs`, `vulnerabilities`, `code_smells`, `coverage`, `duplicated_lines_density`,
+`ncloc`
 
 *Ratings:* `reliability_rating`, `security_rating`, `sqale_rating`
 
@@ -153,7 +170,8 @@ User wants to...
 
 **Purpose:** Update the status of a specific issue.
 
-**Required:** `key` (issue key from `search_sonar_issues_in_projects` response field `key`), `status`
+**Required:** `key` (issue key from `search_sonar_issues_in_projects` response field `key`),
+`status`
 
 **Valid status values:** `falsepositive`, `accept`, `reopen`
 
@@ -208,26 +226,27 @@ User wants to...
 
 ## Parameter Mapping Cheatsheet
 
-| User Says | Tool | Key Parameter |
-|---|---|---|
-| "project my-app" | any | `projectKey: "my-app"` |
-| "PR #234" | quality gate / search | `pullRequest: "234"` / `pullRequestId: "234"` |
-| "on main branch" | quality gate | no branch param; omit `pullRequest` to get default branch |
-| "critical issues" | search | `severities: ["BLOCKER", "HIGH"]` |
-| "rule java:S2068" | show_rule | `key: "java:S2068"` |
-| "issue AY1234" | change_status | `key: "AY1234"` |
-| "TypeScript code" | analyze_snippet | `language: "typescript"` |
-| "mark as false positive" | change_status | `status: "falsepositive"` |
-| "accept as debt" | change_status | `status: "accept"` |
+| User Says                | Tool                  | Key Parameter                                             |
+|--------------------------|-----------------------|-----------------------------------------------------------|
+| "project my-app"         | any                   | `projectKey: "my-app"`                                    |
+| "PR #234"                | quality gate / search | `pullRequest: "234"` / `pullRequestId: "234"`             |
+| "on main branch"         | quality gate          | no branch param; omit `pullRequest` to get default branch |
+| "critical issues"        | search                | `severities: ["BLOCKER", "HIGH"]`                         |
+| "rule java:S2068"        | show_rule             | `key: "java:S2068"`                                       |
+| "issue AY1234"           | change_status         | `key: "AY1234"`                                           |
+| "TypeScript code"        | analyze_snippet       | `language: "typescript"`                                  |
+| "mark as false positive" | change_status         | `status: "falsepositive"`                                 |
+| "accept as debt"         | change_status         | `status: "accept"`                                        |
 
 ## SonarQube Server vs SonarCloud Differences
 
-| Feature | SonarQube Server | SonarCloud |
-|---|---|---|
-| Project key format | Usually short slug | `<org>_<repo>` (e.g., `my-org_my-repo`) |
-| PR analysis | Supported | Supported |
-| Organization parameter | Not applicable | Required for some APIs |
-| `analysisId` | Available | Available |
-| Branch analysis | Supported | Supported |
+| Feature                | SonarQube Server   | SonarCloud                              |
+|------------------------|--------------------|-----------------------------------------|
+| Project key format     | Usually short slug | `<org>_<repo>` (e.g., `my-org_my-repo`) |
+| PR analysis            | Supported          | Supported                               |
+| Organization parameter | Not applicable     | Required for some APIs                  |
+| `analysisId`           | Available          | Available                               |
+| Branch analysis        | Supported          | Supported                               |
 
-If the user's project key contains an underscore and appears to follow `org_repo` format, it is likely a SonarCloud project.
+If the user's project key contains an underscore and appears to follow `org_repo` format, it is
+likely a SonarCloud project.

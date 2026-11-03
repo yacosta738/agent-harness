@@ -25,20 +25,20 @@
 
 ## Artifact File Paths
 
-| Skill        | Creates / Reads    | Path                                                                                        |
-|--------------|--------------------|---------------------------------------------------------------------------------------------|
-| orchestrator | Creates/Updates    | `.agents/sdd/changes/{change-name}/state.yaml`                                                 |
+| Skill        | Creates / Reads    | Path                                                                                                    |
+|--------------|--------------------|---------------------------------------------------------------------------------------------------------|
+| orchestrator | Creates/Updates    | `.agents/sdd/changes/{change-name}/state.yaml`                                                          |
 | sdd-init     | Creates            | `.agents/sdd/config.yaml`, `.agents/sdd/specs/`, `.agents/sdd/changes/`, `.agents/sdd/changes/archive/` |
-| sdd-explore  | Creates (optional) | `.agents/sdd/changes/{change-name}/exploration.md`                                             |
-| sdd-propose  | Creates            | `.agents/sdd/changes/{change-name}/proposal.md`                                                |
-| sdd-spec     | Creates            | `.agents/sdd/changes/{change-name}/specs/{domain}/spec.md`                                     |
-| sdd-design   | Creates            | `.agents/sdd/changes/{change-name}/design.md`                                                  |
-| sdd-tasks    | Creates            | `.agents/sdd/changes/{change-name}/tasks.md`                                                   |
-| sdd-apply    | Updates            | `.agents/sdd/changes/{change-name}/tasks.md` (marks `[x]`)                                     |
-| sdd-verify   | Creates            | `.agents/sdd/changes/{change-name}/verify-report.md`                                           |
-| sdd-qa       | Creates            | `.agents/sdd/changes/{change-name}/qa-report.md`                                                |
-| sdd-archive  | Moves              | `.agents/sdd/changes/{change-name}/` → `.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/`    |
-| sdd-archive  | Updates            | `.agents/sdd/specs/{domain}/spec.md` (merges deltas into main specs)                           |
+| sdd-explore  | Creates (optional) | `.agents/sdd/changes/{change-name}/exploration.md`                                                      |
+| sdd-propose  | Creates            | `.agents/sdd/changes/{change-name}/proposal.md`                                                         |
+| sdd-spec     | Creates            | `.agents/sdd/changes/{change-name}/specs/{domain}/spec.md`                                              |
+| sdd-design   | Creates            | `.agents/sdd/changes/{change-name}/design.md`                                                           |
+| sdd-tasks    | Creates            | `.agents/sdd/changes/{change-name}/tasks.md`                                                            |
+| sdd-apply    | Updates            | `.agents/sdd/changes/{change-name}/tasks.md` (marks `[x]`)                                              |
+| sdd-verify   | Creates            | `.agents/sdd/changes/{change-name}/verify-report.md`                                                    |
+| sdd-qa       | Creates            | `.agents/sdd/changes/{change-name}/qa-report.md`                                                        |
+| sdd-archive  | Moves              | `.agents/sdd/changes/{change-name}/` → `.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/`          |
+| sdd-archive  | Updates            | `.agents/sdd/specs/{domain}/spec.md` (merges deltas into main specs)                                    |
 
 ## Reading Artifacts
 
@@ -70,16 +70,22 @@ Use the shared rule from `persistence-contract.md`:
 - ALWAYS create the change directory (`.agents/sdd/changes/{change-name}/`) before writing artifacts
 - If a file already exists, READ it first and UPDATE it (don't overwrite blindly)
 - If the change directory already exists with artifacts, the change is being CONTINUED
-- `sdd-qa` MUST preserve `qa-report.md` during archive and MUST NOT be treated as complete without a report containing evidence or explicit untested/blocking reasons
-- Archive MUST require both `verify-report.md` and `qa-report.md` before moving the change; missing reports, blocking verdicts, and unresolved release-blocking findings remain visible in the report and state
+- `sdd-qa` MUST preserve `qa-report.md` during archive and MUST NOT be treated as complete without a
+  report containing evidence or explicit untested/blocking reasons
+- Archive MUST require both `verify-report.md` and `qa-report.md` before moving the change; missing
+  reports, blocking verdicts, and unresolved release-blocking findings remain visible in the report
+  and state
 - Use the `.agents/sdd/config.yaml` `rules` section to apply project-specific constraints per phase
 
 ## Deterministic Runner Adapter
 
 Projects may opt into `.agents/sdd/quality-runner.json` (`quality-runner/v1`) and the standalone
-`scripts/sdd-quality-runner.mjs`. Consumers must retain runner envelope identity, status, reason, redacted
-evidence, and artifact references. Missing/disabled runner configuration is an explicit `fallback`, not a pass.
-The standalone `scripts/sdd-fsm.mjs` owns legal state transitions when enabled; prompt flow remains a compatibility
+`scripts/sdd-quality-runner.mjs`. Consumers must retain runner envelope identity, status, reason,
+redacted
+evidence, and artifact references. Missing/disabled runner configuration is an explicit `fallback`,
+not a pass.
+The standalone `scripts/sdd-fsm.mjs` owns legal state transitions when enabled; prompt flow remains
+a compatibility
 adapter only and must not claim deterministic enforcement when the FSM is unavailable.
 
 ## Config File Reference

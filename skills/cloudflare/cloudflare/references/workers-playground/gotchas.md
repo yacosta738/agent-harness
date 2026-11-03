@@ -72,8 +72,8 @@ try { ... } catch (e) {
 
 ## Browser Support
 
-| Browser | Status        |
-|---------|---------------|
+| Browser | Status         |
+|---------|----------------|
 | Chrome  | ✅ Recommended |
 | Firefox | ✅ Works       |
 | Edge    | ✅ Works       |

@@ -2,7 +2,8 @@
 
 ## Intent
 
-Add responsibilities to an object dynamically by wrapping it with objects implementing the same contract.
+Add responsibilities to an object dynamically by wrapping it with objects implementing the same
+contract.
 
 ## Forces that justify it
 

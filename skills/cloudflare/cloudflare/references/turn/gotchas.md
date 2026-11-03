@@ -191,7 +191,7 @@ if (ttl > 172800) {
 **Solution**:
 
 - Set TTL to expected session duration
-- Implement credential refresh with setConfiguration()
+- Implement credential refresh with setConfiguration ()
 - Use ICE restart if connection fails
 
 ```typescript

@@ -7,10 +7,10 @@
  */
 
 import {
-  TANSTACK_MARKER_OPEN,
   applyTanStackLiveAdapter,
   detectTanStackStartProject,
   removeTanStackLiveAdapter,
+  TANSTACK_MARKER_OPEN,
   unpatchTanStackRoot,
 } from '../tanstack-adapter.mjs';
 
@@ -24,12 +24,12 @@ export const tanstackStart = {
   inject: {
     kind: 'adapter',
 
-    apply({ cwd, port, token, project }) {
-      return applyTanStackLiveAdapter({ cwd, port, token, project });
+    apply({cwd, port, token, project}) {
+      return applyTanStackLiveAdapter({cwd, port, token, project});
     },
 
-    remove({ cwd, project }) {
-      return removeTanStackLiveAdapter({ cwd, project });
+    remove({cwd, project}) {
+      return removeTanStackLiveAdapter({cwd, project});
     },
 
     // The mount component's extension follows the root route's, so the path
@@ -38,8 +38,10 @@ export const tanstackStart = {
       return project?.componentFile ? [project.componentFile] : [];
     },
 
-    artifacts({ project }) {
-      if (!project) return [];
+    artifacts({project}) {
+      if (!project) {
+        return [];
+      }
       return [
         {
           kind: 'created',

@@ -1,18 +1,25 @@
 # Line Chart
 
-**Best for:** continuous trends over time or a sequential index — signups over weeks, revenue by month, latency over releases. Use when the direction and rate of change between points is the primary message.
+**Best for:** continuous trends over time or a sequential index — signups over weeks, revenue by
+month, latency over releases. Use when the direction and rate of change between points is the
+primary message.
 
 ## Layout conventions
 
-- **Plot area margins:** left 80px, bottom 60px, top 40px, right 40px — inside `0 0 1000 500` viewBox.
+- **Plot area margins:** left 80px, bottom 60px, top 40px, right 40px — inside `0 0 1000 500`
+  viewBox.
 - **Points:** 4–12 data points. Fewer → consider a summary stat; more → aggregate into periods.
-- **X-axis:** evenly spaced time/index labels below the plot. Use Geist Mono 8px, centered on each point x.
+- **X-axis:** evenly spaced time/index labels below the plot. Use Geist Mono 8px, centered on each
+  point x.
 - **Y-axis gridlines:** 4–6 horizontals at regular intervals. Same faint treatment as bar chart.
 - **Lines:** `<polyline>` with `fill="none"`. Focal series `stroke-width="1.8"`, others `"1.2"`.
 - **Vertex dots:** only on the focal series (`r=4`, filled). Other series: line only.
-- **Area fill (optional):** `<polygon>` closing back to `y=420` (x-axis baseline) at 0.08 opacity. Use for the focal series only when the area meaning is important.
-- **Multi-series:** up to 5 series. Focal = `accent`. Others = `series-1`, `series-2`, `series-3`, `series-4` from style-guide.md. Apply series palette in order — don't skip.
-- **Legend:** horizontal strip at the bottom. Swatch = 16×8px rect with the series fill/stroke. One entry per series.
+- **Area fill (optional):** `<polygon>` closing back to `y=420` (x-axis baseline) at 0.08 opacity.
+  Use for the focal series only when the area meaning is important.
+- **Multi-series:** up to 5 series. Focal = `accent`. Others = `series-1`, `series-2`, `series-3`,
+  `series-4` from style-guide.md. Apply series palette in order — don't skip.
+- **Legend:** horizontal strip at the bottom. Swatch = 16×8px rect with the series fill/stroke. One
+  entry per series.
 
 ### Polyline pattern
 

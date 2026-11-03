@@ -2,7 +2,8 @@
 
 ## Intent
 
-Define a creation operation through an abstraction while allowing concrete implementations to decide which product type is instantiated.
+Define a creation operation through an abstraction while allowing concrete implementations to decide
+which product type is instantiated.
 
 ## Forces that justify it
 

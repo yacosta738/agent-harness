@@ -33,14 +33,17 @@ Then list the page as claims, one per section, each with its proof:
 ```
 
 A section with no claim is filler; delete it. This is also how you escape the stock order of
-hero, logos, features, testimonial, pricing, call to action: the order of the argument is the order of
+hero, logos, features, testimonial, pricing, call to action: the order of the argument is the order
+of
 the page.
 
 ## 2. The two-line headline
 
-A headline is a title. It is held in one glance. On the studied gallery sites the hero headline has a
+A headline is a title. It is held in one glance. On the studied gallery sites the hero headline has
+a
 median of 5 words and 70% sit on one or two lines at desktop width. Every headline on your page, at
-every viewport, fits in **two lines or fewer**. `inspect.mjs` measures this at 1440, 768 and 390 pixels
+every viewport, fits in **two lines or fewer**. `inspect.mjs` measures this at 1440, 768 and 390
+pixels
 and fails the page otherwise.
 
 The constraint is arithmetic, so do it before you fall in love with a sentence:
@@ -53,13 +56,13 @@ k ≈ 0.50  most grotesks and serifs at display size, tight tracking
 k ≈ 0.58  wide / extended faces, all-caps settings
 ```
 
-| Where | Line width | Size | Per line | Two-line budget |
-| --- | --- | --- | --- | --- |
-| Phone 390, 20px gutters | 350px | 44px | ~16 | **~32 characters** |
-| Phone 390, 20px gutters | 350px | 34px | ~21 | ~42 characters |
-| Tablet 768 | 690px | 64px | ~22 | ~44 characters |
-| Desktop, 12-col measure | 1100px | 104px | ~21 | ~42 characters |
-| Desktop, half width | 620px | 72px | ~17 | ~34 characters |
+| Where                   | Line width | Size  | Per line | Two-line budget    |
+|-------------------------|------------|-------|----------|--------------------|
+| Phone 390, 20px gutters | 350px      | 44px  | ~16      | **~32 characters** |
+| Phone 390, 20px gutters | 350px      | 34px  | ~21      | ~42 characters     |
+| Tablet 768              | 690px      | 64px  | ~22      | ~44 characters     |
+| Desktop, 12-col measure | 1100px     | 104px | ~21      | ~42 characters     |
+| Desktop, half width     | 620px      | 72px  | ~17      | ~34 characters     |
 
 So a hero headline of **about 32 characters or fewer** (four to six words) survives everywhere at a
 confident size. Up to about 42 works if the phone size comes down to the mid-30s. Past that you are
@@ -78,10 +81,14 @@ Controlling the break:
 Section headings follow the same rule and are shorter: two to five words.
 
 **A statement is not a headline.** An intro sentence or a quotation set large (the manifesto line
-after the hero, a testimonial) is a paragraph: mark it up as `<p>` or `<blockquote>`, keep it to about
-25 words, and set it at statement size, which the inspector takes as 36px or less on desktop, 32px on
-a tablet and 24px on a phone. It may then run to about three lines (four on a phone). Set larger than
-that, or marked up as a heading, or placed as the main line of the first screen, it is a headline and
+after the hero, a testimonial) is a paragraph: mark it up as `<p>` or `<blockquote>`, keep it to
+about
+25 words, and set it at statement size, which the inspector takes as 36px or less on desktop, 32px
+on
+a tablet and 24px on a phone. It may then run to about three lines (four on a phone). Set larger
+than
+that, or marked up as a heading, or placed as the main line of the first screen, it is a headline
+and
 gets two lines. In blind judging, a sentence set big over three or more lines was read as a long
 headline every time, whatever its markup; if the words matter that much, cut them to a two-line
 headline instead.
@@ -105,7 +112,8 @@ Shapes to avoid, because they are the average of every landing page:
 - The correction: "It's not just a tool, it's a workflow". Also "More than a …".
 - "X, reimagined / redefined / made simple". "Welcome to …". "Meet …" for a product nobody has met.
 - A question the reader did not ask.
-- A headline that needs its colon: "Ledgerly: invoicing for freelancers". Drop the name, it is in the
+- A headline that needs its colon: "Ledgerly: invoicing for freelancers". Drop the name, it is in
+  the
   navigation.
 - One word of the headline styled differently (italic, serif, coloured, underlined, in a pill).
 
@@ -113,7 +121,8 @@ Sentence case. No full stop unless the direction's voice uses them everywhere.
 
 ## 4. Supporting line, body, buttons
 
-**Supporting line.** One sentence, at most about 22 words, that says concretely what the thing is and
+**Supporting line.** One sentence, at most about 22 words, that says concretely what the thing is
+and
 who it is for. It is where the detail cut from the headline goes. It never repeats the headline in
 other words.
 
@@ -142,11 +151,14 @@ When the brief supplies no proof, use what is true by construction:
   with plainly fictional sample content and say so in your final report so it is replaced before
   launch. Do not put real company names or real people in it.
 
-**Sample details are different from proof, and they are expected.** Where the brief gives the shape of
+**Sample details are different from proof, and they are expected.** Where the brief gives the shape
+of
 the content but not every detail (six rooms "from €140", "a short menu", twelve speakers), write the
 full set of plausible details: each room with a name, a bed, a view and its own rate; each dish with
-its price; each speaker with a talk title. A design can only be judged at its real density, and a page
-that shows one rate where six rooms exist looks unfinished. List every sample detail in the report so
+its price; each speaker with a talk title. A design can only be judged at its real density, and a
+page
+that shows one rate where six rooms exist looks unfinished. List every sample detail in the report
+so
 the client confirms or replaces it.
 
 ## 6. Things that read as generated
@@ -154,13 +166,17 @@ the client confirms or replaces it.
 `lint.mjs` flags most of these.
 
 - Verbs and adjectives of the genre: unlock, unleash, supercharge, elevate, empower, streamline,
-  seamless, effortless, robust, cutting-edge, next-generation, world-class, all-in-one, blazing fast.
-- Labels pretending to be editorial: "Field notes", "The details", "Our philosophy", "Quietly trusted
+  seamless, effortless, robust, cutting-edge, next-generation, world-class, all-in-one, blazing
+  fast.
+- Labels pretending to be editorial: "Field notes", "The details", "Our philosophy", "Quietly
+  trusted
   by". A section heading can simply be "Pricing".
-- Furniture text: locale or time strips, "Est. 2024", coordinates, version stamps, "Scroll", "(Scroll
+- Furniture text: locale or time strips, "Est. 2024", coordinates, version stamps, "Scroll", "
+  (Scroll
   to explore)", fake photo credits, status lines such as "Available for work" with a dot, strings of
   words separated by middle dots or slashes.
-- The em dash as a habit. One or two on a page read as writing; ten read as a model. Use a full stop.
+- The em dash as a habit. One or two on a page read as writing; ten read as a model. Use a full
+  stop.
 - Explainer captions that narrate the design: "A clean, minimal layout for…".
 - Step labels that duplicate numbers: "Step 1", "Phase 02".
 - Three parallel items everywhere: three features, three stats, three steps. Use the number the

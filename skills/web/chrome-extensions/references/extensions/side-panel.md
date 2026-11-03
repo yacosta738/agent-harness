@@ -3,6 +3,7 @@
 ## Setup
 
 Add to manifest.json:
+
 ```json
 {
   "permissions": ["sidePanel"],
@@ -53,6 +54,7 @@ chrome.commands.onCommand.addListener(async (command) => {
 ```
 
 You can also open it for a specific tab:
+
 ```js
 await chrome.sidePanel.open({ tabId: tab.id });
 ```
@@ -103,7 +105,8 @@ async function getPageContent() {
 }
 ```
 
-Or use `chrome.scripting.executeScript` from the side panel (requires `scripting` and `activeTab` permissions):
+Or use `chrome.scripting.executeScript` from the side panel (requires `scripting` and `activeTab`
+permissions):
 
 ```js
 const [{ result }] = await chrome.scripting.executeScript({
@@ -114,12 +117,12 @@ const [{ result }] = await chrome.scripting.executeScript({
 
 ## Side Panel vs Popup
 
-| Feature | Side Panel | Popup |
-|---------|-----------|-------|
-| Stays open | Yes | Closes when clicking away |
-| Resizable | Yes (by user) | Fixed size |
-| Coexists with page | Yes (side by side) | Overlays page |
-| Use when | Extended interaction, reading | Quick actions, settings |
+| Feature            | Side Panel                    | Popup                     |
+|--------------------|-------------------------------|---------------------------|
+| Stays open         | Yes                           | Closes when clicking away |
+| Resizable          | Yes (by user)                 | Fixed size                |
+| Coexists with page | Yes (side by side)            | Overlays page             |
+| Use when           | Extended interaction, reading | Quick actions, settings   |
 
 ## Important Notes
 

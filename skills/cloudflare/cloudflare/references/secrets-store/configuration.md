@@ -151,8 +151,8 @@ Best practice: Separate names for local/prod:
 
 ### Adding Bindings
 
-**Method 1**: Worker → Settings → Bindings → Add → Secrets Store
-**Method 2**: Create secret directly from Worker settings dropdown
+**Method 1**: Worker → Settings → Bindings → Add → Secrets Store **Method 2**: Create secret
+directly from Worker settings dropdown
 
 Deploy options:
 

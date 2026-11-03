@@ -28,7 +28,7 @@ All SDKs are Stainless-generated from OpenAPI spec (consistent APIs).
 
 | Method           | Security            | Use Case             | Scope               |
 |------------------|---------------------|----------------------|---------------------|
-| **API Token** ✓  | Scoped, rotatable   | Production           | Per-zone or account |
+| **API Token** ✓ | Scoped, rotatable   | Production           | Per-zone or account |
 | API Key + Email  | Full account access | Legacy only          | Everything          |
 | User Service Key | Limited             | Origin CA certs only | Origin CA           |
 

@@ -38,14 +38,14 @@
 
 import path from 'node:path';
 
-import { sveltekit } from './sveltekit.mjs';
-import { nuxt } from './nuxt.mjs';
-import { tanstackStart } from './tanstack-start.mjs';
-import { astro } from './astro.mjs';
-import { nextjs } from './nextjs.mjs';
-import { viteGeneric } from './vite-generic.mjs';
-import { staticHtml } from './static-html.mjs';
-import { TAG_PATCH_MARKERS, unpatchTagFile } from './tag-strategy.mjs';
+import {sveltekit} from './sveltekit.mjs';
+import {nuxt} from './nuxt.mjs';
+import {tanstackStart} from './tanstack-start.mjs';
+import {astro} from './astro.mjs';
+import {nextjs} from './nextjs.mjs';
+import {viteGeneric} from './vite-generic.mjs';
+import {staticHtml} from './static-html.mjs';
+import {TAG_PATCH_MARKERS, unpatchTagFile} from './tag-strategy.mjs';
 
 /** Priority order. Do not reorder without re-reading rule 1 above. */
 export const FRAMEWORKS = Object.freeze([
@@ -79,8 +79,8 @@ export const TAG_PATCH_KIND = 'live-tag';
  * the entries so a new adapter registers its own undo alongside its apply.
  */
 export const PATCH_UNDOERS = Object.freeze(Object.assign(
-  { [TAG_PATCH_KIND]: unpatchTagFile },
-  ...FRAMEWORKS.map((framework) => framework.inject.unpatch || {}),
+    {[TAG_PATCH_KIND]: unpatchTagFile},
+    ...FRAMEWORKS.map((framework) => framework.inject.unpatch || {}),
 ));
 
 /**
@@ -91,7 +91,9 @@ export const PATCH_UNDOERS = Object.freeze(Object.assign(
 export function resolveFramework(cwd = process.cwd(), config = null) {
   for (const framework of FRAMEWORKS) {
     const project = framework.detect(cwd, config);
-    if (project) return { framework, project };
+    if (project) {
+      return {framework, project};
+    }
   }
   // Unreachable while static-html stays terminal, but a caller that reorders
   // the array should get a diagnosable null rather than a silent tag inject.
@@ -106,11 +108,13 @@ export function resolveSourceTraits(filePath) {
   const ext = path.extname(String(filePath || '')).toLowerCase();
   for (const framework of FRAMEWORKS) {
     const source = framework.source;
-    if (!source || !source.extensions.includes(ext)) continue;
-    const { extensions, ...traits } = source;
-    return { framework: framework.name, ...SOURCE_TRAIT_DEFAULTS, ...traits };
+    if (!source || !source.extensions.includes(ext)) {
+      continue;
+    }
+    const {extensions, ...traits} = source;
+    return {framework: framework.name, ...SOURCE_TRAIT_DEFAULTS, ...traits};
   }
-  return { framework: null, ...SOURCE_TRAIT_DEFAULTS };
+  return {framework: null, ...SOURCE_TRAIT_DEFAULTS};
 }
 
 /**
@@ -128,11 +132,15 @@ export function frameworkIgnorePatterns(resolved) {
  * Adapters declare their own; the tag strategy patches exactly the resolved
  * config files.
  */
-export function describeInjectArtifacts(resolved, { cwd = process.cwd(), files = [] } = {}) {
-  if (!resolved) return [];
-  const { framework, project } = resolved;
+export function describeInjectArtifacts(resolved,
+    {cwd = process.cwd(), files = []} = {}) {
+  if (!resolved) {
+    return [];
+  }
+  const {framework, project} = resolved;
   if (framework.inject.kind === 'adapter') {
-    return (framework.inject.artifacts?.({ cwd, project }) || []).filter((a) => a && a.path);
+    return (framework.inject.artifacts?.({cwd, project}) || []).filter(
+        (a) => a && a.path);
   }
   return files.map((file) => ({
     kind: 'patched',

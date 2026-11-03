@@ -39,8 +39,8 @@ oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-follet
 
 - Porcentaje: 30% de cantidades en guarderías/empleadas de hogar
 - Límite: 400 euros (600 euros si 2+ hijos < 3 años)
-- Límite renta: base liquidable - mínimo personal <= 22.000 euros (individual), <= 31.000 euros (
-  conjunta)
+- Límite renta: base liquidable - mínimo personal <= 22.000 euros (individual), <= 31.000 euros
+  (conjunta)
 
 ### 7. Por discapacidad >= 65 años que necesiten ayuda
 

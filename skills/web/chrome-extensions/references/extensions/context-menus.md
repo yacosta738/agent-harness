@@ -8,7 +8,8 @@
 
 ## Creating Menus
 
-Create in the service worker, typically in `onInstalled` (menus persist, but re-creating is idempotent):
+Create in the service worker, typically in `onInstalled` (menus persist, but re-creating is
+idempotent):
 
 ```js
 chrome.runtime.onInstalled.addListener(() => {
@@ -43,7 +44,8 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 ## Context Types
 
-`all`, `page`, `frame`, `selection`, `link`, `editable`, `image`, `video`, `audio`, `launcher`, `browser_action`, `action`
+`all`, `page`, `frame`, `selection`, `link`, `editable`, `image`, `video`, `audio`, `launcher`,
+`browser_action`, `action`
 
 ## Submenus
 

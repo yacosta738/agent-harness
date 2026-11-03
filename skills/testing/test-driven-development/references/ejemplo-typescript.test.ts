@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
+import {test} from "node:test";
 
 type Order = Readonly<{ totalCents: number }>;
 type PaymentResult = Readonly<{ approved: boolean }>;
@@ -33,7 +33,7 @@ class FakePaymentGateway implements PaymentGateway {
 
   async charge(amountCents: number): Promise<PaymentResult> {
     this.chargedAmountCents = amountCents;
-    return { approved: this.approved };
+    return {approved: this.approved};
   }
 }
 
@@ -41,7 +41,7 @@ test("confirma una compra cuando el pago se aprueba", async () => {
   const gateway = new FakePaymentGateway(true);
   const checkout = new CheckoutService(gateway);
 
-  const result = await checkout.checkout({ totalCents: 2400 });
+  const result = await checkout.checkout({totalCents: 2400});
 
   assert.equal(result, "confirmed");
   assert.equal(gateway.chargedAmountCents, 2400);
@@ -50,7 +50,7 @@ test("confirma una compra cuando el pago se aprueba", async () => {
 test("rechaza una compra cuando el pago se deniega", async () => {
   const checkout = new CheckoutService(new FakePaymentGateway(false));
 
-  const result = await checkout.checkout({ totalCents: 1800 });
+  const result = await checkout.checkout({totalCents: 1800});
 
   assert.equal(result, "rejected");
 });

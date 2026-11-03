@@ -40,15 +40,14 @@ async function execWithRetry(sandbox, cmd) {
 
 ### "Connection refused: container port not found"
 
-**Cause:** Missing `EXPOSE` directive in Dockerfile
-**Solution:** Add `EXPOSE <port>` to Dockerfile (only needed for `wrangler dev`, production
+**Cause:** Missing `EXPOSE` directive in Dockerfile **Solution:** Add `EXPOSE <port>` to Dockerfile
+(only needed for `wrangler dev`, production
 auto-exposes)
 
 ### "Preview URLs not working"
 
 **Cause:** Custom domain not configured, wildcard DNS missing, `normalizeId` not set, or
-`proxyToSandbox()` not called
-**Solution:** Check:
+`proxyToSandbox()` not called **Solution:** Check:
 
 1. Custom domain configured? (not `.workers.dev`)
 2. Wildcard DNS set up? (`*.domain.com → worker.domain.com`)
@@ -66,8 +65,8 @@ auto-exposes)
 
 ### "File not persisting"
 
-**Cause:** Files in `/tmp` or other ephemeral paths
-**Solution:** Use `/workspace` for persistent files
+**Cause:** Files in `/tmp` or other ephemeral paths **Solution:** Use `/workspace` for persistent
+files
 
 ### "Bucket mounting doesn't work locally"
 
@@ -76,8 +75,8 @@ auto-exposes)
 
 ### "Different normalizeId = different sandbox"
 
-**Cause:** Changing `normalizeId` option changes Durable Object ID
-**Solution:** Set `normalizeId` consistently. `normalizeId: true` lowercases the ID.
+**Cause:** Changing `normalizeId` option changes Durable Object ID **Solution:** Set `normalizeId`
+consistently. `normalizeId: true` lowercases the ID.
 
 ```typescript
 // These create DIFFERENT sandboxes:
@@ -87,8 +86,8 @@ getSandbox(env.Sandbox, 'MyApp', { normalizeId: true });  // DO ID: hash('myapp'
 
 ### "Code context variables disappeared"
 
-**Cause:** Container restart clears code context state
-**Solution:** Code contexts are ephemeral. Recreate context after container sleep/wake.
+**Cause:** Container restart clears code context state **Solution:** Code contexts are ephemeral.
+Recreate context after container sleep/wake.
 
 ## Performance Optimization
 

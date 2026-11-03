@@ -2,10 +2,10 @@
 
 ## Common Errors
 
-### ".get() Throws on Error"
+### ".get () Throws on Error"
 
-**Cause:** Assuming `.get()` returns null on failure instead of throwing
-**Solution:** Always wrap `.get()` calls in try/catch blocks to handle errors gracefully
+**Cause:** Assuming `.get()` returns null on failure instead of throwing **Solution:** Always wrap
+`.get()` calls in try/catch blocks to handle errors gracefully
 
 ```typescript
 try {
@@ -17,8 +17,8 @@ try {
 
 ### "Logging Secret Values"
 
-**Cause:** Accidentally logging secret values in console or error messages
-**Solution:** Only log metadata (e.g., "Retrieved API_KEY") never the actual secret value
+**Cause:** Accidentally logging secret values in console or error messages **Solution:** Only log
+metadata (e.g., "Retrieved API_KEY") never the actual secret value
 
 ### "Module-Level Secret Access"
 
@@ -41,8 +41,8 @@ Dashboard
 
 ### "JSON Parsing Failure"
 
-**Cause:** Storing invalid JSON in secret, then failing to parse during runtime
-**Solution:** Validate JSON before storing:
+**Cause:** Storing invalid JSON in secret, then failing to parse during runtime **Solution:**
+Validate JSON before storing:
 
 ```bash
 # Validate before storing
@@ -65,14 +65,14 @@ try {
 
 ### "Cannot access secret in local dev"
 
-**Cause:** Attempting to access production secrets in local development environment
-**Solution:** Create local-only secrets (without `--remote` flag) for development:
+**Cause:** Attempting to access production secrets in local development environment **Solution:**
+Create local-only secrets (without `--remote` flag) for development:
 `wrangler secrets-store secret create <store-id> --name API_KEY --scopes workers`
 
 ### "Property 'get' does not exist"
 
-**Cause:** Missing TypeScript type definition for secret binding
-**Solution:** Define interface with get method:
+**Cause:** Missing TypeScript type definition for secret binding **Solution:** Define interface with
+get method:
 `interface Env { API_KEY: { get(): Promise<string> }; }`
 
 ### "Binding already exists"

@@ -2,7 +2,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL, fileURLToPath } from 'node:url';
+import {fileURLToPath, pathToFileURL} from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const candidates = [
@@ -16,6 +16,6 @@ if (!detectorPath) {
   process.exit(1);
 }
 
-const { detectCli } = await import(pathToFileURL(detectorPath));
+const {detectCli} = await import(pathToFileURL(detectorPath));
 
 await detectCli();

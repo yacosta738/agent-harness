@@ -1,11 +1,14 @@
-The **Summarizer API** allows web developers to offer local, AI-powered text distillation directly within the browser using **Gemini Nano in Chrome or Phi in Edge**. This API supports various formats, including key points, headlines, and TL;DRs, while operating entirely on-device to ensure user privacy.
+The **Summarizer API** allows web developers to offer local, AI-powered text distillation directly
+within the browser using **Gemini Nano in Chrome or Phi in Edge**. This API supports various
+formats, including key points, headlines, and TL;DRs, while operating entirely on-device to ensure
+user privacy.
 
 ---
 
 ## Getting Started
 
-The Summarizer API is available starting in **Chrome and Edge 138**. It requires a one-time model download of Gemini Nano or Phi (respectively).
-
+The Summarizer API is available starting in **Chrome and Edge 138**. It requires a one-time model
+download of Gemini Nano or Phi (respectively).
 
 ### Hardware & Software Requirements
 
@@ -16,13 +19,20 @@ The Summarizer API is available starting in **Chrome and Edge 138**. It requires
 
 ### Model Download and Availability
 
-Check if the model is ready, needs downloading, or is unavailable. 
+Check if the model is ready, needs downloading, or is unavailable.
 
-**Mandatory Options Passing:** You must pass the identical configuration options object to both `Summarizer.availability(options)` and `Summarizer.create(options)`. Do NOT use the deprecated `window.ai.summarizer` API surface.
+**Mandatory Options Passing:** You must pass the identical configuration options object to both
+`Summarizer.availability(options)` and `Summarizer.create(options)`. Do NOT use the deprecated
+`window.ai.summarizer` API surface.
 
-**Mandatory Progress Monitoring:** You MUST implement a monitor for model download progress by providing a `monitor(m)` callback to `Summarizer.create()` and adding a listener for the `downloadprogress` event.
+**Mandatory Progress Monitoring:** You MUST implement a monitor for model download progress by
+providing a `monitor(m)` callback to `Summarizer.create()` and adding a listener for the
+`downloadprogress` event.
 
-**User Gesture Requirement:** When `availability` is `'downloadable'` or `'downloading'`, triggering the actual download via `Summarizer.create()` requires a user gesture (such as a user click). You must place the creation call inside an event listener rather than calling it unconditionally on page load to prevent `NotAllowedError`.
+**User Gesture Requirement:** When `availability` is `'downloadable'` or `'downloading'`, triggering
+the actual download via `Summarizer.create()` requires a user gesture (such as a user click). You
+must place the creation call inside an event listener rather than calling it unconditionally on page
+load to prevent `NotAllowedError`.
 
 ```javascript
 const options = {
@@ -57,7 +67,7 @@ When creating a summarizer via `Summarizer.create(options)`, you can customize
 the output:
 
 | Parameter    | Options                                    | Description                             |
-| :----------- | :----------------------------------------- | :-------------------------------------- |
+|:-------------|:-------------------------------------------|:----------------------------------------|
 | `type`       | `key-points`, `tldr`, `teaser`, `headline` | Defines the summary strategy.           |
 | `format`     | `markdown`, `plain-text`                   | Output syntax style.                    |
 | `length`     | `short`, `medium`, `long`                  | Target length (e.g., 1 vs 5 sentences). |
@@ -144,11 +154,21 @@ if ('Summarizer' in self) {
 }
 ```
 
-If the `Summarizer` API is unsupported or availability checks return `'unavailable'`, you must gracefully fall back.
+If the `Summarizer` API is unsupported or availability checks return `'unavailable'`, you must
+gracefully fall back.
 
 Recommended options:
-1. **Remote API Fallback**: Direct the distillation request to a server endpoint or remote API (such as the Vertex AI Gemini API) so that users still get summaries.
-2. **Graceful Degradation**: Visually disable the summarization controls in the UI, or hide the button while displaying a friendly message (e.g., `"Local summarization is currently unsupported in this browser"`). Do not allow interaction to trigger generic unhandled runtime exceptions.
-3. **Polyfill Fallback**: You can use community-maintained polyfills like `built-in-ai-task-apis-polyfills` or `prompt-api-polyfill` to emulate the API surface using remote services with models in the cloud or on-device inference with local models.
 
-> **Privacy and Cost Implications:** These polyfills possibly proxy requests to remote servers (such as Gemini API over the cloud). This completely nullifies the on-device privacy guarantees of the native Built-in AI APIs and will incur server-side API usage costs.
+1. **Remote API Fallback**: Direct the distillation request to a server endpoint or remote API (such
+   as the Vertex AI Gemini API) so that users still get summaries.
+2. **Graceful Degradation**: Visually disable the summarization controls in the UI, or hide the
+   button while displaying a friendly message (e.g.,
+   `"Local summarization is currently unsupported in this browser"`). Do not allow interaction to
+   trigger generic unhandled runtime exceptions.
+3. **Polyfill Fallback**: You can use community-maintained polyfills like
+   `built-in-ai-task-apis-polyfills` or `prompt-api-polyfill` to emulate the API surface using
+   remote services with models in the cloud or on-device inference with local models.
+
+> **Privacy and Cost Implications:** These polyfills possibly proxy requests to remote servers (such
+> as Gemini API over the cloud). This completely nullifies the on-device privacy guarantees of the
+> native Built-in AI APIs and will incur server-side API usage costs.

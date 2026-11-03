@@ -1,6 +1,14 @@
 # Export HTML content from canvas
 
-Web applications frequently need to capture and export rich HTML content—such as customized dashboards, styled documents, or interactive charts—as static images or video recordings. Historically, achieving this required bulky third-party libraries that manually parse DOM nodes and CSS properties to reconstruct a visual facsimile on a canvas. This approach is computationally expensive, error-prone, and frequently fails to support modern CSS layout features. With the HTML-in-Canvas API, developers can render real DOM elements directly into the canvas context. Because the browser's native rendering engine paints the HTML subtree with pixel-perfect accuracy, capturing the exact visual output as an image or video stream is highly efficient using built-in canvas methods like `toDataURL()`, `toBlob()`, or `captureStream()`.
+Web applications frequently need to capture and export rich HTML content—such as customized
+dashboards, styled documents, or interactive charts—as static images or video recordings.
+Historically, achieving this required bulky third-party libraries that manually parse DOM nodes and
+CSS properties to reconstruct a visual facsimile on a canvas. This approach is computationally
+expensive, error-prone, and frequently fails to support modern CSS layout features. With the
+HTML-in-Canvas API, developers can render real DOM elements directly into the canvas context.
+Because the browser's native rendering engine paints the HTML subtree with pixel-perfect accuracy,
+capturing the exact visual output as an image or video stream is highly efficient using built-in
+canvas methods like `toDataURL()`, `toBlob()`, or `captureStream()`.
 
 ## How to implement
 
@@ -14,7 +22,9 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 }
 ```
 
-2. Initialize the canvas to support rendering of descendant HTML elements by adding the `layoutsubtree` attribute to the `<canvas>` HTML element. Place your HTML content inside the `<canvas>` element with the `layoutsubtree` attribute:
+2. Initialize the canvas to support rendering of descendant HTML elements by adding the
+   `layoutsubtree` attribute to the `<canvas>` HTML element. Place your HTML content inside the
+   `<canvas>` element with the `layoutsubtree` attribute:
 
 ```html
 <canvas id="canvas" layoutsubtree>
@@ -83,8 +93,9 @@ canvas.onpaint = () => {
 };
 ```
 
-
-When using a `requestAnimationFrame` loop to render the scene, call `canvas.requestPaint()` within the loop to ensure that the HTML content is rendered to the canvas. Make sure you only re-render the canvas if there has been an update to the descendant HTML elements:
+When using a `requestAnimationFrame` loop to render the scene, call `canvas.requestPaint()` within
+the loop to ensure that the HTML content is rendered to the canvas. Make sure you only re-render the
+canvas if there has been an update to the descendant HTML elements:
 
   ```js
   function render() {
@@ -103,7 +114,8 @@ When using a `requestAnimationFrame` loop to render the scene, call `canvas.requ
 
 5. Update the CSS transform.
 
-- For the 2D context case, apply the transform returned by the rendering call to the `style.transform` property:
+- For the 2D context case, apply the transform returned by the rendering call to the
+  `style.transform` property:
 
 ```js
 canvas.onpaint = () => {
@@ -116,12 +128,21 @@ canvas.onpaint = () => {
 };
 ```
 
-- For the 3D case with WebGL or WebGPU, the browser needs to map from the 3D coordinate space into the CSS coordinate space using a viewport transform. To facilitate this, do the following:
-  - Convert WebGL MVP Matrix to DOM Matrix.
-  - Normalize the HTML element. HTML elements are sized in pixels (for example, 200px wide). WebGL, however, usually treats objects as "unit squares", for example, ranging from 0 to 1. If you don't normalize, your 200px button will look 200 times larger.
-  - Map to the canvas viewport. This step is the "re-scaling" phase: it stretches that unit-space math back out to match the actual pixel dimensions of your `<canvas>` element on the screen. It also flips the Y-axis, because in WebGL, up is positive, but in CSS, down is positive.
-  - Calculate the final transform. Multiply the matrices in order: Viewport * MVP * Normalization. Combining them into one final transform produces a "map" that tells the browser exactly where that HTML element layer should sit to align with the 3D drawing.
-  - Apply the transform to the HTML element. This moves the HTML element layer to sit directly on top of its rendered pixels. This ensures that when a user clicks a button or selects text, they are actually hitting the real HTML element.
+- For the 3D case with WebGL or WebGPU, the browser needs to map from the 3D coordinate space into
+  the CSS coordinate space using a viewport transform. To facilitate this, do the following:
+    - Convert WebGL MVP Matrix to DOM Matrix.
+    - Normalize the HTML element. HTML elements are sized in pixels (for example, 200px wide).
+      WebGL, however, usually treats objects as "unit squares", for example, ranging from 0 to 1. If
+      you don't normalize, your 200px button will look 200 times larger.
+    - Map to the canvas viewport. This step is the "re-scaling" phase: it stretches that unit-space
+      math back out to match the actual pixel dimensions of your `<canvas>` element on the screen.
+      It also flips the Y-axis, because in WebGL, up is positive, but in CSS, down is positive.
+    - Calculate the final transform. Multiply the matrices in order: Viewport * MVP * Normalization.
+      Combining them into one final transform produces a "map" that tells the browser exactly where
+      that HTML element layer should sit to align with the 3D drawing.
+    - Apply the transform to the HTML element. This moves the HTML element layer to sit directly on
+      top of its rendered pixels. This ensures that when a user clicks a button or selects text,
+      they are actually hitting the real HTML element.
 
   ```js
   if (canvas.getElementTransform) {
@@ -161,7 +182,13 @@ canvas.onpaint = () => {
   }
   ```
 
-6. [Troubleshooting] If the developer is experiencing a mismatch in the DOM logical layout in 3D even after applying the CSS transform from step 5, check if the developer is experiencing the issue in Chromium 148 or earlier. If that's the case, check if `transform.is2D` is correctly set to false for a 3D DOMMatrix. If not, re-initialize the DOMMatrix which corrects `is2D` to be false before applying the transform to the target HTML element. This issue is fixed in Chromium 149+, and if the developer is experiencing it in newer Chromium versions, the is2D value is not the cause:
+6. [Troubleshooting] If the developer is experiencing a mismatch in the DOM logical layout in 3D
+   even after applying the CSS transform from step 5, check if the developer is experiencing the
+   issue in Chromium 148 or earlier. If that's the case, check if `transform.is2D` is correctly set
+   to false for a 3D DOMMatrix. If not, re-initialize the DOMMatrix which corrects `is2D` to be
+   false before applying the transform to the target HTML element. This issue is fixed in Chromium
+   149+, and if the developer is experiencing it in newer Chromium versions, the is2D value is not
+   the cause:
 
 ```js
 if (transform.is2D) {
@@ -174,7 +201,8 @@ if (transform.is2D) {
 targetHTMLElement.style.transform = computedTransform.toString();
 ```
 
-7. Use regular canvas export methods like `toDataURL()`, `toBlob()`, or `captureStream()`. The exported data will include the rendered HTML content.
+7. Use regular canvas export methods like `toDataURL()`, `toBlob()`, or `captureStream()`. The
+   exported data will include the rendered HTML content.
 
 ## Example code
 
@@ -230,20 +258,29 @@ targetHTMLElement.style.transform = computedTransform.toString();
 - **MANDATORY**: Check browser support for the HTML-in-Canvas API before using it.
 - **MANDATORY**: Always add the `layoutsubtree` attribute to the `<canvas>` element.
 - **MANDATORY**: Use an `onpaint` event handler to render the HTML content to the canvas.
-- **MANDATORY**: Use the `drawElementImage`, `texElementImage2D`, or `copyElementImageToTexture` methods to render the HTML content to the canvas.
-- **MANDATORY**: Update the CSS transform of the HTML element to match the transform of the rendered content by setting the `style.transform` property of the HTML element.
-- **MANDATORY**: Use `ResizeObserver` to observe the screen size and update the canvas size to match device pixels.
+- **MANDATORY**: Use the `drawElementImage`, `texElementImage2D`, or `copyElementImageToTexture`
+  methods to render the HTML content to the canvas.
+- **MANDATORY**: Update the CSS transform of the HTML element to match the transform of the rendered
+  content by setting the `style.transform` property of the HTML element.
+- **MANDATORY**: Use `ResizeObserver` to observe the screen size and update the canvas size to match
+  device pixels.
 - **DO NOT** embed cross-origin content in a canvas, as it is not supported.
-- **DO NOT** initialize `ResizeObserver` within the `onpaint` event handler, as it may lead to memory leaks.
+- **DO NOT** initialize `ResizeObserver` within the `onpaint` event handler, as it may lead to
+  memory leaks.
 
 ## Fallback strategies
 
 HTML in canvas is not natively supported by any major browser yet.
 
-The HTML-in-Canvas API is not currently supported in all modern browsers, thus a fallback strategy is typically required. However, given the improved performance benefits of this API, HTML-in-Canvas should be used if the browser supports it.
+The HTML-in-Canvas API is not currently supported in all modern browsers, thus a fallback strategy
+is typically required. However, given the improved performance benefits of this API, HTML-in-Canvas
+should be used if the browser supports it.
 
-For the use case where HTML content needs to be exported from a canvas, use libraries like `html2canvas`, `dom-to-image`, or `snapdom`. 
+For the use case where HTML content needs to be exported from a canvas, use libraries like
+`html2canvas`, `dom-to-image`, or `snapdom`.
 
-To capture HTML interactions frame by frame, for example, for streaming, capture DOM mutations using libraries like `rrweb`. 
+To capture HTML interactions frame by frame, for example, for streaming, capture DOM mutations using
+libraries like `rrweb`.
 
-Alternatively, implement a warning that HTML media export is not supported in the browser because it doesn't support HTML-in-Canvas.
+Alternatively, implement a warning that HTML media export is not supported in the browser because it
+doesn't support HTML-in-Canvas.

@@ -273,8 +273,8 @@ const auth = await env.AUTH_SERVICE.verifyToken(token);
 
 ### Use Hyperdrive for external database connections
 
-Hyperdrive maintains a regional connection pool, eliminating per-request TCP + TLS + auth cost (
-often 300-500ms). Create a new `Client` per request — Hyperdrive manages the underlying pool.
+Hyperdrive maintains a regional connection pool, eliminating per-request TCP + TLS + auth cost
+(often 300-500ms). Create a new `Client` per request — Hyperdrive manages the underlying pool.
 Requires `nodejs_compat`.
 
 **Check**: any `new Client()` or database connection that uses a direct connection string instead of

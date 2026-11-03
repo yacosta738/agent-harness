@@ -120,9 +120,8 @@ Connected agenda to CRM page, pricing sheet, and technical integration docs.
 
 ## Outputs
 
-**Internal Pre-Read**: Full context for sales team
-**Customer Agenda**: Professional meeting structure
-**Both in Notion** with links to supporting materials
+**Internal Pre-Read**: Full context for sales team **Customer Agenda**: Professional meeting
+structure **Both in Notion** with links to supporting materials
 
 ## Key Success Factors
 

@@ -76,13 +76,14 @@ protocol.
 
 **Who reads, who writes:**
 
-| Scenario | Reads | Writes |
-|----------|-------|--------|
-| Non-SDD (general task) | Orchestrator searches engram, passes summary in prompt | Sub-agent saves discoveries via `mem_save` |
-| SDD (phase with dependencies) | Sub-agent reads artifacts from filesystem | Sub-agent writes its artifact to filesystem |
-| SDD (phase without dependencies, e.g. explore) | Nobody reads prior artifacts | Sub-agent writes its artifact to filesystem |
+| Scenario                                       | Reads                                                  | Writes                                      |
+|------------------------------------------------|--------------------------------------------------------|---------------------------------------------|
+| Non-SDD (general task)                         | Orchestrator searches engram, passes summary in prompt | Sub-agent saves discoveries via `mem_save`  |
+| SDD (phase with dependencies)                  | Sub-agent reads artifacts from filesystem              | Sub-agent writes its artifact to filesystem |
+| SDD (phase without dependencies, e.g. explore) | Nobody reads prior artifacts                           | Sub-agent writes its artifact to filesystem |
 
 **Why this split:**
+
 - Orchestrator reads for non-SDD: it knows what context is relevant; sub-agents doing their own
   searches waste tokens on irrelevant results.
 - Sub-agents read for SDD: SDD artifacts are large; inlining them in the orchestrator prompt would
@@ -137,6 +138,7 @@ apply those rules before task-specific work.
 To generate/update the registry: run the `skill-registry` skill or `sdd-init`.
 
 Sub-agent skill loading priority:
+
 1. `## Project Standards (auto-resolved)` block → apply directly (no file reads needed)
 2. `## Skills to load before work` block → read those exact `SKILL.md` files
 3. `SKILL: Load` instructions → fallback

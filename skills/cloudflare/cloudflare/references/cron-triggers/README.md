@@ -23,8 +23,8 @@ underutilized periods.
  * * * * *
 ```
 
-**Special chars:** `*` (any), `,` (list), `-` (range), `/` (step), `L` (last), `W` (weekday), `#` (
-nth)
+**Special chars:** `*` (any), `,` (list), `-` (range), `/` (step), `L` (last), `W` (weekday), `#`
+(nth)
 
 ## Common Schedules
 
@@ -97,7 +97,7 @@ curl "http://localhost:8787/__scheduled?cron=*/5+*+*+*+*"
 ## In This Reference
 
 - [configuration.md](./configuration.md) - wrangler config, env-specific schedules, Green Compute
-- [api.md](./api.md) - ScheduledController, noRetry(), waitUntil, testing patterns
+- [api.md](./api.md) - ScheduledController, noRetry (), waitUntil, testing patterns
 - [patterns.md](./patterns.md) - Use cases, monitoring, queue integration, Durable Objects
 - [gotchas.md](./gotchas.md) - Timezone issues, idempotency, security, testing
 

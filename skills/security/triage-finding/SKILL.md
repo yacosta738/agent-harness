@@ -96,21 +96,21 @@ local policy evidence.
 4. Apply the Repository Security Policy Gate above.
 5. For each triage item, trace the claimed source, control, sink, and
    reachable path:
-   - Treat scanner/advisory prose as a claim, not as proof.
-   - Start from the cited code, manifest, version range, or supplied
-     evidence.
-   - Record reachability anchor evidence: the concrete caller,
-     entrypoint, route, command, package export, deployment path,
-     dependency edge, or other repo fact that proves the vulnerable
-     condition is connected to the product surface.
-   - Record supporting evidence and counterevidence.
-   - Record unresolved proof gaps instead of smoothing them over.
+    - Treat scanner/advisory prose as a claim, not as proof.
+    - Start from the cited code, manifest, version range, or supplied
+      evidence.
+    - Record reachability anchor evidence: the concrete caller,
+      entrypoint, route, command, package export, deployment path,
+      dependency edge, or other repo fact that proves the vulnerable
+      condition is connected to the product surface.
+    - Record supporting evidence and counterevidence.
+    - Record unresolved proof gaps instead of smoothing them over.
 6. Classify the product surface and trust boundary:
-   - Identify whether the path is a CLI, library API, hosted service,
-     local developer UI, MCP/tooling surface, example/demo, test/fixture,
-     docs, generated code, vendored code, or unknown surface.
-   - Record whether the claimed source is untrusted input in the intended
-     product model, or trusted operator/developer configuration.
+    - Identify whether the path is a CLI, library API, hosted service,
+      local developer UI, MCP/tooling surface, example/demo, test/fixture,
+      docs, generated code, vendored code, or unknown surface.
+    - Record whether the claimed source is untrusted input in the intended
+      product model, or trusted operator/developer configuration.
 7. Apply the verdict rules.
 8. Assign exploitability stack ranks for `confirmed` and `needs_review`.
 9. For `confirmed` findings, optionally add owner hints when local

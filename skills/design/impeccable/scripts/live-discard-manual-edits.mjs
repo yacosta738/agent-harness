@@ -16,13 +16,21 @@
  * Output JSON: { discarded: N, entries: [...discardedEntries], totalCount: N }
  */
 
-import { readBuffer, removeEntries, truncateBuffer } from './live/manual-edits-buffer.mjs';
+import {
+  readBuffer,
+  removeEntries,
+  truncateBuffer
+} from './live/manual-edits-buffer.mjs';
 
 function argVal(args, name) {
   const prefix = name + '=';
   for (const a of args) {
-    if (a === name) return true;
-    if (a.startsWith(prefix)) return a.slice(prefix.length);
+    if (a === name) {
+      return true;
+    }
+    if (a.startsWith(prefix)) {
+      return a.slice(prefix.length);
+    }
   }
   return null;
 }
@@ -48,4 +56,4 @@ if (pageUrlFilter) {
 }
 
 const remaining = readBuffer(cwd).entries.reduce((n, e) => n + e.ops.length, 0);
-console.log(JSON.stringify({ discarded, entries, totalCount: remaining }));
+console.log(JSON.stringify({discarded, entries, totalCount: remaining}));

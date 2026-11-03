@@ -4,4 +4,4 @@ function isFullPage(content) {
   return /<!doctype\s|<html[\s>]|<head[\s>]/i.test(stripped);
 }
 
-export { isFullPage };
+export {isFullPage};

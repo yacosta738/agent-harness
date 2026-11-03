@@ -57,7 +57,7 @@ const page2 = await browser.newPage();
 | Evaluation failed             | DOM element missing                     | Use `?.` optional chaining                    |
 | Protocol error: Target closed | Page closed during operation            | Await all ops before closing                  |
 
-## page.evaluate() Gotchas
+## page.evaluate () Gotchas
 
 ```typescript
 // ❌ Outer scope not available

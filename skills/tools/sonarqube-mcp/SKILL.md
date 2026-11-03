@@ -6,11 +6,15 @@ allowed-tools: Read
 
 # SonarQube MCP Integration
 
-Leverage SonarQube and SonarCloud capabilities directly through the Model Context Protocol (MCP) server to enforce code quality, discover issues, and run pre-push analysis inside the agent workflow.
+Leverage SonarQube and SonarCloud capabilities directly through the Model Context Protocol (MCP)
+server to enforce code quality, discover issues, and run pre-push analysis inside the agent
+workflow.
 
 ## Overview
 
-This skill provides instructions and patterns for using the [SonarQube MCP Server](https://github.com/SonarSource/sonarqube-mcp-server) tools. It enables automated workflows for:
+This skill provides instructions and patterns for using
+the [SonarQube MCP Server](https://github.com/SonarSource/sonarqube-mcp-server) tools. It enables
+automated workflows for:
 
 - Checking quality gate status before merges or deployments
 - Discovering and triaging issues by severity and project
@@ -27,19 +31,24 @@ Use this skill when:
 - The user wants to understand why a specific Sonar rule flagged their code
 - The user asks for pre-commit or pre-push quality feedback
 
-**Trigger phrases:** "check quality gate", "sonarqube quality gate", "find sonar issues", "search sonar issues", "analyze code with sonar", "check sonar rule", "sonarcloud issues", "pre-push sonar check", "sonar pre-commit"
+**Trigger phrases:** "check quality gate", "sonarqube quality gate", "find sonar issues", "search
+sonar issues", "analyze code with sonar", "check sonar rule", "sonarcloud issues", "pre-push sonar
+check", "sonar pre-commit"
 
 ## Prerequisites and Setup
 
-The plugin includes a `.mcp.json` that starts the SonarQube MCP Server automatically via Docker. Before using this skill, set the required environment variables:
+The plugin includes a `.mcp.json` that starts the SonarQube MCP Server automatically via Docker.
+Before using this skill, set the required environment variables:
 
 **SonarQube Server (remote or local):**
+
 ```bash
 export SONARQUBE_TOKEN="squ_your_token"
 export SONARQUBE_URL="https://sonarqube.mycompany.com"  # or http://host.docker.internal:9000 for local Docker
 ```
 
 **SonarCloud:**
+
 ```bash
 export SONARQUBE_TOKEN="squ_your_token"
 export SONARQUBE_ORG="your-org-key"   # required for SonarCloud
@@ -47,6 +56,7 @@ export SONARQUBE_ORG="your-org-key"   # required for SonarCloud
 ```
 
 **Requirements:**
+
 - Docker must be installed and running
 - `SONARQUBE_TOKEN` is always required
 - `SONARQUBE_URL` is required for SonarQube Server (use `host.docker.internal` for local instances)
@@ -66,12 +76,12 @@ export SONARQUBE_ORG="your-org-key"   # required for SonarCloud
    ```
 
 2. Verify MCP tool availability:
-   - Tool names follow the pattern: `mcp__sonarqube-mcp__<tool-name>`
+    - Tool names follow the pattern: `mcp__sonarqube-mcp__<tool-name>`
 
 3. If the MCP server fails to start, check:
-   - Docker is running
-   - Environment variables are set
-   - Reference: [mcp/sonarqube on Docker Hub](https://hub.docker.com/r/mcp/sonarqube)
+    - Docker is running
+    - Environment variables are set
+    - Reference: [mcp/sonarqube on Docker Hub](https://hub.docker.com/r/mcp/sonarqube)
 
 ## Reference Documents
 
@@ -86,14 +96,14 @@ export SONARQUBE_ORG="your-org-key"   # required for SonarCloud
 
 Determine which operation the user needs:
 
-| User Intent | Tool to Use |
-|---|---|
+| User Intent                          | Tool to Use                       |
+|--------------------------------------|-----------------------------------|
 | Check if project passes quality gate | `get_project_quality_gate_status` |
-| Find critical issues in a project | `search_sonar_issues_in_projects` |
-| Analyze code before committing | `analyze_code_snippet` |
-| Understand a flagged rule | `show_rule` |
-| Get detailed project metrics | `get_component_measures` |
-| Mark an issue as false positive | `change_sonar_issue_status` |
+| Find critical issues in a project    | `search_sonar_issues_in_projects` |
+| Analyze code before committing       | `analyze_code_snippet`            |
+| Understand a flagged rule            | `show_rule`                       |
+| Get detailed project metrics         | `get_component_measures`          |
+| Mark an issue as false positive      | `change_sonar_issue_status`       |
 
 If the user's intent is ambiguous, ask for the project key and the goal before proceeding.
 
@@ -102,11 +112,13 @@ If the user's intent is ambiguous, ask for the project key and the goal before p
 Use `get_project_quality_gate_status` to verify a project meets its quality standards.
 
 **Parameters:**
+
 - `projectKey` (string) — Project key in SonarQube/SonarCloud
 - `pullRequest` (string, optional) — Pull request ID for PR-specific gate check
 - `analysisId` (string, optional) — Specific analysis ID
 
-> Note: There is no `branch` parameter on this tool. Without a `pullRequest` or `analysisId`, the tool returns the quality gate status for the default branch.
+> Note: There is no `branch` parameter on this tool. Without a `pullRequest` or `analysisId`, the
+> tool returns the quality gate status for the default branch.
 
 **Pattern — Check default branch gate:**
 
@@ -132,6 +144,7 @@ Use `get_project_quality_gate_status` to verify a project meets its quality stan
 ```
 
 **Interpreting the response:**
+
 - `status: "OK"` — Gate passed, safe to merge/deploy
 - `status: "ERROR"` — Gate failed; check `conditions` array for failing metrics
 - Each condition shows: `metricKey`, `actualValue`, `errorThreshold`, `comparator`
@@ -143,6 +156,7 @@ For more on metric keys, see `references/metrics.md`.
 Use `search_sonar_issues_in_projects` to find and prioritize issues.
 
 **Parameters:**
+
 - `projects` (array, optional) — List of project keys; omit to search all accessible projects
 - `severities` (array, optional) — Filter: `BLOCKER`, `HIGH`, `MEDIUM`, `LOW`, `INFO`
 - `pullRequestId` (string, optional) — Limit search to a specific PR
@@ -193,21 +207,25 @@ Use this to mark false positives or accepted technical debt:
 }
 ```
 
-Valid statuses: `falsepositive` (not a real issue), `accept` (acknowledged technical debt), `reopen` (reset to open)
+Valid statuses: `falsepositive` (not a real issue), `accept` (acknowledged technical debt), `reopen`
+(reset to open)
 
-> Always present the list of issues to the user before changing their status. Never autonomously mark issues as false positives without explicit user confirmation.
+> Always present the list of issues to the user before changing their status. Never autonomously
+> mark issues as false positives without explicit user confirmation.
 
 ### Step 4: Pre-Push Analysis (Shift Left)
 
 Use `analyze_code_snippet` to run SonarQube analysis on code before committing.
 
 **Parameters:**
+
 - `projectKey` (string) — Project key for context
 - `fileContent` (string, **required**) — Full content of the file to analyze
 - `language` (string, optional) — Language hint for better accuracy
 - `codeSnippet` (string, optional) — Narrow results to a specific sub-range within `fileContent`
 
-**Supported languages:** `javascript`, `typescript`, `python`, `java`, `go`, `php`, `cs`, `cpp`, `kotlin`, `ruby`, `scala`, `swift`
+**Supported languages:** `javascript`, `typescript`, `python`, `java`, `go`, `php`, `cs`, `cpp`,
+`kotlin`, `ruby`, `scala`, `swift`
 
 **Pattern — Analyze TypeScript file before commit:**
 
@@ -236,7 +254,9 @@ Use `analyze_code_snippet` to run SonarQube analysis on code before committing.
 ```
 
 **Response interpretation:**
-- Each issue includes: `ruleKey`, severity, clean code attribute, impact category, line number, quick fix availability
+
+- Each issue includes: `ruleKey`, severity, clean code attribute, impact category, line number,
+  quick fix availability
 - Address `CRITICAL` and `HIGH` severity issues before committing
 - Use `show_rule` with the `ruleKey` value for any unfamiliar rule
 
@@ -245,7 +265,9 @@ Use `analyze_code_snippet` to run SonarQube analysis on code before committing.
 Use `show_rule` to understand why a rule exists and how to fix flagged code.
 
 **Parameters:**
-- `key` (string) — Rule key in format `<language>:<rule-id>` (e.g., `typescript:S1082`, `java:S2068`)
+
+- `key` (string) — Rule key in format `<language>:<rule-id>` (e.g., `typescript:S1082`,
+  `java:S2068`)
 
 **Pattern — Get rule documentation:**
 
@@ -258,18 +280,21 @@ Use `show_rule` to understand why a rule exists and how to fix flagged code.
 }
 ```
 
-**Response includes:** rule name, type, severity, full description, tags (e.g., `cwe`, `owasp-a2`), language, remediation effort estimate, code examples (non-compliant vs compliant).
+**Response includes:** rule name, type, severity, full description, tags (e.g., `cwe`, `owasp-a2`),
+language, remediation effort estimate, code examples (non-compliant vs compliant).
 
 ### Step 6: Get Component Measures
 
 Use `get_component_measures` to retrieve detailed metrics for a project, directory, or file.
 
 **Parameters:**
+
 - `projectKey` (string) — Project key in SonarQube/SonarCloud
 - `pullRequest` (string, optional) — PR ID for PR-scoped metrics
 - `metricKeys` (array) — List of metric keys to retrieve
 
-**Common metric keys:** `coverage`, `bugs`, `vulnerabilities`, `code_smells`, `complexity`, `cognitive_complexity`, `ncloc`, `duplicated_lines_density`, `new_coverage`, `new_bugs`
+**Common metric keys:** `coverage`, `bugs`, `vulnerabilities`, `code_smells`, `complexity`,
+`cognitive_complexity`, `ncloc`, `duplicated_lines_density`, `new_coverage`, `new_bugs`
 
 **Pattern — Project health dashboard:**
 
@@ -288,10 +313,12 @@ For full metric reference, see `references/metrics.md`.
 ### Step 7: Present Results to User
 
 After each tool call:
+
 - Summarize findings in human-readable form
 - Flag issues that require attention (BLOCKER, HIGH severity)
 - Propose next actions based on findings
-- Wait for user confirmation before taking remediation steps (e.g., changing issue status, modifying code)
+- Wait for user confirmation before taking remediation steps (e.g., changing issue status, modifying
+  code)
 
 ## Examples
 
@@ -309,7 +336,8 @@ After each tool call:
 }
 ```
 
-**If gate fails:** Extract failing conditions, present them to the user, then use `search_sonar_issues_in_projects` filtered by the same PR to show the actual issues.
+**If gate fails:** Extract failing conditions, present them to the user, then use
+`search_sonar_issues_in_projects` filtered by the same PR to show the actual issues.
 
 ### Example 2: Shift-Left Analysis Before Push
 
@@ -326,7 +354,8 @@ After each tool call:
 }
 ```
 
-Present findings → for each issue, optionally call `show_rule` with the `ruleKey` value to explain the fix.
+Present findings → for each issue, optionally call `show_rule` with the `ruleKey` value to explain
+the fix.
 
 ### Example 3: Triage BLOCKER Issues in a Project
 
@@ -344,24 +373,35 @@ Present findings → for each issue, optionally call `show_rule` with the `ruleK
 }
 ```
 
-Group results by category (Security, Reliability, Maintainability) and present to user. Offer to call `show_rule` for unfamiliar rules.
+Group results by category (Security, Reliability, Maintainability) and present to user. Offer to
+call `show_rule` for unfamiliar rules.
 
 ## Best Practices
 
-1. **Environment Setup** — Set credentials once per session; the MCP server automatically picks them up
-2. **Always check quality gate before merge** — Run `get_project_quality_gate_status` as part of any PR review workflow
+1. **Environment Setup** — Set credentials once per session; the MCP server automatically picks them
+   up
+2. **Always check quality gate before merge** — Run `get_project_quality_gate_status` as part of any
+   PR review workflow
 3. **Shift left on security issues** — Use `analyze_code_snippet` during development, not only in CI
-4. **Prioritize by severity** — Address BLOCKER and HIGH issues first; document decisions for MEDIUM and LOW
+4. **Prioritize by severity** — Address BLOCKER and HIGH issues first; document decisions for MEDIUM
+   and LOW
 5. **Use `show_rule` for unfamiliar keys** — Never dismiss a rule without understanding its intent
-6. **Paginate large result sets** — Use `p` and `ps` parameters; handle multi-page responses for complete coverage
-7. **Never change issue status autonomously** — Always present issues to the user and get explicit confirmation before calling `change_sonar_issue_status`
-8. **Provide language hints** — Specify `language` in `analyze_code_snippet` for more accurate analysis
+6. **Paginate large result sets** — Use `p` and `ps` parameters; handle multi-page responses for
+   complete coverage
+7. **Never change issue status autonomously** — Always present issues to the user and get explicit
+   confirmation before calling `change_sonar_issue_status`
+8. **Provide language hints** — Specify `language` in `analyze_code_snippet` for more accurate
+   analysis
 
 ## Constraints and Warnings
 
 - MCP server must be configured and running; verify tool availability before use
-- `analyze_code_snippet` analyzes snippets in isolation — full project context may affect results in CI
+- `analyze_code_snippet` analyzes snippets in isolation — full project context may affect results in
+  CI
 - Issue status changes (false positive, won't fix) require appropriate SonarQube permissions
-- SonarCloud and SonarQube Server APIs are mostly compatible but some features differ; check `references/llm-context.md`
-- Pagination is required for projects with many issues; check `paging.total` and `paging.pageSize` in the response to determine whether to iterate further pages
-- Quality gate status reflects the last completed analysis — trigger a new analysis if the code has changed
+- SonarCloud and SonarQube Server APIs are mostly compatible but some features differ; check
+  `references/llm-context.md`
+- Pagination is required for projects with many issues; check `paging.total` and `paging.pageSize`
+  in the response to determine whether to iterate further pages
+- Quality gate status reflects the last completed analysis — trigger a new analysis if the code has
+  changed

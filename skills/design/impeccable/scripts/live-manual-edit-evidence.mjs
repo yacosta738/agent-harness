@@ -10,8 +10,8 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { isGeneratedFile } from './lib/is-generated.mjs';
-import { readBuffer, getBufferPath } from './live/manual-edits-buffer.mjs';
+import {isGeneratedFile} from './lib/is-generated.mjs';
+import {getBufferPath, readBuffer} from './live/manual-edits-buffer.mjs';
 
 const EVIDENCE_VERSION = 1;
 const TEXT_EXTENSIONS = new Set([
@@ -20,7 +20,8 @@ const TEXT_EXTENSIONS = new Set([
   // templates, so copy edits land in all three.
   '.ex', '.heex', '.eex',
 ]);
-const SEARCH_DIRS = ['src', 'app', 'pages', 'components', 'public', 'views', 'templates', 'site', 'lib', 'data'];
+const SEARCH_DIRS = ['src', 'app', 'pages', 'components', 'public', 'views',
+  'templates', 'site', 'lib', 'data'];
 const STRONG_LITERAL_MATCH_LIMIT = 8;
 const WEAK_LITERAL_MATCH_LIMIT = 4;
 const OBJECT_KEY_MATCH_LIMIT = 8;
@@ -41,11 +42,14 @@ const SKIP_DIRS = new Set([
   'coverage',
 ]);
 
-export function buildManualEditEvidence({ cwd = process.cwd(), pageUrl = null } = {}) {
+export function buildManualEditEvidence({
+  cwd = process.cwd(),
+  pageUrl = null
+} = {}) {
   const buffer = readBuffer(cwd);
   const entries = pageUrl
-    ? buffer.entries.filter((entry) => entry.pageUrl === pageUrl)
-    : buffer.entries;
+      ? buffer.entries.filter((entry) => entry.pageUrl === pageUrl)
+      : buffer.entries;
   const opCount = countOps(entries);
 
   if (opCount === 0) {
@@ -60,7 +64,8 @@ export function buildManualEditEvidence({ cwd = process.cwd(), pageUrl = null } 
 
   const searchFiles = collectSearchFiles(cwd);
   const ops = flattenOps(entries);
-  const candidates = ops.map((op) => buildCandidatesForOp(op, cwd, searchFiles));
+  const candidates = ops.map(
+      (op) => buildCandidatesForOp(op, cwd, searchFiles));
   return {
     version: EVIDENCE_VERSION,
     pageUrl: pageUrl || null,
@@ -79,7 +84,10 @@ export function buildManualEditEvidence({ cwd = process.cwd(), pageUrl = null } 
 
 function countOps(entries) {
   let count = 0;
-  for (const entry of entries) count += Array.isArray(entry.ops) ? entry.ops.length : 0;
+  for (const entry of entries) {
+    count += Array.isArray(entry.ops)
+        ? entry.ops.length : 0;
+  }
   return count;
 }
 
@@ -101,7 +109,8 @@ function flattenOps(entries) {
         deleted: op.deleted === true,
         sourceHint: op.sourceHint || null,
         leaf: op.leaf || null,
-        nearbyEditableTexts: Array.isArray(op.nearbyEditableTexts) ? op.nearbyEditableTexts : [],
+        nearbyEditableTexts: Array.isArray(op.nearbyEditableTexts)
+            ? op.nearbyEditableTexts : [],
         container: op.container || null,
         contextHints: contextHintsByRef.get(op.ref) || [],
       });
@@ -116,18 +125,31 @@ function buildContextHintsByRef(entry) {
     const hints = new Set();
     const add = (value) => {
       const text = normalizeText(decodeBasicHtml(String(value || '')));
-      if (text.length < 3 || text.length > 160) return;
-      if (text === normalizeText(op.originalText) || text === normalizeText(op.newText)) return;
+      if (text.length < 3 || text.length > 160) {
+        return;
+      }
+      if (text === normalizeText(op.originalText) || text === normalizeText(
+          op.newText)) {
+        return;
+      }
       hints.add(text);
     };
 
     for (const item of op.nearbyEditableTexts || []) {
       add(typeof item === 'string' ? item : item?.text);
     }
-    const outer = typeof entry.element?.outerHTML === 'string' ? entry.element.outerHTML : '';
-    for (const match of outer.matchAll(/data-impeccable-original-text="([^"]*)"/g)) add(match[1]);
+    const outer = typeof entry.element?.outerHTML === 'string'
+        ? entry.element.outerHTML : '';
+    for (const match of
+        outer.matchAll(/data-impeccable-original-text="([^"]*)"/g)) {
+      add(
+          match[1]);
+    }
     if (typeof entry.element?.textContent === 'string') {
-      for (const chunk of entry.element.textContent.split(/\s{2,}|\n|\t/)) add(chunk);
+      for (const chunk of entry.element.textContent.split(/\s{2,}|\n|\t/)) {
+        add(
+            chunk);
+      }
     }
     map.set(op.ref, [...hints].slice(0, 16));
   }
@@ -142,15 +164,20 @@ function buildCandidatesForOp(op, cwd, searchFiles) {
     ref: op.ref,
     originalText,
     sourceHint: analyzeSourceHint(op, cwd),
-    textMatches: originalText ? findLiteralMatches(searchFiles, originalText, { max: literalMatchLimit(originalText) }) : [],
-    objectKeyMatches: originalText ? findObjectKeyMatches(searchFiles, originalText, { max: OBJECT_KEY_MATCH_LIMIT }) : [],
-    locatorMatches: findLocatorMatches(searchFiles, op, { max: LOCATOR_MATCH_LIMIT }),
-    contextTextMatches: findContextMatches(searchFiles, contextNeedles, { maxPerHint: CONTEXT_MATCH_PER_HINT, max: CONTEXT_MATCH_LIMIT }),
+    textMatches: originalText ? findLiteralMatches(searchFiles, originalText,
+        {max: literalMatchLimit(originalText)}) : [],
+    objectKeyMatches: originalText ? findObjectKeyMatches(searchFiles,
+        originalText, {max: OBJECT_KEY_MATCH_LIMIT}) : [],
+    locatorMatches: findLocatorMatches(searchFiles, op,
+        {max: LOCATOR_MATCH_LIMIT}),
+    contextTextMatches: findContextMatches(searchFiles, contextNeedles,
+        {maxPerHint: CONTEXT_MATCH_PER_HINT, max: CONTEXT_MATCH_LIMIT}),
   };
 }
 
 function literalMatchLimit(text) {
-  return isWeakSourceNeedle(text) ? WEAK_LITERAL_MATCH_LIMIT : STRONG_LITERAL_MATCH_LIMIT;
+  return isWeakSourceNeedle(text) ? WEAK_LITERAL_MATCH_LIMIT
+      : STRONG_LITERAL_MATCH_LIMIT;
 }
 
 function isWeakSourceNeedle(text) {
@@ -160,17 +187,19 @@ function isWeakSourceNeedle(text) {
 
 function analyzeSourceHint(op, cwd) {
   const hint = normalizeSourceHint(op.sourceHint);
-  if (!hint.file) return null;
+  if (!hint.file) {
+    return null;
+  }
   const file = path.resolve(cwd, hint.file);
   const relativeFile = path.relative(cwd, file);
   if (!isPathInsideOrEqual(cwd, file)) {
-    return { ...hint, status: 'outside_cwd', relativeFile: hint.file };
+    return {...hint, status: 'outside_cwd', relativeFile: hint.file};
   }
   if (!fs.existsSync(file)) {
-    return { ...hint, status: 'file_missing', relativeFile };
+    return {...hint, status: 'file_missing', relativeFile};
   }
-  if (isGeneratedFile(file, { cwd })) {
-    return { ...hint, status: 'generated', relativeFile };
+  if (isGeneratedFile(file, {cwd})) {
+    return {...hint, status: 'generated', relativeFile};
   }
 
   const content = fs.readFileSync(file, 'utf-8');
@@ -179,7 +208,8 @@ function analyzeSourceHint(op, cwd) {
   const start = Math.max(0, line - 4);
   const end = Math.min(lines.length, line + 3);
   const windowText = lines.slice(start, end).join('\n');
-  const containsOriginalText = typeof op.originalText === 'string' && windowText.includes(op.originalText);
+  const containsOriginalText = typeof op.originalText === 'string'
+      && windowText.includes(op.originalText);
   return {
     ...hint,
     status: containsOriginalText ? 'ok' : 'text_not_found_near_hint',
@@ -192,14 +222,19 @@ function analyzeSourceHint(op, cwd) {
 }
 
 function normalizeSourceHint(hint) {
-  if (!hint || typeof hint !== 'object') return {};
+  if (!hint || typeof hint !== 'object') {
+    return {};
+  }
   let line = Number.isFinite(Number(hint.line)) ? Number(hint.line) : null;
-  let column = Number.isFinite(Number(hint.column)) ? Number(hint.column) : null;
+  let column = Number.isFinite(Number(hint.column)) ? Number(hint.column)
+      : null;
   if ((!line || !column) && typeof hint.loc === 'string') {
     const match = hint.loc.match(/^(\d+)(?::(\d+))?/);
     if (match) {
       line = Number(match[1]);
-      if (match[2]) column = Number(match[2]);
+      if (match[2]) {
+        column = Number(match[2]);
+      }
     }
   }
   return {
@@ -222,112 +257,177 @@ function collectSearchFiles(cwd) {
 }
 
 function scanDir(dir, cwd, seenDirs, seenFiles, out, depth) {
-  if (depth > 7 || !fs.existsSync(dir)) return;
+  if (depth > 7 || !fs.existsSync(dir)) {
+    return;
+  }
   let realDir;
-  try { realDir = fs.realpathSync(dir); } catch { return; }
-  if (seenDirs.has(realDir)) return;
+  try {
+    realDir = fs.realpathSync(dir);
+  } catch {
+    return;
+  }
+  if (seenDirs.has(realDir)) {
+    return;
+  }
   seenDirs.add(realDir);
 
   let entries;
-  try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+  try {
+    entries = fs.readdirSync(dir, {withFileTypes: true});
+  } catch {
+    return;
+  }
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      if (SKIP_DIRS.has(entry.name)) continue;
+      if (SKIP_DIRS.has(entry.name)) {
+        continue;
+      }
       scanDir(fullPath, cwd, seenDirs, seenFiles, out, depth + 1);
       continue;
     }
-    if (!entry.isFile() || !TEXT_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) continue;
+    if (!entry.isFile() || !TEXT_EXTENSIONS.has(
+        path.extname(entry.name).toLowerCase())) {
+      continue;
+    }
     maybeAddSearchFile(fullPath, cwd, seenFiles, out);
   }
 }
 
 function scanRootFiles(cwd, seenFiles, out) {
   let entries;
-  try { entries = fs.readdirSync(cwd, { withFileTypes: true }); } catch { return; }
+  try {
+    entries = fs.readdirSync(cwd, {withFileTypes: true});
+  } catch {
+    return;
+  }
   for (const entry of entries) {
-    if (!entry.isFile() || !TEXT_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) continue;
+    if (!entry.isFile() || !TEXT_EXTENSIONS.has(
+        path.extname(entry.name).toLowerCase())) {
+      continue;
+    }
     maybeAddSearchFile(path.join(cwd, entry.name), cwd, seenFiles, out);
   }
 }
 
 function maybeAddSearchFile(file, cwd, seenFiles, out) {
   let realFile;
-  try { realFile = fs.realpathSync(file); } catch { return; }
-  if (seenFiles.has(realFile)) return;
+  try {
+    realFile = fs.realpathSync(file);
+  } catch {
+    return;
+  }
+  if (seenFiles.has(realFile)) {
+    return;
+  }
   seenFiles.add(realFile);
-  if (isGeneratedFile(file, { cwd })) return;
+  if (isGeneratedFile(file, {cwd})) {
+    return;
+  }
   let content;
-  try { content = fs.readFileSync(file, 'utf-8'); } catch { return; }
-  out.push({ file, relativeFile: path.relative(cwd, file), content, lines: content.split('\n') });
+  try {
+    content = fs.readFileSync(file, 'utf-8');
+  } catch {
+    return;
+  }
+  out.push({
+    file,
+    relativeFile: path.relative(cwd, file),
+    content,
+    lines: content.split('\n')
+  });
 }
 
-function findLiteralMatches(searchFiles, needle, { max }) {
-  return findMatches(searchFiles, needle, { kind: 'text', max });
+function findLiteralMatches(searchFiles, needle, {max}) {
+  return findMatches(searchFiles, needle, {kind: 'text', max});
 }
 
-function findObjectKeyMatches(searchFiles, text, { max }) {
-  const re = new RegExp('(["\\\'`])' + escapeRegExp(text) + '\\1(?=\\s*:)', 'g');
+function findObjectKeyMatches(searchFiles, text, {max}) {
+  const re = new RegExp('(["\\\'`])' + escapeRegExp(text) + '\\1(?=\\s*:)',
+      'g');
   const out = [];
   for (const file of searchFiles) {
     for (const match of file.content.matchAll(re)) {
       out.push(matchForIndex(file, match.index, 'object_key', text));
-      if (out.length >= max) return out;
+      if (out.length >= max) {
+        return out;
+      }
     }
   }
   return out;
 }
 
-function findLocatorMatches(searchFiles, op, { max }) {
+function findLocatorMatches(searchFiles, op, {max}) {
   const needles = [];
-  if (op.elementId) needles.push({ kind: 'id', needle: op.elementId });
-  for (const cls of op.classes || []) {
-    if (cls) needles.push({ kind: 'class', needle: cls });
+  if (op.elementId) {
+    needles.push({kind: 'id', needle: op.elementId});
   }
-  if (op.tag) needles.push({ kind: 'tag', needle: '<' + op.tag });
+  for (const cls of op.classes || []) {
+    if (cls) {
+      needles.push({kind: 'class', needle: cls});
+    }
+  }
+  if (op.tag) {
+    needles.push({kind: 'tag', needle: '<' + op.tag});
+  }
 
   const out = [];
   const seen = new Set();
-  for (const { kind, needle } of needles) {
-    for (const match of findMatches(searchFiles, needle, { kind, max })) {
+  for (const {kind, needle} of needles) {
+    for (const match of findMatches(searchFiles, needle, {kind, max})) {
       const key = match.file + ':' + match.line + ':' + kind + ':' + needle;
-      if (seen.has(key)) continue;
+      if (seen.has(key)) {
+        continue;
+      }
       seen.add(key);
-      out.push({ ...match, needle });
-      if (out.length >= max) return out;
+      out.push({...match, needle});
+      if (out.length >= max) {
+        return out;
+      }
     }
   }
   return out;
 }
 
-function findContextMatches(searchFiles, hints, { maxPerHint, max }) {
+function findContextMatches(searchFiles, hints, {maxPerHint, max}) {
   const out = [];
   const seen = new Set();
   for (const hint of hints || []) {
-    for (const match of findMatches(searchFiles, hint, { kind: 'context', max: maxPerHint })) {
+    for (const match of
+        findMatches(searchFiles, hint, {kind: 'context', max: maxPerHint})) {
       const key = match.file + ':' + match.line + ':' + hint;
-      if (seen.has(key)) continue;
+      if (seen.has(key)) {
+        continue;
+      }
       seen.add(key);
-      out.push({ ...match, needle: hint });
-      if (out.length >= max) return out;
+      out.push({...match, needle: hint});
+      if (out.length >= max) {
+        return out;
+      }
     }
   }
   return out;
 }
 
-function findMatches(searchFiles, needle, { kind, max }) {
+function findMatches(searchFiles, needle, {kind, max}) {
   const text = String(needle || '');
-  if (!text) return [];
+  if (!text) {
+    return [];
+  }
   const out = [];
   for (const file of searchFiles) {
     let index = 0;
     while (out.length < max) {
       index = file.content.indexOf(text, index);
-      if (index === -1) break;
+      if (index === -1) {
+        break;
+      }
       out.push(matchForIndex(file, index, kind, text));
       index += Math.max(1, text.length);
     }
-    if (out.length >= max) break;
+    if (out.length >= max) {
+      break;
+    }
   }
   return out;
 }
@@ -355,12 +455,12 @@ function normalizeText(value) {
 
 function decodeBasicHtml(value) {
   return value
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&apos;/g, "'")
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>');
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
 }
 
 function escapeRegExp(value) {

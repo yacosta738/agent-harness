@@ -43,10 +43,8 @@ Each decision page should include:
 
 ## Views
 
-**Recent Decisions**: Sort by Date descending
-**Active Decisions**: Filter where Status = "Accepted"
-**By Domain**: Group by Domain
-**High Impact**: Filter where Impact = "High"
+**Recent Decisions**: Sort by Date descending **Active Decisions**: Filter where Status = "Accepted"
+**By Domain**: Group by Domain **High Impact**: Filter where Impact = "High"
 **Pending**: Filter where Status = "Proposed"
 
 ## Best Practices

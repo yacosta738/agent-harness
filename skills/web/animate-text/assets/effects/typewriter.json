@@ -44,7 +44,10 @@
   "showcase": {
     "content": {
       "sample": "Precision in motion.",
-      "samples": ["Precision in motion.", "Write. Pause. Continue."]
+      "samples": [
+        "Precision in motion.",
+        "Write. Pause. Continue."
+      ]
     },
     "content_usage": {
       "default_policy": "When applying an effect to an existing heading or text section, preserve the section text. Do not replace user/application copy with showcase sample text unless the user explicitly asks to reproduce the demo copy.",
@@ -140,7 +143,13 @@
     },
     "playback": {
       "kind": "loop",
-      "cycle": ["enter", "hold", "exit", "micro-delay", "gap"],
+      "cycle": [
+        "enter",
+        "hold",
+        "exit",
+        "micro-delay",
+        "gap"
+      ],
       "replacement_behavior": "exit-before-enter",
       "hold_ms": 550,
       "micro_delay_ms": 85,
@@ -186,7 +195,11 @@
         "line_display": "block",
         "transform_origin": "50% 55%",
         "white_space": "pre",
-        "will_change": ["transform", "opacity", "filter"]
+        "will_change": [
+          "transform",
+          "opacity",
+          "filter"
+        ]
       }
     },
     "rendering_contract": {
@@ -204,7 +217,11 @@
       "content_replacement": "current phrase is cleared and replaced only after exit_total_ms + micro_delay_ms"
     },
     "library_selection": {
-      "supported_adapters": ["waapi", "motion", "gsap"],
+      "supported_adapters": [
+        "waapi",
+        "motion",
+        "gsap"
+      ],
       "aliases": {
         "web animations api": "waapi",
         "waapi": "waapi",

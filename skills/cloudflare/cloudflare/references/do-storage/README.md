@@ -43,8 +43,8 @@ export class Counter extends DurableObject {
 
 | Backend              | Create Method        | APIs                     | PITR |
 |----------------------|----------------------|--------------------------|------|
-| SQLite (recommended) | `new_sqlite_classes` | SQL + sync KV + async KV | ✅    |
-| KV (legacy)          | `new_classes`        | async KV only            | ❌    |
+| SQLite (recommended) | `new_sqlite_classes` | SQL + sync KV + async KV | ✅   |
+| KV (legacy)          | `new_classes`        | async KV only            | ❌   |
 
 ## Core APIs
 
@@ -57,10 +57,9 @@ export class Counter extends DurableObject {
 
 ## Reading Order
 
-**New to DO storage:** configuration.md → api.md → patterns.md → gotchas.md
-**Building features:** patterns.md → api.md → gotchas.md
-**Debugging issues:** gotchas.md → api.md
-**Writing tests:** testing.md
+**New to DO storage:** configuration.md → api.md → patterns.md → gotchas.md **Building features:**
+patterns.md → api.md → gotchas.md **Debugging issues:** gotchas.md → api.md **Writing tests:**
+testing.md
 
 ## In This Reference
 

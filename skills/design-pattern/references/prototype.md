@@ -2,7 +2,8 @@
 
 ## Intent
 
-Create new objects by copying an existing prototype instead of depending on its concrete construction details.
+Create new objects by copying an existing prototype instead of depending on its concrete
+construction details.
 
 ## Forces that justify it
 

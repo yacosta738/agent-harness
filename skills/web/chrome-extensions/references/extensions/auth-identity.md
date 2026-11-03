@@ -32,6 +32,7 @@ async function signIn() {
 ```
 
 Or with the promise-based API (Chrome 116+):
+
 ```js
 const { token } = await chrome.identity.getAuthToken({ interactive: true });
 ```
@@ -93,11 +94,11 @@ try {
 **This is critical and often missed.** The OAuth `client_id` is tied to a specific extension ID.
 The extension ID changes depending on how you load the extension:
 
-| Context | How ID is determined |
-|---------|---------------------|
+| Context                | How ID is determined                                                         |
+|------------------------|------------------------------------------------------------------------------|
 | Unpacked (development) | Derived from the extension's directory path — changes if you move the folder |
-| Packed (.crx) | Derived from the private key used to pack |
-| Chrome Web Store | Assigned by the store, permanent |
+| Packed (.crx)          | Derived from the private key used to pack                                    |
+| Chrome Web Store       | Assigned by the store, permanent                                             |
 
 **To get a stable ID during development**, add a `"key"` field to your manifest.json.
 This ensures the same extension ID regardless of directory path:

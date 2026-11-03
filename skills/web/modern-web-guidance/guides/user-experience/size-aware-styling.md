@@ -1,8 +1,12 @@
 ## Overview
 
-Size-aware styling allows components to change their layout or appearance based on the space available to them, rather than the size of the whole screen. This is useful for components like cards or navigation bars that might be placed in different parts of a layout (like a narrow sidebar or a wide main area).
+Size-aware styling allows components to change their layout or appearance based on the space
+available to them, rather than the size of the whole screen. This is useful for components like
+cards or navigation bars that might be placed in different parts of a layout (like a narrow sidebar
+or a wide main area).
 
-Using container queries is recommended because it makes components truly modular. You do not need to know where the component will live or write complex media queries to handle every possible layout.
+Using container queries is recommended because it makes components truly modular. You do not need to
+know where the component will live or write complex media queries to handle every possible layout.
 
 ## Implementation
 
@@ -66,9 +70,12 @@ You can also use container queries to hide or show extra details when there is m
 ### Fallback strategies
 
 Baseline status for Container queries: Widely available. It's been Baseline since 2023-02-14.
-Supported by: Chrome 105 (Sep 2022), Edge 105 (Sep 2022), Firefox 110 (Feb 2023), and Safari 16 (Sep 2022).
+Supported by: Chrome 105 (Sep 2022), Edge 105 (Sep 2022), Firefox 110 (Feb 2023), and Safari 16 (Sep
+2022).
 
-For browsers that do not support container queries, the best approach is to use a safe default layout (like the stacked vertical layout) and progressively enhance it using media queries if the general screen size allows it.
+For browsers that do not support container queries, the best approach is to use a safe default
+layout (like the stacked vertical layout) and progressively enhance it using media queries if the
+general screen size allows it.
 
 ```css
 /* Default safe stacked layout */
@@ -101,4 +108,5 @@ For browsers that do not support container queries, the best approach is to use 
 }
 ```
 
-This ensures that users on older browsers still get a usable layout, even if it does not adapt perfectly to every specific container width.
+This ensures that users on older browsers still get a usable layout, even if it does not adapt
+perfectly to every specific container width.

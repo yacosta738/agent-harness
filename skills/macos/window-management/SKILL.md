@@ -109,8 +109,8 @@ deployment targets, expect to use more AppKit bridging or availability guards.
   green toolbar button. For media windows, preserve aspect ratio and grow to the
   largest size that fits the display.
 - Treat default placement and ideal placement as separate policies:
-  - default placement controls where a new window first appears,
-  - ideal placement controls how large a zoomed window should become.
+    - default placement controls where a new window first appears,
+    - ideal placement controls how large a zoomed window should become.
 - Always consider external displays and rotated/narrow screens when sizing
   player windows or document windows from content dimensions.
 

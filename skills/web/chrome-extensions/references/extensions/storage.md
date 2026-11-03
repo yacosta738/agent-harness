@@ -2,11 +2,11 @@
 
 ## Storage Areas
 
-| Area | Persists | Syncs | Quota | Use For |
-|------|----------|-------|-------|---------|
-| `chrome.storage.local` | Yes | No | 10 MB | Most extension data |
-| `chrome.storage.sync` | Yes | Yes (across devices) | 100 KB total, 8 KB/item | User preferences, small data |
-| `chrome.storage.session` | Until browser close | No | 10 MB | Ephemeral state, survives SW restart |
+| Area                     | Persists            | Syncs                | Quota                   | Use For                              |
+|--------------------------|---------------------|----------------------|-------------------------|--------------------------------------|
+| `chrome.storage.local`   | Yes                 | No                   | 10 MB                   | Most extension data                  |
+| `chrome.storage.sync`    | Yes                 | Yes (across devices) | 100 KB total, 8 KB/item | User preferences, small data         |
+| `chrome.storage.session` | Until browser close | No                   | 10 MB                   | Ephemeral state, survives SW restart |
 
 Permission required: `"storage"`
 
@@ -43,6 +43,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 ## storage.sync Quotas
 
 Be aware of limits when using sync:
+
 - `QUOTA_BYTES_PER_ITEM`: 8,192 bytes per key-value pair
 - `MAX_ITEMS`: 512 items
 - `QUOTA_BYTES`: 102,400 bytes total

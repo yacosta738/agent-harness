@@ -18,8 +18,7 @@ These evaluations ensure the Meeting Intelligence skill:
 
 Tests preparation for a decision-making meeting.
 
-**Scenario**: Prep for database migration decision meeting
-**Key Behaviors**:
+**Scenario**: Prep for database migration decision meeting **Key Behaviors**:
 
 - Searches Notion for migration context (specs, discussions, options)
 - Fetches 2-3 relevant pages
@@ -33,8 +32,7 @@ Tests preparation for a decision-making meeting.
 
 Tests preparation for a status update or review meeting.
 
-**Scenario**: Prep for project status review
-**Key Behaviors**:
+**Scenario**: Prep for project status review **Key Behaviors**:
 
 - Gathers project metrics and progress from Notion
 - Fetches relevant pages (roadmap, tasks, milestones)

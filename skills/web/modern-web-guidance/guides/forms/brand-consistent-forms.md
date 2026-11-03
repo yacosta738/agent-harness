@@ -1,16 +1,23 @@
 # Brand-Consistent Forms
 
-Customizing standard HTML form elements like checkboxes and radio buttons has historically been difficult. Developers often faced a choice between using the browser defaults or building custom components from scratch. Building custom controls is time-consuming and can easily lead to accessibility issues or missing states (like the indeterminate state for checkboxes).
+Customizing standard HTML form elements like checkboxes and radio buttons has historically been
+difficult. Developers often faced a choice between using the browser defaults or building custom
+components from scratch. Building custom controls is time-consuming and can easily lead to
+accessibility issues or missing states (like the indeterminate state for checkboxes).
 
-The CSS property `accent-color` provides a simple way to bring your brand color to built-in HTML form inputs with a single line of CSS, without sacrificing accessibility or built-in browser features.
+The CSS property `accent-color` provides a simple way to bring your brand color to built-in HTML
+form inputs with a single line of CSS, without sacrificing accessibility or built-in browser
+features.
 
 ## How to Implement
 
 To apply your brand color to form controls:
 
 1. **Identify your brand color:** Choose a color that represents your brand.
-2. **Apply the `accent-color` property:** Add `accent-color` to the element or a container element (like `body` or a specific form) in your CSS.
-3. **Support Dark Mode (Optional but Recommended):** Use `color-scheme` to let the browser know your site supports dark mode, and adjust the `accent-color` if necessary for better contrast.
+2. **Apply the `accent-color` property:** Add `accent-color` to the element or a container element
+   (like `body` or a specific form) in your CSS.
+3. **Support Dark Mode (Optional but Recommended):** Use `color-scheme` to let the browser know your
+   site supports dark mode, and adjust the `accent-color` if necessary for better contrast.
 
 ## Example Code: Brand-Consistent Form Controls
 
@@ -63,10 +70,17 @@ body {
 ## Strategic Implementation & Best Practices
 
 - **DO** use `accent-color` to easily theme form controls to match your brand.
-- **DO NOT** blindly trust the browser to handle contrast. While browsers are supposed to automatically determine an eligible contrast color, known bugs in implementations like **Safari** (WebKit bug 244233) and **Android Chrome** (Chromium bug 343503163) can fail to invert checkmark colors, leading to invisible or hard-to-see controls when using colors that lack sufficient contrast against the background (e.g., light colors in light mode, or dark colors in dark mode).
-- **DO** combine `accent-color` with `color-scheme: light dark` to ensure form controls look good in both light and dark themes.
-- **DO NOT** use a color that is too close to the background color, even though browsers try to guarantee contrast, it's best to provide a color with good base contrast.
-- **DO NOT** assume `accent-color` works on all form elements. Currently, it only tints `checkbox`, `radio`, `range`, and `progress` elements.
+- **DO NOT** blindly trust the browser to handle contrast. While browsers are supposed to
+  automatically determine an eligible contrast color, known bugs in implementations like **Safari**
+  (WebKit bug 244233) and **Android Chrome** (Chromium bug 343503163) can fail to invert checkmark
+  colors, leading to invisible or hard-to-see controls when using colors that lack sufficient
+  contrast against the background (e.g., light colors in light mode, or dark colors in dark mode).
+- **DO** combine `accent-color` with `color-scheme: light dark` to ensure form controls look good in
+  both light and dark themes.
+- **DO NOT** use a color that is too close to the background color, even though browsers try to
+  guarantee contrast, it's best to provide a color with good base contrast.
+- **DO NOT** assume `accent-color` works on all form elements. Currently, it only tints `checkbox`,
+  `radio`, `range`, and `progress` elements.
 
 ## Fallback Strategy
 
@@ -74,14 +88,21 @@ accent-color has limited availability.
 Supported by: Chrome 93 (Aug 2021), Edge 93 (Sep 2021), and Firefox 92 (Sep 2021).
 Unsupported in: Safari.
 
-For browsers that do not support `accent-color`, the form controls fall back to the browser's default appearance. To ensure full brand consistency and high reliability across all environments, you MUST implement a custom fallback strategy using the established "visually hidden input" technique.
+For browsers that do not support `accent-color`, the form controls fall back to the browser's
+default appearance. To ensure full brand consistency and high reliability across all environments,
+you MUST implement a custom fallback strategy using the established "visually hidden input"
+technique.
 
 ### Progressive Enhancement with `@supports not`
 
-You MUST use the `@supports not` rule to apply custom fallback styles only when `accent-color` is not supported. This ensures you leverage the simplicity of `accent-color` for modern browsers while guaranteeing a consistent branded experience for older ones.
+You MUST use the `@supports not` rule to apply custom fallback styles only when `accent-color` is
+not supported. This ensures you leverage the simplicity of `accent-color` for modern browsers while
+guaranteeing a consistent branded experience for older ones.
 
 #### 1. HTML Structure
+
 Ensure your labels wrap the text in a `<span>` to allow for sibling selectors in CSS:
+
 ```html
 <label for="subscribe-fallback">
   <input type="checkbox" id="subscribe-fallback" class="visually-hidden" checked>
@@ -90,7 +111,9 @@ Ensure your labels wrap the text in a `<span>` to allow for sibling selectors in
 ```
 
 #### 2. CSS Fallback
+
 Apply custom styles within a `@supports not` block:
+
 ```css
 /* Fallback for older browsers without accent-color */
 @supports not (accent-color: var(--brand-color)) {
@@ -236,9 +259,11 @@ Apply custom styles within a `@supports not` block:
 
 ### Dynamic Range Progress in Webkit Fallback
 
-To make the progress fill move with the thumb on a range slider in Webkit browsers (without `accent-color`), you can use a CSS variable and a small amount of JavaScript.
+To make the progress fill move with the thumb on a range slider in Webkit browsers (without
+`accent-color`), you can use a CSS variable and a small amount of JavaScript.
 
 1. **Update CSS**: Use a CSS variable for the gradient stop:
+
 ```css
 input[type="range"]::-webkit-slider-runnable-track {
   background: linear-gradient(to right, var(--brand-color) var(--progress, 0%), #ccc var(--progress, 0%));
@@ -246,6 +271,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 ```
 
 2. **Add JavaScript**: Update the variable on the `input` event:
+
 ```javascript
 if (!CSS.supports('accent-color')) {
   const slider = document.getElementById('volume');

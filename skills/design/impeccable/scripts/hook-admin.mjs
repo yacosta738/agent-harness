@@ -23,21 +23,23 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { IMPECCABLE_COMMAND } from './lib/provider.mjs';
+import {IMPECCABLE_COMMAND} from './lib/provider.mjs';
 
 import {
-  getConfigPath,
-  getLocalConfigPath,
-  getCachePath,
-  getPendingPath,
-  readConfig,
   DEFAULT_CONFIG,
   ensureHookGitExcludes,
+  getCachePath,
+  getConfigPath,
+  getLocalConfigPath,
+  getPendingPath,
   normalizeIgnoreValue,
   normalizeIgnoreValueEntries,
+  readConfig,
 } from './hook-lib.mjs';
 
-const ACTIONS = new Set(['status', 'on', 'off', 'ignore-rule', 'ignore-file', 'ignore-value', 'reset']);
+const ACTIONS = new Set(
+    ['status', 'on', 'off', 'ignore-rule', 'ignore-file', 'ignore-value',
+      'reset']);
 const IMPECCABLE_HOOK_COMMAND_MARKERS = [
   'skills/impeccable/scripts/hook-probe.mjs',
   'skills/impeccable/scripts/hook.mjs',
@@ -90,7 +92,8 @@ const HOOK_MANIFEST_TARGETS = [
             ],
           },
         ],
-        Stop: [stopManifestEntry('node "${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/hook.mjs"')],
+        Stop: [stopManifestEntry(
+            'node "${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/hook.mjs"')],
       },
     }),
   },
@@ -113,7 +116,8 @@ const HOOK_MANIFEST_TARGETS = [
             ],
           },
         ],
-        Stop: [stopManifestEntry('node ".agents/skills/impeccable/scripts/hook.mjs"')],
+        Stop: [stopManifestEntry(
+            'node ".agents/skills/impeccable/scripts/hook.mjs"')],
       },
     }),
   },
@@ -158,53 +162,79 @@ const HOOK_MANIFEST_TARGETS = [
 ];
 
 function readRawConfigFile(filePath) {
-  if (!fs.existsSync(filePath)) return { exists: false, malformed: false, raw: null };
+  if (!fs.existsSync(filePath)) {
+    return {
+      exists: false,
+      malformed: false,
+      raw: null
+    };
+  }
   try {
-    return { exists: true, malformed: false, raw: JSON.parse(fs.readFileSync(filePath, 'utf-8')) };
+    return {
+      exists: true,
+      malformed: false,
+      raw: JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+    };
   } catch {
-    return { exists: true, malformed: true, raw: null };
+    return {exists: true, malformed: true, raw: null};
   }
 }
 
-const DETECTOR_CONFIG_KEYS = new Set(['ignoreRules', 'ignoreFiles', 'ignoreValues', 'designSystem', 'advisoryRules']);
+const DETECTOR_CONFIG_KEYS = new Set(
+    ['ignoreRules', 'ignoreFiles', 'ignoreValues', 'designSystem',
+      'advisoryRules']);
 
 function hookSection(unified) {
-  return unified && typeof unified === 'object' && !Array.isArray(unified) && unified.hook && typeof unified.hook === 'object' && !Array.isArray(unified.hook)
-    ? unified.hook
-    : null;
+  return unified && typeof unified === 'object' && !Array.isArray(unified)
+  && unified.hook && typeof unified.hook === 'object' && !Array.isArray(
+      unified.hook)
+      ? unified.hook
+      : null;
 }
 
 function detectorSection(unified) {
-  return unified && typeof unified === 'object' && !Array.isArray(unified) && unified.detector && typeof unified.detector === 'object' && !Array.isArray(unified.detector)
-    ? unified.detector
-    : null;
+  return unified && typeof unified === 'object' && !Array.isArray(unified)
+  && unified.detector && typeof unified.detector === 'object' && !Array.isArray(
+      unified.detector)
+      ? unified.detector
+      : null;
 }
 
 function readRawHookConfig(cwd, opts = {}) {
-  const unified = readRawConfigFile(opts.local ? getLocalConfigPath(cwd) : getConfigPath(cwd)).raw;
+  const unified = readRawConfigFile(
+      opts.local ? getLocalConfigPath(cwd) : getConfigPath(cwd)).raw;
   return hookSection(unified);
 }
 
 function readRawDetectorConfig(cwd, opts = {}) {
-  const unified = readRawConfigFile(opts.local ? getLocalConfigPath(cwd) : getConfigPath(cwd)).raw;
+  const unified = readRawConfigFile(
+      opts.local ? getLocalConfigPath(cwd) : getConfigPath(cwd)).raw;
   const merged = mergeDetectorConfig(hookSection(unified));
   return mergeDetectorConfig(detectorSection(unified), merged);
 }
 
 function stripDetectorKeys(raw) {
-  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    return {};
+  }
   const out = {};
   for (const [key, value] of Object.entries(raw)) {
-    if (!DETECTOR_CONFIG_KEYS.has(key)) out[key] = value;
+    if (!DETECTOR_CONFIG_KEYS.has(key)) {
+      out[key] = value;
+    }
   }
   return out;
 }
 
 function pickDetectorKeys(raw) {
-  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return {};
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+    return {};
+  }
   const out = {};
   for (const [key, value] of Object.entries(raw)) {
-    if (DETECTOR_CONFIG_KEYS.has(key)) out[key] = value;
+    if (DETECTOR_CONFIG_KEYS.has(key)) {
+      out[key] = value;
+    }
   }
   return out;
 }
@@ -213,32 +243,39 @@ function pickDetectorKeys(raw) {
 // `detector` and preserving sibling keys such as updateCheck.
 function writeHookConfig(cwd, hookConfig, opts = {}) {
   const filePath = opts.local ? getLocalConfigPath(cwd) : getConfigPath(cwd);
-  if (opts.local) ensureHookGitExcludes(cwd);
+  if (opts.local) {
+    ensureHookGitExcludes(cwd);
+  }
   const existingRaw = readRawConfigFile(filePath).raw;
-  const existing = existingRaw && typeof existingRaw === 'object' && !Array.isArray(existingRaw) ? existingRaw : {};
+  const existing = existingRaw && typeof existingRaw === 'object'
+  && !Array.isArray(existingRaw) ? existingRaw : {};
   const existingHookSection = hookSection(existing);
   const existingHook = stripDetectorKeys(existingHookSection);
   const legacyDetector = pickDetectorKeys(existingHookSection);
   // Merge over the existing hook object so fields the merge helpers don't manage
   // (consent, quiet, auditLog) survive an Impeccable hooks edit.
-  const next = { ...existing, hook: { ...existingHook, ...hookConfig } };
+  const next = {...existing, hook: {...existingHook, ...hookConfig}};
   if (Object.keys(legacyDetector).length > 0) {
     const existingDetector = detectorSection(existing) || {};
     next.detector = {
       ...existingDetector,
-      ...mergeDetectorConfig(existingDetector, mergeDetectorConfig(legacyDetector)),
+      ...mergeDetectorConfig(existingDetector,
+          mergeDetectorConfig(legacyDetector)),
     };
   }
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.mkdirSync(path.dirname(filePath), {recursive: true});
   fs.writeFileSync(filePath, JSON.stringify(next, null, 2) + '\n');
   return filePath;
 }
 
 function writeDetectorConfig(cwd, detectorConfig, opts = {}) {
   const filePath = opts.local ? getLocalConfigPath(cwd) : getConfigPath(cwd);
-  if (opts.local) ensureHookGitExcludes(cwd);
+  if (opts.local) {
+    ensureHookGitExcludes(cwd);
+  }
   const existingRaw = readRawConfigFile(filePath).raw;
-  const existing = existingRaw && typeof existingRaw === 'object' && !Array.isArray(existingRaw) ? existingRaw : {};
+  const existing = existingRaw && typeof existingRaw === 'object'
+  && !Array.isArray(existingRaw) ? existingRaw : {};
   const nextHook = stripDetectorKeys(hookSection(existing));
   const existingDetectorSection = detectorSection(existing) || {};
   const existingDetector = mergeDetectorConfig(existingDetectorSection);
@@ -249,9 +286,12 @@ function writeDetectorConfig(cwd, detectorConfig, opts = {}) {
       ...mergeDetectorConfig(detectorConfig, existingDetector),
     },
   };
-  if (Object.keys(nextHook).length > 0) next.hook = nextHook;
-  else delete next.hook;
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  if (Object.keys(nextHook).length > 0) {
+    next.hook = nextHook;
+  } else {
+    delete next.hook;
+  }
+  fs.mkdirSync(path.dirname(filePath), {recursive: true});
   fs.writeFileSync(filePath, JSON.stringify(next, null, 2) + '\n');
   return filePath;
 }
@@ -261,8 +301,10 @@ function mergeHookConfig(existing) {
   return {
     enabled: base.enabled === false ? false : true,
     limits: {
-      maxFindings: Number.isFinite(base?.limits?.maxFindings) ? base.limits.maxFindings : DEFAULT_CONFIG.limits.maxFindings,
-      maxChars: Number.isFinite(base?.limits?.maxChars) ? base.limits.maxChars : DEFAULT_CONFIG.limits.maxChars,
+      maxFindings: Number.isFinite(base?.limits?.maxFindings)
+          ? base.limits.maxFindings : DEFAULT_CONFIG.limits.maxFindings,
+      maxChars: Number.isFinite(base?.limits?.maxChars) ? base.limits.maxChars
+          : DEFAULT_CONFIG.limits.maxChars,
     },
   };
 }
@@ -278,13 +320,15 @@ function mergeDetectorConfig(existing, seed = null) {
     ignoreFiles: [],
     ignoreValues: [],
   };
-  if (seed?.designSystem && typeof seed.designSystem === 'object' && !Array.isArray(seed.designSystem)) {
-    out.designSystem = { ...seed.designSystem };
+  if (seed?.designSystem && typeof seed.designSystem === 'object'
+      && !Array.isArray(seed.designSystem)) {
+    out.designSystem = {...seed.designSystem};
   }
   if (seed?.advisoryRules === 'include' || seed?.advisoryRules === 'exclude') {
     out.advisoryRules = seed.advisoryRules;
   }
-  if (base.designSystem && typeof base.designSystem === 'object' && !Array.isArray(base.designSystem)) {
+  if (base.designSystem && typeof base.designSystem === 'object'
+      && !Array.isArray(base.designSystem)) {
     out.designSystem = {
       ...(out.designSystem || {}),
       enabled: base.designSystem.enabled === false ? false : true,
@@ -294,13 +338,16 @@ function mergeDetectorConfig(existing, seed = null) {
     out.advisoryRules = base.advisoryRules;
   }
   if (Array.isArray(base.ignoreRules)) {
-    out.ignoreRules = Array.from(new Set([...out.ignoreRules, ...base.ignoreRules.map(String)]));
+    out.ignoreRules = Array.from(
+        new Set([...out.ignoreRules, ...base.ignoreRules.map(String)]));
   }
   if (Array.isArray(base.ignoreFiles)) {
-    out.ignoreFiles = Array.from(new Set([...out.ignoreFiles, ...base.ignoreFiles.map(String)]));
+    out.ignoreFiles = Array.from(
+        new Set([...out.ignoreFiles, ...base.ignoreFiles.map(String)]));
   }
   if (Array.isArray(base.ignoreValues)) {
-    out.ignoreValues = mergeIgnoreValueEntries(out.ignoreValues, base.ignoreValues);
+    out.ignoreValues = mergeIgnoreValueEntries(out.ignoreValues,
+        base.ignoreValues);
   }
   return out;
 }
@@ -320,7 +367,8 @@ function ignoreValueEntryKey(entry) {
   // Sorted: a file scope is a set. Comparing stored order made an on-disk scope
   // miss the sorted argv form, so a re-add duplicated the entry and a remove
   // silently failed. Every key that hashes `files` must sort — there are four.
-  const files = Array.isArray(entry.files) && entry.files.length > 0 ? [...entry.files].sort().join('\x1f') : '';
+  const files = Array.isArray(entry.files) && entry.files.length > 0
+      ? [...entry.files].sort().join('\x1f') : '';
   return `${entry.rule}\0${entry.value}\0${files}`;
 }
 
@@ -330,12 +378,19 @@ function statusReport(cwd) {
   const cfg = readConfig(cwd);
   const envKill = process.env.IMPECCABLE_HOOK_DISABLED;
   const envState = envKill ? `IMPECCABLE_HOOK_DISABLED=${envKill}` : 'unset';
-  const cfgPath = path.relative(cwd, getConfigPath(cwd)) || '.impeccable/config.json';
-  const localPath = path.relative(cwd, getLocalConfigPath(cwd)) || '.impeccable/config.local.json';
-  const cachePath = path.relative(cwd, getCachePath(cwd)) || '.impeccable/hook.cache.json';
+  const cfgPath = path.relative(cwd, getConfigPath(cwd))
+      || '.impeccable/config.json';
+  const localPath = path.relative(cwd, getLocalConfigPath(cwd))
+      || '.impeccable/config.local.json';
+  const cachePath = path.relative(cwd, getCachePath(cwd))
+      || '.impeccable/hook.cache.json';
   const fileState = (info, relPath, absent) => {
-    if (info.malformed) return `${relPath} (malformed; ignored)`;
-    if (info.exists) return relPath;
+    if (info.malformed) {
+      return `${relPath} (malformed; ignored)`;
+    }
+    if (info.exists) {
+      return relPath;
+    }
     return `${relPath} (${absent})`;
   };
   // Show the file scope. Dropping it rendered a file-scoped entry as
@@ -343,22 +398,28 @@ function statusReport(cwd) {
   // command refuses — the opposite of what is on disk. Matches the
   // `rule=value [files]` shape `impeccable ignores list` already prints.
   const ignoreValues = cfg.ignoreValues.map((entry) => {
-    const scope = Array.isArray(entry.files) && entry.files.length ? ` [${entry.files.join(', ')}]` : '';
+    const scope = Array.isArray(entry.files) && entry.files.length
+        ? ` [${entry.files.join(', ')}]` : '';
     return `${entry.rule}=${entry.value}${scope}`;
   });
 
   const lines = [
     `Impeccable design hook`,
     `  state:        ${cfg.enabled ? 'enabled' : 'disabled'}`,
-    `  shared file:  ${fileState(shared, cfgPath, 'using defaults; file not present')}`,
+    `  shared file:  ${fileState(shared, cfgPath,
+        'using defaults; file not present')}`,
     `  local file:   ${fileState(local, localPath, 'not present')}`,
-    `  ignoreRules:  ${cfg.ignoreRules.length ? cfg.ignoreRules.join(', ') : '(none)'}`,
-    `  ignoreFiles:  ${cfg.ignoreFiles.length ? cfg.ignoreFiles.join(', ') : '(none)'}`,
-    `  ignoreValues: ${ignoreValues.length ? ignoreValues.join(', ') : '(none)'}`,
+    `  ignoreRules:  ${cfg.ignoreRules.length ? cfg.ignoreRules.join(', ')
+        : '(none)'}`,
+    `  ignoreFiles:  ${cfg.ignoreFiles.length ? cfg.ignoreFiles.join(', ')
+        : '(none)'}`,
+    `  ignoreValues: ${ignoreValues.length ? ignoreValues.join(', ')
+        : '(none)'}`,
     `  maxFindings:  ${cfg.limits.maxFindings}`,
     `  maxChars:     ${cfg.limits.maxChars}`,
     `  env override: ${envState}`,
-    `  cache file:   ${fs.existsSync(getCachePath(cwd)) ? cachePath : `${cachePath} (not present)`}`,
+    `  cache file:   ${fs.existsSync(getCachePath(cwd)) ? cachePath
+        : `${cachePath} (not present)`}`,
   ];
   return lines.join('\n');
 }
@@ -368,34 +429,45 @@ function setEnabled(cwd, value) {
   config.enabled = value;
   const target = writeHookConfig(cwd, config);
   if (!value) {
-    return `Design hook disabled for this project (wrote ${path.relative(cwd, target) || target}).`;
+    return `Design hook disabled for this project (wrote ${path.relative(cwd,
+        target) || target}).`;
   }
 
-  const localTarget = writeHookConfig(cwd, { consent: 'accepted' }, { local: true });
+  const localTarget = writeHookConfig(cwd, {consent: 'accepted'},
+      {local: true});
   const repaired = repairHookManifests(cwd);
   const parts = [
-    `Design hook enabled for this project (wrote ${path.relative(cwd, target) || target}).`,
-    `Recorded local hook consent in ${path.relative(cwd, localTarget) || localTarget}.`,
+    `Design hook enabled for this project (wrote ${path.relative(cwd, target)
+    || target}).`,
+    `Recorded local hook consent in ${path.relative(cwd, localTarget)
+    || localTarget}.`,
   ];
   if (repaired.written.length > 0) {
-    parts.push(`Installed or repaired hook manifests for: ${repaired.written.join(', ')}.`);
+    parts.push(
+        `Installed or repaired hook manifests for: ${repaired.written.join(
+            ', ')}.`);
   } else if (repaired.already.length > 0) {
-    parts.push(`Hook manifests already installed for: ${repaired.already.join(', ')}.`);
+    parts.push(`Hook manifests already installed for: ${repaired.already.join(
+        ', ')}.`);
   } else {
     parts.push('No installed provider skill folders found to repair.');
   }
   if (repaired.backups.length > 0) {
-    parts.push(`Backed up malformed manifest(s): ${repaired.backups.map((filePath) => path.relative(cwd, filePath) || filePath).join(', ')}.`);
+    parts.push(`Backed up malformed manifest(s): ${repaired.backups.map(
+        (filePath) => path.relative(cwd, filePath) || filePath).join(', ')}.`);
   }
   return parts.join(' ');
 }
 
 function repairHookManifests(cwd) {
-  const result = { written: [], already: [], backups: [] };
+  const result = {written: [], already: [], backups: []};
   for (const target of HOOK_MANIFEST_TARGETS) {
-    if (!fs.existsSync(path.join(cwd, target.skillRel))) continue;
+    if (!fs.existsSync(path.join(cwd, target.skillRel))) {
+      continue;
+    }
     const dest = path.join(cwd, target.destRel);
-    const sharedDest = target.sharedDestRel ? path.join(cwd, target.sharedDestRel) : null;
+    const sharedDest = target.sharedDestRel ? path.join(cwd,
+        target.sharedDestRel) : null;
 
     if (sharedDest && fileHasImpeccableHookMarker(sharedDest)) {
       pruneImpeccableHookFromManifest(dest);
@@ -407,7 +479,8 @@ function repairHookManifests(cwd) {
     let next = fresh;
     if (fs.existsSync(dest)) {
       try {
-        next = mergeHookManifests(JSON.parse(fs.readFileSync(dest, 'utf-8')), fresh);
+        next = mergeHookManifests(JSON.parse(fs.readFileSync(dest, 'utf-8')),
+            fresh);
       } catch {
         const backup = `${dest}.bak`;
         fs.copyFileSync(dest, backup);
@@ -421,7 +494,7 @@ function repairHookManifests(cwd) {
       result.already.push(target.provider);
       continue;
     }
-    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.mkdirSync(path.dirname(dest), {recursive: true});
     fs.writeFileSync(dest, serialized);
     result.written.push(target.provider);
   }
@@ -437,80 +510,116 @@ function safeReadText(filePath) {
 }
 
 function mergeHookManifests(existing, fresh) {
-  const existingObject = existing && typeof existing === 'object' && !Array.isArray(existing) ? existing : {};
-  const freshObject = fresh && typeof fresh === 'object' && !Array.isArray(fresh) ? fresh : {};
-  const existingHooks = existingObject.hooks && typeof existingObject.hooks === 'object' && !Array.isArray(existingObject.hooks)
-    ? existingObject.hooks
-    : {};
-  const freshHooks = freshObject.hooks && typeof freshObject.hooks === 'object' && !Array.isArray(freshObject.hooks)
-    ? freshObject.hooks
-    : {};
+  const existingObject = existing && typeof existing === 'object'
+  && !Array.isArray(existing) ? existing : {};
+  const freshObject = fresh && typeof fresh === 'object' && !Array.isArray(
+      fresh) ? fresh : {};
+  const existingHooks = existingObject.hooks && typeof existingObject.hooks
+  === 'object' && !Array.isArray(existingObject.hooks)
+      ? existingObject.hooks
+      : {};
+  const freshHooks = freshObject.hooks && typeof freshObject.hooks === 'object'
+  && !Array.isArray(freshObject.hooks)
+      ? freshObject.hooks
+      : {};
 
-  const merged = { ...existingObject, hooks: {} };
-  if (freshObject.version !== undefined) merged.version = freshObject.version;
-  if (freshObject.description !== undefined) merged.description = freshObject.description;
+  const merged = {...existingObject, hooks: {}};
+  if (freshObject.version !== undefined) {
+    merged.version = freshObject.version;
+  }
+  if (freshObject.description
+      !== undefined) {
+    merged.description = freshObject.description;
+  }
 
-  const hookEvents = new Set([...Object.keys(existingHooks), ...Object.keys(freshHooks)]);
+  const hookEvents = new Set(
+      [...Object.keys(existingHooks), ...Object.keys(freshHooks)]);
   for (const event of hookEvents) {
     const preserved = stripImpeccableHookEntries(existingHooks[event]);
     const added = Array.isArray(freshHooks[event]) ? freshHooks[event] : [];
     const mergedEntries = [...preserved, ...added];
-    if (mergedEntries.length > 0) merged.hooks[event] = mergedEntries;
+    if (mergedEntries.length > 0) {
+      merged.hooks[event] = mergedEntries;
+    }
   }
   return merged;
 }
 
 function fileHasImpeccableHookMarker(filePath) {
-  if (!fs.existsSync(filePath)) return false;
+  if (!fs.existsSync(filePath)) {
+    return false;
+  }
   let parsed;
   try {
     parsed = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
   } catch {
     return false;
   }
-  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return false;
-  if (!parsed.hooks || typeof parsed.hooks !== 'object') return false;
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(
+      parsed)) {
+    return false;
+  }
+  if (!parsed.hooks || typeof parsed.hooks !== 'object') {
+    return false;
+  }
   return valueHasImpeccableHookMarker(parsed.hooks);
 }
 
 function valueHasImpeccableHookMarker(value) {
   if (typeof value === 'string') {
-    return IMPECCABLE_HOOK_COMMAND_MARKERS.some((marker) => value.includes(marker));
+    return IMPECCABLE_HOOK_COMMAND_MARKERS.some(
+        (marker) => value.includes(marker));
   }
-  if (Array.isArray(value)) return value.some(valueHasImpeccableHookMarker);
-  if (value && typeof value === 'object') return Object.values(value).some(valueHasImpeccableHookMarker);
+  if (Array.isArray(value)) {
+    return value.some(valueHasImpeccableHookMarker);
+  }
+  if (value && typeof value === 'object') {
+    return Object.values(value).some(
+        valueHasImpeccableHookMarker);
+  }
   return false;
 }
 
 function stripImpeccableHookEntry(entry) {
-  if (!entry || typeof entry !== 'object') return entry;
+  if (!entry || typeof entry !== 'object') {
+    return entry;
+  }
   // `command`/`args`: Claude/Codex/Cursor. `bash`/`powershell`: GitHub Copilot's
   // flat entry shape, where the marker lives under the shell-command keys.
-  if (valueHasImpeccableHookMarker(entry.command) || valueHasImpeccableHookMarker(entry.args)
-    || valueHasImpeccableHookMarker(entry.bash) || valueHasImpeccableHookMarker(entry.powershell)) {
+  if (valueHasImpeccableHookMarker(entry.command)
+      || valueHasImpeccableHookMarker(entry.args)
+      || valueHasImpeccableHookMarker(entry.bash)
+      || valueHasImpeccableHookMarker(entry.powershell)) {
     return null;
   }
-  if (!Array.isArray(entry.hooks)) return entry;
+  if (!Array.isArray(entry.hooks)) {
+    return entry;
+  }
 
   const strippedHooks = entry.hooks
-    .map(stripImpeccableHookEntry)
-    .filter(Boolean);
+      .map(stripImpeccableHookEntry)
+      .filter(Boolean);
 
-  if (strippedHooks.length === 0 && entry.hooks.some(valueHasImpeccableHookMarker)) {
+  if (strippedHooks.length === 0 && entry.hooks.some(
+      valueHasImpeccableHookMarker)) {
     return null;
   }
-  return { ...entry, hooks: strippedHooks };
+  return {...entry, hooks: strippedHooks};
 }
 
 function stripImpeccableHookEntries(entries) {
-  if (!Array.isArray(entries)) return [];
+  if (!Array.isArray(entries)) {
+    return [];
+  }
   return entries
-    .map(stripImpeccableHookEntry)
-    .filter(Boolean);
+      .map(stripImpeccableHookEntry)
+      .filter(Boolean);
 }
 
 function pruneImpeccableHookFromManifest(manifestPath) {
-  if (!fileHasImpeccableHookMarker(manifestPath)) return false;
+  if (!fileHasImpeccableHookMarker(manifestPath)) {
+    return false;
+  }
   let parsed;
   try {
     parsed = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
@@ -518,16 +627,19 @@ function pruneImpeccableHookFromManifest(manifestPath) {
     return false;
   }
 
-  const existingHooks = parsed.hooks && typeof parsed.hooks === 'object' && !Array.isArray(parsed.hooks)
-    ? parsed.hooks
-    : {};
+  const existingHooks = parsed.hooks && typeof parsed.hooks === 'object'
+  && !Array.isArray(parsed.hooks)
+      ? parsed.hooks
+      : {};
   const cleanedHooks = {};
   for (const [event, entries] of Object.entries(existingHooks)) {
     const kept = stripImpeccableHookEntries(entries);
-    if (kept.length > 0) cleanedHooks[event] = kept;
+    if (kept.length > 0) {
+      cleanedHooks[event] = kept;
+    }
   }
 
-  const next = { ...parsed };
+  const next = {...parsed};
   if (Object.keys(cleanedHooks).length > 0) {
     next.hooks = cleanedHooks;
   } else {
@@ -537,7 +649,7 @@ function pruneImpeccableHookFromManifest(manifestPath) {
   }
 
   if (Object.keys(next).length === 0) {
-    fs.rmSync(manifestPath, { force: true });
+    fs.rmSync(manifestPath, {force: true});
   } else {
     fs.writeFileSync(manifestPath, `${JSON.stringify(next, null, 2)}\n`);
   }
@@ -557,7 +669,9 @@ function parseIgnoreRuleArgs(args) {
     if (arg === '--all-values') {
       allValues = true;
     } else if (arg === '--reason') {
-      while (i + 1 < args.length && !String(args[i + 1]).startsWith('--')) i++;
+      while (i + 1 < args.length && !String(args[i + 1]).startsWith('--')) {
+        i++;
+      }
     } else if (arg.startsWith('--reason=')) {
       // Accepted for command symmetry; ignoreRules stores rule ids only.
     } else if (arg.startsWith('--')) {
@@ -576,14 +690,21 @@ function parseIgnoreRuleArgs(args) {
 function addIgnoreRule(cwd, args) {
   const parsed = parseIgnoreRuleArgs(args);
   const rule = parsed.rule;
-  if (!rule) throw new Error(`Pass a rule id, e.g. ${IMPECCABLE_COMMAND} hooks ignore-rule side-tab`);
+  if (!rule) {
+    throw new Error(
+        `Pass a rule id, e.g. ${IMPECCABLE_COMMAND} hooks ignore-rule side-tab`);
+  }
   if (rule === 'overused-font' && !parsed.allValues) {
-    throw new Error(`overused-font is value-specific by default. Use ${IMPECCABLE_COMMAND} hooks ignore-value overused-font <font> for a confirmed font, or ${IMPECCABLE_COMMAND} hooks ignore-rule overused-font --all-values only when the user asked to ignore overused fonts generally.`);
+    throw new Error(
+        `overused-font is value-specific by default. Use ${IMPECCABLE_COMMAND} hooks ignore-value overused-font <font> for a confirmed font, or ${IMPECCABLE_COMMAND} hooks ignore-rule overused-font --all-values only when the user asked to ignore overused fonts generally.`);
   }
   const config = mergeDetectorConfig(readRawDetectorConfig(cwd));
-  if (!config.ignoreRules.includes(rule)) config.ignoreRules.push(rule);
+  if (!config.ignoreRules.includes(rule)) {
+    config.ignoreRules.push(rule);
+  }
   writeDetectorConfig(cwd, config);
-  return `Added "${rule}" to detector.ignoreRules. Current: ${config.ignoreRules.join(', ')}`;
+  return `Added "${rule}" to detector.ignoreRules. Current: ${config.ignoreRules.join(
+      ', ')}`;
 }
 
 function parseIgnoreFileArgs(args) {
@@ -598,7 +719,8 @@ function parseIgnoreFileArgs(args) {
     } else if (arg === '--local') {
       local = true;
     } else if (arg === '--reason' || arg.startsWith('--reason=')) {
-      throw new Error('--reason is not supported for ignore-file because detector.ignoreFiles stores globs only; use ignore-value when a documented rule-specific exception fits');
+      throw new Error(
+          '--reason is not supported for ignore-file because detector.ignoreFiles stores globs only; use ignore-value when a documented rule-specific exception fits');
     } else if (arg.startsWith('--')) {
       throw new Error(`Unknown ignore-file flag: ${arg}`);
     } else {
@@ -606,8 +728,14 @@ function parseIgnoreFileArgs(args) {
     }
   }
 
-  if (shared && local) throw new Error('Pass only one scope flag: --shared or --local');
-  if (positionals.length > 1) throw new Error('Pass exactly one glob to ignore-file');
+  if (shared && local) {
+    throw new Error(
+        'Pass only one scope flag: --shared or --local');
+  }
+  if (positionals.length > 1) {
+    throw new Error(
+        'Pass exactly one glob to ignore-file');
+  }
 
   return {
     glob: positionals[0],
@@ -618,12 +746,20 @@ function parseIgnoreFileArgs(args) {
 function addIgnoreFile(cwd, args) {
   const parsed = parseIgnoreFileArgs(args);
   const glob = parsed.glob;
-  if (!glob) throw new Error(`Pass a glob, e.g. ${IMPECCABLE_COMMAND} hooks ignore-file "src/legacy/**"`);
-  const config = mergeDetectorConfig(readRawDetectorConfig(cwd, { local: parsed.local }));
-  if (!config.ignoreFiles.includes(glob)) config.ignoreFiles.push(glob);
-  const target = writeDetectorConfig(cwd, config, { local: parsed.local });
-  const scope = parsed.local ? 'local detector.ignoreFiles' : 'shared detector.ignoreFiles';
-  return `Added "${glob}" to ${scope} (${path.relative(cwd, target) || target}). Current: ${config.ignoreFiles.join(', ')}`;
+  if (!glob) {
+    throw new Error(
+        `Pass a glob, e.g. ${IMPECCABLE_COMMAND} hooks ignore-file "src/legacy/**"`);
+  }
+  const config = mergeDetectorConfig(
+      readRawDetectorConfig(cwd, {local: parsed.local}));
+  if (!config.ignoreFiles.includes(glob)) {
+    config.ignoreFiles.push(glob);
+  }
+  const target = writeDetectorConfig(cwd, config, {local: parsed.local});
+  const scope = parsed.local ? 'local detector.ignoreFiles'
+      : 'shared detector.ignoreFiles';
+  return `Added "${glob}" to ${scope} (${path.relative(cwd, target)
+  || target}). Current: ${config.ignoreFiles.join(', ')}`;
 }
 
 // An empty glob used to be dropped by filter(Boolean), so `--file=` reported
@@ -631,12 +767,17 @@ function addIgnoreFile(cwd, args) {
 // file and silently got the project-wide suppression instead. Refuse it.
 function requireGlob(raw, flag) {
   const glob = String(raw ?? '').trim();
-  if (!glob) throw new Error(`${flag} requires a non-empty glob`);
+  if (!glob) {
+    throw new Error(`${flag} requires a non-empty glob`);
+  }
   // A following flag is not a glob. `--file --reason "why"` consumed `--reason`
   // as the scope and left the reason text to fold into the value, storing
   // value="* why" files=["--reason"] and reporting success. Same silent-no-op
   // class as an unknown flag folding into the value; refuse it the same way.
-  if (glob.startsWith('--')) throw new Error(`${flag} requires a glob, got the flag ${glob}`);
+  if (glob.startsWith('--')) {
+    throw new Error(
+        `${flag} requires a glob, got the flag ${glob}`);
+  }
   return glob;
 }
 
@@ -662,7 +803,9 @@ function parseIgnoreValueArgs(args) {
     } else if (arg.startsWith('--reason=')) {
       reason = arg.slice('--reason='.length).trim();
     } else if (arg === '--file' || arg === '--files') {
-      if (i + 1 >= args.length) throw new Error(`${arg} requires a glob`);
+      if (i + 1 >= args.length) {
+        throw new Error(`${arg} requires a glob`);
+      }
       files.push(requireGlob(args[++i], arg));
     } else if (arg.startsWith('--file=')) {
       files.push(requireGlob(arg.slice('--file='.length), '--file'));
@@ -694,7 +837,8 @@ function parseIgnoreValueArgs(args) {
 function addIgnoreValue(cwd, args) {
   const parsed = parseIgnoreValueArgs(args);
   if (!parsed.rule || !parsed.value) {
-    throw new Error(`Pass a rule id and value, e.g. ${IMPECCABLE_COMMAND} hooks ignore-value overused-font Inter`);
+    throw new Error(
+        `Pass a rule id and value, e.g. ${IMPECCABLE_COMMAND} hooks ignore-value overused-font Inter`);
   }
 
   if (parsed.shared && parsed.local) {
@@ -708,35 +852,47 @@ function addIgnoreValue(cwd, args) {
     // `ignore-rule overused-font` refuses on its own without --all-values, so
     // naming the bare form here would hand the user a second error.
     const projectWide = parsed.rule === 'overused-font'
-      ? `${IMPECCABLE_COMMAND} hooks ignore-rule ${parsed.rule} --all-values`
-      : `${IMPECCABLE_COMMAND} hooks ignore-rule ${parsed.rule}`;
-    throw new Error(`Wildcard value ignores must be scoped with --file <glob>, e.g. ${IMPECCABLE_COMMAND} hooks ignore-value design-system-font-size "*" --file "src/widget.js". To suppress the rule project-wide use ${projectWide}.`);
+        ? `${IMPECCABLE_COMMAND} hooks ignore-rule ${parsed.rule} --all-values`
+        : `${IMPECCABLE_COMMAND} hooks ignore-rule ${parsed.rule}`;
+    throw new Error(
+        `Wildcard value ignores must be scoped with --file <glob>, e.g. ${IMPECCABLE_COMMAND} hooks ignore-value design-system-font-size "*" --file "src/widget.js". To suppress the rule project-wide use ${projectWide}.`);
   }
 
   const local = parsed.local;
-  const config = mergeDetectorConfig(readRawDetectorConfig(cwd, { local }));
+  const config = mergeDetectorConfig(readRawDetectorConfig(cwd, {local}));
   // Key on the file scope too: the same rule/value legitimately appears more than
   // once with different scopes, and a rule+value-only key overwrote them.
-  const key = ignoreValueEntryKey({ rule: parsed.rule, value: parsed.value, files: parsed.files });
-  const existing = config.ignoreValues.find((entry) => ignoreValueEntryKey(entry) === key);
+  const key = ignoreValueEntryKey(
+      {rule: parsed.rule, value: parsed.value, files: parsed.files});
+  const existing = config.ignoreValues.find(
+      (entry) => ignoreValueEntryKey(entry) === key);
 
   if (existing) {
-    if (parsed.reason) existing.reason = parsed.reason;
+    if (parsed.reason) {
+      existing.reason = parsed.reason;
+    }
   } else {
     const entry = {
       rule: parsed.rule,
       value: parsed.value,
     };
-    if (parsed.files.length) entry.files = parsed.files;
+    if (parsed.files.length) {
+      entry.files = parsed.files;
+    }
     entry.createdAt = new Date().toISOString();
-    if (parsed.reason) entry.reason = parsed.reason;
+    if (parsed.reason) {
+      entry.reason = parsed.reason;
+    }
     config.ignoreValues.push(entry);
   }
 
-  const target = writeDetectorConfig(cwd, config, { local });
-  const scope = local ? 'local detector.ignoreValues' : 'shared detector.ignoreValues';
-  const scopeSuffix = parsed.files.length ? ` scoped to ${parsed.files.join(', ')}` : '';
-  return `Added ${parsed.rule}=${parsed.value}${scopeSuffix} to ${scope} (${path.relative(cwd, target) || target}).`;
+  const target = writeDetectorConfig(cwd, config, {local});
+  const scope = local ? 'local detector.ignoreValues'
+      : 'shared detector.ignoreValues';
+  const scopeSuffix = parsed.files.length ? ` scoped to ${parsed.files.join(
+      ', ')}` : '';
+  return `Added ${parsed.rule}=${parsed.value}${scopeSuffix} to ${scope} (${path.relative(
+      cwd, target) || target}).`;
 }
 
 function reset(cwd) {
@@ -746,15 +902,19 @@ function reset(cwd) {
   for (const filePath of [getConfigPath(cwd), getLocalConfigPath(cwd)]) {
     try {
       const raw = readRawConfigFile(filePath).raw;
-      if (!raw || typeof raw !== 'object' || Array.isArray(raw) || (!('hook' in raw) && !('detector' in raw))) continue;
-      const { hook, detector, ...rest } = raw;
+      if (!raw || typeof raw !== 'object' || Array.isArray(raw) || (!('hook'
+          in raw) && !('detector' in raw))) {
+        continue;
+      }
+      const {hook, detector, ...rest} = raw;
       if (Object.keys(rest).length === 0) {
         fs.unlinkSync(filePath);
       } else {
         fs.writeFileSync(filePath, JSON.stringify(rest, null, 2) + '\n');
       }
       removed.push(path.relative(cwd, filePath) || filePath);
-    } catch { /* ignore */ }
+    } catch { /* ignore */
+    }
   }
   // State files are wholly ours; delete outright.
   for (const filePath of [getCachePath(cwd), getPendingPath(cwd)]) {
@@ -763,11 +923,12 @@ function reset(cwd) {
         fs.unlinkSync(filePath);
         removed.push(path.relative(cwd, filePath) || filePath);
       }
-    } catch { /* ignore */ }
+    } catch { /* ignore */
+    }
   }
   return removed.length
-    ? `Reset design hook config and cache (removed: ${removed.join(', ')}).`
-    : 'No hook config or cache to remove. Already at defaults.';
+      ? `Reset design hook config and cache (removed: ${removed.join(', ')}).`
+      : 'No hook config or cache to remove. Already at defaults.';
 }
 
 function main() {
@@ -776,20 +937,36 @@ function main() {
   const cwd = process.cwd();
 
   if (!ACTIONS.has(action)) {
-    process.stderr.write(`Unknown action: ${action}\nValid: ${Array.from(ACTIONS).join(', ')}\n`);
+    process.stderr.write(
+        `Unknown action: ${action}\nValid: ${Array.from(ACTIONS).join(
+            ', ')}\n`);
     process.exit(1);
   }
 
   try {
     let out = '';
     switch (action) {
-      case 'status': out = statusReport(cwd); break;
-      case 'on':     out = setEnabled(cwd, true); break;
-      case 'off':    out = setEnabled(cwd, false); break;
-      case 'ignore-rule': out = addIgnoreRule(cwd, rest); break;
-      case 'ignore-file': out = addIgnoreFile(cwd, rest); break;
-      case 'ignore-value': out = addIgnoreValue(cwd, rest); break;
-      case 'reset':  out = reset(cwd); break;
+      case 'status':
+        out = statusReport(cwd);
+        break;
+      case 'on':
+        out = setEnabled(cwd, true);
+        break;
+      case 'off':
+        out = setEnabled(cwd, false);
+        break;
+      case 'ignore-rule':
+        out = addIgnoreRule(cwd, rest);
+        break;
+      case 'ignore-file':
+        out = addIgnoreFile(cwd, rest);
+        break;
+      case 'ignore-value':
+        out = addIgnoreValue(cwd, rest);
+        break;
+      case 'reset':
+        out = reset(cwd);
+        break;
     }
     process.stdout.write(out + '\n');
   } catch (err) {

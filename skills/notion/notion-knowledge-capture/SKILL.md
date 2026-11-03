@@ -41,8 +41,8 @@ with Step 1.
 
 ### 2) Locate destination
 
-- Pick the correct database using `reference/*-database.md` guides; confirm required properties (
-  title, tags, owner, status, date, relations).
+- Pick the correct database using `reference/*-database.md` guides; confirm required properties
+  (title, tags, owner, status, date, relations).
 - If multiple candidate databases, ask the user which to use; otherwise, create in the primary
   wiki/documentation DB.
 
@@ -55,8 +55,8 @@ with Step 1.
 
 ### 4) Create/update in Notion
 
-- Use the available Notion create tool with the correct data-source identifier; set properties (
-  title, tags, owner, status, dates, relations).
+- Use the available Notion create tool with the correct data-source identifier; set properties
+  (title, tags, owner, status, dates, relations).
 - Use templates in `reference/` to structure content (section headers, checklists).
 - If updating an existing page, fetch then edit via the available Notion update tool.
 

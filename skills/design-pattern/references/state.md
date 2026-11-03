@@ -2,7 +2,8 @@
 
 ## Intent
 
-Change an object's behavior when its internal state changes by delegating state-specific behavior to state objects.
+Change an object's behavior when its internal state changes by delegating state-specific behavior to
+state objects.
 
 ## Forces that justify it
 

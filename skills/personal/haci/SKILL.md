@@ -253,8 +253,8 @@ Archivos regionales disponibles:
 5. **Considerar incompatibilidades.** Algunas deducciones son incompatibles entre sí.
    Indicar cuando exista este riesgo.
 
-6. **Avisar de plazos.** Si la conversación ocurre cerca del cierre de la campaña
-   (30 de junio 2026), recordar la urgencia.
+6. **Avisar de plazos.** Si la conversación ocurre cerca del cierre de la campaña (30 de junio
+   2026), recordar la urgencia.
 
 7. **Canarias: revisar manualmente.** Las deducciones de Canarias no siempre aparecen
    en el borrador automático. Avisar expresamente.

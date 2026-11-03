@@ -24,7 +24,7 @@ From the orchestrator:
 ## Execution and Persistence Contract
 
 > Follow **Section B** (retrieval) and **Section C** (persistence) from
-`../_shared/sdd-phase-common.md`.
+> `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`.
 
@@ -109,10 +109,10 @@ specs, testing scope, migrations, docs, and expected integration surface.
 
 Use this heuristic:
 
-| Risk   | Signal                                                                           | Required action                                                                                                                   |
-|--------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| Low    | Small, single-surface change                                                     | `single-pr`; keep work-unit commits.                                                                                              |
-| Medium | Multi-file or uncertain diff, likely 300-400 changed lines                       | `single-pr`; warn that commits must stay slice-ready.                                                                             |
+| Risk   | Signal                                                                           | Required action                                                                                                                            |
+|--------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| Low    | Small, single-surface change                                                     | `single-pr`; keep work-unit commits.                                                                                                       |
+| Medium | Multi-file or uncertain diff, likely 300-400 changed lines                       | `single-pr`; warn that commits must stay slice-ready.                                                                                      |
 | High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | `github-stacked-prs`, `feature-branch-chain`, or approved `size-exception`; record a dependency-ordered layer boundary before `sdd-apply`. |
 
 Balance proposed slices by deliverable work units: each slice should include behavior, tests, and
@@ -123,13 +123,13 @@ unless that layer is itself a complete deliverable.
 
 Each task MUST be:
 
-| Criteria        | Example ✅                                                  | Anti-example ❌          |
-|-----------------|------------------------------------------------------------|-------------------------|
-| **Specific**    | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth"              |
-| **Actionable**  | "Add `ValidateToken()` method to `AuthService`"            | "Handle tokens"         |
-| **Verifiable**  | "Test: `POST /login` returns 401 without token"            | "Make sure it works"    |
-| **Small**       | One file or one logical unit of work                       | "Implement the feature" |
-| **TDD-split**   | Split into RED→GREEN→REFACTOR per behavior                 | Bundle test + impl together |
+| Criteria       | Example ✅                                                 | Anti-example ❌             |
+|----------------|------------------------------------------------------------|-----------------------------|
+| **Specific**   | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth"                  |
+| **Actionable** | "Add `ValidateToken()` method to `AuthService`"            | "Handle tokens"             |
+| **Verifiable** | "Test: `POST /login` returns 401 without token"            | "Make sure it works"        |
+| **Small**      | One file or one logical unit of work                       | "Implement the feature"     |
+| **TDD-split**  | Split into RED→GREEN→REFACTOR per behavior                 | Bundle test + impl together |
 
 ### Phase Organization Guidelines
 
@@ -200,18 +200,21 @@ Return to the orchestrator:
 - Tasks MUST be ordered by dependency — Phase 1 tasks shouldn't depend on Phase 2
 - Testing tasks should reference specific scenarios from the specs
 - Each task should be completable in ONE session (if a task feels too big, split it)
-- Tasks MUST be grouped into dependency-ordered work-unit layers so they can become coherent commits or PR slices if review workload is High
-- For `github-stacked-prs`, every layer MUST record `trunk`, `parent_branch`, `base`, `branch`, `position`, and issue/Linear metadata when available; only the bottom layer targets the trunk
-- For `feature-branch-chain`, record its separately approved integration/tracker base; never substitute GitHub Stack metadata
+- Tasks MUST be grouped into dependency-ordered work-unit layers so they can become coherent commits
+  or PR slices if review workload is High
+- For `github-stacked-prs`, every layer MUST record `trunk`, `parent_branch`, `base`, `branch`,
+  `position`, and issue/Linear metadata when available; only the bottom layer targets the trunk
+- For `feature-branch-chain`, record its separately approved integration/tracker base; never
+  substitute GitHub Stack metadata
 - A `size-exception` MUST state the explicit approval and rationale before apply
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `.agents/sdd/config.yaml`
 - TDD IS MANDATORY. Each implementation task MUST be split into:
-  - RED task: write the failing test FIRST
-  - GREEN task: write minimum code to pass
-  - REFACTOR task: clean up without changing behavior
-  Do NOT bundle implementation and testing into a single task — that hides the TDD cycle.
+    - RED task: write the failing test FIRST
+    - GREEN task: write minimum code to pass
+    - REFACTOR task: clean up without changing behavior
+      Do NOT bundle implementation and testing into a single task — that hides the TDD cycle.
 - **Size budget**: Tasks artifact SHOULD stay under 650 words including the Review Workload
   Forecast. Each task: 1-2 lines max. Use checklist format, not paragraphs.
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

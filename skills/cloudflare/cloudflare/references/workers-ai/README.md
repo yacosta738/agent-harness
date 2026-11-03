@@ -84,8 +84,8 @@ wrangler deploy
 
 ### Native Binding (Recommended)
 
-**When**: Building Workers/Pages with TypeScript
-**Why**: Zero external dependencies, best performance, native types
+**When**: Building Workers/Pages with TypeScript **Why**: Zero external dependencies, best
+performance, native types
 
 ```typescript
 await env.AI.run(model, input);
@@ -93,8 +93,8 @@ await env.AI.run(model, input);
 
 ### REST API
 
-**When**: External services, non-Workers environments, testing
-**Why**: Standard HTTP, works anywhere
+**When**: External services, non-Workers environments, testing **Why**: Standard HTTP, works
+anywhere
 
 ```bash
 curl https://api.cloudflare.com/client/v4/accounts/<ACCOUNT_ID>/ai/run/@cf/meta/llama-3.1-8b-instruct \
@@ -134,13 +134,13 @@ const model = openai('model-name', {
 
 ## Platform Limits
 
-| Limit            | Free Tier                   | Paid Plans               |
-|------------------|-----------------------------|--------------------------|
-| Neurons/day      | 10,000                      | Pay per use              |
-| Rate limit       | Varies by model             | Higher (contact support) |
-| Context window   | Model dependent (2K-8K)     | Same                     |
-| Streaming        | ✅ Supported                 | ✅ Supported              |
-| Function calling | ✅ Supported (select models) | ✅ Supported              |
+| Limit            | Free Tier                    | Paid Plans               |
+|------------------|------------------------------|--------------------------|
+| Neurons/day      | 10,000                       | Pay per use              |
+| Rate limit       | Varies by model              | Higher (contact support) |
+| Context window   | Model dependent (2K-8K)      | Same                     |
+| Streaming        | ✅ Supported                 | ✅ Supported             |
+| Function calling | ✅ Supported (select models) | ✅ Supported             |
 
 **Pricing**: Free 10K neurons/day, then pay per neuron consumed (varies by model)
 
@@ -197,7 +197,7 @@ wrangler deploy
 
 - [configuration.md](./configuration.md) - wrangler.jsonc setup, TypeScript types, bindings,
   environment variables
-- [api.md](./api.md) - env.AI.run(), streaming, function calling, REST API, response types
+- [api.md](./api.md) - env.AI.run (), streaming, function calling, REST API, response types
 - [patterns.md](./patterns.md) - RAG with Vectorize, prompt engineering, batching, error handling,
   caching
 - [gotchas.md](./gotchas.md) - Deprecated @cloudflare/ai package, rate limits, pricing, common

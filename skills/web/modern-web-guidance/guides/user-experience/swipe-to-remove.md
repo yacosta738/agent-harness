@@ -1,12 +1,20 @@
 # Swipe to remove
 
-Swipe-to-remove patterns are common in mobile applications but can be challenging to implement cleanly on the web. By using CSS Scroll Snap, you can create a smooth, native-feeling swipe interaction that hooks directly into the browser's scrolling engine. This ensures high performance and physics-based momentum without needing a complex JavaScript gesture library.
+Swipe-to-remove patterns are common in mobile applications but can be challenging to implement
+cleanly on the web. By using CSS Scroll Snap, you can create a smooth, native-feeling swipe
+interaction that hooks directly into the browser's scrolling engine. This ensures high performance
+and physics-based momentum without needing a complex JavaScript gesture library.
 
-The same pattern works for any single-action swipe (remove, archive, mark as read, snooze). The action visuals change; the mechanics do not.
+The same pattern works for any single-action swipe (remove, archive, mark as read, snooze). The
+action visuals change; the mechanics do not.
 
 ## How to implement
 
-The component has two layers: a **list** (the `<ul>`) and the **items** inside it. Each item is structured as an outer `<li>`, an inner scroll **track** (the scroll container with the snap points), and a **content** element (the visible row). The action's revealed UI (trash icon, archive label, etc.) lives on either side of the content. The list owns shared wiring (lazy item setup, picking up newly added items); each item owns its own swipe detection.
+The component has two layers: a **list** (the `<ul>`) and the **items** inside it. Each item is
+structured as an outer `<li>`, an inner scroll **track** (the scroll container with the snap
+points), and a **content** element (the visible row). The action's revealed UI (trash icon, archive
+label, etc.) lives on either side of the content. The list owns shared wiring (lazy item setup,
+picking up newly added items); each item owns its own swipe detection.
 
 ### Step 1: Mark up the list with track and content
 
@@ -28,9 +36,14 @@ The component has two layers: a **list** (the `<ul>`) and the **items** inside i
 
 ### Step 2: Configure the track as a horizontal snap container with three snap points
 
-The track has three full-width columns: a left spacer (`::before`), the content, and a right spacer (`::after`). Snapping to a spacer means the content is fully off-screen, which is the rest position after a committed swipe.
+The track has three full-width columns: a left spacer (`::before`), the content, and a right spacer
+(`::after`). Snapping to a spacer means the content is fully off-screen, which is the rest position
+after a committed swipe.
 
-The track configuration is gated behind an `.is-initialized` class on the list item. Before JS upgrades the row, the item just renders as plain content with no horizontal scroller. The class is added in Step 4 once the JavaScript that detects swipes has been wired up. This ensures the user cannot swipe before the functionality is ready.
+The track configuration is gated behind an `.is-initialized` class on the list item. Before JS
+upgrades the row, the item just renders as plain content with no horizontal scroller. The class is
+added in Step 4 once the JavaScript that detects swipes has been wired up. This ensures the user
+cannot swipe before the functionality is ready.
 
 ```css
 .SwipeableList {
@@ -128,11 +141,17 @@ The track configuration is gated behind an `.is-initialized` class on the list i
 
 ### Step 3: Add the action icons to the list item
 
-The action color lives on the spacers (Step 2). The action **icon** lives on the list item itself, anchored to the row's left and right edges.
+The action color lives on the spacers (Step 2). The action **icon** lives on the list item itself,
+anchored to the row's left and right edges.
 
-> **Note:** Throughout this guide, "left" refers to the *left side of the row* (which is revealed by swiping right), and "right" refers to the *right side of the row* (revealed by swiping left).
+> **Note:** Throughout this guide, "left" refers to the *left side of the row* (which is revealed by
+> swiping right), and "right" refers to the *right side of the row* (revealed by swiping left).
 
-The placement, sizing, and motion below are a **starting suggestion**, not a requirement. Adjust the icon size, edge insets, threshold-pop scale, transition duration, and even the choice of pseudo-elements vs. real DOM nodes to match your design. The only mechanical requirement is that the icon sits behind the content (so the content can cover it pre-swipe) and inside the list item (so it doesn't scroll with the spacer). Everything else is taste.
+The placement, sizing, and motion below are a **starting suggestion**, not a requirement. Adjust the
+icon size, edge insets, threshold-pop scale, transition duration, and even the choice of
+pseudo-elements vs. real DOM nodes to match your design. The only mechanical requirement is that the
+icon sits behind the content (so the content can cover it pre-swipe) and inside the list item (so it
+doesn't scroll with the spacer). Everything else is taste.
 
 ```css
 /* Action icons painted on the list item. They're absolutely positioned
@@ -200,15 +219,25 @@ The placement, sizing, and motion below are a **starting suggestion**, not a req
 
 ### Step 4: Detect the commit gesture with `IntersectionObserver`
 
-Use `IntersectionObserver` rooted at the track, observing the content. As the user swipes, the content's intersection ratio with the track drops; we use **two thresholds**:
+Use `IntersectionObserver` rooted at the track, observing the content. As the user swipes, the
+content's intersection ratio with the track drops; we use **two thresholds**:
 
-- `activateThreshold`: a high ratio (e.g., 0.8). When the visible portion of the content drops below this, the user is past the visual activate point. Toggle the icon-pop affordance.
-- `commitThreshold`: a low ratio (e.g., 0.2). When the visible portion drops below this, the user has committed. Start the remove animation **immediately**, without waiting for the snap gesture to fully settle. The collapsing row blends into the user's continuing swipe momentum, which feels more responsive than waiting for the snap to land before reacting.
+- `activateThreshold`: a high ratio (e.g., 0.8). When the visible portion of the content drops below
+  this, the user is past the visual activate point. Toggle the icon-pop affordance.
+- `commitThreshold`: a low ratio (e.g., 0.2). When the visible portion drops below this, the user
+  has committed. Start the remove animation **immediately**, without waiting for the snap gesture to
+  fully settle. The collapsing row blends into the user's continuing swipe momentum, which feels
+  more responsive than waiting for the snap to land before reacting.
 
 Two more concerns are handled here:
 
-- **Lazy per-item setup**: a single outer `IntersectionObserver` rooted at the viewport drives setup and the start/stop of the inner swipe observers. Items only get wired up the first time they scroll into view, and items that scroll off-screen have their swipe observer paused. This keeps the active observer count bounded and avoids reading layout-dependent values (like `clientWidth`) before the item has been rendered.
-- **Dynamic items**: real lists grow over time (initial render, infinite scroll, server push). A `MutationObserver` on the `<ul>` registers any newly added items with the outer observer.
+- **Lazy per-item setup**: a single outer `IntersectionObserver` rooted at the viewport drives setup
+  and the start/stop of the inner swipe observers. Items only get wired up the first time they
+  scroll into view, and items that scroll off-screen have their swipe observer paused. This keeps
+  the active observer count bounded and avoids reading layout-dependent values (like `clientWidth`)
+  before the item has been rendered.
+- **Dynamic items**: real lists grow over time (initial render, infinite scroll, server push). A
+  `MutationObserver` on the `<ul>` registers any newly added items with the outer observer.
 
 ```js
 // Per-item handles. Populated when an item is first lazily wired up; read by
@@ -369,17 +398,23 @@ document.querySelectorAll('.SwipeableList').forEach(setupList);
 
 For variants other than removal, only the visuals and the body of the commit handler change:
 
-- **Archive**: green/blue background, archive icon, move the item to an archive list rather than removing it.
-- **Mark as read**: subdued background, checkmark icon, update item state and re-render (or just remove a `.unread` class).
+- **Archive**: green/blue background, archive icon, move the item to an archive list rather than
+  removing it.
+- **Mark as read**: subdued background, checkmark icon, update item state and re-render (or just
+  remove a `.unread` class).
 - **Snooze**: blue background, clock icon, hide until a chosen time.
 
 The scroll/snap/observation mechanics are unchanged.
 
 #### Different actions per swipe direction
 
-A single row can also expose **two different actions**: one for a left swipe and one for a right swipe (e.g., "archive" on right, "delete" on left), the way many native mail apps do it. The scroll, snap, and commit-detection mechanics don't change at all — the only thing that changes is what happens at commit time.
+A single row can also expose **two different actions**: one for a left swipe and one for a right
+swipe (e.g., "archive" on right, "delete" on left), the way many native mail apps do it. The scroll,
+snap, and commit-detection mechanics don't change at all — the only thing that changes is what
+happens at commit time.
 
-In Step 4, the commit branch always calls `removeItem(...)`. To support two actions, pick the handler based on `direction`:
+In Step 4, the commit branch always calls `removeItem(...)`. To support two actions, pick the
+handler based on `direction`:
 
 ```js
 if (ratio < commitThreshold) {
@@ -391,9 +426,16 @@ if (ratio < commitThreshold) {
 }
 ```
 
-A note on naming: `removeItem` is named for the destructive case, but the function it runs (collapse the row's height, slide the content off-screen, then drop the node) is really a generic "this row is done, animate it away" routine. It works just as well for archive, mark-as-read, or snooze — the row goes away from *this* list either way. If your handlers don't actually remove anything (e.g., both move the item elsewhere), rename it to something neutral like `dismissItem` so the code reads correctly.
+A note on naming: `removeItem` is named for the destructive case, but the function it runs (collapse
+the row's height, slide the content off-screen, then drop the node) is really a generic "this row is
+done, animate it away" routine. It works just as well for archive, mark-as-read, or snooze — the row
+goes away from *this* list either way. If your handlers don't actually remove anything (e.g., both
+move the item elsewhere), rename it to something neutral like `dismissItem` so the code reads
+correctly.
 
-To make the two actions visually distinct, hoist a color and icon for each direction onto the list item, then paint the track with a split gradient and the two pseudo-element icons from the same variables.
+To make the two actions visually distinct, hoist a color and icon for each direction onto the list
+item, then paint the track with a split gradient and the two pseudo-element icons from the same
+variables.
 
 ```css
 .SwipeableList-item {
@@ -427,23 +469,43 @@ To make the two actions visually distinct, hoist a color and icon for each direc
 .SwipeableList-item.is-initialized::after  { background-image: var(--right-action-icon); }
 ```
 
-With this setup, the spacers no longer need their own background-color (the track's gradient handles the reveal), so you can drop the `background-color` rule on `.SwipeableList-track::before, ::after` from Step 2 if you're using this dual-action variant.
+With this setup, the spacers no longer need their own background-color (the track's gradient handles
+the reveal), so you can drop the `background-color` rule on `.SwipeableList-track::before, ::after`
+from Step 2 if you're using this dual-action variant.
 
 ## Best practices and pitfalls
 
-- **DO** use `mandatory` snap, not `proximity`. With `proximity`, the row can rest partially scrolled, leaving the action background half-visible.
-- **DO** set `overscroll-behavior-x: none` on the track. Without it, an over-swipe can trigger the browser's back-navigation gesture on iOS/Android.
-- **DO** commit at a threshold *before* the snap settles (e.g., `commitThreshold ≈ 0.2`) rather than waiting for the content to be fully off-screen. This lets the remove animation start during the gesture, which feels significantly more responsive than waiting for the snap to land.
-- **DO** drive per-item setup from an outer viewport `IntersectionObserver` rather than wiring every item up at page load. This avoids reading layout-dependent values (`clientWidth`, etc.) before items have been rendered, and keeps the active observer count proportional to what the user can actually see.
-- **DO** use a `MutationObserver` on the list when items are added dynamically (initial render after data loads, infinite scroll, server push). Without it, items appended after page load won't get wired up.
-- **DO NOT** rely on `pointerdown`/`pointermove`/`pointerup` to drive a manual transform. You'll lose momentum, snap-back, keyboard accessibility, and reduced-motion handling that the browser gives you for free.
-- **DO** confirm destructive actions when appropriate. For "remove", consider showing an undo toast after the swipe completes; the gesture is fast and easy to trigger by accident.
-- **DO** ensure the scroll track is focusable, keyboard accessible, and that there is a visual focus affordance.
-- **DO** provide accessible alternatives for any relevant actions triggered by the swipe (e.g., a visible button, context menu, or edit mode).
+- **DO** use `mandatory` snap, not `proximity`. With `proximity`, the row can rest partially
+  scrolled, leaving the action background half-visible.
+- **DO** set `overscroll-behavior-x: none` on the track. Without it, an over-swipe can trigger the
+  browser's back-navigation gesture on iOS/Android.
+- **DO** commit at a threshold *before* the snap settles (e.g., `commitThreshold ≈ 0.2`) rather than
+  waiting for the content to be fully off-screen. This lets the remove animation start during the
+  gesture, which feels significantly more responsive than waiting for the snap to land.
+- **DO** drive per-item setup from an outer viewport `IntersectionObserver` rather than wiring every
+  item up at page load. This avoids reading layout-dependent values (`clientWidth`, etc.) before
+  items have been rendered, and keeps the active observer count proportional to what the user can
+  actually see.
+- **DO** use a `MutationObserver` on the list when items are added dynamically (initial render after
+  data loads, infinite scroll, server push). Without it, items appended after page load won't get
+  wired up.
+- **DO NOT** rely on `pointerdown`/`pointermove`/`pointerup` to drive a manual transform. You'll
+  lose momentum, snap-back, keyboard accessibility, and reduced-motion handling that the browser
+  gives you for free.
+- **DO** confirm destructive actions when appropriate. For "remove", consider showing an undo toast
+  after the swipe completes; the gesture is fast and easy to trigger by accident.
+- **DO** ensure the scroll track is focusable, keyboard accessible, and that there is a visual focus
+  affordance.
+- **DO** provide accessible alternatives for any relevant actions triggered by the swipe (e.g., a
+  visible button, context menu, or edit mode).
 
 ## Fallback strategies
 
-The scroll-snap mechanics that underpin this pattern (`scroll-snap-type`, `scroll-snap-align`), `IntersectionObserver`, `MutationObserver`, `ResizeObserver`, and the Web Animations API are all Baseline Widely Available, so the gesture, commit detection, lifecycle management, and removal animation work broadly. All newer features that are used are either not core to the experience or have robust fallbacks that can be reliably used now.
+The scroll-snap mechanics that underpin this pattern (`scroll-snap-type`, `scroll-snap-align`),
+`IntersectionObserver`, `MutationObserver`, `ResizeObserver`, and the Web Animations API are all
+Baseline Widely Available, so the gesture, commit detection, lifecycle management, and removal
+animation work broadly. All newer features that are used are either not core to the experience or
+have robust fallbacks that can be reliably used now.
 
 ### Fallback for `overscroll-behavior`
 
@@ -451,14 +513,23 @@ overscroll-behavior has limited availability.
 Supported by: Chrome 144 (Jan 2026), Edge 144 (Jan 2026), and Firefox 150 (Apr 2026).
 Unsupported in: Safari.
 
-No fallback is needed for this use case. `overscroll-behavior` was Baseline Widely Available but no longer is due to an interop issue that only manifests on containers without scrollable overflow. But the track here is always horizontally scrollable (three full-width columns inside a 100%-width container), so the property behaves consistently across browsers and the swipe gesture is reliably contained.
+No fallback is needed for this use case. `overscroll-behavior` was Baseline Widely Available but no
+longer is due to an interop issue that only manifests on containers without scrollable overflow. But
+the track here is always horizontally scrollable (three full-width columns inside a 100%-width
+container), so the property behaves consistently across browsers and the swipe gesture is reliably
+contained.
 
 ### Fallback for `scrollbar-width`
 
 Baseline status for scrollbar-width: Newly available. It's been Baseline since 2024-12-11.
-Supported by: Chrome 121 (Jan 2024), Edge 121 (Jan 2024), Firefox 64 (Dec 2018), and Safari 18.2 (Dec 2024).
+Supported by: Chrome 121 (Jan 2024), Edge 121 (Jan 2024), Firefox 64 (Dec 2018), and Safari 18.2
+(Dec 2024).
 
-Hidden scrollbars are a visual enhancement, not the mechanism that makes swipe-to-remove work. If your Baseline target does not include `scrollbar-width`, the row still scrolls, snaps, detects commit, and removes correctly; the unsupported experience may simply show a horizontal scrollbar. If your product requires hidden scrollbars in older WebKit-derived browsers, you can add a narrowly scoped `::-webkit-scrollbar { display: none; }` rule for the swipe track.
+Hidden scrollbars are a visual enhancement, not the mechanism that makes swipe-to-remove work. If
+your Baseline target does not include `scrollbar-width`, the row still scrolls, snaps, detects
+commit, and removes correctly; the unsupported experience may simply show a horizontal scrollbar. If
+your product requires hidden scrollbars in older WebKit-derived browsers, you can add a narrowly
+scoped `::-webkit-scrollbar { display: none; }` rule for the swipe track.
 
 ### Fallback for `scroll-initial-target`
 
@@ -466,7 +537,8 @@ scroll-initial-target has limited availability.
 Supported by: Chrome 133 (Feb 2025) and Edge 133 (Feb 2025).
 Unsupported in: Firefox and Safari.
 
-If your Baseline target does not include `scroll-initial-target`, scroll the track to the content programmatically inside `setupItem`. Detect with `CSS.supports`:
+If your Baseline target does not include `scroll-initial-target`, scroll the track to the content
+programmatically inside `setupItem`. Detect with `CSS.supports`:
 
 ```js
 // Hoist the feature detect so the conditional `ResizeObserver` below can be
@@ -486,12 +558,19 @@ function setupItem(item) {
 
 **Call ordering matters.** The programmatic scroll MUST run:
 
-1. **AFTER** `.is-initialized` is added to the list item (the class is what turns the track into a scroll container; setting `scrollLeft` on a non-scrollable element is a no-op).
-2. **BEFORE** the inner `IntersectionObserver` from Step 4 is attached. Otherwise the initial programmatic scroll past the left spacer will be observed as a "swipe" and immediately fire the commit handler.
+1. **AFTER** `.is-initialized` is added to the list item (the class is what turns the track into a
+   scroll container; setting `scrollLeft` on a non-scrollable element is a no-op).
+2. **BEFORE** the inner `IntersectionObserver` from Step 4 is attached. Otherwise the initial
+   programmatic scroll past the left spacer will be observed as a "swipe" and immediately fire the
+   commit handler.
 
-Driving setup from the outer viewport observer (Step 4) is what makes this reliable: `setupItem` runs after the item is rendered, so `track.clientWidth` returns a real value rather than `0`.
+Driving setup from the outer viewport observer (Step 4) is what makes this reliable: `setupItem`
+runs after the item is rendered, so `track.clientWidth` returns a real value rather than `0`.
 
-Some browsers (notably Safari) also reset the snap-container scroll position whenever the track resizes (URL-bar show/hide, viewport resize, container queries, etc.). Use a `ResizeObserver` on each track to re-apply the scroll. Gate it behind the same `CSS.supports` check — when `scroll-initial-target` is supported, the browser handles resize-time scroll restoration itself.
+Some browsers (notably Safari) also reset the snap-container scroll position whenever the track
+resizes (URL-bar show/hide, viewport resize, container queries, etc.). Use a `ResizeObserver` on
+each track to re-apply the scroll. Gate it behind the same `CSS.supports` check — when
+`scroll-initial-target` is supported, the browser handles resize-time scroll restoration itself.
 
 ```js
 const trackResizeObserver = needsScrollWorkaround
@@ -514,7 +593,9 @@ function setupItem(item) {
 }
 ```
 
-Unobserve the track before the row's height animation runs in `removeItem`, otherwise the height change re-triggers the resize callback during removal. Add this alongside the existing `viewportObserver.unobserve(item)` in the commit branch:
+Unobserve the track before the row's height animation runs in `removeItem`, otherwise the height
+change re-triggers the resize callback during removal. Add this alongside the existing
+`viewportObserver.unobserve(item)` in the commit branch:
 
 ```js
 if (ratio < commitThreshold) {

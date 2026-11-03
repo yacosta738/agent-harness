@@ -6,9 +6,12 @@ advertise: true
 
 # Terminal Automation with agent-tty
 
-If `agent-tty` is not already available in the environment, fetch the current `README.md` from `coder/agent-tty` on GitHub and follow its installation instructions before continuing. Otherwise use `agent-tty` directly.
+If `agent-tty` is not already available in the environment, fetch the current `README.md` from
+`coder/agent-tty` on GitHub and follow its installation instructions before continuing. Otherwise
+use `agent-tty` directly.
 Examples use `jq` for JSON parsing; any JSON-processing tool works.
-Prefer isolated homes, JSON envelopes, and renderer-backed artifacts so terminal workflows stay reviewable and reproducible.
+Prefer isolated homes, JSON envelopes, and renderer-backed artifacts so terminal workflows stay
+reviewable and reproducible.
 
 ## Core Workflow
 
@@ -70,11 +73,17 @@ agent-tty --home "$AGENT_HOME" run "$SESSION_ID" 'pwd && ls -la' --json
 agent-tty --home "$AGENT_HOME" snapshot "$SESSION_ID" --format text --json
 ```
 
-`snapshot` and a matched `wait` carry an optional `screenHash` (a hash of the visible screen text). Compare it across calls to tell whether the visible screen actually changed instead of diffing full text; equal hashes mean identical visible content even when the event sequence advanced.
+`snapshot` and a matched `wait` carry an optional `screenHash` (a hash of the visible screen text).
+Compare it across calls to tell whether the visible screen actually changed instead of diffing full
+text; equal hashes mean identical visible content even when the event sequence advanced.
 
 ### Drive an interactive CLI or TUI
 
-Use `batch` to run an ordered sequence of input-and-`wait` steps in one call instead of separate `run`/`wait`/`send-keys` invocations. Each `wait` step is anchored to a Wait Baseline — it only observes screen state produced _after_ the preceding input step, so the sequence cannot race ahead and match a stale screen. A batch stops at the first failed step by default (`--keep-going` attempts every step).
+Use `batch` to run an ordered sequence of input-and-`wait` steps in one call instead of separate
+`run`/`wait`/`send-keys` invocations. Each `wait` step is anchored to a Wait Baseline — it only
+observes screen state produced _after_ the preceding input step, so the sequence cannot race ahead
+and match a stale screen. A batch stops at the first failed step by default (`--keep-going` attempts
+every step).
 
 ```bash
 AGENT_HOME="$(mktemp -d)"
@@ -88,7 +97,8 @@ agent-tty --home "$AGENT_HOME" batch "$SESSION_ID" '[
 agent-tty --home "$AGENT_HOME" screenshot "$SESSION_ID" --json
 ```
 
-A `wait` can still match the _echo_ of a just-typed command, so use a distinctive output token or `screenStableMs` rather than waiting for text you just typed.
+A `wait` can still match the _echo_ of a just-typed command, so use a distinctive output token or
+`screenStableMs` rather than waiting for text you just typed.
 
 ### Export reviewer-facing artifacts
 
@@ -104,9 +114,13 @@ agent-tty --home "$AGENT_HOME" record export "$SESSION_ID" --format webm --json
 
 ## Anti-Patterns
 
-- **Do not reach for `tmux`, `screen`, or ad hoc PTY wrappers first** when `agent-tty` can provide an isolated, inspectable session.
-- **Do not rely on blind `sleep` calls** when `wait --text`, `wait --idle-ms`, or `wait --screen-stable-ms` can observe terminal readiness directly.
+- **Do not reach for `tmux`, `screen`, or ad hoc PTY wrappers first** when `agent-tty` can provide
+  an isolated, inspectable session.
+- **Do not rely on blind `sleep` calls** when `wait --text`, `wait --idle-ms`, or
+  `wait --screen-stable-ms` can observe terminal readiness directly.
 - **Do not bypass `--json`** when another tool or agent needs machine-readable results.
-- **Do not use external screenshot tools as the primary proof path** when `agent-tty screenshot` and `agent-tty record export` can produce renderer-backed artifacts tied to the session timeline.
+- **Do not use external screenshot tools as the primary proof path** when `agent-tty screenshot` and
+  `agent-tty record export` can produce renderer-backed artifacts tied to the session timeline.
 - **Do not leave sessions running after the task ends**; destroy them explicitly.
-- **Do not rewrite public examples into repo-local development invocations**; the public workflow should stay `agent-tty ...`.
+- **Do not rewrite public examples into repo-local development invocations**; the public workflow
+  should stay `agent-tty ...`.

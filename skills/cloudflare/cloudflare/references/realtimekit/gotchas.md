@@ -12,8 +12,7 @@ service for restrictive networks
 ### "No video/audio tracks"
 
 **Cause:** Browser permissions not granted, video/audio not enabled, device in use, or device
-unavailable
-**Solution:**
+unavailable **Solution:**
 Request browser permissions explicitly, verify initialization config, use
 `meeting.self.getAllDevices()` to debug, close other apps using device
 
@@ -31,35 +30,32 @@ namespace
 
 ### "CORS errors in API calls"
 
-**Cause:** Making REST API calls from client-side
-**Solution:** All REST API calls **must** be server-side (Workers, backend). Never expose API tokens
+**Cause:** Making REST API calls from client-side **Solution:** All REST API calls **must** be
+server-side (Workers, backend). Never expose API tokens
 to clients.
 
 ### "Preset not applying"
 
 **Cause:** Preset doesn't exist, name mismatch (case-sensitive), or participant created before
-preset
-**Solution:**
+preset **Solution:**
 Verify preset exists via Dashboard or API, check exact spelling and case, create preset before
 adding participants
 
 ### "Token reuse error"
 
-**Cause:** Reusing participant tokens across sessions
-**Solution:** Generate fresh token per session. Use refresh endpoint if token expires during
+**Cause:** Reusing participant tokens across sessions **Solution:** Generate fresh token per
+session. Use refresh endpoint if token expires during
 session.
 
 ### "Video quality poor"
 
-**Cause:** Insufficient bandwidth, resolution/bitrate too high, or CPU overload
-**Solution:**
+**Cause:** Insufficient bandwidth, resolution/bitrate too high, or CPU overload **Solution:**
 Lower `mediaConfiguration.video` resolution/frameRate, monitor network conditions, reduce
 participant count or grid size
 
 ### "Echo or audio feedback"
 
-**Cause:** Multiple devices picking up same audio source
-**Solution:**
+**Cause:** Multiple devices picking up same audio source **Solution:**
 
 - Lower `mediaConfiguration.video` resolution/frameRate
 - Monitor network conditions
@@ -76,15 +72,13 @@ speaking
 ### "Screen share not working"
 
 **Cause:** Browser doesn't support screen sharing API, permission denied, or wrong `displaySurface`
-config
-**Solution:**
+config **Solution:**
 Use Chrome/Edge/Firefox (Safari limited support), check browser permissions, try different
 `displaySurface` values ('window', 'monitor', 'browser')
 
 ### "How do I schedule meetings?"
 
-**Cause:** RealtimeKit has no built-in scheduling system
-**Solution:**
+**Cause:** RealtimeKit has no built-in scheduling system **Solution:**
 Store meeting IDs in your database with timestamps. Generate participant tokens only when user
 should join. Example:
 

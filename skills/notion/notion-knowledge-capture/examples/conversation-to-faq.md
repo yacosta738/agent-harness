@@ -28,9 +28,8 @@ This is Q&A content → **FAQ Entry** format is appropriate
 
 Extract distinct Q&A pairs from conversation:
 
-**FAQ 1**: Port already in use error
-**FAQ 2**: Cannot connect to database error
-**FAQ 3**: General troubleshooting approach
+**FAQ 1**: Port already in use error **FAQ 2**: Cannot connect to database error **FAQ 3**: General
+troubleshooting approach
 
 ### Step 3: Determine Destination
 

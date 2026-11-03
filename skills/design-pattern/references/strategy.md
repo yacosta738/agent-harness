@@ -2,7 +2,8 @@
 
 ## Intent
 
-Encapsulate interchangeable algorithms behind a common contract and select one independently from the client.
+Encapsulate interchangeable algorithms behind a common contract and select one independently from
+the client.
 
 ## Forces that justify it
 

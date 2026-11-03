@@ -135,8 +135,8 @@ a reference implementation of the same pattern used by the Cloudflare Actors fra
 
 ### Input/Output Gates
 
-Storage operations automatically block other requests (input gates). Responses wait for writes (
-output gates).
+Storage operations automatically block other requests (input gates). Responses wait for writes
+(output gates).
 
 ```typescript
 async increment(): Promise<number> {
@@ -179,7 +179,7 @@ async processItem(id: string) {
 
 **Solution**: Use optimistic locking (version numbers) or `transaction()`.
 
-### blockConcurrencyWhile()
+### blockConcurrencyWhile ()
 
 Blocks ALL concurrency. Use sparingly - only for initialization:
 
@@ -202,7 +202,7 @@ async handleRequest() {
 
 ## RPC Methods
 
-Use RPC (compatibility date >= 2024-04-03) instead of fetch() handler:
+Use RPC (compatibility date >= 2024-04-03) instead of fetch () handler:
 
 ```typescript
 export class ChatRoom extends DurableObject<Env> {
@@ -221,7 +221,7 @@ const stub = env.CHAT_ROOM.getByName(roomId);
 const msg = await stub.sendMessage("user-123", "Hello!"); // Typed!
 ```
 
-### Explicit init() Method
+### Explicit init () Method
 
 DOs don't know their own ID. Pass identity explicitly:
 

@@ -57,7 +57,7 @@ WebSockets, alarms) and `Env` (bindings).
 Workers use bindings to get stubs, then call RPC methods directly (recommended) or use fetch
 handler (legacy).
 
-**RPC vs fetch() decision:**
+**RPC vs fetch () decision:**
 
 ```
 ├─ New project + compat ≥2024-04-03 → RPC (type-safe, simpler)
@@ -66,7 +66,7 @@ handler (legacy).
 └─ Legacy compatibility → fetch()
 ```
 
-See [Patterns: RPC vs fetch()](./patterns.md) for examples.
+See [Patterns: RPC vs fetch ()](./patterns.md) for examples.
 
 ### ID Generation
 
@@ -154,7 +154,7 @@ export default {
 └─ Legacy compat → fetch()
 ```
 
-See [Patterns: RPC vs fetch()](./patterns.md) for examples.
+See [Patterns: RPC vs fetch ()](./patterns.md) for examples.
 
 ### Which storage?
 

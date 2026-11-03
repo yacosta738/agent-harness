@@ -20,6 +20,7 @@ Add `"declarativeNetRequestFeedback"` permission to use `onRuleMatchedDebug` (de
 ## Rule Format
 
 `rules/rules.json`:
+
 ```json
 [
   {
@@ -47,18 +48,19 @@ Add `"declarativeNetRequestFeedback"` permission to use `onRuleMatchedDebug` (de
 
 - `id`: Unique integer per rule
 - `priority`: Higher priority rules win conflicts
-- `action.type`: `"block"`, `"redirect"`, `"allow"`, `"modifyHeaders"`, `"allowAllRequests"`, `"upgradeScheme"`
+- `action.type`: `"block"`, `"redirect"`, `"allow"`, `"modifyHeaders"`, `"allowAllRequests"`,
+  `"upgradeScheme"`
 - `condition.urlFilter`: Pattern matching (supports `*`, `||`, `|`, `^`)
 - `condition.resourceTypes`: Array of resource types to match
 
 ### URL Filter Patterns
 
-| Pattern | Matches |
-|---------|---------|
-| `"doubleclick.net"` | Any URL containing "doubleclick.net" |
-| `"||doubleclick.net"` | Domain starts with doubleclick.net |
-| `"||example.com/ads/*"` | Specific path pattern |
-| `*://*.tracking.com/*` | Subdomain matching |
+| Pattern                | Matches                              |
+|------------------------|--------------------------------------|
+| `"doubleclick.net"`    | Any URL containing "doubleclick.net" |
+| `"                     |                                      |doubleclick.net"` | Domain starts with doubleclick.net |
+| `"                     |                                      |example.com/ads/*"` | Specific path pattern |
+| `*://*.tracking.com/*` | Subdomain matching                   |
 
 ### Resource Types
 
@@ -107,6 +109,7 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 ## Limits
 
-- Static rules: 30,000 guaranteed per extension, plus an additional 300,000 from a pool shared between extensions
+- Static rules: 30,000 guaranteed per extension, plus an additional 300,000 from a pool shared
+  between extensions
 - Dynamic rules: 30,000
 - Session rules: 5,000

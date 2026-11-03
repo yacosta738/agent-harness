@@ -18,7 +18,11 @@
       "line_display": "block",
       "transform_origin": "50% 55%",
       "white_space": "pre",
-      "will_change": ["transform", "opacity", "filter"]
+      "will_change": [
+        "transform",
+        "opacity",
+        "filter"
+      ]
     }
   },
   "kinetic-line-host": {
@@ -35,7 +39,11 @@
       "top": "50%",
       "white_space": "nowrap",
       "absolute_centered": true,
-      "will_change": ["transform", "opacity", "filter"]
+      "will_change": [
+        "transform",
+        "opacity",
+        "filter"
+      ]
     }
   },
   "kinetic-stack-host": {
@@ -52,7 +60,11 @@
       "top": "50%",
       "white_space": "nowrap",
       "absolute_centered": true,
-      "will_change": ["transform", "opacity", "filter"]
+      "will_change": [
+        "transform",
+        "opacity",
+        "filter"
+      ]
     }
   }
 }

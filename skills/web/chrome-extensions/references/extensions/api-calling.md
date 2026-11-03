@@ -10,7 +10,8 @@ To determine if this is sufficient, use `curl` to call the API with a test origi
 curl -H "Origin: https://example.com" -I https://api.openweathermap.org/data/2.5/weather?q=London&appid=KEY`
 ```
 
-If the response includes either `*` or `https://example.com` as the value for the `Access-Control-Allow-Origin` header, the API supports CORS.
+If the response includes either `*` or `https://example.com` as the value for the
+`Access-Control-Allow-Origin` header, the API supports CORS.
 
 If the API does not support CORS, request host permissions to bypass these restrictions:
 

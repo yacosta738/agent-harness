@@ -72,8 +72,8 @@ Follow these steps to create a Pull Request:
 - **Headings**: Keep all headings from the template.
 - **Checklists**: Review each item. Mark with `[x]` if completed. If an item
   is not applicable, leave it unchecked or mark as `[ ]` (depending on the
-  template's instructions) or remove it if the template allows flexibility
-  (but prefer keeping it unchecked for transparency).
+  template's instructions) or remove it if the template allows flexibility (but prefer keeping it
+  unchecked for transparency).
 - **Content**: Fill in the sections with clear, concise summaries of your
   changes.
 - **Related Issues**: Link any issues fixed or related to this PR (e.g.,

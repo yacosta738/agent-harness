@@ -19,20 +19,22 @@ implement them by writing actual code. You follow the specs and design strictly.
 From the orchestrator:
 
 - Change name
-- The specific task(s) to implement (e.g., "Phase 1, tasks 1.1-1.3")
+- The specific task (s) to implement (e.g., "Phase 1, tasks 1.1-1.3")
 - Artifact store mode (`openspec`)
 
 ## Execution and Persistence Contract
 
 > Follow **Section B** (retrieval) and **Section C** (persistence) from
-`../_shared/sdd-phase-common.md`.
+> `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`. Update `tasks.md` with `[x]`
   marks.
 
 ## What to Do
 
-Apply is implementation-only. It MUST NOT claim product or operator acceptance. After technical verification, `sdd-verify` hands off to `sdd-qa`, which resolves capabilities and persists `qa-report.md`; apply may provide context but must not duplicate those acceptance checks.
+Apply is implementation-only. It MUST NOT claim product or operator acceptance. After technical
+verification, `sdd-verify` hands off to `sdd-qa`, which resolves capabilities and persists
+`qa-report.md`; apply may provide context but must not duplicate those acceptance checks.
 
 ### Step 1: Load Skills
 
@@ -70,7 +72,8 @@ Before writing code, read the `Review Workload Forecast` in `tasks.md`.
 Before mutation, validate the assigned layer metadata: `trunk`, `parent_branch`, `base`, `branch`,
 `position`, and issue/Linear references when available. For `github-stacked-prs`, only the bottom
 layer may use the trunk as `base`; every higher layer MUST use its immediate parent branch. Stop on
-missing, stale, ambiguous, or legacy strategy values, dirty state, or scope outside the assigned layer.
+missing, stale, ambiguous, or legacy strategy values, dirty state, or scope outside the assigned
+layer.
 
 ### Step 4: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
 
@@ -114,7 +117,10 @@ Detect test runner from:
 └── Fallback: report that tests couldn't be run automatically
 ```
 
-If no test runner is found, follow the repository's configured exception: do not invent a runner or fixture app, use focused JSON/YAML/Markdown/path smoke checks where possible, and explicitly report that RED→GREEN→REFACTOR evidence cannot be claimed. For this repository, continue the documentation/configuration slice while recording the no-runner limitation.
+If no test runner is found, follow the repository's configured exception: do not invent a runner or
+fixture app, use focused JSON/YAML/Markdown/path smoke checks where possible, and explicitly report
+that RED→GREEN→REFACTOR evidence cannot be claimed. For this repository, continue the
+documentation/configuration slice while recording the no-runner limitation.
 
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`,
 `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
@@ -205,19 +211,20 @@ If none, say "None."}
 - Apply any `rules.apply` from `.agents/sdd/config.yaml`
 - Keep implementation batches aligned with work-unit commits: behavior, tests, and docs stay
   together
-- TDD is mandatory when a runner exists; when no runner exists, do not invent one and explicitly report that RED → GREEN → REFACTOR evidence is unavailable
+- TDD is mandatory when a runner exists; when no runner exists, do not invent one and explicitly
+  report that RED → GREEN → REFACTOR evidence is unavailable
   RED (writing the failing test first). Standard Mode does not exist. If you detect code written
   before tests, STOP and delete the code — start over with the failing test first.
 - **Fast feedback during TDD is OK; final claims are not.**
-  - During the RED→GREEN→REFACTOR cycle of a single task, it is fine to run a single test file
-    or `--tests 'pattern'` for speed and signal.
-  - However, to mark `apply_outcome=PASS` in `state.yaml` or to claim "tests green" in your
-    return summary, you MUST have run the BROADER task invocation at least once without a
-    `--tests` filter (e.g. the full module's `test` / `postgresIntegrationTest` task, or the
-    justfile recipe such as `just backend-test-fast` / `just backend-test-postgres`). Filtered
-    runs hide regressions like JVM class-name collisions, Spring context wiring conflicts, and
-    bean duplicate-registration errors that only surface during full classpath scans.
-  - The full (unfiltered) invocation MUST be listed by name in `apply-progress.md` under
-    "Commands Run" with its exit code and test counts. If you did not run it, do not claim
-    green.
+    - During the RED→GREEN→REFACTOR cycle of a single task, it is fine to run a single test file
+      or `--tests 'pattern'` for speed and signal.
+    - However, to mark `apply_outcome=PASS` in `state.yaml` or to claim "tests green" in your
+      return summary, you MUST have run the BROADER task invocation at least once without a
+      `--tests` filter (e.g. the full module's `test` / `postgresIntegrationTest` task, or the
+      justfile recipe such as `just backend-test-fast` / `just backend-test-postgres`). Filtered
+      runs hide regressions like JVM class-name collisions, Spring context wiring conflicts, and
+      bean duplicate-registration errors that only surface during full classpath scans.
+    - The full (unfiltered) invocation MUST be listed by name in `apply-progress.md` under
+      "Commands Run" with its exit code and test counts. If you did not run it, do not claim
+      green.
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

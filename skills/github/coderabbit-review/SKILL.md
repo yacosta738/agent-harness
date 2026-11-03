@@ -9,7 +9,8 @@ Use this skill to run CodeRabbit from the terminal, summarize the findings, and 
 follow-up fixes.
 
 Default synthesis rubric: load `four-r-review` when converting CodeRabbit output into a human review
-summary. Keep CodeRabbit as the source of findings, but classify each finding under the most relevant
+summary. Keep CodeRabbit as the source of findings, but classify each finding under the most
+relevant
 4R lens: R1 Risk, R2 Readability, R3 Reliability, or R4 Resilience.
 
 Stay silent while an active review is running. Do not send progress commentary about waiting,
@@ -55,7 +56,8 @@ coderabbit review --agent --base main
 coderabbit review --agent --base-commit <sha>
 ```
 
-If `../../../prompts`, `.coderabbit.yaml`, or `CLAUDE.md` exist in the repo root, pass the files that exist
+If `../../../prompts`, `.coderabbit.yaml`, or `CLAUDE.md` exist in the repo root, pass the files
+that exist
 with `-c` to improve review quality.
 
 ## Output Handling
@@ -64,11 +66,12 @@ with `-c` to improve review quality.
 - Collect `finding` events and group them by severity.
 - Load `four-r-review` before writing the final summary.
 - Classify each finding under the primary 4R bucket:
-  - **R1 Risk** — security, privilege, production impact, blast radius
-  - **R2 Readability** — clarity, naming, complexity, maintainability
-  - **R3 Reliability** — tests, correctness, edge cases, error handling, timeouts
-  - **R4 Resilience** — retries, fallbacks, graceful degradation, observability
-- If a finding spans multiple buckets, choose the dominant one and mention the secondary concern in the description.
+    - **R1 Risk** — security, privilege, production impact, blast radius
+    - **R2 Readability** — clarity, naming, complexity, maintainability
+    - **R3 Reliability** — tests, correctness, edge cases, error handling, timeouts
+    - **R4 Resilience** — retries, fallbacks, graceful degradation, observability
+- If a finding spans multiple buckets, choose the dominant one and mention the secondary concern in
+  the description.
 - Ignore `status` events in the user-facing summary.
 - If an `error` event is returned, report the failure instead of inventing a manual review.
 - Treat a running CodeRabbit review as healthy for up to 10 minutes even if output is quiet.
@@ -93,10 +96,10 @@ with `-c` to improve review quality.
 
 - Include file path, impact, and the concrete fix direction.
 - End with a compact 4R rollup when findings exist:
-  - `R1 Risk: N`
-  - `R2 Readability: N`
-  - `R3 Reliability: N`
-  - `R4 Resilience: N`
+    - `R1 Risk: N`
+    - `R2 Readability: N`
+    - `R3 Reliability: N`
+    - `R4 Resilience: N`
 - If there are no findings, say `CodeRabbit found 0 findings.` and do not invent issues.
 
 ## Guardrails

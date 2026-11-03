@@ -1,6 +1,11 @@
 # Expose canvas content to browser features
 
-Regular `<canvas>` content is not exposed to browser features such as screen readers, indexing, translation tools, accessibility assistive tools, find-in-page, print, etc. With `HTML in canvas`, you can render real DOM directly in a canvas element. Adding the `layoutsubtree` attribute to a `<canvas>` HTML element allows rendering descendant HTML elements within the canvas's rendering context. You can use it to style and lay out text in a canvas, expose canvas content to browser features (like accessibility, translation, or find-in-page), and apply 2D and 3D effects to HTML.
+Regular `<canvas>` content is not exposed to browser features such as screen readers, indexing,
+translation tools, accessibility assistive tools, find-in-page, print, etc. With `HTML in canvas`,
+you can render real DOM directly in a canvas element. Adding the `layoutsubtree` attribute to a
+`<canvas>` HTML element allows rendering descendant HTML elements within the canvas's rendering
+context. You can use it to style and lay out text in a canvas, expose canvas content to browser
+features (like accessibility, translation, or find-in-page), and apply 2D and 3D effects to HTML.
 
 ## How to implement
 
@@ -84,7 +89,9 @@ canvas.onpaint = () => {
 };
 ```
 
-When using a `requestAnimationFrame` loop to render the scene, call `canvas.requestPaint()` within the loop to ensure that the HTML content is rendered to the canvas. Make sure you only re-render the canvas if there has been an update to the descendant HTML elements:
+When using a `requestAnimationFrame` loop to render the scene, call `canvas.requestPaint()` within
+the loop to ensure that the HTML content is rendered to the canvas. Make sure you only re-render the
+canvas if there has been an update to the descendant HTML elements:
 
 ```js
 function render() {
@@ -103,7 +110,8 @@ canvas.onpaint = (event) => {
 
 6. Update the CSS transform.
 
-- For the 2D context case, apply the transform returned by the rendering call to the `style.transform` property:
+- For the 2D context case, apply the transform returned by the rendering call to the
+  `style.transform` property:
 
 ```js
 canvas.onpaint = () => {
@@ -116,12 +124,21 @@ canvas.onpaint = () => {
 };
 ```
 
-- For the 3D case with WebGL or WebGPU, the browser needs to map from the 3D coordinate space into the CSS coordinate space using a viewport transform. To facilitate this, do the following:
-  - Convert WebGL MVP Matrix to DOM Matrix.
-  - Normalize the HTML element. HTML elements are sized in pixels (for example, 200px wide). WebGL, however, usually treats objects as "unit squares", for example, ranging from 0 to 1. If you don't normalize, your 200px button will look 200 times larger.
-  - Map to the canvas viewport. This step is the "re-scaling" phase: it stretches that unit-space math back out to match the actual pixel dimensions of your `<canvas>` element on the screen. It also flips the Y-axis, because in WebGL, up is positive, but in CSS, down is positive.
-  - Calculate the final transform. Multiply the matrices in order: Viewport _ MVP _ Normalization. Combining them into one final transform produces a "map" that tells the browser exactly where that HTML element layer should sit to align with the 3D drawing.
-  - Apply the transform to the HTML element. This moves the HTML element layer to sit directly on top of its rendered pixels. This ensures that when a user clicks a button or selects text, they are actually hitting the real HTML element.
+- For the 3D case with WebGL or WebGPU, the browser needs to map from the 3D coordinate space into
+  the CSS coordinate space using a viewport transform. To facilitate this, do the following:
+    - Convert WebGL MVP Matrix to DOM Matrix.
+    - Normalize the HTML element. HTML elements are sized in pixels (for example, 200px wide).
+      WebGL, however, usually treats objects as "unit squares", for example, ranging from 0 to 1. If
+      you don't normalize, your 200px button will look 200 times larger.
+    - Map to the canvas viewport. This step is the "re-scaling" phase: it stretches that unit-space
+      math back out to match the actual pixel dimensions of your `<canvas>` element on the screen.
+      It also flips the Y-axis, because in WebGL, up is positive, but in CSS, down is positive.
+    - Calculate the final transform. Multiply the matrices in order: Viewport _ MVP _ Normalization.
+      Combining them into one final transform produces a "map" that tells the browser exactly where
+      that HTML element layer should sit to align with the 3D drawing.
+    - Apply the transform to the HTML element. This moves the HTML element layer to sit directly on
+      top of its rendered pixels. This ensures that when a user clicks a button or selects text,
+      they are actually hitting the real HTML element.
 
   ```js
   if (canvas.getElementTransform) {
@@ -161,7 +178,13 @@ canvas.onpaint = () => {
   }
   ```
 
-7. [Troubleshooting] If the developer is experiencing a mismatch in the DOM logical layout in 3D even after applying the CSS transform from step 5, check if the developer is experiencing the issue in Chromium 148 or earlier. If that's the case, check if `transform.is2D` is correctly set to false for a 3D DOMMatrix. If not, re-initialize the DOMMatrix which corrects `is2D` to be false before applying the transform to the target HTML element. This issue is fixed in Chromium 149+, and if the developer is experiencing it in newer Chromium versions, the is2D value is not the cause:
+7. [Troubleshooting] If the developer is experiencing a mismatch in the DOM logical layout in 3D
+   even after applying the CSS transform from step 5, check if the developer is experiencing the
+   issue in Chromium 148 or earlier. If that's the case, check if `transform.is2D` is correctly set
+   to false for a 3D DOMMatrix. If not, re-initialize the DOMMatrix which corrects `is2D` to be
+   false before applying the transform to the target HTML element. This issue is fixed in Chromium
+   149+, and if the developer is experiencing it in newer Chromium versions, the is2D value is not
+   the cause:
 
 ```js
 if (transform.is2D) {
@@ -354,25 +377,33 @@ targetHTMLElement.style.transform = computedTransform.toString();
 - **MANDATORY**: Check browser support for the HTML-in-Canvas API before using it.
 - **MANDATORY**: Always add the `layoutsubtree` attribute to the `<canvas>` element.
 - **MANDATORY**: Use an `onpaint` event handler to render the HTML content to the canvas.
-- **MANDATORY**: Use the `drawElementImage`, `texElementImage2D`, or `copyElementImageToTexture` methods to render the HTML content to the canvas.
-- **MANDATORY**: Update the CSS transform of the HTML element to match the transform of the rendered content by setting the `style.transform` property of the HTML element.
-- **MANDATORY**: Use `ResizeObserver` to observe the screen size and update the canvas size to match device pixels.
+- **MANDATORY**: Use the `drawElementImage`, `texElementImage2D`, or `copyElementImageToTexture`
+  methods to render the HTML content to the canvas.
+- **MANDATORY**: Update the CSS transform of the HTML element to match the transform of the rendered
+  content by setting the `style.transform` property of the HTML element.
+- **MANDATORY**: Use `ResizeObserver` to observe the screen size and update the canvas size to match
+  device pixels.
 - **DO NOT** embed cross-origin content in a canvas, as it is not supported.
-- **DO NOT** initialize `ResizeObserver` within the `onpaint` event handler, as it may lead to memory leaks.
+- **DO NOT** initialize `ResizeObserver` within the `onpaint` event handler, as it may lead to
+  memory leaks.
 
 ## Fallback strategies
 
 HTML in canvas is not natively supported by any major browser yet.
 
-The HTML-in-Canvas API is not currently supported in all modern browsers, thus a fallback strategy is typically required.
+The HTML-in-Canvas API is not currently supported in all modern browsers, thus a fallback strategy
+is typically required.
 
-However, given the improved performance benefits of this API, HTML-in-Canvas should be used if the browser supports it.
+However, given the improved performance benefits of this API, HTML-in-Canvas should be used if the
+browser supports it.
 
-The fallback strategy depends on the use case. For example, for an interactive HTML content in canvas, if HTML-in-Canvas is not supported, place the HTML content on top of the canvas using CSS.
+The fallback strategy depends on the use case. For example, for an interactive HTML content in
+canvas, if HTML-in-Canvas is not supported, place the HTML content on top of the canvas using CSS.
 
 ### HTML-in-Canvas polyfills
 
-Use the following polyfill script to mimic the HTML-in-Canvas API in browsers that do not support it.
+Use the following polyfill script to mimic the HTML-in-Canvas API in browsers that do not support
+it.
 
 1. Install or embed the library:
 

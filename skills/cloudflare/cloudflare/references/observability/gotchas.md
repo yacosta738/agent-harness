@@ -3,8 +3,7 @@
 ### "Logs not appearing"
 
 **Cause:** Observability disabled, Worker not redeployed, no traffic, low sampling rate, or log size
-exceeds 256 KB
-**Solution:**
+exceeds 256 KB **Solution:**
 
 ```bash
 # Verify config
@@ -22,8 +21,7 @@ Ensure `observability.enabled = true`, redeploy Worker, check `head_sampling_rat
 ### "Traces not being captured"
 
 **Cause:** Traces not enabled, incorrect sampling rate, Worker not redeployed, or destination
-unavailable
-**Solution:**
+unavailable **Solution:**
 
 ```jsonc
 // Temporarily set to 100% sampling for debugging
@@ -56,8 +54,8 @@ check destination status
 ### Spectre Mitigation Timing
 
 **Problem:** `Date.now()` and `performance.now()` have reduced precision (coarsened to 100μs)
-**Cause:** Spectre vulnerability mitigation in V8
-**Solution:** Accept reduced precision or use Workers Traces for accurate timing
+**Cause:** Spectre vulnerability mitigation in V8 **Solution:** Accept reduced precision or use
+Workers Traces for accurate timing
 
 ```typescript
 // Date.now() is coarsened - trace spans are accurate
@@ -92,9 +90,9 @@ FROM api_usage GROUP BY customer_id;
 
 ### Trace Context Propagation Limits
 
-**Problem:** Deep call chains lose trace context after 100 spans
-**Cause:** Cloudflare limits trace depth to prevent performance impact
-**Solution:** Design for flatter architectures or use custom correlation IDs for deep chains
+**Problem:** Deep call chains lose trace context after 100 spans **Cause:** Cloudflare limits trace
+depth to prevent performance impact **Solution:** Design for flatter architectures or use custom
+correlation IDs for deep chains
 
 ```typescript
 // For deep call chains, add custom correlation ID
@@ -112,8 +110,8 @@ await fetch('https://api.example.com', {
 ### Workers Traces
 
 - **GA Pricing (starts March 1, 2026):**
-  - $0.10 per 1M trace spans captured
-  - Retention: 14 days included
+    - $0.10 per 1M trace spans captured
+    - Retention: 14 days included
 - **Free tier:** 10M trace spans/month
 - **Note:** Beta usage (before March 1, 2026) is free
 

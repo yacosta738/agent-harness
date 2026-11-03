@@ -25,6 +25,7 @@ SonarQube analyzes PRs automatically when integrated with CI/CD. After CI runs, 
 If `status: "OK"` → safe to proceed with merge review.
 
 If `status: "ERROR"`:
+
 1. Extract failing conditions from the `conditions` array
 2. For each failing condition, identify the metric and gap (actual vs threshold)
 3. Use `search_sonar_issues_in_projects` filtered by PR to surface the specific issues
@@ -45,6 +46,7 @@ If `status: "ERROR"`:
 ### Step 3: Triage Issues
 
 Group found issues by:
+
 - **Security** (`category: SECURITY`) → highest priority
 - **Reliability** (`category: RELIABILITY`) → bugs that affect behavior
 - **Maintainability** (`category: MAINTAINABILITY`) → code smells
@@ -53,7 +55,8 @@ Present categorized summary to the developer before requesting changes.
 
 ### Step 4: Verify Fix
 
-After the developer pushes fixes, re-check the quality gate using the updated PR number or trigger a new analysis via CI.
+After the developer pushes fixes, re-check the quality gate using the updated PR number or trigger a
+new analysis via CI.
 
 ---
 
@@ -200,12 +203,12 @@ After fixes, check the project health:
 
 For ongoing projects, establish a monitoring routine:
 
-| Frequency | Check | Tool |
-|---|---|---|
-| Every PR | Quality gate status | `get_project_quality_gate_status` |
-| Weekly | New BLOCKER/CRITICAL issues | `search_sonar_issues_in_projects` |
-| Sprint review | Overall project health | `get_component_measures` |
-| Before release | Full gate check on main | `get_project_quality_gate_status` |
+| Frequency      | Check                       | Tool                              |
+|----------------|-----------------------------|-----------------------------------|
+| Every PR       | Quality gate status         | `get_project_quality_gate_status` |
+| Weekly         | New BLOCKER/CRITICAL issues | `search_sonar_issues_in_projects` |
+| Sprint review  | Overall project health      | `get_component_measures`          |
+| Before release | Full gate check on main     | `get_project_quality_gate_status` |
 
 ---
 
@@ -230,7 +233,8 @@ When working on security-sensitive code (auth, payments, user data):
 }
 ```
 
-Then filter the response for `"category": "SECURITY"` entries and review all of them, starting from BLOCKER.
+Then filter the response for `"category": "SECURITY"` entries and review all of them, starting from
+BLOCKER.
 
 ---
 

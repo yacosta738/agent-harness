@@ -4,20 +4,20 @@
 
 ### "Binding ID vs name mismatch"
 
-**Cause:** Confusion between binding name (code) and resource ID
-**Solution:** Bindings use `binding` (code name) and `id`/`database_id`/`bucket_name` (resource ID).
+**Cause:** Confusion between binding name (code) and resource ID **Solution:** Bindings use
+`binding` (code name) and `id`/`database_id`/`bucket_name` (resource ID).
 Preview bindings need separate IDs: `preview_id`, `preview_database_id`
 
 ### "Environment not inheriting config"
 
-**Cause:** Non-inheritable keys not redefined per environment
-**Solution:** Non-inheritable keys (bindings, vars) must be redefined per environment. Inheritable
+**Cause:** Non-inheritable keys not redefined per environment **Solution:** Non-inheritable keys
+(bindings, vars) must be redefined per environment. Inheritable
 keys (routes, compatibility_date) can be overridden
 
 ### "Local dev behavior differs from production"
 
-**Cause:** Using local simulation instead of remote execution
-**Solution:** Choose appropriate remote mode:
+**Cause:** Using local simulation instead of remote execution **Solution:** Choose appropriate
+remote mode:
 
 - `wrangler dev` (default): Local simulation, fast, limited accuracy
 - `wrangler dev --remote`: Full remote execution, production-accurate, slower
@@ -25,8 +25,7 @@ keys (routes, compatibility_date) can be overridden
 
 ### "startWorker doesn't match production"
 
-**Cause:** Using local mode when remote resources needed
-**Solution:** Use `remote` option:
+**Cause:** Using local mode when remote resources needed **Solution:** Use `remote` option:
 
 ```typescript
 const worker = await startWorker({
@@ -37,8 +36,7 @@ const worker = await startWorker({
 
 ### "Unexpected runtime changes"
 
-**Cause:** Missing compatibility_date
-**Solution:** Always set `compatibility_date`:
+**Cause:** Missing compatibility_date **Solution:** Always set `compatibility_date`:
 
 ```jsonc
 { "compatibility_date": "2025-01-01" }
@@ -46,8 +44,8 @@ const worker = await startWorker({
 
 ### "Durable Object binding not working"
 
-**Cause:** Missing script_name for external DOs
-**Solution:** Always specify `script_name` for external Durable Objects:
+**Cause:** Missing script_name for external DOs **Solution:** Always specify `script_name` for
+external Durable Objects:
 
 ```jsonc
 {
@@ -63,19 +61,19 @@ For local DOs in same Worker, `script_name` is optional.
 
 ### "Auto-provisioned resources not appearing"
 
-**Cause:** IDs written back to config on first deploy, but config not reloaded
-**Solution:** After first deploy with auto-provisioning, config file is updated with IDs. Commit the
+**Cause:** IDs written back to config on first deploy, but config not reloaded **Solution:** After
+first deploy with auto-provisioning, config file is updated with IDs. Commit the
 updated config. On subsequent deploys, existing resources are reused.
 
 ### "Secrets not available in local dev"
 
-**Cause:** Secrets set with `wrangler secret put` only work in deployed Workers
-**Solution:** For local dev, use `.dev.vars`
+**Cause:** Secrets set with `wrangler secret put` only work in deployed Workers **Solution:** For
+local dev, use `.dev.vars`
 
 ### "Node.js compatibility error"
 
-**Cause:** Missing Node.js compatibility flag
-**Solution:** Some bindings (Hyperdrive with `pg`) require:
+**Cause:** Missing Node.js compatibility flag **Solution:** Some bindings (Hyperdrive with `pg`)
+require:
 
 ```jsonc
 { "compatibility_flags": ["nodejs_compat_v2"] }
@@ -102,8 +100,8 @@ updated config. On subsequent deploys, existing resources are reused.
 
 ### "Placement not reducing latency"
 
-**Cause:** Misunderstanding of Smart Placement
-**Solution:** Smart Placement only helps when Worker accesses D1 or Durable Objects. It doesn't
+**Cause:** Misunderstanding of Smart Placement **Solution:** Smart Placement only helps when Worker
+accesses D1 or Durable Objects. It doesn't
 affect KV, R2, or external API latency.
 
 ```jsonc
@@ -112,8 +110,7 @@ affect KV, R2, or external API latency.
 
 ### "unstable_startWorker not found"
 
-**Cause:** Using outdated API
-**Solution:** Use stable `startWorker` instead:
+**Cause:** Using outdated API **Solution:** Use stable `startWorker` instead:
 
 ```typescript
 import { startWorker } from "wrangler";  // Not unstable_startWorker
@@ -121,8 +118,8 @@ import { startWorker } from "wrangler";  // Not unstable_startWorker
 
 ### "outboundService not mocking fetch"
 
-**Cause:** Mock function not returning Response
-**Solution:** Always return Response, use `fetch(req)` for passthrough:
+**Cause:** Mock function not returning Response **Solution:** Always return Response, use
+`fetch(req)` for passthrough:
 
 ```typescript
 const worker = await startWorker({

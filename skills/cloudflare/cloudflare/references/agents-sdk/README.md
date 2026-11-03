@@ -76,10 +76,10 @@ export class MyAgent extends Agent<Env> {
 
 ## Package Entry Points
 
-| Import            | Purpose                                     |
-|-------------------|---------------------------------------------|
-| `agents`          | Server-side Agent classes, lifecycle        |
-| `../../../../../prompts`    | `useAgent()` hook for WebSocket connections |
+| Import                   | Purpose                                     |
+|--------------------------|---------------------------------------------|
+| `agents`                 | Server-side Agent classes, lifecycle        |
+| `../../../../../prompts` | `useAgent()` hook for WebSocket connections |
 | `../../../../../prompts` | `useAgentChat()` hook for AI chat UIs       |
 
 ## In This Reference

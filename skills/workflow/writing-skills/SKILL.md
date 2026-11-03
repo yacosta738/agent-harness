@@ -141,7 +141,7 @@ Applies to new skills AND edits. No exceptions:
 
 **RED Phase:**
 
-- [ ] Create pressure scenario(s) for discipline skills (3+ combined pressures)
+- [ ] Create pressure scenario (s) for discipline skills (3+ combined pressures)
 - [ ] Run scenario WITHOUT skill — document baseline behavior verbatim
 - [ ] Identify patterns in rationalizations/failures
 

@@ -7,11 +7,11 @@
  */
 
 import {
-  SVELTE_LAYOUT_MARKER_OPEN,
-  SVELTE_LIVE_ROOT_COMPONENT,
   applySvelteKitLiveAdapter,
   detectSvelteKitProject,
   removeSvelteKitLiveAdapter,
+  SVELTE_LAYOUT_MARKER_OPEN,
+  SVELTE_LIVE_ROOT_COMPONENT,
   unpatchSvelteLayout,
 } from '../sveltekit-adapter.mjs';
 
@@ -25,12 +25,12 @@ export const sveltekit = {
   inject: {
     kind: 'adapter',
 
-    apply({ cwd, port, token, config }) {
-      return applySvelteKitLiveAdapter({ cwd, port, token, config });
+    apply({cwd, port, token, config}) {
+      return applySvelteKitLiveAdapter({cwd, port, token, config});
     },
 
-    remove({ cwd, config }) {
-      return removeSvelteKitLiveAdapter({ cwd, config });
+    remove({cwd, config}) {
+      return removeSvelteKitLiveAdapter({cwd, config});
     },
 
     // The generated root component and the `src/lib/impeccable/` runtime paths
@@ -39,7 +39,7 @@ export const sveltekit = {
       return [];
     },
 
-    artifacts({ project }) {
+    artifacts({project}) {
       return [
         {
           kind: 'created',

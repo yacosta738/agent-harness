@@ -37,16 +37,16 @@ screenshots, and logs.
 ## adb control commands
 
 - Tap (use UI tree-derived coordinates):
-  - `adb -s <serial> shell input tap <x> <y>`
+    - `adb -s <serial> shell input tap <x> <y>`
 - Swipe:
-  - `adb -s <serial> shell input swipe <x1> <y1> <x2> <y2>`
-  - Avoid edges (start ~150-200 px from left/right) to reduce accidental back gestures.
+    - `adb -s <serial> shell input swipe <x1> <y1> <x2> <y2>`
+    - Avoid edges (start ~150-200 px from left/right) to reduce accidental back gestures.
 - Text:
-  - `adb -s <serial> shell input text "hello"`
+    - `adb -s <serial> shell input text "hello"`
 - Back:
-  - `adb -s <serial> shell input keyevent 4`
+    - `adb -s <serial> shell input keyevent 4`
 - UI tree dump:
-  - `adb -s <serial> exec-out uiautomator dump /dev/tty`
+    - `adb -s <serial> exec-out uiautomator dump /dev/tty`
 
 ## Coordinate picking (UI tree only)
 
@@ -105,8 +105,8 @@ Use this helper to create a compact, readable overview before inspecting full XM
 ## Package shortcuts
 
 - List installed packages:
-  - `adb -s <serial> shell pm list packages`
+    - `adb -s <serial> shell pm list packages`
 - Filter to your namespace:
-  - `adb -s <serial> shell pm list packages | rg <company_or_app_id>`
+    - `adb -s <serial> shell pm list packages | rg <company_or_app_id>`
 - Confirm the activity resolves before launching:
-  - `adb -s <serial> shell cmd package resolve-activity --brief <package>`
+    - `adb -s <serial> shell cmd package resolve-activity --brief <package>`

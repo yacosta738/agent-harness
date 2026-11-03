@@ -68,8 +68,8 @@ Place in build output (e.g., `dist/_redirects`):
 /api/* /api-v2/:splat 200        # Proxy (no redirect)
 ```
 
-**Limits**: 2,100 total (2,000 static + 100 dynamic), 1,000 char/line
-**Note**: Functions take precedence
+**Limits**: 2,100 total (2,000 static + 100 dynamic), 1,000 char/line **Note**: Functions take
+precedence
 
 ### _headers
 
@@ -85,8 +85,8 @@ Place in build output (e.g., `dist/_redirects`):
   Cache-Control: public, max-age=31536000, immutable
 ```
 
-**Limits**: 100 rules, 2,000 char/line
-**Note**: Only static assets; Functions set headers in Response
+**Limits**: 100 rules, 2,000 char/line **Note**: Only static assets; Functions set headers in
+Response
 
 ### _routes.json
 

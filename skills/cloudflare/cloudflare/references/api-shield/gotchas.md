@@ -4,8 +4,7 @@
 
 ### "Schema Validation 2.0 not working after migration"
 
-**Cause:** Classic rules still active, conflicting with new system
-**Solution:**
+**Cause:** Classic rules still active, conflicting with new system **Solution:**
 
 1. Delete ALL Classic schema validation rules
 2. Clear Cloudflare cache (wait 5 min)
@@ -15,8 +14,7 @@
 
 ### "Schema validation blocking valid requests"
 
-**Cause:** Schema too restrictive, missing fields, or incorrect types
-**Solution:**
+**Cause:** Schema too restrictive, missing fields, or incorrect types **Solution:**
 
 1. Check Firewall Events for violation details
 2. Review schema in Settings
@@ -50,8 +48,7 @@
 
 ### "Risk labels not appearing in firewall rules"
 
-**Cause:** Feature not enabled, insufficient traffic, or missing session identifiers
-**Solution:**
+**Cause:** Feature not enabled, insufficient traffic, or missing session identifiers **Solution:**
 
 1. Verify Schema Validation 2.0 enabled
 2. Enable BOLA Detection in schema settings
@@ -62,14 +59,13 @@
 ### "Endpoint discovery not finding APIs"
 
 **Cause:** Insufficient traffic (<500 reqs/10d), non-2xx responses, Worker direct requests, or
-incorrect session ID config
-**Solution:** Ensure 500+ requests in 10 days, 2xx responses from edge (not Workers direct),
+incorrect session ID config **Solution:** Ensure 500+ requests in 10 days, 2xx responses from edge
+(not Workers direct),
 configure session IDs correctly. ML updates daily.
 
 ### "Sequence detection false positives"
 
-**Cause:** Lookback window issues, non-unique session IDs, or model sensitivity
-**Solution:**
+**Cause:** Lookback window issues, non-unique session IDs, or model sensitivity **Solution:**
 
 1. Review lookback settings (10 reqs to managed endpoints, 10min window)
 2. Ensure session ID uniqueness per user (not shared tokens)
@@ -78,8 +74,7 @@ configure session IDs correctly. ML updates daily.
 
 ### "GraphQL protection blocking valid queries"
 
-**Cause:** Query depth/size limits too restrictive, complex but legitimate queries
-**Solution:**
+**Cause:** Query depth/size limits too restrictive, complex but legitimate queries **Solution:**
 
 1. Review blocked query patterns in Security > Events
 2. Increase max_depth (default: 10) if needed
@@ -89,24 +84,24 @@ configure session IDs correctly. ML updates daily.
 
 ### "Token invalid"
 
-**Cause:** Configuration error, JWKS mismatch, or expired token
-**Solution:** Verify config matches IdP, update JWKS, check token expiration
+**Cause:** Configuration error, JWKS mismatch, or expired token **Solution:** Verify config matches
+IdP, update JWKS, check token expiration
 
 ### "Schema violation"
 
-**Cause:** Missing required fields, wrong data types, or spec mismatch
-**Solution:** Review schema against actual requests, ensure all required fields present, validate
+**Cause:** Missing required fields, wrong data types, or spec mismatch **Solution:** Review schema
+against actual requests, ensure all required fields present, validate
 types match spec
 
 ### "Fallthrough"
 
-**Cause:** Unknown endpoint or pattern mismatch
-**Solution:** Update schema with all endpoints, check path pattern matching
+**Cause:** Unknown endpoint or pattern mismatch **Solution:** Update schema with all endpoints,
+check path pattern matching
 
 ### "mTLS failed"
 
-**Cause:** Certificate untrusted/expired or wrong CA
-**Solution:** Verify cert chain, check expiration, confirm correct CA uploaded
+**Cause:** Certificate untrusted/expired or wrong CA **Solution:** Verify cert chain, check
+expiration, confirm correct CA uploaded
 
 ## Limits (2026)
 

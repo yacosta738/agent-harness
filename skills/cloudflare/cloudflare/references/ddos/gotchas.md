@@ -4,8 +4,7 @@
 
 ### "False positives blocking legitimate traffic"
 
-**Cause**: Sensitivity too high, wrong action, or missing exceptions
-**Solution**:
+**Cause**: Sensitivity too high, wrong action, or missing exceptions **Solution**:
 
 1. Lower sensitivity for specific rule/category
 2. Use `log` action first to validate (Enterprise Advanced)
@@ -14,8 +13,8 @@
 
 ### "Attacks getting through"
 
-**Cause**: Sensitivity too low or wrong action
-**Solution**: Increase to `default` sensitivity and use `block` action:
+**Cause**: Sensitivity too low or wrong action **Solution**: Increase to `default` sensitivity and
+use `block` action:
 
 ```typescript
 const config = {
@@ -34,13 +33,13 @@ const config = {
 
 ### "Zone override ignored"
 
-**Cause**: Account overrides conflict with zone overrides
-**Solution**: Configure at zone level OR remove zone overrides to use account-level
+**Cause**: Account overrides conflict with zone overrides **Solution**: Configure at zone level OR
+remove zone overrides to use account-level
 
 ### "Log action not available"
 
-**Cause**: Not on Enterprise Advanced DDoS plan
-**Solution**: Use `managed_challenge` with low sensitivity for testing
+**Cause**: Not on Enterprise Advanced DDoS plan **Solution**: Use `managed_challenge` with low
+sensitivity for testing
 
 ### "Rule limit exceeded"
 
@@ -49,8 +48,8 @@ const config = {
 
 ### "Cannot override rule"
 
-**Cause**: Rule is read-only
-**Solution**: Check API response for read-only indicator, use different rule
+**Cause**: Rule is read-only **Solution**: Check API response for read-only indicator, use different
+rule
 
 ### "Cannot disable DDoS protection"
 
@@ -59,13 +58,13 @@ const config = {
 
 ### "Expression not allowed"
 
-**Cause**: Custom expressions require Enterprise Advanced plan
-**Solution**: Use `expression: "true"` for all traffic, or upgrade plan
+**Cause**: Custom expressions require Enterprise Advanced plan **Solution**: Use
+`expression: "true"` for all traffic, or upgrade plan
 
 ### "Managed ruleset not found"
 
-**Cause**: Zone/account doesn't have DDoS managed ruleset, or incorrect phase
-**Solution**: Verify ruleset exists via `client.rulesets.list()`, check phase name (`ddos_l7` or
+**Cause**: Zone/account doesn't have DDoS managed ruleset, or incorrect phase **Solution**: Verify
+ruleset exists via `client.rulesets.list()`, check phase name (`ddos_l7` or
 `ddos_l4`)
 
 ## API Error Codes
@@ -84,9 +83,9 @@ const config = {
 | Resource/Limit           | Free/Pro/Business | Enterprise | Enterprise Advanced |
 |--------------------------|-------------------|------------|---------------------|
 | Override rules per zone  | 1                 | 1          | 10                  |
-| Custom expressions       | ✗                 | ✗          | ✓                   |
-| Log action               | ✗                 | ✗          | ✓                   |
-| Adaptive DDoS            | ✗                 | ✓          | ✓                   |
+| Custom expressions       | ✗                | ✗         | ✓                  |
+| Log action               | ✗                | ✗         | ✓                  |
+| Adaptive DDoS            | ✗                | ✓         | ✓                  |
 | Traffic history required | -                 | 7 days     | 7 days              |
 
 ## Tuning Strategy

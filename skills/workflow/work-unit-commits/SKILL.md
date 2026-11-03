@@ -32,16 +32,16 @@ apply.
 
 ## Core Rules
 
-| Rule                           | Requirement                                                                                  |
-|--------------------------------|----------------------------------------------------------------------------------------------|
-| Commit by work unit            | One commit delivers one behavior, fix, migration, refactor, or docs unit.                    |
-| Stack layer coherence          | For `github-stacked-prs`, one work-unit commit belongs to one dependency-ordered layer.       |
-| Do not commit by file type     | Avoid separate `models`, `services`, `tests`, `docs` commits when none stands alone.           |
-| Keep tests with code           | Tests belong in the same commit as the behavior they verify.                                 |
-| Keep docs with visible changes | User-facing docs belong with the feature or workflow they explain.                            |
-| Preserve rollback              | Reverting the commit should not remove unrelated work.                                       |
+| Rule                           | Requirement                                                                                     |
+|--------------------------------|-------------------------------------------------------------------------------------------------|
+| Commit by work unit            | One commit delivers one behavior, fix, migration, refactor, or docs unit.                       |
+| Stack layer coherence          | For `github-stacked-prs`, one work-unit commit belongs to one dependency-ordered layer.         |
+| Do not commit by file type     | Avoid separate `models`, `services`, `tests`, `docs` commits when none stands alone.            |
+| Keep tests with code           | Tests belong in the same commit as the behavior they verify.                                    |
+| Keep docs with visible changes | User-facing docs belong with the feature or workflow they explain.                              |
+| Preserve rollback              | Reverting the commit should not remove unrelated work.                                          |
 | No stack mechanics here        | Do not initialize, link, sync, rebase, or merge a Stack; hand those operations to GitHub skill. |
-| Tell the why                   | The commit message explains the outcome, not the file list.                                  |
+| Tell the why                   | The commit message explains the outcome, not the file list.                                     |
 
 ## Quick Check
 

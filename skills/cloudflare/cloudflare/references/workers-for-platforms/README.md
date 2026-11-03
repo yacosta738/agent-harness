@@ -42,10 +42,10 @@ worker configuration.
    mode by default - no request.cf access, no shared cache)
 2. **Dynamic Dispatch Worker** - Entry point, routes requests, enforces platform logic (auth,
    limits, validation)
-3. **User Workers** - Customer code in isolated sandboxes, API-deployed, optional bindings (
-   KV/D1/R2/DO)
-4. **Outbound Worker** (optional) - Intercepts external fetch, controls egress, logs subrequests (
-   blocks TCP socket connect() API)
+3. **User Workers** - Customer code in isolated sandboxes, API-deployed, optional bindings
+   (KV/D1/R2/DO)
+4. **Outbound Worker** (optional) - Intercepts external fetch, controls egress, logs subrequests
+   (blocks TCP socket connect () API)
 
 **Request Flow:**
 

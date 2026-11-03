@@ -148,8 +148,8 @@ BotDetectionIDs       # Heuristic detection IDs
 - `"Cloudflare Service"` - Zero Trust
 - `"Not Computed"` - Score = 0
 
-Access via Logpush (stream to cloud storage/SIEM), Logpull (API to fetch logs), or GraphQL API (
-query analytics data).
+Access via Logpush (stream to cloud storage/SIEM), Logpull (API to fetch logs), or GraphQL API
+(query analytics data).
 
 ## Testing with Miniflare
 

@@ -18,27 +18,29 @@ The direction sheet deals you a type system (faces, weights, settings). This fil
 
 From 202 measurable sites out of the 247 studied (Chrome, 1440×900 and 390×844):
 
-| | Median | Middle half | Note |
-| --- | --- | --- | --- |
-| Hero headline size | 72px (5.0vw) | 43–109px | Top-scored sites: 6.0vw median |
-| Largest type on the page | 6.4vw | up to 10.4vw | Top-scored sites 8.4vw, weak sites 5.0vw |
-| Hero headline on a phone | 40px | 32–59px | |
-| Hero tracking | -0.01em | -0.03 to 0 | Tighter as size grows |
-| Hero leading | 1.0 | 0.95–1.1 | |
-| Body size | 16px | 14–18px | |
-| Headline ÷ body size | 4.3 | | Top-scored sites 4.7 |
-| Typefaces in real use | 2 | 31% use one, 45% two, 22% three | |
-| Hero weight | regular 48%, medium 18%, bold or heavier 22% | | Big type does not need to be bold |
-| Hero in capitals | 24% | | |
-| Hero centred | 39% | | 52% on the weak sites |
+|                          | Median                                       | Middle half                     | Note                                     |
+|--------------------------|----------------------------------------------|---------------------------------|------------------------------------------|
+| Hero headline size       | 72px (5.0vw)                                 | 43–109px                        | Top-scored sites: 6.0vw median           |
+| Largest type on the page | 6.4vw                                        | up to 10.4vw                    | Top-scored sites 8.4vw, weak sites 5.0vw |
+| Hero headline on a phone | 40px                                         | 32–59px                         |                                          |
+| Hero tracking            | -0.01em                                      | -0.03 to 0                      | Tighter as size grows                    |
+| Hero leading             | 1.0                                          | 0.95–1.1                        |                                          |
+| Body size                | 16px                                         | 14–18px                         |                                          |
+| Headline ÷ body size     | 4.3                                          |                                 | Top-scored sites 4.7                     |
+| Typefaces in real use    | 2                                            | 31% use one, 45% two, 22% three |                                          |
+| Hero weight              | regular 48%, medium 18%, bold or heavier 22% |                                 | Big type does not need to be bold        |
+| Hero in capitals         | 24%                                          |                                 |                                          |
+| Hero centred             | 39%                                          |                                 | 52% on the weak sites                    |
 
-Two things to take from it. First, size contrast is the main lever and the best sites pull it harder.
+Two things to take from it. First, size contrast is the main lever and the best sites pull it
+harder.
 Second, weight is not: half of the heroes are set in a regular weight. Scale and spacing make type
 confident; bold is one option among several.
 
 ## 2. The scale: few sizes, far apart
 
-The panel described about 30 of the 114 strongest sites as using two or three type sizes with nothing
+The panel described about 30 of the 114 strongest sites as using two or three type sizes with
+nothing
 in between, and none as using a graded five- or six-step scale. So: one display size, one text size
 and a small size carry the page; a lead size and a heading size exist for when they are needed. Five
 is the ceiling. The common failure is nine sizes that are all near each other (16, 18, 20, 24, 28,
@@ -82,13 +84,18 @@ Large type exposes spacing that is invisible at text size. Apply all of these to
   120px will choke 32px. Set tracking per step, not once for all headings.
 - **Leading below 1.0 needs checking.** Look for collisions between descenders and the ascenders or
   accents of the next line. Two-line headlines make this easy to verify by eye.
-- **All capitals** want slightly open tracking (0 to +0.03em) even at display size, and leading around
+- **All capitals** want slightly open tracking (0 to +0.03em) even at display size, and leading
+  around
   0.9.
-- **Optical alignment.** Big letters with round or diagonal left edges (O, C, A, T, W) look indented.
-  Pull the headline left by about 0.04–0.06em (`margin-left: -0.05em`) so it aligns optically with the
+- **Optical alignment.** Big letters with round or diagonal left edges (O, C, A, T, W) look
+  indented.
+  Pull the headline left by about 0.04–0.06em (`margin-left: -0.05em`) so it aligns optically with
+  the
   text beneath it.
-- **Viewport-wide type.** For a line that must span the screen, size it in `vw` and verify at 390 and
-  1440; set `white-space: nowrap` and let the container clip rather than wrap. Calculate the size from
+- **Viewport-wide type.** For a line that must span the screen, size it in `vw` and verify at 390
+  and
+  1440; set `white-space: nowrap` and let the container clip rather than wrap. Calculate the size
+  from
   the character count: `font-size ≈ container width ÷ (characters × k)` with k from `copy.md` §2.
 - Never add a text shadow, an outline stroke, or a gradient fill to display type.
 
@@ -134,7 +141,8 @@ The sheet gives a `<link>` tag. Use it exactly; do not swap in a face you prefer
   self-hosted `@font-face` with `font-display: swap`). Fontshare faces load from the
   `api.fontshare.com` stylesheet on the sheet.
 - After building, `inspect.mjs` reports the families that actually rendered. If it warns that a face
-  did not load, the screenshots show a fallback and nothing you judge from them is real. Fix the link
+  did not load, the screenshots show a fallback and nothing you judge from them is real. Fix the
+  link
   first.
 
 ## 6. One family or two
@@ -152,7 +160,8 @@ coherent. When the dealt system has two faces:
 - Curly quotes and apostrophes, real dashes, a real ellipsis (see `copy.md` §7).
 - `font-variant-numeric: tabular-nums` for prices, tables, dates in columns; `oldstyle-nums` suits
   serif body text.
-- `text-underline-offset: 0.18em; text-decoration-thickness: 0.07em` on links, so underlines clear the
+- `text-underline-offset: 0.18em; text-decoration-thickness: 0.07em` on links, so underlines clear
+  the
   descenders.
 - `hyphens: none` on headings. `overflow-wrap: anywhere` only on long URLs or emails.
 - A heading belongs to the text after it: space above a heading is at least twice the space below.

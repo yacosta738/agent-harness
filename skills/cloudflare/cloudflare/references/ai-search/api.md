@@ -8,7 +8,7 @@ const results = await env.AI.autorag("instance-name").search(options);
 const instances = await env.AI.autorag("_").listInstances();
 ```
 
-## aiSearch() Options
+## aiSearch () Options
 
 ```typescript
 interface AiSearchOptions {

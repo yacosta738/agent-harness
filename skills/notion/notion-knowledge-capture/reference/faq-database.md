@@ -42,10 +42,9 @@ Each FAQ page should include:
 
 ## Views
 
-**By Category**: Group by Category
-**Recently Updated**: Sort by Last Reviewed descending
-**Needs Review**: Filter where Last Reviewed > 180 days ago
-**External FAQs**: Filter where Audience contains "External"
+**By Category**: Group by Category **Recently Updated**: Sort by Last Reviewed descending **Needs
+Review**: Filter where Last Reviewed > 180 days ago **External FAQs**: Filter where Audience
+contains "External"
 **Popular**: Sort by Helpful Count descending (if tracking)
 
 ## Best Practices

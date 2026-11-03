@@ -6,6 +6,7 @@ Chrome Extensions enforce a strict Content Security Policy that cannot be relaxe
 pages (popup, side panel, options, new tab, etc.).
 
 Blocked by default:
+
 - `eval()`, `new Function()`, `setTimeout("string")`
 - Inline `<script>` tags
 - Inline event handlers (`onclick="..."`, `onload="..."`, etc.)
@@ -27,6 +28,7 @@ Blocked by default:
 ```
 
 In `popup.js`:
+
 ```js
 document.getElementById('btn').addEventListener('click', () => {
   // Handle click

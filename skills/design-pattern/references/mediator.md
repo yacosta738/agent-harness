@@ -2,7 +2,8 @@
 
 ## Intent
 
-Centralize communication between collaborating components so they do not depend directly on one another.
+Centralize communication between collaborating components so they do not depend directly on one
+another.
 
 ## Forces that justify it
 

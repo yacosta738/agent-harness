@@ -8,7 +8,10 @@
 - **Upstream skill subpath:** `skills/diagram-design/`
 - **Local path:** `skills/design/diagram-design/`
 - **Snapshot date:** `2026-08-14`
-- **Snapshot status:** Slice 4 of 6 — identity/licensing metadata and the complete `references/**`, `scripts/**`, and `assets/**` trees are present; this is a complete skill snapshot. Only client-specific and upstream repository content outside the Agent Skill, listed below, remains excluded.
+- **Snapshot status:** Slice 4 of 6 — identity/licensing metadata and the complete `references/**`,
+  `scripts/**`, and `assets/**` trees are present; this is a complete skill snapshot. Only
+  client-specific and upstream repository content outside the Agent Skill, listed below, remains
+  excluded.
 
 `SKILL.md` is copied byte-for-byte from the pinned upstream commit. The complete `references/**`,
 `scripts/**`, and `assets/**` trees are also copied byte-for-byte, preserving the upstream relative
@@ -63,11 +66,11 @@ This snapshot is no longer byte-for-byte identical to the pinned commit. Every d
 documentation-only, changes no recipe, limit, token, or connector rule, and exists because the
 pinned text resolves paths that only work inside the upstream repository root:
 
-| File | Change | Reason |
-|---|---|---|
-| `SKILL.md` §6 rule 6 | Replaced `python3 scripts/verify-geometry.py <file>` with an instruction to verify by inspection. | The verifier is upstream root tooling (see *Excluded upstream content*), not part of the skill subtree. |
-| `SKILL.md` §9 checklist | Same replacement for the geometry item; motion item now points at `self_check.py` plus manual checks instead of `verify-motion.py` and the skin linter. | Same cause; both tools are absent from the subtree. |
-| `references/animation.md` | Export-and-verification block now calls the packaged `self_check.py` and states plainly that `verify-motion.py`, `test-verify-motion.py`, and `lint-skin.py` are not shipped. | The original block presented three commands that cannot resolve from an installed skill. |
+| File                      | Change                                                                                                                                                                        | Reason                                                                                                  |
+|---------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `SKILL.md` §6 rule 6      | Replaced `python3 scripts/verify-geometry.py <file>` with an instruction to verify by inspection.                                                                             | The verifier is upstream root tooling (see *Excluded upstream content*), not part of the skill subtree. |
+| `SKILL.md` §9 checklist   | Same replacement for the geometry item; motion item now points at `self_check.py` plus manual checks instead of `verify-motion.py` and the skin linter.                       | Same cause; both tools are absent from the subtree.                                                     |
+| `references/animation.md` | Export-and-verification block now calls the packaged `self_check.py` and states plainly that `verify-motion.py`, `test-verify-motion.py`, and `lint-skin.py` are not shipped. | The original block presented three commands that cannot resolve from an installed skill.                |
 
 Upstream report: the skill docs should qualify those three commands as repository-only, the same way
 `SKILL.md` §9 already says "In this repository".

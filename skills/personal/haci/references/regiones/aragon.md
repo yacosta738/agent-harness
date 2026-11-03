@@ -10,8 +10,8 @@ oficial: https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-follet
 ### 1. Por nacimiento o adopción
 
 - Cuantía básica: 500 euros
-- Incrementada: 600 euros si base imponible no supera 21.000 euros (individual) o 35.000 euros (
-  conjunta)
+- Incrementada: 600 euros si base imponible no supera 21.000 euros (individual) o 35.000 euros
+  (conjunta)
 - Zonas despobladas: 600 euros, incrementable a 720 euros con límites de renta
 
 ### 2. Por arrendamiento de vivienda social (dación en pago)

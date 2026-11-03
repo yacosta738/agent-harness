@@ -1,10 +1,16 @@
 ## Overview
-To apply a transparency gradient to the edges of a container (e.g., to indicate more content is available to scroll or to fade out text), use CSS Masking with a linear gradient. This approach is superior to using a semi-transparent overlay because it actually fades the content itself, allowing the background to show through naturally without interfering with text selection or pointer events.
+
+To apply a transparency gradient to the edges of a container (e.g., to indicate more content is
+available to scroll or to fade out text), use CSS Masking with a linear gradient. This approach is
+superior to using a semi-transparent overlay because it actually fades the content itself, allowing
+the background to show through naturally without interfering with text selection or pointer events.
 
 ## Implementation
+
 To implement a soft edge fade:
 
 ### Fading the bottom edge of a container
+
 This is useful for indicating that there is more content below in a scrollable area.
 
 ```css
@@ -21,6 +27,7 @@ This is useful for indicating that there is more content below in a scrollable a
 ```
 
 ### Fading both top and bottom edges
+
 You can use a single gradient with multiple color stops to fade both edges.
 
 ```css
@@ -32,13 +39,18 @@ You can use a single gradient with multiple color stops to fade both edges.
 ```
 
 ## Fallback strategies
+
 Baseline status for Masks: Newly available. It's been Baseline since 2023-12-07.
-Supported by: Chrome 120 (Dec 2023), Edge 120 (Dec 2023), Firefox 53 (Apr 2017), and Safari 15.4 (Mar 2022).
+Supported by: Chrome 120 (Dec 2023), Edge 120 (Dec 2023), Firefox 53 (Apr 2017), and Safari 15.4
+(Mar 2022).
 
 If a browser does not support `mask-image` or the prefixed version:
+
 - The content will not fade and will display with sharp edges.
-- Ensure the interface is still functional and content is readable without the fade (progressive enhancement).
-- You can use a semi-transparent overlay as a fallback, but be aware it requires knowing the background color and may interfere with text selection unless `pointer-events: none` is used.
+- Ensure the interface is still functional and content is readable without the fade (progressive
+  enhancement).
+- You can use a semi-transparent overlay as a fallback, but be aware it requires knowing the
+  background color and may interfere with text selection unless `pointer-events: none` is used.
 
 ```css
 /* Fallback using an overlay for browsers that do not support masking */

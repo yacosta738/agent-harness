@@ -41,18 +41,18 @@ The threat model must make obvious:
    stop here — return its path and a one-line summary.
 3. If a threat model or authoritative security guidance is provided or found
    in the repo (AGENTS.md, SECURITY.md, docs/security, threat-model.md):
-   - Write it exactly to the repository-scoped threat model path.
-   - Treat that file as the only threat model source of truth.
-   - Do not expand, summarize, or reinterpret it.
+    - Write it exactly to the repository-scoped threat model path.
+    - Treat that file as the only threat model source of truth.
+    - Do not expand, summarize, or reinterpret it.
 4. Otherwise, generate a repository-scoped threat model using the structure
    in `references/threat-model-template.md`.
 5. Before finalizing, sanity-check that:
-   - The threat model is repository-scoped, not centered on a single feature
-     or current diff.
-   - It describes repository-wide primary product or runtime surfaces and
-     trust boundaries before any narrower examples.
-   - Vulnerability-class discussion is about repository-context classes, not
-     findings about any current diff.
+    - The threat model is repository-scoped, not centered on a single feature
+      or current diff.
+    - It describes repository-wide primary product or runtime surfaces and
+      trust boundaries before any narrower examples.
+    - Vulnerability-class discussion is about repository-context classes, not
+      findings about any current diff.
 6. Write the threat model to the repository-scoped path.
 
 ## Output Contract

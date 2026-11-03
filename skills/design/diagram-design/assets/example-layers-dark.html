@@ -2,122 +2,178 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>AI app stack · Layer hierarchy</title>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
-      --color-paper:   #2d3142;
-      --color-ink:     #f5f5f5;
-      --color-muted:   #bfc0c0;
-      --color-accent:  #f08a59;
-      --font-sans:     'Geist', system-ui, sans-serif;
-      --font-serif:    'Instrument Serif', serif;
-      --font-mono:     'Geist Mono', ui-monospace, monospace;
+      --color-accent: #f08a59;
+      --color-ink: #f5f5f5;
+      --font-mono: 'Geist Mono', ui-monospace, monospace;
+      --color-muted: #bfc0c0;
+      --color-paper: #2d3142;
+      --font-sans: 'Geist', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', serif;
     }
 
     body {
-      font-family: var(--font-sans);
+      align-items: center;
       background: var(--color-paper);
       color: var(--color-ink);
-      min-height: 100vh;
       display: flex;
-      align-items: center;
+      font-family: var(--font-sans);
       justify-content: center;
+      min-height: 100vh;
       padding: 3rem 2rem;
     }
 
-    .frame { max-width: 1200px; width: 100%; }
+    .frame {
+      max-width: 1200px;
+      width: 100%;
+    }
 
     .eyebrow {
+      color: var(--color-muted);
       font-family: var(--font-mono);
       font-size: 0.66rem;
       font-weight: 500;
       letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--color-muted);
       margin-bottom: 0.5rem;
+      text-transform: uppercase;
     }
 
     h1 {
+      color: var(--color-ink);
       font-family: var(--font-serif);
       font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
       font-weight: 400;
       letter-spacing: -0.02em;
       line-height: 1.15;
-      color: var(--color-ink);
       margin-bottom: 1.5rem;
     }
 
-    svg { width: 100%; min-width: 900px; display: block; }
+    svg {
+      display: block;
+      min-width: 900px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
-  <div class="frame">
-    <p class="eyebrow">Layer stack · Diagram Design</p>
-    <h1>AI app stack · Where the work actually happens</h1>
+<div class="frame">
+  <p class="eyebrow">Layer stack · Diagram Design</p>
+  <h1>AI app stack · Where the work actually happens</h1>
 
-    <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="layers-dark-title layers-dark-desc">
-      <title id="layers-dark-title">AI app stack · Where the work actually happens</title>
-      <desc id="layers-dark-desc">Layer stack showing model weights, SDK, prompts, agent harness, and UI surface, with the agent harness highlighted as the focal layer.</desc>
-        <defs>
-          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.9" fill="rgba(245,245,245,0.10)"/>
-          </pattern>
-        </defs>
+  <svg aria-labelledby="layers-dark-title layers-dark-desc" role="img" viewBox="0 0 1000 500"
+       xmlns="http://www.w3.org/2000/svg">
+    <title id="layers-dark-title">AI app stack · Where the work actually happens</title>
+    <desc id="layers-dark-desc">Layer stack showing model weights, SDK, prompts, agent harness, and
+      UI surface, with the agent harness highlighted as the focal layer.
+    </desc>
+    <defs>
+      <pattern height="22" id="dots" patternUnits="userSpaceOnUse" width="22">
+        <circle cx="1" cy="1" fill="rgba(245,245,245,0.10)" r="0.9"/>
+      </pattern>
+    </defs>
 
-        <rect width="100%" height="100%" fill="#2d3142"/>
-        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+    <rect fill="#2d3142" height="100%" width="100%"/>
+    <rect fill="url(#dots)" height="100%" opacity="0.55" width="100%"/>
 
-        <!-- Direction column (left margin) -->
-        <text x="60" y="68" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">ABSTRACTION</text>
-        <line x1="80" y1="80" x2="80" y2="400" stroke="rgba(245,245,245,0.30)" stroke-width="1"/>
-        <polygon points="76,80 84,80 80,72" fill="#bfc0c0"/>
-        <text x="60" y="416" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">SILICON</text>
+    <!-- Direction column (left margin) -->
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em" x="60"
+          y="68">ABSTRACTION
+    </text>
+    <line stroke="rgba(245,245,245,0.30)" stroke-width="1" x1="80" x2="80" y1="80" y2="400"/>
+    <polygon fill="#bfc0c0" points="76,80 84,80 80,72"/>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em" x="60"
+          y="416">SILICON
+    </text>
 
-        <!-- Stack container hairlines (top + bottom edges) -->
-        <line x1="120" y1="80" x2="960" y2="80" stroke="rgba(245,245,245,0.12)" stroke-width="1"/>
-        <line x1="120" y1="400" x2="960" y2="400" stroke="rgba(245,245,245,0.12)" stroke-width="1"/>
+    <!-- Stack container hairlines (top + bottom edges) -->
+    <line stroke="rgba(245,245,245,0.12)" stroke-width="1" x1="120" x2="960" y1="80" y2="80"/>
+    <line stroke="rgba(245,245,245,0.12)" stroke-width="1" x1="120" x2="960" y1="400" y2="400"/>
 
-        <!-- L5 — UI (top layer, lifted fill) -->
-        <rect x="120" y="80" width="840" height="64" fill="#393e53"/>
-        <line x1="120" y1="144" x2="960" y2="144" stroke="rgba(245,245,245,0.12)" stroke-width="1"/>
-        <text x="140" y="116" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">L5</text>
-        <text x="260" y="118" fill="#f5f5f5" font-size="16" font-weight="600" font-family="'Geist', sans-serif">UI surface</text>
-        <text x="940" y="118" fill="#bfc0c0" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end" letter-spacing="0.08em">chat, editor, canvas</text>
+    <!-- L5 — UI (top layer, lifted fill) -->
+    <rect fill="#393e53" height="64" width="840" x="120" y="80"/>
+    <line stroke="rgba(245,245,245,0.12)" stroke-width="1" x1="120" x2="960" y1="144" y2="144"/>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.14em" x="140"
+          y="116">L5
+    </text>
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="16" font-weight="600" x="260"
+          y="118">UI surface
+    </text>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="10" letter-spacing="0.08em" text-anchor="end"
+          x="940" y="118">chat, editor, canvas
+    </text>
 
-        <!-- L4 — Agent harness (FOCAL, coral tint + coral stroke) -->
-        <rect x="120" y="144" width="840" height="64" fill="rgba(240,138,89,0.12)"/>
-        <rect x="120" y="144" width="840" height="64" fill="none" stroke="#f08a59" stroke-width="1"/>
-        <text x="140" y="180" fill="#f08a59" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em" font-weight="600">L4</text>
-        <text x="260" y="182" fill="#f5f5f5" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Agent harness</text>
-        <text x="940" y="182" fill="#f08a59" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end" letter-spacing="0.08em">tools, memory, loop</text>
+    <!-- L4 — Agent harness (FOCAL, coral tint + coral stroke) -->
+    <rect fill="rgba(240,138,89,0.12)" height="64" width="840" x="120" y="144"/>
+    <rect fill="none" height="64" stroke="#f08a59" stroke-width="1" width="840" x="120" y="144"/>
+    <text fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" font-weight="600" letter-spacing="0.14em"
+          x="140" y="180">L4
+    </text>
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="16" font-weight="600" x="260"
+          y="182">Agent harness
+    </text>
+    <text fill="#f08a59" font-family="'Geist Mono', monospace" font-size="10" letter-spacing="0.08em" text-anchor="end"
+          x="940" y="182">tools, memory, loop
+    </text>
 
-        <!-- L3 — Prompt layer -->
-        <rect x="120" y="208" width="840" height="64" fill="#2d3142"/>
-        <line x1="120" y1="272" x2="960" y2="272" stroke="rgba(245,245,245,0.12)" stroke-width="1"/>
-        <text x="140" y="244" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">L3</text>
-        <text x="260" y="246" fill="#f5f5f5" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Prompt layer</text>
-        <text x="940" y="246" fill="#bfc0c0" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end" letter-spacing="0.08em">system, few-shot, caching</text>
+    <!-- L3 — Prompt layer -->
+    <rect fill="#2d3142" height="64" width="840" x="120" y="208"/>
+    <line stroke="rgba(245,245,245,0.12)" stroke-width="1" x1="120" x2="960" y1="272" y2="272"/>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.14em" x="140"
+          y="244">L3
+    </text>
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="16" font-weight="600" x="260"
+          y="246">Prompt layer
+    </text>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="10" letter-spacing="0.08em" text-anchor="end"
+          x="940" y="246">system, few-shot, caching
+    </text>
 
-        <!-- L2 — SDK -->
-        <rect x="120" y="272" width="840" height="64" fill="#221f1c"/>
-        <line x1="120" y1="336" x2="960" y2="336" stroke="rgba(245,245,245,0.12)" stroke-width="1"/>
-        <text x="140" y="308" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">L2</text>
-        <text x="260" y="310" fill="#f5f5f5" font-size="16" font-weight="600" font-family="'Geist', sans-serif">SDK / client</text>
-        <text x="940" y="310" fill="#bfc0c0" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end" letter-spacing="0.08em">auth, retries, streaming</text>
+    <!-- L2 — SDK -->
+    <rect fill="#221f1c" height="64" width="840" x="120" y="272"/>
+    <line stroke="rgba(245,245,245,0.12)" stroke-width="1" x1="120" x2="960" y1="336" y2="336"/>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.14em" x="140"
+          y="308">L2
+    </text>
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="16" font-weight="600" x="260"
+          y="310">SDK / client
+    </text>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="10" letter-spacing="0.08em" text-anchor="end"
+          x="940" y="310">auth, retries, streaming
+    </text>
 
-        <!-- L1 — Model -->
-        <rect x="120" y="336" width="840" height="64" fill="#221f1c"/>
-        <text x="140" y="372" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.14em">L1</text>
-        <text x="260" y="374" fill="#f5f5f5" font-size="16" font-weight="600" font-family="'Geist', sans-serif">Model weights</text>
-        <text x="940" y="374" fill="#bfc0c0" font-size="10" font-family="'Geist Mono', monospace" text-anchor="end" letter-spacing="0.08em">opus, sonnet, haiku</text>
+    <!-- L1 — Model -->
+    <rect fill="#221f1c" height="64" width="840" x="120" y="336"/>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.14em" x="140"
+          y="372">L1
+    </text>
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="16" font-weight="600" x="260"
+          y="374">Model weights
+    </text>
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="10" letter-spacing="0.08em" text-anchor="end"
+          x="940" y="374">opus, sonnet, haiku
+    </text>
 
-        <!-- Caption -->
-        <text x="120" y="456" fill="#bfc0c0" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">FOCAL LAYER</text>
-        <text x="240" y="456" fill="#bfc0c0" font-size="8.5" font-family="'Geist', sans-serif" font-style="italic">The harness is where most product differentiation actually lives — tools, memory, and the loop that stitches model calls into useful work.</text>
-      </svg>
-  </div>
+    <!-- Caption -->
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em" x="120"
+          y="456">FOCAL LAYER
+    </text>
+    <text fill="#bfc0c0" font-family="'Geist', sans-serif" font-size="8.5" font-style="italic" x="240"
+          y="456">The harness is where most product differentiation actually lives —
+      tools, memory, and the loop that stitches model calls into useful work.
+    </text>
+  </svg>
+</div>
 </body>
 </html>

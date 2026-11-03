@@ -36,7 +36,8 @@ This workflow uses local Git and GitHub CLI:
   docs.
 - Use `reviewable-pr-slices` before pushing/opening a PR when the diff may approach or exceed the
   review budget, default 400 changed lines.
-- Use `github-stacked-prs` when the approved strategy is `github-stacked-prs`; it owns Stack detection,
+- Use `github-stacked-prs` when the approved strategy is `github-stacked-prs`; it owns Stack
+  detection,
   topology, push/link/sync/rebase/merge mechanics. `yeet` retains authorization and scope checks.
 - Preserve `feature-branch-chain` as a separate workflow; do not invoke `gh stack` for it.
 - Use `cognitive-doc-design` when drafting a non-trivial PR body.
@@ -45,7 +46,8 @@ This workflow uses local Git and GitHub CLI:
 
 ### Stack handoff
 
-If `chain_strategy` is `github-stacked-prs`, first hand off to `github-stacked-prs` for detection-only
+If `chain_strategy` is `github-stacked-prs`, first hand off to `github-stacked-prs` for
+detection-only
 preflight and layer validation. Do not stage, commit, push, rebase, or create a PR until it reports
 that `gh >= 2.90`, `github/gh-stack`, authentication, clean state, one repository/remote, linear
 history, and unambiguous Stack/PR state are ready. Missing prerequisites produce these manual

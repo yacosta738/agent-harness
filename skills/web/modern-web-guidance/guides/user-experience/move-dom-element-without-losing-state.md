@@ -1,10 +1,15 @@
-When reparenting DOM elements using traditional methods like `appendChild()` or `insertBefore()`, the browser implicitly removes the element from the DOM and then inserts it into its new location. This "remove and insert" operation resets many internal states, causing `<iframe>` elements to reload, CSS animations to restart, and input fields to lose focus.
+When reparenting DOM elements using traditional methods like `appendChild()` or `insertBefore()`,
+the browser implicitly removes the element from the DOM and then inserts it into its new location.
+This "remove and insert" operation resets many internal states, causing `<iframe>` elements to
+reload, CSS animations to restart, and input fields to lose focus.
 
-To move an element while preserving its state, use the `moveBefore()` API. This method performs an atomic move, completely bypassing the removal and insertion steps.
+To move an element while preserving its state, use the `moveBefore()` API. This method performs an
+atomic move, completely bypassing the removal and insertion steps.
 
 ### Moving an element with state
 
-Use `moveBefore()` exactly as you would use `insertBefore()`. It requires two arguments: the node to move, and a reference node to insert before (or `null` to append to the end of the new parent).
+Use `moveBefore()` exactly as you would use `insertBefore()`. It requires two arguments: the node to
+move, and a reference node to insert before (or `null` to append to the end of the new parent).
 
 ```javascript
 const newParent = document.getElementById('new-parent');
@@ -17,9 +22,11 @@ newParent.moveBefore(elementWithState, null);
 
 ### Moving custom elements (Web Components)
 
-If you are moving custom elements using `moveBefore()`, their `connectedCallback` and `disconnectedCallback` lifecycle methods will **not** be fired.
+If you are moving custom elements using `moveBefore()`, their `connectedCallback` and
+`disconnectedCallback` lifecycle methods will **not** be fired.
 
-If your custom element needs to perform specific logic when moved, implement the `connectedMoveCallback()` method inside the custom element definition.
+If your custom element needs to perform specific logic when moved, implement the
+`connectedMoveCallback()` method inside the custom element definition.
 
 ```javascript
 class MyCustomElement extends HTMLElement {
@@ -36,11 +43,12 @@ class MyCustomElement extends HTMLElement {
 
 ### Fallback strategies
 
-moveBefore() has limited availability.
+moveBefore () has limited availability.
 Supported by: Chrome 133 (Feb 2025), Edge 133 (Feb 2025), and Firefox 144 (Oct 2025).
 Unsupported in: Safari.
 
-Since `moveBefore()` is a progressive enhancement, you MUST use feature detection before calling it, falling back to traditional `insertBefore()` or `appendChild()` operations for older browsers. 
+Since `moveBefore()` is a progressive enhancement, you MUST use feature detection before calling it,
+falling back to traditional `insertBefore()` or `appendChild()` operations for older browsers.
 
 ```javascript
 const targetParent = document.getElementById('target-container');

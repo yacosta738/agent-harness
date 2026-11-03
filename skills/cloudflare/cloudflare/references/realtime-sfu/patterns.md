@@ -21,9 +21,9 @@ Publisher -> Edge A -> Edge B -> Sub1
 
 ## Use Cases
 
-**1:1:** A creates session+publishes, B creates+subscribes to A+publishes, A subscribes to B
-**N:N:** All create session+publish, backend broadcasts track IDs, all subscribe to others
-**1:N:** Publisher creates+publishes, viewers each create+subscribe (no fan-out limit)
+**1:1:** A creates session+publishes, B creates+subscribes to A+publishes, A subscribes to B **N:
+N:** All create session+publish, backend broadcasts track IDs, all subscribe to others **1:N:**
+Publisher creates+publishes, viewers each create+subscribe (no fan-out limit)
 **Breakout:** Same PeerConnection! Backend closes/adds tracks, no recreation
 
 ## PartyTracks (Recommended)
@@ -172,10 +172,10 @@ dc.onopen = () => dc.send(JSON.stringify({type: 'chat', text: 'Hi'}));
 dc.onmessage = (e) => console.log('RX:', JSON.parse(e.data));
 ```
 
-**WHIP/WHEP:** For streaming interop (OBS → SFU, SFU → video players), use WHIP (ingest) and WHEP (
-egress) protocols. See Cloudflare Stream integration docs.
+**WHIP/WHEP:** For streaming interop (OBS → SFU, SFU → video players), use WHIP (ingest) and WHEP
+(egress) protocols. See Cloudflare Stream integration docs.
 
 Integrations: R2 for recording `env.R2_BUCKET.put(...)`, Queues for analytics
 
-Perf: 100-250ms connect, ~50ms latency (95%), 200-400ms glass-to-glass, no participant limit (
-client: 10-50 tracks)
+Perf: 100-250ms connect, ~50ms latency (95%), 200-400ms glass-to-glass, no participant limit
+(client: 10-50 tracks)

@@ -1,6 +1,6 @@
 ## Critical Gotchas
 
-### ⚠️ WebSocket: fetch() vs containerFetch()
+### ⚠️ WebSocket: fetch () vs containerFetch ()
 
 **Problem:** WebSocket connections fail silently
 
@@ -16,7 +16,7 @@ return container.containerFetch(request);
 return container.fetch(request);
 ```
 
-### ⚠️ startAndWaitForPorts() vs start()
+### ⚠️ startAndWaitForPorts () vs start ()
 
 **Problem:** "connection refused" after `start()`
 
@@ -77,7 +77,7 @@ await this.ctx.blockConcurrencyWhile(async () => {
 
 **Fix:** Keep hooks fast, avoid long operations
 
-### ⚠️ Don't Override alarm() When Using schedule()
+### ⚠️ Don't Override alarm () When Using schedule ()
 
 **Problem:** Scheduled tasks don't execute
 

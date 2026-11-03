@@ -16,10 +16,10 @@ Spectrum handles everything else: SSH, gaming, databases, MQTT, SMTP, RDP, custo
 |-----------------------|---------------------|---------------------|
 | TCP protocols         | Selected ports only | All ports (1-65535) |
 | UDP protocols         | Selected ports only | All ports (1-65535) |
-| Port ranges           | ❌                   | ✅                   |
-| Argo Smart Routing    | ✅                   | ✅                   |
-| IP Firewall           | ✅                   | ✅                   |
-| Load balancer origins | ✅                   | ✅                   |
+| Port ranges           | ❌                  | ✅                  |
+| Argo Smart Routing    | ✅                  | ✅                  |
+| IP Firewall           | ✅                  | ✅                  |
+| Load balancer origins | ✅                  | ✅                  |
 
 ## Decision Tree
 

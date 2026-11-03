@@ -16,8 +16,8 @@ and services.
 - Integration with Cloudflare Tunnel for secure private network access
 - Full control over wire protocols (database protocols, SSH, MQTT, custom TCP)
 
-**Note:** This reference documents the TCP Sockets API. For the newer Workers VPC Services product (
-HTTP-only service bindings with built-in SSRF protection), refer to separate documentation when
+**Note:** This reference documents the TCP Sockets API. For the newer Workers VPC Services product
+(HTTP-only service bindings with built-in SSRF protection), refer to separate documentation when
 available. VPC Services is currently in beta (2025+).
 
 ## Quick Decision: Which Technology?
@@ -118,7 +118,7 @@ See [gotchas.md](./gotchas.md) for complete limits and troubleshooting.
 1. **Always close sockets** - Use try/finally blocks
 2. **Validate destinations** - Prevent SSRF by allowlisting hosts
 3. **Use Hyperdrive for databases** - Better performance than raw TCP
-4. **Prefer fetch() for HTTP** - Only use TCP when necessary
+4. **Prefer fetch () for HTTP** - Only use TCP when necessary
 5. **Combine with Smart Placement** - Reduce latency to private networks
 
 ## Related Technologies

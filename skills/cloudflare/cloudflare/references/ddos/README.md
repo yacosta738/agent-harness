@@ -13,12 +13,12 @@ Autonomous, always-on protection against DDoS attacks across L3/4 and L7.
 
 | Feature             | Free  | Pro   | Business | Enterprise | Enterprise Advanced |
 |---------------------|-------|-------|----------|------------|---------------------|
-| HTTP DDoS (L7)      | ✓     | ✓     | ✓        | ✓          | ✓                   |
-| Network DDoS (L3/4) | ✓     | ✓     | ✓        | ✓          | ✓                   |
+| HTTP DDoS (L7)      | ✓    | ✓    | ✓       | ✓         | ✓                  |
+| Network DDoS (L3/4) | ✓    | ✓    | ✓       | ✓         | ✓                  |
 | Override rules      | 1     | 1     | 1        | 1          | 10                  |
-| Custom expressions  | ✗     | ✗     | ✗        | ✗          | ✓                   |
-| Log action          | ✗     | ✗     | ✗        | ✗          | ✓                   |
-| Adaptive DDoS       | ✗     | ✗     | ✗        | ✓          | ✓                   |
+| Custom expressions  | ✗    | ✗    | ✗       | ✗         | ✓                  |
+| Log action          | ✗    | ✗    | ✗       | ✗         | ✓                  |
+| Adaptive DDoS       | ✗    | ✗    | ✗       | ✓         | ✓                  |
 | Alert filters       | Basic | Basic | Basic    | Advanced   | Advanced            |
 
 ## Actions & Sensitivity

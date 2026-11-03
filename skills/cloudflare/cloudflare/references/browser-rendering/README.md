@@ -37,8 +37,7 @@ data, capturing page metrics, or automating browser interactions.
 | Learning curve | Steeper                      | Gentler                   |
 
 **Use Puppeteer:** Need CDP protocol access, Chrome-specific features, migration from existing
-Puppeteer code
-**Use Playwright:** Modern selector APIs, cross-browser patterns, faster development
+Puppeteer code **Use Playwright:** Modern selector APIs, cross-browser patterns, faster development
 
 ## Tier Limits Summary
 

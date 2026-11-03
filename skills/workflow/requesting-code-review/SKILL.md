@@ -56,7 +56,8 @@ Load `four-r-review` and require findings to be evaluated through:
 - **R3 Reliability** — tests, edge cases, error handling, timeouts
 - **R4 Resilience** — retries, backoff, graceful degradation, observability
 
-The reviewer should not stop at style comments. They must explicitly look for ship-risk, proof of correctness, and dependency failure behavior.
+The reviewer should not stop at style comments. They must explicitly look for ship-risk, proof of
+correctness, and dependency failure behavior.
 
 **4. Act on feedback:**
 

@@ -45,22 +45,22 @@ simulator-specific workflows onto pure macOS tasks.
 - For Xcode, list schemes and prefer the app-producing scheme unless the user names another one.
 - For SwiftPM, identify executable products when possible.
 - Split SwiftPM launch handling by product type:
-  - use raw executable launch only for true command-line tools,
-  - use a generated project-local `.app` bundle for AppKit/SwiftUI GUI apps.
+    - use raw executable launch only for true command-line tools,
+    - use a generated project-local `.app` bundle for AppKit/SwiftUI GUI apps.
 - Determine the app/process name to kill before relaunching.
 
 3. Create or update `script/build_and_run.sh`.
 
 - Make the script project-specific and executable.
 - It should always:
-  1. stop the existing running app/process if present,
-  2. build the macOS target,
-  3. launch the freshly built app or executable.
+    1. stop the existing running app/process if present,
+    2. build the macOS target,
+    3. launch the freshly built app or executable.
 - Add optional flags for debugging/log inspection:
-  - `--debug` to launch under `lldb` or attach the debugger
-  - `--logs` to stream process logs after launch
-  - `--telemetry` to stream unified logs filtered to the app subsystem/category
-  - `--verify` to launch the app and confirm the process exists with `pgrep -x <AppName>`
+    - `--debug` to launch under `lldb` or attach the debugger
+    - `--logs` to stream process logs after launch
+    - `--telemetry` to stream unified logs filtered to the app subsystem/category
+    - `--verify` to launch the app and confirm the process exists with `pgrep -x <AppName>`
 - Keep the default no-flag path simple: kill, build, run.
 - Prefer writing one script that owns this workflow instead of repeatedly asking the agent to
   manually run `swift build`, locate the artifact, then invoke an ad hoc run command.
@@ -122,16 +122,16 @@ simulator-specific workflows onto pure macOS tasks.
 ## Preferred Commands
 
 - Project discovery:
-  - `find . -name '*.xcworkspace' -o -name '*.xcodeproj' -o -name 'Package.swift'`
+    - `find . -name '*.xcworkspace' -o -name '*.xcodeproj' -o -name 'Package.swift'`
 - Scheme discovery:
-  - `xcodebuild -list -workspace <workspace>`
-  - `xcodebuild -list -project <project>`
+    - `xcodebuild -list -workspace <workspace>`
+    - `xcodebuild -list -project <project>`
 - Build/run:
-  - `./script/build_and_run.sh`
-  - `./script/build_and_run.sh --debug`
-  - `./script/build_and_run.sh --logs`
-  - `./script/build_and_run.sh --telemetry`
-  - `./script/build_and_run.sh --verify`
+    - `./script/build_and_run.sh`
+    - `./script/build_and_run.sh --debug`
+    - `./script/build_and_run.sh --logs`
+    - `./script/build_and_run.sh --telemetry`
+    - `./script/build_and_run.sh --verify`
 
 ## References
 

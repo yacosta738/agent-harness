@@ -40,9 +40,9 @@ interface DDoSOverride {
 
 | Plan                | Custom Expressions | Example                                                  |
 |---------------------|--------------------|----------------------------------------------------------|
-| Free/Pro/Business   | ✗                  | Use `"true"` only                                        |
-| Enterprise          | ✗                  | Use `"true"` only                                        |
-| Enterprise Advanced | ✓                  | `ip.src in {...}`, `http.request.uri.path matches "..."` |
+| Free/Pro/Business   | ✗                 | Use `"true"` only                                        |
+| Enterprise          | ✗                 | Use `"true"` only                                        |
+| Enterprise Advanced | ✓                 | `ip.src in {...}`, `http.request.uri.path matches "..."` |
 
 ## Sensitivity Mapping
 
@@ -71,8 +71,8 @@ Individual Rule > Category > Global sensitivity/action
 
 ## Adaptive DDoS Profiles
 
-**Availability**: Enterprise, Enterprise Advanced
-**Learning period**: 7 days of traffic history required
+**Availability**: Enterprise, Enterprise Advanced **Learning period**: 7 days of traffic history
+required
 
 | Profile Type    | Description                          | Detects                                 |
 |-----------------|--------------------------------------|-----------------------------------------|

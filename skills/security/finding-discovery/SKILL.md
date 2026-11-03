@@ -34,37 +34,37 @@ Do not assign final severity here — that is `attack-path-analysis`.
    `$threat-model` first, or to provide sufficient repository-specific
    security guidance to act as one.
 3. Build a coverage plan:
-   - Enumerate the in-scope surfaces (routes, handlers, parsers, stores,
-     auth, queries, exec sinks, file sinks, outbound HTTP).
-   - Enumerate the in-scope attacker inputs from the threat model.
-   - For advisory-seeded scans, write or update `<context_dir>/seed_research.md`
-     with advisory anchors, candidate files/functions, and failed lookups.
+    - Enumerate the in-scope surfaces (routes, handlers, parsers, stores,
+      auth, queries, exec sinks, file sinks, outbound HTTP).
+    - Enumerate the in-scope attacker inputs from the threat model.
+    - For advisory-seeded scans, write or update `<context_dir>/seed_research.md`
+      with advisory anchors, candidate files/functions, and failed lookups.
 4. For repository-wide or scoped-path scans, dispatch discovery work:
-   - Use `codegraph_explore` for symbol-level navigation across files.
-   - Use the `semgrep` MCP for static pattern scanning.
-   - Use the `sonarqube` MCP for prior findings as a starting hypothesis
-     (treat as claims, not proof).
-   - Use the `gh_grep` MCP for real-world usage patterns of suspect APIs.
-   - Optionally spawn `security-engineer` sub-agents for parallel slices.
+    - Use `codegraph_explore` for symbol-level navigation across files.
+    - Use the `semgrep` MCP for static pattern scanning.
+    - Use the `sonarqube` MCP for prior findings as a starting hypothesis (treat as claims, not
+      proof).
+    - Use the `gh_grep` MCP for real-world usage patterns of suspect APIs.
+    - Optionally spawn `security-engineer` sub-agents for parallel slices.
 5. For each in-scope surface, evaluate:
-   - Source: is the input attacker-controlled per the threat model?
-   - Sink: is there a dangerous sink (exec, eval, SQL, path-join,
-     deserialization, outbound HTTP, file write, template eval, redirect,
-     etc.)?
-   - Closest control: what guard exists? Is it absent, bypassed,
-     mis-scoped, or incomplete?
-   - Reachability: is the path plausibly reachable from an in-scope
-     attack surface?
+    - Source: is the input attacker-controlled per the threat model?
+    - Sink: is there a dangerous sink (exec, eval, SQL, path-join,
+      deserialization, outbound HTTP, file write, template eval, redirect,
+      etc.)?
+    - Closest control: what guard exists? Is it absent, bypassed,
+      mis-scoped, or incomplete?
+    - Reachability: is the path plausibly reachable from an in-scope
+      attack surface?
 6. For each technically plausible candidate, append a row to
    `<discovery_dir>/raw_candidates.jsonl` with the shape in
    `references/candidate-schema.md`.
 7. Dedupe:
-   - Two candidates are the same issue only when fixing one would fix the
-     other and they share the same source/control/sink/impact tuple.
-   - Subsumed candidates collapse into the broader one; keep the strongest
-     affected locations from each member.
-   - Independently reachable siblings stay separate (e.g. each `execute`/
-     `executemany` query builder method is its own candidate).
+    - Two candidates are the same issue only when fixing one would fix the
+      other and they share the same source/control/sink/impact tuple.
+    - Subsumed candidates collapse into the broader one; keep the strongest
+      affected locations from each member.
+    - Independently reachable siblings stay separate (e.g. each `execute`/
+      `executemany` query builder method is its own candidate).
 8. Write `<discovery_dir>/finding_discovery_report.md` with the deduped,
    ranked candidate inventory.
 9. For each kept candidate, create
@@ -121,20 +121,20 @@ Return:
 
 - `discovery_report`: absolute path to `finding_discovery_report.md`.
 - `candidates`: list of candidate objects with at minimum:
-  - `candidate_id` (stable, like `disc-001`)
-  - `title`
-  - `affected_locations`: list of `{label, path, lines, detail?}` with
-    labels from `entrypoint | wrapper | root_control | sink |
+    - `candidate_id` (stable, like `disc-001`)
+    - `title`
+    - `affected_locations`: list of `{label, path, lines, detail?}` with
+      labels from `entrypoint | wrapper | root_control | sink |
     concrete_implementation`
-  - `attacker_source`
-  - `sink_or_broken_control`
-  - `impact`
-  - `why_plausible`: short paragraph anchored to code
-  - `closest_control` and why it is absent, bypassed, mis-scoped, or
-    incomplete
-  - `validation_recommended`: `yes` or `no`
-  - `cwe`: list of CWE ids when known
-  - `seed_or_advisory_ref`: optional reference for seeded candidates
+    - `attacker_source`
+    - `sink_or_broken_control`
+    - `impact`
+    - `why_plausible`: short paragraph anchored to code
+    - `closest_control` and why it is absent, bypassed, mis-scoped, or
+      incomplete
+    - `validation_recommended`: `yes` or `no`
+    - `cwe`: list of CWE ids when known
+    - `seed_or_advisory_ref`: optional reference for seeded candidates
 - `coverage_ledger_path`: absolute path to the coverage ledger.
 - `dedupe_summary`: how many raw candidates collapsed into how many
   deduped candidates.

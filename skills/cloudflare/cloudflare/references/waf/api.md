@@ -48,13 +48,13 @@ await client.rulesets.delete({ zone_id: 'zone_id', ruleset_id: 'ruleset_id' });
 
 | Action              | Custom | Managed | Rate Limit | Description                   |
 |---------------------|--------|---------|------------|-------------------------------|
-| `block`             | ✅      | ❌       | ✅          | Block request with 403        |
-| `challenge`         | ✅      | ❌       | ✅          | Show CAPTCHA challenge        |
-| `js_challenge`      | ✅      | ❌       | ✅          | JS-based challenge            |
-| `managed_challenge` | ✅      | ❌       | ✅          | Smart challenge (recommended) |
-| `log`               | ✅      | ❌       | ✅          | Log only, don't block         |
-| `skip`              | ✅      | ❌       | ❌          | Skip rule evaluation          |
-| `execute`           | ❌      | ✅       | ❌          | Deploy managed ruleset        |
+| `block`             | ✅     | ❌      | ✅         | Block request with 403        |
+| `challenge`         | ✅     | ❌      | ✅         | Show CAPTCHA challenge        |
+| `js_challenge`      | ✅     | ❌      | ✅         | JS-based challenge            |
+| `managed_challenge` | ✅     | ❌      | ✅         | Smart challenge (recommended) |
+| `log`               | ✅     | ❌      | ✅         | Log only, don't block         |
+| `skip`              | ✅     | ❌      | ❌         | Skip rule evaluation          |
+| `execute`           | ❌     | ✅      | ❌         | Deploy managed ruleset        |
 
 ### Phases (Execution Order)
 
@@ -201,5 +201,5 @@ Skip rules bypass subsequent rule evaluation. Two skip types:
 }
 ```
 
-**Note**: Skip rules in custom phase can skip managed/ratelimit phases, but not vice versa (
-execution order).
+**Note**: Skip rules in custom phase can skip managed/ratelimit phases, but not vice versa
+(execution order).

@@ -24,9 +24,11 @@ From the orchestrator:
 ## Execution and Persistence Contract
 
 > Follow **Section B** (retrieval) and **Section C** (persistence) from
-`../_shared/sdd-phase-common.md`.
+> `../_shared/sdd-phase-common.md`.
 
-- **openspec**: Read and follow `../_shared/openspec-convention.md`. Require both `verify-report.md` and `qa-report.md`, evaluate the acceptance release gate, then perform merge and archive folder moves.
+- **openspec**: Read and follow `../_shared/openspec-convention.md`. Require both `verify-report.md`
+  and `qa-report.md`, evaluate the acceptance release gate, then perform merge and archive folder
+  moves.
 
 ## What to Do
 
@@ -36,7 +38,12 @@ Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
 ### Step 2: Validate the Two-Report Acceptance Gate
 
-The lifecycle is `apply → verify → qa → archive`. Before syncing or moving the change, require both `verify-report.md` and `qa-report.md` at the change root. Verification must be `PASS` or `PASS WITH WARNINGS`; block missing reports, failed verification, QA `FAIL`, unresolved `CRITICAL`/P0/P1 findings, and acceptance-relevant `BLOCKED`/`NOT TESTED`. Documentation/config-only changes may proceed only with an explicit rationale and visible warning; preserve the original QA verdict and evidence. P2/P3 findings are warnings unless configuration says otherwise.
+The lifecycle is `apply → verify → qa → archive`. Before syncing or moving the change, require both
+`verify-report.md` and `qa-report.md` at the change root. Verification must be `PASS` or
+`PASS WITH WARNINGS`; block missing reports, failed verification, QA `FAIL`, unresolved `CRITICAL`
+/P0/P1 findings, and acceptance-relevant `BLOCKED`/`NOT TESTED`. Documentation/config-only changes
+may proceed only with an explicit rationale and visible warning; preserve the original QA verdict
+and evidence. P2/P3 findings are warnings unless configuration says otherwise.
 
 ### Step 3: Sync Delta Specs to Main Specs
 
@@ -123,8 +130,10 @@ Ready for the next change.
 
 ## Rules
 
-- NEVER archive a change with missing reports, failed verification, QA `FAIL`, or unresolved `CRITICAL`, `P0`, or `P1` findings
-- Acceptance-relevant QA `BLOCKED`/`NOT TESTED` blocks archive unless config permits a documented non-runtime exception; preserve the original verdict
+- NEVER archive a change with missing reports, failed verification, QA `FAIL`, or unresolved
+  `CRITICAL`, `P0`, or `P1` findings
+- Acceptance-relevant QA `BLOCKED`/`NOT TESTED` blocks archive unless config permits a documented
+  non-runtime exception; preserve the original verdict
 - ALWAYS sync delta specs BEFORE moving to archive
 - When merging into existing specs, PRESERVE requirements not mentioned in the delta
 - Use ISO date format (YYYY-MM-DD) for archive folder prefix

@@ -1,17 +1,27 @@
 # Animate to Intrinsic Sizes
 
-Animating elements to dynamic sizes like `block-size: auto` or `inline-size: max-content` has historically required JavaScript or fragile "max-height" hacks. The `interpolate-size` property and `calc-size()` function allow the browser to natively interpolate between fixed lengths and intrinsic sizing keywords.
+Animating elements to dynamic sizes like `block-size: auto` or `inline-size: max-content` has
+historically required JavaScript or fragile "max-height" hacks. The `interpolate-size` property and
+`calc-size()` function allow the browser to natively interpolate between fixed lengths and intrinsic
+sizing keywords.
 
 ## Implementation steps
 
-1.  **Opt-in to keyword interpolation**: Apply `interpolate-size: allow-keywords` to a parent element (typically `:root`) to enable transitions for properties using intrinsic keywords.
-2.  **Define the transition**: Set a `transition` for the sizing property (e.g., `block-size`, `inline-size`) on the target element.
-3.  **Use intrinsic keywords**: Change the sizing property to a supported intrinsic keyword—`auto`, `min-content`, `max-content`, `fit-content`, or (for flex-basis) `content`—during an interaction (e.g., `:hover` or a state class).
-4.  **Perform calculations (Optional)**: Use `calc-size()` if you need to perform math on an intrinsic size (e.g., `auto + 2rem`). `calc-size()` also supports the `any` keyword for basis-agnostic calculations.
+1. **Opt-in to keyword interpolation**: Apply `interpolate-size: allow-keywords` to a parent element
+   (typically `:root`) to enable transitions for properties using intrinsic keywords.
+2. **Define the transition**: Set a `transition` for the sizing property (e.g., `block-size`,
+   `inline-size`) on the target element.
+3. **Use intrinsic keywords**: Change the sizing property to a supported intrinsic keyword—`auto`,
+   `min-content`, `max-content`, `fit-content`, or (for flex-basis) `content`—during an interaction
+   (e.g., `:hover` or a state class).
+4. **Perform calculations (Optional)**: Use `calc-size()` if you need to perform math on an
+   intrinsic size (e.g., `auto + 2rem`). `calc-size()` also supports the `any` keyword for
+   basis-agnostic calculations.
 
 ## Example: Generic Expansion Pattern
 
-You can apply this pattern to any container (like a "Show More" section or a navigation menu) to transition between a restricted height and the element's natural size.
+You can apply this pattern to any container (like a "Show More" section or a navigation menu) to
+transition between a restricted height and the element's natural size.
 
 ```css
 /* Opt-in globally for all children */
@@ -54,7 +64,8 @@ You can apply this pattern to any container (like a "Show More" section or a nav
 
 ## Example: Transition from Intrinsic to Fixed
 
-You can also animate in the opposite direction—starting from a natural size and collapsing to a specific length. This is useful for "dismissible" components.
+You can also animate in the opposite direction—starting from a natural size and collapsing to a
+specific length. This is useful for "dismissible" components.
 
 ```css
 .collapsible-alert {
@@ -100,23 +111,32 @@ triggerBtn?.addEventListener('click', () => {
 
 ## Key constraints
 
-*   **Keyword-to-Keyword Restriction**: You cannot animate between two different keywords directly (e.g., from `min-content` to `max-content`). One end of the transition must be a fixed length or percentage (e.g., `0` to `auto`).
-*   **Calc-size Syntax**: Inside `calc-size()`, you cannot mix different intrinsic keywords in the same expression. The first argument (the basis) defines what `size` represents.
-*   **Opt-in Requirement**: Transitions to intrinsic keywords are disabled by default (`numeric-only`) to maintain backward compatibility. You must apply `interpolate-size: allow-keywords` to the element or an ancestor. `calc-size()` acts as a per-property override, automatically enabling interpolation whenever it is used.
+* **Keyword-to-Keyword Restriction**: You cannot animate between two different keywords directly
+  (e.g., from `min-content` to `max-content`). One end of the transition must be a fixed length or
+  percentage (e.g., `0` to `auto`).
+* **Calc-size Syntax**: Inside `calc-size()`, you cannot mix different intrinsic keywords in the
+  same expression. The first argument (the basis) defines what `size` represents.
+* **Opt-in Requirement**: Transitions to intrinsic keywords are disabled by default (`numeric-only`)
+  to maintain backward compatibility. You must apply `interpolate-size: allow-keywords` to the
+  element or an ancestor. `calc-size()` acts as a per-property override, automatically enabling
+  interpolation whenever it is used.
 
 ## Fallback strategies
 
 interpolate-size has limited availability.
 Supported by: Chrome 129 (Sep 2024) and Edge 129 (Sep 2024).
 Unsupported in: Firefox and Safari.
-calc-size() has limited availability.
+calc-size () has limited availability.
 Supported by: Chrome 129 (Sep 2024) and Edge 129 (Sep 2024).
 Unsupported in: Firefox and Safari.
 
-`interpolate-size` and `calc-size()` are progressive enhancements. Browsers that do not support them will perform an instant jump to the target size.
+`interpolate-size` and `calc-size()` are progressive enhancements. Browsers that do not support them
+will perform an instant jump to the target size.
 
-*   **Graceful Degradation**: For simple `block-size: auto` transitions, standard browsers will simply toggle the size instantly, which is functional but less polished.
-*   **Manual keyword fallbacks**: When using `calc-size()`, always provide a standard keyword fallback for older browsers, as they will discard the entire `calc-size()` declaration.
+* **Graceful Degradation**: For simple `block-size: auto` transitions, standard browsers will simply
+  toggle the size instantly, which is functional but less polished.
+* **Manual keyword fallbacks**: When using `calc-size()`, always provide a standard keyword fallback
+  for older browsers, as they will discard the entire `calc-size()` declaration.
 
 ```css
 .card {

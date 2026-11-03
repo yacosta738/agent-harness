@@ -2,7 +2,9 @@
 
 ## Quick: Omit icons
 
-If generating real icon files is impractical, **omit `icons` and `default_icon` from manifest.json entirely**. Chrome uses a default puzzle-piece icon. This is always better than referencing files that don't exist.
+If generating real icon files is impractical, **omit `icons` and `default_icon` from manifest.json
+entirely**. Chrome uses a default puzzle-piece icon. This is always better than referencing files
+that don't exist.
 
 ## Generate with Python (Pillow)
 

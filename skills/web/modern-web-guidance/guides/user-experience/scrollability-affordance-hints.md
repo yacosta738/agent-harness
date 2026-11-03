@@ -1,6 +1,9 @@
 ## Overview
 
-Visual hints, like shadows or gradients, help users understand that they can scroll to see more content. This guide shows how to build these hints using CSS `container-scroll-state-queries`, which allows styling elements based on the scrollable state of their container without relying on JavaScript scroll listeners or observers.
+Visual hints, like shadows or gradients, help users understand that they can scroll to see more
+content. This guide shows how to build these hints using CSS `container-scroll-state-queries`, which
+allows styling elements based on the scrollable state of their container without relying on
+JavaScript scroll listeners or observers.
 
 ## Implementation
 
@@ -19,7 +22,9 @@ The scroll container must be declared as a scroll-state query container.
 
 ### 2. Style the Indicators
 
-Place the indicator elements (like shadows, gradients, or arrows) inside the container and style them. By default, they should not be visible. When they are shown, they should not be interactive, by setting `pointer-events: none`.
+Place the indicator elements (like shadows, gradients, or arrows) inside the container and style
+them. By default, they should not be visible. When they are shown, they should not be interactive,
+by setting `pointer-events: none`.
 
 ```css
 .indicator-top, .indicator-bottom {
@@ -45,7 +50,8 @@ Place the indicator elements (like shadows, gradients, or arrows) inside the con
 
 ### 3. Query the Scroll State
 
-Use the `@container` rule with the `scroll-state` function. Check if the container is scrollable up or down to show the respective indicator.
+Use the `@container` rule with the `scroll-state` function. Check if the container is scrollable up
+or down to show the respective indicator.
 
 ```css
 /* Show top indicator when the user can scroll up */
@@ -70,10 +76,14 @@ Supported by: Chrome 133 (Feb 2025) and Edge 133 (Feb 2025).
 Unsupported in: Firefox and Safari.
 
 ### Basic Fallback
-If the feature is not supported, the indicators will remain invisible. Since these are hints and not critical for functionality, it is acceptable to omit them in unsupported browsers.
+
+If the feature is not supported, the indicators will remain invisible. Since these are hints and not
+critical for functionality, it is acceptable to omit them in unsupported browsers.
 
 ### Advanced Fallback (Intersection Observer)
-If the hints are required, use an `IntersectionObserver` to toggle classes when sentinel elements at the top and bottom of the scroller move in and out of the scrollport.
+
+If the hints are required, use an `IntersectionObserver` to toggle classes when sentinel elements at
+the top and bottom of the scroller move in and out of the scrollport.
 
 ```html
 <!-- Sentinel elements placed at the ends of the scroller -->

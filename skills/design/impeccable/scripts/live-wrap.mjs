@@ -13,17 +13,19 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { isGeneratedFile } from './lib/is-generated.mjs';
-import { resolveLiveTemplateExtensions } from './lib/template-extensions.mjs';
-import { readBuffer as readManualEditsBuffer } from './live/manual-edits-buffer.mjs';
-import { findSourceFile } from './live/source-search.mjs';
-import { resolveSourceTraits } from './live/frameworks/index.mjs';
+import {isGeneratedFile} from './lib/is-generated.mjs';
+import {resolveLiveTemplateExtensions} from './lib/template-extensions.mjs';
+import {
+  readBuffer as readManualEditsBuffer
+} from './live/manual-edits-buffer.mjs';
+import {findSourceFile} from './live/source-search.mjs';
+import {resolveSourceTraits} from './live/frameworks/index.mjs';
 import {
   buildSvelteComponentCssAuthoring,
   scaffoldSvelteComponentSession,
   shouldUseSvelteComponentInjection,
 } from './live/svelte-component.mjs';
-import { enterLiveRoot } from './live/roots.mjs';
+import {enterLiveRoot} from './live/roots.mjs';
 
 export async function wrapCli() {
   const args = process.argv.slice(2);
@@ -78,7 +80,10 @@ The agent should insert variant HTML at insertLine.`);
   // a no-op on the svelte-component path, which never writes the route source.
   const deferSourceWrite = args.includes('--defer-source-write');
 
-  if (!id) { console.error('Missing --id'); process.exit(1); }
+  if (!id) {
+    console.error('Missing --id');
+    process.exit(1);
+  }
   if (!elementId && !classes && !query) {
     console.error('Need at least one of: --element-id, --classes, --query');
     process.exit(1);
@@ -87,7 +92,7 @@ The agent should insert variant HTML at insertLine.`);
   // Build search queries in priority order (most specific first)
   const queries = buildSearchQueries(elementId, classes, tag, query);
 
-  const genOpts = { cwd: process.cwd() };
+  const genOpts = {cwd: process.cwd()};
 
   // Find the source file. Generated files are excluded from auto-search so we
   // don't silently write variants into a file the next build will wipe.
@@ -96,7 +101,10 @@ The agent should insert variant HTML at insertLine.`);
   if (!targetFile) {
     for (const q of queries) {
       targetFile = findFileWithQuery(q, process.cwd(), genOpts);
-      if (targetFile) { matchedQuery = q; break; }
+      if (targetFile) {
+        matchedQuery = q;
+        break;
+      }
     }
     if (!targetFile) {
       // Nothing in source. Did the element show up in a generated file? That
@@ -104,8 +112,11 @@ The agent should insert variant HTML at insertLine.`);
       // doesn't exist in this project."
       let generatedHit = null;
       for (const q of queries) {
-        generatedHit = findFileWithQuery(q, process.cwd(), { ...genOpts, includeGenerated: true });
-        if (generatedHit) break;
+        generatedHit = findFileWithQuery(q, process.cwd(),
+            {...genOpts, includeGenerated: true});
+        if (generatedHit) {
+          break;
+        }
       }
       if (generatedHit) {
         console.error(JSON.stringify({
@@ -128,7 +139,8 @@ The agent should insert variant HTML at insertLine.`);
       console.error(JSON.stringify({
         error: 'file_is_generated',
         fallback: 'agent-driven',
-        file: path.relative(process.cwd(), path.resolve(process.cwd(), targetFile)),
+        file: path.relative(process.cwd(),
+            path.resolve(process.cwd(), targetFile)),
         hint: 'Explicit --file points at a generated file. Writing here gets wiped by the next build. See "Handle fallback" in live.md.',
       }));
       process.exit(1);
@@ -156,10 +168,15 @@ The agent should insert variant HTML at insertLine.`);
       // Once a more-specific query (ID, full className combo) yielded a unique
       // result, stop — falling through to the loose tag+single-class query
       // would readmit the siblings we just disambiguated past.
-      if (candidates.length === 1) break;
+      if (candidates.length === 1) {
+        break;
+      }
     }
     if (candidates.length === 0) {
-      console.error(JSON.stringify({ error: 'Found file but could not locate element in ' + targetFile + '. Searched for: ' + queries.join(', ') }));
+      console.error(JSON.stringify({
+        error: 'Found file but could not locate element in ' + targetFile
+            + '. Searched for: ' + queries.join(', ')
+      }));
       process.exit(1);
     }
     if (candidates.length === 1) {
@@ -212,15 +229,20 @@ The agent should insert variant HTML at insertLine.`);
   } else {
     for (const q of queries) {
       match = findElement(lines, q, tag);
-      if (match) break;
+      if (match) {
+        break;
+      }
     }
     if (!match) {
-      console.error(JSON.stringify({ error: 'Found file but could not locate element in ' + targetFile + '. Searched for: ' + queries.join(', ') }));
+      console.error(JSON.stringify({
+        error: 'Found file but could not locate element in ' + targetFile
+            + '. Searched for: ' + queries.join(', ')
+      }));
       process.exit(1);
     }
   }
 
-  const { startLine, endLine } = match;
+  const {startLine, endLine} = match;
   const commentSyntax = detectCommentSyntax(targetFile);
   const styleMode = detectStyleMode(targetFile);
   const isJsx = commentSyntax.open === '{/*';
@@ -246,11 +268,15 @@ The agent should insert variant HTML at insertLine.`);
   // Without it, fail if pending edits plausibly touch this exact source range;
   // otherwise skip buffer awareness so unrelated staged edits on another page
   // do not block normal wrap work.
-  let pendingBuffer = { entries: [] };
-  try { pendingBuffer = readManualEditsBuffer(process.cwd()); } catch {}
+  let pendingBuffer = {entries: []};
+  try {
+    pendingBuffer = readManualEditsBuffer(process.cwd());
+  } catch {
+  }
   const pendingEntriesForTarget = pageUrl
-    ? []
-    : pendingEntriesThatMayAffectWrap(pendingBuffer.entries, targetFile, originalLines, startLine, process.cwd());
+      ? []
+      : pendingEntriesThatMayAffectWrap(pendingBuffer.entries, targetFile,
+          originalLines, startLine, process.cwd());
   if (pendingEntriesForTarget.length > 0) {
     console.error(JSON.stringify({
       error: 'missing_page_url_with_pending_edits',
@@ -262,15 +288,21 @@ The agent should insert variant HTML at insertLine.`);
   if (pageUrl) {
     const failedBufferedOps = [];
     for (const entry of pendingBuffer.entries || []) {
-      if (entry.pageUrl !== pageUrl) continue;
+      if (entry.pageUrl !== pageUrl) {
+        continue;
+      }
       for (const op of entry.ops || []) {
-        const mayAffectWrap = manualEditMayAffectWrap(op, targetFile, originalLines, startLine, process.cwd());
-        const result = applyBufferedManualEditToLines(originalLines, startLine, op);
+        const mayAffectWrap = manualEditMayAffectWrap(op, targetFile,
+            originalLines, startLine, process.cwd());
+        const result = applyBufferedManualEditToLines(originalLines, startLine,
+            op);
         if (result.changed) {
           originalLines = result.lines;
           continue;
         }
-        if (!mayAffectWrap) continue;
+        if (!mayAffectWrap) {
+          continue;
+        }
         failedBufferedOps.push({
           entryId: entry.id,
           ref: op?.ref || null,
@@ -291,19 +323,23 @@ The agent should insert variant HTML at insertLine.`);
 
   const originalBaseIndent = minLeadingSpaces(originalLines);
   const reindentOriginal = (extra) => originalLines
-    .map((l) => (l.trim() === '' ? '' : indent + extra + l.slice(originalBaseIndent)))
-    .join('\n');
+      .map((l) => (l.trim() === '' ? '' : indent + extra + l.slice(
+          originalBaseIndent)))
+      .join('\n');
   const originalIndented = reindentOriginal('    ');
-  const relTargetFile = path.relative(process.cwd(), targetFile).split(path.sep).join('/');
+  const relTargetFile = path.relative(process.cwd(), targetFile).split(
+      path.sep).join('/');
   // The registry says which files get component preview; the svelte-component
   // module keeps the env escape hatch that turns it off.
-  const useSvelteComponent = resolveSourceTraits(targetFile).preview === 'component'
-    && shouldUseSvelteComponentInjection(targetFile);
+  const useSvelteComponent = resolveSourceTraits(targetFile).preview
+      === 'component'
+      && shouldUseSvelteComponentInjection(targetFile);
 
   // Wrapper attributes differ by syntax. HTML allows plain string attrs;
   // JSX requires object-literal style and parses string attrs as HTML (which
   // either type-errors or renders a literal CSS string).
-  const styleContents = isJsx ? 'style={{ display: "contents" }}' : 'style="display: contents"';
+  const styleContents = isJsx ? 'style={{ display: "contents" }}'
+      : 'style="display: contents"';
 
   // JSX/TSX guard: the picked element occupies a single JSX child slot
   // (inside `return (...)`, an array `.map(...)`, an `asChild` branch, or
@@ -318,31 +354,42 @@ The agent should insert variant HTML at insertLine.`);
   // replacement range to include the wrapper's `<div>` open / close lines
   // so the entire scaffold gets removed cleanly.
   const wrapperLines = isJsx ? [
-    indent + '<div data-impeccable-variants="' + id + '" data-impeccable-variant-count="' + count + '"' + ' ' + styleContents + '>',
-    indent + '  ' + commentSyntax.open + ' impeccable-variants-start ' + id + ' ' + commentSyntax.close,
+    indent + '<div data-impeccable-variants="' + id
+    + '" data-impeccable-variant-count="' + count + '"' + ' ' + styleContents
+    + '>',
+    indent + '  ' + commentSyntax.open + ' impeccable-variants-start ' + id
+    + ' ' + commentSyntax.close,
     indent + '  ' + commentSyntax.open + ' Original ' + commentSyntax.close,
     indent + '  <div data-impeccable-variant="original">',
     reindentOriginal('    '),
     indent + '  </div>',
-    indent + '  ' + commentSyntax.open + ' Variants: insert below this line ' + commentSyntax.close,
-    indent + '  ' + commentSyntax.open + ' impeccable-variants-end ' + id + ' ' + commentSyntax.close,
+    indent + '  ' + commentSyntax.open + ' Variants: insert below this line '
+    + commentSyntax.close,
+    indent + '  ' + commentSyntax.open + ' impeccable-variants-end ' + id + ' '
+    + commentSyntax.close,
     indent + '</div>',
   ] : [
-    indent + commentSyntax.open + ' impeccable-variants-start ' + id + ' ' + commentSyntax.close,
-    indent + '<div data-impeccable-variants="' + id + '" data-impeccable-variant-count="' + count + '"' + ' ' + styleContents + '>',
+    indent + commentSyntax.open + ' impeccable-variants-start ' + id + ' '
+    + commentSyntax.close,
+    indent + '<div data-impeccable-variants="' + id
+    + '" data-impeccable-variant-count="' + count + '"' + ' ' + styleContents
+    + '>',
     indent + '  ' + commentSyntax.open + ' Original ' + commentSyntax.close,
     indent + '  <div data-impeccable-variant="original">',
     originalIndented,
     indent + '  </div>',
-    indent + '  ' + commentSyntax.open + ' Variants: insert below this line ' + commentSyntax.close,
+    indent + '  ' + commentSyntax.open + ' Variants: insert below this line '
+    + commentSyntax.close,
     indent + '</div>',
-    indent + commentSyntax.open + ' impeccable-variants-end ' + id + ' ' + commentSyntax.close,
+    indent + commentSyntax.open + ' impeccable-variants-end ' + id + ' '
+    + commentSyntax.close,
   ];
 
   let outputFile = targetFile;
   let outputLines;
   let outputStartLine = startLine + 1;
-  let outputEndLine = startLine + wrapperLines.length + (originalLines.length - 1);
+  let outputEndLine = startLine + wrapperLines.length + (originalLines.length
+      - 1);
   let insertLine;
   let svelteSession = null;
   let deferredWrapper = null;
@@ -412,12 +459,15 @@ The agent should insert variant HTML at insertLine.`);
     insertLine = startLine + 6 + (originalLines.length - 1) + 1;
   }
 
-  const outputRelFile = path.relative(process.cwd(), outputFile).split(path.sep).join('/');
+  const outputRelFile = path.relative(process.cwd(), outputFile).split(
+      path.sep).join('/');
 
   const componentPreviewActive = !!svelteSession;
-  const svelteComponentAuthoring = componentPreviewActive ? buildSvelteComponentCssAuthoring(count) : null;
+  const svelteComponentAuthoring = componentPreviewActive
+      ? buildSvelteComponentCssAuthoring(count) : null;
   const componentSession = svelteSession;
-  const componentPreviewMode = componentPreviewActive ? 'svelte-component' : undefined;
+  const componentPreviewMode = componentPreviewActive ? 'svelte-component'
+      : undefined;
   const previewMode = componentPreviewMode;
 
   console.log(JSON.stringify({
@@ -425,15 +475,17 @@ The agent should insert variant HTML at insertLine.`);
     sourceFile: componentPreviewActive ? relTargetFile : undefined,
     previewMode,
     previewFallback: sveltePreviewFallback
-      ? { from: 'svelte-component', reason: sveltePreviewFallback }
-      : undefined,
+        ? {from: 'svelte-component', reason: sveltePreviewFallback}
+        : undefined,
     // Deferred source write: the wrapper is NOT yet in source. The agent
     // replaces [replaceStartLine, replaceEndLine] with `wrapperBlock` (variants
     // spliced at the "insert below this line" marker) in one atomic edit.
     sourceWritten: deferredWrapper ? false : undefined,
     wrapperBlock: deferredWrapper ? deferredWrapper.block : undefined,
-    replaceStartLine: deferredWrapper ? deferredWrapper.replaceStartLine : undefined,
-    replaceEndLine: deferredWrapper ? deferredWrapper.replaceEndLine : undefined,
+    replaceStartLine: deferredWrapper ? deferredWrapper.replaceStartLine
+        : undefined,
+    replaceEndLine: deferredWrapper ? deferredWrapper.replaceEndLine
+        : undefined,
     componentDir: componentSession?.componentDir,
     propContract: componentSession?.propContract,
     componentStubMarkup: componentSession?.stubMarkup,
@@ -450,8 +502,10 @@ The agent should insert variant HTML at insertLine.`);
     commentSyntax: commentSyntax,
     styleMode: componentPreviewMode || styleMode.mode,
     styleTag: componentPreviewActive ? null : styleMode.styleTag,
-    cssSelectorPrefixExamples: componentPreviewActive ? [] : buildCssSelectorPrefixExamples(styleMode.mode, count),
-    cssAuthoring: svelteComponentAuthoring || buildCssAuthoring(styleMode, count),
+    cssSelectorPrefixExamples: componentPreviewActive ? []
+        : buildCssSelectorPrefixExamples(styleMode.mode, count),
+    cssAuthoring: svelteComponentAuthoring || buildCssAuthoring(styleMode,
+        count),
     originalLineCount: originalLines.length,
   }));
 }
@@ -463,64 +517,84 @@ The agent should insert variant HTML at insertLine.`);
 function argVal(args, flag) {
   const prefix = flag + '=';
   for (const arg of args) {
-    if (arg.startsWith(prefix)) return arg.slice(prefix.length);
+    if (arg.startsWith(prefix)) {
+      return arg.slice(prefix.length);
+    }
   }
   const idx = args.indexOf(flag);
   return idx !== -1 && idx + 1 < args.length ? args[idx + 1] : null;
 }
 
-function pendingEntriesThatMayAffectWrap(entries, targetFile, originalLines, selectionStartLine, cwd) {
+function pendingEntriesThatMayAffectWrap(entries, targetFile, originalLines,
+    selectionStartLine, cwd) {
   const targetAbs = path.resolve(cwd, targetFile);
   return (entries || []).filter((entry) => {
     return (entry.ops || []).some((op) => {
-      return manualEditMayAffectWrap(op, targetAbs, originalLines, selectionStartLine, cwd);
+      return manualEditMayAffectWrap(op, targetAbs, originalLines,
+          selectionStartLine, cwd);
     });
   });
 }
 
-function manualEditMayAffectWrap(op, targetFile, originalLines, selectionStartLine, cwd) {
+function manualEditMayAffectWrap(op, targetFile, originalLines,
+    selectionStartLine, cwd) {
   const targetAbs = path.resolve(cwd, targetFile);
-  if (manualEditHintFallsInsideSelection(op, targetAbs, originalLines, selectionStartLine, cwd)) return true;
-  if (manualEditLocatorMatchesSelection(op, originalLines)) return true;
+  if (manualEditHintFallsInsideSelection(op, targetAbs, originalLines,
+      selectionStartLine, cwd)) {
+    return true;
+  }
+  if (manualEditLocatorMatchesSelection(op, originalLines)) {
+    return true;
+  }
   if (typeof op?.originalText === 'string' && op.originalText.length > 0) {
     return originalLines.join('\n').includes(op.originalText);
   }
   return false;
 }
 
-function manualEditHintFallsInsideSelection(op, targetAbs, originalLines, selectionStartLine, cwd) {
+function manualEditHintFallsInsideSelection(op, targetAbs, originalLines,
+    selectionStartLine, cwd) {
   const hintFile = op?.sourceHint?.file;
   const hintedLine = Number(op?.sourceHint?.line);
-  if (!hintFile || !Number.isFinite(hintedLine)) return false;
-  const hintAbs = path.isAbsolute(hintFile) ? hintFile : path.resolve(cwd, hintFile);
-  if (path.resolve(hintAbs) !== targetAbs) return false;
+  if (!hintFile || !Number.isFinite(hintedLine)) {
+    return false;
+  }
+  const hintAbs = path.isAbsolute(hintFile) ? hintFile : path.resolve(cwd,
+      hintFile);
+  if (path.resolve(hintAbs) !== targetAbs) {
+    return false;
+  }
   const hintedIndex = hintedLine - 1 - selectionStartLine;
   return hintedIndex >= 0
-    && hintedIndex < originalLines.length
-    && typeof op?.originalText === 'string'
-    && originalLines[hintedIndex].includes(op.originalText);
+      && hintedIndex < originalLines.length
+      && typeof op?.originalText === 'string'
+      && originalLines[hintedIndex].includes(op.originalText);
 }
 
 function manualEditLocatorMatchesSelection(op, originalLines) {
-  if (!op || typeof op.originalText !== 'string' || op.originalText.length === 0) return false;
+  if (!op || typeof op.originalText !== 'string' || op.originalText.length
+      === 0) {
+    return false;
+  }
   return originalLines.some((line) => (
-    line.includes(op.originalText) && lineMatchesManualEditLocator(line, op)
+      line.includes(op.originalText) && lineMatchesManualEditLocator(line, op)
   ));
 }
 
 function applyBufferedManualEditToLines(originalLines, selectionStartLine, op) {
   if (
-    !op
-    || typeof op.originalText !== 'string'
-    || op.originalText.length === 0
-    || typeof op.newText !== 'string'
+      !op
+      || typeof op.originalText !== 'string'
+      || op.originalText.length === 0
+      || typeof op.newText !== 'string'
   ) {
-    return { lines: originalLines, changed: false };
+    return {lines: originalLines, changed: false};
   }
 
   const replaceLine = (lineIndex) => ({
     lines: originalLines.map((line, index) => (
-      index === lineIndex ? replaceOnce(line, op.originalText, op.newText) : line
+        index === lineIndex ? replaceOnce(line, op.originalText, op.newText)
+            : line
     )),
     changed: true,
   });
@@ -528,7 +602,8 @@ function applyBufferedManualEditToLines(originalLines, selectionStartLine, op) {
   const hintedLine = Number(op.sourceHint?.line);
   if (Number.isFinite(hintedLine)) {
     const hintedIndex = hintedLine - 1 - selectionStartLine;
-    if (hintedIndex >= 0 && hintedIndex < originalLines.length && originalLines[hintedIndex].includes(op.originalText)) {
+    if (hintedIndex >= 0 && hintedIndex < originalLines.length
+        && originalLines[hintedIndex].includes(op.originalText)) {
       return replaceLine(hintedIndex);
     }
   }
@@ -536,38 +611,52 @@ function applyBufferedManualEditToLines(originalLines, selectionStartLine, op) {
   const locatorMatches = [];
   for (let index = 0; index < originalLines.length; index += 1) {
     const line = originalLines[index];
-    if (!line.includes(op.originalText)) continue;
-    if (!lineMatchesManualEditLocator(line, op)) continue;
+    if (!line.includes(op.originalText)) {
+      continue;
+    }
+    if (!lineMatchesManualEditLocator(line, op)) {
+      continue;
+    }
     locatorMatches.push(index);
   }
-  if (locatorMatches.length === 1) return replaceLine(locatorMatches[0]);
+  if (locatorMatches.length === 1) {
+    return replaceLine(locatorMatches[0]);
+  }
 
   const originalBlock = originalLines.join('\n');
   if (countOccurrences(originalBlock, op.originalText) === 1) {
     return {
-      lines: replaceOnce(originalBlock, op.originalText, op.newText).split('\n'),
+      lines: replaceOnce(originalBlock, op.originalText, op.newText).split(
+          '\n'),
       changed: true,
     };
   }
 
-  return { lines: originalLines, changed: false };
+  return {lines: originalLines, changed: false};
 }
 
 function lineMatchesManualEditLocator(line, op) {
   if (op.tag) {
-    const tagRe = new RegExp('<\\s*' + escapeRegExp(op.tag) + '(?=[\\s>/]|$)', 'i');
-    if (!tagRe.test(line)) return false;
+    const tagRe = new RegExp('<\\s*' + escapeRegExp(op.tag) + '(?=[\\s>/]|$)',
+        'i');
+    if (!tagRe.test(line)) {
+      return false;
+    }
   }
 
   if (op.elementId) {
     const id = escapeRegExp(op.elementId);
     const idRe = new RegExp('\\bid\\s*=\\s*["\']' + id + '["\']');
-    if (!idRe.test(line)) return false;
+    if (!idRe.test(line)) {
+      return false;
+    }
   }
 
   const classes = Array.isArray(op.classes) ? op.classes.filter(Boolean) : [];
   for (const className of classes) {
-    if (!line.includes(className)) return false;
+    if (!line.includes(className)) {
+      return false;
+    }
   }
 
   return true;
@@ -575,17 +664,24 @@ function lineMatchesManualEditLocator(line, op) {
 
 function replaceOnce(value, needle, replacement) {
   const index = value.indexOf(needle);
-  if (index === -1) return value;
-  return value.slice(0, index) + replacement + value.slice(index + needle.length);
+  if (index === -1) {
+    return value;
+  }
+  return value.slice(0, index) + replacement + value.slice(
+      index + needle.length);
 }
 
 function countOccurrences(value, needle) {
-  if (!needle) return 0;
+  if (!needle) {
+    return 0;
+  }
   let count = 0;
   let index = 0;
   while (true) {
     index = value.indexOf(needle, index);
-    if (index === -1) return count;
+    if (index === -1) {
+      return count;
+    }
     count += 1;
     index += needle.length;
   }
@@ -647,10 +743,10 @@ function splitClassList(classes) {
 
 function attrEscapeDouble(str) {
   return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
 }
 
 /**
@@ -662,29 +758,33 @@ function attrEscapeDouble(str) {
  */
 function detectCommentSyntax(filePath) {
   return resolveSourceTraits(filePath).commentSyntax === 'jsx'
-    ? { open: '{/*', close: '*/}' }
-    : { open: '<!--', close: '-->' };
+      ? {open: '{/*', close: '*/}'}
+      : {open: '<!--', close: '-->'};
 }
 
 function detectStyleMode(filePath) {
   const traits = resolveSourceTraits(filePath);
-  return { mode: traits.styleMode, styleTag: traits.styleTag };
+  return {mode: traits.styleMode, styleTag: traits.styleTag};
 }
 
 function buildCssSelectorPrefixExamples(styleMode, count) {
-  if (styleMode !== 'astro-global-prefixed') return [];
-  return Array.from({ length: count }, (_, i) => `[data-impeccable-variant="${i + 1}"]`);
+  if (styleMode !== 'astro-global-prefixed') {
+    return [];
+  }
+  return Array.from({length: count},
+      (_, i) => `[data-impeccable-variant="${i + 1}"]`);
 }
 
 function buildCssAuthoring(styleMode, count) {
-  const variantNumbers = Array.from({ length: count }, (_, i) => i + 1);
+  const variantNumbers = Array.from({length: count}, (_, i) => i + 1);
   if (styleMode.mode === 'astro-global-prefixed') {
     return {
       mode: styleMode.mode,
       styleTag: styleMode.styleTag,
       strategy: 'global-prefixed',
       rulePattern: '[data-impeccable-variant="N"] > .variant-class { ... }',
-      selectorExamples: variantNumbers.map((n) => `[data-impeccable-variant="${n}"] > .variant-class`),
+      selectorExamples: variantNumbers.map(
+          (n) => `[data-impeccable-variant="${n}"] > .variant-class`),
       requirements: [
         'Use the styleTag exactly; the is:inline attribute is required for this file.',
         'Put raw CSS directly between the styleTag opening and a plain </style> close.',
@@ -703,7 +803,8 @@ function buildCssAuthoring(styleMode, count) {
     styleTag: styleMode.styleTag,
     strategy: 'scope-rule',
     rulePattern: '@scope ([data-impeccable-variant="N"]) { :scope > .variant-class { ... } }',
-    selectorExamples: variantNumbers.map((n) => `@scope ([data-impeccable-variant="${n}"]) { :scope > .variant-class { ... } }`),
+    selectorExamples: variantNumbers.map(
+        (n) => `@scope ([data-impeccable-variant="${n}"]) { :scope > .variant-class { ... } }`),
     requirements: [
       'Use @scope blocks keyed to each [data-impeccable-variant="N"] wrapper.',
       'Inside each @scope block, make :scope rules step into the replacement element with a descendant combinator.',
@@ -730,7 +831,8 @@ function findFileWithQuery(query, cwd, genOpts = {}) {
     query,
     cwd,
     extensions: resolveLiveTemplateExtensions(cwd),
-    fileFilter: (filePath) => genOpts.includeGenerated || !isGeneratedFile(filePath, genOpts),
+    fileFilter: (filePath) => genOpts.includeGenerated || !isGeneratedFile(
+        filePath, genOpts),
   });
 }
 
@@ -760,9 +862,13 @@ const OPENER_RE = /<([A-Za-z][A-Za-z0-9]*)(?=[\s/>]|$)/;
 function minLeadingSpaces(lines) {
   let min = Infinity;
   for (const l of lines) {
-    if (l.trim() === '') continue;
+    if (l.trim() === '') {
+      continue;
+    }
     const m = l.match(/^(\s*)/);
-    if (m && m[1].length < min) min = m[1].length;
+    if (m && m[1].length < min) {
+      min = m[1].length;
+    }
   }
   return min === Infinity ? 0 : min;
 }
@@ -770,18 +876,27 @@ function minLeadingSpaces(lines) {
 function findElement(lines, query, tag = null) {
   // Iterate all matches — the first substring hit isn't always the right one.
   for (let i = 0; i < lines.length; i++) {
-    if (!lines[i].includes(query)) continue;
+    if (!lines[i].includes(query)) {
+      continue;
+    }
 
     const stripped = lines[i].trim();
-    if (stripped.startsWith('<!--') || stripped.startsWith('{/*') || stripped.startsWith('//')) continue;
+    if (stripped.startsWith('<!--') || stripped.startsWith('{/*')
+        || stripped.startsWith('//')) {
+      continue;
+    }
     // Skip lines already inside a variant wrapper
-    if (lines[i].includes('data-impeccable-variant')) continue;
+    if (lines[i].includes('data-impeccable-variant')) {
+      continue;
+    }
 
     const openerLine = findOpenerLine(lines, i, tag);
-    if (openerLine === -1) continue;
+    if (openerLine === -1) {
+      continue;
+    }
 
     const endLine = findClosingLine(lines, openerLine);
-    return { startLine: openerLine, endLine };
+    return {startLine: openerLine, endLine};
   }
 
   return null;
@@ -798,16 +913,27 @@ function findAllElements(lines, query, tag = null) {
   const out = [];
   const seen = new Set();
   for (let i = 0; i < lines.length; i++) {
-    if (!lines[i].includes(query)) continue;
+    if (!lines[i].includes(query)) {
+      continue;
+    }
     const stripped = lines[i].trim();
-    if (stripped.startsWith('<!--') || stripped.startsWith('{/*') || stripped.startsWith('//')) continue;
-    if (lines[i].includes('data-impeccable-variant')) continue;
+    if (stripped.startsWith('<!--') || stripped.startsWith('{/*')
+        || stripped.startsWith('//')) {
+      continue;
+    }
+    if (lines[i].includes('data-impeccable-variant')) {
+      continue;
+    }
     const openerLine = findOpenerLine(lines, i, tag);
-    if (openerLine === -1) continue;
-    if (seen.has(openerLine)) continue; // multiple matches inside the same element
+    if (openerLine === -1) {
+      continue;
+    }
+    if (seen.has(openerLine)) {
+      continue;
+    } // multiple matches inside the same element
     seen.add(openerLine);
     const endLine = findClosingLine(lines, openerLine);
-    out.push({ startLine: openerLine, endLine });
+    out.push({startLine: openerLine, endLine});
   }
   return out;
 }
@@ -834,19 +960,22 @@ function filterByText(candidates, lines, text) {
   // `candidates.slice()` return forced `filtered.length > 1` and surfaced
   // a spurious `element_ambiguous` error on every short-text picker event
   // with multiple candidates.
-  if (trimmed.length < 8) return [];
+  if (trimmed.length < 8) {
+    return [];
+  }
   const targetSpaced = trimmed;
   const targetCompact = trimmed.replace(/\s+/g, '');
 
   return candidates.filter((c) => {
     const body = lines.slice(c.startLine, c.endLine + 1).join(' ');
     const inner = body
-      .replace(/<[^>]*>/g, ' ')   // strip HTML/JSX tags
-      .replace(/\{[^}]*\}/g, ' ')  // strip JSX expressions
-      .toLowerCase();
+        .replace(/<[^>]*>/g, ' ')   // strip HTML/JSX tags
+        .replace(/\{[^}]*\}/g, ' ')  // strip JSX expressions
+        .toLowerCase();
     const sourceSpaced = inner.replace(/\s+/g, ' ').trim();
     const sourceCompact = inner.replace(/\s+/g, '');
-    return sourceSpaced.includes(targetSpaced) || sourceCompact.includes(targetCompact);
+    return sourceSpaced.includes(targetSpaced) || sourceCompact.includes(
+        targetCompact);
   });
 }
 
@@ -862,14 +991,20 @@ function filterByText(candidates, lines, text) {
 function findOpenerLine(lines, matchLine, tag) {
   const self = lines[matchLine].match(OPENER_RE);
   if (self) {
-    if (!tag || self[1] === tag) return matchLine;
+    if (!tag || self[1] === tag) {
+      return matchLine;
+    }
     return -1;
   }
   const MAX_BACKWALK = 10;
   for (let i = matchLine - 1; i >= Math.max(0, matchLine - MAX_BACKWALK); i--) {
     const opener = lines[i].match(OPENER_RE);
-    if (!opener) continue;
-    if (!tag || opener[1] === tag) return i;
+    if (!opener) {
+      continue;
+    }
+    if (!tag || opener[1] === tag) {
+      return i;
+    }
     // Different tag name than requested — abort; we're inside a non-target opener.
     return -1;
   }
@@ -882,7 +1017,9 @@ function findOpenerLine(lines, matchLine, tag) {
  */
 function findClosingLine(lines, start) {
   const openMatch = lines[start].match(OPENER_RE);
-  if (!openMatch) return start; // caller passed a non-opener; nothing to span
+  if (!openMatch) {
+    return start;
+  } // caller passed a non-opener; nothing to span
 
   const tagName = openMatch[1];
   let depth = 0;
@@ -898,7 +1035,9 @@ function findClosingLine(lines, start) {
 
     depth += opens - selfCloses - closes;
 
-    if (depth <= 0) return i;
+    if (depth <= 0) {
+      return i;
+    }
   }
 
   // If we can't find the close, return a reasonable guess
@@ -907,7 +1046,8 @@ function findClosingLine(lines, start) {
 
 // Auto-execute when run directly (node live-wrap.mjs ...)
 const _running = process.argv[1];
-if (_running?.endsWith('live-wrap.mjs') || _running?.endsWith('live-wrap.mjs/')) {
+if (_running?.endsWith('live-wrap.mjs') || _running?.endsWith(
+    'live-wrap.mjs/')) {
   enterLiveRoot();
   wrapCli();
 }

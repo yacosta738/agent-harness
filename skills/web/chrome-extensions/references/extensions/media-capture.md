@@ -2,9 +2,9 @@
 
 ## Choosing the Right API
 
-| Need | API |
-|------|-----|
-| Record the active tab's audio/video | `chrome.tabCapture.getMediaStreamId()` |
+| Need                                         | API                                          |
+|----------------------------------------------|----------------------------------------------|
+| Record the active tab's audio/video          | `chrome.tabCapture.getMediaStreamId()`       |
 | Let the user choose a screen, window, or tab | `chrome.desktopCapture.chooseDesktopMedia()` |
 
 Prefer `tabCapture` when you only need the current tab — it requires no user chooser dialog and
@@ -77,6 +77,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 ## State Locking — Prevent Double-Start Errors
 
 Both APIs fail if called while a previous capture is still active:
+
 - `tabCapture`: `"Cannot capture a tab with an active stream"`
 - `desktopCapture`: opens a second chooser dialog on top of the first
 

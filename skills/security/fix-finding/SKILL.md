@@ -40,63 +40,63 @@ guessing a product policy or security invariant.
 ## Workflow
 
 1. **Scope the fix.**
-   - Inspect the affected files and the smallest set of supporting files
-     needed to understand the vulnerable path.
-   - Before editing, establish that the reported weakness is concretely
-     reachable in the checked-out code. Generic weakness labels and
-     suspicious-looking code are not proof.
-   - If the same broken security boundary cannot be shown after a bounded
-     investigation, do not patch an adjacent weakness or add speculative
-     defense in depth. Return `no_change` when evidence shows the path is
-     already safe; otherwise return `blocked` with the missing proof.
-   - Identify the narrowest code boundary where the security invariant
-     should be enforced.
-   - Check for existing helpers, validators, permission checks,
-     sanitizers, policy objects, and test patterns before adding new
-     ones.
+    - Inspect the affected files and the smallest set of supporting files
+      needed to understand the vulnerable path.
+    - Before editing, establish that the reported weakness is concretely
+      reachable in the checked-out code. Generic weakness labels and
+      suspicious-looking code are not proof.
+    - If the same broken security boundary cannot be shown after a bounded
+      investigation, do not patch an adjacent weakness or add speculative
+      defense in depth. Return `no_change` when evidence shows the path is
+      already safe; otherwise return `blocked` with the missing proof.
+    - Identify the narrowest code boundary where the security invariant
+      should be enforced.
+    - Check for existing helpers, validators, permission checks,
+      sanitizers, policy objects, and test patterns before adding new
+      ones.
 2. **Reproduce or encode the issue before fixing.**
-   - TDD: write a failing test FIRST. The test must fail on `main` and
-     pass after the fix.
-   - Prefer a failing regression test, unit test, integration test,
-     property test, or realistic-interface reproduction.
-   - If runtime reproduction is not feasible, create the strongest
-     bounded static or harness-based validation artifact available and
-     document the proof gap.
-   - Do not keep a test that exercises unsafe behavior unless it is safe,
-     deterministic, and appropriate for the repository.
-   - If the issue no longer reproduces before any code changes,
-     investigate whether it was already fixed and preserve the validation
-     evidence.
+    - TDD: write a failing test FIRST. The test must fail on `main` and
+      pass after the fix.
+    - Prefer a failing regression test, unit test, integration test,
+      property test, or realistic-interface reproduction.
+    - If runtime reproduction is not feasible, create the strongest
+      bounded static or harness-based validation artifact available and
+      document the proof gap.
+    - Do not keep a test that exercises unsafe behavior unless it is safe,
+      deterministic, and appropriate for the repository.
+    - If the issue no longer reproduces before any code changes,
+      investigate whether it was already fixed and preserve the validation
+      evidence.
 3. **Generate the fix.**
-   - Make the smallest behavior change that enforces the intended
-     invariant.
-   - Avoid broad refactors. Prefer local, established abstractions
-     unless a larger change is required to enforce the security
-     invariant.
-   - Preserve existing APIs unless changing the API is the security fix.
-   - Handle error paths explicitly. Do not silently accept unsafe input.
-   - Skip code changes when repository evidence and validation show the
-     finding is already fixed.
+    - Make the smallest behavior change that enforces the intended
+      invariant.
+    - Avoid broad refactors. Prefer local, established abstractions
+      unless a larger change is required to enforce the security
+      invariant.
+    - Preserve existing APIs unless changing the API is the security fix.
+    - Handle error paths explicitly. Do not silently accept unsafe input.
+    - Skip code changes when repository evidence and validation show the
+      finding is already fixed.
 4. **Add repeatable validation.**
-   - Confirm the failing test now passes.
-   - Include positive coverage for legitimate behavior that should still
-     work.
-   - Add tests at the lowest level that proves the invariant, plus an
-     interface-level test when the vulnerable path is externally
-     reachable and feasible.
+    - Confirm the failing test now passes.
+    - Include positive coverage for legitimate behavior that should still
+      work.
+    - Add tests at the lowest level that proves the invariant, plus an
+      interface-level test when the vulnerable path is externally
+      reachable and feasible.
 5. **Validate the fix works.**
-   - Run the focused tests that cover the changed code.
-   - Run the original PoC or reproducer, if one exists, and confirm it
-     no longer succeeds.
-   - Re-check the original source-to-sink or broken-control path in the
-     fixed code.
-   - Search nearby call sites or variants that might bypass the new
-     control.
-   - Confirm the regression test would fail if the fix were removed,
-     when practical.
-   - Run any relevant unit tests, integration tests, formatter, linter,
-     type checker, package-specific dependency check, and other
-     repository checks normally required for the touched files.
+    - Run the focused tests that cover the changed code.
+    - Run the original PoC or reproducer, if one exists, and confirm it
+      no longer succeeds.
+    - Re-check the original source-to-sink or broken-control path in the
+      fixed code.
+    - Search nearby call sites or variants that might bypass the new
+      control.
+    - Confirm the regression test would fail if the fix were removed,
+      when practical.
+    - Run any relevant unit tests, integration tests, formatter, linter,
+      type checker, package-specific dependency check, and other
+      repository checks normally required for the touched files.
 6. **Report the outcome** with exact commands, results, changed files,
    and remaining risk.
 

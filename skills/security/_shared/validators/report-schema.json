@@ -46,7 +46,11 @@
               "properties": {
                 "kind": {
                   "type": "string",
-                  "enum": ["entrypoint", "propagation", "sink"]
+                  "enum": [
+                    "entrypoint",
+                    "propagation",
+                    "sink"
+                  ]
                 },
                 "file": {
                   "type": "string",
@@ -67,7 +71,13 @@
                   "visibleContent": true
                 }
               },
-              "required": ["kind", "file", "line", "scope", "description"],
+              "required": [
+                "kind",
+                "file",
+                "line",
+                "scope",
+                "description"
+              ],
               "additionalProperties": false
             }
           },
@@ -92,7 +102,11 @@
                   "visibleContent": true
                 }
               },
-              "required": ["file", "line", "description"],
+              "required": [
+                "file",
+                "line",
+                "description"
+              ],
               "additionalProperties": false
             }
           },
@@ -104,7 +118,17 @@
               "properties": {
                 "kind": {
                   "type": "string",
-                  "enum": ["authentication_level", "authorization_role", "user_interaction", "system_configuration", "network_routing", "environmental_dependency", "data_state", "timing_dependency", "third_party_dependency"]
+                  "enum": [
+                    "authentication_level",
+                    "authorization_role",
+                    "user_interaction",
+                    "system_configuration",
+                    "network_routing",
+                    "environmental_dependency",
+                    "data_state",
+                    "timing_dependency",
+                    "third_party_dependency"
+                  ]
                 },
                 "description": {
                   "type": "string",
@@ -112,7 +136,10 @@
                   "visibleContent": true
                 }
               },
-              "required": ["kind", "description"],
+              "required": [
+                "kind",
+                "description"
+              ],
               "additionalProperties": false
             }
           },
@@ -148,7 +175,12 @@
                 "visibleContent": true
               }
             },
-            "required": ["attacker_perspective", "payloads", "instructions", "observed_result"],
+            "required": [
+              "attacker_perspective",
+              "payloads",
+              "instructions",
+              "observed_result"
+            ],
             "additionalProperties": false
           },
           "remediation": {
@@ -172,12 +204,17 @@
                       "type": "string"
                     }
                   },
-                  "required": ["file_name", "fixed_code"],
+                  "required": [
+                    "file_name",
+                    "fixed_code"
+                  ],
                   "additionalProperties": false
                 }
               }
             },
-            "required": ["strategy"],
+            "required": [
+              "strategy"
+            ],
             "additionalProperties": false
           },
           "severity": {
@@ -188,7 +225,13 @@
                 "properties": {
                   "score": {
                     "type": "string",
-                    "enum": ["informational", "low", "medium", "high", "critical"]
+                    "enum": [
+                      "informational",
+                      "low",
+                      "medium",
+                      "high",
+                      "critical"
+                    ]
                   },
                   "reason": {
                     "type": "string",
@@ -196,7 +239,10 @@
                     "visibleContent": true
                   }
                 },
-                "required": ["score", "reason"],
+                "required": [
+                  "score",
+                  "reason"
+                ],
                 "additionalProperties": false
               },
               "impact": {
@@ -204,7 +250,13 @@
                 "properties": {
                   "score": {
                     "type": "string",
-                    "enum": ["informational", "low", "medium", "high", "critical"]
+                    "enum": [
+                      "informational",
+                      "low",
+                      "medium",
+                      "high",
+                      "critical"
+                    ]
                   },
                   "reason": {
                     "type": "string",
@@ -212,15 +264,28 @@
                     "visibleContent": true
                   }
                 },
-                "required": ["score", "reason"],
+                "required": [
+                  "score",
+                  "reason"
+                ],
                 "additionalProperties": false
               },
               "overall_severity": {
                 "type": "string",
-                "enum": ["informational", "low", "medium", "high", "critical"]
+                "enum": [
+                  "informational",
+                  "low",
+                  "medium",
+                  "high",
+                  "critical"
+                ]
               }
             },
-            "required": ["likelihood", "impact", "overall_severity"],
+            "required": [
+              "likelihood",
+              "impact",
+              "overall_severity"
+            ],
             "additionalProperties": false
           },
           "confidence": {
@@ -228,7 +293,11 @@
             "properties": {
               "score": {
                 "type": "string",
-                "enum": ["low", "medium", "high"]
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
               },
               "reason": {
                 "type": "string",
@@ -236,11 +305,28 @@
                 "visibleContent": true
               }
             },
-            "required": ["score", "reason"],
+            "required": [
+              "score",
+              "reason"
+            ],
             "additionalProperties": false
           }
         },
-        "required": ["verdict", "fingerprint", "title", "description", "root_cause", "intended_behavior", "trace", "evidence", "conditions", "execution", "remediation", "severity", "confidence"],
+        "required": [
+          "verdict",
+          "fingerprint",
+          "title",
+          "description",
+          "root_cause",
+          "intended_behavior",
+          "trace",
+          "evidence",
+          "conditions",
+          "execution",
+          "remediation",
+          "severity",
+          "confidence"
+        ],
         "additionalProperties": false
       },
       {
@@ -280,7 +366,11 @@
               "properties": {
                 "kind": {
                   "type": "string",
-                  "enum": ["entrypoint", "propagation", "sink"]
+                  "enum": [
+                    "entrypoint",
+                    "propagation",
+                    "sink"
+                  ]
                 },
                 "file": {
                   "type": "string",
@@ -301,7 +391,13 @@
                   "visibleContent": true
                 }
               },
-              "required": ["kind", "file", "line", "scope", "description"],
+              "required": [
+                "kind",
+                "file",
+                "line",
+                "scope",
+                "description"
+              ],
               "additionalProperties": false
             }
           },
@@ -326,7 +422,11 @@
                   "visibleContent": true
                 }
               },
-              "required": ["file", "line", "description"],
+              "required": [
+                "file",
+                "line",
+                "description"
+              ],
               "additionalProperties": false
             }
           },
@@ -357,7 +457,17 @@
             "additionalProperties": false
           }
         },
-        "required": ["verdict", "fingerprint", "title", "description", "claimed_root_cause", "trace", "evidence", "blockers", "validation_plan"],
+        "required": [
+          "verdict",
+          "fingerprint",
+          "title",
+          "description",
+          "claimed_root_cause",
+          "trace",
+          "evidence",
+          "blockers",
+          "validation_plan"
+        ],
         "additionalProperties": false
       },
       {
@@ -397,7 +507,11 @@
               "properties": {
                 "kind": {
                   "type": "string",
-                  "enum": ["entrypoint", "propagation", "sink"]
+                  "enum": [
+                    "entrypoint",
+                    "propagation",
+                    "sink"
+                  ]
                 },
                 "file": {
                   "type": "string",
@@ -418,7 +532,13 @@
                   "visibleContent": true
                 }
               },
-              "required": ["kind", "file", "line", "scope", "description"],
+              "required": [
+                "kind",
+                "file",
+                "line",
+                "scope",
+                "description"
+              ],
               "additionalProperties": false
             }
           },
@@ -443,7 +563,11 @@
                   "visibleContent": true
                 }
               },
-              "required": ["file", "line", "description"],
+              "required": [
+                "file",
+                "line",
+                "description"
+              ],
               "additionalProperties": false
             }
           },
@@ -453,7 +577,16 @@
             "visibleContent": true
           }
         },
-        "required": ["verdict", "fingerprint", "title", "description", "claimed_root_cause", "trace", "evidence", "reason"],
+        "required": [
+          "verdict",
+          "fingerprint",
+          "title",
+          "description",
+          "claimed_root_cause",
+          "trace",
+          "evidence",
+          "reason"
+        ],
         "additionalProperties": false
       }
     ]

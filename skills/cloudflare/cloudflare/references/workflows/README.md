@@ -15,10 +15,9 @@ execution.
 
 ## Core Concepts
 
-**Workflow**: Class extending `WorkflowEntrypoint` with `run` method
-**Instance**: Single execution with unique ID & independent state
-**Steps**: Independently retriable units via `step.do()` - API calls, DB queries, AI invocations
-**State**: Persisted from step returns; step name = cache key
+**Workflow**: Class extending `WorkflowEntrypoint` with `run` method **Instance**: Single execution
+with unique ID & independent state **Steps**: Independently retriable units via `step.do()` - API
+calls, DB queries, AI invocations **State**: Persisted from step returns; step name = cache key
 
 ## Quick Start
 
@@ -55,8 +54,7 @@ export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
 
 ## Reading Order
 
-**Getting Started:** configuration.md → api.md → patterns.md
-**Troubleshooting:** gotchas.md
+**Getting Started:** configuration.md → api.md → patterns.md **Troubleshooting:** gotchas.md
 
 ## In This Reference
 

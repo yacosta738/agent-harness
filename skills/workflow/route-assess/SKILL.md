@@ -30,7 +30,8 @@ Ask: **"¿Cuántas partes del sistema toca esto?"**
 
 - **1 superficie** (un comportamiento aislado) → Direct
 - **2-3 superficies** (un workflow, configuración) → Direct or Delegated direct
-- **4+ superficies** (múltiples features, servicios) → Delegated direct unless Explicit SDD is requested
+- **4+ superficies** (múltiples features, servicios) → Delegated direct unless Explicit SDD is
+  requested
 
 Count independently changing behaviors, not files. Updating one exact default across repeated
 module declarations is one surface. Multiple files alone never force SDD.
@@ -41,7 +42,8 @@ Ask: **"¿Necesitamos una especificación durable para decidir o coordinar este 
 
 - Exact requested outcome, no unresolved trade-off → Direct
 - Temporary design reasoning or a scoped choice → brainstorming inside RPI
-- Durable product contract, approval gates, or resumable coordination → ask whether Explicit SDD is wanted
+- Durable product contract, approval gates, or resumable coordination → ask whether Explicit SDD is
+  wanted
 
 Do not confuse **persistent code** with **a need for durable specification**. Almost every committed
 change persists. Long-term behavior alone is not an SDD signal.
@@ -50,7 +52,8 @@ change persists. Long-term behavior alone is not an SDD signal.
 
 Ask: **"¿Qué pasa si nos equivocamos?"**
 
-- Easy to revert, low blast radius → Direct if no design choice remains; otherwise use internal brainstorming within RPI
+- Easy to revert, low blast radius → Direct if no design choice remains; otherwise use internal
+  brainstorming within RPI
 - Hard to undo, high risk → strengthen verification/review; do not infer SDD
 
 ### Step 4: Coupling Check
@@ -62,14 +65,14 @@ Ask: **"¿Está aislado o depende de otras cosas?"**
 
 ## Decision Matrix
 
-| Behavioral surface | Design choice | Reversible | Coupled contract | Recommended Lane |
-|--------------------|---------------|------------|------------------|-----------------|
-| 1, even if repeated in files | None; exact edit supplied | Yes | No | **Direct** |
-| 1 | Small/temporary | Yes | No | **Direct** |
-| 2-3 | Small/temporary | Yes | Low | **Delegated direct** when fresh context helps |
-| 2-3 | Durable/ambiguous | Any | Yes | **Ask whether Explicit SDD is wanted** |
-| 4+ | Any | Any | Any | **Delegated direct** unless Explicit SDD is requested |
-| Unclear | Unclear | Unclear | Unclear | **Ask user** |
+| Behavioral surface           | Design choice             | Reversible | Coupled contract | Recommended Lane                                      |
+|------------------------------|---------------------------|------------|------------------|-------------------------------------------------------|
+| 1, even if repeated in files | None; exact edit supplied | Yes        | No               | **Direct**                                            |
+| 1                            | Small/temporary           | Yes        | No               | **Direct**                                            |
+| 2-3                          | Small/temporary           | Yes        | Low              | **Delegated direct** when fresh context helps         |
+| 2-3                          | Durable/ambiguous         | Any        | Yes              | **Ask whether Explicit SDD is wanted**                |
+| 4+                           | Any                       | Any        | Any              | **Delegated direct** unless Explicit SDD is requested |
+| Unclear                      | Unclear                   | Unclear    | Unclear          | **Ask user**                                          |
 
 ### SDD Admission Check
 
@@ -113,7 +116,8 @@ Use these when assessment is unclear:
 - **Don't equate persistence with specs.** A committed default value is durable code, not
   automatically a durable design decision.
 - **Don't ask all questions.** Use 1-2 that cut through the ambiguity.
-- **Don't delay for analysis paralysis.** If you can't decide after 2 questions, ask the user directly.
+- **Don't delay for analysis paralysis.** If you can't decide after 2 questions, ask the user
+  directly.
 
 ## Post-Decision Memory (IMPORTANT)
 
@@ -132,6 +136,7 @@ content:
 ```
 
 **Why this matters:**
+
 - Future similar requests can be routed faster
 - Pattern recognition across sessions
 - Accountability for routing choices
@@ -145,7 +150,10 @@ undecided, use brainstorming inside RPI to resolve that choice first. Use Explic
 the user requests or accepts durable artifacts.
 
 If user asks to "update the test step in CI" and you route it as Delegated direct, save:
+
 - title: "Routed delegated direct for CI step update"
 - type: decision
 - topic_key: routing/github-actions
-- content: "**What**: Delegated direct for single CI step update | **Why**: Fresh context helps verify the workflow without durable specs | **Context**: Surface=1, Durable=no, Reversible=easy, Coupling=isolated"
+- content: "**What**: Delegated direct for single CI step update | **Why**: Fresh context helps
+  verify the workflow without durable specs | **Context**: Surface=1, Durable=no, Reversible=easy,
+  Coupling=isolated"

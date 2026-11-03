@@ -1,11 +1,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {fileURLToPath} from 'node:url';
 
-import { finding } from '../../findings.mjs';
-import { profileFindingsAsync, profileStep, profileStepAsync } from '../../profile/profiler.mjs';
-import { captureVisualContrastCandidate } from '../visual/screenshot-contrast.mjs';
-import { checkContentHiddenAtRest } from '../../rules/checks.mjs';
+import {finding} from '../../findings.mjs';
+import {
+  profileFindingsAsync,
+  profileStep,
+  profileStepAsync
+} from '../../profile/profiler.mjs';
+import {
+  captureVisualContrastCandidate
+} from '../visual/screenshot-contrast.mjs';
+import {checkContentHiddenAtRest} from '../../rules/checks.mjs';
 
 // On Windows, puppeteer's bundled Chrome lives in a user-writable cache
 // directory. Its GPU process can be denied (STATUS_ACCESS_DENIED) by security
@@ -20,11 +26,12 @@ import { checkContentHiddenAtRest } from '../../rules/checks.mjs';
 // fails (Chrome not installed, or channel resolution fails). If the bundled
 // launch then also fails, surface the original system-Chrome error as the
 // cause so the real failure is not lost.
-async function launchBrowser(puppeteer, { headless = true, args = [] } = {}) {
+async function launchBrowser(puppeteer, {headless = true, args = []} = {}) {
   let channelError;
   if (process.platform === 'win32') {
     try {
-      return await puppeteer.default.launch({ channel: 'chrome', headless, args });
+      return await puppeteer.default.launch(
+          {channel: 'chrome', headless, args});
     } catch (err) {
       // System Chrome unavailable or unlaunchable; fall through to the bundled
       // browser, but keep the error in case the fallback fails too.
@@ -32,9 +39,12 @@ async function launchBrowser(puppeteer, { headless = true, args = [] } = {}) {
     }
   }
   try {
-    return await puppeteer.default.launch({ headless, args });
+    return await puppeteer.default.launch({headless, args});
   } catch (err) {
-    if (channelError && err && err.cause === undefined) err.cause = channelError;
+    if (channelError && err && err.cause
+        === undefined) {
+      err.cause = channelError;
+    }
     throw err;
   }
 }
@@ -50,52 +60,61 @@ async function measureContentHiddenAfterReveal(page) {
   await page.evaluate(async () => {
     const step = Math.max(200, Math.floor(window.innerHeight * 0.7));
     const max = Math.max(
-      document.documentElement.scrollHeight || 0,
-      document.body?.scrollHeight || 0,
+        document.documentElement.scrollHeight || 0,
+        document.body?.scrollHeight || 0,
     );
     for (let y = 0; y <= max; y += step) {
-      window.scrollTo({ top: y, left: 0, behavior: 'instant' });
-      await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 40)));
+      window.scrollTo({top: y, left: 0, behavior: 'instant'});
+      await new Promise(
+          resolve => requestAnimationFrame(() => setTimeout(resolve, 40)));
     }
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    window.scrollTo({top: 0, left: 0, behavior: 'instant'});
     await new Promise(resolve => setTimeout(resolve, 700));
   });
   return page.evaluate(() => {
-    if (typeof window.impeccableMeasureHiddenText !== 'function') return null;
+    if (typeof window.impeccableMeasureHiddenText !== 'function') {
+      return null;
+    }
     return window.impeccableMeasureHiddenText();
   });
 }
 
 function serializeDesignSystemForBrowser(designSystem) {
-  if (!designSystem?.present) return null;
+  if (!designSystem?.present) {
+    return null;
+  }
   return {
     present: true,
     hasFonts: designSystem.hasFonts === true,
     allowedFonts: Array.from(designSystem.allowedFonts || []),
     hasColors: designSystem.hasColors === true,
     allowedColors: Array.from(designSystem.allowedColorKeys?.values?.() || [])
-      .map(entry => entry?.color)
-      .filter(color => color && Number.isFinite(color.r) && Number.isFinite(color.g) && Number.isFinite(color.b))
-      .map(color => ({ r: color.r, g: color.g, b: color.b })),
+        .map(entry => entry?.color)
+        .filter(color => color && Number.isFinite(color.r) && Number.isFinite(
+            color.g) && Number.isFinite(color.b))
+        .map(color => ({r: color.r, g: color.g, b: color.b})),
     hasRadii: designSystem.hasRadii === true,
     allowedRadii: (designSystem.allowedRadii || [])
-      .map(entry => Number(entry?.px))
-      .filter(px => Number.isFinite(px)),
+        .map(entry => Number(entry?.px))
+        .filter(px => Number.isFinite(px)),
     hasPillRadius: designSystem.hasPillRadius === true,
   };
 }
 
-async function runVisualContrastFallback(page, serializedGroups, options, profile, target) {
-  if (options?.visualContrast === false) return [];
+async function runVisualContrastFallback(page, serializedGroups, options,
+    profile, target) {
+  if (options?.visualContrast === false) {
+    return [];
+  }
   const maxCandidates = Number.isFinite(options?.visualContrastMaxCandidates)
-    ? options.visualContrastMaxCandidates
-    : 12;
+      ? options.visualContrastMaxCandidates
+      : 12;
   const scrollOffscreen = options?.visualContrastScrollOffscreen !== false;
   const existingLowContrastSelectors = new Set(
-    serializedGroups
-      .filter(group => group.findings?.some(f => f.type === 'low-contrast'))
-      .map(group => group.selector)
-      .filter(Boolean)
+      serializedGroups
+          .filter(group => group.findings?.some(f => f.type === 'low-contrast'))
+          .map(group => group.selector)
+          .filter(Boolean)
   );
 
   let browserAnalyses = [];
@@ -107,13 +126,19 @@ async function runVisualContrastFallback(page, serializedGroups, options, profil
       ruleId: 'browser-fallback',
       target,
     }, async () => {
-      browserAnalyses = await page.evaluate(async ({ maxCandidates, scrollOffscreen }) => {
-        if (typeof window.impeccableAnalyzeVisualContrast !== 'function') return [];
-        return window.impeccableAnalyzeVisualContrast({ maxCandidates, scrollOffscreen });
-      }, { maxCandidates, scrollOffscreen });
+      browserAnalyses = await page.evaluate(
+          async ({maxCandidates, scrollOffscreen}) => {
+            if (typeof window.impeccableAnalyzeVisualContrast
+                !== 'function') {
+              return [];
+            }
+            return window.impeccableAnalyzeVisualContrast(
+                {maxCandidates, scrollOffscreen});
+          }, {maxCandidates, scrollOffscreen});
       return browserAnalyses
-        .filter(result => result.finding && !existingLowContrastSelectors.has(result.selector))
-        .map(result => result.finding);
+          .filter(result => result.finding && !existingLowContrastSelectors.has(
+              result.selector))
+          .map(result => result.finding);
     });
     findings.push(...browserFindings);
   }
@@ -125,24 +150,30 @@ async function runVisualContrastFallback(page, serializedGroups, options, profil
       phase: 'visual-contrast',
       ruleId: 'collect-candidates',
       target,
-    }, () => page.evaluate(({ maxCandidates }) => {
-      if (typeof window.impeccableCollectVisualContrastCandidates !== 'function') return [];
-      return window.impeccableCollectVisualContrastCandidates({ maxCandidates });
-    }, { maxCandidates }));
+    }, () => page.evaluate(({maxCandidates}) => {
+      if (typeof window.impeccableCollectVisualContrastCandidates
+          !== 'function') {
+        return [];
+      }
+      return window.impeccableCollectVisualContrastCandidates({maxCandidates});
+    }, {maxCandidates}));
   }
 
-  const viewport = options?.viewport || { width: 1280, height: 800 };
+  const viewport = options?.viewport || {width: 1280, height: 800};
   const browserResolvedSelectors = new Set(
-    browserAnalyses
-      .filter(result => result.status === 'fail' || result.status === 'pass')
-      .map(result => result.selector)
-      .filter(Boolean)
+      browserAnalyses
+          .filter(
+              result => result.status === 'fail' || result.status === 'pass')
+          .map(result => result.selector)
+          .filter(Boolean)
   );
   const filtered = candidates.filter(candidate =>
-    !existingLowContrastSelectors.has(candidate.selector) &&
-    !browserResolvedSelectors.has(candidate.selector)
+      !existingLowContrastSelectors.has(candidate.selector) &&
+      !browserResolvedSelectors.has(candidate.selector)
   );
-  if (options?.visualContrastPixel === false) return findings;
+  if (options?.visualContrastPixel === false) {
+    return findings;
+  }
   for (const candidate of filtered) {
     const result = await profileFindingsAsync(profile, {
       engine: 'browser',
@@ -150,7 +181,8 @@ async function runVisualContrastFallback(page, serializedGroups, options, profil
       ruleId: 'pixel-diff',
       target,
     }, async () => {
-      const finding = await captureVisualContrastCandidate(page, candidate, viewport);
+      const finding = await captureVisualContrastCandidate(page, candidate,
+          viewport);
       return finding ? [finding] : [];
     });
     findings.push(...result);
@@ -166,7 +198,7 @@ async function detectUrl(url, options = {}) {
   const profile = options?.profile;
   const waitUntil = options?.waitUntil || 'networkidle0';
   const settleMs = Number.isFinite(options?.settleMs) ? options.settleMs : 0;
-  const viewport = options?.viewport || { width: 1280, height: 800 };
+  const viewport = options?.viewport || {width: 1280, height: 800};
   const externalBrowser = options?.browser || null;
   let puppeteer;
   if (!externalBrowser) {
@@ -178,16 +210,17 @@ async function detectUrl(url, options = {}) {
         target: url,
       }, () => import('puppeteer'));
     } catch {
-      throw new Error('puppeteer is required for URL scanning. Install: npm install puppeteer');
+      throw new Error(
+          'puppeteer is required for URL scanning. Install: npm install puppeteer');
     }
   }
 
   // Read the browser detection script — reuse it instead of reimplementing
   const browserScriptPath = path.resolve(
-    path.dirname(fileURLToPath(import.meta.url)),
-    '..',
-    '..',
-    'detect-antipatterns-browser.js'
+      path.dirname(fileURLToPath(import.meta.url)),
+      '..',
+      '..',
+      'detect-antipatterns-browser.js'
   );
   let browserScript;
   try {
@@ -204,13 +237,15 @@ async function detectUrl(url, options = {}) {
   // CI runners (GitHub Actions Ubuntu) block unprivileged user namespaces, so
   // Chrome can't initialize its sandbox there. Disable the sandbox only when
   // running in CI; local users keep the default hardened launch.
-  const launchArgs = process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : [];
+  const launchArgs = process.env.CI ? ['--no-sandbox',
+    '--disable-setuid-sandbox'] : [];
   const browser = externalBrowser || await profileStepAsync(profile, {
     engine: 'browser',
     phase: 'load',
     ruleId: 'launch-browser',
     target: url,
-  }, () => launchBrowser(puppeteer, { headless: options?.headless ?? true, args: launchArgs }));
+  }, () => launchBrowser(puppeteer,
+      {headless: options?.headless ?? true, args: launchArgs}));
   const page = await profileStepAsync(profile, {
     engine: 'browser',
     phase: 'load',
@@ -225,8 +260,11 @@ async function detectUrl(url, options = {}) {
   const pageErrors = [];
   if (options?.scriptErrors !== false) {
     page.on('pageerror', (err) => {
-      const message = String(err?.message || err).split('\n')[0].trim().slice(0, 160);
-      if (message && !pageErrors.includes(message)) pageErrors.push(message);
+      const message = String(err?.message || err).split('\n')[0].trim().slice(0,
+          160);
+      if (message && !pageErrors.includes(message)) {
+        pageErrors.push(message);
+      }
     });
   }
 
@@ -243,7 +281,7 @@ async function detectUrl(url, options = {}) {
       phase: 'load',
       ruleId: `goto:${waitUntil}`,
       target: url,
-    }, () => page.goto(url, { waitUntil, timeout: 30000 }));
+    }, () => page.goto(url, {waitUntil, timeout: 30000}));
     if (settleMs > 0) {
       await profileStepAsync(profile, {
         engine: 'browser',
@@ -254,7 +292,8 @@ async function detectUrl(url, options = {}) {
     }
 
     // Inject the browser detection script and collect results
-    const browserDesignSystem = serializeDesignSystemForBrowser(options?.designSystem);
+    const browserDesignSystem = serializeDesignSystemForBrowser(
+        options?.designSystem);
     await profileStepAsync(profile, {
       engine: 'browser',
       phase: 'scan',
@@ -264,7 +303,7 @@ async function detectUrl(url, options = {}) {
       window.__IMPECCABLE_CONFIG__ = {
         ...(window.__IMPECCABLE_CONFIG__ || {}),
         autoScan: false,
-        ...(designSystem ? { designSystem } : {}),
+        ...(designSystem ? {designSystem} : {}),
       };
     }, browserDesignSystem));
     await profileStepAsync(profile, {
@@ -281,11 +320,18 @@ async function detectUrl(url, options = {}) {
       target: url,
     }, async () => {
       serializedGroups = await page.evaluate(() => {
-        if (!window.impeccableDetect) return [];
-        return window.impeccableDetect({ decorate: false, serialize: true });
+        if (!window.impeccableDetect) {
+          return [];
+        }
+        return window.impeccableDetect({decorate: false, serialize: true});
       });
-      return serializedGroups.flatMap(({ findings }) =>
-        findings.map(f => ({ id: f.type, snippet: f.detail, ignoreValue: f.ignoreValue || '', severity: f.severity || '' }))
+      return serializedGroups.flatMap(({findings}) =>
+          findings.map(f => ({
+            id: f.type,
+            snippet: f.detail,
+            ignoreValue: f.ignoreValue || '',
+            severity: f.severity || ''
+          }))
       );
     });
     // Content invisible at rest: reveal sweep, then re-measure. Runs after
@@ -305,10 +351,11 @@ async function detectUrl(url, options = {}) {
     }
 
     for (const message of pageErrors.slice(0, 3)) {
-      results.push({ id: 'script-error', snippet: message });
+      results.push({id: 'script-error', snippet: message});
     }
 
-    const visualFindings = await runVisualContrastFallback(page, serializedGroups, options, profile, url);
+    const visualFindings = await runVisualContrastFallback(page,
+        serializedGroups, options, profile, url);
     results.push(...visualFindings);
   } finally {
     await profileStepAsync(profile, {
@@ -316,7 +363,8 @@ async function detectUrl(url, options = {}) {
       phase: 'load',
       ruleId: 'close-page',
       target: url,
-    }, () => page.close().catch(() => {}));
+    }, () => page.close().catch(() => {
+    }));
     if (!externalBrowser) {
       await profileStepAsync(profile, {
         engine: 'browser',
@@ -328,10 +376,14 @@ async function detectUrl(url, options = {}) {
   }
   return results.map(f => {
     const item = finding(f.id, url, f.snippet);
-    if (f.ignoreValue) item.ignoreValue = f.ignoreValue;
+    if (f.ignoreValue) {
+      item.ignoreValue = f.ignoreValue;
+    }
     // Per-finding severity promotion (e.g. hero-region pulsing dot)
     // overrides the registry default carried by finding().
-    if (f.severity && f.severity !== item.severity) item.severity = f.severity;
+    if (f.severity && f.severity !== item.severity) {
+      item.severity = f.severity;
+    }
     return item;
   });
 }
@@ -341,9 +393,11 @@ async function createBrowserDetector(options = {}) {
   try {
     puppeteer = await import('puppeteer');
   } catch {
-    throw new Error('puppeteer is required for URL scanning. Install: npm install puppeteer');
+    throw new Error(
+        'puppeteer is required for URL scanning. Install: npm install puppeteer');
   }
-  const launchArgs = options.launchArgs || (process.env.CI ? ['--no-sandbox', '--disable-setuid-sandbox'] : []);
+  const launchArgs = options.launchArgs || (process.env.CI ? ['--no-sandbox',
+    '--disable-setuid-sandbox'] : []);
   const browser = options.browser || await launchBrowser(puppeteer, {
     headless: options.headless ?? true,
     args: launchArgs,
@@ -352,7 +406,7 @@ async function createBrowserDetector(options = {}) {
   const defaults = {
     waitUntil: options.waitUntil || 'load',
     settleMs: Number.isFinite(options.settleMs) ? options.settleMs : 100,
-    viewport: options.viewport || { width: 1280, height: 800 },
+    viewport: options.viewport || {width: 1280, height: 800},
   };
   return {
     browser,
@@ -364,9 +418,17 @@ async function createBrowserDetector(options = {}) {
       });
     },
     async close() {
-      if (ownsBrowser) await browser.close().catch(() => {});
+      if (ownsBrowser) {
+        await browser.close().catch(() => {
+        });
+      }
     },
   };
 }
 
-export { runVisualContrastFallback, detectUrl, createBrowserDetector, launchBrowser };
+export {
+  runVisualContrastFallback,
+  detectUrl,
+  createBrowserDetector,
+  launchBrowser
+};

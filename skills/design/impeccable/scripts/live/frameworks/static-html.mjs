@@ -12,10 +12,10 @@ export const staticHtml = {
   name: 'static-html',
 
   detect() {
-    return { via: 'fallback' };
+    return {via: 'fallback'};
   },
 
-  inject: { kind: 'tag' },
+  inject: {kind: 'tag'},
 
   source: {
     extensions: ['.html', '.htm'],

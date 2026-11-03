@@ -143,8 +143,8 @@ const [user, config, cache] = await Promise.all([
 const config = await env.MY_KV.get('app-config', { type: 'json' });
 ```
 
-**Use when:** Read-heavy, <25MB, global distribution, eventual consistency OK
-**Latency:** <10ms reads (cached), writes eventually consistent (60s)
+**Use when:** Read-heavy, <25MB, global distribution, eventual consistency OK **Latency:** <10ms
+reads (cached), writes eventually consistent (60s)
 
 ### D1: Relational Queries
 
@@ -155,8 +155,8 @@ const results = await env.DB.prepare(`
 `).all();
 ```
 
-**Use when:** Relational data, JOINs, ACID transactions
-**Limits:** 10GB database size, 100k rows per query
+**Use when:** Relational data, JOINs, ACID transactions **Limits:** 10GB database size, 100k rows
+per query
 
 ### R2: Large Objects
 
@@ -165,8 +165,7 @@ const object = await env.MY_BUCKET.get('large-file.zip');
 return new Response(object.body);
 ```
 
-**Use when:** Files >25MB, S3-compatible API needed
-**Limits:** 5TB per object, unlimited storage
+**Use when:** Files >25MB, S3-compatible API needed **Limits:** 5TB per object, unlimited storage
 
 ### Durable Objects: Coordination
 
@@ -176,8 +175,8 @@ const stub = env.COUNTER.get(id);
 await stub.fetch(new Request('https://fake/increment'));
 ```
 
-**Use when:** Strong consistency, real-time coordination, WebSocket state
-**Guarantees:** Single-threaded execution, transactional storage
+**Use when:** Strong consistency, real-time coordination, WebSocket state **Guarantees:**
+Single-threaded execution, transactional storage
 
 ## Anti-Patterns
 
@@ -193,8 +192,8 @@ await stub.fetch(new Request('https://fake/increment'));
 **❌ Large data in vars:** `{ "vars": { "HUGE_CONFIG": "..." } }` (5KB max)
 **✅** `env.MY_KV.put('config', data)`
 
-**❌ Caching env globally:** `const apiKey = env.API_KEY` outside fetch()
-**✅** Access `env.API_KEY` per-request inside fetch()
+**❌ Caching env globally:** `const apiKey = env.API_KEY` outside fetch ()
+**✅** Access `env.API_KEY` per-request inside fetch ()
 
 ## See Also
 

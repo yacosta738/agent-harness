@@ -46,8 +46,8 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 });
 ```
 
-**Note:** Requires Chrome 99+, only use when minimum Chrome version is set to 99.
-**Note:** Do NOT mix the two styles. If you return a Promise, do NOT also call `sendResponse` or `return true`.
+**Note:** Requires Chrome 99+, only use when minimum Chrome version is set to 99. **Note:** Do NOT
+mix the two styles. If you return a Promise, do NOT also call `sendResponse` or `return true`.
 
 ## Content script ↔ service worker
 
@@ -117,7 +117,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 ### Sending to a tab before the content script is ready
 
-Content scripts are injected after the page loads. If the service worker sends a message immediately on `tabs.onUpdated`, the content script may not be listening yet. Use a handshake or retry:
+Content scripts are injected after the page loads. If the service worker sends a message immediately
+on `tabs.onUpdated`, the content script may not be listening yet. Use a handshake or retry:
 
 ```js
 // content script — announce it's ready
@@ -133,4 +134,5 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
 
 ### Multiple listeners responding
 
-Only one listener should respond to a given message type. If multiple listeners call `sendResponse`, only the first one wins and the rest are silently ignored.
+Only one listener should respond to a given message type. If multiple listeners call `sendResponse`,
+only the first one wins and the rest are silently ignored.

@@ -19,6 +19,7 @@ const session = await LanguageModel.create({ ... });
 ```
 
 Also remove the expired permission from manifest.json:
+
 ```json
 "permissions": ["aiLanguageModelOriginTrial"]  // ❌ remove this
 ```
@@ -45,6 +46,7 @@ Note the use of `tabs` + `host_permissions` instead of `activeTab` — side pane
 clicks do NOT activate `activeTab` (see Rule 12).
 
 ### manifest.json
+
 ```json
 {
   "manifest_version": 3,
@@ -59,6 +61,7 @@ clicks do NOT activate `activeTab` (see Rule 12).
 ```
 
 ### service-worker.js
+
 ```js
 chrome.action.onClicked.addListener(async (tab) => {
   await chrome.sidePanel.open({ windowId: tab.windowId });
@@ -66,6 +69,7 @@ chrome.action.onClicked.addListener(async (tab) => {
 ```
 
 ### sidepanel/sidepanel.js
+
 ```js
 const statusEl = document.getElementById('status');
 const summaryEl = document.getElementById('summary');

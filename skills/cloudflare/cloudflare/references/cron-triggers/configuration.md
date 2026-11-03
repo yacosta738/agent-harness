@@ -89,8 +89,8 @@ Schedule crons during low-carbon periods for carbon-aware execution:
 
 **Structure:** `minute hour day-of-month month day-of-week`
 
-**Special chars:** `*` (any), `,` (list), `-` (range), `/` (step), `L` (last), `W` (weekday), `#` (
-nth)
+**Special chars:** `*` (any), `,` (list), `-` (range), `/` (step), `L` (last), `W` (weekday), `#`
+(nth)
 
 ## Managing Triggers
 

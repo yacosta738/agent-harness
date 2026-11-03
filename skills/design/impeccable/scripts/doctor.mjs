@@ -21,12 +21,16 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {fileURLToPath} from 'node:url';
 
-import { loadContext, extractPlatform, resolveTargetSelection } from './context.mjs';
-import { parseTargetOptions } from './lib/target-args.mjs';
-import { IMPECCABLE_COMMAND, IMPECCABLE_PROVIDER_ID } from './lib/provider.mjs';
-import { parseDesignMd } from './lib/design-parser.mjs';
+import {
+  extractPlatform,
+  loadContext,
+  resolveTargetSelection
+} from './context.mjs';
+import {parseTargetOptions} from './lib/target-args.mjs';
+import {IMPECCABLE_COMMAND, IMPECCABLE_PROVIDER_ID} from './lib/provider.mjs';
+import {parseDesignMd} from './lib/design-parser.mjs';
 import {
   PRODUCT_SCHEMA_VERSION,
   readProductSchemaVersion,
@@ -63,14 +67,22 @@ function safeRead(filePath) {
 
 function parseArgs(argv) {
   const passthrough = [];
-  const flags = { json: false, fix: false, help: false };
+  const flags = {json: false, fix: false, help: false};
   for (const arg of argv) {
-    if (arg === '--json') flags.json = true;
-    else if (arg === '--fix') flags.fix = true;
-    else if (arg === '--help' || arg === '-h') flags.help = true;
-    else passthrough.push(arg);
+    if (arg === '--json') {
+      flags.json = true;
+    } else if (arg === '--fix') {
+      flags.fix = true;
+    } else if (arg === '--help' || arg === '-h') {
+      flags.help = true;
+    } else {
+      passthrough.push(arg);
+    }
   }
-  return { flags, targetOptions: parseTargetOptions(passthrough, { strict: true }) };
+  return {
+    flags,
+    targetOptions: parseTargetOptions(passthrough, {strict: true})
+  };
 }
 
 function usage() {
@@ -90,9 +102,12 @@ function usage() {
 async function collect(cwd, targetOptions) {
   const ctx = loadContext(cwd, targetOptions);
   const projectRoot = ctx.projectRoot || cwd;
-  const absProductPath = ctx.productPath ? path.resolve(cwd, ctx.productPath) : null;
-  const absDesignPath = ctx.designPath ? path.resolve(cwd, ctx.designPath) : null;
-  const sidecarCandidates = designSidecarCandidatesFor(projectRoot, ctx.contextDir);
+  const absProductPath = ctx.productPath ? path.resolve(cwd, ctx.productPath)
+      : null;
+  const absDesignPath = ctx.designPath ? path.resolve(cwd, ctx.designPath)
+      : null;
+  const sidecarCandidates = designSidecarCandidatesFor(projectRoot,
+      ctx.contextDir);
   const knownRuleIds = await loadKnownRuleIds(SCRIPTS_DIR);
 
   const selection = resolveTargetSelection(cwd, targetOptions);
@@ -109,25 +124,28 @@ async function collect(cwd, targetOptions) {
   const findings = [
     ...checkProduct(ctx.product, ctx.productPath || 'PRODUCT.md'),
     ...(ctx.product
-      ? checkNativePlatformEvidence({
+        ? checkNativePlatformEvidence({
           projectRoot,
           platform: ctx.platform,
           product: ctx.product,
           productPath: ctx.productPath,
         })
-      : []),
-    ...checkDesignSidecar({ designPath: absDesignPath, sidecarCandidates, projectRoot }),
-    ...checkDesignDrift({ designPath: absDesignPath, projectRoot }),
-    ...checkDesignCoverage({ design: ctx.design, designPath: ctx.designPath, parseDesignMd }),
-    ...checkConfig({ projectRoot, repoRoot: ctx.repoRoot }),
-    ...checkDetectorIgnores({ projectRoot, knownRuleIds }),
-    ...checkSurfaceBriefs({ candidates: ctx.surfaceBriefCandidates, projectRoot }),
+        : []),
+    ...checkDesignSidecar(
+        {designPath: absDesignPath, sidecarCandidates, projectRoot}),
+    ...checkDesignDrift({designPath: absDesignPath, projectRoot}),
+    ...checkDesignCoverage(
+        {design: ctx.design, designPath: ctx.designPath, parseDesignMd}),
+    ...checkConfig({projectRoot, repoRoot: ctx.repoRoot}),
+    ...checkDetectorIgnores({projectRoot, knownRuleIds}),
+    ...checkSurfaceBriefs(
+        {candidates: ctx.surfaceBriefCandidates, projectRoot}),
     ...checkHookInstallation({
       projectRoot,
       repoRoot: ctx.repoRoot,
       providerId: IMPECCABLE_PROVIDER_ID,
     }),
-    ...checkLegacyLiveState({ projectRoot }),
+    ...checkLegacyLiveState({projectRoot}),
     ...checkProjectRoots({
       patterns: readProjectRootPatterns(ctx.repoRoot),
       candidates: workspaceCandidates,
@@ -149,17 +167,24 @@ async function collect(cwd, targetOptions) {
 // Read straight from disk rather than importing context.mjs's private reader.
 // Only the positive/negative pattern strings matter here.
 function readProjectRootPatterns(repoRoot) {
-  if (!repoRoot) return [];
+  if (!repoRoot) {
+    return [];
+  }
   const patterns = [];
   for (const name of ['config.json', 'config.local.json']) {
     try {
-      const raw = JSON.parse(fs.readFileSync(path.join(repoRoot, '.impeccable', name), 'utf-8'));
+      const raw = JSON.parse(
+          fs.readFileSync(path.join(repoRoot, '.impeccable', name), 'utf-8'));
       if (Array.isArray(raw?.projectRoots)) {
         for (const entry of raw.projectRoots) {
-          if (typeof entry === 'string' && entry.trim()) patterns.push(entry.trim());
+          if (typeof entry === 'string' && entry.trim()) {
+            patterns.push(
+                entry.trim());
+          }
         }
       }
-    } catch { /* missing or malformed: nothing to check */ }
+    } catch { /* missing or malformed: nothing to check */
+    }
   }
   return patterns;
 }
@@ -174,47 +199,65 @@ function applyFixes(report) {
 
   for (const entry of report.findings) {
     if (entry.severity !== 'auto') {
-      skipped.push({ id: entry.id, reason: 'needs a decision from the user' });
+      skipped.push({id: entry.id, reason: 'needs a decision from the user'});
       continue;
     }
     if (entry.id === 'design-sidecar-legacy-path') {
       const canonical = report.sidecarCandidates[0];
-      const present = report.sidecarCandidates.find((candidate) => fs.existsSync(candidate));
-      if (!canonical || !present || path.resolve(canonical) === path.resolve(present)) continue;
-      if (fs.existsSync(canonical)) {
-        skipped.push({ id: entry.id, reason: `${rel(canonical, report.projectRoot)} already exists; not overwriting` });
+      const present = report.sidecarCandidates.find(
+          (candidate) => fs.existsSync(candidate));
+      if (!canonical || !present || path.resolve(canonical) === path.resolve(
+          present)) {
         continue;
       }
-      fs.mkdirSync(path.dirname(canonical), { recursive: true });
+      if (fs.existsSync(canonical)) {
+        skipped.push({
+          id: entry.id,
+          reason: `${rel(canonical,
+              report.projectRoot)} already exists; not overwriting`
+        });
+        continue;
+      }
+      fs.mkdirSync(path.dirname(canonical), {recursive: true});
       fs.renameSync(present, canonical);
-      applied.push(`Moved ${rel(present, report.projectRoot)} to ${rel(canonical, report.projectRoot)}.`);
+      applied.push(
+          `Moved ${rel(present, report.projectRoot)} to ${rel(canonical,
+              report.projectRoot)}.`);
       continue;
     }
     if (entry.id === 'legacy-live-state') {
       // Reported, never deleted here: a running live session still reads these,
       // and losing session state to a doctor run is a worse outcome than a
       // stale file. The report says what to remove and when.
-      skipped.push({ id: entry.id, reason: 'delete by hand once no live session is running' });
+      skipped.push({
+        id: entry.id,
+        reason: 'delete by hand once no live session is running'
+      });
       continue;
     }
-    skipped.push({ id: entry.id, reason: 'no automatic migration implemented' });
+    skipped.push({id: entry.id, reason: 'no automatic migration implemented'});
   }
 
   // Stamping the product record is additive and safe, and it is what stops a
   // later version proposing an interview the user has already sat through.
   const productPath = report.absProductPath;
-  if (productPath && report.ctx.product && readProductSchemaVersion(report.ctx.product) === null
-    && !report.findings.some((entry) => entry.id === 'product-schema-legacy')) {
-    fs.writeFileSync(productPath, stampProductSchema(report.ctx.product), 'utf-8');
-    applied.push(`Stamped ${rel(productPath, report.projectRoot)} as product-schema ${PRODUCT_SCHEMA_VERSION}.`);
+  if (productPath && report.ctx.product && readProductSchemaVersion(
+          report.ctx.product) === null
+      && !report.findings.some(
+          (entry) => entry.id === 'product-schema-legacy')) {
+    fs.writeFileSync(productPath, stampProductSchema(report.ctx.product),
+        'utf-8');
+    applied.push(`Stamped ${rel(productPath,
+        report.projectRoot)} as product-schema ${PRODUCT_SCHEMA_VERSION}.`);
   }
 
-  return { applied, skipped };
+  return {applied, skipped};
 }
 
 function rel(filePath, root) {
   const value = path.relative(root, filePath);
-  return value && !value.startsWith('..') ? value.split(path.sep).join('/') : filePath;
+  return value && !value.startsWith('..') ? value.split(path.sep).join('/')
+      : filePath;
 }
 
 const SEVERITY_LABEL = {
@@ -225,21 +268,26 @@ const SEVERITY_LABEL = {
 
 function renderText(report, fixes) {
   const lines = [];
-  const { findings } = report;
+  const {findings} = report;
 
-  lines.push(`Impeccable doctor: ${rel(report.projectRoot, process.cwd()) || '.'}`);
+  lines.push(
+      `Impeccable doctor: ${rel(report.projectRoot, process.cwd()) || '.'}`);
   if (report.ctx.isMonorepo) {
-    lines.push(`Monorepo, repo root ${rel(report.ctx.repoRoot, process.cwd()) || '.'}.`);
+    lines.push(`Monorepo, repo root ${rel(report.ctx.repoRoot, process.cwd())
+    || '.'}.`);
   }
   lines.push('');
 
   if (!findings.length) {
-    lines.push('No drift found. Every artifact matches what this version reads.');
+    lines.push(
+        'No drift found. Every artifact matches what this version reads.');
   } else {
     const order = ['route', 'mention', 'auto'];
     for (const severity of order) {
       const group = findings.filter((entry) => entry.severity === severity);
-      if (!group.length) continue;
+      if (!group.length) {
+        continue;
+      }
       lines.push(`${SEVERITY_LABEL[severity]} (${group.length}):`);
       for (const entry of group) {
         lines.push(`  ${entry.id}${entry.path ? `  [${entry.path}]` : ''}`);
@@ -254,28 +302,35 @@ function renderText(report, fixes) {
     lines.push('Workspaces:');
     for (const workspace of report.workspaces) {
       lines.push(`  ${workspace.path}  product: ${workspace.productStatus}`
-        + `  design: ${workspace.designStatus}`
-        + `${workspace.platform ? `  platform: ${workspace.platform}` : ''}`);
+          + `  design: ${workspace.designStatus}`
+          + `${workspace.platform ? `  platform: ${workspace.platform}` : ''}`);
     }
     lines.push('');
   }
 
   if (!report.ruleRegistryAvailable) {
-    lines.push('Note: the bundled detector could not be resolved, so ignored rule ids were not validated.');
+    lines.push(
+        'Note: the bundled detector could not be resolved, so ignored rule ids were not validated.');
     lines.push('');
   }
 
   if (fixes) {
     lines.push(fixes.applied.length ? 'Applied:' : 'Applied nothing.');
-    for (const entry of fixes.applied) lines.push(`  ${entry}`);
-    const held = fixes.skipped.filter((entry) => entry.reason !== 'needs a decision from the user');
+    for (const entry of fixes.applied) {
+      lines.push(`  ${entry}`);
+    }
+    const held = fixes.skipped.filter(
+        (entry) => entry.reason !== 'needs a decision from the user');
     if (held.length) {
       lines.push('Left alone:');
-      for (const entry of held) lines.push(`  ${entry.id}: ${entry.reason}`);
+      for (const entry of held) {
+        lines.push(`  ${entry.id}: ${entry.reason}`);
+      }
     }
   } else if (findings.some((entry) => entry.severity === 'auto')) {
-    lines.push(`Run \`node doctor.mjs --fix\` to apply the automatic migrations, `
-      + `or \`${IMPECCABLE_COMMAND} doctor\` to work through all of them.`);
+    lines.push(
+        `Run \`node doctor.mjs --fix\` to apply the automatic migrations, `
+        + `or \`${IMPECCABLE_COMMAND} doctor\` to work through all of them.`);
   }
 
   return lines.join('\n');
@@ -308,7 +363,7 @@ async function cli() {
       ruleRegistryAvailable: report.ruleRegistryAvailable,
       findings: report.findings,
       workspaces: report.workspaces,
-      ...(fixes ? { fixes } : {}),
+      ...(fixes ? {fixes} : {}),
     }, null, 2)}\n`);
     return;
   }
@@ -318,9 +373,12 @@ async function cli() {
 
 function invokedAsScript() {
   const arg = process.argv[1];
-  if (!arg) return false;
+  if (!arg) {
+    return false;
+  }
   try {
-    return fs.realpathSync(arg) === fs.realpathSync(fileURLToPath(import.meta.url));
+    return fs.realpathSync(arg) === fs.realpathSync(
+        fileURLToPath(import.meta.url));
   } catch {
     return false;
   }
@@ -333,4 +391,4 @@ if (invokedAsScript()) {
   });
 }
 
-export { collect, applyFixes, renderText };
+export {collect, applyFixes, renderText};

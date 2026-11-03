@@ -1,16 +1,26 @@
 # Stabilize Reactive State with Temporal
 
-While some reactive systems (like [React](https://react.dev/)) rely strictly on reference equality to detect state changes, others (like [Vue](https://vuejs.org/) and [Svelte](https://svelte.dev/)) can track mutations to plain objects. However, for built-in objects like the legacy `Date` object, internal mutations (like `setHours()`) do not change the object's reference and are generally not tracked by any framework's default reactivity system. This leads to missed UI updates and hard-to-debug side effects.
+While some reactive systems (like [React](https://react.dev/)) rely strictly on reference equality
+to detect state changes, others (like [Vue](https://vuejs.org/) and [Svelte](https://svelte.dev/))
+can track mutations to plain objects. However, for built-in objects like the legacy `Date` object,
+internal mutations (like `setHours()`) do not change the object's reference and are generally not
+tracked by any framework's default reactivity system. This leads to missed UI updates and
+hard-to-debug side effects.
 
-The `Temporal` API solves this by providing immutable objects. Any operation that modifies a value (such as adding time or setting a field) returns a new instance with a new memory reference. This guarantees that state updates are always detected by reactive systems, ensuring UI stability.
+The `Temporal` API solves this by providing immutable objects. Any operation that modifies a value
+(such as adding time or setting a field) returns a new instance with a new memory reference. This
+guarantees that state updates are always detected by reactive systems, ensuring UI stability.
 
 ## How to Implement
 
 To stabilize reactive state using Temporal:
 
-1. **Use Temporal types for state:** Store `Temporal` objects (like `Temporal.PlainDateTime` or `Temporal.PlainDate`) in your reactive state instead of legacy `Date` objects.
-2. **Perform immutable updates:** When updating the state, use Temporal methods like `.add()`, `.subtract()`, or `.with()`. These methods return a new object.
-3. **Pass the new reference to the state setter:** Use the newly created Temporal object to update your component state, triggering a reliable re-render.
+1. **Use Temporal types for state:** Store `Temporal` objects (like `Temporal.PlainDateTime` or
+   `Temporal.PlainDate`) in your reactive state instead of legacy `Date` objects.
+2. **Perform immutable updates:** When updating the state, use Temporal methods like `.add()`,
+   `.subtract()`, or `.with()`. These methods return a new object.
+3. **Pass the new reference to the state setter:** Use the newly created Temporal object to update
+   your component state, triggering a reliable re-render.
 
 ## Example Code: Temporal vs Legacy Date in State
 
@@ -44,8 +54,10 @@ function extendDeadlineGood() {
 
 ## Strategic Implementation & Best Practices
 
-- **DO** use `Temporal` for any date/time values stored in reactive state to benefit from its immutability.
-- **DO** use the most specific Temporal type for your use case (e.g., `Temporal.PlainDate` if you only need the calendar date) to avoid unnecessary complexity.
+- **DO** use `Temporal` for any date/time values stored in reactive state to benefit from its
+  immutability.
+- **DO** use the most specific Temporal type for your use case (e.g., `Temporal.PlainDate` if you
+  only need the calendar date) to avoid unnecessary complexity.
 - **DO NOT** mutate `Date` objects in place when they are part of a component's state.
 - **DO** ensure you handle environments without native support by conditionally loading a polyfill.
 
@@ -55,7 +67,8 @@ Temporal has limited availability.
 Supported by: Chrome 144 (Jan 2026), Edge 144 (Jan 2026), and Firefox 139 (May 2025).
 Unsupported in: Safari.
 
-Since the `Temporal` API is a newer feature and may not be supported in all browsers, you should feature-detect it and conditionally load a polyfill if needed.
+Since the `Temporal` API is a newer feature and may not be supported in all browsers, you should
+feature-detect it and conditionally load a polyfill if needed.
 
 ```html
 <!-- Conditionally load the Temporal polyfill only if not natively supported -->

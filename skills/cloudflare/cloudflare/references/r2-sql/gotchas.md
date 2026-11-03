@@ -55,17 +55,17 @@ Check partition spec: `DESCRIBE namespace.table_name`
 
 | Feature                         | Supported | Notes                     |
 |---------------------------------|-----------|---------------------------|
-| SELECT, WHERE, GROUP BY, HAVING | ✅         | Standard support          |
-| COUNT, SUM, AVG, MIN, MAX       | ✅         | Standard aggregations     |
-| ORDER BY partition/aggregation  | ✅         | See above                 |
-| LIMIT                           | ✅         | Max 10,000                |
-| Column aliases                  | ❌         | No AS alias               |
-| Expressions in SELECT           | ❌         | No col1 + col2            |
-| ORDER BY non-partition          | ❌         | Fails at runtime          |
-| JOINs, subqueries, CTEs         | ❌         | Denormalize at write time |
-| Window functions, UNION         | ❌         | Use external engines      |
-| INSERT/UPDATE/DELETE            | ❌         | Use PyIceberg/Pipelines   |
-| Nested columns, arrays, JSON    | ❌         | Flatten at write time     |
+| SELECT, WHERE, GROUP BY, HAVING | ✅        | Standard support          |
+| COUNT, SUM, AVG, MIN, MAX       | ✅        | Standard aggregations     |
+| ORDER BY partition/aggregation  | ✅        | See above                 |
+| LIMIT                           | ✅        | Max 10,000                |
+| Column aliases                  | ❌        | No AS alias               |
+| Expressions in SELECT           | ❌        | No col1 + col2            |
+| ORDER BY non-partition          | ❌        | Fails at runtime          |
+| JOINs, subqueries, CTEs         | ❌        | Denormalize at write time |
+| Window functions, UNION         | ❌        | Use external engines      |
+| INSERT/UPDATE/DELETE            | ❌        | Use PyIceberg/Pipelines   |
+| Nested columns, arrays, JSON    | ❌        | Flatten at write time     |
 
 **Workarounds:**
 
@@ -77,8 +77,8 @@ Check partition spec: `DESCRIBE namespace.table_name`
 
 ### "Column not found"
 
-**Cause:** Typo, column doesn't exist, or case mismatch
-**Solution:** `DESCRIBE namespace.table_name` to check schema
+**Cause:** Typo, column doesn't exist, or case mismatch **Solution:**
+`DESCRIBE namespace.table_name` to check schema
 
 ### "Type mismatch"
 
@@ -94,8 +94,8 @@ WHERE timestamp > '2025-01-01T00:00:00Z'
 
 ### "ORDER BY column not in partition key"
 
-**Cause:** Ordering by non-partition column
-**Solution:** Use partition key, aggregation, or remove ORDER BY. Check: `DESCRIBE table`
+**Cause:** Ordering by non-partition column **Solution:** Use partition key, aggregation, or remove
+ORDER BY. Check: `DESCRIBE table`
 
 ### "Token authentication failed"
 

@@ -88,6 +88,7 @@ chrome.action.onClicked.addListener((tab) => {
 ```
 
 You can toggle between popup and no-popup dynamically:
+
 ```js
 chrome.action.setPopup({ popup: 'popup/popup.html' }); // Enable popup
 chrome.action.setPopup({ popup: '' }); // Disable popup (enables onClicked)

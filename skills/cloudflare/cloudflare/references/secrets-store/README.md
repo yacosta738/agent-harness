@@ -4,17 +4,17 @@ Account-level encrypted secret management for Workers and AI Gateway.
 
 ## Overview
 
-**Secrets Store**: Centralized, account-level secrets, reusable across Workers
-**Worker Secrets**: Per-Worker secrets (`wrangler secret put`)
+**Secrets Store**: Centralized, account-level secrets, reusable across Workers **Worker Secrets**:
+Per-Worker secrets (`wrangler secret put`)
 
 ### Architecture
 
 - **Store**: Container (1/account in beta)
 - **Secret**: String ≤1024 bytes
 - **Scopes**: Permission boundaries controlling access
-  - `workers`: For Workers runtime access
-  - `ai-gateway`: For AI Gateway access
-  - Secrets must have correct scope for binding to work
+    - `workers`: For Workers runtime access
+    - `ai-gateway`: For AI Gateway access
+    - Secrets must have correct scope for binding to work
 - **Bindings**: Connect secrets via `env` object
 
 **Regional Availability**: Global except China Network (unavailable)

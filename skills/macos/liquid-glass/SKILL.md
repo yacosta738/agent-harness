@@ -57,8 +57,8 @@ scrims, and clipping before adding more effects.
 - Assume toolbar items are rendered on a floating Liquid Glass surface and are
   grouped automatically.
 - Use `ToolbarSpacer` to communicate grouping:
-  - fixed spacing to split related actions into a distinct group,
-  - flexible spacing to push a leading action away from a trailing group.
+    - fixed spacing to split related actions into a distinct group,
+    - flexible spacing to push a leading action away from a trailing group.
 - Use `sharedBackgroundVisibility` when an item should stand alone without the
   shared glass background, for example a profile/avatar item.
 - Add `badge` to toolbar item content for notification or status indicators.

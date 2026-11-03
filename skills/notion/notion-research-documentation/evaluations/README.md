@@ -18,8 +18,7 @@ These evaluations ensure the Research & Documentation skill:
 
 Tests basic research workflow with synthesis across multiple Notion pages.
 
-**Scenario**: Research Q4 product roadmap and create summary
-**Key Behaviors**:
+**Scenario**: Research Q4 product roadmap and create summary **Key Behaviors**:
 
 - Searches Notion for roadmap-related pages
 - Fetches multiple relevant pages (roadmap, product docs, meeting notes)
@@ -32,8 +31,7 @@ Tests basic research workflow with synthesis across multiple Notion pages.
 
 Tests creating research documentation in a Notion database with properties.
 
-**Scenario**: Research competitor landscape and save to Research database
-**Key Behaviors**:
+**Scenario**: Research competitor landscape and save to Research database **Key Behaviors**:
 
 - Searches for existing competitive intelligence in Notion
 - Identifies Research database as target
@@ -68,10 +66,10 @@ Research & Documentation evaluations should verify:
 ### Format Selection
 
 - Chooses correct format based on scope and depth:
-  - **Research Summary**: Quick overview with key findings
-  - **Comprehensive Report**: Deep analysis with multiple sections
-  - **Quick Brief**: Fast facts and takeaways
-  - **Comparison**: Side-by-side analysis
+    - **Research Summary**: Quick overview with key findings
+    - **Comprehensive Report**: Deep analysis with multiple sections
+    - **Quick Brief**: Fast facts and takeaways
+    - **Comparison**: Side-by-side analysis
 - Applies format structure consistently
 - Uses appropriate sections and headings
 

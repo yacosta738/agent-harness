@@ -7,14 +7,17 @@ Every public effect ships two generated JSON contracts.
 1. `assets/specs/<id>.json`: portable motion spec
 2. `assets/effects/<id>.json`: exact generated animation recipe
 
-Use the portable spec when translating the motion intent into a new context. Use the exact effect recipe when reproducing generated animation behavior 1:1 in WAAPI, Motion, GSAP, or another target library.
+Use the portable spec when translating the motion intent into a new context. Use the exact effect
+recipe when reproducing generated animation behavior 1:1 in WAAPI, Motion, GSAP, or another target
+library.
 
-Content does not belong in the portable spec. Sample text stays in `assets/samples.json` and is embedded into generated effect recipes.
+Content does not belong in the portable spec. Sample text stays in `assets/samples.json` and is
+embedded into generated effect recipes.
 
 ## Portable Spec Top-level Fields
 
 | Field              | Type    | Description                                          |
-| ------------------ | ------- | ---------------------------------------------------- |
+|--------------------|---------|------------------------------------------------------|
 | `id`               | string  | Kebab-case identifier, matches filename.             |
 | `display_name`     | string  | Human-readable name.                                 |
 | `description`      | string  | One-sentence description of the effect.              |
@@ -88,9 +91,9 @@ Fields:
 Fields:
 
 - `mode`
-  - `crossfade`
-  - `sequential`
-  - `morph`
+    - `crossfade`
+    - `sequential`
+    - `morph`
 - `overlap_ms`
 - `micro_delay_ms`
 - `scenario_spec`
@@ -118,7 +121,8 @@ Supported values:
 - `kinetic-top-build`
 - `shared-slide-opacity-stage`
 
-This field is a portable renderer hint. The resolved generated renderer is described in `effect.showcase.renderer`.
+This field is a portable renderer hint. The resolved generated renderer is described in
+`effect.showcase.renderer`.
 
 ## `build`
 
@@ -152,7 +156,9 @@ Known keys:
 
 ## Exact Effect Recipe
 
-`assets/effects/<id>.json` is generated metadata for reproducing the current animation behavior exactly. It intentionally excludes non-animation presentation styling such as font size, font weight, color, padding, card chrome, and page layout.
+`assets/effects/<id>.json` is generated metadata for reproducing the current animation behavior
+exactly. It intentionally excludes non-animation presentation styling such as font size, font
+weight, color, padding, card chrome, and page layout.
 
 ```json
 {
@@ -226,7 +232,8 @@ Fields:
 
 - `default_policy`: preserve existing heading or section text when the user asks to apply an effect.
 - `showcase_samples`: use bundled samples as demo/fallback copy, not as replacement product copy.
-- `loop_policy`: use user/application-provided phrase arrays when available; otherwise animate the existing phrase or explicitly provided alternates.
+- `loop_policy`: use user/application-provided phrase arrays when available; otherwise animate the
+  existing phrase or explicitly provided alternates.
 
 ### `effect.showcase.renderer`
 
@@ -235,22 +242,25 @@ Resolved renderer for the current effect.
 Fields:
 
 - `id`
-  - `generic-stagger`
-  - `shared-slide-opacity-stage`
-  - `kinetic-center-build`
-  - `kinetic-top-build`
+    - `generic-stagger`
+    - `shared-slide-opacity-stage`
+    - `kinetic-center-build`
+    - `kinetic-top-build`
 - `source`
-  - `default`
-  - `spec`
-  - `catalog-override`
+    - `default`
+    - `spec`
+    - `catalog-override`
 - `params`
-  - structured renderer-specific data used by the generated recipe
+    - structured renderer-specific data used by the generated recipe
 - `recipe`
-  - the renderer algorithm needed for exact reproduction
-  - may include `initial_state`, `verification`, `canonical_loop_pseudocode`, and `keyframe_recipe` for renderers where prose is not precise enough
-  - `initial_state` defines required pre-animation styles such as word opacity before a reveal
-  - `canonical_loop_pseudocode` defines the low-freedom loop order when prose could lead to double-enter or enter-only implementations
-  - `keyframe_recipe` defines intermediate offsets and formulas that must be preserved for layout-aware renderers
+    - the renderer algorithm needed for exact reproduction
+    - may include `initial_state`, `verification`, `canonical_loop_pseudocode`, and
+      `keyframe_recipe` for renderers where prose is not precise enough
+    - `initial_state` defines required pre-animation styles such as word opacity before a reveal
+    - `canonical_loop_pseudocode` defines the low-freedom loop order when prose could lead to
+      double-enter or enter-only implementations
+    - `keyframe_recipe` defines intermediate offsets and formulas that must be preserved for
+      layout-aware renderers
 
 ### `effect.showcase.runtime`
 
@@ -300,11 +310,13 @@ Generic stagger effects include:
 - `exit.scaled_stagger_ms`
 - formulas for total phase duration based on animated unit count
 
-Layout-aware renderers include renderer-specific timing blocks such as `first_word`, `push`, `exit`, `hold_ms`, and `gap_ms`.
+Layout-aware renderers include renderer-specific timing blocks such as `first_word`, `push`, `exit`,
+`hold_ms`, and `gap_ms`.
 
 ### `effect.showcase.stage`
 
-Resolved animation host requirements for the effect. These fields describe what the animation engine needs, not the visual design of the page.
+Resolved animation host requirements for the effect. These fields describe what the animation engine
+needs, not the visual design of the page.
 
 Fields vary by preset, but may include:
 
@@ -314,7 +326,9 @@ Fields vary by preset, but may include:
 - `kinetic_container`
 - `kinetic_word`
 
-Do not treat this block as a style guide. Typography, colors, card size, padding, and surrounding layout belong to the consuming application unless a user explicitly asks to reproduce a specific page design.
+Do not treat this block as a style guide. Typography, colors, card size, padding, and surrounding
+layout belong to the consuming application unless a user explicitly asks to reproduce a specific
+page design.
 
 ### `effect.showcase.rendering_contract`
 
@@ -328,7 +342,9 @@ Structured details that affect exact reproduction, including:
 - initial delay policy
 - content replacement behavior
 
-For kinetic build renderers, `y_travel_multiplier` is intentionally `1` and the contract includes a note that build x/y values are raw renderer pixels. Runtime y-travel scaling only applies to generic/title frame conversion, not to `buildKineticFrame` coordinates.
+For kinetic build renderers, `y_travel_multiplier` is intentionally `1` and the contract includes a
+note that build x/y values are raw renderer pixels. Runtime y-travel scaling only applies to
+generic/title frame conversion, not to `buildKineticFrame` coordinates.
 
 ### `effect.showcase.library_selection`
 
@@ -341,7 +357,9 @@ Fields:
 - `rule`: required behavior when a user names a target animation library.
 - `verification`: import/call checks an agent should run against generated code.
 
-If a user explicitly asks for GSAP, the implementation should use `showcase.library_adapters.gsap`; if they ask for Motion, use `showcase.library_adapters.motion`; if they ask for WAAPI, use `showcase.library_adapters.waapi`. Do not silently substitute one adapter for another.
+If a user explicitly asks for GSAP, the implementation should use `showcase.library_adapters.gsap`;
+if they ask for Motion, use `showcase.library_adapters.motion`; if they ask for WAAPI, use
+`showcase.library_adapters.waapi`. Do not silently substitute one adapter for another.
 
 ### `effect.showcase.library_adapters`
 
@@ -367,13 +385,25 @@ Each adapter includes:
 - `cancellation`
 - `renderer_notes`
 
-Use the adapter matching the requested stack. For example, Motion implementations should use `showcase.library_adapters.motion` for time-unit conversion, easing helper conversion, property-keyframe shape, and renderer-specific notes. GSAP implementations should use `showcase.library_adapters.gsap` for `CustomEase`, `gsap.set`, `gsap.to`, keyframe offsets, and completion behavior.
+Use the adapter matching the requested stack. For example, Motion implementations should use
+`showcase.library_adapters.motion` for time-unit conversion, easing helper conversion,
+property-keyframe shape, and renderer-specific notes. GSAP implementations should use
+`showcase.library_adapters.gsap` for `CustomEase`, `gsap.set`, `gsap.to`, keyframe offsets, and
+completion behavior.
 
-For Motion, `times` belongs in the animation options object, not inside the property keyframes object. For GSAP, first-frame styles should be initialized before tweens start, and offset-derived per-keyframe segment durations should not be combined with a top-level `duration` on the same `gsap.to` call.
+For Motion, `times` belongs in the animation options object, not inside the property keyframes
+object. For GSAP, first-frame styles should be initialized before tweens start, and offset-derived
+per-keyframe segment durations should not be combined with a top-level `duration` on the same
+`gsap.to` call.
 
-Exact implementations must preserve the full playback loop for the selected renderer. A first-enter-only Motion, GSAP, WAAPI, or CSS reveal is not equivalent to the generated site behavior unless the user explicitly asks for a one-shot reveal.
+Exact implementations must preserve the full playback loop for the selected renderer. A
+first-enter-only Motion, GSAP, WAAPI, or CSS reveal is not equivalent to the generated site behavior
+unless the user explicitly asks for a one-shot reveal.
 
-For generic stagger loops, the first phrase enters once. After that, each loop exits the currently visible phrase, waits the configured micro-delay, replaces the stage with the next phrase, enters that next phrase, waits the gap, and then starts the next cycle by exiting the visible phrase. Do not enter the same visible phrase twice after the gap.
+For generic stagger loops, the first phrase enters once. After that, each loop exits the currently
+visible phrase, waits the configured micro-delay, replaces the stage with the next phrase, enters
+that next phrase, waits the gap, and then starts the next cycle by exiting the visible phrase. Do
+not enter the same visible phrase twice after the gap.
 
 ### `effect.showcase.engine_notes`
 
@@ -381,7 +411,8 @@ Stack-specific implementation notes for WAAPI, Motion, GSAP, and sometimes CSS.
 
 ### `effect.showcase.reproduction_notes`
 
-Short paragraphs describing additional animation-specific transformations that an implementation should preserve for visual parity.
+Short paragraphs describing additional animation-specific transformations that an implementation
+should preserve for visual parity.
 
 ## Generated Shared Assets
 
@@ -392,4 +423,5 @@ The public skill also includes:
 - `assets/renderer-recipes.json`
 - `assets/library-adapters.json`
 
-These are shared references. `assets/effects/<id>.json` embeds the resolved values needed for one effect so agents can usually use `get-effect.mjs <id>` as the one-stop exact reproduction artifact.
+These are shared references. `assets/effects/<id>.json` embeds the resolved values needed for one
+effect so agents can usually use `get-effect.mjs <id>` as the one-stop exact reproduction artifact.

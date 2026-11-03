@@ -1,17 +1,25 @@
 # Calculating Event Differentials with Temporal
 
-Calculating the time elapsed between events (such as trial expirations, subscription durations, or prorated costs) has historically been difficult with the legacy `Date` object due to complexities with time zones, daylight saving time (DST), and inconsistent parsing.
+Calculating the time elapsed between events (such as trial expirations, subscription durations, or
+prorated costs) has historically been difficult with the legacy `Date` object due to complexities
+with time zones, daylight saving time (DST), and inconsistent parsing.
 
-The `Temporal` API provides a modern, robust solution for date and time arithmetic. Specifically, `Temporal.ZonedDateTime` and `Temporal.Duration` enable exact, DST-safe calculations of time differences.
+The `Temporal` API provides a modern, robust solution for date and time arithmetic. Specifically,
+`Temporal.ZonedDateTime` and `Temporal.Duration` enable exact, DST-safe calculations of time
+differences.
 
 ## How to Implement
 
 To calculate differentials between two events:
 
-1.  **Obtain ZonedDateTime objects**: Convert your inputs (dates and times) into `Temporal.ZonedDateTime` objects. This ensures calculations are time-zone aware.
-2.  **Calculate active time with `.since()`**: Use `currentZonedDateTime.since(startZonedDateTime)` to find the time elapsed since a start event.
-3.  **Calculate remaining time with `.until()`**: Use `currentZonedDateTime.until(endZonedDateTime)` to find the time remaining until a future event.
-4.  **Control precision with options**: Use `largestUnit`, `smallestUnit`, and `roundingMode` to control how the resulting duration is balanced and rounded.
+1. **Obtain ZonedDateTime objects**: Convert your inputs (dates and times) into
+   `Temporal.ZonedDateTime` objects. This ensures calculations are time-zone aware.
+2. **Calculate active time with `.since()`**: Use `currentZonedDateTime.since(startZonedDateTime)`
+   to find the time elapsed since a start event.
+3. **Calculate remaining time with `.until()`**: Use `currentZonedDateTime.until(endZonedDateTime)`
+   to find the time remaining until a future event.
+4. **Control precision with options**: Use `largestUnit`, `smallestUnit`, and `roundingMode` to
+   control how the resulting duration is balanced and rounded.
 
 ### Example: Trial Expiration Calculation
 
@@ -52,11 +60,18 @@ if (isExpired) {
 
 ## Strategic Implementation & Best Practices
 
--   **DO** use `Temporal.ZonedDateTime` for calculations involving real-world events that occur in specific time zones (like subscription renewals or event scheduling).
--   **DO** use `largestUnit` to specify the largest unit you want in the result (e.g., `'year'` or `'month'`). If you omit it, it defaults to `'auto'` which might not always sum up to years/months as expected for human-readable durations.
--   **DO** use `.since()` when calculating time elapsed *since* a past event (e.g., `now.since(start)`), and `.until()` for time remaining *until* a future event (e.g., `now.until(end)`).
--   **DO NOT** modify instances directly; `Temporal` objects are **immutable**. Operations like `add()`, `subtract()`, or `with()` return a *new* instance.
--   **DO** use `Temporal.ZonedDateTime.compare` to check if one time point is after another. It returns `1` if the first is after the second, `-1` if before, and `0` if equal.
+- **DO** use `Temporal.ZonedDateTime` for calculations involving real-world events that occur in
+  specific time zones (like subscription renewals or event scheduling).
+- **DO** use `largestUnit` to specify the largest unit you want in the result (e.g., `'year'` or
+  `'month'`). If you omit it, it defaults to `'auto'` which might not always sum up to years/months
+  as expected for human-readable durations.
+- **DO** use `.since()` when calculating time elapsed *since* a past event (e.g.,
+  `now.since(start)`), and `.until()` for time remaining *until* a future event (e.g.,
+  `now.until(end)`).
+- **DO NOT** modify instances directly; `Temporal` objects are **immutable**. Operations like
+  `add()`, `subtract()`, or `with()` return a *new* instance.
+- **DO** use `Temporal.ZonedDateTime.compare` to check if one time point is after another. It
+  returns `1` if the first is after the second, `-1` if before, and `0` if equal.
 
 ## Fallback Strategy
 
@@ -66,9 +81,11 @@ Temporal has limited availability.
 Supported by: Chrome 144 (Jan 2026), Edge 144 (Jan 2026), and Firefox 139 (May 2025).
 Unsupported in: Safari.
 
-For browsers that do not yet support the native `Temporal` API, use feature detection and a polyfill. The standard reference polyfill is `@js-temporal/polyfill`.
+For browsers that do not yet support the native `Temporal` API, use feature detection and a
+polyfill. The standard reference polyfill is `@js-temporal/polyfill`.
 
-Note that the polyfill does not automatically assign the `Temporal` object to the global scope to avoid conflicts. You must manually assign it if your code relies on the global `Temporal` object.
+Note that the polyfill does not automatically assign the `Temporal` object to the global scope to
+avoid conflicts. You must manually assign it if your code relies on the global `Temporal` object.
 
 ```javascript
 // Check if Temporal is supported natively

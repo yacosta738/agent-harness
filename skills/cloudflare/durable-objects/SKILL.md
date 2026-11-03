@@ -116,7 +116,7 @@ export default {
 2. **Use `getByName()` for deterministic routing** - Same input = same DO instance
 3. **Use SQLite storage** - Configure `new_sqlite_classes` in migrations
 4. **Initialize in constructor** - Use `blockConcurrencyWhile()` for schema setup only
-5. **Use RPC methods** - Not fetch() handler (compatibility date >= 2024-04-03)
+5. **Use RPC methods** - Not fetch () handler (compatibility date >= 2024-04-03)
 6. **Persist first, cache second** - Always write to storage before updating in-memory state
 7. **One alarm per DO** - `setAlarm()` replaces any existing alarm
 

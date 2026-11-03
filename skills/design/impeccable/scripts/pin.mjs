@@ -13,16 +13,24 @@
  * in the project root and creates/removes the pin in all of them.
  */
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync, readdirSync } from 'node:fs';
-import { basename, join, resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync
+} from 'node:fs';
+import {basename, dirname, join, resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // All known harness directories
 const HARNESS_DIRS = [
-  '.claude', '.cursor', '.gemini', '.codex', '.agents', '.agent', '.github', '.grok',
-  '.trae', '.trae-cn', '.pi', '.opencode', '.kiro', '.rovodev', '.vibe', '.qoder',
+  '.claude', '.cursor', '.gemini', '.codex', '.agents', '.agent', '.github',
+  '.grok',
+  '.trae', '.trae-cn', '.pi', '.opencode', '.kiro', '.rovodev', '.vibe',
+  '.qoder',
 ];
 
 const CODEX_HARNESSES = new Set(['.codex', '.agents']);
@@ -46,14 +54,16 @@ function findProjectRoot(startDir = process.cwd()) {
   let dir = resolve(startDir);
   while (dir !== '/') {
     if (
-      existsSync(join(dir, 'package.json')) ||
-      existsSync(join(dir, '.git')) ||
-      existsSync(join(dir, 'skills-lock.json'))
+        existsSync(join(dir, 'package.json')) ||
+        existsSync(join(dir, '.git')) ||
+        existsSync(join(dir, 'skills-lock.json'))
     ) {
       return dir;
     }
     const parent = resolve(dir, '..');
-    if (parent === dir) break;
+    if (parent === dir) {
+      break;
+    }
     dir = parent;
   }
   return resolve(startDir);
@@ -68,7 +78,8 @@ function findHarnessDirs(projectRoot) {
     const skillsDir = join(projectRoot, harness, 'skills');
     // Only pin in harness dirs that already have impeccable installed
     const impeccableDir = join(skillsDir, 'impeccable');
-    if (existsSync(impeccableDir) || existsSync(join(skillsDir, 'i-impeccable'))) {
+    if (existsSync(impeccableDir) || existsSync(
+        join(skillsDir, 'i-impeccable'))) {
       dirs.push(skillsDir);
     }
   }
@@ -94,7 +105,8 @@ function commandPrefixForSkillsDir(skillsDir) {
 }
 
 function generatePinnedSkill(command, metadata, commandPrefix) {
-  const desc = metadata[command]?.description || `Shortcut for ${commandPrefix}impeccable ${command}.`;
+  const desc = metadata[command]?.description
+      || `Shortcut for ${commandPrefix}impeccable ${command}.`;
   const hint = metadata[command]?.argumentHint || '[target]';
 
   return `---
@@ -142,14 +154,15 @@ function pin(command, projectRoot) {
       }
     }
 
-    mkdirSync(skillDir, { recursive: true });
+    mkdirSync(skillDir, {recursive: true});
     writeFileSync(join(skillDir, 'SKILL.md'), content, 'utf-8');
     console.log(`  + ${skillDir}`);
     created++;
   }
 
   if (created > 0) {
-    console.log(`\nPinned '${command}' as a standalone shortcut in ${created} location(s).`);
+    console.log(
+        `\nPinned '${command}' as a standalone shortcut in ${created} location(s).`);
     console.log('Use the pinned command directly in each harness.');
   }
 
@@ -165,10 +178,14 @@ function unpin(command, projectRoot) {
 
   for (const skillsDir of harnessDirs) {
     const skillDir = join(skillsDir, command);
-    if (!existsSync(skillDir)) continue;
+    if (!existsSync(skillDir)) {
+      continue;
+    }
 
     const skillMd = join(skillDir, 'SKILL.md');
-    if (!existsSync(skillMd)) continue;
+    if (!existsSync(skillMd)) {
+      continue;
+    }
 
     // Safety: only remove if it's a pinned skill
     const content = readFileSync(skillMd, 'utf-8');
@@ -177,14 +194,15 @@ function unpin(command, projectRoot) {
       continue;
     }
 
-    rmSync(skillDir, { recursive: true, force: true });
+    rmSync(skillDir, {recursive: true, force: true});
     console.log(`  - ${skillDir}`);
     removed++;
   }
 
   if (removed > 0) {
     console.log(`\nUnpinned '${command}' from ${removed} location(s).`);
-    console.log(`Use Impeccable's '${command}' workflow directly to access it.`);
+    console.log(
+        `Use Impeccable's '${command}' workflow directly to access it.`);
   } else {
     console.log(`No pinned '${command}' shortcut found.`);
   }
@@ -193,7 +211,7 @@ function unpin(command, projectRoot) {
 }
 
 // --- CLI ---
-const [,, action, command] = process.argv;
+const [, , action, command] = process.argv;
 
 if (!action || !command) {
   console.log('Usage: node pin.mjs <pin|unpin> <command>');

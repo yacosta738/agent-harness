@@ -1,15 +1,29 @@
 # Rich Media Picker (Customizable Select)
 
-The native `<select>` element was historically difficult to style and could only contain plain text options. The `appearance: base-select` property offers a declarative, CSS-only way to opt into a customizable state for the `<select>` element. This allows developers to include rich HTML content—such as images, SVGs, and complex layouts—inside `<option>` elements, while retaining native keyboard accessibility and form integration. Use this pattern to replace heavy, custom-built select components with standard, native elements.
+The native `<select>` element was historically difficult to style and could only contain plain text
+options. The `appearance: base-select` property offers a declarative, CSS-only way to opt into a
+customizable state for the `<select>` element. This allows developers to include rich HTML
+content—such as images, SVGs, and complex layouts—inside `<option>` elements, while retaining native
+keyboard accessibility and form integration. Use this pattern to replace heavy, custom-built select
+components with standard, native elements.
 
 ## How to Implement
 
 To implement a rich media picker using the Customizable Select API:
 
-1. **Opt-in to base styles**: Apply `appearance: base-select` to both the `<select>` element and its internal picker using the `::picker(select)` pseudo-element. This changes the browser's HTML parser for the contents inside the `<select>`.
-2. **Define the Button Content**: Use standard `<button>` and `<selectedcontent>` elements inside the `<select>` to define what is shown when the picker is closed. The `<selectedcontent>` element automatically mirrors the content of the selected option. This is required if you want to display the currently selected rich content in the button.
-3. **Use Rich Content inside Options**: You can now place images, SVGs, and other HTML tags inside `<option>` tags. Prior to this API, the browser would strip tags from `<option>` tags and render only plain text.
-4. **Style the Popover**: Style the dropped-down options list by targeting the `::picker(select)` pseudo-element. It renders in the top layer, meaning you don't need to fight with `z-index`. Options are positioned using the Anchor Positioning API natively.
+1. **Opt-in to base styles**: Apply `appearance: base-select` to both the `<select>` element and its
+   internal picker using the `::picker(select)` pseudo-element. This changes the browser's HTML
+   parser for the contents inside the `<select>`.
+2. **Define the Button Content**: Use standard `<button>` and `<selectedcontent>` elements inside
+   the `<select>` to define what is shown when the picker is closed. The `<selectedcontent>` element
+   automatically mirrors the content of the selected option. This is required if you want to display
+   the currently selected rich content in the button.
+3. **Use Rich Content inside Options**: You can now place images, SVGs, and other HTML tags inside
+   `<option>` tags. Prior to this API, the browser would strip tags from `<option>` tags and render
+   only plain text.
+4. **Style the Popover**: Style the dropped-down options list by targeting the `::picker(select)`
+   pseudo-element. It renders in the top layer, meaning you don't need to fight with `z-index`.
+   Options are positioned using the Anchor Positioning API natively.
 
 ## Example Code: Rich Role Picker
 
@@ -101,12 +115,20 @@ select.custom-select option:checked .option-title {
 
 ## Strategic Implementation & Best Practices
 
-- **DO** use `appearance: base-select` when you need complex options layouts (icons, descriptions, images) that was previously only possible with heavy JavaScript UI frameworks.
-- **DO NOT** use ad-hoc elements if you notice performance lags; the browser handles native keyboard focus natively.
-- **DO** account for top-layer rendering. The picker renders in the top-layer, meaning it overrides relative `z-index` of page content.
-- **DO** hide secondary details (like descriptions) in the button state if they take too much space, by styling `.custom-select selectedcontent .option-desc { display: none; }`.
-- **DO** test layout behavior. Setting `appearance: base-select` removes the default browser behavior of sizing the select based on its longest option width. You may need to set a fixed width or use flex/grid constraints to prevent layout shifts.
-- **DO** ensure your `<select>` has a `name` attribute and an associated `<label>`. This ensures that even with a custom UI, the component remains accessible to screen readers and works correctly with standard form submissions.
+- **DO** use `appearance: base-select` when you need complex options layouts (icons, descriptions,
+  images) that was previously only possible with heavy JavaScript UI frameworks.
+- **DO NOT** use ad-hoc elements if you notice performance lags; the browser handles native keyboard
+  focus natively.
+- **DO** account for top-layer rendering. The picker renders in the top-layer, meaning it overrides
+  relative `z-index` of page content.
+- **DO** hide secondary details (like descriptions) in the button state if they take too much space,
+  by styling `.custom-select selectedcontent .option-desc { display: none; }`.
+- **DO** test layout behavior. Setting `appearance: base-select` removes the default browser
+  behavior of sizing the select based on its longest option width. You may need to set a fixed width
+  or use flex/grid constraints to prevent layout shifts.
+- **DO** ensure your `<select>` has a `name` attribute and an associated `<label>`. This ensures
+  that even with a custom UI, the component remains accessible to screen readers and works correctly
+  with standard form submissions.
 
 ## Fallback Strategies
 
@@ -116,11 +138,15 @@ Customizable <select> has limited availability.
 Supported by: Chrome 135 (Apr 2025) and Edge 135 (Apr 2025).
 Unsupported in: Firefox and Safari.
 
-For browsers that do not yet support `appearance: base-select`, the `<select>` element degrades gracefully to a standard operating system dropdown.
+For browsers that do not yet support `appearance: base-select`, the `<select>` element degrades
+gracefully to a standard operating system dropdown.
 
-- **Non-Text Content Ignored**: Older browsers strip HTML tags (like `<svg>` or `<div>`) inside `<option>` tags and render only the text nodes. Ensure the text content of the `<option>` is readable and meaningful on its own.
-- **HTML Structure Handling**: Standard parsers may ignore the `<button>` and `<selectedcontent>` tags inside `<select>` or treat them as invalid. No heavy JavaScript polyfills are strictly required for progressive enhancement if you view standard text as a readable fallback.
-
+- **Non-Text Content Ignored**: Older browsers strip HTML tags (like `<svg>` or `<div>`) inside
+  `<option>` tags and render only the text nodes. Ensure the text content of the `<option>` is
+  readable and meaningful on its own.
+- **HTML Structure Handling**: Standard parsers may ignore the `<button>` and `<selectedcontent>`
+  tags inside `<select>` or treat them as invalid. No heavy JavaScript polyfills are strictly
+  required for progressive enhancement if you view standard text as a readable fallback.
 
 ```javascript
 document.addEventListener("DOMContentLoaded", () => {

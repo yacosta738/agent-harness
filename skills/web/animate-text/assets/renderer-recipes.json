@@ -83,7 +83,9 @@
     "frame_materialization": {
       "title_transform": "translate3d(x_px, y_px * runtime.y_travel_multiplier, 0) scale(scale)",
       "title_filter": "blur(blur_px)",
-      "word_animation_properties": ["opacity"]
+      "word_animation_properties": [
+        "opacity"
+      ]
     },
     "initial_state": {
       "before_enter": [
@@ -91,7 +93,9 @@
         "Set every non-space word span opacity to build.word_opacity_from before starting any enter tween.",
         "Whitespace spans should preserve layout but do not receive opacity tweens."
       ],
-      "before_exit": ["Set the title element to titleFrame(exit.from)."]
+      "before_exit": [
+        "Set the title element to titleFrame(exit.from)."
+      ]
     },
     "verification": [
       "A GSAP implementation must call gsap.set(wordNodes, { opacity: word_opacity_from }) or assign equivalent inline styles before gsap.to(wordNodes, { opacity: word_opacity_to, ... }).",
@@ -102,7 +106,9 @@
   "kinetic-center-build": {
     "id": "kinetic-center-build",
     "summary": "Build a centered horizontal phrase word by word; each incoming word enters from the right and pushes existing words into newly centered positions.",
-    "required_measurements": ["offsetWidth for every word after appending the incoming word"],
+    "required_measurements": [
+      "offsetWidth for every word after appending the incoming word"
+    ],
     "algorithm": [
       "Create a relative kinetic line container using the kinetic-line-host stage preset.",
       "For each phrase word, append an absolutely centered word span.",
@@ -229,7 +235,9 @@
   "kinetic-top-build": {
     "id": "kinetic-top-build",
     "summary": "Build a centered vertical stack word by word; each incoming word drops from above and pushes existing words into newly centered y positions.",
-    "required_measurements": ["offsetHeight for every word after appending the incoming word"],
+    "required_measurements": [
+      "offsetHeight for every word after appending the incoming word"
+    ],
     "algorithm": [
       "Create a relative kinetic stack container using the kinetic-stack-host stage preset.",
       "For each phrase word, append an absolutely centered word span.",

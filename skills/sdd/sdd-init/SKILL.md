@@ -18,7 +18,7 @@ backend.
 ## Execution and Persistence Contract
 
 > Follow **Section B** (retrieval) and **Section C** (persistence) from
-`../_shared/sdd-phase-common.md`.
+> `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`. Run full bootstrap.
 

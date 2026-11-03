@@ -1,8 +1,8 @@
 # IRPF 2025 - Normativa Nacional
 
 Documento de referencia con la normativa estatal del Impuesto sobre la Renta de las Personas
-Físicas (IRPF) para el ejercicio 2025. Toda la información procede de fuentes oficiales: AEAT (
-Agencia Estatal de Administración Tributaria) y BOE.
+Físicas (IRPF) para el ejercicio 2025. Toda la información procede de fuentes oficiales: AEAT
+(Agencia Estatal de Administración Tributaria) y BOE.
 
 Fuente principal: Manual Práctico de Renta 2025 de la AEAT
 https://sede.agenciatributaria.gob.es/Sede/Ayuda/25Manual/100.html
@@ -52,8 +52,8 @@ protegida:**
 
 - Hasta 1.000 euros anuales conjuntamente
 
-**Importante:** Están obligados a declarar en todo caso los beneficiarios del Ingreso Mínimo Vital (
-IMV).
+**Importante:** Están obligados a declarar en todo caso los beneficiarios del Ingreso Mínimo Vital
+(IMV).
 
 ### Situaciones que obligan siempre a declarar
 
@@ -113,8 +113,8 @@ ahorro.
 **Tipos totales efectivos del ahorro:** Del 19% (hasta 6.000 euros) al 30% (a partir de 300.000
 euros).
 
-**Novedad 2025:** Se eleva el tipo del último tramo del ahorro del 14% al 15% por cada escala (
-estatal y autonómica), resultando en un tipo total máximo del 30%.
+**Novedad 2025:** Se eleva el tipo del último tramo del ahorro del 14% al 15% por cada escala
+(estatal y autonómica), resultando en un tipo total máximo del 30%.
 
 ---
 

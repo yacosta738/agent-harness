@@ -2,171 +2,263 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Publishing an article · Swimlane</title>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
-      --color-paper:   #f5f5f5;
-      --color-ink:     #2d3142;
-      --color-muted:   #4f5d75;
-      --color-accent:  #eb6c36;
-      --font-sans:     'Geist', system-ui, sans-serif;
-      --font-serif:    'Instrument Serif', serif;
-      --font-mono:     'Geist Mono', ui-monospace, monospace;
+      --color-accent: #eb6c36;
+      --color-ink: #2d3142;
+      --font-mono: 'Geist Mono', ui-monospace, monospace;
+      --color-muted: #4f5d75;
+      --color-paper: #f5f5f5;
+      --font-sans: 'Geist', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', serif;
     }
 
     body {
-      font-family: var(--font-sans);
+      align-items: center;
       background: var(--color-paper);
       color: var(--color-ink);
-      min-height: 100vh;
       display: flex;
-      align-items: center;
+      font-family: var(--font-sans);
       justify-content: center;
+      min-height: 100vh;
       padding: 3rem 2rem;
     }
 
-    .frame { max-width: 1200px; width: 100%; }
+    .frame {
+      max-width: 1200px;
+      width: 100%;
+    }
 
     .eyebrow {
+      color: var(--color-muted);
       font-family: var(--font-mono);
       font-size: 0.66rem;
       font-weight: 500;
       letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--color-muted);
       margin-bottom: 0.5rem;
+      text-transform: uppercase;
     }
 
     h1 {
+      color: var(--color-ink);
       font-family: var(--font-serif);
       font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
       font-weight: 400;
       letter-spacing: -0.02em;
       line-height: 1.15;
-      color: var(--color-ink);
       margin-bottom: 1.5rem;
     }
 
-    svg { width: 100%; min-width: 900px; display: block; }
+    svg {
+      display: block;
+      min-width: 900px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
-  <div class="frame">
-    <p class="eyebrow">Swimlane · Diagram Design</p>
-    <h1>Publishing an article</h1>
+<div class="frame">
+  <p class="eyebrow">Swimlane · Diagram Design</p>
+  <h1>Publishing an article</h1>
 
-    <svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="swimlane-title swimlane-desc">
-      <title id="swimlane-title">Publishing an article</title>
-      <desc id="swimlane-desc">Swimlane diagram showing an article moving from MDX draft through review, editing, approval, build, and Cloudflare Pages deployment.</desc>
-        <defs>
-          <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.9" fill="rgba(45,49,66,0.10)"/>
-          </pattern>
-          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
-          <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
-        </defs>
+  <svg aria-labelledby="swimlane-title swimlane-desc" role="img" viewBox="0 0 1000 480"
+       xmlns="http://www.w3.org/2000/svg">
+    <title id="swimlane-title">Publishing an article</title>
+    <desc id="swimlane-desc">Swimlane diagram showing an article moving from MDX draft through
+      review, editing, approval, build, and Cloudflare Pages deployment.
+    </desc>
+    <defs>
+      <pattern height="22" id="dots" patternUnits="userSpaceOnUse" width="22">
+        <circle cx="1" cy="1" fill="rgba(45,49,66,0.10)" r="0.9"/>
+      </pattern>
+      <marker id="arrow" markerHeight="6" markerWidth="8" orient="auto" refX="7" refY="3">
+        <polygon fill="#4f5d75" points="0 0, 8 3, 0 6"/>
+      </marker>
+      <marker id="arrow-accent" markerHeight="6" markerWidth="8" orient="auto" refX="7" refY="3">
+        <polygon fill="#eb6c36" points="0 0, 8 3, 0 6"/>
+      </marker>
+    </defs>
 
-        <rect width="100%" height="100%" fill="#f5f5f5"/>
-        <rect width="100%" height="100%" fill="url(#dots)" opacity="0.55"/>
+    <rect fill="#f5f5f5" height="100%" width="100%"/>
+    <rect fill="url(#dots)" height="100%" opacity="0.55" width="100%"/>
 
-        <!-- Lane dividers -->
-        <line x1="40" y1="80" x2="960" y2="80" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
-        <line x1="40" y1="160" x2="960" y2="160" stroke="rgba(45,49,66,0.10)" stroke-width="1"/>
-        <line x1="40" y1="240" x2="960" y2="240" stroke="rgba(45,49,66,0.10)" stroke-width="1"/>
-        <line x1="40" y1="320" x2="960" y2="320" stroke="rgba(45,49,66,0.10)" stroke-width="1"/>
-        <line x1="40" y1="400" x2="960" y2="400" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+    <!-- Lane dividers -->
+    <line stroke="rgba(45,49,66,0.22)" stroke-width="1" x1="40" x2="960" y1="80" y2="80"/>
+    <line stroke="rgba(45,49,66,0.10)" stroke-width="1" x1="40" x2="960" y1="160" y2="160"/>
+    <line stroke="rgba(45,49,66,0.10)" stroke-width="1" x1="40" x2="960" y1="240" y2="240"/>
+    <line stroke="rgba(45,49,66,0.10)" stroke-width="1" x1="40" x2="960" y1="320" y2="320"/>
+    <line stroke="rgba(45,49,66,0.22)" stroke-width="1" x1="40" x2="960" y1="400" y2="400"/>
 
-        <!-- Actor column divider -->
-        <line x1="160" y1="80" x2="160" y2="400" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+    <!-- Actor column divider -->
+    <line stroke="rgba(45,49,66,0.22)" stroke-width="1" x1="160" x2="160" y1="80" y2="400"/>
 
-        <!-- Lane labels -->
-        <text x="60" y="124" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.18em">AUTHOR</text>
-        <text x="60" y="204" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.18em">REVIEWER</text>
-        <text x="60" y="284" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.18em">EDITOR</text>
-        <text x="60" y="364" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CI / CD</text>
+    <!-- Lane labels -->
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+          y="124">AUTHOR
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+          y="204">REVIEWER
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+          y="284">EDITOR
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+          y="364">CI / CD
+    </text>
 
-        <!-- Arrows (drawn first) -->
-        <!-- 1. Draft → Open PR (within Author) -->
-        <line x1="300" y1="120" x2="340" y2="120" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <!-- 2. Open PR → Review (Author → Reviewer handoff, diagonal down-right) -->
-        <line x1="460" y1="144" x2="500" y2="176" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <!-- 3. Review → Polish (Reviewer → Editor, vertical down) -->
-        <line x1="570" y1="224" x2="570" y2="256" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
-        <!-- 4. Polish → Approve (within Editor) -->
-        <line x1="640" y1="280" x2="680" y2="280" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <!-- 5. Approve → Build (Editor → CI/CD, coral handoff) -->
-        <line x1="750" y1="304" x2="720" y2="336" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
-        <!-- 6. Build → Deploy (within CI/CD) -->
-        <line x1="760" y1="360" x2="800" y2="360" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <!-- Arrows (drawn first) -->
+    <!-- 1. Draft → Open PR (within Author) -->
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-width="1.2" x1="300" x2="340" y1="120"
+          y2="120"/>
+    <!-- 2. Open PR → Review (Author → Reviewer handoff, diagonal down-right) -->
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-width="1.2" x1="460" x2="500" y1="144"
+          y2="176"/>
+    <!-- 3. Review → Polish (Reviewer → Editor, vertical down) -->
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2" x1="570" x2="570"
+          y1="224" y2="256"/>
+    <!-- 4. Polish → Approve (within Editor) -->
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-width="1.2" x1="640" x2="680" y1="280"
+          y2="280"/>
+    <!-- 5. Approve → Build (Editor → CI/CD, coral handoff) -->
+    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="750" x2="720" y1="304"
+          y2="336"/>
+    <!-- 6. Build → Deploy (within CI/CD) -->
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-width="1.2" x1="760" x2="800" y1="360"
+          y2="360"/>
 
-        <!-- Arrow labels -->
-        <rect x="478" y="140" width="60" height="12" rx="2" fill="#f5f5f5"/>
-        <text x="508" y="150" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">HANDOFF</text>
+    <!-- Arrow labels -->
+    <rect fill="#f5f5f5" height="12" rx="2" width="60" x="478" y="140"/>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle"
+          x="508" y="150">HANDOFF
+    </text>
 
-        <rect x="548" y="228" width="52" height="12" rx="2" fill="#ececec"/>
-        <text x="574" y="238" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">REVISE</text>
+    <rect fill="#ececec" height="12" rx="2" width="52" x="548" y="228"/>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle"
+          x="574" y="238">REVISE
+    </text>
 
-        <rect x="712" y="308" width="80" height="12" rx="2" fill="#f5f5f5"/>
-        <text x="752" y="318" fill="#eb6c36" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.12em">DEPLOY TRIGGER</text>
+    <rect fill="#f5f5f5" height="12" rx="2" width="80" x="712" y="308"/>
+    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle"
+          x="752" y="318">DEPLOY TRIGGER
+    </text>
 
-        <!-- Steps -->
-        <!-- Author: Draft MDX -->
-        <rect x="180" y="96" width="120" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <text x="240" y="118" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Draft MDX</text>
-        <text x="240" y="132" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">src/content/…</text>
+    <!-- Steps -->
+    <!-- Author: Draft MDX -->
+    <rect fill="#ffffff" height="48" rx="6" stroke="#2d3142" stroke-width="1" width="120" x="180"
+          y="96"/>
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+          x="240" y="118">Draft MDX
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="240"
+          y="132">src/content/…
+    </text>
 
-        <!-- Author: Open PR -->
-        <rect x="340" y="96" width="120" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <text x="400" y="118" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Open PR</text>
-        <text x="400" y="132" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">gh pr create</text>
+    <!-- Author: Open PR -->
+    <rect fill="#ffffff" height="48" rx="6" stroke="#2d3142" stroke-width="1" width="120" x="340"
+          y="96"/>
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+          x="400" y="118">Open PR
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="400"
+          y="132">gh pr create
+    </text>
 
-        <!-- Reviewer: Review content -->
-        <rect x="500" y="176" width="140" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <text x="570" y="198" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Review content</text>
-        <text x="570" y="212" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">fact-check · voice</text>
+    <!-- Reviewer: Review content -->
+    <rect fill="#ffffff" height="48" rx="6" stroke="#2d3142" stroke-width="1" width="140" x="500"
+          y="176"/>
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+          x="570" y="198">Review content
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="570"
+          y="212">fact-check · voice
+    </text>
 
-        <!-- Editor: Polish copy -->
-        <rect x="500" y="256" width="140" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <text x="570" y="278" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Polish copy</text>
-        <text x="570" y="292" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">style · line edits</text>
+    <!-- Editor: Polish copy -->
+    <rect fill="#ffffff" height="48" rx="6" stroke="#2d3142" stroke-width="1" width="140" x="500"
+          y="256"/>
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+          x="570" y="278">Polish copy
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="570"
+          y="292">style · line edits
+    </text>
 
-        <!-- Editor: Approve merge -->
-        <rect x="680" y="256" width="140" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <text x="750" y="278" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Approve merge</text>
-        <text x="750" y="292" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">squash · main</text>
+    <!-- Editor: Approve merge -->
+    <rect fill="#ffffff" height="48" rx="6" stroke="#2d3142" stroke-width="1" width="140" x="680"
+          y="256"/>
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+          x="750" y="278">Approve merge
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="750"
+          y="292">squash · main
+    </text>
 
-        <!-- CI/CD: Build -->
-        <rect x="680" y="336" width="80" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <text x="720" y="358" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Build</text>
-        <text x="720" y="372" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">astro build</text>
+    <!-- CI/CD: Build -->
+    <rect fill="#ffffff" height="48" rx="6" stroke="#2d3142" stroke-width="1" width="80" x="680"
+          y="336"/>
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+          x="720" y="358">Build
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="720"
+          y="372">astro build
+    </text>
 
-        <!-- CI/CD: Deploy (coral focal) -->
-        <rect x="800" y="336" width="120" height="48" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
-        <text x="860" y="358" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Deploy</text>
-        <text x="860" y="372" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">cloudflare pages</text>
+    <!-- CI/CD: Deploy (coral focal) -->
+    <rect fill="rgba(235,108,54,0.08)" height="48" rx="6" stroke="#eb6c36" stroke-width="1" width="120"
+          x="800" y="336"/>
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+          x="860" y="358">Deploy
+    </text>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="860"
+          y="372">cloudflare pages
+    </text>
 
-        <!-- Legend -->
-        <line x1="40" y1="428" x2="960" y2="428" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
-        <text x="40" y="444" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+    <!-- Legend -->
+    <line stroke="rgba(45,49,66,0.10)" stroke-width="0.8" x1="40" x2="960" y1="428" y2="428"/>
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em" x="40"
+          y="444">LEGEND
+    </text>
 
-        <rect x="40" y="460" width="14" height="10" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <text x="60" y="468" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Step</text>
+    <rect fill="#ffffff" height="10" rx="2" stroke="#2d3142" stroke-width="1" width="14" x="40"
+          y="460"/>
+    <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="60" y="468">Step
+    </text>
 
-        <rect x="132" y="460" width="14" height="10" rx="2" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
-        <text x="152" y="468" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Focal outcome</text>
+    <rect fill="rgba(235,108,54,0.08)" height="10" rx="2" stroke="#eb6c36" stroke-width="1" width="14"
+          x="132" y="460"/>
+    <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="152" y="468">Focal
+      outcome
+    </text>
 
-        <line x1="268" y1="466" x2="296" y2="466" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
-        <text x="304" y="468" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Within-lane step</text>
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-width="1.2" x1="268" x2="296" y1="466"
+          y2="466"/>
+    <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="304" y="468">
+      Within-lane step
+    </text>
 
-        <line x1="444" y1="466" x2="472" y2="466" stroke="#4f5d75" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
-        <text x="480" y="468" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Revision loop</text>
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="4,3" stroke-width="1.2" x1="444" x2="472"
+          y1="466" y2="466"/>
+    <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="480" y="468">Revision
+      loop
+    </text>
 
-        <line x1="608" y1="466" x2="636" y2="466" stroke="#eb6c36" stroke-width="1.4" marker-end="url(#arrow-accent)"/>
-        <text x="644" y="468" fill="#4f5d75" font-size="8.5" font-family="'Geist', sans-serif">Critical handoff</text>
-      </svg>
-  </div>
+    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="608" x2="636" y1="466"
+          y2="466"/>
+    <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="644" y="468">Critical
+      handoff
+    </text>
+  </svg>
+</div>
 </body>
 </html>

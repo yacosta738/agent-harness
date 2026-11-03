@@ -72,9 +72,9 @@ All tasks loaded 366 lines regardless of need.
 
 ### api.md (287 lines)
 
-- zaraz.track()
-- zaraz.set()
-- zaraz.ecommerce()
+- zaraz.track ()
+- zaraz.set ()
+- zaraz.ecommerce ()
 - Zaraz Context (system/client properties)
 - zaraz.consent API
 - zaraz.debug

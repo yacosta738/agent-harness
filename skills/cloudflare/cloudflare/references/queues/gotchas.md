@@ -5,8 +5,7 @@
 ### 1. "Entire Batch Retried After Single Error"
 
 **Problem:** Throwing uncaught error in queue handler retries the entire batch, not just the failed
-message
-**Cause:** Uncaught exceptions propagate to the runtime, triggering batch-level retry
+message **Cause:** Uncaught exceptions propagate to the runtime, triggering batch-level retry
 **Solution:** Always wrap individual message processing in try/catch and call `msg.retry()`
 explicitly
 
@@ -34,9 +33,9 @@ async queue(batch: MessageBatch): Promise<void> {
 
 ### 2. "Messages Retry Forever"
 
-**Problem:** Messages not explicitly ack'd or retry'd will auto-retry indefinitely
-**Cause:** Runtime default behavior retries unhandled messages until `max_retries` reached
-**Solution:** Always call `msg.ack()` or `msg.retry()` for each message. Never leave messages
+**Problem:** Messages not explicitly ack'd or retry'd will auto-retry indefinitely **Cause:**
+Runtime default behavior retries unhandled messages until `max_retries` reached **Solution:** Always
+call `msg.ack()` or `msg.retry()` for each message. Never leave messages
 unhandled.
 
 ```typescript
@@ -68,9 +67,9 @@ async queue(batch: MessageBatch): Promise<void> {
 
 ### "Duplicate Message Processing"
 
-**Problem:** Same message processed multiple times
-**Cause:** At-least-once delivery guarantee means duplicates are possible during retries
-**Solution:** Design consumers to be idempotent by tracking processed message IDs in KV with
+**Problem:** Same message processed multiple times **Cause:** At-least-once delivery guarantee means
+duplicates are possible during retries **Solution:** Design consumers to be idempotent by tracking
+processed message IDs in KV with
 expiration TTL
 
 ```typescript
@@ -91,9 +90,9 @@ async queue(batch: MessageBatch, env: Env): Promise<void> {
 
 ### "Pull Consumer Can't Decode Messages"
 
-**Problem:** Pull consumer or dashboard shows unreadable message bodies
-**Cause:** Messages sent with `v8` content type are only decodable by Workers push consumers
-**Solution:** Use `json` content type for pull consumers or dashboard visibility
+**Problem:** Pull consumer or dashboard shows unreadable message bodies **Cause:** Messages sent
+with `v8` content type are only decodable by Workers push consumers **Solution:** Use `json` content
+type for pull consumers or dashboard visibility
 
 ```typescript
 // Use json for pull consumers
@@ -105,16 +104,16 @@ await env.MY_QUEUE.send({ date: new Date(), tags: new Set() }, { contentType: 'v
 
 ### "Messages Not Being Delivered"
 
-**Problem:** Messages sent but consumer not processing
-**Cause:** Queue paused, consumer not configured, or consumer errors
-**Solution:** Check queue status with `wrangler queues list`, verify consumer configured with
+**Problem:** Messages sent but consumer not processing **Cause:** Queue paused, consumer not
+configured, or consumer errors **Solution:** Check queue status with `wrangler queues list`, verify
+consumer configured with
 `wrangler queues consumer add`, and check logs with `wrangler tail`
 
 ### "High Dead Letter Queue Rate"
 
-**Problem:** Many messages ending up in DLQ
-**Cause:** Consumer repeatedly failing to process messages after max retries
-**Solution:** Review consumer error logs, check external dependency availability, verify message
+**Problem:** Many messages ending up in DLQ **Cause:** Consumer repeatedly failing to process
+messages after max retries **Solution:** Review consumer error logs, check external dependency
+availability, verify message
 format matches expectations, or increase retry delay
 
 ## Error Classification Patterns
@@ -160,9 +159,9 @@ function isRetryable(error: unknown): boolean {
 
 ### "CPU Time Exceeded in Consumer"
 
-**Problem:** Consumer fails with CPU time limit exceeded
-**Cause:** Consumer processing exceeding 30s default CPU time limit
-**Solution:** Increase CPU limit in wrangler.jsonc: `{ "limits": { "cpu_ms": 300000 } }` (5 minutes
+**Problem:** Consumer fails with CPU time limit exceeded **Cause:** Consumer processing exceeding
+30s default CPU time limit **Solution:** Increase CPU limit in wrangler.jsonc:
+`{ "limits": { "cpu_ms": 300000 } }` (5 minutes
 max)
 
 ## Content Type Decision Guide

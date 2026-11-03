@@ -22,26 +22,26 @@ with the text
 
 ### "Node.js module not found"
 
-**Cause:** Node.js built-ins not available by default
-**Solution:** Use Workers APIs (e.g., R2 for file storage) or enable Node.js compat with
+**Cause:** Node.js built-ins not available by default **Solution:** Use Workers APIs (e.g., R2 for
+file storage) or enable Node.js compat with
 `"compatibility_flags": ["nodejs_compat_v2"]`
 
 ### "Cannot fetch in global scope"
 
-**Cause:** Attempting to use fetch during module initialization
-**Solution:** Move fetch calls inside handler functions (fetch, scheduled, etc.) where they're
+**Cause:** Attempting to use fetch during module initialization **Solution:** Move fetch calls
+inside handler functions (fetch, scheduled, etc.) where they're
 allowed
 
 ### "Subrequest depth limit exceeded"
 
-**Cause:** Too many nested subrequests creating deep call chain
-**Solution:** Flatten request chain or use service bindings for direct Worker-to-Worker
+**Cause:** Too many nested subrequests creating deep call chain **Solution:** Flatten request chain
+or use service bindings for direct Worker-to-Worker
 communication
 
 ### "D1 read-after-write inconsistency"
 
-**Cause:** D1 is eventually consistent; reads may not reflect recent writes
-**Solution:** Use D1 Sessions (2024+) to guarantee read-after-write consistency within a session:
+**Cause:** D1 is eventually consistent; reads may not reflect recent writes **Solution:** Use D1
+Sessions (2024+) to guarantee read-after-write consistency within a session:
 
 ```typescript
 const session = env.DB.withSession();
@@ -53,8 +53,8 @@ const user = await session.prepare('SELECT * FROM users WHERE name = ?').bind('A
 
 ### "wrangler types not generating TypeScript definitions"
 
-**Cause:** Type generation not configured or outdated
-**Solution:** Run `npx wrangler types` after changing bindings in wrangler.jsonc:
+**Cause:** Type generation not configured or outdated **Solution:** Run `npx wrangler types` after
+changing bindings in wrangler.jsonc:
 
 ```bash
 npx wrangler types  # Generates .wrangler/types/runtime.d.ts
@@ -91,8 +91,8 @@ const count = await stub.increment(); // Direct method call
 
 ### "WebSocket connection closes unexpectedly"
 
-**Cause:** Worker reaches CPU limit while maintaining WebSocket connection
-**Solution:** Use WebSocket hibernation (2024+) to offload idle connections:
+**Cause:** Worker reaches CPU limit while maintaining WebSocket connection **Solution:** Use
+WebSocket hibernation (2024+) to offload idle connections:
 
 ```typescript
 export class WebSocketDO {

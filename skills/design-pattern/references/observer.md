@@ -2,7 +2,8 @@
 
 ## Intent
 
-Notify multiple subscribers when a subject changes without tightly coupling the subject to concrete observers.
+Notify multiple subscribers when a subject changes without tightly coupling the subject to concrete
+observers.
 
 ## Forces that justify it
 

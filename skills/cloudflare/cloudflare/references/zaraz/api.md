@@ -2,7 +2,7 @@
 
 Client-side JavaScript API for tracking events, setting properties, and managing consent.
 
-## zaraz.track()
+## zaraz.track ()
 
 ```javascript
 zaraz.track('button_click');
@@ -12,7 +12,7 @@ zaraz.track('pageview', { page_path: '/products', page_title: 'Products' }); // 
 
 **Params:** `eventName` (string), `properties` (object, optional). Fire-and-forget.
 
-## zaraz.set()
+## zaraz.set ()
 
 ```javascript
 zaraz.set('userId', 'user_12345');
@@ -21,7 +21,7 @@ zaraz.set({ email: '[email protected]', plan: 'premium', country: 'US' });
 
 Properties persist for page session. Use for user identification and segmentation.
 
-## zaraz.ecommerce()
+## zaraz.ecommerce ()
 
 ```javascript
 zaraz.ecommerce('Product Viewed', { product_id: 'SKU123', name: 'Widget', price: 49.99 });

@@ -32,7 +32,7 @@ interface ForwardableEmailMessage {
 
 ### Methods
 
-#### setReject(reason: string): void
+#### setReject (reason: string): void
 
 Reject with permanent SMTP 5xx error. Email not delivered, sender may receive bounce.
 
@@ -42,7 +42,7 @@ if (blockList.includes(message.from)) {
 }
 ```
 
-#### forward(rcptTo: string, headers?: Headers): Promise<void>
+#### forward (rcptTo: string, headers?: Headers): Promise<void>
 
 Forward to verified destination. Only `X-*` custom headers allowed.
 
@@ -55,7 +55,7 @@ h.set('X-Processed-By', 'worker');
 await message.forward('inbox@example.com', h);
 ```
 
-#### reply(message: EmailMessage): Promise<void>
+#### reply (message: EmailMessage): Promise<void>
 
 Send a reply to the original sender (March 2025 feature).
 

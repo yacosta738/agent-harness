@@ -9,8 +9,8 @@ Tunnels use one of two config sources:
 | Local         | `config.yml` file | Edit file, restart  | Dev, multi-env, version control    |
 | Cloudflare    | Dashboard/API     | Instant, no restart | Production, centralized management |
 
-**Token-based tunnels** = config source: Cloudflare
-**Locally-managed tunnels** = config source: local
+**Token-based tunnels** = config source: Cloudflare **Locally-managed tunnels** = config source:
+local
 
 ## Config File Location
 
@@ -138,8 +138,8 @@ ingress:
 cloudflared tunnel run my-tunnel
 ```
 
-**Pros:** Version control, multi-environment, offline edits
-**Cons:** Requires file distribution, manual restarts
+**Pros:** Version control, multi-environment, offline edits **Cons:** Requires file distribution,
+manual restarts
 
 ### Cloudflare Config (Token-Based)
 
@@ -151,8 +151,8 @@ cloudflared tunnel --no-autoupdate run --token <TOKEN>
 Configure routes in dashboard: **Zero Trust** > **Networks** > **Tunnels** > [Tunnel] > **Public
 Hostname**
 
-**Pros:** Centralized updates, no file management, instant route changes
-**Cons:** Requires dashboard/API access, less portable
+**Pros:** Centralized updates, no file management, instant route changes **Cons:** Requires
+dashboard/API access, less portable
 
 ## Environment Variables
 

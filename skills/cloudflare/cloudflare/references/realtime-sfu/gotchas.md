@@ -10,8 +10,7 @@
 ### "No media flow"
 
 **Cause:** SDP exchange incomplete, connection not established, tracks not added before offer,
-browser permissions missing
-**Solution:**
+browser permissions missing **Solution:**
 
 1. Verify SDP exchange complete
 2. Check `pc.connectionState === 'connected'`
@@ -22,8 +21,7 @@ browser permissions missing
 ### "Track not receiving"
 
 **Cause:** Track not published, track ID not shared, session IDs mismatch, `pc.ontrack` not set,
-renegotiation needed
-**Solution:**
+renegotiation needed **Solution:**
 
 1. Verify track published successfully
 2. Confirm track ID shared between peers
@@ -33,8 +31,7 @@ renegotiation needed
 
 ### "ICE connection failed"
 
-**Cause:** Network changed, firewall blocked UDP, TURN needed, transient network issue
-**Solution:**
+**Cause:** Network changed, firewall blocked UDP, TURN needed, transient network issue **Solution:**
 
 ```typescript
 pc.oniceconnectionstatechange = async () => {
@@ -68,8 +65,7 @@ pc.oniceconnectionstatechange = async () => {
 
 ### "Network change disconnects call"
 
-**Cause:** Mobile switching WiFi↔cellular, laptop changing networks
-**Solution:**
+**Cause:** Mobile switching WiFi↔cellular, laptop changing networks **Solution:**
 
 ```typescript
 // Listen for network changes

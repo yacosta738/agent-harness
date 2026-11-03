@@ -17,8 +17,8 @@ any skill-specific hard rules.
 - Identify the trust boundary before tracing source → sink. Without a boundary,
   the path is just a function call.
 - A reachable dataflow is not enough. `confirmed` requires both:
-  1. the vulnerable condition is statically reachable under stated preconditions
-  2. the source crosses an intended security boundary for a shipped surface
+    1. the vulnerable condition is statically reachable under stated preconditions
+    2. the source crosses an intended security boundary for a shipped surface
 - Local-only, test, fixture, example, vendored, or generated code is not in scope
   unless the repository evidence shows it ships as part of the product surface.
 
@@ -45,8 +45,8 @@ any skill-specific hard rules.
 
 - Never run the app, deploy, push, mutate Jira/Linear, or create issues without
   explicit user approval during the current run.
-- Never edit repository files unless the active skill explicitly authorizes it
-  (for example, `fix-finding` writes the fix; everything else is read-only).
+- Never edit repository files unless the active skill explicitly authorizes it (for example,
+  `fix-finding` writes the fix; everything else is read-only).
 - Never broaden scope into unrelated cleanup or refactors.
 
 ## 6. Subagent discipline

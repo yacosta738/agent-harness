@@ -18,8 +18,7 @@ These evaluations ensure the Spec to Implementation skill:
 
 Tests basic workflow of turning a spec into an implementation plan.
 
-**Scenario**: Implement user authentication feature from spec
-**Key Behaviors**:
+**Scenario**: Implement user authentication feature from spec **Key Behaviors**:
 
 - Searches for and finds the authentication spec page
 - Fetches spec and extracts requirements
@@ -32,8 +31,7 @@ Tests basic workflow of turning a spec into an implementation plan.
 
 Tests creating concrete tasks from a specification in a task database.
 
-**Scenario**: Create tasks from API redesign spec
-**Key Behaviors**:
+**Scenario**: Create tasks from API redesign spec **Key Behaviors**:
 
 - Finds spec page in Notion
 - Extracts specific requirements and acceptance criteria
@@ -72,9 +70,9 @@ Spec to Implementation evaluations should verify:
 
 - Creates implementation plan page
 - Breaks work into logical phases:
-  - Phase 1: Foundation/Setup
-  - Phase 2: Core Implementation
-  - Phase 3: Testing & Polish
+    - Phase 1: Foundation/Setup
+    - Phase 2: Core Implementation
+    - Phase 3: Testing & Polish
 - Includes timeline estimates
 - Identifies dependencies between phases
 - Links back to original spec
@@ -85,11 +83,11 @@ Spec to Implementation evaluations should verify:
 - Fetches database schema for property names
 - Creates tasks with correct properties
 - Each task has:
-  - Clear, specific title
-  - Context and description
-  - Acceptance criteria (checklist format)
-  - Appropriate priority and status
-  - Link to spec page
+    - Clear, specific title
+    - Context and description
+    - Acceptance criteria (checklist format)
+    - Appropriate priority and status
+    - Link to spec page
 - Tasks are right-sized (not too big, not too small)
 - Dependencies between tasks are noted
 

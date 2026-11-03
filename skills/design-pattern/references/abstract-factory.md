@@ -47,7 +47,8 @@ class DarkUiFactory : UiFactory {
 
 - Every new product type touches every factory and every family.
 - Clients depend on a factory abstraction even when only one family ships today.
-- A DI container or a configuration map expresses family selection more cheaply in most JVM applications.
+- A DI container or a configuration map expresses family selection more cheaply in most JVM
+  applications.
 
 ## Pattern-specific review checks
 

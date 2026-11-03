@@ -66,8 +66,8 @@ when color appears, it's intentional and restrained.
 | Active/selected     | Inverted block (`#FFFFFF` bg, `#000000` text) | Nav active state, selected rows         |
 | Wireframe/blueprint | `#FFFFFF` at 15–40% opacity                   | 3D isometric diagrams, layer outlines   |
 
-**Rule**: The palette is black + white. Color only enters for status indicators
-(dim red/green) and must be desaturated — never vibrant or neon.
+**Rule**: The palette is black + white. Color only enters for status indicators (dim red/green) and
+must be desaturated — never vibrant or neon.
 
 ### Typography
 

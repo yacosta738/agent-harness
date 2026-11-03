@@ -301,8 +301,8 @@ ley.
 ### 8.3. Amnistías y regularizaciones
 
 No existe actualmente ningún régimen de amnistía fiscal vigente. Los contribuyentes que detecten
-errores deben presentar autoliquidaciones complementarias (si resulta a ingresar) o rectificativas (
-si resulta a devolver).
+errores deben presentar autoliquidaciones complementarias (si resulta a ingresar) o rectificativas
+(si resulta a devolver).
 
 ### 8.4. Obligación de declarar bienes en el extranjero
 

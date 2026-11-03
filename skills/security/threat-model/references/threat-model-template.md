@@ -8,7 +8,7 @@ the tone concrete and repository-specific. Generic OWASP prose is a smell.
 ### 1. Repository at a Glance
 
 - What this repo is, in one paragraph.
-- Primary product or runtime surface(s): CLI, library, hosted service, local
+- Primary product or runtime surface (s): CLI, library, hosted service, local
   developer UI, MCP/tooling surface, framework, etc.
 - Out-of-scope surfaces: examples, tests, fixtures, generated/vendor code,
   local-only developer tools. Explicitly named.

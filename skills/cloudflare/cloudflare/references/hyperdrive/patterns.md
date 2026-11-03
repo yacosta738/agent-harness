@@ -60,7 +60,7 @@ const topProducts = await client.query(`
 `, [sevenDaysAgo]);
 ```
 
-**Benefits:** Expensive aggregations cached (avoid NOW() for cacheability), dashboard instant,
+**Benefits:** Expensive aggregations cached (avoid NOW () for cacheability), dashboard instant,
 reduced DB load.
 
 ## Multi-Tenant

@@ -1,17 +1,22 @@
 > **Additional context needed**: the brand's emotional range.
 
-Make the experience memorable at moments that earn it. Delight is not a layer of generic whimsy; it is product character revealed through a useful interaction, a humane response, or an unexpectedly considered detail.
+Make the experience memorable at moments that earn it. Delight is not a layer of generic whimsy; it
+is product character revealed through a useful interaction, a humane response, or an unexpectedly
+considered detail.
 
 ---
 
 ## Visitor mode
 
-- **Persuade + Experience:** personality may run through voice, composition, motion, and discovery, provided the artifact remains the focus.
-- **Operate + Read:** concentrate delight at meaningful moments such as first use, completion, recovery, or mastery. Reliability carries everything else.
+- **Persuade + Experience:** personality may run through voice, composition, motion, and discovery,
+  provided the artifact remains the focus.
+- **Operate + Read:** concentrate delight at meaningful moments such as first use, completion,
+  recovery, or mastery. Reliability carries everything else.
 
 ## Find the opportunity
 
-Inspect the target, DESIGN.md, product voice, repeated-use frequency, and emotional context. Look for:
+Inspect the target, DESIGN.md, product voice, repeated-use frequency, and emotional context. Look
+for:
 
 - effort worth acknowledging;
 - waiting that can become informative;
@@ -20,11 +25,13 @@ Inspect the target, DESIGN.md, product voice, repeated-use frequency, and emotio
 - an interaction whose physical or verbal response could express the brand;
 - a useful capability people might enjoy discovering.
 
-Do not manufacture a celebration for an ordinary click. Ask only when the brand's emotional range or the stakes cannot be inferred.
+Do not manufacture a celebration for an ordinary click. Ask only when the brand's emotional range or
+the stakes cannot be inferred.
 
 ## Define one delight thesis
 
-State in one sentence what the user should feel and why that feeling belongs to this product. Then choose the smallest system that can deliver it:
+State in one sentence what the user should feel and why that feeling belongs to this product. Then
+choose the smallest system that can deliver it:
 
 - a distinctive response to a meaningful action;
 - product-specific language that clarifies while carrying voice;
@@ -36,11 +43,15 @@ Derive the treatment from product mechanism and visual world, not a stock catalo
 
 ## Build for the emotional moment
 
-- **Success:** match the response to the effort and consequence. Major milestones can expand; routine saves should simply feel certain.
-- **Waiting:** show truthful progress, useful context, or product-specific activity. Never fake work or delay completion to stage a flourish.
+- **Success:** match the response to the effort and consequence. Major milestones can expand;
+  routine saves should simply feel certain.
+- **Waiting:** show truthful progress, useful context, or product-specific activity. Never fake work
+  or delay completion to stage a flourish.
 - **Empty and first use:** make the next action clear before adding personality.
-- **Error and recovery:** lead with the problem and recovery. Warmth may reduce stress; jokes must not trivialize loss, money, privacy, or blocked work.
-- **Repeated interaction:** keep the response satisfying after the hundredth use. Variation is useful only when it remains coherent and predictable enough to trust.
+- **Error and recovery:** lead with the problem and recovery. Warmth may reduce stress; jokes must
+  not trivialize loss, money, privacy, or blocked work.
+- **Repeated interaction:** keep the response satisfying after the hundredth use. Variation is
+  useful only when it remains coherent and predictable enough to trust.
 - **Discovery:** reward curiosity without hiding required functionality.
 
 Copy must use the product's language. Generic whimsy is worse than neutral clarity.
@@ -56,7 +67,9 @@ Delight must not:
 - become mandatory, unskippable, or exhausting on repeat;
 - add a dependency or asset cost disproportionate to the moment.
 
-For authored motion, load [animate.md](animate.md). Respect screen readers, keyboard use, touch, localization, and cultural context. Nonessential loops stop when hidden. Make celebration intensity proportional to frequency and consequence.
+For authored motion, load [animate.md](animate.md). Respect screen readers, keyboard use, touch,
+localization, and cultural context. Nonessential loops stop when hidden. Make celebration intensity
+proportional to frequency and consequence.
 
 ## Verify
 

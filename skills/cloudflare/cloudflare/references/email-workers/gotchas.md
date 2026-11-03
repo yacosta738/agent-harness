@@ -15,7 +15,7 @@ const email = await PostalMime.parse(buffer);
 const rawText = new TextDecoder().decode(buffer);
 ```
 
-### ctx.waitUntil() Errors Silent
+### ctx.waitUntil () Errors Silent
 
 ```typescript
 // ❌ Errors dropped silently
@@ -67,7 +67,7 @@ Let postal-mime handle decoding - `email.subject`, `email.text`, `email.html` ar
 
 ## API Behavior
 
-### setReject() vs throw
+### setReject () vs throw
 
 ```typescript
 // setReject() for SMTP rejection
@@ -77,7 +77,7 @@ if (blockList.includes(message.from)) { message.setReject('Blocked'); return; }
 if (!env.KV) throw new Error('KV not configured');
 ```
 
-### forward() Only X-* Headers
+### forward () Only X-* Headers
 
 ```typescript
 headers.set('X-Processed-By', 'worker');  // ✅ Works

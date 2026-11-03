@@ -1,6 +1,6 @@
 # AI Search Patterns
 
-## search() vs aiSearch()
+## search () vs aiSearch ()
 
 | Use                  | Method       | Returns                            |
 |----------------------|--------------|------------------------------------|

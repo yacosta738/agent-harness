@@ -1,8 +1,13 @@
 # Overview
 
-Use the Invoker Commands API to toggle the visibility of `<dialog>` and `[popover]` elements directly from HTML buttons, eliminating the need for custom JavaScript event listeners.
+Use the Invoker Commands API to toggle the visibility of `<dialog>` and `[popover]` elements
+directly from HTML buttons, eliminating the need for custom JavaScript event listeners.
 
-By applying the `commandfor` (target ID) and `command` (action) attributes to a `<button>`, the browser automatically handles open/close state changes, focus management, and accessibility bindings (such as `aria-expanded`). This declarative approach is recommended because it removes brittle boilerplate code, ensures interactions are functional immediately upon HTML parsing, and guarantees a robust, natively accessible user experience.
+By applying the `commandfor` (target ID) and `command` (action) attributes to a `<button>`, the
+browser automatically handles open/close state changes, focus management, and accessibility bindings
+(such as `aria-expanded`). This declarative approach is recommended because it removes brittle
+boilerplate code, ensures interactions are functional immediately upon HTML parsing, and guarantees
+a robust, natively accessible user experience.
 
 ## Implementing Declarative Popovers
 
@@ -21,7 +26,8 @@ Popovers can be toggled open and closed using a single button.
 </div>
 ```
 
-If you need to control opening and closing with separate buttons, you can use the `show-popover` and `hide-popover` commands.
+If you need to control opening and closing with separate buttons, you can use the `show-popover` and
+`hide-popover` commands.
 
 ```html
 <!-- MANDATORY: Use 'show-popover' to explicitly open the popover. It will not close the popover if clicked again. -->
@@ -41,7 +47,8 @@ If you need to control opening and closing with separate buttons, you can use th
 
 ## Implementing Declarative Modal Dialogs
 
-Unlike popovers, modal dialogs typically use separate buttons for opening and closing. Use the `show-modal` command specifically when you need to open a dialog as a modal.
+Unlike popovers, modal dialogs typically use separate buttons for opening and closing. Use the
+`show-modal` command specifically when you need to open a dialog as a modal.
 
 ```html
 <!-- MANDATORY: Use command="show-modal" to trigger the dialog as a modal, trapping focus and preventing interaction with the rest of the page. -->
@@ -63,19 +70,27 @@ Unlike popovers, modal dialogs typically use separate buttons for opening and cl
 ## Fallback strategies
 
 Baseline status for Invoker commands: Newly available. It's been Baseline since 2025-12-12.
-Supported by: Chrome 135 (Apr 2025), Edge 135 (Apr 2025), Firefox 144 (Oct 2025), and Safari 26.2 (Dec 2025).
+Supported by: Chrome 135 (Apr 2025), Edge 135 (Apr 2025), Firefox 144 (Oct 2025), and Safari 26.2
+(Dec 2025).
 Baseline status for Popover: Newly available. It's been Baseline since 2025-01-27.
-Supported by: Chrome 116 (Aug 2023), Edge 116 (Aug 2023), Firefox 125 (Apr 2024), Safari 17 (Sep 2023), and Safari iOS 18.3 (Jan 2025).
+Supported by: Chrome 116 (Aug 2023), Edge 116 (Aug 2023), Firefox 125 (Apr 2024), Safari 17 (Sep
+2023), and Safari iOS 18.3 (Jan 2025).
 
-Because Invoker Commands and Popovers are not yet universally supported, you MUST use polyfills as fallbacks for older browsers.
+Because Invoker Commands and Popovers are not yet universally supported, you MUST use polyfills as
+fallbacks for older browsers.
 
 ### Polyfilling Invoker Commands
 
-MANDATORY: Feature detect support by checking for the `commandForElement` property on the `HTMLButtonElement` prototype. Do NOT check the window or document object. You MUST dynamically import the polyfill only when the native feature is missing. DO NOT unconditionally load the polyfill.
-Mandatory: Listen for the 'command' event directly on the target element because the native 'command' event does not bubble.
+MANDATORY: Feature detect support by checking for the `commandForElement` property on the
+`HTMLButtonElement` prototype. Do NOT check the window or document object. You MUST dynamically
+import the polyfill only when the native feature is missing. DO NOT unconditionally load the
+polyfill.
+Mandatory: Listen for the 'command' event directly on the target element because the native
+'command' event does not bubble.
 
 **Option 1: Using a bundler**
-Install the polyfill via npm (`npm install invokers-polyfill`). This approach is for projects using a bundler (like Vite or Webpack) or import maps. For all other setups, use the CDN option below.
+Install the polyfill via npm (`npm install invokers-polyfill`). This approach is for projects using
+a bundler (like Vite or Webpack) or import maps. For all other setups, use the CDN option below.
 
 ```javascript
 // MANDATORY: Feature detect 'commandForElement' on HTMLButtonElement.prototype.
@@ -86,7 +101,8 @@ if (!('commandForElement' in HTMLButtonElement.prototype)) {
 ```
 
 **Option 2: Using a CDN**
-For projects without a bundler, dynamically import the polyfill directly from a CDN inside a `<script type="module">`.
+For projects without a bundler, dynamically import the polyfill directly from a CDN inside a
+`<script type="module">`.
 
 ```html
 <script type="module">
@@ -99,18 +115,25 @@ For projects without a bundler, dynamically import the polyfill directly from a 
 ```
 
 **Invokers Polyfill Limitations**
-MANDATORY: This polyfill does not handle the ARIA states (e.g., `aria-expanded`) of the command button the way native browsers do. You are strongly encouraged to handle these states yourself to ensure your site is fully accessible.
+MANDATORY: This polyfill does not handle the ARIA states (e.g., `aria-expanded`) of the command
+button the way native browsers do. You are strongly encouraged to handle these states yourself to
+ensure your site is fully accessible.
 
 Baseline status for Invoker commands: Newly available. It's been Baseline since 2025-12-12.
-Supported by: Chrome 135 (Apr 2025), Edge 135 (Apr 2025), Firefox 144 (Oct 2025), and Safari 26.2 (Dec 2025).
+Supported by: Chrome 135 (Apr 2025), Edge 135 (Apr 2025), Firefox 144 (Oct 2025), and Safari 26.2
+(Dec 2025).
 
-If the Invoker Commands API is not supported, the `command` event will not fire. For full support across all modern browsers, it is recommended to use the invokers-polyfill from https://github.com/keithamus/invokers-polyfill via `npm install` or CDN.
+If the Invoker Commands API is not supported, the `command` event will not fire. For full support
+across all modern browsers, it is recommended to use the invokers-polyfill
+from https://github.com/keithamus/invokers-polyfill via `npm install` or CDN.
 
-This polyfill fully supports custom actions (starting with `--`) and dispatches the `command` event exactly like the native API.
+This polyfill fully supports custom actions (starting with `--`) and dispatches the `command` event
+exactly like the native API.
 
 ### Dynamic Import (Performance Optimization)
 
-For the best performance, you should only load the polyfill if the browser doesn't support the API natively. This saves bandwidth and reduces script execution time for users on modern browsers.
+For the best performance, you should only load the polyfill if the browser doesn't support the API
+natively. This saves bandwidth and reduces script execution time for users on modern browsers.
 
 ```javascript
 // Check for native support first
@@ -129,7 +152,9 @@ if (!hasNativeSupport) {
 
 ### Manual fallback (Traditional pattern)
 
-If you prefer not to use a polyfill, you can use a combination of **event delegation** to dispatch events and a **command registry** to handle the actions. This is a common architectural pattern in traditional JavaScript development that remains highly efficient and scalable.
+If you prefer not to use a polyfill, you can use a combination of **event delegation** to dispatch
+events and a **command registry** to handle the actions. This is a common architectural pattern in
+traditional JavaScript development that remains highly efficient and scalable.
 
 ```javascript
 // 1. Define a registry of requested actions for cleaner logic
@@ -175,10 +200,12 @@ document.getElementById('action-target').addEventListener('command', (event) => 
 
 To support the `popover` attribute in older browsers, use the `@oddbird/popover-polyfill`.
 
-MANDATORY: Feature detect popover support by checking for the `popover` property on the `HTMLElement` prototype. Conditionally initialize the polyfill only if native support is missing.
+MANDATORY: Feature detect popover support by checking for the `popover` property on the
+`HTMLElement` prototype. Conditionally initialize the polyfill only if native support is missing.
 
 **Option 1: Using a bundler**
-Install the package via npm (`npm install @oddbird/popover-polyfill`). This method requires a bundler or import maps to resolve the module path.
+Install the package via npm (`npm install @oddbird/popover-polyfill`). This method requires a
+bundler or import maps to resolve the module path.
 
 ```javascript
 // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
@@ -190,7 +217,8 @@ if (!('popover' in HTMLElement.prototype)) {
 ```
 
 **Option 2: Using a CDN**
-For projects without a bundler, dynamically import the polyfill directly from a CDN inside a `<script type="module">`.
+For projects without a bundler, dynamically import the polyfill directly from a CDN inside a
+`<script type="module">`.
 
 ```html
 <script type="module">
@@ -205,7 +233,8 @@ For projects without a bundler, dynamically import the polyfill directly from a 
 ```
 
 **Popover Polyfill Limitations & Styling Caveats**
-MANDATORY: Use `:is()` or `:where()` to combine `:popover-open` with the corresponding polyfill class, otherwise browsers that do not support `:popover-open` will throw away the entire rule.
+MANDATORY: Use `:is()` or `:where()` to combine `:popover-open` with the corresponding polyfill
+class, otherwise browsers that do not support `:popover-open` will throw away the entire rule.
 
 ```css
 [popover]:is(:popover-open, .\:popover-open) {

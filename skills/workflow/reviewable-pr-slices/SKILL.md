@@ -34,16 +34,16 @@ Do not use for tiny, single-purpose changes comfortably under budget.
 
 ## Hard Rules
 
-| Rule                  | Requirement                                                                      |
-|-----------------------|----------------------------------------------------------------------------------|
-| Forecast early        | During SDD task planning, estimate review workload before implementation starts. |
-| Budget check          | Check changed lines before opening or marking a PR ready.                        |
-| Autonomous slices     | Each PR has one deliverable scope, verification, and reasonable rollback.        |
-| Work-unit balance     | Balance slices around deliverable work units, not file types or phases alone.    |
-| Explicit boundaries   | State start, end, dependencies, follow-up, and out-of-scope work.                |
-| Canonical strategy     | Choose exactly `github-stacked-prs`, `feature-branch-chain`, `single-pr`, or `size-exception`. |
-| One strategy           | Do not mix GitHub Stack state and feature-branch tracker patterns in one chain.          |
-| Exception is explicit  | Use `size-exception` only with user or maintainer approval and rationale.                  |
+| Rule                  | Requirement                                                                                    |
+|-----------------------|------------------------------------------------------------------------------------------------|
+| Forecast early        | During SDD task planning, estimate review workload before implementation starts.               |
+| Budget check          | Check changed lines before opening or marking a PR ready.                                      |
+| Autonomous slices     | Each PR has one deliverable scope, verification, and reasonable rollback.                      |
+| Work-unit balance     | Balance slices around deliverable work units, not file types or phases alone.                  |
+| Explicit boundaries   | State start, end, dependencies, follow-up, and out-of-scope work.                              |
+| Canonical strategy    | Choose exactly `github-stacked-prs`, `feature-branch-chain`, `single-pr`, or `size-exception`. |
+| One strategy          | Do not mix GitHub Stack state and feature-branch tracker patterns in one chain.                |
+| Exception is explicit | Use `size-exception` only with user or maintainer approval and rationale.                      |
 
 ## SDD Integration
 
@@ -65,10 +65,10 @@ During `sdd-tasks`, add a **Review Workload Forecast** to `tasks.md`:
 
 Use this heuristic:
 
-| Risk   | Signal                                                                           | Action                                              |
-|--------|----------------------------------------------------------------------------------|-----------------------------------------------------|
-| Low    | Small, single-surface change                                                     | Keep one PR with work-unit commits.                 |
-| Medium | Multi-file or uncertain diff, likely 300-400 changed lines                       | Warn and keep commits slice-ready.                  |
+| Risk   | Signal                                                                           | Action                                                                                                          |
+|--------|----------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| Low    | Small, single-surface change                                                     | Keep one PR with work-unit commits.                                                                             |
+| Medium | Multi-file or uncertain diff, likely 300-400 changed lines                       | Warn and keep commits slice-ready.                                                                              |
 | High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | Stop before `sdd-apply` and require `github-stacked-prs`, `feature-branch-chain`, or approved `size-exception`. |
 
 During `sdd-apply`, implement only the approved slice or task batch. If implementation grows beyond

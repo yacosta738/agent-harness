@@ -43,8 +43,8 @@ Snippets execute synchronously in the request path - performance is critical.
 
 ## Reading Order
 
-1. **[configuration.md](configuration.md)** - Start here: setup, deployment methods (
-   Dashboard/API/Terraform)
+1. **[configuration.md](configuration.md)** - Start here: setup, deployment methods
+   (Dashboard/API/Terraform)
 2. **[api.md](api.md)** - Core APIs: Request, Response, headers, `request.cf` properties
 3. **[patterns.md](patterns.md)** - Real-world examples: geo-routing, A/B tests, security headers
 4. **[gotchas.md](gotchas.md)** - Troubleshooting: common errors, performance tips, API limitations

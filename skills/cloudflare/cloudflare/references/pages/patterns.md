@@ -147,8 +147,8 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
 };
 ```
 
-**Best for**: Read-heavy apps with D1/Durable Objects in specific regions.
-**Not needed**: Apps without data locality constraints or with evenly distributed traffic.
+**Best for**: Read-heavy apps with D1/Durable Objects in specific regions. **Not needed**: Apps
+without data locality constraints or with evenly distributed traffic.
 
 ## Framework Integration
 
@@ -203,7 +203,7 @@ Dashboard → Settings → Build → Root directory. Set to subproject (e.g., `a
 
 ## Best Practices
 
-**Performance**: Exclude static via `_routes.json`; cache with KV; keep bundle < 1MB
-**Security**: Use secrets (not vars); validate inputs; rate limit with KV/DO
-**Workflow**: Preview per branch; local dev with `wrangler pages dev`; instant rollbacks in
+**Performance**: Exclude static via `_routes.json`; cache with KV; keep bundle < 1MB **Security**:
+Use secrets (not vars); validate inputs; rate limit with KV/DO **Workflow**: Preview per branch;
+local dev with `wrangler pages dev`; instant rollbacks in
 Dashboard

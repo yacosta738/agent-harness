@@ -1,8 +1,11 @@
-The Prompt API allows developers to run natural language processing tasks directly in the browser using **Gemini Nano**. This built-in AI approach ensures user privacy, reduces server costs, and enables offline functionality.
+The Prompt API allows developers to run natural language processing tasks directly in the browser
+using **Gemini Nano**. This built-in AI approach ensures user privacy, reduces server costs, and
+enables offline functionality.
 
 ## 1. Getting Started and Hardware Requirements
 
-The Prompt API is currently available in Chrome as of version 148 (Desktop) for Windows, macOS, Linux, and Chromebook Plus.
+The Prompt API is currently available in Chrome as of version 148 (Desktop) for Windows, macOS,
+Linux, and Chromebook Plus.
 
 ### Hardware Prerequisites
 
@@ -33,13 +36,16 @@ if (availability !== 'unavailable') {
 
 ## 2. Core Prompting Capabilities
 
-Session examples in this section omit `session.destroy()` for brevity. Always call `session.destroy()` when a session is no longer needed to free device memory (see Section 5).
+Session examples in this section omit `session.destroy()` for brevity. Always call
+`session.destroy()` when a session is no longer needed to free device memory (see Section 5).
 
 ### Basic and Streamed Output
 
-For short responses, use `prompt()`. For longer content, use `promptStreaming()` to provide a more responsive UI.
+For short responses, use `prompt()`. For longer content, use `promptStreaming()` to provide a more
+responsive UI.
 
-**MANDATORY**: Never assign model output to `innerHTML`. Model output is untrusted and can contain injected markup. Always use `textContent` or a sanitizer.
+**MANDATORY**: Never assign model output to `innerHTML`. Model output is untrusted and can contain
+injected markup. Always use `textContent` or a sanitizer.
 
 ```javascript
 const session = await LanguageModel.create();
@@ -88,11 +94,14 @@ Sessions allow the model to maintain context across multiple interactions.
 
 ### Context and Quota
 
-Each session has a maximum token limit. You can monitor usage via `session.contextUsage` and `session.contextWindow`. If the window overflows, the oldest messages (except the system prompt) are dropped.
+Each session has a maximum token limit. You can monitor usage via `session.contextUsage` and
+`session.contextWindow`. If the window overflows, the oldest messages (except the system prompt) are
+dropped.
 
 ### Cloning Sessions
 
-Cloning is efficient for starting parallel conversations that share the same initial context (like a "system" personality) without re-initializing.
+Cloning is efficient for starting parallel conversations that share the same initial context (like a
+"system" personality) without re-initializing.
 
 ```javascript
 const mainSession = await LanguageModel.create({
@@ -107,9 +116,11 @@ mainSession.destroy();
 
 ### Restoring Past Sessions
 
-While a native "restore" feature is in development, you can recreate a session by feeding previous history into `initialPrompts`.
+While a native "restore" feature is in development, you can recreate a session by feeding previous
+history into `initialPrompts`.
 
-**Note**: `localStorage` is unencrypted and persistent. Stored conversation history may include user PII — consider the privacy implications before persisting chat history.
+**Note**: `localStorage` is unencrypted and persistent. Stored conversation history may include user
+PII — consider the privacy implications before persisting chat history.
 
 ```javascript
 // || '[]' ensures JSON.parse never receives null when the key doesn't exist yet.
@@ -121,7 +132,9 @@ const session = await LanguageModel.create({
 
 ## 4. Structured Output with JSON Schema
 
-To prevent the model from adding "chatter" (e.g., "Sure, here is your JSON:"), use a **JSON Schema** via the `responseConstraint` field. This ensures the output is valid JSON that can be parsed immediately.
+To prevent the model from adding "chatter" (e.g., "Sure, here is your JSON:"), use a **JSON Schema**
+via the `responseConstraint` field. This ensures the output is valid JSON that can be parsed
+immediately.
 
 ### Example: Sentiment Classification
 
@@ -158,14 +171,20 @@ const character = await session.prompt([
 
 ## 5. Best Practices and Safety
 
-- **Resource Cleanup**: Always call `session.destroy()` when a conversation is finished to free up memory.
-- **Output Safety**: Model output is untrusted. Always write results to `textContent`, not `innerHTML`, to prevent XSS injection from malicious model output.
+- **Resource Cleanup**: Always call `session.destroy()` when a conversation is finished to free up
+  memory.
+- **Output Safety**: Model output is untrusted. Always write results to `textContent`, not
+  `innerHTML`, to prevent XSS injection from malicious model output.
 - Use a sanitizer like the native Sanitizer API or DOMPurify if you need to allow limited HTML.
-- **Aborting Tasks**: Use `AbortController` to allow users to stop long-running generations. Pass the `signal` to `prompt()` or `promptStreaming()`, not to `LanguageModel.create()`.
-- **Security**: Use Permission Policies to control access in iframes: `<iframe src="..." allow="language-model"></iframe>`.
-- **Design**: Review the [People + AI Guidebook](https://pair.withgoogle.com/guidebook/) to ensure responsible AI implementation.
+- **Aborting Tasks**: Use `AbortController` to allow users to stop long-running generations. Pass
+  the `signal` to `prompt()` or `promptStreaming()`, not to `LanguageModel.create()`.
+- **Security**: Use Permission Policies to control access in iframes:
+  `<iframe src="..." allow="language-model"></iframe>`.
+- **Design**: Review the [People + AI Guidebook](https://pair.withgoogle.com/guidebook/) to ensure
+  responsible AI implementation.
 
-By combining structured outputs with robust session management, developers can build complex, stateful AI applications that run entirely on the user's device.
+By combining structured outputs with robust session management, developers can build complex,
+stateful AI applications that run entirely on the user's device.
 
 ## 6. Fallback strategies
 
@@ -183,7 +202,10 @@ if ('LanguageModel' in self) {
 }
 ```
 
-If the Prompt API is unsupported or availability checks return 'unavailable', you must gracefully fall back:
+If the Prompt API is unsupported or availability checks return 'unavailable', you must gracefully
+fall back:
 
-* Remote API Fallback: Redirect the detection request to a server endpoint or a cloud API (such as the Vertex AI Gemini API).
-* Local API Fallback: Redirect the detection request to a local endpoint, for example, using Transformers.js. 
+* Remote API Fallback: Redirect the detection request to a server endpoint or a cloud API (such as
+  the Vertex AI Gemini API).
+* Local API Fallback: Redirect the detection request to a local endpoint, for example, using
+  Transformers.js. 

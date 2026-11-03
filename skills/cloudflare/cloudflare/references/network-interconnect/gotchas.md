@@ -15,8 +15,7 @@
 
 ### "Status: Unhealthy"
 
-**Cause:** Physical issue, low light (<-20 dBm), optic mismatch, or dirty connectors
-**Solution:**
+**Cause:** Physical issue, low light (<-20 dBm), optic mismatch, or dirty connectors **Solution:**
 
 1. Check physical connections
 2. Clean fiber connectors
@@ -53,8 +52,8 @@
 
 ### 400 Bad Request: "slot_id already occupied"
 
-**Cause:** Another interconnect already uses this slot
-**Solution:** Use `occupied=false` filter when listing slots:
+**Cause:** Another interconnect already uses this slot **Solution:** Use `occupied=false` filter
+when listing slots:
 
 ```typescript
 await client.networkInterconnects.slots.list({
@@ -66,15 +65,13 @@ await client.networkInterconnects.slots.list({
 
 ### 400 Bad Request: "invalid facility code"
 
-**Cause:** Typo or unsupported facility
-**Solution:**
+**Cause:** Typo or unsupported facility **Solution:**
 Check [locations PDF](https://developers.cloudflare.com/network-interconnect/static/cni-locations-2026-01.pdf)
 for valid codes
 
 ### 403 Forbidden: "Enterprise plan required"
 
-**Cause:** Account not enterprise-level
-**Solution:** Contact account team to upgrade
+**Cause:** Account not enterprise-level **Solution:** Contact account team to upgrade
 
 ### 422 Unprocessable: "validate_only request failed"
 
@@ -83,15 +80,14 @@ for valid codes
 
 ### Rate Limiting
 
-**Limit:** 1200 requests/5min per token
-**Solution:** Implement exponential backoff, cache slot listings
+**Limit:** 1200 requests/5min per token **Solution:** Implement exponential backoff, cache slot
+listings
 
 ## Cloud-Specific Issues
 
 ### AWS Direct Connect: "VLAN not matching"
 
-**Cause:** VLAN ID from AWS LOA doesn't match CNI config
-**Solution:**
+**Cause:** VLAN ID from AWS LOA doesn't match CNI config **Solution:**
 
 1. Get VLAN from AWS Console after ordering
 2. Send exact VLAN to CF account team
@@ -99,8 +95,7 @@ for valid codes
 
 ### AWS: "Connection stuck in Pending"
 
-**Cause:** LOA not provided to CF or AWS connection not accepted
-**Solution:**
+**Cause:** LOA not provided to CF or AWS connection not accepted **Solution:**
 
 1. Verify AWS connection status is "Available"
 2. Confirm LOA sent to CF account team
@@ -122,8 +117,7 @@ in Magic WAN instead
 
 ### Equinix: "Virtual circuit not appearing"
 
-**Cause:** CF hasn't accepted Equinix connection request
-**Solution:**
+**Cause:** CF hasn't accepted Equinix connection request **Solution:**
 
 1. Verify VC created in Equinix Fabric Portal
 2. Contact CF account team to accept
@@ -131,8 +125,8 @@ in Magic WAN instead
 
 ### Console Connect/Megaport: "API creation fails"
 
-**Cause:** Partner interconnects require partner portal + CF approval
-**Solution:** Cannot fully automate. Order in partner portal, notify CF account team.
+**Cause:** Partner interconnects require partner portal + CF approval **Solution:** Cannot fully
+automate. Order in partner portal, notify CF account team.
 
 ## Anti-Patterns
 

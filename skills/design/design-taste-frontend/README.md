@@ -1,7 +1,9 @@
 # tasteskill v2 (`design-taste-frontend`)
 
-A design skill for coding agents, built from a study of 247 curated sites (One Page Love and Awwwards
-Sites of the Day, October 2026). It gives an agent an art direction instead of letting it fall back on
+A design skill for coding agents, built from a study of 247 curated sites (One Page Love and
+Awwwards
+Sites of the Day, October 2026). It gives an agent an art direction instead of letting it fall back
+on
 the average landing page, holds it to a strict no-ornament house style, and makes it look at its own
 render before calling the work done.
 
@@ -10,7 +12,8 @@ render before calling the work done.
 1. **Inventory.** The agent lists what only this client has: the name and what it means, the street,
    the numbers, the one constraint, the materials, the hours.
 2. **Draw.** `scripts/draw.mjs` deals three of 20 directions (each an idea engine seen on the
-   strongest studied sites); the agent picks the one that can carry something from the inventory, and
+   strongest studied sites); the agent picks the one that can carry something from the inventory,
+   and
    the script deals the rest: a hero composition, section compositions, a type system of real free
    fonts, a palette, photographs, a motion, studied references, and under every blueprint a list of
    where it disagrees with the house rules. Recent draws are remembered so projects do not repeat.
@@ -23,7 +26,8 @@ render before calling the work done.
    only where no honest picture exists.
 5. **Gate.** `scripts/lint.mjs` (source) and `scripts/inspect.mjs` (real browser, 1440 / 768 / 390)
    measure the house rules: headlines of two lines or fewer, no eyebrow labels, no monospace, no
-   01/02/03, no thin rules, no gradients, no resting shadows, no cream-and-terracotta, no violet, and
+   01/02/03, no thin rules, no gradients, no resting shadows, no cream-and-terracotta, no violet,
+   and
    the faults blind jurors punished: no focal point, empty screens, text covered or cut, long pins,
    sideways rows, faded text.
 6. **Look.** The inspector saves screenshots; the agent critiques them with an Awwwards-weighted
@@ -59,7 +63,8 @@ over the DevTools protocol with Node's built-in WebSocket; nothing is installed)
 
 ## Install
 
-Copy this folder to your skills directory, for example `~/.claude/skills/design-taste-frontend/`, or keep it in
+Copy this folder to your skills directory, for example `~/.claude/skills/design-taste-frontend/`, or
+keep it in
 a repository under `.claude/skills/`.
 
 ## Notes

@@ -4,8 +4,7 @@
 
 ### "INSUFFICIENT_INVOCATIONS"
 
-**Cause:** Not enough traffic for Smart Placement to analyze
-**Solution:**
+**Cause:** Not enough traffic for Smart Placement to analyze **Solution:**
 
 - Ensure Worker receives consistent global traffic
 - Wait longer (analysis takes up to 15 minutes)
@@ -14,8 +13,7 @@
 
 ### "UNSUPPORTED_APPLICATION"
 
-**Cause:** Smart Placement made Worker slower rather than faster
-**Reasons:**
+**Cause:** Smart Placement made Worker slower rather than faster **Reasons:**
 
 - Worker doesn't make backend calls (runs faster at edge)
 - Backend calls are cached (network latency to user more important)
@@ -32,8 +30,7 @@
 ### "No request duration metrics"
 
 **Cause:** Smart Placement not enabled, insufficient time passed, insufficient traffic, or analysis
-incomplete
-**Solution:**
+incomplete **Solution:**
 
 - Ensure Smart Placement enabled in config
 - Wait 15+ minutes after deployment

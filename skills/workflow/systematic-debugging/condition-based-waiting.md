@@ -90,14 +90,12 @@ debugging session.
 
 ## Common Mistakes
 
-**❌ Polling too fast:** `setTimeout(check, 1)` - wastes CPU
-**✅ Fix:** Poll every 10ms
+**❌ Polling too fast:** `setTimeout(check, 1)` - wastes CPU **✅ Fix:** Poll every 10ms
 
-**❌ No timeout:** Loop forever if condition never met
-**✅ Fix:** Always include timeout with clear error
+**❌ No timeout:** Loop forever if condition never met **✅ Fix:** Always include timeout with clear
+error
 
-**❌ Stale data:** Cache state before loop
-**✅ Fix:** Call getter inside loop for fresh data
+**❌ Stale data:** Cache state before loop **✅ Fix:** Call getter inside loop for fresh data
 
 ## When Arbitrary Timeout IS Correct
 
