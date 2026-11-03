@@ -27,6 +27,7 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
    `<canvas>` element with the `layoutsubtree` attribute:
 
 ```html
+
 <canvas id="canvas" layoutsubtree>
   <div id="html-content"></div>
 </canvas>
@@ -38,19 +39,19 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 const observer = new ResizeObserver(([entry]) => {
   const dpc = entry.devicePixelContentBoxSize;
   canvas.width = dpc
-    ? dpc[0].inlineSize
-    : Math.round(entry.contentRect.width * window.devicePixelRatio);
+      ? dpc[0].inlineSize
+      : Math.round(entry.contentRect.width * window.devicePixelRatio);
   canvas.height = dpc
-    ? dpc[0].blockSize
-    : Math.round(entry.contentRect.height * window.devicePixelRatio);
+      ? dpc[0].blockSize
+      : Math.round(entry.contentRect.height * window.devicePixelRatio);
 });
 
 const supportsDevicePixelContentBox =
-  typeof ResizeObserverEntry !== "undefined" &&
-  "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
+    typeof ResizeObserverEntry !== "undefined" &&
+    "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
 const options = supportsDevicePixelContentBox
-  ? { box: "device-pixel-content-box" }
-  : {};
+    ? {box: "device-pixel-content-box"}
+    : {};
 observer.observe(canvas, options);
 ```
 
@@ -72,12 +73,12 @@ canvas.onpaint = () => {
 canvas.onpaint = () => {
   if (gl.texElementImage2D) {
     gl.texElementImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      uiElement,
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        uiElement,
     );
   }
 };
@@ -99,17 +100,18 @@ canvas if there has been an update to the descendant HTML elements:
 
   ```js
   function render() {
-    // Request to update the canvas
-    canvas.requestPaint();
-    requestAnimationFrame(render);
-  }
+  // Request to update the canvas
+  canvas.requestPaint();
   requestAnimationFrame(render);
+}
 
-  canvas.onpaint = (event) => {
-    if (event.changedElements && event.changedElements.length > 0) {
-      // Update the texture with drawElementImage, texElementImage2D, or copyElementImageToTexture, and update the CSS transform as shown in step 5
-    }
-  };
+requestAnimationFrame(render);
+
+canvas.onpaint = (event) => {
+  if (event.changedElements && event.changedElements.length > 0) {
+    // Update the texture with drawElementImage, texElementImage2D, or copyElementImageToTexture, and update the CSS transform as shown in step 5
+  }
+};
   ```
 
 5. Update the CSS transform.
@@ -207,49 +209,52 @@ targetHTMLElement.style.transform = computedTransform.toString();
 ## Example code
 
 ```html
+
 <body>
-    <canvas id="canvas" style="width: 400px; height: 200px;" layoutsubtree>
-        <input id="element">
-    </canvas>
-    
-    <button id="download">Download Image</button>
+<canvas id="canvas" style="width: 400px; height: 200px;" layoutsubtree>
+  <input id="element">
+</canvas>
 
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const element = document.getElementById('element');
-        const download = document.getElementById('download');
+<button id="download">Download Image</button>
 
-        canvas.onpaint = (event) => {
-            ctx.reset();
-            // Draw the element into the canvas
-            const transform = ctx.drawElementImage(element, 10, 10);
-            // Synchronize DOM position for hit testing (typing)
-            element.style.transform = transform.toString();
-        };
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const element = document.getElementById('element');
+  const download = document.getElementById('download');
 
-        download.onclick = () => {
-            // Export the canvas content as an image
-            const dataURL = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = 'exported-canvas.png';
-            link.href = dataURL;
-            link.click();
-        };
+  canvas.onpaint = (event) => {
+    ctx.reset();
+    // Draw the element into the canvas
+    const transform = ctx.drawElementImage(element, 10, 10);
+    // Synchronize DOM position for hit testing (typing)
+    element.style.transform = transform.toString();
+  };
 
-        // Re-initialize canvas size on screen resize
-        const observer = new ResizeObserver(([entry]) => {
-            const dpc = entry.devicePixelContentBoxSize;
-            canvas.width = dpc ? dpc[0].inlineSize : Math.round(entry.contentRect.width * window.devicePixelRatio);
-            canvas.height = dpc ? dpc[0].blockSize : Math.round(entry.contentRect.height * window.devicePixelRatio);
-            canvas.requestPaint();
-        });
-        const supportsDevicePixelContentBox = 
-            typeof ResizeObserverEntry !== 'undefined' && 
-            'devicePixelContentBoxSize' in ResizeObserverEntry.prototype;
-        const options = supportsDevicePixelContentBox ? { box: 'device-pixel-content-box' } : {};
-        observer.observe(canvas, options);
-    </script>
+  download.onclick = () => {
+    // Export the canvas content as an image
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'exported-canvas.png';
+    link.href = dataURL;
+    link.click();
+  };
+
+  // Re-initialize canvas size on screen resize
+  const observer = new ResizeObserver(([entry]) => {
+    const dpc = entry.devicePixelContentBoxSize;
+    canvas.width = dpc ? dpc[0].inlineSize : Math.round(
+        entry.contentRect.width * window.devicePixelRatio);
+    canvas.height = dpc ? dpc[0].blockSize : Math.round(
+        entry.contentRect.height * window.devicePixelRatio);
+    canvas.requestPaint();
+  });
+  const supportsDevicePixelContentBox =
+      typeof ResizeObserverEntry !== 'undefined' &&
+      'devicePixelContentBoxSize' in ResizeObserverEntry.prototype;
+  const options = supportsDevicePixelContentBox ? {box: 'device-pixel-content-box'} : {};
+  observer.observe(canvas, options);
+</script>
 </body>
 ```
 

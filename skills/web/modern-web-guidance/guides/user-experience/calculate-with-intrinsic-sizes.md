@@ -25,9 +25,9 @@ to modify an intrinsic size with a calculation or constraint; for simple keyword
 .element {
   /* MANDATORY: Always provide a fallback for browsers that do not support calc-size() */
   inline-size: min-content;
-  
+
   /* DO: Use calc-size to modify an intrinsic basis with a calculation or function */
-  inline-size: calc-size(min-content, size + 2rem);
+  inline-size: calc-size(min-content, size+2rem);
 }
 ```
 
@@ -119,7 +119,7 @@ By default, browsers cannot interpolate between a length (e.g., `0px`) and an in
     DO: Use calc-size(auto, ...) to enable animation from 0 to the element's 
     intrinsic size while doing a calculation (in this case, adding a space of 2rem).
   */
-  block-size: calc-size(auto, size + 2rem);
+  block-size: calc-size(auto, size+2rem);
 }
 ```
 
@@ -210,9 +210,9 @@ keyword or length as a fallback.
 ```css
 .element {
   /* Fallback for browsers that don't support calc-size() */
-  inline-size: fit-content; 
+  inline-size: fit-content;
   /* Modern browsers will override the fallback */
-  inline-size: calc-size(fit-content, size + 2rem);
+  inline-size: calc-size(fit-content, size+2rem);
 }
 ```
 

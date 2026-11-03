@@ -27,10 +27,10 @@ exponential backoff
 
 ```typescript
 async function putWithRetry(
-  kv: KVNamespace,
-  key: string,
-  value: string,
-  maxAttempts = 5
+    kv: KVNamespace,
+    key: string,
+    value: string,
+    maxAttempts = 5
 ): Promise<void> {
   let delay = 1000;
   for (let i = 0; i < maxAttempts; i++) {
@@ -72,7 +72,7 @@ return config?.theme ?? "default";
 
 // ✅ GOOD: Early return
 const config = await env.KV.get("config", "json");
-if (!config) return new Response("Not found", { status: 404 });
+if (!config) return new Response("Not found", {status: 404});
 return new Response(config.theme);
 ```
 

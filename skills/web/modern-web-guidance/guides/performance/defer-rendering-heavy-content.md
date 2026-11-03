@@ -54,7 +54,7 @@ rendered, using that calculated size over the placeholder if the element goes of
 .heavy-section-deferred {
   /* MANDATORY: Skips rendering calculations when off-screen */
   content-visibility: auto;
-  
+
   /* Mandatory: Provide an estimated size to prevent layouts shifts.
     - 'auto' is optional and enables the browser to remember the actual size
       once rendered. It must be paired with a <length> value to be used for
@@ -64,7 +64,7 @@ rendered, using that calculated size over the placeholder if the element goes of
     - '150px' is the estimated height of this element. This can be any valid
       CSS <length> value.
    */
-  contain-intrinsic-size: auto none auto 150px; 
+  contain-intrinsic-size: auto none auto 150px;
 }
 ```
 
@@ -128,7 +128,7 @@ Use feature detection to implement a fallback.
 
 /* Modern Browsers only */
 @supports (content-visibility: hidden) {
- .inactive {
+  .inactive {
     display: block; /* Turn the layout box back on */
     content-visibility: hidden;
   }

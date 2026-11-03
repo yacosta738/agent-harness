@@ -16,12 +16,12 @@
 ```javascript
 // ❌ Body consumed twice
 const body = await request.text();
-await fetch(url, { body: request.body }); // Error!
+await fetch(url, {body: request.body}); // Error!
 
 // ✅ Clone first
 const clone = request.clone();
 const body = await request.text();
-await fetch(url, { body: clone.body });
+await fetch(url, {body: clone.body});
 ```
 
 ### "Worker exceeded CPU time"
@@ -42,7 +42,7 @@ return new Response('OK'); // Return immediately
 // ❌ 100 individual fetches
 // ✅ Batch into single API call
 await fetch('https://api.example.com/batch', {
-  body: JSON.stringify({ ids: [...] })
+  body: JSON.stringify({ids: [...]})
 });
 ```
 
@@ -54,11 +54,12 @@ await cache.put(request, response.clone());
 return response;
 
 // Validate input early
-if (request.method !== 'POST') return new Response('', { status: 405 });
+if (request.method !== 'POST') return new Response('', {status: 405});
 
 // Handle errors
-try { ... } catch (e) {
-  return Response.json({ error: e.message }, { status: 500 });
+try { ...
+} catch (e) {
+  return Response.json({error: e.message}, {status: 500});
 }
 ```
 

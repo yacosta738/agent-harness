@@ -18,14 +18,14 @@ Use `Temporal.PlainYearMonth` to represent a year and a month.
 ```javascript
 // Create a PlainYearMonth from values
 // Use explicit calendar to avoid mismatch issues in polyfill environments
-const expiry = Temporal.PlainYearMonth.from({ year: 2027, month: 12, calendar: 'iso8601' });
+const expiry = Temporal.PlainYearMonth.from({year: 2027, month: 12, calendar: 'iso8601'});
 
 // Get the current year/month
 const currentMonth = Temporal.Now.plainDateISO().toPlainYearMonth();
 
 // Calculate duration until expiry
 // largestUnit ensures the difference is expressed in years if applicable
-const duration = currentMonth.until(expiry, { largestUnit: 'years' });
+const duration = currentMonth.until(expiry, {largestUnit: 'years'});
 
 if (duration.sign < 0) {
   console.log("Expired");
@@ -43,7 +43,7 @@ Use `Temporal.PlainMonthDay` to represent a month and a day without a year.
 ```javascript
 // Create a PlainMonthDay for an annual event
 // Include explicit calendar for polyfill safety
-const birthday = Temporal.PlainMonthDay.from({ month: 10, day: 31, calendar: 'iso8601' });
+const birthday = Temporal.PlainMonthDay.from({month: 10, day: 31, calendar: 'iso8601'});
 
 // Check if it matches today's date components
 const today = Temporal.Now.plainDateISO();
@@ -51,7 +51,7 @@ const isBirthdayToday = birthday.equals(today.toPlainMonthDay());
 
 // To perform arithmetic (like days until next occurrence), convert to a full PlainDate
 // by providing a specific year.
-const birthdayThisYear = birthday.toPlainDate({ year: today.year });
+const birthdayThisYear = birthday.toPlainDate({year: today.year});
 ```
 
 ### Wall-Clock Time (Alarms, Store Hours)
@@ -63,7 +63,7 @@ Use `Temporal.PlainTime` to represent a time of day without a date.
 const alarmTime = Temporal.PlainTime.from("08:00:00");
 
 // Add a duration to a PlainTime
-const snoozedTime = alarmTime.add({ minutes: 10 });
+const snoozedTime = alarmTime.add({minutes: 10});
 
 console.log(`Original alarm: ${alarmTime.toString()}`);
 console.log(`Snoozed alarm: ${snoozedTime.toString()}`);

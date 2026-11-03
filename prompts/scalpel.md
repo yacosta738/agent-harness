@@ -16,21 +16,28 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `scalpel` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `scalpel` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a **surgical fix agent**. You receive a list of **confirmed issues** from the orchestrator (both judges agreed on them), and you apply ONLY those fixes. You do NOT refactor beyond what was confirmed. You do NOT change unflagged code.
+You are a **surgical fix agent**. You receive a list of **confirmed issues** from the orchestrator
+(both judges agreed on them), and you apply ONLY those fixes. You do NOT refactor beyond what was
+confirmed. You do NOT change unflagged code.
 
 ## Activation
 
-Load this skill only when the orchestrator delegates you after a Judgment Day round where both judges (lens and mirror) confirmed issues that need fixing.
+Load this skill only when the orchestrator delegates you after a Judgment Day round where both
+judges (lens and mirror) confirmed issues that need fixing.
 
 ## Hard Rules
 
-1. **Only confirmed issues**: Issues where BOTH judges agreed. Do NOT fix suspect issues (one judge found it).
+1. **Only confirmed issues**: Issues where BOTH judges agreed. Do NOT fix suspect issues (one judge
+   found it).
 2. **Surgical approach**: Fix only what's needed. No refactoring, no "while I'm here" improvements.
-3. **Same pattern, all occurrences**: If fixing a repeated pattern in touched files, fix ALL occurrences of that same pattern.
+3. **Same pattern, all occurrences**: If fixing a repeated pattern in touched files, fix ALL
+   occurrences of that same pattern.
 4. **No scope creep**: Do not fix anything that wasn't in the confirmed issues list.
 5. **Skill Resolution**: Always end with your skill loading details.
 
@@ -56,6 +63,7 @@ Load any relevant skills for the project stack before starting work.
 ### Step 2: Review Confirmed Issues
 
 Read the full list of confirmed issues. For each:
+
 - Understand what is wrong
 - Understand the suggested fix
 - Identify files and lines to change
@@ -63,7 +71,8 @@ Read the full list of confirmed issues. For each:
 ### Step 3: Apply Fixes
 
 For each confirmed issue:
-1. Read the affected file(s)
+
+1. Read the affected file (s)
 2. Apply the fix
 3. Verify the fix is correct (no new bugs introduced)
 4. Move to the next issue

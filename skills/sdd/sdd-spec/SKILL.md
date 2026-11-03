@@ -83,8 +83,7 @@ The system {MUST/SHALL/SHOULD} {do something specific}.
 
 ### Requirement: {Existing Requirement Name}
 
-{New description — replaces the existing one}
-(Previously: {what it was before})
+{New description — replaces the existing one} (Previously: {what it was before})
 
 #### Scenario: {Updated scenario}
 
@@ -133,16 +132,19 @@ Return to the orchestrator:
 **Change**: {change-name}
 
 ### Specs Written
+
 | Domain | Type | Requirements | Scenarios |
 |--------|------|-------------|-----------|
 | {domain} | Delta/New | {N added, M modified, K removed} | {total scenarios} |
 
 ### Coverage
+
 - Happy paths: {covered/missing}
 - Edge cases: {covered/missing}
 - Error states: {covered/missing}
 
 ### Next Step
+
 Ready for design (sdd-design). If design already exists, ready for tasks (sdd-tasks).
 ```
 

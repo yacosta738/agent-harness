@@ -33,8 +33,8 @@ provides the additional 2.2 criteria and operational guidance.
   changes, route announcements
 - **Mobile & Touch**: Device-independent inputs, gesture alternatives, drag alternatives, touch
   target sizing
-- **Testing**: Screen readers (NVDA, JAWS, VoiceOver, TalkBack), keyboard-only, automated tooling (
-  axe, pa11y, Lighthouse), manual heuristics
+- **Testing**: Screen readers (NVDA, JAWS, VoiceOver, TalkBack), keyboard-only, automated tooling
+  (axe, pa11y, Lighthouse), manual heuristics
 
 ## Your Approach
 

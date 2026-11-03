@@ -21,18 +21,18 @@ identically across types.
 ## 1. Inputs — the parameter contract
 
 ```yaml
-title:    "Current IT Landscape"
+title: "Current IT Landscape"
 subtitle: "Data pipeline before the platform"
-eyebrow:  "NatStat · Before the platform"
+eyebrow: "NatStat · Before the platform"
 
 orientation: horizontal      # horizontal (default, zones L→R) | vertical (zones T→B)
 
-zones:                       # 2..4 zones, ordered along the orientation axis
+zones: # 2..4 zones, ordered along the orientation axis
   - name: "COLLECTION"
-    components:              # 1..5 components per zone
+    components: # 1..5 components per zone
       - id: survey-solutions
         name: "Survey Solutions"
-        sub:  "CAPI · PostgreSQL"
+        sub: "CAPI · PostgreSQL"
         icon: postgres               # any id from references/primitive-icons.md
         kind: standard               # standard | focal | external (external → dashed stroke)
       - { id: aspnet,    name: "ASP.NET Apps",    sub: "migration · admin portals", icon: server }
@@ -48,7 +48,7 @@ zones:                       # 2..4 zones, ordered along the orientation axis
       - { id: natstat-website, name: "NatStat Website",   sub: "public · static pages", icon: internet }
       - { id: ministry,        name: "Ministry Partners", sub: "~6 ministries",         icon: users,    kind: external }
 
-connectors:                   # ordered list; each links two component ids
+connectors: # ordered list; each links two component ids
   - { from: survey-solutions, to: shared-drive,   label: "CSV",     icon: csv,   style: link }
   - { from: aspnet,           to: shared-drive,   label: "EMAIL",   icon: file,  style: link }      # `mail` MISSING in catalog → falls back to `file`
   - { from: civil-reg,        to: shared-drive,   label: "EXCEL",   icon: excel, style: link, dashed: true }
@@ -58,11 +58,11 @@ connectors:                   # ordered list; each links two component ids
   - { from: legacy-portal,    to: natstat-website, label: "WEB",                 style: neutral }
   - { from: natstat-website,  to: ministry,        label: "CSV DL", icon: csv,   style: link, dashed: true }
 
-footer:                       # 0..3 optional full-canvas-width bars (cross-cutting concerns)
+footer: # 0..3 optional full-canvas-width bars (cross-cutting concerns)
   - { name: "Identity Manager", sub: "Active Directory · LDAP · SSO", icon: active-directory }
   - { name: "Observability",    sub: "logs · metrics · alerts",       icon: monitoring }
 
-legend:                       # auto-generated from styles used; user can override labels
+legend: # auto-generated from styles used; user can override labels
   - { swatch: link,    label: "data flow" }
   - { swatch: accent,  label: "pain-point" }
   - { swatch: dashed,  label: "external" }
@@ -149,12 +149,14 @@ viewBox_h       = content_bottom + legend_block_h + 24
 Solid paper fill across `viewBox`. No dot pattern. Each zone box:
 
 ```svg
+
 <rect x="zone_x(i)" y="zone_y" width="zone_w(i)" height="zone_h"
-      fill="{ink @ 0.02}" stroke="{ink @ 0.10}" stroke-width="0.8" rx="8"/>
-<!-- paper-masked break for the zone label -->
+  fill="{ink @ 0.02}" stroke="{ink @ 0.10}" stroke-width="0.8" rx="8"/>
+  <!-- paper-masked break for the zone label -->
 <rect x="zone_x(i)+20" y="zone_y-8" width="{label_w}" height="16" fill="{paper}"/>
 <text x="zone_x(i)+24" y="zone_y+4" fill="{ink @ 0.40}"
-      font-family="{eyebrow}" letter-spacing="0.14em">{name}</text>
+font-family="{eyebrow}" letter-spacing="0.14em">{name}
+</text>
 ```
 
 ### 2.2 Component box
@@ -170,6 +172,7 @@ Three visual kinds:
 **Icon placement** (24×24, monochrome via `currentColor` — see `references/primitive-icons.md`):
 
 ```svg
+
 <g transform="translate(comp_x + 12, comp_y + (comp_h - 24)/2)" color="{ink_for_kind}">
   <use href="#icon-{name}"/>            <!-- or inline the SVG path from the catalog -->
 </g>
@@ -209,13 +212,18 @@ corridor_x = dst_cx                            # land arrow on dst horizontal ce
 ### 2.4 Footer bar
 
 ```svg
+
 <rect x="left_pad" y="footer_y(k)" width="viewBox_w - 2*left_pad" height="footer_bar_h"
-      fill="{ink @ 0.03}" stroke="{ink @ 0.18}" stroke-width="0.8" rx="8"/>
+  fill="{ink @ 0.03}" stroke="{ink @ 0.18}" stroke-width="0.8" rx="8"/>
 <g transform="translate(left_pad + 20, footer_y(k) + (footer_bar_h - 24)/2)" color="{ink}">
-  <use href="#icon-{name}"/>
+<use href="#icon-{name}"/>
 </g>
-<text x="left_pad + 56" y="footer_y(k) + 24" font-family="{node-name}" font-size="14" fill="{ink}">{name}</text>
-<text x="left_pad + 56" y="footer_y(k) + 40" font-family="{sublabel}" font-size="12" fill="{muted}">{sub}</text>
+<text x="left_pad + 56" y="footer_y(k) + 24" font-family="{node-name}" font-size="14" fill="{ink}">
+{name}
+</text>
+<text x="left_pad + 56" y="footer_y(k) + 40" font-family="{sublabel}" font-size="12" fill="{muted}">
+{sub}
+</text>
 ```
 
 Footer bars are layer-wide services. **No connectors emerge from them.** They sit visually below the
@@ -238,11 +246,12 @@ Reused verbatim from `type-process.md` §3.1. No diagonals — ever.
 ```svg
 <!-- Same zone, adjacent component (same vertical column): single vertical line -->
 <line x1="{src_cx}" y1="{src_bot}" x2="{dst_cx}" y2="{dst_top}"
-      stroke="…" stroke-width="…" marker-end="…"/>
+  stroke="…" stroke-width="…" marker-end="…"/>
 
-<!-- Cross-zone or cross-row: exit right → H → Q-bend → V → enter top (or bottom) -->
-<path d="M {src_right},{src_cy}  H {dst_cx - 8}  Q {dst_cx},{src_cy} {dst_cx},{src_cy ± 8}  V {dst_top_or_bottom}"
-      fill="none" stroke="…" stroke-width="…" marker-end="…"/>
+  <!-- Cross-zone or cross-row: exit right → H → Q-bend → V → enter top (or bottom) -->
+<path
+d="M {src_right},{src_cy}  H {dst_cx - 8}  Q {dst_cx},{src_cy} {dst_cx},{src_cy ± 8}  V {dst_top_or_bottom}"
+fill="none" stroke="…" stroke-width="…" marker-end="…"/>
 ```
 
 - Use `{src_cy + 8}` and `V {dst_top}` when destination lies BELOW source.
@@ -282,10 +291,17 @@ Add `stroke-dasharray="4 3"` when `dashed: true`.
 **Defs block** (always emit all three):
 
 ```svg
+
 <defs>
-  <marker id="arrow"        markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="{muted}"/></marker>
-  <marker id="arrow-link"   markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="{link}"/></marker>
-  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="{accent}"/></marker>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="{muted}"/>
+  </marker>
+  <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="{link}"/>
+  </marker>
+  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="{accent}"/>
+  </marker>
 </defs>
 ```
 
@@ -296,12 +312,15 @@ perpendicular to the line** so it never overlaps the stroke. Icon (when `icon:` 
 the label's paper-fill mask, to the left of the text.
 
 ```svg
+
 <g transform="translate({label_cx}, {label_cy})">
   <rect x="-{w/2}" y="-9" width="{w}" height="18" rx="3" fill="{paper}" stroke="none"/>
-  <use href="#icon-{icon}" x="-{w/2 + 4}" y="-6" width="12" height="12" color="{stroke_color}"/>     <!-- if icon set -->
+  <use href="#icon-{icon}" x="-{w/2 + 4}" y="-6" width="12" height="12"
+    color="{stroke_color}"/>     <!-- if icon set -->
   <text x="{icon ? (-(w/2) + 22) : 0}" y="3" text-anchor="{icon ? 'start' : 'middle'}"
-        font-family="{arrow-label}" font-size="9" font-weight="600"
-        letter-spacing="0.08em" fill="{stroke_color}">{label}</text>
+    font-family="{arrow-label}" font-size="9" font-weight="600"
+    letter-spacing="0.08em" fill="{stroke_color}">{label}
+  </text>
 </g>
 ```
 
@@ -480,9 +499,9 @@ The complete inputs that map to the shipped canonical example. Every coordinate 
 derivable from §2 applied to these inputs.
 
 ```yaml
-title:    "Current IT Landscape"
+title: "Current IT Landscape"
 subtitle: "Data pipeline before the platform"
-eyebrow:  "NatStat · Before the platform"
+eyebrow: "NatStat · Before the platform"
 
 orientation: horizontal
 
@@ -490,7 +509,7 @@ zones:
   - name: "COLLECTION"
     components:
       - { id: survey-solutions, name: "Survey Solutions", sub: "CAPI · PostgreSQL",          icon: postgres }
-      - { id: aspnet,           name: "ASP.NET Apps",     sub: "migration · admin portals", icon: server   }
+      - { id: aspnet,           name: "ASP.NET Apps",     sub: "migration · admin portals", icon: server }
       - { id: civil-reg,        name: "Civil Registry",   sub: "external · CRVS data",      icon: database, kind: external }
   - name: "PROCESSING"
     components:

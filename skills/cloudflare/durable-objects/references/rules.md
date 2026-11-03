@@ -23,11 +23,16 @@ state.
 ```typescript
 // Parent: GameServer tracks match references
 // Children: GameMatch handles individual match state
-async createMatch(name: string): Promise<string> {
+async
+createMatch(name
+:
+string
+):
+Promise < string > {
   const matchId = crypto.randomUUID();
   this.ctx.storage.sql.exec(
-    "INSERT INTO matches (id, name) VALUES (?, ?)",
-    matchId, name
+      "INSERT INTO matches (id, name) VALUES (?, ?)",
+      matchId, name
   );
   const child = this.env.GAME_MATCH.getByName(matchId);
   await child.init(matchId, name);
@@ -40,7 +45,7 @@ async createMatch(name: string): Promise<string> {
 Influence DO creation location for latency-sensitive apps:
 
 ```typescript
-const id = env.GAME.idFromName(gameId, { locationHint: "wnam" });
+const id = env.GAME.idFromName(gameId, {locationHint: "wnam"});
 ```
 
 Available hints: `wnam`, `enam`, `sam`, `weur`, `eeur`, `apac`, `oc`, `afr`, `me`.
@@ -60,18 +65,18 @@ SQL API is synchronous:
 ```typescript
 // Write
 this.ctx.storage.sql.exec(
-  "INSERT INTO items (name, value) VALUES (?, ?)",
-  name, value
+    "INSERT INTO items (name, value) VALUES (?, ?)",
+    name, value
 );
 
 // Read
 const rows = this.ctx.storage.sql.exec<{ id: number; name: string }>(
-  "SELECT * FROM items WHERE name = ?", name
+    "SELECT * FROM items WHERE name = ?", name
 ).toArray();
 
 // Single row
 const row = this.ctx.storage.sql.exec<{ count: number }>(
-  "SELECT COUNT(*) as count FROM items"
+    "SELECT COUNT(*) as count FROM items"
 ).one();
 ```
 
@@ -81,12 +86,20 @@ const row = this.ctx.storage.sql.exec<{ count: number }>(
 `_sql_schema_migrations` table instead:
 
 ```typescript
-constructor(ctx: DurableObjectState, env: Env) {
+constructor(ctx
+:
+DurableObjectState, env
+:
+Env
+)
+{
   super(ctx, env);
   ctx.blockConcurrencyWhile(async () => this.migrate());
 }
 
-private migrate() {
+private
+migrate()
+{
   this.ctx.storage.sql.exec(`
     CREATE TABLE IF NOT EXISTS _sql_schema_migrations (
       id INTEGER PRIMARY KEY,
@@ -95,8 +108,10 @@ private migrate() {
   `);
 
   const currentVersion = this.ctx.storage.sql
-    .exec<{ version: number }>("SELECT COALESCE(MAX(id), 0) as version FROM _sql_schema_migrations")
-    .one().version;
+      .exec<{
+        version: number
+      }>("SELECT COALESCE(MAX(id), 0) as version FROM _sql_schema_migrations")
+      .one().version;
 
   if (currentVersion < 1) {
     this.ctx.storage.sql.exec(`
@@ -139,7 +154,10 @@ Storage operations automatically block other requests (input gates). Responses w
 (output gates).
 
 ```typescript
-async increment(): Promise<number> {
+async
+increment()
+:
+Promise < number > {
   // Safe: input gates block interleaving during storage ops
   const val = (await this.ctx.storage.get<number>("count")) ?? 0;
   await this.ctx.storage.put("count", val + 1);
@@ -168,11 +186,16 @@ await this.ctx.storage.put("key2", val2); // Separate transaction!
 
 ```typescript
 // ⚠️ Race condition possible
-async processItem(id: string) {
+async
+processItem(id
+:
+string
+)
+{
   const item = await this.ctx.storage.get<Item>(`item:${id}`);
   if (item?.status === "pending") {
     await fetch("https://api.example.com/process"); // Other requests can run here!
-    await this.ctx.storage.put(`item:${id}`, { status: "completed" });
+    await this.ctx.storage.put(`item:${id}`, {status: "completed"});
   }
 }
 ```
@@ -185,13 +208,21 @@ Blocks ALL concurrency. Use sparingly - only for initialization:
 
 ```typescript
 // ✅ Good: One-time init
-constructor(ctx: DurableObjectState, env: Env) {
+constructor(ctx
+:
+DurableObjectState, env
+:
+Env
+)
+{
   super(ctx, env);
   ctx.blockConcurrencyWhile(async () => this.migrate());
 }
 
 // ❌ Bad: On every request (kills throughput)
-async handleRequest() {
+async
+handleRequest()
+{
   await this.ctx.blockConcurrencyWhile(async () => {
     // ~5ms = max 200 req/sec
   });
@@ -209,10 +240,10 @@ export class ChatRoom extends DurableObject<Env> {
   async sendMessage(userId: string, content: string): Promise<Message> {
     // Public methods are RPC endpoints
     const result = this.ctx.storage.sql.exec<{ id: number }>(
-      "INSERT INTO messages (user_id, content) VALUES (?, ?) RETURNING id",
-      userId, content
+        "INSERT INTO messages (user_id, content) VALUES (?, ?) RETURNING id",
+        userId, content
     );
-    return { id: result.one().id, userId, content };
+    return {id: result.one().id, userId, content};
   }
 }
 
@@ -226,7 +257,14 @@ const msg = await stub.sendMessage("user-123", "Hello!"); // Typed!
 DOs don't know their own ID. Pass identity explicitly:
 
 ```typescript
-async init(entityId: string, metadata: Metadata): Promise<void> {
+async
+init(entityId
+:
+string, metadata
+:
+Metadata
+):
+Promise < void > {
   await this.ctx.storage.put("entityId", entityId);
   await this.ctx.storage.put("metadata", metadata);
 }
@@ -241,22 +279,27 @@ One alarm per DO. `setAlarm()` replaces existing.
 await this.ctx.storage.setAlarm(Date.now() + 60_000);
 
 // Handler
-async alarm(): Promise<void> {
+async
+alarm()
+:
+Promise < void > {
   const tasks = this.ctx.storage.sql.exec<Task>(
-    "SELECT * FROM tasks WHERE due_at <= ?", Date.now()
+      "SELECT * FROM tasks WHERE due_at <= ?", Date.now()
   ).toArray();
-  
-  for (const task of tasks) {
-    await this.processTask(task);
-  }
-  
-  // Reschedule if more work
-  const next = this.ctx.storage.sql.exec<{ due_at: number }>(
+
+  for(const task of tasks
+)
+{
+  await this.processTask(task);
+}
+
+// Reschedule if more work
+const next = this.ctx.storage.sql.exec<{ due_at: number }>(
     "SELECT MIN(due_at) as due_at FROM tasks WHERE due_at > ?", Date.now()
-  ).one();
-  if (next?.due_at) {
-    await this.ctx.storage.setAlarm(next.due_at);
-  }
+).one();
+if (next?.due_at) {
+  await this.ctx.storage.setAlarm(next.due_at);
+}
 }
 
 // Get/Delete
@@ -269,19 +312,40 @@ await this.ctx.storage.deleteAlarm();
 ## WebSockets (Hibernation API)
 
 ```typescript
-async fetch(request: Request): Promise<Response> {
+async
+fetch(request
+:
+Request
+):
+Promise < Response > {
   const pair = new WebSocketPair();
   this.ctx.acceptWebSocket(pair[1]);
-  return new Response(null, { status: 101, webSocket: pair[0] });
+  return new Response(null, {status: 101, webSocket: pair[0]});
 }
 
-async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+async
+webSocketMessage(ws
+:
+WebSocket, message
+:
+string | ArrayBuffer
+)
+{
   const data = JSON.parse(message as string);
   // Handle message
-  ws.send(JSON.stringify({ type: "ack" }));
+  ws.send(JSON.stringify({type: "ack"}));
 }
 
-async webSocketClose(ws: WebSocket, code: number, reason: string) {
+async
+webSocketClose(ws
+:
+WebSocket, code
+:
+number, reason
+:
+string
+)
+{
   // Cleanup
 }
 
@@ -292,10 +356,13 @@ getWebSockets().forEach(ws => ws.send(JSON.stringify(payload)));
 ## Error Handling
 
 ```typescript
-async safeOperation(): Promise<Result> {
+async
+safeOperation()
+:
+Promise < Result > {
   try {
     return await this.riskyOperation();
-  } catch (error) {
+  } catch(error) {
     console.error("Operation failed:", error);
     // Log to external service if needed
     throw error; // Re-throw to signal failure to caller

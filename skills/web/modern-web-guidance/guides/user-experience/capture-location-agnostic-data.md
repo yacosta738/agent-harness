@@ -31,12 +31,12 @@ const plainDate = Temporal.PlainDate.from(birthdateStr);
 
 // 2. Display the date
 // This will output "01/01/1990" (or equivalent) in any time zone
-console.log(plainDate.toLocaleString('en-GB')); 
+console.log(plainDate.toLocaleString('en-GB'));
 
 // 3. Compare with standard Date (which might drift)
 const dateObj = new Date("1990-01-01T00:00:00Z");
 // In a UTC-5 time zone, this might print "31/12/1989"
-console.log(new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York' }).format(dateObj));
+console.log(new Intl.DateTimeFormat('en-GB', {timeZone: 'America/New_York'}).format(dateObj));
 ```
 
 ## Strategic Implementation & Best Practices

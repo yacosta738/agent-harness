@@ -197,8 +197,8 @@ the page doesn't shift.
   <title>Analytics Reports | Guidance Platform</title>
 </head>
 <body>
-  <p>The motto is <span lang="la">"Carpe diem"</span>.</p>
-  <iframe title="Interactive Sales Chart" src="/chart"></iframe>
+<p>The motto is <span lang="la">"Carpe diem"</span>.</p>
+<iframe title="Interactive Sales Chart" src="/chart"></iframe>
 </body>
 </html>
 ```
@@ -378,7 +378,8 @@ function toggleWidgetState() {
 <form>
   <label for="pwd">Password:</label>
   <span id="pwd-hint">Must contain at least 8 characters.</span>
-  <input id="pwd" type="password" aria-describedby="pwd-hint" autocomplete="current-password" required>
+  <input id="pwd" type="password" aria-describedby="pwd-hint" autocomplete="current-password"
+         required>
 </form>
 ```
 
@@ -425,7 +426,7 @@ attention or prevent safe continuation (e.g., data loss, session timeouts, or ne
 ```html
 <!-- Session Timeout Warning with controls -->
 <div role="alert" aria-live="assertive" class="timeout-warning">
-  Your session will expire in 2 minutes. 
+  Your session will expire in 2 minutes.
   <button onclick="extendSession()">Extend Session</button>
 </div>
 ```
@@ -479,6 +480,7 @@ body {
   line-height: 1.5;
   text-align: start; /* Supports LTR and RTL */
 }
+
 article {
   max-width: 80ch; /* Caps line length to ~80 characters for readability */
 }
@@ -498,6 +500,7 @@ article {
   --bg-color: #ffffff;
   --text-color: #212529;
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg-color: #121212;

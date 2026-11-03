@@ -318,7 +318,16 @@ heuristics to `$variable-name`.
 **Figma token JSON** (Figma Tokens Plugin format):
 
 ```json
-{ "colors": { "brand": { "primary": { "value": "#eb6c36", "type": "color" } } } }
+{
+  "colors": {
+    "brand": {
+      "primary": {
+        "value": "#eb6c36",
+        "type": "color"
+      }
+    }
+  }
+}
 ```
 
 Walk the tree; the leaf `value` fields are the colors, the path segments supply the role heuristic.

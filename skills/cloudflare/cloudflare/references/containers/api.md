@@ -1,7 +1,7 @@
 ## Container Class API
 
 ```typescript
-import { Container } from "@cloudflare/containers";
+import {Container} from "@cloudflare/containers";
 
 export class MyContainer extends Container {
   defaultPort = 8080;
@@ -12,11 +12,20 @@ export class MyContainer extends Container {
   envVars = {};
   entrypoint = [];
 
-  onStart() { /* container started */ }
-  onStop() { /* container stopping */ }
-  onError(error: Error) { /* container error */ }
-  onActivityExpired(): boolean { /* timeout, return true to stay alive */ }
-  async alarm() { /* scheduled task */ }
+  onStart() { /* container started */
+  }
+
+  onStop() { /* container stopping */
+  }
+
+  onError(error: Error) { /* container error */
+  }
+
+  onActivityExpired(): boolean { /* timeout, return true to stay alive */
+  }
+
+  async alarm() { /* scheduled task */
+  }
 }
 ```
 
@@ -36,7 +45,7 @@ const container = env.MY_CONTAINER.getRandom();
 
 ```typescript
 await container.start();
-await container.start({ envVars: { KEY: "value" } });
+await container.start({envVars: {KEY: "value"}});
 ```
 
 Returns when **process starts**, NOT when ports ready. Use for fire-and-forget.
@@ -45,10 +54,10 @@ Returns when **process starts**, NOT when ports ready. Use for fire-and-forget.
 
 ```typescript
 await container.startAndWaitForPorts();  // Uses requiredPorts
-await container.startAndWaitForPorts({ ports: [8080, 9090] });
+await container.startAndWaitForPorts({ports: [8080, 9090]});
 await container.startAndWaitForPorts({
   ports: [8080],
-  startOptions: { envVars: { KEY: "value" } }
+  startOptions: {envVars: {KEY: "value"}}
 });
 ```
 
@@ -60,7 +69,7 @@ Returns when **ports listening**. Use before HTTP/TCP requests.
 
 ```typescript
 await container.waitForPort(8080);
-await container.waitForPort(8080, { timeout: 30000 });
+await container.waitForPort(8080, {timeout: 30000});
 ```
 
 ## Communication
@@ -72,7 +81,7 @@ await container.waitForPort(8080, { timeout: 30000 });
 const response = await container.fetch(request);
 const response = await container.fetch("http://container/api", {
   method: "POST",
-  body: JSON.stringify({ data: "value" })
+  body: JSON.stringify({data: "value"})
 });
 ```
 
@@ -112,7 +121,8 @@ Called when container process starts (ports may not be ready). Runs in `blockCon
 concurrent requests.
 
 ```typescript
-onStart() {
+onStart()
+{
   console.log("Container starting");
 }
 ```
@@ -122,7 +132,8 @@ onStart() {
 Called when SIGTERM received. 15 minutes until SIGKILL. Use for graceful shutdown.
 
 ```typescript
-onStop() {
+onStop()
+{
   // Save state, close connections, flush logs
 }
 ```
@@ -132,7 +143,11 @@ onStop() {
 Called when container crashes or fails to start.
 
 ```typescript
-onError(error: Error) {
+onError(error
+:
+Error
+)
+{
   console.error("Container error:", error);
 }
 ```
@@ -142,7 +157,10 @@ onError(error: Error) {
 Called when `sleepAfter` timeout reached. Return `true` to stay alive, `false` to stop.
 
 ```typescript
-onActivityExpired(): boolean {
+onActivityExpired()
+:
+boolean
+{
   if (this.hasActiveConnections()) return true;  // Keep alive
   return false;  // OK to stop
 }
@@ -180,7 +198,8 @@ const state = await container.getState();
 ```typescript
 export class MyContainer extends Container {
   async fetch(request: Request) {
-    if (this.ctx.container.running) { ... }
+    if (this.ctx.container.running) { ...
+    }
   }
 }
 ```

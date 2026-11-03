@@ -4,7 +4,9 @@
 
 ```json
 {
-  "permissions": ["identity"],
+  "permissions": [
+    "identity"
+  ],
   "oauth2": {
     "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
     "scopes": [
@@ -20,7 +22,7 @@
 ```js
 async function signIn() {
   return new Promise((resolve, reject) => {
-    chrome.identity.getAuthToken({ interactive: true }, (token) => {
+    chrome.identity.getAuthToken({interactive: true}, (token) => {
       if (chrome.runtime.lastError) {
         reject(new Error(chrome.runtime.lastError.message));
       } else {
@@ -34,7 +36,7 @@ async function signIn() {
 Or with the promise-based API (Chrome 116+):
 
 ```js
-const { token } = await chrome.identity.getAuthToken({ interactive: true });
+const {token} = await chrome.identity.getAuthToken({interactive: true});
 ```
 
 ## Fetching User Profile
@@ -42,7 +44,7 @@ const { token } = await chrome.identity.getAuthToken({ interactive: true });
 ```js
 async function getUserProfile(token) {
   const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: {Authorization: `Bearer ${token}`}
   });
   if (!response.ok) throw new Error('Failed to fetch profile');
   return response.json();
@@ -55,7 +57,7 @@ async function getUserProfile(token) {
 ```js
 async function signOut(token) {
   // Remove cached token
-  await chrome.identity.removeCachedAuthToken({ token });
+  await chrome.identity.removeCachedAuthToken({token});
 
   // Optionally revoke the token server-side
   await fetch(`https://accounts.google.com/o/oauth2/revoke?token=${token}`);
@@ -66,7 +68,7 @@ async function signOut(token) {
 
 ```js
 try {
-  const { token } = await chrome.identity.getAuthToken({ interactive: true });
+  const {token} = await chrome.identity.getAuthToken({interactive: true});
   const profile = await getUserProfile(token);
   displayProfile(profile);
 } catch (err) {

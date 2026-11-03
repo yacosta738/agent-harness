@@ -43,11 +43,11 @@ function analyzeTelemetry(sortedEvents) {
   for (let i = 1; i < sortedEvents.length; i++) {
     const prev = sortedEvents[i - 1];
     const curr = sortedEvents[i];
-    
+
     // Calculate difference in nanoseconds
     const duration = curr.timestamp.since(prev.timestamp);
     const nsDiff = duration.total('nanoseconds');
-    
+
     console.log(`Delay between Event ${prev.eventType} and Event ${curr.eventType}: ${nsDiff}ns`);
   }
 }
@@ -83,7 +83,7 @@ must explicitly assign it if you need it globally.
     // The polyfill does not auto-install globally, so we must assign it
     globalThis.Temporal = module.Temporal;
   }
-  
+
   // Proceed with application logic
 })();
 ```

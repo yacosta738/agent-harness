@@ -35,7 +35,7 @@ units (e.g., grid columns, board lists).
 .board-column {
   /* Apply containment boundaries */
   content-visibility: auto;
-  
+
   /* Mandatory: Provide a placeholder size to prevent layouts shifts.
      For a vertical column, define a reasonable width and height. 
      - 'auto' is optional and enables the browser to remember the actual size
@@ -61,7 +61,7 @@ Ensure that interactions occurring inside the column benefit from the containmen
 function moveItemToColumn(itemId, columnId) {
   const item = document.getElementById(itemId);
   const column = document.getElementById(columnId);
-  
+
   // The browser will only reflow this specific column, 
   // not the entire board layout!
   column.appendChild(item);

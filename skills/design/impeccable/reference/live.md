@@ -250,8 +250,26 @@ attribute values as an expression). Declare them in `componentDir/params.json` k
 number, using the schema from section 7:
 
 ```json
-{ "1": [ {"id":"density","kind":"steps","default":"snug","label":"Density","options":[
-    {"value":"airy","label":"Airy"},{"value":"snug","label":"Snug"} ]} ] }
+{
+  "1": [
+    {
+      "id": "density",
+      "kind": "steps",
+      "default": "snug",
+      "label": "Density",
+      "options": [
+        {
+          "value": "airy",
+          "label": "Airy"
+        },
+        {
+          "value": "snug",
+          "label": "Snug"
+        }
+      ]
+    }
+  ]
+}
 ```
 
 Author the component `<style>` against `var(--p-<id>, default)` for `range`/`toggle` and
@@ -399,7 +417,7 @@ use `className=` / `style={{…}}`, keep `data-impeccable-*` attributes as plain
 <style data-impeccable-css="SESSION_ID">{`
   @scope ([data-impeccable-variant="1"]) { ... }
 `}</style>
-<div data-impeccable-variant="2" style={{ display: 'none' }}>
+<div data-impeccable-variant="2" style={{display: 'none'}}>
   {/* variant 2 */}
 </div>
 ```
@@ -431,6 +449,7 @@ non-negotiable when expressible; respect the cap, no duplicate knobs.
 `componentDir/params.json` instead, same schema, keyed by variant number; see the wrap section):
 
 ```html
+
 <div data-impeccable-variant="1" data-impeccable-params='[
   {"id":"color-amount","kind":"range","min":0,"max":1,"step":0.05,"default":0.5,"label":"Color amount"},
   {"id":"serif","kind":"toggle","default":false,"label":"Serif display"}

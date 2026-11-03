@@ -49,7 +49,9 @@ Declare a sandboxed page in manifest.json. Sandboxed pages have a relaxed CSP th
 ```json
 {
   "sandbox": {
-    "pages": ["sandbox.html"]
+    "pages": [
+      "sandbox.html"
+    ]
   }
 }
 ```
@@ -82,7 +84,7 @@ iframe.contentWindow.postMessage({
 
 // sandbox.js — receive and execute
 window.addEventListener('message', (event) => {
-  const { html, css, js } = event.data;
+  const {html, css, js} = event.data;
   // Clear previous content
   document.body.innerHTML = '';
   document.head.querySelectorAll('style.user-style').forEach(s => s.remove());
@@ -126,7 +128,7 @@ function updatePreview(htmlCode, cssCode, jsCode) {
 </body>
 </html>
 `;
-  const blob = new Blob([html], { type: 'text/html' });
+  const blob = new Blob([html], {type: 'text/html'});
   const url = URL.createObjectURL(blob);
   const iframe = document.getElementById('preview');
   // Revoke previous URL

@@ -15,51 +15,51 @@ schema. Two generations from the same inputs must produce visually identical SVG
 ## 1. Inputs — the parameter contract
 
 ```yaml
-sources:                            # left column, 0..6 nodes
+sources: # left column, 0..6 nodes
   - { name: "Databases",  type: "db",        subtitle: "SQL · MariaDB",
-      connects_to: [{to: "NiFi", label: "JDBC"},
-                    {to: "Trino", label: "FEDERATE", style: "federated"}] }
+      connects_to: [ { to: "NiFi", label: "JDBC" },
+                     { to: "Trino", label: "FEDERATE", style: "federated" } ] }
   - { name: "SFTP drops", type: "sftp",      subtitle: "scheduled pulls",
-      connects_to: [{to: "NiFi", label: "SFTP"}] }
+      connects_to: [ { to: "NiFi", label: "SFTP" } ] }
   - { name: "Email",      type: "mail",      subtitle: "IMAP attachments",
-      connects_to: [{to: "NiFi", label: "IMAP"}] }
+      connects_to: [ { to: "NiFi", label: "IMAP" } ] }
   - { name: "IBM legacy", type: "mainframe", subtitle: "file export",
-      connects_to: [{to: "NiFi", label: "FILE"}] }
+      connects_to: [ { to: "NiFi", label: "FILE" } ] }
 
 platform:
   name: "DATA PLATFORM"             # zone label (paper-masked top border)
-  rows:                             # ordered top→bottom; each is bar or row
+  rows: # ordered top→bottom; each is bar or row
     - { kind: bar, name: "Trino",   icon: trino,   subtitle: "federated query · push-down",
         role: "SQL", focal: true }
     - { kind: row, nodes: [
-        { name: "Apache NiFi",  icon: nifi,    role: "INGEST",   subtitle: "flow-based ETL" },
-        { name: "MinIO",        icon: minio,   role: "STORE",    subtitle: "S3 object store · medallion", focal: true },
-        { name: "JupyterLab",   icon: jupyter, role: "NOTEBOOK", subtitle: "Python · R · pandas" }
-      ]}
+      { name: "Apache NiFi",  icon: nifi,    role: "INGEST",   subtitle: "flow-based ETL" },
+      { name: "MinIO",        icon: minio,   role: "STORE",    subtitle: "S3 object store · medallion", focal: true },
+      { name: "JupyterLab",   icon: jupyter, role: "NOTEBOOK", subtitle: "Python · R · pandas" }
+    ] }
     - { kind: bar, name: "Apache Airflow", icon: airflow,
         subtitle: "scheduler · DAG triggers · backfill", role: "DAG" }
 
-consumers:                          # right column, 0..6 nodes
+consumers: # right column, 0..6 nodes
   - { name: "Desktop apps",   type: "monitor", subtitle: "SPSS · SAS · Stata",
-      connects_from: [{from: "Trino", label: "ODBC"}] }
+      connects_from: [ { from: "Trino", label: "ODBC" } ] }
   - { name: "BI & reports",   type: "chart",   subtitle: "Tableau · Power BI",
-      connects_from: [{from: "Trino", label: "JDBC"}] }
+      connects_from: [ { from: "Trino", label: "JDBC" } ] }
   - { name: "Public website", type: "globe",   subtitle: "NatStat portal",
-      connects_from: [{from: "Trino", label: "HTTPS"}] }
+      connects_from: [ { from: "Trino", label: "HTTPS" } ] }
   - { name: "API gateway",    type: "api",     subtitle: "3rd-party / OAuth2",
-      connects_from: [{from: "Trino", label: "REST"}] }
+      connects_from: [ { from: "Trino", label: "REST" } ] }
 
-footer:                             # 0..N cross-cutting bars stacked below zone (full-canvas width)
+footer: # 0..N cross-cutting bars stacked below zone (full-canvas width)
   - { name: "Active Directory", icon: key,        subtitle: "LDAP · SSO · group RBAC",
       color: "#b85450" }            # tinted red to flag the security concern
   # additional footer nodes (Observability, Backup, …) stack below this one
 
-internal_connections:               # explicit platform-component edges
+internal_connections: # explicit platform-component edges
   - { from: "NiFi",        to: "MinIO",      style: "primary",   label: "WRITE" }
-  - { from: "MinIO",       to: "JupyterLab", style: "secondary", label: "READ"  }
+  - { from: "MinIO",       to: "JupyterLab", style: "secondary", label: "READ" }
   - { from: "MinIO",       to: "Trino",      style: "secondary" }
   - { from: "JupyterLab",  to: "Trino",      style: "secondary", dashed: true }
-  - { from: "Airflow",     to: ["Apache NiFi", "MinIO", "JupyterLab"], style: "trigger" }
+  - { from: "Airflow",     to: [ "Apache NiFi", "MinIO", "JupyterLab" ], style: "trigger" }
 
 focal_accent: "#eb6c36"             # one color for all focal components (default = SKILL accent)
 dark: false
@@ -229,12 +229,23 @@ Trino → consumer edges — those are fixed by rule.
 **Defs block** (required, five markers — exactly):
 
 ```svg
+
 <defs>
-  <marker id="arrow"        markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
-  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
-  <marker id="arrow-link"   markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/></marker>
-  <marker id="arrow-sm"     markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#4f5d75"/></marker>
-  <marker id="arrow-dim"    markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="rgba(45,49,66,0.45)"/></marker>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/>
+  </marker>
+  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/>
+  </marker>
+  <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/>
+  </marker>
+  <marker id="arrow-sm" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+    <polygon points="0 0, 6 2.5, 0 5" fill="#4f5d75"/>
+  </marker>
+  <marker id="arrow-dim" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="rgba(45,49,66,0.45)"/>
+  </marker>
 </defs>
 ```
 

@@ -18,7 +18,7 @@ Before drawing, collect these from the user (or accept them as a YAML/JSON block
 this reference is derived from these inputs. Don't invent geometry on the fly.
 
 ```yaml
-chevrons:                       # ordered left → right; reserved names auto-promote to vertical
+chevrons: # ordered left → right; reserved names auto-promote to vertical
   - { name: "Data sources",         columns: 1 }
   - { name: "Ingestion",            columns: 1 }
   - { name: "Storage",              columns: 1 }
@@ -28,29 +28,29 @@ chevrons:                       # ordered left → right; reserved names auto-pr
   - { name: "Security",             vertical: true, color: "#b85450" }   # tinted to match the Identity bar below
   - { name: "Observability",        vertical: true }                     # reserved → pairs with crosscut #2
 
-sources:                        # external; rendered in the dashed zone on the left
-  - { name: "PostgreSQL", type: "db",     connects_to: ["NiFi"] }
-  - { name: "SFTP drop",  type: "ftp",    connects_to: ["NiFi"] }
-  - { name: "Web forms",  type: "web",    connects_to: ["NiFi"] }
-  - { name: "Legacy",     type: "legacy", connects_to: ["NiFi"] }
+sources: # external; rendered in the dashed zone on the left
+  - { name: "PostgreSQL", type: "db",     connects_to: [ "NiFi" ] }
+  - { name: "SFTP drop",  type: "ftp",    connects_to: [ "NiFi" ] }
+  - { name: "Web forms",  type: "web",    connects_to: [ "NiFi" ] }
+  - { name: "Legacy",     type: "legacy", connects_to: [ "NiFi" ] }
 
-components:                     # inside the cluster, plus bars and cross-cutting rows
-  - { name: "NiFi",       chevron: "Ingestion",      kind: node,          icon: nifi,     role: "COLL"  }
+components: # inside the cluster, plus bars and cross-cutting rows
+  - { name: "NiFi",       chevron: "Ingestion",      kind: node,          icon: nifi,     role: "COLL" }
   - { name: "MinIO",      chevron: "Storage",        kind: node,          icon: minio,    role: "STORE", focal: true }
-  - { name: "Trino",      chevron: "Storage",        kind: node,          icon: trino,    role: "VIRT"  }
-  - { name: "Notebooks",  chevron: "Transformation", kind: node,          icon: jupyter,  role: "ANLZ"  }
+  - { name: "Trino",      chevron: "Storage",        kind: node,          icon: trino,    role: "VIRT" }
+  - { name: "Notebooks",  chevron: "Transformation", kind: node,          icon: jupyter,  role: "ANLZ" }
   - { name: "Superset",   chevron: "Visualization",  kind: node,          icon: superset, role: "DASH" }
   - { name: "Airflow",    chevron: "Orchestration",  kind: bar,           icon: airflow,    subtitle: "Apache Airflow" }
   - { name: "Identity",   chevron: "Security",       kind: cross-cutting, icon: keycloak,   subtitle: "Keycloak · LDAP · OIDC",     color: "#b85450" }
   - { name: "Monitoring", chevron: "Observability",  kind: cross-cutting, icon: prometheus, subtitle: "Prometheus · Grafana · Loki" }
 
-connections:                    # explicit edges; focal-touching ones become accent automatically
+connections: # explicit edges; focal-touching ones become accent automatically
   - { from: "NiFi",    to: "MinIO",                style: "primary" }
   - { from: "NiFi",    to: "Trino",                style: "secondary" }
   - { from: "MinIO",   to: "Notebooks",            style: "primary" }
   - { from: "Trino",   to: "MinIO",                style: "query" }   # read-back (dashed)
   - { from: "Notebooks", to: "Superset",           style: "secondary" }
-  - { from: "Airflow", to: ["NiFi", "Trino", "Notebooks"], style: "trigger" }
+  - { from: "Airflow", to: [ "NiFi", "Trino", "Notebooks" ], style: "trigger" }
 
 focal: "MinIO"                  # exactly one; defaults to first kind=node under "Storage"
 dark: false
@@ -307,11 +307,20 @@ override style on focal-touching or bar-originating edges.
 **Defs block** (required, exactly these four markers):
 
 ```svg
+
 <defs>
-  <marker id="arrow"        markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
-  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
-  <marker id="arrow-sm"     markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#4f5d75"/></marker>
-  <marker id="arrow-dim"    markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="rgba(45,49,66,0.45)"/></marker>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/>
+  </marker>
+  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/>
+  </marker>
+  <marker id="arrow-sm" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+    <polygon points="0 0, 6 2.5, 0 5" fill="#4f5d75"/>
+  </marker>
+  <marker id="arrow-dim" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="rgba(45,49,66,0.45)"/>
+  </marker>
 </defs>
 ```
 

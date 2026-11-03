@@ -188,7 +188,7 @@ If drains are unavailable (Hobby plan or not yet configured), use these alternat
 | Performance metrics         | **Dashboard only**   | `https://vercel.com/{team}/{project}/speed-insights`                                |
 
 > **Upgrade path:** When ready for centralized observability, upgrade to Pro and configure drains at
-`https://vercel.com/dashboard/{team}/~/settings/log-drains` or via REST API. The drain setup is
+> `https://vercel.com/dashboard/{team}/~/settings/log-drains` or via REST API. The drain setup is
 > typically < 5 minutes.
 
 #### Observability Decision Matrix

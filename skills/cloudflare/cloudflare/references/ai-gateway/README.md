@@ -28,9 +28,9 @@ with analytics, caching, rate limiting, and routing capabilities.
 Most modern pattern using official `ai-gateway-provider` package with automatic fallbacks.
 
 ```typescript
-import { createAiGateway } from 'ai-gateway-provider';
-import { createOpenAI } from '@ai-sdk/openai';
-import { generateText } from 'ai';
+import {createAiGateway} from 'ai-gateway-provider';
+import {createOpenAI} from '@ai-sdk/openai';
+import {generateText} from 'ai';
 
 const gateway = createAiGateway({
   accountId: process.env.CF_ACCOUNT_ID,
@@ -42,13 +42,13 @@ const openai = createOpenAI({
 });
 
 // Single model
-const { text } = await generateText({
+const {text} = await generateText({
   model: gateway(openai('gpt-4o')),
   prompt: 'Hello'
 });
 
 // Automatic fallback array
-const { text } = await generateText({
+const {text} = await generateText({
   model: gateway([
     openai('gpt-4o'),              // Try first
     anthropic('claude-sonnet-4-5'), // Fallback
@@ -77,7 +77,7 @@ const client = new OpenAI({
 // Switch providers by changing model format: {provider}/{model}
 const response = await client.chat.completions.create({
   model: 'openai/gpt-4o', // or 'anthropic/claude-sonnet-4-5'
-  messages: [{ role: 'user', content: 'Hello!' }]
+  messages: [{role: 'user', content: 'Hello!'}]
 });
 ```
 
@@ -89,14 +89,14 @@ For Cloudflare Workers using Workers AI.
 export default {
   async fetch(request, env, ctx) {
     const response = await env.AI.run(
-      '@cf/meta/llama-3-8b-instruct',
-      { messages: [{ role: 'user', content: 'Hello!' }] },
-      {
-        gateway: {
-          id: 'my-gateway',
-          metadata: { userId: '123', team: 'engineering' }
+        '@cf/meta/llama-3-8b-instruct',
+        {messages: [{role: 'user', content: 'Hello!'}]},
+        {
+          gateway: {
+            id: 'my-gateway',
+            metadata: {userId: '123', team: 'engineering'}
+          }
         }
-      }
     );
 
     return Response.json(response);

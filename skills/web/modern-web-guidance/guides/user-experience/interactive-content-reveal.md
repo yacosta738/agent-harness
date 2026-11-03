@@ -12,12 +12,13 @@ between values during updates.
 
 ```css
 /* Register the spotlight inner and outer sizes to enable interpolation */
- @property --inner-size{
+@property --inner-size {
   syntax: "<length-percentage>";
   inherits: true;
   initial-value: 0px;
 }
-@property --outer-size{
+
+@property --outer-size {
   syntax: "<length-percentage>";
   inherits: true;
   initial-value: 0px;
@@ -35,13 +36,13 @@ the registered properties.
 ```css
 .reveal-layer {
   /* Only transition the size properties, NOT the position variables */
-  transition: --inner-size 0.2s ease-in-out, --outer-size 0.2s ease-in-out;  
+  transition: --inner-size 0.2s ease-in-out, --outer-size 0.2s ease-in-out;
 
   /* The spotlight is defined by the transparent center of the mask */
   mask-image: radial-gradient(
-    circle at var(--mouse-x) var(--mouse-y),
-    black var(--inner-size, 0%),
-    transparent var(--outer-size, 0%)
+      circle at var(--mouse-x) var(--mouse-y),
+      black var(--inner-size, 0%),
+      transparent var(--outer-size, 0%)
   );
 
   /* Ensure the mask doesn't repeat if the element is large */
@@ -69,7 +70,7 @@ const container = document.querySelector('.container');
 // Store the container's bounding rect
 let rect = container.getBoundingClientRect();
 // Update the rect when the container is resized
-const resizeObserver = new ResizeObserver(()=>{
+const resizeObserver = new ResizeObserver(() => {
   rect = container.getBoundingClientRect();
 })
 resizeObserver.observe(container);
@@ -123,10 +124,9 @@ movement will jump between on and off states because they cannot interpolate val
 ```css
 .reveal-layer {
   mask-image: radial-gradient(
-    circle at var(--mouse-x) var(--mouse-y),
-    /* Use fallback values when using the `var()` function for browsers that don't get an initial value from the @property registration. */
-    black var(--inner-size, 0%),
-    transparent var(--outer-size, 0%)
+      circle at var(--mouse-x) var(--mouse-y),
+        /* Use fallback values when using the `var()` function for browsers that don't get an initial value from the @property registration. */ black var(--inner-size, 0%),
+      transparent var(--outer-size, 0%)
   );
 }
 ```

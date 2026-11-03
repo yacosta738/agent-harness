@@ -14,7 +14,7 @@ snap section headers to the top of the viewport.
 
 ```css
 main {
-    /* Enable scroll snapping on the container */  
+  /* Enable scroll snapping on the container */
   scroll-snap-type: y proximity;
   overflow-y: auto;
 }
@@ -49,7 +49,7 @@ const links = document.querySelectorAll('nav a');
 main.addEventListener('scrollsnapchange', (event) => {
   // Use snapTargetBlock for vertical or snapTargetInline for horizontal
   const snappedHeader = event.snapTargetBlock;
-  
+
   if (snappedHeader) {
     setSelectedParagraph(snappedHeader.id);
   }
@@ -83,23 +83,23 @@ this will trigger while the scroll happens, rather than only when the scroll has
 // Feature detect support for scroll snap events
 if (!('onscrollsnapchange' in HTMLElement.prototype)) {
   const observer = new IntersectionObserver(
-    () => {
-      // Each time the set of intersecting headers changes, find the top
-      // header that is visible.
-      const topEntry = [...headers].reduce((currentTop, header) => {
-        // Use the bottom to handle scrolling up, when the top is still offscreen
-        const {bottom} = header.getBoundingClientRect();
-        // Don't match if the header's bottom is aboce the scrollport
-        if (bottom < 0) return;
-        if (!currentTop) return header;
-        return bottom <
+      () => {
+        // Each time the set of intersecting headers changes, find the top
+        // header that is visible.
+        const topEntry = [...headers].reduce((currentTop, header) => {
+          // Use the bottom to handle scrolling up, when the top is still offscreen
+          const {bottom} = header.getBoundingClientRect();
+          // Don't match if the header's bottom is aboce the scrollport
+          if (bottom < 0) return;
+          if (!currentTop) return header;
+          return bottom <
           currentTop.getBoundingClientRect().bottom
-          ? header
-          : currentTop;
-      }, undefined);
-      if (topEntry) setSelectedParagraph(topEntry.id);
-    },
-    { root: main, threshold: 0.9 // Adjust based on your use case },
+              ? header
+              : currentTop;
+        }, undefined);
+        if (topEntry) setSelectedParagraph(topEntry.id);
+      },
+      {root: main, threshold: 0.9 // Adjust based on your use case },
   );
 
   // Observe all snap targets (e.g., section headers)

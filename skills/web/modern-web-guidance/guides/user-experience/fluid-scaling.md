@@ -20,7 +20,7 @@ To use container query units, you must first define a containment context on a p
   /* Define the container type. Use 'inline-size' for width-based scaling. */
   /* You can also use 'size' for both width and height, but it requires explicit sizing. */
   container-type: inline-size;
-  
+
   /* Optional: Name the container for specific targeting */
   container-name: fluid-card;
 }

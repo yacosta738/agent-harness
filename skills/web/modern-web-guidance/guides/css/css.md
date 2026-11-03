@@ -105,6 +105,7 @@ use `:is()` or `:where()` instead and take advantage of their forgiving parsing 
 [popover]:popover-open {
   /* styles for native popovers */
 }
+
 [popover].\:popover-open {
   /* same styles again, for polyfilled popovers */
 }
@@ -224,8 +225,13 @@ order) should win, e.g. theming classes.
 For example this will not work as expected:
 
 ```css
-.dark .invert { color-scheme: light }
-.light .invert { color-scheme: dark }
+.dark .invert {
+  color-scheme: light
+}
+
+.light .invert {
+  color-scheme: dark
+}
 ```
 
 If `.invert` is nested within _both_ `.dark` and `.light`, it will always resolve to dark mode as
@@ -234,11 +240,15 @@ Using `@scope` fixes this:
 
 ```css
 @scope (.dark) {
-  .invert { color-scheme: light }
+  .invert {
+    color-scheme: light
+  }
 }
 
 @scope (.light) {
-  .invert { color-scheme: dark }
+  .invert {
+    color-scheme: dark
+  }
 }
 ```
 
@@ -517,30 +527,210 @@ Examples below.
 Vertical stripes of `1em` width each:
 
 ```css
-background: linear-gradient(to right, var(--color-1) 50%, var(--color-2) 0) 0 / 2em;
+background:
+
+linear-gradient
+(
+to right,
+
+var
+(
+--color-1
+
+)
+50
+%
+,
+var
+(
+--color-2
+
+)
+0
+)
+0
+/
+2
+em
+
+;
 ```
 
 Diagonal stripes of `1em` width each:
 
 ```css
-background: repeating-linear-gradient(-45deg, var(--color-1) 0 1em, var(--color-2) 0 2em);
+background:
+
+repeating-linear-gradient
+(
+-
+45
+deg,
+
+var
+(
+--color-1
+
+)
+0
+1
+em,
+
+var
+(
+--color-2
+
+)
+0
+2
+em
+
+)
+;
 ```
 
 Checkerboard pattern with `1em` squares:
 
 ```css
-background: repeating-conic-gradient(var(--color-1) 0 25%, var(--color-2) 0 50%) 0 / 2em 2em;
+background:
+
+repeating-conic-gradient
+(
+var
+(
+--color-1
+
+)
+0
+25
+%
+,
+var
+(
+--color-2
+
+)
+0
+50
+%
+)
+0
+/
+2
+em
+
+2
+em
+
+;
 ```
 
 Polka dot with `.5em` radius dots spaced `2em` apart (horizontally/vertically — multiply by
 `sqrt(2)` for diagonal distance):
 
 ```css
---distance: 2em;
---radius: .5em;
---polka: radial-gradient(circle, var(--color-1) var(--radius), transparent calc(var(--radius) + 1px));
-background: var(--polka) 0 0, var(--polka) var(--distance) var(--distance) var(--color-2);
-background-size: calc(var(--distance) * 2) calc(var(--distance) * 2);
+--distance:
+
+2
+em
+
+;
+--radius:
+
+.5
+em
+
+;
+--polka:
+
+radial-gradient
+(
+circle,
+
+var
+(
+--color-1
+
+)
+var
+(
+--radius
+
+)
+,
+transparent
+
+calc
+(
+var
+(
+--radius
+
+)
++
+
+1
+px
+
+)
+)
+;
+background:
+
+var
+(
+--polka
+
+)
+0
+0
+,
+var
+(
+--polka
+
+)
+var
+(
+--distance
+
+)
+var
+(
+--distance
+
+)
+var
+(
+--color-2
+
+)
+;
+background-size:
+
+calc
+(
+var
+(
+--distance
+
+)
+*
+
+2
+)
+calc
+(
+var
+(
+--distance
+
+)
+*
+
+2
+)
+;
 ```
 
 Simple pie chart:
@@ -662,6 +852,7 @@ already present in the DOM. I.e. this is wrong:
 HTML:
 
 ```html
+
 <button class="save">Save</button>
 ```
 

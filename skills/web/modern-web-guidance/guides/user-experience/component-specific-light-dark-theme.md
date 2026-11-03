@@ -104,29 +104,29 @@ Example:
 
 ```css
 :root {
-	--accent-color: light-dark(blue, skyblue);
-	--surface-color: light-dark(white, #222);
-	--text-color: light-dark(#111, white);
+  --accent-color: light-dark(blue, skyblue);
+  --surface-color: light-dark(white, #222);
+  --text-color: light-dark(#111, white);
 
-	color-scheme: light dark;
-	accent-color: var(--accent-color);
-	color: var(--text-color);
+  color-scheme: light dark;
+  accent-color: var(--accent-color);
+  color: var(--text-color);
 }
 
 body {
-	/* --surface-color dynamically switches despite being inherited because --surface-color is not registered */
-	background: var(--surface-color);
+  /* --surface-color dynamically switches despite being inherited because --surface-color is not registered */
+  background: var(--surface-color);
 }
 
 pre, code {
-	color-scheme: dark;
-	background: var(--surface-color);
+  color-scheme: dark;
+  background: var(--surface-color);
 
-	/* Without this, accent-color would be blue, not skyblue! */
-	accent-color: var(--accent-color);
+  /* Without this, accent-color would be blue, not skyblue! */
+  accent-color: var(--accent-color);
 
-	/* Without this, text-color would be #111, not white! */
-	color: var(--text-color);
+  /* Without this, text-color would be #111, not white! */
+  color: var(--text-color);
 }
 ```
 
@@ -181,7 +181,7 @@ provide different colors when dark mode is preferred.
 }
 
 button.primary {
-	background-color: var(--color-brand);
+  background-color: var(--color-brand);
 }
 ```
 

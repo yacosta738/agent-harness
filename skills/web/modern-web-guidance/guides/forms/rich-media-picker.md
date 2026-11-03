@@ -31,12 +31,14 @@ To implement a rich media picker using the Customizable Select API:
 <label for="role-picker">Select your role</label>
 <select class="custom-select" name="role" id="role-picker">
   <button>
-    <selectedcontent></selectedcontent> <!-- Mirrors the selected option's content automatically so you do not need JS to update the button -->
+    <selectedcontent></selectedcontent>
+    <!-- Mirrors the selected option's content automatically so you do not need JS to update the button -->
   </button>
 
   <!-- Define concise aria-label values on options whose mirrored rich content would otherwise read awkwardly as a concatenated string -->
   <option value="frontend" aria-label="Frontend Developer">
-    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor">
       <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
     </svg>
     <div class="option-text">
@@ -46,7 +48,8 @@ To implement a rich media picker using the Customizable Select API:
   </option>
 
   <option value="backend" aria-label="Backend Developer">
-    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor">
       <rect x="2" y="12" width="20" height="14" rx="2" ry="2"></rect>
     </svg>
     <div class="option-text">
@@ -108,6 +111,7 @@ select.custom-select option:checked {
   background-color: #3b82f6;
   color: #ffffff;
 }
+
 select.custom-select option:checked .option-title {
   font-weight: 700;
 }

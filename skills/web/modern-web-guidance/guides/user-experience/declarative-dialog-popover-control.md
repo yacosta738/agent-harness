@@ -105,6 +105,7 @@ For projects without a bundler, dynamically import the polyfill directly from a 
 `<script type="module">`.
 
 ```html
+
 <script type="module">
   // MANDATORY: Feature detect 'commandForElement' on HTMLButtonElement.prototype.
   // Conditionally load the invokers-polyfill from a CDN only in browsers lacking native support.
@@ -178,7 +179,7 @@ if (!supportsInvokers) {
     if (target && command) {
       target.dispatchEvent(new CustomEvent('command', {
         bubbles: true,
-        detail: { command }
+        detail: {command}
       }));
     }
   });
@@ -210,7 +211,7 @@ bundler or import maps to resolve the module path.
 ```javascript
 // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
 if (!('popover' in HTMLElement.prototype)) {
-  import('@oddbird/popover-polyfill/fn').then(({ apply }) => {
+  import('@oddbird/popover-polyfill/fn').then(({apply}) => {
     apply();
   });
 }
@@ -221,13 +222,15 @@ For projects without a bundler, dynamically import the polyfill directly from a 
 `<script type="module">`.
 
 ```html
+
 <script type="module">
   // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
   // Conditionally load the popover-polyfill from a CDN only in browsers lacking native support.
   if (!('popover' in HTMLElement.prototype)) {
-    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover-fn.js').then(({ apply }) => {
-      apply();
-    });
+    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover-fn.js').then(
+        ({apply}) => {
+          apply();
+        });
   }
 </script>
 ```

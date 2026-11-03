@@ -25,7 +25,7 @@ function returns an integer, so it must be multiplied by a time unit to convert 
 motion.
 
 ```css
-@media (prefers-reduced-motion: reduce){
+@media (prefers-reduced-motion: reduce) {
   /* Disable animation for users who prefer reduced motion. */
   #stagger-list > .item {
     animation: none;
@@ -49,9 +49,10 @@ property to each sibling element. MANDATORY: wrap this in a
 JavaScript.
 
 ```js
-if(!CSS.supports('animation-delay: calc(sibling-index() * 0.1s)')){
+if (!CSS.supports('animation-delay: calc(sibling-index() * 0.1s)')) {
   const staggerList = document.getElementById('stagger-list');
-  [...staggerList.children].forEach((el, index)=>el.style.setProperty('--sibling-index', index + 1));
+  [...staggerList.children].forEach(
+      (el, index) => el.style.setProperty('--sibling-index', index + 1));
 }
 ```
 

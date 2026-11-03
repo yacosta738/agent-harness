@@ -111,9 +111,9 @@ These are timing/race condition issues. Your task:
 1. Read the test file and understand what each test verifies
 2. Identify root cause - timing issues or actual bugs?
 3. Fix by:
-   - Replacing arbitrary timeouts with event-based waiting
-   - Fixing bugs in abort implementation if found
-   - Adjusting test expectations if testing changed behavior
+    - Replacing arbitrary timeouts with event-based waiting
+    - Fixing bugs in abort implementation if found
+    - Adjusting test expectations if testing changed behavior
 
 Do NOT just increase timeouts - find the real issue.
 

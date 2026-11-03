@@ -12,9 +12,18 @@
 // AGENTS.md — kerrigan loads it via {file:./prompts/ORCHESTRATOR.md}).
 // Output is deterministic: sorted files, no timestamps in the manifest.
 
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync
+} from "node:fs";
+import {dirname, join, resolve} from "node:path";
+import {fileURLToPath} from "node:url";
+// node <20.19 lacks require in ESM scope guard: use createRequire for walk()
+import {createRequire} from "node:module";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ADAPTER_PREFIX = "adapters/opencode/";
@@ -23,7 +32,8 @@ const ADAPTER_PREFIX = "adapters/opencode/";
 // lands with the prefix stripped (opencode.json, cli.json, scripts/*,
 // plugins/*, themes/*, adapter.json). Unsupported V1 plugin files are absent.
 function destFor(repoPath) {
-  return repoPath.startsWith(ADAPTER_PREFIX) ? repoPath.slice(ADAPTER_PREFIX.length) : repoPath;
+  return repoPath.startsWith(ADAPTER_PREFIX) ? repoPath.slice(
+      ADAPTER_PREFIX.length) : repoPath;
 }
 
 function loadJson(rel) {
@@ -35,7 +45,9 @@ function loadJson(rel) {
 function expand(pattern) {
   const out = [];
   if (!pattern.includes("*")) {
-    if (existsSync(join(ROOT, pattern))) out.push(pattern);
+    if (existsSync(join(ROOT, pattern))) {
+      out.push(pattern);
+    }
     return out;
   }
   const parts = pattern.split("/");
@@ -47,7 +59,7 @@ function expand(pattern) {
 }
 
 function walk(absDir, relDir, rest, out) {
-  const { readdirSync, statSync } = require("node:fs");
+  const {readdirSync, statSync} = require("node:fs");
   let entries;
   try {
     entries = readdirSync(absDir).sort();
@@ -56,28 +68,39 @@ function walk(absDir, relDir, rest, out) {
   }
   const [head, ...tail] = rest;
   for (const e of entries) {
-    if (e === ".DS_Store") continue;
+    if (e === ".DS_Store") {
+      continue;
+    }
     const abs = join(absDir, e);
     const rel = relDir === "." ? e : `${relDir}/${e}`;
     const isDir = statSync(abs).isDirectory();
     if (head === "**") {
       // ** matches zero or more levels: try rest against self and children
       if (tail.length === 0) {
-        if (!isDir) out.push(rel);
-        else walk(abs, rel, rest, out);
+        if (!isDir) {
+          out.push(rel);
+        } else {
+          walk(abs, rel, rest, out);
+        }
       } else {
         if (matchPart(tail[0], e)) {
           if (tail.length === 1) {
-            if (!isDir) out.push(rel);
+            if (!isDir) {
+              out.push(rel);
+            }
           } else if (isDir) {
             walk(abs, rel, tail.slice(1), out);
           }
         }
-        if (isDir) walk(abs, rel, rest, out);
+        if (isDir) {
+          walk(abs, rel, rest, out);
+        }
       }
     } else if (matchPart(head, e)) {
       if (tail.length === 0) {
-        if (!isDir) out.push(rel);
+        if (!isDir) {
+          out.push(rel);
+        }
       } else if (isDir) {
         walk(abs, rel, tail, out);
       }
@@ -92,21 +115,32 @@ function matchPart(glob, name) {
 
 function resolvePreset(adapter, presetName) {
   const preset = adapter.presets[presetName];
-  if (!preset) throw new Error(`unknown preset '${presetName}' (have: ${Object.keys(adapter.presets).join(", ")})`);
+  if (!preset) {
+    throw new Error(
+        `unknown preset '${presetName}' (have: ${Object.keys(
+            adapter.presets).join(", ")})`);
+  }
   const seen = new Set();
   for (const comp of preset) {
     const spec = adapter.components[comp];
-    if (!spec) throw new Error(`unknown component '${comp}'`);
+    if (!spec) {
+      throw new Error(`unknown component '${comp}'`);
+    }
     for (const pat of spec.include) {
-      for (const f of expand(pat)) seen.add(f);
+      for (const f of expand(pat)) {
+        seen.add(f);
+      }
     }
   }
   return [...seen].sort();
 }
 
 function fileRefs(prompt) {
-  if (typeof prompt !== "string") return [];
-  return [...prompt.matchAll(/\{file:([^}]+)\}/g)].map((m) => m[1].replace(/^\.\//, ""));
+  if (typeof prompt !== "string") {
+    return [];
+  }
+  return [...prompt.matchAll(/\{file:([^}]+)\}/g)].map(
+      (m) => m[1].replace(/^\.\//, ""));
 }
 
 // Drop agent registrations whose prompt files are not in this bundle,
@@ -115,7 +149,9 @@ function pruneAgents(cfg, bundled) {
   const pruned = [];
   const agents = cfg.agent ?? {};
   for (const [name, def] of Object.entries(agents)) {
-    if (name === "kerrigan") continue; // primary always ships
+    if (name === "kerrigan") {
+      continue;
+    } // primary always ships
     const refs = fileRefs(def.prompt);
     if (refs.length > 0 && !refs.every((r) => bundled.has(r))) {
       delete agents[name];
@@ -136,7 +172,7 @@ function pruneAgents(cfg, bundled) {
 function render(presetName, outDir) {
   const adapter = loadJson("adapters/opencode/adapter.json");
   const files = resolvePreset(adapter, presetName);
-  rmSync(outDir, { recursive: true, force: true });
+  rmSync(outDir, {recursive: true, force: true});
   const bundled = new Set();
   for (const f of files) {
     bundled.add(destFor(f));
@@ -145,7 +181,7 @@ function render(presetName, outDir) {
   for (const f of files) {
     const dest = destFor(f);
     const abs = join(outDir, dest);
-    mkdirSync(dirname(abs), { recursive: true });
+    mkdirSync(dirname(abs), {recursive: true});
     if (f === "adapters/opencode/opencode.json") {
       const cfg = loadJson(f);
       pruned.push(...pruneAgents(cfg, bundled));
@@ -157,30 +193,39 @@ function render(presetName, outDir) {
   const manifest = {
     generator: "scripts/generate-bundle.mjs",
     preset: presetName,
-    flatten: { [`${ADAPTER_PREFIX}**`]: "**" },
+    flatten: {[`${ADAPTER_PREFIX}**`]: "**"},
     pruned,
     files: [...bundled].sort(),
   };
-  writeFileSync(join(outDir, "manifest.json"), JSON.stringify(manifest, null, 2) + "\n");
-  console.log(`preset '${presetName}': ${manifest.files.length} files, pruned ${pruned.length} -> ${outDir}`);
-  if (pruned.length > 0) console.log(`  pruned: ${pruned.join(", ")}`);
+  writeFileSync(join(outDir, "manifest.json"),
+      JSON.stringify(manifest, null, 2) + "\n");
+  console.log(
+      `preset '${presetName}': ${manifest.files.length} files, pruned ${pruned.length} -> ${outDir}`);
+  if (pruned.length > 0) {
+    console.log(`  pruned: ${pruned.join(", ")}`);
+  }
 }
 
 function list(presetName) {
   const adapter = loadJson("adapters/opencode/adapter.json");
-  for (const f of resolvePreset(adapter, presetName)) console.log(destFor(f));
+  for (const f of resolvePreset(adapter, presetName)) {
+    console.log(destFor(f));
+  }
 }
 
-// node <20.19 lacks require in ESM scope guard: use createRequire for walk()
-import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 
 const [, , cmd = "render", ...rest] = process.argv;
-const args = Object.fromEntries(rest.flatMap((a, i, arr) => (a.startsWith("--") ? [[a.slice(2), arr[i + 1]]] : [])));
+const args = Object.fromEntries(rest.flatMap(
+    (a, i, arr) => (a.startsWith("--") ? [[a.slice(2), arr[i + 1]]] : [])));
 const harness = loadJson("harness.config.json");
 const preset = args.preset ?? harness.preset ?? "recommended";
 const output = resolve(ROOT, args.output ?? "dist/opencode");
 
-if (cmd === "render") render(preset, output);
-else if (cmd === "list") list(preset);
-else throw new Error(`unknown command '${cmd}' (render|list)`);
+if (cmd === "render") {
+  render(preset, output);
+} else if (cmd === "list") {
+  list(preset);
+} else {
+  throw new Error(`unknown command '${cmd}' (render|list)`);
+}

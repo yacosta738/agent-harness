@@ -93,31 +93,37 @@ saving):
 ## Exploration: {topic}
 
 ### Current State
+
 {How the system works today relevant to this topic}
 
 ### Affected Areas
+
 - `path/to/file.ext` — {why it's affected}
 - `path/to/other.ext` — {why it's affected}
 
 ### Approaches
+
 1. **{Approach name}** — {brief description}
-   - Pros: {list}
-   - Cons: {list}
-   - Effort: {Low/Medium/High}
+    - Pros: {list}
+    - Cons: {list}
+    - Effort: {Low/Medium/High}
 
 2. **{Approach name}** — {brief description}
-   - Pros: {list}
-   - Cons: {list}
-   - Effort: {Low/Medium/High}
+    - Pros: {list}
+    - Cons: {list}
+    - Effort: {Low/Medium/High}
 
 ### Recommendation
+
 {Your recommended approach and why}
 
 ### Risks
+
 - {Risk 1}
 - {Risk 2}
 
 ### Ready for Proposal
+
 {Yes/No — and what the orchestrator should tell the user}
 ```
 

@@ -19,6 +19,7 @@ picking up newly added items); each item owns its own swipe detection.
 ### Step 1: Mark up the list with track and content
 
 ```html
+
 <ul class="SwipeableList">
   <li id="list-item-1" class="SwipeableList-item">
     <div class="SwipeableList-track">
@@ -188,9 +189,15 @@ doesn't scroll with the spacer). Everything else is taste.
 
   background: var(--action-icon) center / contain no-repeat;
 }
+
 /* Inset from the row edge (example values; adjust to match your layout). */
-.SwipeableList-item.is-initialized::before { left: 1.5em; }
-.SwipeableList-item.is-initialized::after  { right: 1.5em; }
+.SwipeableList-item.is-initialized::before {
+  left: 1.5em;
+}
+
+.SwipeableList-item.is-initialized::after {
+  right: 1.5em;
+}
 
 /* Activating pop: scale the icon up when the user is past the visual
    activate point, so the row's affordance feels reactive. Toggled by JS
@@ -293,8 +300,8 @@ function setupItem(item) {
     // track's left edge means the content has been pulled right (left
     // spacer revealed), so the leading icon is on the left.
     const direction = (entry.boundingClientRect.x - entry.rootBounds.x) > 0
-      ? 'left'
-      : 'right';
+        ? 'left'
+        : 'right';
 
     if (ratio < commitThreshold) {
       // The IO entry's boundingClientRect is the last reliable measurement
@@ -328,15 +335,15 @@ function setupItem(item) {
 }
 
 async function removeItem(item, content, direction, entry) {
-  const opts = { duration: 300, easing: 'ease', fill: 'forwards' };
+  const opts = {duration: 300, easing: 'ease', fill: 'forwards'};
 
   const rect = entry.boundingClientRect;
   // Content's pixel offset from the track's left edge.
   const x = rect.x - entry.rootBounds.x;
   // Pixel distance the content needs to travel to be fully out of view.
   const translate = direction === 'left'
-    ? rect.width - x
-    : -(x + rect.width);
+      ? rect.width - x
+      : -(x + rect.width);
 
   // Use a combination of CSS transitions (for declarative styles) and
   // WAAPI animations (for computed values) to remove the element,
@@ -345,10 +352,10 @@ async function removeItem(item, content, direction, entry) {
   // height-collapse animation can otherwise finish before the browser's
   // smooth scroll-snap has scrolled the content fully off-screen.
   item.classList.add('is-removing');
-  item.animate([{ height: `${rect.height}px` }, { height: '0px' }], opts);
-  content.animate([{ translate: `${translate}px` }], opts);
+  item.animate([{height: `${rect.height}px`}, {height: '0px'}], opts);
+  content.animate([{translate: `${translate}px`}], opts);
   await Promise.allSettled(
-    item.getAnimations({ subtree: true }).map((a) => a.finished),
+      item.getAnimations({subtree: true}).map((a) => a.finished),
   );
 
   // Safari has a scroll-latching bug: removing the node while the swipe
@@ -388,7 +395,7 @@ function setupList(list) {
         }
       }
     }
-  }).observe(list, { childList: true });
+  }).observe(list, {childList: true});
 }
 
 document.querySelectorAll('.SwipeableList').forEach(setupList);
@@ -457,16 +464,21 @@ variables.
      The track's color also stays continuous behind the content as it
      translates off, so the leading-direction color shows the whole way. */
   background-image: linear-gradient(
-    to right,
-    var(--left-action-color) 50%,
-    var(--right-action-color) 50%
+      to right,
+      var(--left-action-color) 50%,
+      var(--right-action-color) 50%
   );
   background-attachment: local;
 }
 
 /* Per-side icons read from the same variables. */
-.SwipeableList-item.is-initialized::before { background-image: var(--left-action-icon); }
-.SwipeableList-item.is-initialized::after  { background-image: var(--right-action-icon); }
+.SwipeableList-item.is-initialized::before {
+  background-image: var(--left-action-icon);
+}
+
+.SwipeableList-item.is-initialized::after {
+  background-image: var(--right-action-icon);
+}
 ```
 
 With this setup, the spacers no longer need their own background-color (the track's gradient handles
@@ -574,12 +586,12 @@ each track to re-apply the scroll. Gate it behind the same `CSS.supports` check 
 
 ```js
 const trackResizeObserver = needsScrollWorkaround
-  ? new ResizeObserver((entries) => {
+    ? new ResizeObserver((entries) => {
       for (const entry of entries) {
         entry.target.scrollLeft = entry.target.clientWidth;
       }
     })
-  : null;
+    : null;
 
 function setupItem(item) {
   // ...existing setup...

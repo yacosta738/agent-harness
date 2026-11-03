@@ -41,20 +41,20 @@ Exceeding limits results in **packet drops**.
 
 ```typescript
 // ❌ BAD: API will reject
-const creds = await generate({ ttl: 604800 });  // 7 days
+const creds = await generate({ttl: 604800});  // 7 days
 
 // ✅ GOOD:
-const creds = await generate({ ttl: 86400 });   // 24 hours
+const creds = await generate({ttl: 86400});   // 24 hours
 ```
 
 ### Hardcoding IPs without monitoring
 
 ```typescript
 // ❌ BAD: IPs can change with 14-day notice
-const iceServers = [{ urls: 'turn:141.101.90.1:3478' }];
+const iceServers = [{urls: 'turn:141.101.90.1:3478'}];
 
 // ✅ GOOD: Use DNS
-const iceServers = [{ urls: 'turn:turn.cloudflare.com:3478' }];
+const iceServers = [{urls: 'turn:turn.cloudflare.com:3478'}];
 ```
 
 ### Using port 53 in browsers
@@ -72,7 +72,7 @@ urls: urls.filter(url => !url.includes(':53'))
 ```typescript
 // ❌ BAD: Credentials expire but call continues → connection drops
 const creds = await fetchCreds();
-const pc = new RTCPeerConnection({ iceServers: creds });
+const pc = new RTCPeerConnection({iceServers: creds});
 
 // ✅ GOOD: Refresh before expiry
 setInterval(() => refreshCredentials(pc), 3000000);  // 50 min
@@ -101,7 +101,7 @@ pc.addEventListener('iceconnectionstatechange', async () => {
 // ❌ BAD: Secret exposed to client
 const secret = 'your-turn-key-secret';
 const response = await fetch(`https://rtc.live.cloudflare.com/v1/turn/...`, {
-  headers: { 'Authorization': `Bearer ${secret}` }
+  headers: {'Authorization': `Bearer ${secret}`}
 });
 
 // ✅ GOOD: Generate credentials server-side
@@ -125,7 +125,7 @@ pc.addEventListener('iceconnectionstatechange', async () => {
       pc.iceConnectionState === 'disconnected') {
     await refreshTURNCredentials(pc);
     pc.restartIce();
-    const offer = await pc.createOffer({ iceRestart: true });
+    const offer = await pc.createOffer({iceRestart: true});
     await pc.setLocalDescription(offer);
     // Send offer to peer via signaling...
   }

@@ -156,7 +156,7 @@ Or via MCP if available: use `get_runtime_logs` with level filter `error`.
 
 | Finding                  | Action                                                                                                                                     |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| No errors                | ✓ Clean deploy — no runtime errors in first hour                                                                                           |
+| No errors                | ✓ Clean deploy — no runtime errors in first hour                                                                                          |
 | Errors detected          | List error count and first 5 unique error messages. Suggest: check drain payloads for correlated traces, review function logs in Dashboard |
 | 500 status codes in logs | Correlate timestamps with drain data (if configured) or `vercel logs <url> --json` for structured output. Flag for immediate investigation |
 | Timeout errors           | Check function duration limits in `vercel.json` or project settings. Consider increasing `maxDuration`                                     |

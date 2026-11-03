@@ -28,6 +28,7 @@ A few things to keep in mind:
 The following is a basic example of the above implementation steps.
 
 ```html
+
 <div class="features">
   <div class="card"></div>
   <div class="card"></div>
@@ -82,6 +83,7 @@ For core features, an alternate approach using selectors should be used. This ex
 property:
 
 ```html
+
 <div class="features" data-density="spacious">
   <div class="card"></div>
   <div class="card"></div>

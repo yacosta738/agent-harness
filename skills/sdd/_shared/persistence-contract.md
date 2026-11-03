@@ -53,11 +53,11 @@ The orchestrator persists DAG state after each phase transition to enable recove
 Write `.agents/sdd/changes/{change-name}/state.yaml` after each phase completes:
 
 ```yaml
-change: {change-name}
-current_phase: {last completed phase}
-completed: [explore, propose, spec, design, tasks]
-next: {next phase in DAG}
-updated: {ISO date}
+change: { change-name }
+current_phase: { last completed phase }
+completed: [ explore, propose, spec, design, tasks ]
+next: { next phase in DAG }
+updated: { ISO date }
 ```
 
 To recover state: read `.agents/sdd/changes/{change-name}/state.yaml`. If missing, fall back to

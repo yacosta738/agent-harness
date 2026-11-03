@@ -22,6 +22,7 @@ validity state of a specific descendant. This keeps all presentation logic in CS
 ### 1. HTML Structure
 
 ```html
+
 <form>
   <div class="card-section">
     <div class="header">
@@ -122,14 +123,14 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -147,7 +148,7 @@ const UserInvalidFallback = (() => {
     root.addEventListener('reset', handleEvent, true); // Capture resets
   };
 
-  return { init };
+  return {init};
 })();
 
 // Initialize for a specific form

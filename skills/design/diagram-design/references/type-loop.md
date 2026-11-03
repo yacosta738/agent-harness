@@ -20,11 +20,11 @@ connector paths, and viewBox bounds. Identical inputs should produce identical g
 title: "The self-improving loop"
 subtitle: "Every pass improves the shared operating record"
 
-hub:                                  # exactly one
+hub: # exactly one
   name: "Shared memory"
   sublabel: "one record, every loop"
 
-stations:                             # 5..8, clockwise from top
+stations: # 5..8, clockwise from top
   - { name: "Capture",  sublabel: "signals in",       spoke_label: "SIGNALS" }
   - { name: "Research", sublabel: "evidence pulled" }
   - { name: "Decide",   sublabel: "human approves",   focal: true }

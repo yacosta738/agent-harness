@@ -65,15 +65,13 @@ How does this map to the proposal's approach? Reference specs.}
 
 ### Decision: {Decision Title}
 
-**Choice**: {What we chose}
-**Alternatives considered**: {What we rejected}
-**Rationale**: {Why this choice over alternatives}
+**Choice**: {What we chose} **Alternatives considered**: {What we rejected} **Rationale**: {Why this
+choice over alternatives}
 
 ### Decision: {Decision Title}
 
-**Choice**: {What we chose}
-**Alternatives considered**: {What we rejected}
-**Rationale**: {Why this choice over alternatives}
+**Choice**: {What we chose} **Alternatives considered**: {What we rejected} **Rationale**: {Why this
+choice over alternatives}
 
 ## Data Flow
 
@@ -123,19 +121,21 @@ Return to the orchestrator:
 ```markdown
 ## Design Created
 
-**Change**: {change-name}
-**Location**: .agents/sdd/changes/{change-name}/design.md
+**Change**: {change-name} **Location**: .agents/sdd/changes/{change-name}/design.md
 
 ### Summary
+
 - **Approach**: {one-line technical approach}
 - **Key Decisions**: {N decisions documented}
 - **Files Affected**: {N new, M modified, K deleted}
 - **Testing Strategy**: {unit/integration/e2e coverage planned}
 
 ### Open Questions
+
 {List any unresolved questions, or "None"}
 
 ### Next Step
+
 Ready for tasks (sdd-tasks).
 ```
 

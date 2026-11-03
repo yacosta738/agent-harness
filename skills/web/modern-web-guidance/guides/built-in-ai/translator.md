@@ -71,7 +71,7 @@ const translator = await Translator.create({
 });
 
 const result = await translator.translate(
-  'Where is the next bus stop, please?',
+    'Where is the next bus stop, please?',
 );
 console.log(result);
 // Output: "Où est le prochain arrêt de bus, s'il vous plaît ?"
@@ -174,5 +174,6 @@ Recommended options:
    remote services.
 
 > **Privacy and Cost Implications:** These polyfills proxy requests to remote servers (such as
-> Gemini API over the cloud). This completely nullifies the on-device privacy guarantees of the native
+> Gemini API over the cloud). This completely nullifies the on-device privacy guarantees of the
+> native
 > Built-in AI APIs and will incur server-side API usage costs.

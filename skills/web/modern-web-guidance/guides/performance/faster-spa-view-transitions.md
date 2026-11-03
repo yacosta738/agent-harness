@@ -46,7 +46,7 @@ Set `content-visibility: hidden` on views that are not currently active.
 .spa-view.inactive {
   /* MANDATORY: Use hidden to cache the rendering state of inactive views */
   content-visibility: hidden;
-  
+
   /* Optional: Prevent hidden views from taking up physical space in layout flow */
   position: absolute;
 }
@@ -63,12 +63,12 @@ function switchToView(viewId) {
     view.classList.add('inactive');
     view.setAttribute('aria-hidden', 'true');
   });
-  
+
   // Show the target view
   const activeView = document.getElementById(viewId);
   activeView.classList.remove('inactive');
   activeView.setAttribute('aria-hidden', 'false');
-  
+
   // MANDATORY: Move focus to the new view to ensure a logical tab-order
   activeView.focus();
 }

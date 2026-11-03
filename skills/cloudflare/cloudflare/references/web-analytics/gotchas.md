@@ -7,6 +7,7 @@
 **Symptom:** Only initial pageload counted **Fix:** Add `spa: true`:
 
 ```html
+
 <script data-cf-beacon='{"token": "TOKEN", "spa": true}' ...></script>
 ```
 
@@ -54,7 +55,8 @@ manually
 ### Next.js Hydration Warning
 
 ```tsx
-<script suppressHydrationWarning ... />
+<script suppressHydrationWarning ...
+/>
 ```
 
 ### Gatsby Window Undefined

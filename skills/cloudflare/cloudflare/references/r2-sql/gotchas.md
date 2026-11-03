@@ -35,18 +35,27 @@ Can only order by:
 
 ```sql
 -- ✅ Valid: ORDER BY partition key
-SELECT * FROM logs.requests ORDER BY timestamp DESC LIMIT 100;
+SELECT *
+FROM logs.requests
+ORDER BY timestamp DESC
+LIMIT 100;
 
 -- ✅ Valid: ORDER BY aggregation
-SELECT region, SUM(amount) FROM sales.transactions
-GROUP BY region ORDER BY SUM(amount) DESC;
+SELECT region, SUM(amount)
+FROM sales.transactions
+GROUP BY region
+ORDER BY SUM(amount) DESC;
 
 -- ❌ Invalid: ORDER BY non-partition column
-SELECT * FROM logs.requests ORDER BY user_id;
+SELECT *
+FROM logs.requests
+ORDER BY user_id;
 
 -- ❌ Invalid: ORDER BY alias (must repeat function)
-SELECT region, SUM(amount) as total FROM sales.transactions
-GROUP BY region ORDER BY total;  -- Use ORDER BY SUM(amount)
+SELECT region, SUM(amount) as total
+FROM sales.transactions
+GROUP BY region
+ORDER BY total; -- Use ORDER BY SUM(amount)
 ```
 
 Check partition spec: `DESCRIBE namespace.table_name`
@@ -138,16 +147,23 @@ Max LIMIT is 10,000. For pagination, use WHERE filters with partition keys.
 
 ```sql
 -- ❌ Slow: No filters
-SELECT * FROM logs.requests LIMIT 10000;
+SELECT *
+FROM logs.requests
+LIMIT 10000;
 
 -- ✅ Fast: Filter on partition key
-SELECT * FROM logs.requests
-WHERE timestamp >= '2025-01-15T00:00:00Z' AND timestamp < '2025-01-16T00:00:00Z'
+SELECT *
+FROM logs.requests
+WHERE timestamp >= '2025-01-15T00:00:00Z'
+  AND timestamp < '2025-01-16T00:00:00Z'
 LIMIT 1000;
 
 -- ✅ Faster: Multiple filters
-SELECT * FROM logs.requests
-WHERE timestamp >= '2025-01-15T00:00:00Z' AND status = 404 AND method = 'GET'
+SELECT *
+FROM logs.requests
+WHERE timestamp >= '2025-01-15T00:00:00Z'
+  AND status = 404
+  AND method = 'GET'
 LIMIT 1000;
 ```
 
@@ -163,12 +179,16 @@ LIMIT 1000;
 
 ```sql
 -- ❌ Times out: Year-long aggregation
-SELECT status, COUNT(*) FROM logs.requests
-WHERE timestamp >= '2024-01-01T00:00:00Z' GROUP BY status;
+SELECT status, COUNT(*)
+FROM logs.requests
+WHERE timestamp >= '2024-01-01T00:00:00Z'
+GROUP BY status;
 
 -- ✅ Faster: Month-long aggregation
-SELECT status, COUNT(*) FROM logs.requests
-WHERE timestamp >= '2025-01-01T00:00:00Z' AND timestamp < '2025-02-01T00:00:00Z'
+SELECT status, COUNT(*)
+FROM logs.requests
+WHERE timestamp >= '2025-01-01T00:00:00Z'
+  AND timestamp < '2025-02-01T00:00:00Z'
 GROUP BY status;
 ```
 

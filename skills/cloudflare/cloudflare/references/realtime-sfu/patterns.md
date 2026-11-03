@@ -57,7 +57,7 @@ function VideoCall() {
   const localTracks = useObservableAsValue(pt.localTracks$);
   const remoteTracks = useObservableAsValue(pt.remoteTracks$);
 
-  return <div>{/* Render tracks */}</div>;
+  return <div>{/* Render tracks */} < /div>;
 }
 
 // Screenshare
@@ -75,7 +75,7 @@ Express:
 ```js
 app.post('/api/new-session', async (req, res) => {
   const r = await fetch(`${CALLS_API}/apps/${process.env.CALLS_APP_ID}/sessions/new`,
-    {method: 'POST', headers: {'Authorization': `Bearer ${process.env.CALLS_APP_SECRET}`}});
+      {method: 'POST', headers: {'Authorization': `Bearer ${process.env.CALLS_APP_SECRET}`}});
   res.json(await r.json());
 });
 ```
@@ -150,18 +150,21 @@ Bandwidth mgmt:
 const s = pc.getSenders().find(s => s.track?.kind === 'video');
 const p = s.getParameters();
 if (!p.encodings) p.encodings = [{}];
-p.encodings[0].maxBitrate = 1200000; p.encodings[0].maxFramerate = 24;
+p.encodings[0].maxBitrate = 1200000;
+p.encodings[0].maxFramerate = 24;
 await s.setParameters(p);
 ```
 
 Simulcast (CF auto-forwards best layer):
 
 ```ts
-pc.addTransceiver('video', {direction: 'sendonly', sendEncodings: [
-  {rid: 'high', maxBitrate: 1200000},
-  {rid: 'med', maxBitrate: 600000, scaleResolutionDownBy: 2},
-  {rid: 'low', maxBitrate: 200000, scaleResolutionDownBy: 4}
-]});
+pc.addTransceiver('video', {
+  direction: 'sendonly', sendEncodings: [
+    {rid: 'high', maxBitrate: 1200000},
+    {rid: 'med', maxBitrate: 600000, scaleResolutionDownBy: 2},
+    {rid: 'low', maxBitrate: 200000, scaleResolutionDownBy: 4}
+  ]
+});
 ```
 
 DataChannel:

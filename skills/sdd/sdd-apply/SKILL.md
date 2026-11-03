@@ -151,47 +151,57 @@ Return to the orchestrator:
 ```markdown
 ## Implementation Progress
 
-**Change**: {change-name}
-**Mode**: Documentation pressure scenarios + static validation (no executable project test runner)
+**Change**: {change-name} **Mode**: Documentation pressure scenarios + static validation (no
+executable project test runner)
 
 ### Completed Tasks
+
 - [x] {task 1.1 description}
 - [x] {task 1.2 description}
 
 ### Files Changed
+
 | File | Action | What Was Done |
 |------|--------|---------------|
 | `path/to/file.ext` | Created | {brief description} |
 | `path/to/other.ext` | Modified | {brief description} |
 
 ### Review Workload
+
 - **Forecast from tasks.md**: {Low | Medium | High}
-- **Chain strategy**: {github-stacked-prs | feature-branch-chain | single-pr | size-exception | not set}
+- **Chain strategy**: {github-stacked-prs | feature-branch-chain | single-pr | size-exception | not
+  set}
 - **Layer boundary**: {trunk, parent_branch, base, branch, position, issue/Linear metadata}
 - **Implemented slice/batch**: {scope implemented}
 - **Budget concern**: {None | Needs rebalance | Needs user decision}
 
 ### RED→GREEN→REFACTOR Evidence
+
 | Task | Test File | RED (fail) | GREEN (pass) | REFACTOR |
 |------|-----------|------------|--------------|----------|
 | 1.1 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 | 1.2 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 
-**TDD compliance**: Not claimed. This repository has no test runner; only focused JSON/YAML/Markdown/path smoke checks were executed.
+**TDD compliance**: Not claimed. This repository has no test runner; only focused
+JSON/YAML/Markdown/path smoke checks were executed.
 
 ### Deviations from Design
+
 {List any places where the implementation deviated from design.md and why.
 If none, say "None — implementation matches design."}
 
 ### Issues Found
+
 {List any problems discovered during implementation.
 If none, say "None."}
 
 ### Remaining Tasks
+
 - [ ] {next task}
 - [ ] {next task}
 
 ### Status
+
 {N}/{total} tasks complete. {Ready for next batch / Ready for verify / Blocked by X}
 ```
 

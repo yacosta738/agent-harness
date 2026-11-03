@@ -46,16 +46,24 @@ Error: git init failed in /Users/jesse/project/packages/core
 **What code directly causes this?**
 
 ```typescript
-await execFileAsync('git', ['init'], { cwd: projectDir });
+await execFileAsync('git', ['init'], {cwd: projectDir});
 ```
 
 ### 3. Ask: What Called This?
 
 ```typescript
 WorktreeManager.createSessionWorktree(projectDir, sessionId)
-  → called by Session.initializeWorkspace()
-  → called by Session.create()
-  → called by test at Project.create()
+  → called
+by
+Session.initializeWorkspace()
+  → called
+by
+Session.create()
+  → called
+by
+test
+at
+Project.create()
 ```
 
 ### 4. Keep Tracing Up
@@ -90,7 +98,7 @@ async function gitInit(directory: string) {
     stack,
   });
 
-  await execFileAsync('git', ['init'], { cwd: directory });
+  await execFileAsync('git', ['init'], {cwd: directory});
 }
 ```
 

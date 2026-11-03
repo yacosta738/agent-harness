@@ -177,7 +177,7 @@ const response = await env.ASSETS.fetch(request);
 
 if (!response.ok) {
   // Asset not found or error
-  return new Response('Custom error page', { status: 404 });
+  return new Response('Custom error page', {status: 404});
 }
 
 return response;

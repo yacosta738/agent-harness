@@ -1096,33 +1096,75 @@ rules built in and its colours read from these tokens.
 ```css
 :root {
   /* light */
-  --ground: #f9fafb;  --surface: #ffffff;  --raised: #f9f9f9;  --active: #eeeeee;
-  --border: #e8e8e8;  --rule: #f2f2f2;     --control: #d1d5db;
-  --text: #111111;    --muted: #5f6368;    --faint: #6b6b6b;    /* placeholders use --faint */
-  --primary: #1d1f20;                      /* near-black fill, white label */
+  --ground: #f9fafb;
+  --surface: #ffffff;
+  --raised: #f9f9f9;
+  --active: #eeeeee;
+  --border: #e8e8e8;
+  --rule: #f2f2f2;
+  --control: #d1d5db;
+  --text: #111111;
+  --muted: #5f6368;
+  --faint: #6b6b6b; /* placeholders use --faint */
+  --primary: #1d1f20; /* near-black fill, white label */
   --accent: /* one hue, about 3% of pixels: the data, plus at most one control */;
-  --positive: #247b50;  --pill-positive-bg: #dcfae5;  --pill-positive-ink: #04250e;
-  --negative: #c4242a;  --pill-negative-bg: #ffedea;  --pill-negative-ink: #831c1e;
-  --pill-warning-bg: #fffbeb;  --pill-warning-ink: #92400e;  /* notice border #fde68a */
-  --grid: #e5e5e5;  --chart-span: 0.06;  /* the opacity of a shaded span in a chart */
+  --positive: #247b50;
+  --pill-positive-bg: #dcfae5;
+  --pill-positive-ink: #04250e;
+  --negative: #c4242a;
+  --pill-negative-bg: #ffedea;
+  --pill-negative-ink: #831c1e;
+  --pill-warning-bg: #fffbeb;
+  --pill-warning-ink: #92400e; /* notice border #fde68a */
+  --grid: #e5e5e5;
+  --chart-span: 0.06; /* the opacity of a shaded span in a chart */
 
-  --radius-card: 8px;  --radius-control: 6px;  --radius-chip: 4px;  /* soft styles: 20 / 14 / 999 */
-  --gap: 16px;  --card-pad: 20px;  --pad: 24px;
-  --nav-row: 34px;  --control-height: 32px;  --row-height: 48px;
-  --font: "Inter", system-ui, sans-serif;                            /* one grotesk */
-  --fs-title: 24px;  --fs-section: 16px;  --fs-kpi: 24px;  --fs-body: 14px;  --fs-small: 12px;
+  --radius-card: 8px;
+  --radius-control: 6px;
+  --radius-chip: 4px; /* soft styles: 20 / 14 / 999 */
+  --gap: 16px;
+  --card-pad: 20px;
+  --pad: 24px;
+  --nav-row: 34px;
+  --control-height: 32px;
+  --row-height: 48px;
+  --font: "Inter", system-ui, sans-serif; /* one grotesk */
+  --fs-title: 24px;
+  --fs-section: 16px;
+  --fs-kpi: 24px;
+  --fs-body: 14px;
+  --fs-small: 12px;
 }
+
 :root[data-theme="dark"] {
-  --ground: #000000;  --surface: #111111;  --raised: #222222;  --active: #222222;
-  --border: #1a1a1a;  --rule: #161616;     --control: #444444;  /* on a #111 ground the border is #2e2e2e */
-  --text: #ffffff;    --muted: #b4b4b4;    --faint: #949494;  /* two greys that read apart */
-  --primary: #ffffff;                      /* inverted: white fill, black label */
-  --positive: #3fc07a;  --pill-positive-bg: #172a1d;  --pill-positive-ink: #3fc07a;  /* a green accent replaces these */
-  --negative: #e5566f;  --pill-negative-bg: #2c1a20;  --pill-negative-ink: #e5566f;  /* the study's #d4405d, lifted for 4.5:1 */
-  --grid: #2b2b2b;  --chart-span: 0.12;
+  --ground: #000000;
+  --surface: #111111;
+  --raised: #222222;
+  --active: #222222;
+  --border: #1a1a1a;
+  --rule: #161616;
+  --control: #444444; /* on a #111 ground the border is #2e2e2e */
+  --text: #ffffff;
+  --muted: #b4b4b4;
+  --faint: #949494; /* two greys that read apart */
+  --primary: #ffffff; /* inverted: white fill, black label */
+  --positive: #3fc07a;
+  --pill-positive-bg: #172a1d;
+  --pill-positive-ink: #3fc07a; /* a green accent replaces these */
+  --negative: #e5566f;
+  --pill-negative-bg: #2c1a20;
+  --pill-negative-ink: #e5566f; /* the study's #d4405d, lifted for 4.5:1 */
+  --grid: #2b2b2b;
+  --chart-span: 0.12;
 }
-.num { font-variant-numeric: tabular-nums; }
-td.num, th.num { text-align: right; }
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+td.num, th.num {
+  text-align: right;
+}
 ```
 
 ## 10. Density

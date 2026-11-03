@@ -92,18 +92,23 @@ description: Use when [specific triggering conditions]
 # Skill Name
 
 ## Overview
+
 What is this? Core principle in 1-2 sentences.
 
 ## When to Use
+
 Bullet list with symptoms and use cases. When NOT to use.
 
 ## Core Pattern
+
 Before/after comparison or process steps.
 
 ## Quick Reference
+
 Table or bullets for scanning.
 
 ## Common Mistakes
+
 What goes wrong + fixes.
 ```
 

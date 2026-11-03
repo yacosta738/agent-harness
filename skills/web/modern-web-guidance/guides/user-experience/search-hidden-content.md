@@ -45,6 +45,7 @@ search for a word within that section.
 ### Using `<details>` element
 
 ```html
+
 <details>
   <summary>Click to expand</summary>
   <p>This content is visually hidden.</p>
@@ -57,6 +58,7 @@ When handling mutually exclusive content regions, like an exclusive accordion, u
 `<details>` element with a shared `name` attribute.
 
 ```html
+
 <div class="accordion-group">
   <!-- The name attribute creates an exclusive disclosure group -->
   <details class="disclosure" name="my-accordion">
@@ -92,6 +94,7 @@ matched panel remains visible. In the `beforematch` event handler, you MUST sync
 states such as setting `aria-expanded="true"` on the controlling button.
 
 ```html
+
 <div class="custom-accordion">
   <div class="controls">
     <button aria-expanded="true" aria-controls="panel-1" id="btn-1">Section 1</button>

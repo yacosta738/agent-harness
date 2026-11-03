@@ -18,11 +18,14 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-verify` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-verify` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Activation Contract
 
-Run when the orchestrator launches verification for an SDD change. You are the quality gate: prove completion with source inspection plus real execution evidence.
+Run when the orchestrator launches verification for an SDD change. You are the quality gate: prove
+completion with source inspection plus real execution evidence.
 
 ## Hard Rules
 
@@ -31,26 +34,32 @@ Run when the orchestrator launches verification for an SDD change. You are the q
 - A spec scenario is compliant only when a covering test passed at runtime.
 - Compare specs first, design second, task completion third.
 - Do not fix issues; report them for the orchestrator/user.
-- Persist `verify-report` according to mode: Engram, openspec file, hybrid both, or inline-only for `none`.
-- Verify technical conformance only. Do not claim user/operator acceptance; after this report, hand off explicitly to `sdd-qa`, which owns acceptance scenarios and `qa-report.md`.
-- When `sdd-quality-runner.mjs` is enabled, consume its versioned envelopes instead of inventing commands. Preserve
-  command identity, cwd, exit code, parser result, status, reason, redacted evidence, and artifact references.
-  `UNAVAILABLE` remains unavailable and is not a pass. If the runner is disabled/unavailable, label the report
+- Persist `verify-report` according to mode: Engram, openspec file, hybrid both, or inline-only for
+  `none`.
+- Verify technical conformance only. Do not claim user/operator acceptance; after this report, hand
+  off explicitly to `sdd-qa`, which owns acceptance scenarios and `qa-report.md`.
+- When `sdd-quality-runner.mjs` is enabled, consume its versioned envelopes instead of inventing
+  commands. Preserve
+  command identity, cwd, exit code, parser result, status, reason, redacted evidence, and artifact
+  references.
+  `UNAVAILABLE` remains unavailable and is not a pass. If the runner is disabled/unavailable, label
+  the report
   `fallback` and state that deterministic enforcement was not available.
-- If Strict TDD is active, load `skills/sdd/sdd-verify/strict-tdd-verify.md` from this skill directory; if inactive, never load it.
+- If Strict TDD is active, load `skills/sdd/sdd-verify/strict-tdd-verify.md` from this skill
+  directory; if inactive, never load it.
 - Return the Section D envelope from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ## Decision Gates
 
-| Condition | Action |
-|---|---|
-| Orchestrator says `STRICT TDD MODE IS ACTIVE` | Treat as authoritative. |
-| Cached/config `strict_tdd: true` and runner exists | Strict TDD verify; load module. |
-| Strict TDD false or no runner | Standard verify; skip TDD checks. |
-| Task incomplete | CRITICAL for core task, WARNING for cleanup task. |
-| Test command exits non-zero | CRITICAL. |
-| Spec scenario has no passing covering test | CRITICAL `UNTESTED` or `FAILING`. |
-| Design deviation exists | WARNING unless it breaks a spec. |
+| Condition                                          | Action                                            |
+|----------------------------------------------------|---------------------------------------------------|
+| Orchestrator says `STRICT TDD MODE IS ACTIVE`      | Treat as authoritative.                           |
+| Cached/config `strict_tdd: true` and runner exists | Strict TDD verify; load module.                   |
+| Strict TDD false or no runner                      | Standard verify; skip TDD checks.                 |
+| Task incomplete                                    | CRITICAL for core task, WARNING for cleanup task. |
+| Test command exits non-zero                        | CRITICAL.                                         |
+| Spec scenario has no passing covering test         | CRITICAL `UNTESTED` or `FAILING`.                 |
+| Design deviation exists                            | WARNING unless it breaks a spec.                  |
 
 ## Execution Steps
 
@@ -67,6 +76,7 @@ Run when the orchestrator launches verification for an SDD change. You are the q
 ## Output Contract
 
 Return `## Verification Report` with:
+
 - change, mode, completeness table
 - build/tests/coverage evidence
 - spec compliance matrix
@@ -87,5 +97,7 @@ Return `## Verification Report` with:
 
 ## References
 
-- `../../skills/sdd/_shared/sdd-phase-common.md` — skill loading, retrieval, persistence, and return envelope.
-- `../../skills/sdd/sdd-verify` — strict-tdd-verify.md and report-format.md references (load only when Strict TDD is active).
+- `../../skills/sdd/_shared/sdd-phase-common.md` — skill loading, retrieval, persistence, and return
+  envelope.
+- `../../skills/sdd/sdd-verify` — strict-tdd-verify.md and report-format.md references (load only
+  when Strict TDD is active).

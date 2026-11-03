@@ -39,8 +39,16 @@ embedded into generated effect recipes.
   "duration_ms": 900,
   "stagger_ms": 25,
   "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
-  "from": { "opacity": 0, "y_px": 16, "blur_px": 12 },
-  "to": { "opacity": 1, "y_px": 0, "blur_px": 0 }
+  "from": {
+    "opacity": 0,
+    "y_px": 16,
+    "blur_px": 12
+  },
+  "to": {
+    "opacity": 1,
+    "y_px": 0,
+    "blur_px": 0
+  }
 }
 ```
 
@@ -80,7 +88,9 @@ Fields:
       "Start old text exit at t=0ms.",
       "Start new text enter based on overlap and micro delay."
     ],
-    "verification": ["No hard-cut frame between old and new text."],
+    "verification": [
+      "No hard-cut frame between old and new text."
+    ],
     "fallback": {
       "if_overlap_is_too_busy": "Reduce overlap_ms."
     }
@@ -168,7 +178,11 @@ weight, color, padding, card chrome, and page layout.
   "showcase": {
     "content": {
       "sample": "Motion with intent.",
-      "samples": ["Motion with intent.", "Think different.", "Built to flow."]
+      "samples": [
+        "Motion with intent.",
+        "Think different.",
+        "Built to flow."
+      ]
     },
     "content_usage": {
       "default_policy": "When applying an effect to an existing heading or text section, preserve the section text.",
@@ -199,7 +213,13 @@ weight, color, padding, card chrome, and page layout.
     },
     "playback": {
       "kind": "loop",
-      "cycle": ["enter", "hold", "exit", "micro-delay", "gap"],
+      "cycle": [
+        "enter",
+        "hold",
+        "exit",
+        "micro-delay",
+        "gap"
+      ],
       "replacement_behavior": "exit-before-enter",
       "hold_ms": 550,
       "micro_delay_ms": 35,

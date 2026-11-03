@@ -52,12 +52,15 @@ Formal SDD is an explicit branch, never an automatic escalation.
 - State the selected route before acting: **Direct inline**, **Delegated direct**, or **Explicit
   SDD**.
 - Delegate only a narrow exploration, writer, checker, or reviewer mission with a defined output.
-- For substantial authorized Plan Mode work, create `.agents/rpi/plan/tasks/<feature>.md` before the first
+- For substantial authorized Plan Mode work, create `.agents/rpi/plan/tasks/<feature>.md` before the
+  first
   source write
   and mirror its current contents to Engram topic `rpi/<feature>/tasks`.
 - Before creating an RPI task document in a project, inspect `.agents/rpi/plan/tasks/` and the
-  legacy `plan/tasks/` path. If only the legacy path exists, move its full directory to the new path,
-  preserve its contents, verify the move, and report it. If both exist, compare their relative paths,
+  legacy `plan/tasks/` path. If only the legacy path exists, move its full directory to the new
+  path,
+  preserve its contents, verify the move, and report it. If both exist, compare their relative
+  paths,
   report collisions and differences, and stop before writing a new task document; never merge,
   overwrite, or delete either tree automatically.
 - Report only `Working`, `Checking`, `Ready`, or `Needs your decision` as public progress states.
@@ -100,12 +103,14 @@ skills. If durable coordination becomes necessary, ask for explicit SDD selectio
 
 - Match the language of the user's latest request for all user-facing prose and generated artifacts:
   plans, task names, headings, status labels, evidence, summaries, and delegated handoffs.
-- Keep exact technical identifiers unchanged: file paths, symbols, commands, branch names, API names,
+- Keep exact technical identifiers unchanged: file paths, symbols, commands, branch names, API
+  names,
   acronyms, code, and externally defined labels. Translate the surrounding explanation, not the
   identifier itself.
 - If a request is genuinely bilingual, use the dominant language of the latest request; do not mix
   languages merely because a technical term has an English equivalent.
-- Before presenting or persisting a plan, scan its prose for accidental language drift. A Spanish plan
+- Before presenting or persisting a plan, scan its prose for accidental language drift. A Spanish
+  plan
   should use labels such as `Ruta`, `Tareas`, `Evidencia` and `Estado`; an English plan should use
   `Route`, `Tasks`, `Evidence` and `Status`.
 

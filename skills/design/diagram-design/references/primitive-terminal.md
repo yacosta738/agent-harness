@@ -13,6 +13,7 @@ brand.
 ## Grammar
 
 ```html
+
 <div class="terminal">
   <div class="titlebar">
     <div class="dot accent"></div>
@@ -34,18 +35,22 @@ brand.
 body {
   background: var(--terminal-page);
 }
+
 .terminal {
   background: var(--terminal-paper);
   border: 1px solid var(--terminal-border);
   border-radius: 12px;
 }
+
 .titlebar {
   background: var(--terminal-bar);
   border-bottom: 1px solid var(--terminal-border);
 }
+
 .dot {
   background: var(--terminal-soft);
 }
+
 .dot.accent {
   background: var(--terminal-accent);
 }

@@ -2,9 +2,17 @@
   "version": "agent-harness.adapter/v1",
   "name": "opencode",
   "defaultTarget": "~/.config/opencode",
-  "allowedLayers": ["portable", "adapter", "runtime"],
+  "allowedLayers": [
+    "portable",
+    "adapter",
+    "runtime"
+  ],
   "defaultPreset": "recommended",
-  "presetOrder": ["minimal", "recommended", "full"],
+  "presetOrder": [
+    "minimal",
+    "recommended",
+    "full"
+  ],
   "components": {
     "core": {
       "include": [
@@ -94,8 +102,37 @@
     }
   },
   "presets": {
-    "minimal": ["core", "skills", "permissions", "persona"],
-    "recommended": ["core", "skills", "permissions", "persona", "delegation", "engram", "context7", "sdd", "rdd", "judgment-day"],
-    "full": ["core", "skills", "permissions", "persona", "delegation", "engram", "context7", "sdd", "rdd", "judgment-day", "theme", "integrations"]
+    "minimal": [
+      "core",
+      "skills",
+      "permissions",
+      "persona"
+    ],
+    "recommended": [
+      "core",
+      "skills",
+      "permissions",
+      "persona",
+      "delegation",
+      "engram",
+      "context7",
+      "sdd",
+      "rdd",
+      "judgment-day"
+    ],
+    "full": [
+      "core",
+      "skills",
+      "permissions",
+      "persona",
+      "delegation",
+      "engram",
+      "context7",
+      "sdd",
+      "rdd",
+      "judgment-day",
+      "theme",
+      "integrations"
+    ]
   }
 }

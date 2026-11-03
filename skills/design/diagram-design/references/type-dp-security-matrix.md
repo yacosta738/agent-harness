@@ -21,16 +21,16 @@ focal rule, color override, dark mode, and reproducibility checklist read identi
 ## 1. Inputs — the parameter contract
 
 ```yaml
-title:    "Platform Access Matrix"
+title: "Platform Access Matrix"
 subtitle: "Four canonical groups × platform components"
 
-roles:                                  # 2..6 columns, ordered left → right
-  - { name: "Data Administrators", code: "DL-DataAdmins"      }
-  - { name: "Data Engineers",      code: "DL-DataEngineers"   }
-  - { name: "Data Scientists",     code: "DL-DataScientists"  }
-  - { name: "Data Consumers",      code: "DL-DataConsumers"   }
+roles: # 2..6 columns, ordered left → right
+  - { name: "Data Administrators", code: "DL-DataAdmins" }
+  - { name: "Data Engineers",      code: "DL-DataEngineers" }
+  - { name: "Data Scientists",     code: "DL-DataScientists" }
+  - { name: "Data Consumers",      code: "DL-DataConsumers" }
 
-components:                             # 2..14 rows, ordered top → bottom
+components: # 2..14 rows, ordered top → bottom
   - { name: "Keycloak",                          hint: "SSO" }   # `hint` = right-aligned aside in label cell
   - { name: "MinIO · raw bucket" }
   - { name: "MinIO · anon · staging · agg" }
@@ -40,7 +40,7 @@ components:                             # 2..14 rows, ordered top → bottom
   - { name: "JupyterHub" }
   - { name: "NiFi" }
 
-cells:                                  # explicit (row, col) entries; omitted → defaults to "none"
+cells: # explicit (row, col) entries; omitted → defaults to "none"
   # value = displayed text (free-form)
   # level = visual category: full | rw | read | none  (closed vocabulary, drives styling)
   # focal: true (max 1)            — overrides level to focal styling
@@ -52,14 +52,14 @@ cells:                                  # explicit (row, col) entries; omitted �
   - { row: 0, col: 3, value: "Login", level: "read" }
 
   - { row: 1, col: 0, value: "Full",       level: "full" }
-  - { row: 1, col: 1, value: "R/W",        level: "rw"   }
+  - { row: 1, col: 1, value: "R/W",        level: "rw" }
   - { row: 1, col: 2, value: "No access",  level: "none" }
   - { row: 1, col: 3, value: "No access",  level: "none" }
 
   # ... rows 2..4 follow the same pattern ...
 
   - { row: 5, col: 0, value: "Full",       level: "full" }
-  - { row: 5, col: 1, value: "R/W",        level: "rw"   }
+  - { row: 5, col: 1, value: "R/W",        level: "rw" }
   - { row: 5, col: 2, value: "SELECT",     level: "read" }
   - { row: 5, col: 3, value: "SELECT only", sub: "sole consumer access", focal: true }
 
@@ -356,14 +356,14 @@ The complete inputs that map to the shipped canonical example. Every coordinate 
 derivable from §2 applied to these inputs.
 
 ```yaml
-title:    "Platform Access Matrix"
+title: "Platform Access Matrix"
 subtitle: "Four canonical groups × platform components"
 
 roles:
-  - { name: "Data Administrators", code: "DL-DataAdmins"      }
-  - { name: "Data Engineers",      code: "DL-DataEngineers"   }
-  - { name: "Data Scientists",     code: "DL-DataScientists"  }
-  - { name: "Data Consumers",      code: "DL-DataConsumers"   }
+  - { name: "Data Administrators", code: "DL-DataAdmins" }
+  - { name: "Data Engineers",      code: "DL-DataEngineers" }
+  - { name: "Data Scientists",     code: "DL-DataScientists" }
+  - { name: "Data Consumers",      code: "DL-DataConsumers" }
 
 components:
   - { name: "Keycloak",                          hint: "SSO" }
@@ -383,37 +383,37 @@ cells:
   - { row: 0, col: 3, value: "Login", level: "read" }
   # Row 1 — MinIO raw
   - { row: 1, col: 0, value: "Full", level: "full" }
-  - { row: 1, col: 1, value: "R/W",  level: "rw"   }
+  - { row: 1, col: 1, value: "R/W",  level: "rw" }
   - { row: 1, col: 2, value: "No access", level: "none" }
   - { row: 1, col: 3, value: "No access", level: "none" }
   # Row 2 — MinIO anon/staging/agg
   - { row: 2, col: 0, value: "Full", level: "full" }
-  - { row: 2, col: 1, value: "R/W",  level: "rw"   }
+  - { row: 2, col: 1, value: "R/W",  level: "rw" }
   - { row: 2, col: 2, value: "Read", level: "read" }
   - { row: 2, col: 3, value: "No access", level: "none" }
   # Row 3 — Trino raw catalog
   - { row: 3, col: 0, value: "Full", level: "full" }
-  - { row: 3, col: 1, value: "R/W",  level: "rw"   }
+  - { row: 3, col: 1, value: "R/W",  level: "rw" }
   - { row: 3, col: 2, value: "No access", level: "none" }
   - { row: 3, col: 3, value: "No access", level: "none" }
   # Row 4 — Trino anon-staging
   - { row: 4, col: 0, value: "Full",   level: "full" }
-  - { row: 4, col: 1, value: "R/W",    level: "rw"   }
+  - { row: 4, col: 1, value: "R/W",    level: "rw" }
   - { row: 4, col: 2, value: "SELECT", level: "read" }
   - { row: 4, col: 3, value: "No access", level: "none" }
   # Row 5 — Trino aggregated (focal cell at col 3)
   - { row: 5, col: 0, value: "Full",        level: "full" }
-  - { row: 5, col: 1, value: "R/W",         level: "rw"   }
+  - { row: 5, col: 1, value: "R/W",         level: "rw" }
   - { row: 5, col: 2, value: "SELECT",      level: "read" }
   - { row: 5, col: 3, value: "SELECT only", sub: "sole consumer access", focal: true }
   # Row 6 — JupyterHub
   - { row: 6, col: 0, value: "Admin", level: "full" }
-  - { row: 6, col: 1, value: "R/W",   level: "rw"   }
-  - { row: 6, col: 2, value: "R/W",   level: "rw"   }
+  - { row: 6, col: 1, value: "R/W",   level: "rw" }
+  - { row: 6, col: 2, value: "R/W",   level: "rw" }
   - { row: 6, col: 3, value: "No access", level: "none" }
   # Row 7 — NiFi
   - { row: 7, col: 0, value: "Admin", level: "full" }
-  - { row: 7, col: 1, value: "R/W",   level: "rw"   }
+  - { row: 7, col: 1, value: "R/W",   level: "rw" }
   - { row: 7, col: 2, value: "Read",  level: "read" }
   - { row: 7, col: 3, value: "No access", level: "none" }
 

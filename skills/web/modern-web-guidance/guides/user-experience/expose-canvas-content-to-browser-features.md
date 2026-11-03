@@ -23,6 +23,7 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 3. Place your HTML content inside the `<canvas>` element with the `layoutsubtree` attribute.
 
 ```html
+
 <canvas id="canvas" layoutsubtree>
   <div id="html-content"></div>
 </canvas>
@@ -34,19 +35,19 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 const observer = new ResizeObserver(([entry]) => {
   const dpc = entry.devicePixelContentBoxSize;
   canvas.width = dpc
-    ? dpc[0].inlineSize
-    : Math.round(entry.contentRect.width * window.devicePixelRatio);
+      ? dpc[0].inlineSize
+      : Math.round(entry.contentRect.width * window.devicePixelRatio);
   canvas.height = dpc
-    ? dpc[0].blockSize
-    : Math.round(entry.contentRect.height * window.devicePixelRatio);
+      ? dpc[0].blockSize
+      : Math.round(entry.contentRect.height * window.devicePixelRatio);
 });
 
 const supportsDevicePixelContentBox =
-  typeof ResizeObserverEntry !== "undefined" &&
-  "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
+    typeof ResizeObserverEntry !== "undefined" &&
+    "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
 const options = supportsDevicePixelContentBox
-  ? { box: "device-pixel-content-box" }
-  : {};
+    ? {box: "device-pixel-content-box"}
+    : {};
 observer.observe(canvas, options);
 ```
 
@@ -68,12 +69,12 @@ canvas.onpaint = () => {
 canvas.onpaint = () => {
   if (gl.texElementImage2D) {
     gl.texElementImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      uiElement,
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        uiElement,
     );
   }
 };
@@ -99,6 +100,7 @@ function render() {
   canvas.requestPaint();
   requestAnimationFrame(render);
 }
+
 requestAnimationFrame(render);
 
 canvas.onpaint = (event) => {
@@ -202,12 +204,13 @@ targetHTMLElement.style.transform = computedTransform.toString();
 ### 2D Canvas
 
 ```html
+
 <canvas id="canvas" layoutsubtree style="width: 400px; height: 200px;">
   <div id="ui-element">
     <p>
       This text is rendered inside the canvas but is present in the DOM tree.
     </p>
-    <input type="email" name="email" placeholder="enter your email" />
+    <input type="email" name="email" placeholder="enter your email"/>
     <button type="button">Submit</button>
   </div>
 </canvas>
@@ -230,20 +233,20 @@ targetHTMLElement.style.transform = computedTransform.toString();
   const observer = new ResizeObserver(([entry]) => {
     const dpc = entry.devicePixelContentBoxSize;
     canvas.width = dpc
-      ? dpc[0].inlineSize
-      : Math.round(entry.contentRect.width * window.devicePixelRatio);
+        ? dpc[0].inlineSize
+        : Math.round(entry.contentRect.width * window.devicePixelRatio);
     canvas.height = dpc
-      ? dpc[0].blockSize
-      : Math.round(entry.contentRect.height * window.devicePixelRatio);
+        ? dpc[0].blockSize
+        : Math.round(entry.contentRect.height * window.devicePixelRatio);
     canvas.requestPaint();
   });
 
   const supportsDevicePixelContentBox =
-    typeof ResizeObserverEntry !== "undefined" &&
-    "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
+      typeof ResizeObserverEntry !== "undefined" &&
+      "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
   const options = supportsDevicePixelContentBox
-    ? { box: "device-pixel-content-box" }
-    : {};
+      ? {box: "device-pixel-content-box"}
+      : {};
   observer.observe(canvas, options);
 </script>
 ```
@@ -251,6 +254,7 @@ targetHTMLElement.style.transform = computedTransform.toString();
 ### WebGL Canvas
 
 ```html
+
 <canvas id="canvas" layoutsubtree style="width: 400px; height: 400px;">
   <div id="ui-element">
     <p>WebGL UI Element</p>
@@ -271,12 +275,12 @@ targetHTMLElement.style.transform = computedTransform.toString();
     // 1. Update texture with HTML content
     if (gl.texElementImage2D) {
       gl.texElementImage2D(
-        gl.TEXTURE_2D,
-        0,
-        gl.RGBA,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        uiElement,
+          gl.TEXTURE_2D,
+          0,
+          gl.RGBA,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          uiElement,
       );
     }
 
@@ -293,20 +297,20 @@ targetHTMLElement.style.transform = computedTransform.toString();
       const gridHeight = uiElement.offsetHeight * dprY;
 
       const cssToUnitSpace = new DOMMatrix()
-        .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
-        .translate(-gridWidth / 2, -gridHeight / 2);
+          .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
+          .translate(-gridWidth / 2, -gridHeight / 2);
 
       const clipToCanvasViewport = new DOMMatrix()
-        .translate(canvas.width / 2, canvas.height / 2)
-        .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
+          .translate(canvas.width / 2, canvas.height / 2)
+          .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
 
       const screenSpaceTransform = clipToCanvasViewport
-        .multiply(mvpDOM)
-        .multiply(cssToUnitSpace);
+          .multiply(mvpDOM)
+          .multiply(cssToUnitSpace);
 
       const computedTransform = canvas.getElementTransform(
-        uiElement,
-        screenSpaceTransform,
+          uiElement,
+          screenSpaceTransform,
       );
       uiElement.style.transform = computedTransform.toString();
     }
@@ -317,6 +321,7 @@ targetHTMLElement.style.transform = computedTransform.toString();
 ### WebGPU Canvas
 
 ```html
+
 <canvas id="canvas" layoutsubtree style="width: 400px; height: 400px;">
   <div id="ui-element">
     <p>WebGPU UI Element</p>
@@ -351,20 +356,20 @@ targetHTMLElement.style.transform = computedTransform.toString();
       const gridHeight = uiElement.offsetHeight * dprY;
 
       const cssToUnitSpace = new DOMMatrix()
-        .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight) // Retain Z scale
-        .translate(-gridWidth / 2, -gridHeight / 2);
+          .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight) // Retain Z scale
+          .translate(-gridWidth / 2, -gridHeight / 2);
 
       const clipToCanvasViewport = new DOMMatrix()
-        .translate(canvas.width / 2, canvas.height / 2)
-        .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2); // Retain Z scale
+          .translate(canvas.width / 2, canvas.height / 2)
+          .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2); // Retain Z scale
 
       const screenSpaceTransform = clipToCanvasViewport
-        .multiply(mvpDOM)
-        .multiply(cssToUnitSpace);
+          .multiply(mvpDOM)
+          .multiply(cssToUnitSpace);
 
       const computedTransform = canvas.getElementTransform(
-        uiElement,
-        screenSpaceTransform,
+          uiElement,
+          screenSpaceTransform,
       );
       uiElement.style.transform = computedTransform.toString();
     }

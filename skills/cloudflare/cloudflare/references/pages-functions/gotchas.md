@@ -21,8 +21,12 @@
 **Solution:** Run `npx wrangler types` or manually define:
 
 ```typescript
-interface Env { MY_BINDING: KVNamespace; }
-export const onRequest: PagesFunction<Env> = async (ctx) => { /* ... */ };
+interface Env {
+  MY_BINDING: KVNamespace;
+}
+
+export const onRequest: PagesFunction<Env> = async (ctx) => { /* ... */
+};
 ```
 
 ### Secrets not available in production

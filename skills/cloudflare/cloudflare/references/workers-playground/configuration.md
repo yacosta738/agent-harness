@@ -52,7 +52,7 @@ Import from external URLs or inline modules:
 
 ```javascript
 // Import from CDN
-import { Hono } from 'https://esm.sh/hono@3';
+import {Hono} from 'https://esm.sh/hono@3';
 
 // Or paste library code and import relatively
 // (See patterns.md for multi-module examples)

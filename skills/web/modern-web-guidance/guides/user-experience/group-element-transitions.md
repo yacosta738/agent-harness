@@ -63,6 +63,7 @@ element if it is the only child.
   /* Specify an animation duration if you want something different than the UA default of 0.5s */
   animation-duration: 1s;
 }
+
 /* A `::view-transition-old()` element is the only child if it isn't present after the view transition, so it is a removed element. */
 ::view-transition-old(.list-item):only-child {
   animation-name: slide-out;
@@ -75,6 +76,7 @@ element if it is the only child.
     translate: -100vw 0;
   }
 }
+
 @keyframes slide-out {
   to {
     translate: -100vw 0;

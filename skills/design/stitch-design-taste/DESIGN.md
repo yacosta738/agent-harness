@@ -18,7 +18,8 @@ the output should be. Pick the level that fits your project.
 
 > **How to use:** Change the numbers above to match your project's vibe. At **Creativity 1–3**, the
 > system produces clean, quiet, Notion-like interfaces. At **Creativity 7–10**, expect inline image
-> typography, dramatic scale contrast, and strong editorial layouts. The rest of the rules below adapt
+> typography, dramatic scale contrast, and strong editorial layouts. The rest of the rules below
+> adapt
 > to your chosen levels.
 
 ---
@@ -28,8 +29,9 @@ the output should be. Pick the level that fits your project.
 A restrained, gallery-airy interface with confident asymmetric layouts and fluid spring-physics
 motion. The atmosphere is clinical yet warm — like a well-lit architecture studio where every
 element earns its place through function. Density is balanced (Level 4), variance runs high (Level
+
 8) to prevent symmetrical boredom, and motion is fluid but never theatrical (Level 6). The overall
-impression: expensive, intentional, alive.
+   impression: expensive, intentional, alive.
 
 ## 2. Color Palette & Roles
 
@@ -158,7 +160,8 @@ requirement. Every single element must be tested at 375px, 768px, and 1440px.**
 ## 8. Motion & Interaction (Code-Phase Intent)
 
 > **Note:** Stitch generates static screens — it does not animate. This section documents the
-> **intended motion behavior** so that the coding agent (Antigravity, Cursor, etc.) knows exactly how
+> **intended motion behavior** so that the coding agent (Antigravity, Cursor, etc.) knows exactly
+> how
 > to implement animations when building the exported design into a live product.
 
 - **Physics Engine:** Spring-based exclusively. `stiffness: 100, damping: 20`. No linear easing

@@ -32,6 +32,7 @@ the same as explicitly setting the `closedby` attribute to `closerequest`.
 If you also want “light dismiss” behavior, then you must set `closedby` to `any`:
 
 ```html
+
 <dialog closedby="any" aria-labelledby="example">
   <h1 id="example">Example</h1>
   <p>Modal that can be dismissed with close requests and light dismiss.</p>

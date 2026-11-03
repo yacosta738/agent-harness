@@ -24,10 +24,9 @@ To animate an element when toggling its visibility via an attribute (e.g., `hidd
   opacity: 1;
   translate: 0;
   /* MANDATORY: Use transition-behavior: allow-discrete for display transition */
-  transition:
-    display 0.4s,
-    opacity 0.4s ease-out,
-    translate 0.4s ease-out;
+  transition: display 0.4s,
+  opacity 0.4s ease-out,
+  translate 0.4s ease-out;
   transition-behavior: allow-discrete;
 }
 
@@ -125,8 +124,8 @@ logic.
 ```javascript
 // Detect support for discrete transitions and starting-style
 const supportsModernTransitions =
-  window.CSS &&
-  CSS.supports('transition-behavior', 'allow-discrete');
+    window.CSS &&
+    CSS.supports('transition-behavior', 'allow-discrete');
 
 if (!supportsModernTransitions) {
   // Implement manual JS-based fallback for entry/exit
@@ -148,5 +147,5 @@ requestAnimationFrame(() => {
 el.setAttribute('hidden', true);
 el.addEventListener('transitionend', () => {
   if (el.classList.contains('hidden')) el.style.display = 'none';
-}, { once: true });
+}, {once: true});
 ```

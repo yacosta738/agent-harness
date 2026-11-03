@@ -234,7 +234,10 @@ you're tempted to accent 4 things, you haven't decided what's focal yet.
 Instrument Serif is reserved for annotation callouts. Never JetBrains Mono as a blanket "dev" font.
 
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
 ```
 
 ---
@@ -258,6 +261,7 @@ the relevant `references/type-*.md`. Optional primitives:
 diagram in a secondary container background — the diagram sits directly on the page.
 
 ```svg
+
 <rect width="100%" height="100%" fill="#f5f5f5"/>
 ```
 
@@ -265,6 +269,7 @@ diagram in a secondary container background — the diagram sits directly on the
 (essays, hero diagrams on a dedicated page), opt in by adding the `dots` pattern and a second rect:
 
 ```svg
+
 <defs>
   <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
     <circle cx="1" cy="1" r="0.9" fill="rgba(45,49,66,0.10)"/>
@@ -280,14 +285,15 @@ compounds with surrounding chrome and reads as noise.
 ### Arrow markers (define all three, always)
 
 ```svg
+
 <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
   <polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/>
 </marker>
 <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-  <polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/>
+<polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/>
 </marker>
 <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-  <polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/>
+<polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/>
 </marker>
 ```
 
@@ -374,18 +380,22 @@ any diagram.
 ```svg
 <!-- 1. Opaque paper mask — prevents arrows bleeding through transparent fills -->
 <rect x="X" y="Y" width="W" height="H" rx="6" fill="#f5f5f5"/>
-<!-- 2. Styled box -->
+  <!-- 2. Styled box -->
 <rect x="X" y="Y" width="W" height="H" rx="6" fill="FILL" stroke="STROKE" stroke-width="1"/>
-<!-- 3. Rectangular type tag (rx=2, NOT a pill) -->
-<rect x="X+8" y="Y+6" width="28" height="12" rx="2" fill="transparent" stroke="STROKE@0.40" stroke-width="0.8"/>
+  <!-- 3. Rectangular type tag (rx=2, NOT a pill) -->
+<rect x="X+8" y="Y+6" width="28" height="12" rx="2" fill="transparent" stroke="STROKE@0.40"
+stroke-width="0.8"/>
 <text x="X+22" y="Y+15" fill="STROKE@0.8" font-size="7" font-family="'Geist Mono', monospace"
-      text-anchor="middle" letter-spacing="0.08em">API</text>
-<!-- 4. Node name (Geist sans — human-readable) -->
+text-anchor="middle" letter-spacing="0.08em">API
+</text>
+  <!-- 4. Node name (Geist sans — human-readable) -->
 <text x="CX" y="CY+2" fill="#2d3142" font-size="12" font-weight="600"
-      font-family="'Geist', sans-serif" text-anchor="middle">Node Name</text>
-<!-- 5. Technical sublabel (Geist Mono) -->
+font-family="'Geist', sans-serif" text-anchor="middle">Node Name
+</text>
+  <!-- 5. Technical sublabel (Geist Mono) -->
 <text x="CX" y="CY+18" fill="#4f5d75" font-size="9"
-      font-family="'Geist Mono', monospace" text-anchor="middle">tech:port</text>
+font-family="'Geist Mono', monospace" text-anchor="middle">tech:port
+</text>
 ```
 
 ### Arrow labels — always mask, always with margin
@@ -397,7 +407,8 @@ label must sit with a visible gap above the connector — never on top of it.**
 <!-- Mask sits 14px above the arrow (8px text height + 6px gap). Stroke is at ARROW_Y. -->
 <rect x="MID_X-18" y="ARROW_Y-20" width="36" height="12" rx="2" fill="#f5f5f5"/>
 <text x="MID_X" y="ARROW_Y-11" fill="#7a8399" font-size="8"
-      font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">WRITE</text>
+font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">WRITE
+</text>
 ```
 
 Rules:
@@ -415,11 +426,13 @@ Rules:
 a hairline separator:
 
 ```svg
+
 <line x1="30" y1="LEGEND_Y-8" x2="VIEWBOX_W-30" y2="LEGEND_Y-8"
-      stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+  stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
 <text x="30" y="LEGEND_Y+8" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace"
-      letter-spacing="0.14em">LEGEND</text>
-<!-- Items — horizontal row, ~160px apart -->
+letter-spacing="0.14em">LEGEND
+</text>
+  <!-- Items — horizontal row, ~160px apart -->
 ```
 
 Expand SVG `viewBox` height by ~60px.
@@ -495,13 +508,16 @@ If you exceed, split into two diagrams (overview + detail).
 Don't use 3 identical generic cards. Vary the treatment:
 
 ```html
+
 <div class="card">
   <p class="eyebrow">SECTION LABEL</p>
   <div class="card-header">
     <span class="card-dot coral"></span>
     <h3>Card Title</h3>
   </div>
-  <ul><li>Item</li></ul>
+  <ul>
+    <li>Item</li>
+  </ul>
 </div>
 ```
 

@@ -95,12 +95,14 @@ keep the evidence auditable:
 # Acceptance QA Report: {change-name}
 
 ## Identity
+
 - Change:
 - Mode: openspec
 - QA phase:
 - Date:
 
 ## Sources of Truth
+
 - Proposal:
 - Specifications:
 - Design:
@@ -108,38 +110,45 @@ keep the evidence auditable:
 - Technical verification:
 
 ## Target and Environment
+
 - Target:
 - Environment:
 - Credentials/permissions:
 - Limitations:
 
 ## Capability Inventory
+
 | Capability | Availability | Selected? | Rationale / rejection reason |
 |---|---|---|---|
 
 ## Scenario Matrix
+
 | ID | Capability | Acceptance scenario | Result | Evidence or reason |
 |---|---|---|---|---|
 
 Allowed results: `PASS`, `FAIL`, `BLOCKED`, `NOT TESTED`.
 
 ## Untested Scope
+
 - Scope:
 - Reason:
 - Re-run prerequisite:
 
 ## Findings
+
 | ID | Severity | Scenario / location | Evidence | Status |
 |---|---|---|---|---|
 
 Allowed severities: `CRITICAL`, `P0`, `P1`, `P2`, `P3`.
 
 ## Verdict
+
 `PASS` | `PASS WITH WARNINGS` | `FAIL` | `BLOCKED` | `NOT TESTED`
 
 ### Rationale
 
 ## Limitations and Handoff
+
 - QA does not fix code.
 - Product acceptance is not claimed without a target and observable evidence.
 - Follow-up for implementation:

@@ -6,8 +6,8 @@ Client-side JavaScript API for tracking events, setting properties, and managing
 
 ```javascript
 zaraz.track('button_click');
-zaraz.track('purchase', { value: 99.99, currency: 'USD', item_id: '12345' });
-zaraz.track('pageview', { page_path: '/products', page_title: 'Products' }); // SPA
+zaraz.track('purchase', {value: 99.99, currency: 'USD', item_id: '12345'});
+zaraz.track('pageview', {page_path: '/products', page_title: 'Products'}); // SPA
 ```
 
 **Params:** `eventName` (string), `properties` (object, optional). Fire-and-forget.
@@ -16,7 +16,7 @@ zaraz.track('pageview', { page_path: '/products', page_title: 'Products' }); // 
 
 ```javascript
 zaraz.set('userId', 'user_12345');
-zaraz.set({ email: '[email protected]', plan: 'premium', country: 'US' });
+zaraz.set({email: '[email protected]', plan: 'premium', country: 'US'});
 ```
 
 Properties persist for page session. Use for user identification and segmentation.
@@ -24,11 +24,11 @@ Properties persist for page session. Use for user identification and segmentatio
 ## zaraz.ecommerce ()
 
 ```javascript
-zaraz.ecommerce('Product Viewed', { product_id: 'SKU123', name: 'Widget', price: 49.99 });
-zaraz.ecommerce('Product Added', { product_id: 'SKU123', quantity: 2, price: 49.99 });
+zaraz.ecommerce('Product Viewed', {product_id: 'SKU123', name: 'Widget', price: 49.99});
+zaraz.ecommerce('Product Added', {product_id: 'SKU123', quantity: 2, price: 49.99});
 zaraz.ecommerce('Order Completed', {
   order_id: 'ORD-789', total: 149.98, currency: 'USD',
-  products: [{ product_id: 'SKU123', quantity: 2, price: 49.99 }]
+  products: [{product_id: 'SKU123', quantity: 2, price: 49.99}]
 });
 ```
 
@@ -53,7 +53,7 @@ const purposes = zaraz.consent.getAll(); // { analytics: true, marketing: false 
 
 // Set
 zaraz.consent.modal = true; // Show modal
-zaraz.consent.setAll({ analytics: true, marketing: false });
+zaraz.consent.setAll({analytics: true, marketing: false});
 zaraz.consent.set('marketing', true);
 
 // Listen
@@ -95,9 +95,13 @@ zaraz.track('event2'); // All batched
 ```typescript
 interface Zaraz {
   track(event: string, properties?: Record<string, unknown>): void;
+
   set(key: string, value: unknown): void;
+
   set(properties: Record<string, unknown>): void;
+
   ecommerce(event: string, properties: Record<string, unknown>): void;
+
   consent: {
     getAll(): Record<string, boolean>;
     setAll(purposes: Record<string, boolean>): void;
@@ -107,8 +111,15 @@ interface Zaraz {
   };
   debug: boolean;
   tools?: string[];
+
   getCookie(name: string): string | undefined;
+
   readCookie(name: string): string | undefined;
 }
-declare global { interface Window { zaraz: Zaraz; } }
+
+declare global {
+  interface Window {
+    zaraz: Zaraz;
+  }
+}
 ```

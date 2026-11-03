@@ -133,7 +133,7 @@ interface SiteverifyRequest {
 // Cloudflare Workers
 const result = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+  headers: {'Content-Type': 'application/json'},
   body: JSON.stringify({
     secret: env.TURNSTILE_SECRET,
     response: token,
@@ -173,7 +173,9 @@ interface SiteverifyResponse {
 ```json
 {
   "success": false,
-  "error-codes": ["timeout-or-duplicate"]
+  "error-codes": [
+    "timeout-or-duplicate"
+  ]
 }
 ```
 
@@ -218,10 +220,15 @@ interface TurnstileOptions {
 
 interface Turnstile {
   render(container: string | HTMLElement, options: TurnstileOptions): string;
+
   reset(widgetId: string): void;
+
   remove(widgetId: string): void;
+
   getResponse(widgetId: string): string | undefined;
+
   isExpired(widgetId: string): boolean;
+
   execute(container?: string | HTMLElement, options?: TurnstileOptions): void;
 }
 
@@ -243,10 +250,11 @@ declare global {
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"></script>
 
 <!-- With load callback -->
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"></script>
+<script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback"></script>
 <script>
-window.onloadTurnstileCallback = () => {
-  window.turnstile.render('#container', { sitekey: 'YOUR_SITE_KEY' });
-};
+  window.onloadTurnstileCallback = () => {
+    window.turnstile.render('#container', {sitekey: 'YOUR_SITE_KEY'});
+  };
 </script>
 ```

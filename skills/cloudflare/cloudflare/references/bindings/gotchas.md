@@ -106,7 +106,7 @@ const value: string = await env.MY_KV.get('key');
 
 // ✅ Handle null
 const value = await env.MY_KV.get('key');
-if (!value) return new Response('Not found', { status: 404 });
+if (!value) return new Response('Not found', {status: 404});
 ```
 
 ## Environment Gotchas

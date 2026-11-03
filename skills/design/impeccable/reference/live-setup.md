@@ -8,8 +8,15 @@ Create the file at the `path` the boot reported (default `.impeccable/live/confi
 
 ```json
 {
-  "files": ["<path-or-glob>", "<path-or-glob>", ...],
-  "exclude": ["<optional-glob>", ...],
+  "files": [
+    "<path-or-glob>",
+    "<path-or-glob>",
+    ...
+  ],
+  "exclude": [
+    "<optional-glob>",
+    ...
+  ],
   "insertBefore": "</body>",
   "commentSyntax": "html",
   "cspChecked": true
@@ -110,7 +117,7 @@ the script-src and connect-src arrays:
 ```ts
 // Dev-only allowance so impeccable live mode can load. Guarded by NODE_ENV.
 const __impeccableLiveDev =
-  process.env.NODE_ENV === "development" ? ["http://localhost:8400"] : [];
+    process.env.NODE_ENV === "development" ? ["http://localhost:8400"] : [];
 ```
 
 Per-framework: Next.js + monorepo helper: edit the *app's* `next.config.*` (not the shared helper),
@@ -131,7 +138,7 @@ edit):
 ```ts
 // Dev-only allowance so impeccable live mode can load.
 const __impeccableLiveDev =
-  process.env.NODE_ENV === "development" ? " http://localhost:8400" : "";
+    process.env.NODE_ENV === "development" ? " http://localhost:8400" : "";
 ```
 
 - `script-src 'self' 'unsafe-inline'` becomes

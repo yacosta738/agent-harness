@@ -27,10 +27,13 @@ and the comparison between bars is the primary message.
 ```svg
 <!-- Opaque paper mask prevents bleed from background -->
 <rect x="X" y="Y" width="W" height="H" fill="#f5f5f5"/>
-<!-- Bar body -->
-<rect x="X" y="Y" width="W" height="H" fill="rgba(79,93,117,0.15)" stroke="#4f5d75" stroke-width="1"/>
-<!-- Value label above bar -->
-<text x="X+W/2" y="Y-8" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle">VALUE</text>
+  <!-- Bar body -->
+<rect x="X" y="Y" width="W" height="H" fill="rgba(79,93,117,0.15)" stroke="#4f5d75"
+stroke-width="1"/>
+  <!-- Value label above bar -->
+<text x="X+W/2" y="Y-8" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace"
+text-anchor="middle">VALUE
+</text>
 ```
 
 Focal bar: replace fill with `rgba(235,108,54,0.12)`, stroke with `#eb6c36`, label fill with

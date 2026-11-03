@@ -26,8 +26,8 @@ import {
   realpathSync,
   statSync,
 } from "node:fs";
-import { dirname, join, relative, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import {dirname, join, relative, resolve} from "node:path";
+import {fileURLToPath} from "node:url";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES = [];
@@ -47,7 +47,9 @@ function globHasMatch(root, pattern) {
     const char = pattern[i];
     if (char === "*") {
       const recursive = pattern[i + 1] === "*";
-      if (recursive) i += 1;
+      if (recursive) {
+        i += 1;
+      }
       if (recursive && pattern[i + 1] === "/") {
         i += 1;
         regexSource += "(?:.*/)?";
@@ -63,18 +65,23 @@ function globHasMatch(root, pattern) {
   const regex = new RegExp(`^${regexSource}$`);
   let found = false;
   const walk = (absDir, relDir) => {
-    if (found) return;
+    if (found) {
+      return;
+    }
     let entries;
     try {
-      entries = readdirSync(absDir, { withFileTypes: true });
+      entries = readdirSync(absDir, {withFileTypes: true});
     } catch {
       return;
     }
     for (const e of entries) {
-      if (e.name === ".DS_Store") continue;
+      if (e.name === ".DS_Store") {
+        continue;
+      }
       const rel = relDir === "" ? e.name : `${relDir}/${e.name}`;
-      if (e.isDirectory()) walk(join(absDir, e.name), rel);
-      else if (regex.test(rel)) {
+      if (e.isDirectory()) {
+        walk(join(absDir, e.name), rel);
+      } else if (regex.test(rel)) {
         found = true;
         return;
       }
@@ -90,14 +97,20 @@ function fail(msg) {
 }
 
 function checkLocalInstructionPattern(root, pattern) {
-  if (/[*?]/.test(pattern)) return globHasMatch(root, pattern);
+  if (/[*?]/.test(pattern)) {
+    return globHasMatch(root, pattern);
+  }
   const target = resolve(root, pattern);
   const rootPath = resolve(root);
-  if (!isInside(rootPath, target)) return "outside";
+  if (!isInside(rootPath, target)) {
+    return "outside";
+  }
   try {
     const rootResolved = realpathSync(rootPath);
     const actualTarget = realpathSync(target);
-    if (!isInside(rootResolved, actualTarget)) return "outside";
+    if (!isInside(rootResolved, actualTarget)) {
+      return "outside";
+    }
     return statSync(actualTarget).isFile() ? true : "not-file";
   } catch {
     return false;
@@ -109,26 +122,29 @@ function checkOpencodeRefs(root, cfgRel) {
   const cfg = JSON.parse(readFileSync(cfgPath, "utf8"));
   const blob = JSON.stringify(cfg);
   const fileRefs = [...blob.matchAll(/\{file:([^}]+)\}/g)].map((m) => m[1]);
-  const instructionRefs = Array.isArray(cfg.instructions) ? cfg.instructions : [];
+  const instructionRefs = Array.isArray(cfg.instructions) ? cfg.instructions
+      : [];
   const refs = [
     ...new Set([
-      ...fileRefs.map((ref) => ({ ref, kind: "{file:}" })),
-      ...instructionRefs.map((ref) => ({ ref, kind: "instruction" })),
+      ...fileRefs.map((ref) => ({ref, kind: "{file:}"})),
+      ...instructionRefs.map((ref) => ({ref, kind: "instruction"})),
     ]),
   ].sort((a, b) => a.ref.localeCompare(b.ref));
   console.log(`${cfgRel}: ${refs.length} unique instructions and file refs`);
   const rootResolved = resolve(root);
   let ok = 0;
-  for (const { ref, kind } of refs) {
+  for (const {ref, kind} of refs) {
     if (kind === "instruction" && /^https?:\/\//i.test(ref)) {
       ok += 1;
       continue;
     }
 
-    if (kind === "instruction" && ref.startsWith("~/") && !ref.startsWith("~/.config/opencode/")) {
+    if (kind === "instruction" && ref.startsWith("~/") && !ref.startsWith(
+        "~/.config/opencode/")) {
       const homeRef = ref.slice(2);
       if (ref.includes("*") || ref.includes("?")) {
-        fail(`instruction '${ref}' is home-relative and cannot be verified as a self-contained bundle reference`);
+        fail(
+            `instruction '${ref}' is home-relative and cannot be verified as a self-contained bundle reference`);
       } else {
         try {
           if (statSync(resolve(process.env.HOME ?? "", homeRef)).isFile()) {
@@ -137,7 +153,8 @@ function checkOpencodeRefs(root, cfgRel) {
             fail(`instruction '${ref}' is not a file`);
           }
         } catch {
-          fail(`instruction '${ref}' does not exist under the current home directory`);
+          fail(
+              `instruction '${ref}' does not exist under the current home directory`);
         }
       }
       continue;
@@ -153,20 +170,22 @@ function checkOpencodeRefs(root, cfgRel) {
       } else if (result === "not-file") {
         fail(`instruction '${ref}' is not a file`);
       } else {
-        fail(`instruction '${ref}' does not resolve to a local file or matching glob`);
+        fail(
+            `instruction '${ref}' does not resolve to a local file or matching glob`);
       }
       continue;
     }
 
     // The harness deploys to ~/.config/opencode, so validate these global paths inside the bundle.
     const bundleRelative = ref.startsWith("~/.config/opencode/")
-      ? ref.slice("~/.config/opencode/".length)
-      : ref;
+        ? ref.slice("~/.config/opencode/".length)
+        : ref;
     // {file:...} references retain their established config-root resolution.
     const stripped = kind === "{file:}"
-      ? bundleRelative.replace(/^[\.\/]+/, "")
-      : bundleRelative;
-    if (kind === "instruction" && !isInside(rootResolved, resolve(root, stripped))) {
+        ? bundleRelative.replace(/^[\.\/]+/, "")
+        : bundleRelative;
+    if (kind === "instruction" && !isInside(rootResolved,
+        resolve(root, stripped))) {
       fail(`instruction '${ref}' escapes the bundle root`);
       continue;
     }
@@ -208,7 +227,9 @@ function checkOpencodeRefs(root, cfgRel) {
       let shown = target;
       try {
         const rel = relative(rootResolved, target);
-        if (rel && !rel.startsWith("..") && !/^[\\/]/.test(rel)) shown = rel;
+        if (rel && !rel.startsWith("..") && !/^[\\/]/.test(rel)) {
+          shown = rel;
+        }
       } catch {
         /* keep shown = target */
       }
@@ -273,12 +294,12 @@ function checkCommands(cmdsDir, resolveRoot) {
     }
   }
   console.log(
-    `commands: ${n} absolute path refs checked in ${cmds.length} files`,
+      `commands: ${n} absolute path refs checked in ${cmds.length} files`,
   );
 }
 
 function parseArgs(argv) {
-  const out = { root: null };
+  const out = {root: null};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--root") {
@@ -294,7 +315,7 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
     console.log(
-      "Usage: node scripts/check-refs.mjs [--root <bundleDir>]\n" +
+        "Usage: node scripts/check-refs.mjs [--root <bundleDir>]\n" +
         "  No --root: source mode (validates live repo).\n" +
         "  --root <path>: bundle mode (validates <path>/opencode.json).",
     );

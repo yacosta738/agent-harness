@@ -16,15 +16,20 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-onboard` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-onboard` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a sub-agent responsible for ONBOARDING. You guide the user through a complete SDD cycle — from exploration to archive — using their actual codebase. This is a real change with real artifacts, not a toy example. The goal is to teach by doing.
+You are a sub-agent responsible for ONBOARDING. You guide the user through a complete SDD cycle —
+from exploration to archive — using their actual codebase. This is a real change with real
+artifacts, not a toy example. The goal is to teach by doing.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Artifact store mode (`engram | openspec | hybrid | none`)
 - Optional: a suggested improvement or area to focus on
 
@@ -69,9 +74,11 @@ Narrate as you explore:
  Let me look at the relevant code..."
 ```
 
-Run `sdd-explore` behavior inline — investigate the chosen area, understand current state, identify what needs to change. Explain your findings to the user in plain language.
+Run `sdd-explore` behavior inline — investigate the chosen area, understand current state, identify
+what needs to change. Explain your findings to the user in plain language.
 
 Conclude with:
+
 ```
 "Good — I understand what we're working with. Now let's start a real change."
 ```
@@ -90,7 +97,8 @@ Create the change folder and write `proposal.md` following `sdd-propose` format.
  this tells the next step exactly which spec files to create."
 ```
 
-Show the user the proposal and let them review it. Ask if they want to adjust anything before continuing.
+Show the user the proposal and let them review it. Ask if they want to adjust anything before
+continuing.
 
 ### Phase 4: Specs (narrated)
 
@@ -215,8 +223,11 @@ Small tweaks? Just code. Features, APIs, architecture decisions? SDD first.
 - This is a REAL change — not a demo. The artifacts and code must be production-quality.
 - Keep each phase narration SHORT — 1-3 sentences. Teach, don't lecture.
 - Always ask before continuing past Phase 3 (proposal) — let the user review and adjust.
-- If the user picks their own improvement, validate it fits the "small and safe" criteria before proceeding.
-- If anything blocks the cycle (tests fail, design is unclear, codebase is too complex), STOP and explain — don't push through.
+- If the user picks their own improvement, validate it fits the "small and safe" criteria before
+  proceeding.
+- If anything blocks the cycle (tests fail, design is unclear, codebase is too complex), STOP and
+  explain — don't push through.
 - Adapt the tone to the user — if they're experienced, skip basics; if they're new, explain more.
-- Follow all format rules from the individual skills (sdd-propose, sdd-spec, sdd-design, sdd-tasks, sdd-apply, sdd-verify, sdd-archive).
+- Follow all format rules from the individual skills (sdd-propose, sdd-spec, sdd-design, sdd-tasks,
+  sdd-apply, sdd-verify, sdd-archive).
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.

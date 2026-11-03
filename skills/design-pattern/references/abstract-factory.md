@@ -25,8 +25,12 @@ AbstractFactory, ConcreteFactory, AbstractProducts, ConcreteProducts, Client.
 ## Kotlin/JVM sketch
 
 ```kotlin
-interface Button { fun render(): String }
-interface Dialog { fun render(): String }
+interface Button {
+    fun render(): String
+}
+interface Dialog {
+    fun render(): String
+}
 
 interface UiFactory {
     fun button(): Button

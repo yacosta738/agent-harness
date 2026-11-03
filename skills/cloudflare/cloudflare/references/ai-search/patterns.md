@@ -34,7 +34,7 @@ const answer = await env.AI.autorag("saas-docs").aiSearch({
 const stream = await env.AI.autorag("docs").aiSearch({
   query, model: "@cf/meta/llama-3.3-70b-instruct-fp8-fast", stream: true
 });
-return new Response(stream, { headers: { "Content-Type": "text/event-stream" } });
+return new Response(stream, {headers: {"Content-Type": "text/event-stream"}});
 ```
 
 ## Score Threshold
@@ -60,18 +60,22 @@ const systemPrompt = `You are a documentation assistant.
 // OR: Multiple folders
 filters: {
   operator: "or",
-  filters: [
-    { column: "folder", operator: "gte", value: "docs/api/" },
-    { column: "folder", operator: "gte", value: "docs/auth/" }
+      filters
+:
+  [
+    {column: "folder", operator: "gte", value: "docs/api/"},
+    {column: "folder", operator: "gte", value: "docs/auth/"}
   ]
 }
 
 // AND: Folder + date
 filters: {
   operator: "and",
-  filters: [
-    { column: "folder", operator: "gte", value: "docs/" },
-    { column: "timestamp", operator: "gte", value: oneWeekAgoSeconds }
+      filters
+:
+  [
+    {column: "folder", operator: "gte", value: "docs/"},
+    {column: "timestamp", operator: "gte", value: oneWeekAgoSeconds}
   ]
 }
 ```
@@ -81,5 +85,9 @@ filters: {
 Enable for high-stakes use cases (adds ~300ms latency):
 
 ```typescript
-reranking: { enabled: true, model: "@cf/baai/bge-reranker-base" }
+reranking: {
+  enabled: true, model
+:
+  "@cf/baai/bge-reranker-base"
+}
 ```

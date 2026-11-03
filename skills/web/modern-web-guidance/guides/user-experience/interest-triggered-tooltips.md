@@ -78,6 +78,7 @@ set an `anchor-name` on the trigger and `position-anchor` on the popover.
 button[interestfor="tooltip-dom"] {
   anchor-name: --tooltip-dom;
 }
+
 #tooltip-dom {
   position-anchor: --tooltip-dom;
 }
@@ -88,7 +89,7 @@ Also, the polyfill does not support `position-area` on popovers, so **MANDATORY:
 `flip-inline`).
 
 ```css
-[popover]{
+[popover] {
   /* MANDATORY: use anchor functions and a position-try fallback for the polyfill */
   top: anchor(bottom);
   left: anchor(center);
@@ -107,8 +108,9 @@ Interest invokers must be conditionally polyfilled using the `interestfor` polyf
 NPM. Do prefer bundling the polyfill over using the CDN.
 
 ```html
+
 <script type="module">
-  if(!HTMLButtonElement.prototype.hasOwnProperty("interestForElement")){
+  if (!HTMLButtonElement.prototype.hasOwnProperty("interestForElement")) {
     // CDN link only used for example, prefer bundling.
     await import("https://unpkg.com/interestfor@latest");
   }
@@ -128,8 +130,9 @@ polyfill. The hint behavior will not be polyfilled in browsers that support `pop
 opened via hover.
 
 ```html
+
 <script type="module">
-  if(!HTMLElement.prototype.hasOwnProperty("popover")){
+  if (!HTMLElement.prototype.hasOwnProperty("popover")) {
     await import("https://unpkg.com/@oddbird/popover-polyfill@latest");
   }
 </script>
@@ -156,6 +159,7 @@ button[interestfor="tooltip-attrs"] {
   /* MANDATORY: Each trigger and popover pair must have a unique anchor name, referenced by `anchor-name` on the trigger and `position-anchor` on the popover. */
   anchor-name: --tooltip-attrs;
 }
+
 #tooltip-attrs {
   position-anchor: --tooltip-attrs;
   /* If using the anchor positioning polyfill with a popover, DO use `anchor()` functions, and not `position-area. */

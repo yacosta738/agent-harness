@@ -80,10 +80,10 @@ if (!('closedBy' in HTMLDialogElement.prototype)) {
     // This distinguishes between a click on the backdrop vs a click on the dialog's background/padding.
     const rect = dialog.getBoundingClientRect();
     const isDialogContent = (
-      rect.top <= event.clientY &&
-      event.clientY <= rect.top + rect.height &&
-      rect.left <= event.clientX &&
-      event.clientX <= rect.left + rect.width
+        rect.top <= event.clientY &&
+        event.clientY <= rect.top + rect.height &&
+        rect.left <= event.clientX &&
+        event.clientX <= rect.left + rect.width
     );
 
     if (isDialogContent) return;

@@ -45,8 +45,8 @@ const end = endDate.toPlainDateTime(endTime).toZonedDateTime(tz);
 // 3. Calculate difference using .since() and .until()
 // By default, units larger than hours might not wrap automatically.
 // Use largestUnit to ensure differences are expressed in larger units if applicable.
-const timeActive = now.since(start, { largestUnit: 'year' });
-const timeRemaining = now.until(end, { largestUnit: 'year' });
+const timeActive = now.since(start, {largestUnit: 'year'});
+const timeRemaining = now.until(end, {largestUnit: 'year'});
 
 console.log(`Active: ${timeActive.days} days, ${timeActive.hours} hours`);
 console.log(`Remaining: ${timeRemaining.days} days, ${timeRemaining.hours} hours`);

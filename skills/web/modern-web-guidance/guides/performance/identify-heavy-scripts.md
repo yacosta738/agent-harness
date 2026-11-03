@@ -44,7 +44,7 @@ const observer = new PerformanceObserver(list => {
   // the most total time, even if each individual invocation is short.
   const scriptSource = [...new Set(allScripts.map(script => script.sourceURL))];
   const scriptsBySource = scriptSource.map(sourceURL => ([sourceURL,
-      allScripts.filter(script => script.sourceURL === sourceURL)
+    allScripts.filter(script => script.sourceURL === sourceURL)
   ]));
   const processedScripts = scriptsBySource.map(([sourceURL, scripts]) => ({
     sourceURL,

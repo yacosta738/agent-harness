@@ -25,7 +25,7 @@ export class ChatAgent extends AIChatAgent<Env> {
       this.messages = this.messages.slice(-50);
     }
 
-    return this.streamText({ model: openai("gpt-4"), messages: this.messages, onFinish });
+    return this.streamText({model: openai("gpt-4"), messages: this.messages, onFinish});
   }
 }
 ```
@@ -45,7 +45,17 @@ export class ChatAgent extends AIChatAgent<Env> {
 **Solution:** Always accept connections:
 
 ```ts
-async onConnect(conn: Connection, ctx: ConnectionContext) { conn.accept(); conn.setState({userId: "123"}); }
+async
+onConnect(conn
+:
+Connection, ctx
+:
+ConnectionContext
+)
+{
+  conn.accept();
+  conn.setState({userId: "123"});
+}
 ```
 
 ### "Schedule limit exceeded"
@@ -54,7 +64,11 @@ async onConnect(conn: Connection, ctx: ConnectionContext) { conn.accept(); conn.
 creation rate:
 
 ```ts
-async checkSchedules() { if ((await this.getSchedules()).length > 800) console.warn("Near limit!"); }
+async
+checkSchedules()
+{
+  if ((await this.getSchedules()).length > 800) console.warn("Near limit!");
+}
 ```
 
 ### "AI Gateway unavailable"
@@ -78,11 +92,19 @@ try {
 ```ts
 // ❌ Returns class instance
 @callable()
-async getData() { return new Date(); }
+async
+getData()
+{
+  return new Date();
+}
 
 // ✅ Returns serializable object
 @callable()
-async getData() { return { timestamp: Date.now() }; }
+async
+getData()
+{
+  return {timestamp: Date.now()};
+}
 ```
 
 ### "Resumable stream not resuming"
@@ -103,9 +125,10 @@ export class ChatAgent extends AIChatAgent<Env> {
 `onStart()` or check connection status:
 
 ```ts
-onStart() {
+onStart()
+{
   // Re-register MCP servers after hibernation
-  await this.mcp.registerServer("github", { url: env.MCP_URL, auth: {...} });
+  await this.mcp.registerServer("github", {url: env.MCP_URL, auth: {...}});
 }
 ```
 

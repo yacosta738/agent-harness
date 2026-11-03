@@ -141,6 +141,7 @@ indicators, empty state illustrations.
   background-image: radial-gradient(circle, var(--border-visible) 1px, transparent 1px);
   background-size: 16px 16px;
 }
+
 .dot-grid-subtle {
   background-image: radial-gradient(circle, var(--border) 0.5px, transparent 0.5px);
   background-size: 12px 12px;

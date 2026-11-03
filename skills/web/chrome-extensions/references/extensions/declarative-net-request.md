@@ -4,13 +4,17 @@
 
 ```json
 {
-  "permissions": ["declarativeNetRequest"],
+  "permissions": [
+    "declarativeNetRequest"
+  ],
   "declarative_net_request": {
-    "rule_resources": [{
-      "id": "ruleset_1",
-      "enabled": true,
-      "path": "rules/rules.json"
-    }]
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules/rules.json"
+      }
+    ]
   }
 }
 ```
@@ -26,19 +30,31 @@ Add `"declarativeNetRequestFeedback"` permission to use `onRuleMatchedDebug` (de
   {
     "id": 1,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
       "urlFilter": "doubleclick.net",
-      "resourceTypes": ["script", "image", "xmlhttprequest", "sub_frame"]
+      "resourceTypes": [
+        "script",
+        "image",
+        "xmlhttprequest",
+        "sub_frame"
+      ]
     }
   },
   {
     "id": 2,
     "priority": 1,
-    "action": { "type": "block" },
+    "action": {
+      "type": "block"
+    },
     "condition": {
       "urlFilter": "google-analytics.com",
-      "resourceTypes": ["script", "xmlhttprequest"]
+      "resourceTypes": [
+        "script",
+        "xmlhttprequest"
+      ]
     }
   }
 ]
@@ -75,8 +91,8 @@ await chrome.declarativeNetRequest.updateDynamicRules({
   addRules: [{
     id: 1000,
     priority: 1,
-    action: { type: 'block' },
-    condition: { urlFilter: 'ads.example.com' }
+    action: {type: 'block'},
+    condition: {urlFilter: 'ads.example.com'}
   }],
   removeRuleIds: [] // IDs to remove
 });
@@ -97,13 +113,13 @@ For production, count via `webRequest` (observe only) or maintain counts with `w
 ```js
 // Alternative: Use webRequest to observe (requires host_permissions)
 chrome.webRequest.onBeforeRequest.addListener(
-  (details) => {
-    // Count requests to known tracking domains
-    if (isTrackerDomain(new URL(details.url).hostname)) {
-      incrementBlockCount(details.tabId);
-    }
-  },
-  { urls: ["<all_urls>"] }
+    (details) => {
+      // Count requests to known tracking domains
+      if (isTrackerDomain(new URL(details.url).hostname)) {
+        incrementBlockCount(details.tabId);
+      }
+    },
+    {urls: ["<all_urls>"]}
 );
 ```
 

@@ -10,6 +10,7 @@ tour steps.
 #### HTML
 
 ```html
+
 <div id="feature-target">Highlight this feature</div>
 
 <!-- MANDATORY: Enforce overlay dialog semantics and accessible name bindings -->
@@ -70,6 +71,7 @@ Supported by: Chrome 116 (Aug 2023), Edge 116 (Aug 2023), Firefox 125 (Apr 2024)
 If the browser does not support Popover, use the `@oddbird/popover-polyfill`:
 
 ```html
+
 <script type="module">
   if (!HTMLElement.prototype.hasOwnProperty('popover')) {
     await import('https://unpkg.com/@oddbird/popover-polyfill');
@@ -95,6 +97,7 @@ not support implicit anchors, so you MUST add explicit anchor names to the trigg
 desired insets instead of `position-area`.
 
 ```html
+
 <script type="module">
   if (!CSS.supports('anchor-name: --foo')) {
     await import("https://unpkg.com/@oddbird/css-anchor-positioning");

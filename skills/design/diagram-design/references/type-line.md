@@ -26,13 +26,13 @@ primary message.
 ```svg
 <!-- Focal series -->
 <polyline points="x0,y0 x1,y1 x2,y2 ..."
-          fill="none" stroke="#eb6c36" stroke-width="1.8" stroke-linejoin="round"/>
-<!-- Dots at each point (focal only) -->
+  fill="none" stroke="#eb6c36" stroke-width="1.8" stroke-linejoin="round"/>
+  <!-- Dots at each point (focal only) -->
 <circle cx="x0" cy="y0" r="4" fill="#eb6c36"/>
 
-<!-- Non-focal series -->
+  <!-- Non-focal series -->
 <polyline points="x0,y0 x1,y1 ..."
-          fill="none" stroke="#7c8f6f" stroke-width="1.2" stroke-linejoin="round"/>
+fill="none" stroke="#7c8f6f" stroke-width="1.2" stroke-linejoin="round"/>
 ```
 
 ## Anti-patterns

@@ -33,7 +33,7 @@ class MyCustomElement extends HTMLElement {
   connectedCallback() {
     // Runs on initial insertion.
   }
-  
+
   connectedMoveCallback() {
     // Runs when the element is moved via moveBefore().
     // Use this to update state that depends on the new DOM location.

@@ -27,7 +27,7 @@ curl -X PATCH "https://api.cloudflare.com/client/v4/zones/{zone_id}/argo/smart_r
 ```typescript
 import Cloudflare from 'cloudflare';
 
-const client = new Cloudflare({ apiToken: process.env.CLOUDFLARE_API_TOKEN });
+const client = new Cloudflare({apiToken: process.env.CLOUDFLARE_API_TOKEN});
 
 const result = await client.argo.smartRouting.edit({
   zone_id: 'your-zone-id',

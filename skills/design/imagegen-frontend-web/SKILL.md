@@ -1093,7 +1093,7 @@ When the user asks for a frontend design:
 
 1. infer site type and primary conversion goal
 2. infer number of sections (if unclear, use the defaults from §5: landing page = 6, full website =
-   8)
+    8)
 3. **commit out loud** to the section count and announce it ("Generating N horizontal images, one
    per section")
 4. plan ONE horizontal image PER SECTION — always separate generations, never collapse

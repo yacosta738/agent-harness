@@ -183,14 +183,15 @@ If a user-facing toggle to override it is desired, it should:
   set it when the page loads:
 
 ```html
+
 <meta name="color-scheme" content="light dark">
 <script>
-{
-  const colorScheme = localStorage.getItem("color-scheme");
-  if (colorScheme) {
-    document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+  {
+    const colorScheme = localStorage.getItem("color-scheme");
+    if (colorScheme) {
+      document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+    }
   }
-}
 </script>
 ```
 
@@ -286,7 +287,7 @@ provide different colors when dark mode is preferred.
 }
 
 button.primary {
-	background-color: var(--color-brand);
+  background-color: var(--color-brand);
 }
 ```
 

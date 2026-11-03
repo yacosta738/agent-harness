@@ -101,7 +101,7 @@ const initActiveItem = () => {
 if (document.readyState === 'complete') {
   initActiveItem();
 } else {
-  window.addEventListener('load', initActiveItem, { once: true });
+  window.addEventListener('load', initActiveItem, {once: true});
 }
 ```
 
@@ -159,7 +159,7 @@ if ('onscrollsnapchanging' in Element.prototype) {
     // Debounce fallback for browsers that don't support scrollend
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(promotePendingToActive, 100);
-  }, { passive: true });
+  }, {passive: true});
 
   // Fallback: use Baseline `scrollend` event to promote pending to active cleanly where supported
   container.addEventListener('scrollend', () => {

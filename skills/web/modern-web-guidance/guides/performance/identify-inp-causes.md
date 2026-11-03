@@ -40,32 +40,32 @@ Long Animation Frames API.
 ```javascript
 // Use the attribution build to get Long Animation Frame data
 // alongside the INP metric value.
-import { onINP } from 'web-vitals/attribution';
+import {onINP} from 'web-vitals/attribution';
 
 onINP((metric) => {
   // Beacon script attribution for the longest script during the INP
   // interaction, so you can identify the root cause in production.
   navigator.sendBeacon(
-    '/analytics',
-    JSON.stringify({
-      name: 'INP',
-      value: metric.value,
-      // These fields give the INP subparts:
-      inputDelay: metric.attribution.inputDelay,
-      presentationDelay: metric.attribution.presentationDelay,
-      processingDuration: metric.attribution.processingDuration,
-      interactionTarget: metric.attribution.interactionTarget,
-      // These fields identify which script function was responsible
-      // for the longest processing during the INP interaction.
-      invokerType: metric.attribution.longestScript.entry?.invokerType,
-      sourceURL: metric.attribution.longestScript.entry?.sourceURL,
-      sourceFunctionName: metric.attribution.longestScript.entry?.sourceFunctionName,
-      sourceCharPosition: metric.attribution.longestScript.entry?.sourceCharPosition,
-      // subpart indicates which phase (input delay, processing, or
-      // presentation delay) the longest script overlapped with most.
-      subpart: metric.attribution.longestScript.subpart,
-      intersectingDuration: metric.attribution.longestScript.intersectingDuration
-    })
+      '/analytics',
+      JSON.stringify({
+        name: 'INP',
+        value: metric.value,
+        // These fields give the INP subparts:
+        inputDelay: metric.attribution.inputDelay,
+        presentationDelay: metric.attribution.presentationDelay,
+        processingDuration: metric.attribution.processingDuration,
+        interactionTarget: metric.attribution.interactionTarget,
+        // These fields identify which script function was responsible
+        // for the longest processing during the INP interaction.
+        invokerType: metric.attribution.longestScript.entry?.invokerType,
+        sourceURL: metric.attribution.longestScript.entry?.sourceURL,
+        sourceFunctionName: metric.attribution.longestScript.entry?.sourceFunctionName,
+        sourceCharPosition: metric.attribution.longestScript.entry?.sourceCharPosition,
+        // subpart indicates which phase (input delay, processing, or
+        // presentation delay) the longest script overlapped with most.
+        subpart: metric.attribution.longestScript.subpart,
+        intersectingDuration: metric.attribution.longestScript.intersectingDuration
+      })
   );
 });
 ```

@@ -24,6 +24,7 @@ Use the Popover API to create a tooltip. This creates an implicit anchor connect
 for positioning.
 
 ```html
+
 <button popovertarget="tooltip" id="anchor" aria-describedby="tooltip">anchor</button>
 <div id="tooltip" popover role="tooltip"></div>
 ```
@@ -67,6 +68,7 @@ step 4), we will add a child element to the tooltip, and create the arrow in its
 pseudo-element.
 
 ```html
+
 <div id="tooltip" popover role="tooltip">
   <div class="tooltip-content">Tooltip</div>
 </div>
@@ -152,7 +154,7 @@ Install the package (`npm install @oddbird/popover-polyfill`).
 ```javascript
 // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
 if (!('popover' in HTMLElement.prototype)) {
-  import('@oddbird/popover-polyfill/fn').then(({ apply }) => {
+  import('@oddbird/popover-polyfill/fn').then(({apply}) => {
     apply();
   });
 }
@@ -163,13 +165,15 @@ If you are not using a package manager, dynamically import the polyfill directly
 unpkg) inside a `<script type="module">`.
 
 ```html
+
 <script type="module">
   // MANDATORY: Feature detect 'popover' on HTMLElement.prototype.
   // Conditionally load the popover-polyfill from a CDN only in browsers lacking native support.
   if (!('popover' in HTMLElement.prototype)) {
-    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover-fn.js').then(({ apply }) => {
-      apply();
-    });
+    import('https://unpkg.com/@oddbird/popover-polyfill@latest/dist/popover-fn.js').then(
+        ({apply}) => {
+          apply();
+        });
   }
 </script>
 ```

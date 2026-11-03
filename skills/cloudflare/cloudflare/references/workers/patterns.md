@@ -4,7 +4,9 @@
 
 ```typescript
 class HTTPError extends Error {
-  constructor(public status: number, message: string) { super(message); }
+  constructor(public status: number, message: string) {
+    super(message);
+  }
 }
 
 export default {
@@ -13,11 +15,11 @@ export default {
       return await handleRequest(request, env);
     } catch (error) {
       if (error instanceof HTTPError) {
-        return new Response(JSON.stringify({ error: error.message }), {
-          status: error.status, headers: { 'Content-Type': 'application/json' }
+        return new Response(JSON.stringify({error: error.message}), {
+          status: error.status, headers: {'Content-Type': 'application/json'}
         });
       }
-      return new Response('Internal Server Error', { status: 500 });
+      return new Response('Internal Server Error', {status: 500});
     }
   },
 };
@@ -26,17 +28,20 @@ export default {
 ## CORS
 
 ```typescript
-const corsHeaders = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS' };
-if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+};
+if (request.method === 'OPTIONS') return new Response(null, {headers: corsHeaders});
 ```
 
 ## Routing
 
 ```typescript
-const router = { 'GET /api/users': handleGetUsers, 'POST /api/users': handleCreateUser };
+const router = {'GET /api/users': handleGetUsers, 'POST /api/users': handleCreateUser};
 
 const handler = router[`${request.method} ${url.pathname}`];
-return handler ? handler(request, env) : new Response('Not Found', { status: 404 });
+return handler ? handler(request, env) : new Response('Not Found', {status: 404});
 ```
 
 **Production**: Use Hono, itty-router, or Worktop (see [frameworks.md](./frameworks.md))
@@ -44,7 +49,7 @@ return handler ? handler(request, env) : new Response('Not Found', { status: 404
 ## Request Validation (Zod)
 
 ```typescript
-import { z } from 'zod';
+import {z} from 'zod';
 
 const userSchema = z.object({
   name: z.string().min(1).max(100),
@@ -56,13 +61,13 @@ async function handleCreateUser(request: Request) {
   try {
     const body = await request.json();
     const validated = userSchema.parse(body);  // Throws on invalid data
-    return new Response(JSON.stringify({ id: 1, ...validated }), {
+    return new Response(JSON.stringify({id: 1, ...validated}), {
       status: 201,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
     });
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return new Response(JSON.stringify({ errors: err.errors }), { status: 400 });
+      return new Response(JSON.stringify({errors: err.errors}), {status: 400});
     }
     throw err;
   }
@@ -101,21 +106,29 @@ const stream = new ReadableStream({
 
 ```typescript
 response.body.pipeThrough(new TextDecoderStream()).pipeThrough(
-  new TransformStream({ transform(chunk, c) { c.enqueue(chunk.toUpperCase()); } })
+    new TransformStream({
+      transform(chunk, c) {
+        c.enqueue(chunk.toUpperCase());
+      }
+    })
 ).pipeThrough(new TextEncoderStream());
 ```
 
 ## Testing
 
 ```typescript
-import { describe, it, expect } from 'vitest';
+import {describe, it, expect} from 'vitest';
 import worker from '../src/index';
 
 describe('Worker', () => {
   it('returns 200', async () => {
     const req = new Request('http://localhost/');
-    const env = { MY_VAR: 'test' };
-    const ctx = { waitUntil: () => {}, passThroughOnException: () => {} };
+    const env = {MY_VAR: 'test'};
+    const ctx = {
+      waitUntil: () => {
+      }, passThroughOnException: () => {
+      }
+    };
     expect((await worker.fetch(req, env, ctx)).status).toBe(200);
   });
 });
@@ -144,11 +157,11 @@ ctx.waitUntil(env.ANALYTICS.writeDataPoint({
 
 ```typescript
 // Security headers
-const security = { 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY' };
+const security = {'X-Content-Type-Options': 'nosniff', 'X-Frame-Options': 'DENY'};
 
 // Auth
 const auth = request.headers.get('Authorization');
-if (!auth?.startsWith('Bearer ')) return new Response('Unauthorized', { status: 401 });
+if (!auth?.startsWith('Bearer ')) return new Response('Unauthorized', {status: 401});
 
 // Gradual rollouts (deterministic user bucketing)
 const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(userId));
@@ -168,7 +181,10 @@ try {
     parts.push(await upload.uploadPart(i + 1, chunks[i]));
   }
   await upload.complete(parts);
-} catch (err) { await upload.abort(); throw err; }
+} catch (err) {
+  await upload.abort();
+  throw err;
+}
 ```
 
 Parallel uploads, resume on failure, handle files > 5GB
@@ -176,12 +192,12 @@ Parallel uploads, resume on failure, handle files > 5GB
 ## Workflows (Step Orchestration)
 
 ```typescript
-import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from 'cloudflare:workers';
+import {WorkflowEntrypoint, WorkflowStep, WorkflowEvent} from 'cloudflare:workers';
 
 export class MyWorkflow extends WorkflowEntrypoint {
   async run(event: WorkflowEvent<{ userId: string }>, step: WorkflowStep) {
     const user = await step.do('fetch-user', async () =>
-      fetch(`/api/users/${event.payload.userId}`).then(r => r.json())
+        fetch(`/api/users/${event.payload.userId}`).then(r => r.json())
     );
     await step.sleep('wait', '1 hour');
     await step.do('notify', async () => sendEmail(user.email));

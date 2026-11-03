@@ -38,7 +38,8 @@ element. This tells the browser to interpret all coordinates inside the mask as 
 to `1` (like `0.5` for 50%) instead of absolute pixels.
 
 > **Luminance vs. Alpha Masking**: By default, SVG masks use **luminance** (brightness) to determine
-> opacity, where white reveals, black hides, and gray creates semi-transparency. If you want the mask
+> opacity, where white reveals, black hides, and gray creates semi-transparency. If you want the
+> mask
 > to use the **alpha channel** (transparency) of your SVG shapes instead, you can specify
 > `mask-type: alpha;` in your CSS or `mask-type="alpha"` directly on the SVG `<mask>` element.
 
@@ -49,9 +50,9 @@ to `1` (like `0.5` for 50%) instead of absolute pixels.
     <!-- objectBoundingBox scales mask coordinates (0 to 1) with the element's size -->
     <mask id="custom-shape" maskContentUnits="objectBoundingBox">
       <!-- Use white shapes to define fully opaque areas -->
-      <circle cx="0.5" cy="0.5" r="0.5" fill="white" />
+      <circle cx="0.5" cy="0.5" r="0.5" fill="white"/>
       <!-- Use gray shapes to define semi-transparent/faded areas -->
-      <circle cx="0.5" cy="0.5" r="0.25" fill="gray" />
+      <circle cx="0.5" cy="0.5" r="0.25" fill="gray"/>
     </mask>
   </defs>
 </svg>
@@ -61,11 +62,11 @@ to `1` (like `0.5` for 50%) instead of absolute pixels.
 </div>
 
 <style>
-.masked-content {
-  /* Reference the SVG mask ID */
-  -webkit-mask-image: url(#custom-shape);
-  mask-image: url(#custom-shape);
-}
+  .masked-content {
+    /* Reference the SVG mask ID */
+    -webkit-mask-image: url(#custom-shape);
+    mask-image: url(#custom-shape);
+  }
 </style>
 ```
 

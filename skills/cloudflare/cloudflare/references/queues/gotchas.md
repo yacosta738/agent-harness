@@ -11,23 +11,37 @@ explicitly
 
 ```typescript
 // ❌ BAD: Throws error, retries entire batch
-async queue(batch: MessageBatch): Promise<void> {
-  for (const msg of batch.messages) {
-    await riskyOperation(msg.body); // If this throws, entire batch retries
-    msg.ack();
-  }
+async
+queue(batch
+:
+MessageBatch
+):
+Promise < void > {
+  for(const msg of batch.messages
+)
+{
+  await riskyOperation(msg.body); // If this throws, entire batch retries
+  msg.ack();
+}
 }
 
 // ✅ GOOD: Catch per message, handle individually
-async queue(batch: MessageBatch): Promise<void> {
-  for (const msg of batch.messages) {
-    try {
-      await riskyOperation(msg.body);
-      msg.ack();
-    } catch (error) {
-      msg.retry({ delaySeconds: 60 });
-    }
+async
+queue(batch
+:
+MessageBatch
+):
+Promise < void > {
+  for(const msg of batch.messages
+)
+{
+  try {
+    await riskyOperation(msg.body);
+    msg.ack();
+  } catch (error) {
+    msg.retry({delaySeconds: 60});
   }
+}
 }
 ```
 
@@ -40,26 +54,40 @@ unhandled.
 
 ```typescript
 // ❌ BAD: Skipped messages auto-retry forever
-async queue(batch: MessageBatch): Promise<void> {
-  for (const msg of batch.messages) {
-    if (shouldProcess(msg.body)) {
-      await process(msg.body);
-      msg.ack();
-    }
-    // Missing: msg.ack() for skipped messages - they will retry!
+async
+queue(batch
+:
+MessageBatch
+):
+Promise < void > {
+  for(const msg of batch.messages
+)
+{
+  if (shouldProcess(msg.body)) {
+    await process(msg.body);
+    msg.ack();
   }
+  // Missing: msg.ack() for skipped messages - they will retry!
+}
 }
 
 // ✅ GOOD: Explicitly handle all messages
-async queue(batch: MessageBatch): Promise<void> {
-  for (const msg of batch.messages) {
-    if (shouldProcess(msg.body)) {
-      await process(msg.body);
-      msg.ack();
-    } else {
-      msg.ack(); // Explicitly ack even if not processing
-    }
+async
+queue(batch
+:
+MessageBatch
+):
+Promise < void > {
+  for(const msg of batch.messages
+)
+{
+  if (shouldProcess(msg.body)) {
+    await process(msg.body);
+    msg.ack();
+  } else {
+    msg.ack(); // Explicitly ack even if not processing
   }
+}
 }
 ```
 
@@ -73,18 +101,27 @@ processed message IDs in KV with
 expiration TTL
 
 ```typescript
-async queue(batch: MessageBatch, env: Env): Promise<void> {
-  for (const msg of batch.messages) {
-    const processed = await env.PROCESSED_KV.get(msg.id);
-    if (processed) {
-      msg.ack();
-      continue;
-    }
-
-    await processMessage(msg.body);
-    await env.PROCESSED_KV.put(msg.id, '1', { expirationTtl: 86400 });
+async
+queue(batch
+:
+MessageBatch, env
+:
+Env
+):
+Promise < void > {
+  for(const msg of batch.messages
+)
+{
+  const processed = await env.PROCESSED_KV.get(msg.id);
+  if (processed) {
     msg.ack();
+    continue;
   }
+
+  await processMessage(msg.body);
+  await env.PROCESSED_KV.put(msg.id, '1', {expirationTtl: 86400});
+  msg.ack();
+}
 }
 ```
 
@@ -96,10 +133,10 @@ type for pull consumers or dashboard visibility
 
 ```typescript
 // Use json for pull consumers
-await env.MY_QUEUE.send(data, { contentType: 'json' });
+await env.MY_QUEUE.send(data, {contentType: 'json'});
 
 // Use v8 only for push consumers with complex JS types
-await env.MY_QUEUE.send({ date: new Date(), tags: new Set() }, { contentType: 'v8' });
+await env.MY_QUEUE.send({date: new Date(), tags: new Set()}, {contentType: 'v8'});
 ```
 
 ### "Messages Not Being Delivered"
@@ -121,25 +158,34 @@ format matches expectations, or increase retry delay
 Classify errors to decide whether to retry or DLQ:
 
 ```typescript
-async queue(batch: MessageBatch, env: Env): Promise<void> {
-  for (const msg of batch.messages) {
-    try {
-      await processMessage(msg.body);
-      msg.ack();
-    } catch (error) {
-      // Transient errors: retry with backoff
-      if (isRetryable(error)) {
-        const delay = Math.min(30 * (2 ** msg.attempts), 43200);
-        msg.retry({ delaySeconds: delay });
-      }
-      // Permanent errors: ack to avoid infinite retries
-      else {
-        console.error('Permanent error, sending to DLQ:', error);
-        await env.ERROR_LOG.put(msg.id, JSON.stringify({ msg: msg.body, error: String(error) }));
-        msg.ack(); // Prevent further retries
-      }
+async
+queue(batch
+:
+MessageBatch, env
+:
+Env
+):
+Promise < void > {
+  for(const msg of batch.messages
+)
+{
+  try {
+    await processMessage(msg.body);
+    msg.ack();
+  } catch (error) {
+    // Transient errors: retry with backoff
+    if (isRetryable(error)) {
+      const delay = Math.min(30 * (2 ** msg.attempts), 43200);
+      msg.retry({delaySeconds: delay});
+    }
+    // Permanent errors: ack to avoid infinite retries
+    else {
+      console.error('Permanent error, sending to DLQ:', error);
+      await env.ERROR_LOG.put(msg.id, JSON.stringify({msg: msg.body, error: String(error)}));
+      msg.ack(); // Prevent further retries
     }
   }
+}
 }
 
 function isRetryable(error: unknown): boolean {
@@ -150,8 +196,8 @@ function isRetryable(error: unknown): boolean {
   if (error instanceof Error) {
     // Don't retry: validation, auth, not found
     return !error.message.includes('validation') &&
-           !error.message.includes('unauthorized') &&
-           !error.message.includes('not found');
+        !error.message.includes('unauthorized') &&
+        !error.message.includes('not found');
   }
   return false; // Unknown errors don't retry
 }
@@ -184,13 +230,13 @@ max)
 
 ```typescript
 // Dashboard/pull: use json
-await env.QUEUE.send({ id: 123, name: 'test' }, { contentType: 'json' });
+await env.QUEUE.send({id: 123, name: 'test'}, {contentType: 'json'});
 
 // Complex JS types (push only): use v8
 await env.QUEUE.send({
   created: new Date(),
   tags: new Set(['a', 'b'])
-}, { contentType: 'v8' });
+}, {contentType: 'v8'});
 ```
 
 ## Limits

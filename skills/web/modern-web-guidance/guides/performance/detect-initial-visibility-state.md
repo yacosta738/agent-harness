@@ -20,14 +20,14 @@ susceptible to race conditions.
 function getVisibilityInfo() {
   // Retrieve VisibilityStateEntry members:
   const entries = performance.getEntriesByType('visibility-state');
-  
+
   if (entries.length > 0) {
     const firstEntry = entries[0];
-    
+
     // If the first performance entry for visibility is 'hidden',
     // the page was loaded in the background.
     const initiallyBackgrounded = firstEntry.name === 'hidden';
-    
+
     // Find the precise, high-resolution timestamp of when the page 
     // was first backgrounded.
     let timeBackgrounded = null;
@@ -76,7 +76,7 @@ function getFallbackVisibilityInfo() {
   // This will fail to detect an initial background state if the user 
   // foregrounded the page before this script executed.
   let initiallyBackgrounded = document.visibilityState === 'hidden';
-  
+
   // If it's hidden now, we approximate that it was hidden from load (time 0).
   let timeBackgrounded = initiallyBackgrounded ? 0 : null;
 
@@ -91,8 +91,12 @@ function getFallbackVisibilityInfo() {
   });
 
   return {
-    get initiallyBackgrounded() { return initiallyBackgrounded; },
-    get timeBackgrounded() { return timeBackgrounded; }
+    get initiallyBackgrounded() {
+      return initiallyBackgrounded;
+    },
+    get timeBackgrounded() {
+      return timeBackgrounded;
+    }
   };
 }
 

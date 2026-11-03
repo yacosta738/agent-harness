@@ -13,7 +13,7 @@ try {
   return userWorker.fetch(request);
 } catch (e) {
   if (e.message.startsWith("Worker not found")) {
-    return new Response("Worker not found", { status: 404 });
+    return new Response("Worker not found", {status: 404});
   }
   throw e;  // Re-throw unexpected errors
 }

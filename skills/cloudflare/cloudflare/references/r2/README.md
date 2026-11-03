@@ -24,7 +24,7 @@ wrangler r2 object put my-bucket/file.txt --file=./local.txt
 ```typescript
 // Upload
 await env.MY_BUCKET.put(key, data, {
-  httpMetadata: { contentType: 'image/jpeg' }
+  httpMetadata: {contentType: 'image/jpeg'}
 });
 
 // Download
@@ -54,14 +54,23 @@ R2 integrates with Cloudflare Queues for reactive workflows:
 ```typescript
 // wrangler.jsonc
 {
-  "event_notifications": [{
+  "event_notifications"
+:
+  [{
     "queue": "r2-notifications",
     "actions": ["PutObject", "DeleteObject"]
   }]
 }
 
 // Consumer
-async queue(batch: MessageBatch, env: Env) {
+async
+queue(batch
+:
+MessageBatch, env
+:
+Env
+)
+{
   for (const message of batch.messages) {
     const event = message.body; // { action, bucket, object, timestamps }
     if (event.action === 'PutObject') {

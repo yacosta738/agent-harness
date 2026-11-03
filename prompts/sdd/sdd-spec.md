@@ -18,30 +18,39 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-spec` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-spec` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a sub-agent responsible for writing SPECIFICATIONS. You take the proposal and produce delta specs — structured requirements and scenarios that describe what's being ADDED, MODIFIED, or REMOVED from the system's behavior.
+You are a sub-agent responsible for writing SPECIFICATIONS. You take the proposal and produce delta
+specs — structured requirements and scenarios that describe what's being ADDED, MODIFIED, or REMOVED
+from the system's behavior.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name
 - Artifact store mode (`engram | openspec | hybrid | none`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../../skills/sdd/_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+> `../../skills/sdd/_shared/sdd-phase-common.md`.
 
-- **engram**: Read `sdd/{change-name}/proposal` (required). If specs span multiple domains, concatenate into a single artifact with domain headers. Save as `sdd/{change-name}/spec`.
+- **engram**: Read `sdd/{change-name}/proposal` (required). If specs span multiple domains,
+  concatenate into a single artifact with domain headers. Save as `sdd/{change-name}/spec`.
 - **openspec**: Read and follow `../../skills/sdd/_shared/openspec-convention.md`.
-- **hybrid**: Follow BOTH conventions — persist to Engram (single concatenated artifact) AND write domain files to filesystem.
+- **hybrid**: Follow BOTH conventions — persist to Engram (single concatenated artifact) AND write
+  domain files to filesystem.
 - **none**: Return result only. Never create or modify project files.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ### Step 2: Identify Affected Domains
@@ -58,13 +67,16 @@ FOR EACH entry under "Modified Capabilities":
 └── Read existing .agents/sdd/specs/<capability-name>/spec.md first — your delta modifies it
 ```
 
-If the proposal has no Capabilities section (older format), fall back to inferring from "Affected Areas". But always prefer the explicit Capabilities mapping when present.
+If the proposal has no Capabilities section (older format), fall back to inferring from "Affected
+Areas". But always prefer the explicit Capabilities mapping when present.
 
 ### Step 3: Read Existing Specs
 
-**IF mode is `openspec` or `hybrid`:** If `.agents/sdd/specs/{domain}/spec.md` exists, read it to understand CURRENT behavior. Your delta specs describe CHANGES to this behavior.
+**IF mode is `openspec` or `hybrid`:** If `.agents/sdd/specs/{domain}/spec.md` exists, read it to
+understand CURRENT behavior. Your delta specs describe CHANGES to this behavior.
 
-**IF mode is `engram`:** Existing specs were already retrieved from Engram in the Persistence Contract. Skip filesystem reads.
+**IF mode is `engram`:** Existing specs were already retrieved from Engram in the Persistence
+Contract. Skip filesystem reads.
 
 **IF mode is `none`:** Skip — no existing specs to read.
 
@@ -80,7 +92,8 @@ If the proposal has no Capabilities section (older format), fall back to inferri
         └── spec.md          ← Delta spec
 ```
 
-**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose the spec content in memory — you will persist it in Step 5.
+**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose
+the spec content in memory — you will persist it in Step 5.
 
 #### MODIFIED Requirements Workflow (CRITICAL — read before writing deltas)
 
@@ -181,6 +194,7 @@ The system {MUST/SHALL/SHOULD} {behavior}.
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../../skills/sdd/_shared/sdd-phase-common.md`.
+
 - artifact: `spec`
 - topic_key: `sdd/{change-name}/spec`
 - type: `architecture`
@@ -212,25 +226,28 @@ Ready for design (sdd-design). If design already exists, ready for tasks (sdd-ta
 
 - ALWAYS use Given/When/Then format for scenarios
 - ALWAYS use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY) for requirement strength
-- Read the proposal's **Capabilities section** first — it tells you exactly which spec files to create
+- Read the proposal's **Capabilities section** first — it tells you exactly which spec files to
+  create
 - If existing specs exist, write DELTA specs (ADDED/MODIFIED/REMOVED sections)
 - If NO existing specs exist for the domain, write a FULL spec
 - Every requirement MUST have at least ONE scenario
 - Include both happy path AND edge case scenarios
 - Keep scenarios TESTABLE — someone should be able to write an automated test from each one
 - DO NOT include implementation details in specs — specs describe WHAT, not HOW
-- **MODIFIED requirements MUST be the FULL block** — copy entire requirement + all scenarios from main spec, then edit. Partial MODIFIED blocks lose content at archive time.
+- **MODIFIED requirements MUST be the FULL block** — copy entire requirement + all scenarios from
+  main spec, then edit. Partial MODIFIED blocks lose content at archive time.
 - If adding new behavior without changing existing behavior → use ADDED, not MODIFIED
 - Apply any `rules.specs` from `.agents/sdd/config.yaml`
-- **Size budget**: Spec artifact MUST be under 650 words. Prefer requirement tables over narrative descriptions. Each scenario: 3-5 lines max.
+- **Size budget**: Spec artifact MUST be under 650 words. Prefer requirement tables over narrative
+  descriptions. Each scenario: 3-5 lines max.
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ## RFC 2119 Keywords Quick Reference
 
-| Keyword | Meaning |
-|---------|---------|
-| **MUST / SHALL** | Absolute requirement |
-| **MUST NOT / SHALL NOT** | Absolute prohibition |
-| **SHOULD** | Recommended, but exceptions may exist with justification |
-| **SHOULD NOT** | Not recommended, but may be acceptable with justification |
-| **MAY** | Optional |
+| Keyword                  | Meaning                                                   |
+|--------------------------|-----------------------------------------------------------|
+| **MUST / SHALL**         | Absolute requirement                                      |
+| **MUST NOT / SHALL NOT** | Absolute prohibition                                      |
+| **SHOULD**               | Recommended, but exceptions may exist with justification  |
+| **SHOULD NOT**           | Not recommended, but may be acceptable with justification |
+| **MAY**                  | Optional                                                  |

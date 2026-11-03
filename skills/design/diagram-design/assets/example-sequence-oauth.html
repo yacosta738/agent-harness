@@ -105,11 +105,14 @@
     <!-- =================================================================
          LIFELINES — Client 160 · API 480 · Auth 800
          ================================================================= -->
-    <line stroke="rgba(45,49,66,0.22)" stroke-dasharray="3,3" stroke-width="1" x1="160" x2="160" y1="128"
+    <line stroke="rgba(45,49,66,0.22)" stroke-dasharray="3,3" stroke-width="1" x1="160" x2="160"
+          y1="128"
           y2="624"/>
-    <line stroke="rgba(45,49,66,0.22)" stroke-dasharray="3,3" stroke-width="1" x1="480" x2="480" y1="128"
+    <line stroke="rgba(45,49,66,0.22)" stroke-dasharray="3,3" stroke-width="1" x1="480" x2="480"
+          y1="128"
           y2="624"/>
-    <line stroke="rgba(45,49,66,0.22)" stroke-dasharray="3,3" stroke-width="1" x1="800" x2="800" y1="128"
+    <line stroke="rgba(45,49,66,0.22)" stroke-dasharray="3,3" stroke-width="1" x1="800" x2="800"
+          y1="128"
           y2="624"/>
 
     <!-- =================================================================
@@ -117,25 +120,31 @@
          ================================================================= -->
     <!-- API holds control for the initial call -->
     <!-- First API activation brackets M1 call through M2 success return -->
-    <rect fill="rgba(45,49,66,0.06)" height="104" stroke="#4f5d75" stroke-width="0.8" width="8" x="476"
+    <rect fill="rgba(45,49,66,0.06)" height="104" stroke="#4f5d75" stroke-width="0.8" width="8"
+          x="476"
           y="180"/>
     <!-- Client activation during refresh region -->
-    <rect fill="rgba(45,49,66,0.06)" height="200" stroke="#4f5d75" stroke-width="0.8" width="8" x="156"
+    <rect fill="rgba(45,49,66,0.06)" height="200" stroke="#4f5d75" stroke-width="0.8" width="8"
+          x="156"
           y="360"/>
     <!-- Auth activation for refresh -->
-    <rect fill="rgba(45,49,66,0.06)" height="64" stroke="#4f5d75" stroke-width="0.8" width="8" x="796"
+    <rect fill="rgba(45,49,66,0.06)" height="64" stroke="#4f5d75" stroke-width="0.8" width="8"
+          x="796"
           y="400"/>
     <!-- API activation for retry -->
-    <rect fill="rgba(45,49,66,0.06)" height="64" stroke="#4f5d75" stroke-width="0.8" width="8" x="476"
+    <rect fill="rgba(45,49,66,0.06)" height="64" stroke="#4f5d75" stroke-width="0.8" width="8"
+          x="476"
           y="496"/>
 
     <!-- =================================================================
          M1: Client → API  GET /resource (before ALT frame)
          ================================================================= -->
-    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="160" x2="476" y1="176"
+    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="160" x2="476"
+          y1="176"
           y2="176"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="128" x="248" y="160"/>
-    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="312" y="170">GET /RESOURCE + BEARER
     </text>
 
@@ -143,25 +152,30 @@
          ALT COMBINED FRAGMENT — spans Client · API · Auth
          Frame: x=88 y=208 w=752 h=360
          ================================================================= -->
-    <rect fill="rgba(45,49,66,0.02)" height="360" rx="4" stroke="rgba(45,49,66,0.22)" stroke-width="1"
+    <rect fill="rgba(45,49,66,0.02)" height="360" rx="4" stroke="rgba(45,49,66,0.22)"
+          stroke-width="1"
           width="752" x="88" y="208"/>
     <!-- Operator tab: ALT -->
     <rect fill="#f5f5f5" height="16" rx="2" stroke="rgba(45,49,66,0.22)" stroke-width="1"
           width="40" x="88" y="208"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em"
+          text-anchor="middle"
           x="108" y="220">ALT
     </text>
 
     <!-- Region 1 guard -->
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.04em" x="100"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.04em"
+          x="100"
           y="244">[token valid]
     </text>
 
     <!-- M2: API → Client  200 (coral headline success) -->
-    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="476" x2="168" y1="272"
+    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="476" x2="168"
+          y1="272"
           y2="272"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="88" x="256" y="256"/>
-    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="300" y="266">200 · BODY
     </text>
 
@@ -170,57 +184,70 @@
           x2="832" y1="312" y2="312"/>
 
     <!-- Region 2 guard -->
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.04em" x="100"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.04em"
+          x="100"
           y="336">[else · 401]
     </text>
 
     <!-- M3: API → Client  401 (return: dashed + filled) -->
-    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2" x1="476" x2="168"
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2"
+          x1="476" x2="168"
           y1="368" y2="368"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="56" x="272" y="352"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="300" y="362">401
     </text>
 
     <!-- M4: Client → Auth  refresh (link-blue) -->
-    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="164" x2="796" y1="416"
+    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="164" x2="796"
+          y1="416"
           y2="416"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="128" x="408" y="400"/>
-    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="472" y="410">POST /TOKEN · REFRESH
     </text>
 
     <!-- M5: Auth → Client  access (return dashed, filled marker) -->
-    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2" x1="796" x2="168"
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2"
+          x1="796" x2="168"
           y1="456" y2="456"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="96" x="424" y="440"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="472" y="450">200 · NEW ACCESS
     </text>
 
     <!-- M6: Client → API  retry -->
-    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="164" x2="476" y1="504"
+    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="164" x2="476"
+          y1="504"
           y2="504"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="112" x="248" y="488"/>
-    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="304" y="498">GET /RESOURCE · RETRY
     </text>
 
     <!-- M7: API → Client  200 retry success (return dashed; coral already used on M2) -->
-    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2" x1="476" x2="168"
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2"
+          x1="476" x2="168"
           y1="544" y2="544"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="88" x="256" y="528"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="300" y="538">200 · BODY
     </text>
 
     <!-- =================================================================
          M8: Client → Auth  async audit (open arrow, outside fragment)
          ================================================================= -->
-    <line marker-end="url(#arrow-open)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2" x1="164" x2="796"
+    <line marker-end="url(#arrow-open)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2"
+          x1="164" x2="796"
           y1="600" y2="600"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="96" x="424" y="584"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="472" y="594">AUDIT · ASYNC
     </text>
 
@@ -229,33 +256,43 @@
          ================================================================= -->
     <!-- Client (input / soft) -->
     <rect fill="#f5f5f5" height="56" rx="6" width="144" x="88" y="72"/>
-    <rect fill="rgba(79,93,117,0.10)" height="56" rx="6" stroke="#7a8399" stroke-width="1" width="144" x="88"
+    <rect fill="rgba(79,93,117,0.10)" height="56" rx="6" stroke="#7a8399" stroke-width="1"
+          width="144" x="88"
           y="72"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(122,131,153,0.40)" stroke-width="0.8" width="32"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(122,131,153,0.40)" stroke-width="0.8"
+          width="32"
           x="96" y="80"/>
-    <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="112" y="89">APP
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="160" y="104">Client
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="160"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="160"
           y="119">SPA · SDK
     </text>
 
     <!-- API (focal) -->
     <rect fill="#f5f5f5" height="56" rx="6" width="144" x="408" y="72"/>
-    <rect fill="rgba(235,108,54,0.08)" height="56" rx="6" stroke="#eb6c36" stroke-width="1" width="144"
+    <rect fill="rgba(235,108,54,0.08)" height="56" rx="6" stroke="#eb6c36" stroke-width="1"
+          width="144"
           x="408" y="72"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(235,108,54,0.50)" stroke-width="0.8" width="32"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"
+          width="32"
           x="416" y="80"/>
-    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="432" y="89">API
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="480" y="104">Resource API
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="480"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="480"
           y="119">Bearer gate
     </text>
 
@@ -263,15 +300,19 @@
     <rect fill="#f5f5f5" height="56" rx="6" width="144" x="728" y="72"/>
     <rect fill="#ffffff" height="56" rx="6" stroke="#2d3142" stroke-width="1" width="144" x="728"
           y="72"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(45,49,66,0.30)" stroke-width="0.8" width="36"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(45,49,66,0.30)" stroke-width="0.8"
+          width="36"
           x="736" y="80"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="754" y="89">AUTH
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="800" y="104">Auth
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="800"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="800"
           y="119">token · refresh
     </text>
 
@@ -279,17 +320,20 @@
          LEGEND
          ================================================================= -->
     <line stroke="rgba(45,49,66,0.10)" stroke-width="0.8" x1="56" x2="904" y1="648" y2="648"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em" x="56"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em"
+          x="56"
           y="664">LEGEND
     </text>
 
-    <rect fill="rgba(235,108,54,0.08)" height="10" rx="2" stroke="#eb6c36" stroke-width="1" width="14" x="56"
+    <rect fill="rgba(235,108,54,0.08)" height="10" rx="2" stroke="#eb6c36" stroke-width="1"
+          width="14" x="56"
           y="680"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="76" y="688">Focal /
       success
     </text>
 
-    <rect fill="rgba(45,49,66,0.02)" height="18" rx="2" stroke="rgba(45,49,66,0.22)" stroke-width="1" width="28"
+    <rect fill="rgba(45,49,66,0.02)" height="18" rx="2" stroke="rgba(45,49,66,0.22)"
+          stroke-width="1" width="28"
           x="200" y="676"/>
     <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="7" x="208" y="688">ALT
     </text>
@@ -297,24 +341,28 @@
       Fragment
     </text>
 
-    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="320" x2="348" y1="684"
+    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="320" x2="348"
+          y1="684"
           y2="684"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="356" y="688">HTTP
       call
     </text>
 
-    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2" x1="448" x2="476"
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2"
+          x1="448" x2="476"
           y1="684" y2="684"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="484" y="688">Return
     </text>
 
-    <line marker-end="url(#arrow-open)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2" x1="560" x2="588"
+    <line marker-end="url(#arrow-open)" stroke="#4f5d75" stroke-dasharray="5,4" stroke-width="1.2"
+          x1="560" x2="588"
           y1="684" y2="684"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="596" y="688">Async
       open
     </text>
 
-    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="696" x2="724" y1="684"
+    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="696" x2="724"
+          y1="684"
           y2="684"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="732" y="688">
       Headline

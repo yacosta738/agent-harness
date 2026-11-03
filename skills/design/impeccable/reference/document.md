@@ -30,7 +30,7 @@ typography:
     lineHeight: 1
     letterSpacing: "normal"
   body:
-    # ...
+  # ...
 rounded:
   sm: "4px"
   md: "8px"
@@ -204,27 +204,35 @@ colors:
 
 **Creative North Star: "[Named metaphor in quotes]"**
 
-[2-3 paragraph holistic description: personality, density, and aesthetic philosophy. Start from the North Star and work outward. State only confirmed visual rejections. End with a short **Key Characteristics:** bullet list.]
+[2-3 paragraph holistic description: personality, density, and aesthetic philosophy. Start from the North Star and work outward. State only confirmed visual rejections. End with a short
+**Key Characteristics:** bullet list.]
 
 ## Colors
 
 [Describe the palette character in one sentence.]
 
 ### Primary
-- **[Descriptive Name]** (#HEX / oklch(...)): [Where and why this color is used. Be specific about context, not just role.]
+
+- **[Descriptive Name]** (#HEX / oklch
+  (...)): [Where and why this color is used. Be specific about context, not just role.]
 
 ### Secondary (optional; omit if the project has only one accent)
+
 - **[Descriptive Name]** (#HEX): [Role.]
 
 ### Tertiary (optional)
+
 - **[Descriptive Name]** (#HEX): [Role.]
 
 ### Neutral
+
 - **[Descriptive Name]** (#HEX): [Text / background / border / divider role.]
 - [...]
 
 ### Named Rules (optional, powerful)
-**The [Rule Name] Rule.** [Short, forceful prohibition or doctrine, e.g. "The One Voice Rule. The primary accent is used on ≤10% of any given screen. Its rarity is the point."]
+
+**The [Rule Name]
+Rule.** [Short, forceful prohibition or doctrine, e.g. "The One Voice Rule. The primary accent is used on ≤10% of any given screen. Its rarity is the point."]
 
 ## Typography
 
@@ -235,13 +243,16 @@ colors:
 **Character:** [1-2 sentence personality description of the pairing.]
 
 ### Hierarchy
+
 - **Display** ([weight], [size/clamp], [line-height]): [Purpose; where it appears.]
 - **Headline** ([weight], [size], [line-height]): [Purpose.]
 - **Title** ([weight], [size], [line-height]): [Purpose.]
-- **Body** ([weight], [size], [line-height]): [Purpose. Include max line length like 65–75ch if relevant.]
+- **Body**
+  ([weight], [size], [line-height]): [Purpose. Include max line length like 65–75ch if relevant.]
 - **Label** ([weight], [size], [letter-spacing], [case if uppercase]): [Purpose.]
 
 ### Named Rules (optional)
+
 **The [Rule Name] Rule.** [Short doctrine about type use.]
 
 ## Layout
@@ -253,11 +264,14 @@ colors:
 [One paragraph: does this system use shadows, tonal layering, or a hybrid? If "no shadows", say so explicitly and describe how depth is conveyed instead.]
 
 ### Shadow Vocabulary (if applicable)
+
 - **[Role name]** (`box-shadow: [exact value]`): [When to use it.]
 - [...]
 
 ### Named Rules (optional)
-**The [Rule Name] Rule.** [e.g. "The Flat-By-Default Rule. Surfaces are flat at rest. Shadows appear only as a response to state (hover, elevation, focus)."]
+
+**The [Rule Name]
+Rule.** [e.g. "The Flat-By-Default Rule. Surfaces are flat at rest. Shadows appear only as a response to state (hover, elevation, focus)."]
 
 ## Shapes
 
@@ -265,19 +279,23 @@ colors:
 
 ## Components
 
-For each component, lead with a short character line, then specify shape, color assignment, states, and any distinctive behavior.
+For each component, lead with a short character line, then specify shape, color assignment, states,
+and any distinctive behavior.
 
 ### Buttons
+
 - **Shape:** [radius described, exact value in parens]
 - **Primary:** [color assignment + padding, in semantic + exact terms]
 - **Hover / Focus:** [transitions, treatments]
 - **Secondary / Ghost / Tertiary (if applicable):** [brief description]
 
 ### Chips (if used)
+
 - **Style:** [background, text color, border treatment]
 - **State:** [selected / unselected, filter / action variants]
 
 ### Cards / Containers
+
 - **Corner Style:** [radius]
 - **Background:** [colors used]
 - **Shadow Strategy:** [reference Elevation section]
@@ -285,25 +303,32 @@ For each component, lead with a short character line, then specify shape, color 
 - **Internal Padding:** [scale]
 
 ### Inputs / Fields
+
 - **Style:** [stroke, background, radius]
 - **Focus:** [treatment, e.g. glow, border shift, etc.]
 - **Error / Disabled:** [if applicable]
 
 ### Navigation
+
 - **Style, typography, default/hover/active states, mobile treatment.**
 
 ### [Signature Component] (optional; if the project has a distinctive custom component worth documenting)
+
 [Description.]
 
 ## Do's and Don'ts
 
-Concrete visual guardrails grounded in the incumbent implementation or the user's chosen world. Lead each with "Do" or "Don't" and include exact values only when established. Do not turn a task-specific concept or surface strategy into a system-wide prohibition.
+Concrete visual guardrails grounded in the incumbent implementation or the user's chosen world. Lead
+each with "Do" or "Don't" and include exact values only when established. Do not turn a
+task-specific concept or surface strategy into a system-wide prohibition.
 
 ### Do:
+
 - **Do** [specific prescription with exact values / named rule].
 - **Do** [...]
 
 ### Don't:
+
 - **Don't** [specific prohibition confirmed by the incumbent system or the user].
 - **Don't** [...]
 - **Don't** [...]
@@ -330,20 +355,52 @@ the sidecar (e.g., from the live panel's stale-hint), preserve `DESIGN.md` and w
   "title": "Design System: [Project Title]",
   "extensions": {
     "colorMeta": {
-      "primary":        { "role": "primary",  "displayName": "Editorial Magenta", "canonical": "oklch(60% 0.25 350)", "tonalRamp": ["...", "...", "..."] },
-      "cool-paper": { "role": "neutral",  "displayName": "Cool Paper",    "canonical": "oklch(96% 0.005 230)", "tonalRamp": ["...", "...", "..."] }
+      "primary": {
+        "role": "primary",
+        "displayName": "Editorial Magenta",
+        "canonical": "oklch(60% 0.25 350)",
+        "tonalRamp": [
+          "...",
+          "...",
+          "..."
+        ]
+      },
+      "cool-paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "oklch(96% 0.005 230)",
+        "tonalRamp": [
+          "...",
+          "...",
+          "..."
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headlines only." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines only."
+      }
     },
     "shadows": [
-      { "name": "ambient-low", "value": "0 4px 24px rgba(0,0,0,0.12)", "purpose": "Diffuse hover glow under accent elements." }
+      {
+        "name": "ambient-low",
+        "value": "0 4px 24px rgba(0,0,0,0.12)",
+        "purpose": "Diffuse hover glow under accent elements."
+      }
     ],
     "motion": [
-      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default easing for state transitions." }
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default easing for state transitions."
+      }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" }
+      {
+        "name": "sm",
+        "value": "640px"
+      }
     ]
   },
   "components": [
@@ -359,10 +416,23 @@ the sidecar (e.g., from the live panel's stale-hint), preserve `DESIGN.md` and w
   "narrative": {
     "northStar": "The Editorial Sanctuary",
     "overview": "2-3 paragraphs of the philosophy, pulled from DESIGN.md Overview section.",
-    "keyCharacteristics": ["...", "..."],
-    "rules": [{ "name": "The One Voice Rule", "body": "...", "section": "colors|typography|elevation" }],
-    "dos":   ["Do use ..."],
-    "donts": ["Don't use ..."]
+    "keyCharacteristics": [
+      "...",
+      "..."
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "...",
+        "section": "colors|typography|elevation"
+      }
+    ],
+    "dos": [
+      "Do use ..."
+    ],
+    "donts": [
+      "Don't use ..."
+    ]
   }
 }
 ```

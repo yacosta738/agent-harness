@@ -15,7 +15,9 @@ interface ForwardableEmailMessage {
   readonly rawSize: number;     // Total message size in bytes
 
   setReject(reason: string): void;
+
   forward(rcptTo: string, headers?: Headers): Promise<void>;
+
   reply(message: EmailMessage): Promise<void>;
 }
 ```
@@ -60,11 +62,11 @@ await message.forward('inbox@example.com', h);
 Send a reply to the original sender (March 2025 feature).
 
 ```typescript
-import { EmailMessage } from 'cloudflare:email';
-import { createMimeMessage } from 'mimetext';
+import {EmailMessage} from 'cloudflare:email';
+import {createMimeMessage} from 'mimetext';
 
 const msg = createMimeMessage();
-msg.setSender({ name: 'Support', addr: 'support@example.com' });
+msg.setSender({name: 'Support', addr: 'support@example.com'});
 msg.setRecipient(message.from);
 msg.setSubject(`Re: ${message.headers.get('Subject')}`);
 msg.setHeader('In-Reply-To', message.headers.get('Message-ID'));
@@ -75,9 +77,9 @@ msg.addMessage({
 });
 
 await message.reply(new EmailMessage(
-  'support@example.com',
-  message.from,
-  msg.asRaw()
+    'support@example.com',
+    message.from,
+    msg.asRaw()
 ));
 ```
 
@@ -92,9 +94,16 @@ await message.reply(new EmailMessage(
 ## EmailMessage Constructor
 
 ```typescript
-import { EmailMessage } from 'cloudflare:email';
+import {EmailMessage} from 'cloudflare:email';
 
-new EmailMessage(from: string, to: string, raw: ReadableStream | string)
+new EmailMessage(from
+:
+string, to
+:
+string, raw
+:
+ReadableStream | string
+)
 ```
 
 Used for sending emails (replies or via SendEmail binding). Domain must be verified.
@@ -171,12 +180,12 @@ console.log(email.attachments.length);
 mimetext v3.0.27 composes outgoing emails.
 
 ```typescript
-import { createMimeMessage } from 'mimetext';
+import {createMimeMessage} from 'mimetext';
 
 const msg = createMimeMessage();
 
 // Sender
-msg.setSender({ name: 'John Doe', addr: 'john@example.com' });
+msg.setSender({name: 'John Doe', addr: 'john@example.com'});
 
 // Recipients
 msg.setRecipient('alice@example.com');
@@ -228,9 +237,9 @@ interface Env {
 
 export default {
   async email(
-    message: ForwardableEmailMessage,
-    env: Env,
-    ctx: ExecutionContext
+      message: ForwardableEmailMessage,
+      env: Env,
+      ctx: ExecutionContext
   ): Promise<void> {
     // Fully typed
   }

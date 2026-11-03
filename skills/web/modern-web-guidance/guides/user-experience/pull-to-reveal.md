@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (targetContent) {
       // Use behavior: "instant" to mimic the native CSS behavior
       // 'block: start' should match your CSS 'scroll-snap-align' (or expected top position)
-      targetContent.scrollIntoView({ behavior: 'instant', block: 'start' });
+      targetContent.scrollIntoView({behavior: 'instant', block: 'start'});
     }
   }
 });

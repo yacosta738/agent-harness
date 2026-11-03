@@ -137,29 +137,30 @@ new_str: "
 ## FAQ Entries Created ✅
 
 ### Conversation Captured
+
 Transformed deployment troubleshooting conversation into 3 comprehensive FAQ entries.
 
 ### FAQ Entries Created
 
 1. **Port Already in Use Error**
-   - Problem: Deployment fails due to occupied port
-   - Solutions: Kill process, use PM2, check node processes
-   - Prevention: Use process managers, graceful shutdown
-   - Link: <mention-page url="...">Port already in use FAQ</mention-page>
+    - Problem: Deployment fails due to occupied port
+    - Solutions: Kill process, use PM2, check node processes
+    - Prevention: Use process managers, graceful shutdown
+    - Link: <mention-page url="...">Port already in use FAQ</mention-page>
 
 2. **Database Connection Errors**
-   - Problem: Cannot connect to database during deployment
-   - Troubleshooting: 4-step systematic approach
-   - Solutions: By error type (credentials, network, limits)
-   - Prevention: Connection pooling, health checks, retry logic
-   - Link: <mention-page url="...">Database connection FAQ</mention-page>
+    - Problem: Cannot connect to database during deployment
+    - Troubleshooting: 4-step systematic approach
+    - Solutions: By error type (credentials, network, limits)
+    - Prevention: Connection pooling, health checks, retry logic
+    - Link: <mention-page url="...">Database connection FAQ</mention-page>
 
 3. **General Troubleshooting Approach**
-   - Best practice: Always check logs first
-   - Tools: PM2 logs, Docker logs, application logs
-   - Systematic approach: 6-step debugging process
-   - Common errors: Module not found, permissions, ports
-   - Link: <mention-page url="...">Troubleshooting first steps FAQ</mention-page>
+    - Best practice: Always check logs first
+    - Tools: PM2 logs, Docker logs, application logs
+    - Systematic approach: 6-step debugging process
+    - Common errors: Module not found, permissions, ports
+    - Link: <mention-page url="...">Troubleshooting first steps FAQ</mention-page>
 
 ### Content Structure
 
@@ -182,12 +183,14 @@ Each FAQ includes:
 ### Value Added
 
 **From conversation** → **To structured knowledge**:
+
 - Casual Q&A → Professional FAQ entries
 - Implicit knowledge → Explicit documentation
 - One-time help → Reusable resource
 - 5-minute conversation → Permanent team knowledge
 
 **Future benefit**:
+
 - Team can self-serve on common issues
 - New team members can onboard faster
 - Reduces repeated questions

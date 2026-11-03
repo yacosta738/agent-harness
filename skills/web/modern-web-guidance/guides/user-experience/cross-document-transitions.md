@@ -39,11 +39,16 @@ slides or reveals.
 }
 
 @keyframes slide-out {
-  to { transform: translateX(-20%); opacity: 0; }
+  to {
+    transform: translateX(-20%);
+    opacity: 0;
+  }
 }
 
 @keyframes slide-in {
-  from { transform: translateX(100%); }
+  from {
+    transform: translateX(100%);
+  }
 }
 ```
 
@@ -73,7 +78,8 @@ You can also conditionally specify transition types inside of an event listener 
 window.addEventListener("pagereveal", async (e) => {
   if (e.viewTransition && window.navigation?.activation) {
     // Use application-specific logic to compute a transition type
-     const transitionType = yourTransitionTypeLogic(navigation.activation.from, navigation.activation.entry);
+    const transitionType = yourTransitionTypeLogic(navigation.activation.from,
+        navigation.activation.entry);
     e.viewTransition.types.add(transitionType);
   }
 });
@@ -92,6 +98,7 @@ each type.
     animation-name: slide-in-next;
   }
 }
+
 :active-view-transition-type(previous) {
   &::view-transition-old(root) {
     animation-name: slide-out-previous;

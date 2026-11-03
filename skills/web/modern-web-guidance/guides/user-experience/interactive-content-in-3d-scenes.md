@@ -28,6 +28,7 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
    `layoutsubtree` attribute.
 
 ```html
+
 <canvas id="canvas" layoutsubtree>
   <div id="html-content"></div>
 </canvas>
@@ -39,19 +40,19 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 const observer = new ResizeObserver(([entry]) => {
   const dpc = entry.devicePixelContentBoxSize;
   canvas.width = dpc
-    ? dpc[0].inlineSize
-    : Math.round(entry.contentRect.width * window.devicePixelRatio);
+      ? dpc[0].inlineSize
+      : Math.round(entry.contentRect.width * window.devicePixelRatio);
   canvas.height = dpc
-    ? dpc[0].blockSize
-    : Math.round(entry.contentRect.height * window.devicePixelRatio);
+      ? dpc[0].blockSize
+      : Math.round(entry.contentRect.height * window.devicePixelRatio);
 });
 
 const supportsDevicePixelContentBox =
-  typeof ResizeObserverEntry !== "undefined" &&
-  "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
+    typeof ResizeObserverEntry !== "undefined" &&
+    "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
 const options = supportsDevicePixelContentBox
-  ? { box: "device-pixel-content-box" }
-  : {};
+    ? {box: "device-pixel-content-box"}
+    : {};
 observer.observe(canvas, options);
 ```
 
@@ -63,12 +64,12 @@ observer.observe(canvas, options);
 canvas.onpaint = () => {
   if (gl.texElementImage2D) {
     gl.texElementImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      uiElement,
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        uiElement,
     );
   }
 };
@@ -94,6 +95,7 @@ function render() {
   canvas.requestPaint();
   requestAnimationFrame(render);
 }
+
 requestAnimationFrame(render);
 
 canvas.onpaint = (event) => {
@@ -134,27 +136,27 @@ if (canvas.getElementTransform) {
   const gridHeight = targetHTMLElement.offsetHeight * dprY;
 
   const toGLModel = new DOMMatrix()
-    // Scale pixels to 1 unit, flip Y (as in CSS it points down, and in WebGL it points up)
-    .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
-    // Center the origin: (0,0) becomes (-width/2, -height/2) before scaling
-    .translate(-gridWidth / 2, -gridHeight / 2);
+      // Scale pixels to 1 unit, flip Y (as in CSS it points down, and in WebGL it points up)
+      .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
+      // Center the origin: (0,0) becomes (-width/2, -height/2) before scaling
+      .translate(-gridWidth / 2, -gridHeight / 2);
 
   // 3. Map to the canvas viewport
   const clipToCanvasViewport = new DOMMatrix()
-    // Move center (0,0) to center of canvas
-    .translate(canvas.width / 2, canvas.height / 2)
-    // Scale normalized clip (-1..1) to viewport size
-    .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
+      // Move center (0,0) to center of canvas
+      .translate(canvas.width / 2, canvas.height / 2)
+      // Scale normalized clip (-1..1) to viewport size
+      .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
 
   // 4. Multiply: (Clip -> Pixels) * (MVP) * (pixels -> unit square)
   const screenSpaceTransform = clipToCanvasViewport
-    .multiply(mvpDOM)
-    .multiply(toGLModel);
+      .multiply(mvpDOM)
+      .multiply(toGLModel);
 
   // 5. Apply to the transform
   const computedTransform = canvas.getElementTransform(
-    targetHTMLElement,
-    screenSpaceTransform,
+      targetHTMLElement,
+      screenSpaceTransform,
   );
   targetHTMLElement.style.transform = computedTransform.toString();
 }
@@ -197,8 +199,8 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 
 ```js
   material.map = new THREE.HTMLTexture(element);
-  mesh = new THREE.Mesh( geometry, material );
-  scene.add( mesh );
+mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
 ```
 
 ## Example code
@@ -206,6 +208,7 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 ### WebGL Canvas
 
 ```html
+
 <canvas id="canvas" layoutsubtree style="width: 400px; height: 400px;">
   <div id="ui-element">
     <p>WebGL UI Element</p>
@@ -226,12 +229,12 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
     // 1. Update texture with HTML content
     if (gl.texElementImage2D) {
       gl.texElementImage2D(
-        gl.TEXTURE_2D,
-        0,
-        gl.RGBA,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        uiElement,
+          gl.TEXTURE_2D,
+          0,
+          gl.RGBA,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          uiElement,
       );
     }
 
@@ -248,20 +251,20 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
       const gridHeight = uiElement.offsetHeight * dprY;
 
       const cssToUnitSpace = new DOMMatrix()
-        .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
-        .translate(-gridWidth / 2, -gridHeight / 2);
+          .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
+          .translate(-gridWidth / 2, -gridHeight / 2);
 
       const clipToCanvasViewport = new DOMMatrix()
-        .translate(canvas.width / 2, canvas.height / 2)
-        .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
+          .translate(canvas.width / 2, canvas.height / 2)
+          .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
 
       const screenSpaceTransform = clipToCanvasViewport
-        .multiply(mvpDOM)
-        .multiply(cssToUnitSpace);
+          .multiply(mvpDOM)
+          .multiply(cssToUnitSpace);
 
       const computedTransform = canvas.getElementTransform(
-        uiElement,
-        screenSpaceTransform,
+          uiElement,
+          screenSpaceTransform,
       );
       uiElement.style.transform = computedTransform.toString();
     }
@@ -272,6 +275,7 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 ### WebGPU Canvas
 
 ```html
+
 <canvas id="canvas" layoutsubtree style="width: 400px; height: 400px;">
   <div id="ui-element">
     <p>WebGPU UI Element</p>
@@ -306,20 +310,20 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
       const gridHeight = uiElement.offsetHeight * dprY;
 
       const cssToUnitSpace = new DOMMatrix()
-        .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight) // Retain Z scale
-        .translate(-gridWidth / 2, -gridHeight / 2);
+          .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight) // Retain Z scale
+          .translate(-gridWidth / 2, -gridHeight / 2);
 
       const clipToCanvasViewport = new DOMMatrix()
-        .translate(canvas.width / 2, canvas.height / 2)
-        .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2); // Retain Z scale
+          .translate(canvas.width / 2, canvas.height / 2)
+          .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2); // Retain Z scale
 
       const screenSpaceTransform = clipToCanvasViewport
-        .multiply(mvpDOM)
-        .multiply(cssToUnitSpace);
+          .multiply(mvpDOM)
+          .multiply(cssToUnitSpace);
 
       const computedTransform = canvas.getElementTransform(
-        uiElement,
-        screenSpaceTransform,
+          uiElement,
+          screenSpaceTransform,
       );
       uiElement.style.transform = computedTransform.toString();
     }
@@ -342,14 +346,14 @@ const element = document.createElement('div');
 element.innerHTML = '<h1>Hello World</h1>';
 
 // 4. Create geometry and material
-const geometry = new RoundedBoxGeometry( 100, 100, 100, 10, 10 );
-const material = new THREE.MeshStandardMaterial( { roughness: 0, metalness: 0.5 } );
+const geometry = new RoundedBoxGeometry(100, 100, 100, 10, 10);
+const material = new THREE.MeshStandardMaterial({roughness: 0, metalness: 0.5});
 
 // 5. Pass the DOM element into THREE.HTMLTexture
 material.map = new THREE.HTMLTexture(element);
 
-mesh = new THREE.Mesh( geometry, material );
-scene.add( mesh );
+mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
 
 // 6. Render Loop
 function animate() {

@@ -47,6 +47,7 @@ To build a component that changes its styling based on a child's state:
   --card-text: #f0f0f0;
   --card-border: #555555;
 }
+
 /* You can also combine :has() and :not() to target specific negative states */
 /* This selects a card that DOES NOT have a toggle in the checked state */
 .theme-card:not(:has(.theme-toggle:checked)) {

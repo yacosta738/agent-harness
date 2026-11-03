@@ -18,13 +18,13 @@ const controller = new AbortController();
 navigator.modelContext.registerTool({
   name: "get_user_preferences",
   description: "Retrieves the user's saved preferences.",
-  inputSchema: { type: "object", properties: {} },
+  inputSchema: {type: "object", properties: {}},
   execute() {
     const prefs = localStorage.getItem("user_prefs");
-    return prefs ? JSON.parse(prefs) : { theme: "light" };
+    return prefs ? JSON.parse(prefs) : {theme: "light"};
   },
-  annotations: { readOnlyHint: true }
-}, { signal: controller.signal });
+  annotations: {readOnlyHint: true}
+}, {signal: controller.signal});
 
 // To unregister the tool (e.g., on component unmount):
 controller.abort();
@@ -42,8 +42,8 @@ navigator.modelContext.registerTool({
   inputSchema: {
     type: "object",
     properties: {
-      width: { type: "number", description: "The width of the rectangle." },
-      height: { type: "number", description: "The height of the rectangle." }
+      width: {type: "number", description: "The width of the rectangle."},
+      height: {type: "number", description: "The height of the rectangle."}
     },
     required: ["width", "height"]
   },
@@ -51,7 +51,7 @@ navigator.modelContext.registerTool({
     // input is { width: 10, height: 20 }
     return input.width * input.height;
   },
-  annotations: { readOnlyHint: true }
+  annotations: {readOnlyHint: true}
 });
 ```
 
@@ -66,7 +66,9 @@ Use `async` when the tool involves operations that return a Promise or take time
 - **External Events**: Waiting for a specific state change or animation to finish.
 
 ```javascript
-async execute(input) {
+async
+execute(input)
+{
   const response = await fetch(`/api/data/${input.id}`);
   return await response.json();
 }
@@ -80,7 +82,8 @@ Use a standard synchronous function for immediate operations:
 - **Synchronous state**: Reading from `localStorage` or a synchronous state manager.
 
 ```javascript
-execute(input) {
+execute(input)
+{
   return input.items.filter(item => item.active);
 }
 ```
@@ -94,11 +97,11 @@ export function createInventoryTool(inventoryManager) {
   return {
     name: "get_inventory",
     description: "Lists items in the inventory.",
-    inputSchema: { type: "object", properties: {} },
+    inputSchema: {type: "object", properties: {}},
     execute() {
       return inventoryManager.getItems();
     },
-    annotations: { readOnlyHint: true }
+    annotations: {readOnlyHint: true}
   };
 }
 ```

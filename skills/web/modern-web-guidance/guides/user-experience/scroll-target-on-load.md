@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const feedTarget = document.querySelector(".item.target");
     if (feedTarget) {
       // 'block: center' ensures the featured media is centered in view
-      feedTarget.scrollIntoView({ behavior: "instant", block: "center" });
+      feedTarget.scrollIntoView({behavior: "instant", block: "center"});
     }
   }
 });

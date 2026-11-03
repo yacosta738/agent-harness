@@ -51,26 +51,52 @@ function hashCode(str: string): number {
 ## Rate Limiting
 
 ```typescript
-async checkLimit(key: string, limit: number, windowMs: number): Promise<boolean> {
+async
+checkLimit(key
+:
+string, limit
+:
+number, windowMs
+:
+number
+):
+Promise < boolean > {
   const req = this.ctx.storage.sql.exec("SELECT COUNT(*) as count FROM requests WHERE key = ? AND timestamp > ?", key, Date.now() - windowMs).one();
-  if (req.count >= limit) return false;
-  this.ctx.storage.sql.exec("INSERT INTO requests (key, timestamp) VALUES (?, ?)", key, Date.now());
-  return true;
+  if(req.count >= limit
+)
+return false;
+this.ctx.storage.sql.exec("INSERT INTO requests (key, timestamp) VALUES (?, ?)", key, Date.now());
+return true;
 }
 ```
 
 ## Distributed Lock
 
 ```typescript
-private held = false;
-async acquire(timeoutMs = 5000): Promise<boolean> {
-  if (this.held) return false;
-  this.held = true;
-  await this.ctx.storage.setAlarm(Date.now() + timeoutMs);
-  return true;
+private
+held = false;
+async
+acquire(timeoutMs = 5000)
+:
+Promise < boolean > {
+  if(this.held
+)
+return false;
+this.held = true;
+await this.ctx.storage.setAlarm(Date.now() + timeoutMs);
+return true;
 }
-async release() { this.held = false; await this.ctx.storage.deleteAlarm(); }
-async alarm() { this.held = false; }  // Auto-release on timeout
+async
+release()
+{
+  this.held = false;
+  await this.ctx.storage.deleteAlarm();
+}
+async
+alarm()
+{
+  this.held = false;
+}  // Auto-release on timeout
 ```
 
 ## Hibernation-Aware Pattern
@@ -78,17 +104,29 @@ async alarm() { this.held = false; }  // Auto-release on timeout
 Preserve state across hibernation:
 
 ```typescript
-async fetch(req: Request): Promise<Response> {
+async
+fetch(req
+:
+Request
+):
+Promise < Response > {
   const [client, server] = Object.values(new WebSocketPair());
   const userId = new URL(req.url).searchParams.get("user");
-  server.serializeAttachment({ userId });  // Survives hibernation
+  server.serializeAttachment({userId});  // Survives hibernation
   this.ctx.acceptWebSocket(server, ["room:lobby"]);
-  server.send(JSON.stringify({ type: "init", state: this.ctx.storage.kv.get("state") }));
-  return new Response(null, { status: 101, webSocket: client });
+  server.send(JSON.stringify({type: "init", state: this.ctx.storage.kv.get("state")}));
+  return new Response(null, {status: 101, webSocket: client});
 }
 
-async webSocketMessage(ws: WebSocket, msg: string) {
-  const { userId } = ws.deserializeAttachment();  // Retrieve after wake
+async
+webSocketMessage(ws
+:
+WebSocket, msg
+:
+string
+)
+{
+  const {userId} = ws.deserializeAttachment();  // Retrieve after wake
   const state = this.ctx.storage.kv.get("state") || {};
   state[userId] = JSON.parse(msg);
   this.ctx.storage.kv.put("state", state);
@@ -101,7 +139,14 @@ async webSocketMessage(ws: WebSocket, msg: string) {
 Broadcast updates to all connected clients:
 
 ```typescript
-async webSocketMessage(ws: WebSocket, msg: string) {
+async
+webSocketMessage(ws
+:
+WebSocket, msg
+:
+string
+)
+{
   const data = JSON.parse(msg);
   this.ctx.storage.kv.put("doc", data.content);  // Persist
   for (const c of this.ctx.getWebSockets()) if (c !== ws) c.send(msg);  // Broadcast
@@ -115,6 +160,7 @@ async webSocketMessage(ws: WebSocket, msg: string) {
 ```typescript
 class ResilientWS {
   private delay = 1000;
+
   connect(url: string) {
     const ws = new WebSocket(url);
     ws.onclose = () => setTimeout(() => {
@@ -128,29 +174,58 @@ class ResilientWS {
 **Server-side** (cleanup on close):
 
 ```typescript
-async webSocketClose(ws: WebSocket, code: number, reason: string, wasClean: boolean) {
-  const { userId } = ws.deserializeAttachment();
+async
+webSocketClose(ws
+:
+WebSocket, code
+:
+number, reason
+:
+string, wasClean
+:
+boolean
+)
+{
+  const {userId} = ws.deserializeAttachment();
   this.ctx.storage.sql.exec("UPDATE users SET online = false WHERE id = ?", userId);
-  for (const c of this.ctx.getWebSockets()) c.send(JSON.stringify({ type: "user_left", userId }));
+  for (const c of this.ctx.getWebSockets()) c.send(JSON.stringify({type: "user_left", userId}));
 }
 ```
 
 ## Session Management
 
 ```typescript
-async createSession(userId: string, data: object): Promise<string> {
-  const id = crypto.randomUUID(), exp = Date.now() + 86400000;
-  this.ctx.storage.sql.exec("INSERT INTO sessions VALUES (?, ?, ?, ?)", id, userId, JSON.stringify(data), exp);
+async
+createSession(userId
+:
+string, data
+:
+object
+):
+Promise < string > {
+  const id = crypto.randomUUID(),
+  exp = Date.now() + 86400000;
+  this
+  .ctx.storage.sql.exec("INSERT INTO sessions VALUES (?, ?, ?, ?)", id, userId, JSON.stringify(data), exp);
   await this.ctx.storage.setAlarm(exp);
   return id;
 }
 
-async getSession(id: string): Promise<object | null> {
+async
+getSession(id
+:
+string
+):
+Promise < object | null > {
   const row = this.ctx.storage.sql.exec("SELECT data FROM sessions WHERE id = ? AND expires_at > ?", id, Date.now()).one();
   return row ? JSON.parse(row.data) : null;
 }
 
-async alarm() { this.ctx.storage.sql.exec("DELETE FROM sessions WHERE expires_at <= ?", Date.now()); }
+async
+alarm()
+{
+  this.ctx.storage.sql.exec("DELETE FROM sessions WHERE expires_at <= ?", Date.now());
+}
 ```
 
 ## Multiple Events (Single Alarm)
@@ -158,14 +233,23 @@ async alarm() { this.ctx.storage.sql.exec("DELETE FROM sessions WHERE expires_at
 Queue pattern to schedule multiple events:
 
 ```typescript
-async scheduleEvent(id: string, runAt: number) {
-  await this.ctx.storage.put(`event:${id}`, { id, runAt });
+async
+scheduleEvent(id
+:
+string, runAt
+:
+number
+)
+{
+  await this.ctx.storage.put(`event:${id}`, {id, runAt});
   const curr = await this.ctx.storage.getAlarm();
   if (!curr || runAt < curr) await this.ctx.storage.setAlarm(runAt);
 }
 
-async alarm() {
-  const events = await this.ctx.storage.list({ prefix: "event:" }), now = Date.now();
+async
+alarm()
+{
+  const events = await this.ctx.storage.list({prefix: "event:"}), now = Date.now();
   let next = null;
   for (const [key, ev] of events) {
     if (ev.runAt <= now) {
@@ -182,8 +266,10 @@ async alarm() {
 Use `ctx.waitUntil()` to complete work after response:
 
 ```typescript
-async myMethod() {
-  const response = { success: true };
+async
+myMethod()
+{
+  const response = {success: true};
   this.ctx.waitUntil(this.ctx.storage.sql.exec("DELETE FROM old_data WHERE timestamp < ?", cutoff));
   return response;
 }

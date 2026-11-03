@@ -48,13 +48,23 @@ interface SearchResult {
 
 ```typescript
 // Comparison
-{ column: "folder", operator: "gte", value: "docs/" }
+{
+  column: "folder", operator
+:
+  "gte", value
+:
+  "docs/"
+}
 
 // Compound
-{ operator: "and", filters: [
-  { column: "folder", operator: "gte", value: "docs/" },
-  { column: "timestamp", operator: "gte", value: 1704067200 }
-]}
+{
+  operator: "and", filters
+:
+  [
+    {column: "folder", operator: "gte", value: "docs/"},
+    {column: "timestamp", operator: "gte", value: 1704067200}
+  ]
+}
 ```
 
 **Operators:** `eq`, `ne`, `gt`, `gte`, `lt`, `lte`
@@ -64,8 +74,8 @@ interface SearchResult {
 ## Streaming
 
 ```typescript
-const stream = await env.AI.autorag("docs").aiSearch({ query, model, stream: true });
-return new Response(stream, { headers: { "Content-Type": "text/event-stream" } });
+const stream = await env.AI.autorag("docs").aiSearch({query, model, stream: true});
+return new Response(stream, {headers: {"Content-Type": "text/event-stream"}});
 ```
 
 ## Error Types

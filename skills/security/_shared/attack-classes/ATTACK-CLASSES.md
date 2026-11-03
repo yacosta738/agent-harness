@@ -23,7 +23,8 @@ that resolves it.
 > action-binding, tool-schema, MCP-identity, and output classes in [AI-AND-LLM.md](AI-AND-LLM.md).
 >
 > **HTTP, web, and identity targets** (ordinary web apps, APIs, reverse proxies, CDNs, gateways,
-> custom HTTP parsers, sessions, CSRF, JWT, OAuth/OIDC, SAML, MFA, passkeys, account recovery/linking,
+> custom HTTP parsers, sessions, CSRF, JWT, OAuth/OIDC, SAML, MFA, passkeys, account
+> recovery/linking,
 > API keys, or mTLS): use [WEB-PROTOCOL-AND-AUTH.md](WEB-PROTOCOL-AND-AUTH.md).
 >
 > **Client-side and browser targets** (SPAs, browser extensions, embedded webviews, service workers,

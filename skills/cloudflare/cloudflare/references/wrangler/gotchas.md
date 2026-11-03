@@ -113,7 +113,7 @@ affect KV, R2, or external API latency.
 **Cause:** Using outdated API **Solution:** Use stable `startWorker` instead:
 
 ```typescript
-import { startWorker } from "wrangler";  // Not unstable_startWorker
+import {startWorker} from "wrangler";  // Not unstable_startWorker
 ```
 
 ### "outboundService not mocking fetch"

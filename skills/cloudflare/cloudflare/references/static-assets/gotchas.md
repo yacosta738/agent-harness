@@ -146,10 +146,14 @@ Set appropriate `Cache-Control` headers:
 
 ```typescript
 // Versioned assets
-'Cache-Control': 'public, max-age=31536000, immutable'
+'Cache-Control'
+:
+'public, max-age=31536000, immutable'
 
 // HTML (revalidate often)
-'Cache-Control': 'public, max-age=0, must-revalidate'
+'Cache-Control'
+:
+'public, max-age=0, must-revalidate'
 ```
 
 See patterns.md:169-189 for implementation.

@@ -31,8 +31,8 @@ export class Counter extends DurableObject {
 
   async increment(): Promise<number> {
     const result = this.sql.exec(
-      'INSERT INTO data VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = value + 1 RETURNING value',
-      'counter', 1
+        'INSERT INTO data VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = value + 1 RETURNING value',
+        'counter', 1
     ).one();
     return result?.value || 1;
   }

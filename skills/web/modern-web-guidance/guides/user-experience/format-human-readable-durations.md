@@ -22,13 +22,13 @@ To format a duration:
 
 ```javascript
 // 1. Create a duration (e.g., from user input)
-const duration = Temporal.Duration.from({ minutes: 90 });
+const duration = Temporal.Duration.from({minutes: 90});
 
 // 2. Balance to hours (converts 90 minutes to 1 hour and 30 minutes)
-const balanced = duration.round({ largestUnit: 'hours' });
+const balanced = duration.round({largestUnit: 'hours'});
 
 // 3. Format using Intl.DurationFormat (Handles pluralization automatically)
-const formatter = new Intl.DurationFormat('en', { style: 'long' });
+const formatter = new Intl.DurationFormat('en', {style: 'long'});
 console.log(formatter.format(balanced));
 // Note: Output may vary by browser (e.g., "1 hour and 30 minutes" or "1 hour, 30 minutes")
 ```
@@ -89,7 +89,7 @@ string construction by extracting the balanced duration properties.
 
 if (typeof Intl.DurationFormat !== 'undefined') {
   // Use recommended Intl API if available
-  const formatter = new Intl.DurationFormat('en', { style: 'long' });
+  const formatter = new Intl.DurationFormat('en', {style: 'long'});
   console.log(formatter.format(balanced));
 } else {
   // Fallback manual formatting (assuming duration is already balanced)

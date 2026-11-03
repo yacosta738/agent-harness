@@ -58,7 +58,7 @@ export default {
       model: "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
     });
 
-    return Response.json({ answer: answer.response });
+    return Response.json({answer: answer.response});
   }
 };
 ```

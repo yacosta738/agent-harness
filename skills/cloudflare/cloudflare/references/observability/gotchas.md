@@ -81,11 +81,13 @@ export default {
 ```sql
 -- WRONG: Undercounts actual events
 SELECT blob1 AS customer_id, COUNT(*) AS total_calls
-FROM api_usage GROUP BY customer_id;
+FROM api_usage
+GROUP BY customer_id;
 
 -- CORRECT: Accounts for sampling
 SELECT blob1 AS customer_id, SUM(_sample_interval) AS total_calls
-FROM api_usage GROUP BY customer_id;
+FROM api_usage
+GROUP BY customer_id;
 ```
 
 ### Trace Context Propagation Limits
@@ -97,11 +99,11 @@ correlation IDs for deep chains
 ```typescript
 // For deep call chains, add custom correlation ID
 const correlationId = crypto.randomUUID();
-console.log({ correlationId, event: 'request_start' });
+console.log({correlationId, event: 'request_start'});
 
 // Pass correlationId through headers to downstream services
 await fetch('https://api.example.com', {
-  headers: { 'X-Correlation-ID': correlationId }
+  headers: {'X-Correlation-ID': correlationId}
 });
 ```
 

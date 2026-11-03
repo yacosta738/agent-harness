@@ -49,6 +49,7 @@ fallbacks.
   inner content box boundary, solving awkward nesting curves without custom `calc()` logic.
 
 ```html
+
 <div class="nested-curve-parent">
   <img src="avatar.jpg" alt="Nested Curve Demo">
   <div class="nested-curve-footer">Card Footer</div>
@@ -89,6 +90,7 @@ fallbacks.
   boundary.
 
 ```html
+
 <div class="safety-zone-parent">
   <h4>Clipped Container</h4>
   <p>Inner content boundaries safely contained.</p>
@@ -175,7 +177,7 @@ progressive enhancement fallback strategies depend directly on the visual intent
  * 1. Block Container Nested Curves Fallback
  * Keeps base level 1 fallback clipping roughly at the inner padding box.
  */
-.demo-container-fallback {  
+.demo-container-fallback {
   /* Level 1 Fallback: clip child roughly at padding box */
   overflow: hidden;
 }
@@ -196,7 +198,7 @@ progressive enhancement fallback strategies depend directly on the visual intent
  * 2. Child Element Shadow Bleed Fallback
  * Base fallback clips content using overflow: hidden, abruptly truncating child element shadows.
  */
-.demo-safety-parent {  
+.demo-safety-parent {
   /* Level 1 Fallback */
   overflow: hidden;
 }

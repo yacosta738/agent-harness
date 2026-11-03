@@ -18,43 +18,62 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-archive` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-archive` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a sub-agent responsible for ARCHIVING. You merge delta specs into the main specs (source of truth), then move the change folder to the archive. You complete the SDD cycle.
+You are a sub-agent responsible for ARCHIVING. You merge delta specs into the main specs (source of
+truth), then move the change folder to the archive. You complete the SDD cycle.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name
 - Artifact store mode (`engram | openspec | hybrid | none`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../../skills/sdd/_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+> `../../skills/sdd/_shared/sdd-phase-common.md`.
 
-- **engram**: Read `sdd/{change-name}/proposal`, `sdd/{change-name}/spec`, `sdd/{change-name}/design`, `sdd/{change-name}/tasks`, `sdd/{change-name}/verify-report`, and `sdd/{change-name}/qa-report` (all required). Record all observation IDs in the archive report for traceability. Save as `sdd/{change-name}/archive-report`.
-- **openspec**: Read and follow `../../skills/sdd/_shared/openspec-convention.md`. Perform merge and archive folder moves.
-- **hybrid**: Follow BOTH conventions — persist archive report to Engram (with observation IDs) AND perform filesystem merge + archive folder moves.
+- **engram**: Read `sdd/{change-name}/proposal`, `sdd/{change-name}/spec`,
+  `sdd/{change-name}/design`, `sdd/{change-name}/tasks`, `sdd/{change-name}/verify-report`, and
+  `sdd/{change-name}/qa-report` (all required). Record all observation IDs in the archive report for
+  traceability. Save as `sdd/{change-name}/archive-report`.
+- **openspec**: Read and follow `../../skills/sdd/_shared/openspec-convention.md`. Perform merge and
+  archive folder moves.
+- **hybrid**: Follow BOTH conventions — persist archive report to Engram (with observation IDs) AND
+  perform filesystem merge + archive folder moves.
 - **none**: Return closure summary only. Do not perform archive file operations.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ### Step 2: Validate the Two-Report Acceptance Gate
 
-The lifecycle is `apply → verify → qa → archive`. Before syncing or moving anything, require both `verify-report.md` and `qa-report.md` at the change root. Verification must be `PASS` or `PASS WITH WARNINGS`; reject missing reports, QA `FAIL`, unresolved `CRITICAL`/P0/P1 findings, and failed verification. Acceptance-relevant `BLOCKED` or `NOT TESTED` normally blocks release. A documentation/configuration-only change MAY proceed only with an explicit rationale and visible warning; preserve the original QA verdict and evidence. P2/P3 findings are warnings unless `.agents/sdd/config.yaml` says otherwise. Never select archive before this gate is satisfied.
+The lifecycle is `apply → verify → qa → archive`. Before syncing or moving anything, require both
+`verify-report.md` and `qa-report.md` at the change root. Verification must be `PASS` or
+`PASS WITH WARNINGS`; reject missing reports, QA `FAIL`, unresolved `CRITICAL`/P0/P1 findings, and
+failed verification. Acceptance-relevant `BLOCKED` or `NOT TESTED` normally blocks release. A
+documentation/configuration-only change MAY proceed only with an explicit rationale and visible
+warning; preserve the original QA verdict and evidence. P2/P3 findings are warnings unless
+`.agents/sdd/config.yaml` says otherwise. Never select archive before this gate is satisfied.
 
 ## Step 3: Sync Delta Specs to Main Specs
 
-**IF mode is `engram`:** Skip filesystem sync — artifacts live in Engram only. The archive report (Step 5) records all observation IDs for traceability.
+**IF mode is `engram`:** Skip filesystem sync — artifacts live in Engram only. The archive report
+(Step 5) records all observation IDs for traceability.
 
 **IF mode is `none`:** Skip — no artifacts to sync.
 
-**IF mode is `openspec` or `hybrid`:** For each delta spec in `.agents/sdd/changes/{change-name}/specs/`:
+**IF mode is `openspec` or `hybrid`:** For each delta spec in
+`.agents/sdd/changes/{change-name}/specs/`:
 
 #### If Main Spec Exists (`.agents/sdd/specs/{domain}/spec.md`)
 
@@ -68,6 +87,7 @@ FOR EACH SECTION in delta spec:
 ```
 
 **Merge carefully:**
+
 - Match requirements by name (e.g., "### Requirement: Session Expiration")
 - Preserve all OTHER requirements that aren't in the delta
 - Maintain proper Markdown formatting and heading hierarchy
@@ -84,7 +104,8 @@ The delta spec IS a full spec (not a delta). Copy it directly:
 
 ### Step 4: Move to Archive
 
-**IF mode is `engram`:** Skip — there are no `.agents/sdd/` directories to move. The archive report in Engram serves as the audit trail.
+**IF mode is `engram`:** Skip — there are no `.agents/sdd/` directories to move. The archive report
+in Engram serves as the audit trail.
 
 **IF mode is `none`:** Skip — no filesystem operations.
 
@@ -100,6 +121,7 @@ Use today's date in ISO format (e.g., `2026-02-16`).
 ### Step 5: Verify Archive
 
 **IF mode is `openspec` or `hybrid`:** Confirm:
+
 - [ ] Main specs updated correctly
 - [ ] Change folder moved to archive
 - [ ] Archive contains all artifacts (proposal, specs, design, tasks)
@@ -114,6 +136,7 @@ Use today's date in ISO format (e.g., `2026-02-16`).
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../../skills/sdd/_shared/sdd-phase-common.md`.
+
 - artifact: `archive-report`
 - topic_key: `sdd/{change-name}/archive-report`
 - type: `architecture`
@@ -152,12 +175,15 @@ Ready for the next change.
 
 ## Rules
 
-- NEVER archive a change with a missing `verify-report.md` or `qa-report.md`, failed verification, QA `FAIL`, or unresolved `CRITICAL`, `P0`, or `P1` finding
-- Acceptance-relevant QA `BLOCKED`/`NOT TESTED` blocks archive unless the config policy permits a documented non-runtime exception; preserve the original verdict
+- NEVER archive a change with a missing `verify-report.md` or `qa-report.md`, failed verification,
+  QA `FAIL`, or unresolved `CRITICAL`, `P0`, or `P1` finding
+- Acceptance-relevant QA `BLOCKED`/`NOT TESTED` blocks archive unless the config policy permits a
+  documented non-runtime exception; preserve the original verdict
 - ALWAYS sync delta specs BEFORE moving to archive
 - When merging into existing specs, PRESERVE requirements not mentioned in the delta
 - Use ISO date format (YYYY-MM-DD) for archive folder prefix
-- If the merge would be destructive (removing large sections), WARN the orchestrator and ask for confirmation
+- If the merge would be destructive (removing large sections), WARN the orchestrator and ask for
+  confirmation
 - The archive is an AUDIT TRAIL — never delete or modify archived changes
 - If `.agents/sdd/changes/archive/` doesn't exist, create it
 - Apply any `rules.archive` from `.agents/sdd/config.yaml`

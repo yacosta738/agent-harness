@@ -7,7 +7,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const user = await env.DATABASE.prepare('SELECT * FROM users WHERE id = ?').bind(userId).first();
     const orders = await env.DATABASE.prepare('SELECT * FROM orders WHERE user_id = ?').bind(userId).all();
-    return Response.json({ user, orders });
+    return Response.json({user, orders});
   }
 };
 ```
@@ -79,11 +79,11 @@ export default {
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const apiUrl = 'https://api.partner.com';
-    const headers = { 'Authorization': `Bearer ${env.API_KEY}` };
+    const headers = {'Authorization': `Bearer ${env.API_KEY}`};
 
     const [profile, transactions] = await Promise.all([
-      fetch(`${apiUrl}/profile`, { headers }),
-      fetch(`${apiUrl}/transactions`, { headers })
+      fetch(`${apiUrl}/profile`, {headers}),
+      fetch(`${apiUrl}/transactions`, {headers})
     ]);
 
     return Response.json({
@@ -101,11 +101,11 @@ export default {
 export default {
   async fetch(request: Request, env: Env) {
     if (!request.headers.get('Authorization')) {
-      return new Response('Unauthorized', { status: 401 });
+      return new Response('Unauthorized', {status: 401});
     }
     const data = await env.BACKEND.fetch(request);
     return new Response(renderPage(await data.json()), {
-      headers: { 'Content-Type': 'text/html' }
+      headers: {'Content-Type': 'text/html'}
     });
   }
 };

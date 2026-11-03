@@ -23,11 +23,11 @@ router.get('/api/credentials', checkUserAuthenticated, async (req, res) => {
 });
 
 router.put('/api/credential/:id', checkUserAuthenticated, async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
+  const {id} = req.params;
+  const {name} = req.body;
   const cred = await db.findCredentialById(id);
   if (!cred || cred.passkeyUserId !== req.user.id) {
-    return res.status(404).json({ error: 'Credential not found.' });
+    return res.status(404).json({error: 'Credential not found.'});
   }
   cred.name = name;
   await db.saveCredential(cred);
@@ -35,13 +35,13 @@ router.put('/api/credential/:id', checkUserAuthenticated, async (req, res) => {
 });
 
 router.delete('/api/credential/:id', checkUserAuthenticated, async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
   const cred = await db.findCredentialById(id);
   if (!cred || cred.passkeyUserId !== req.user.id) {
-    return res.status(404).json({ error: 'Credential not found.' });
+    return res.status(404).json({error: 'Credential not found.'});
   }
   await db.deleteCredential(id);
-  return res.json({ success: true });
+  return res.json({success: true});
 });
 ```
 
@@ -93,7 +93,7 @@ user's synced vaults and your backend database in lockstep.
 
 ```javascript
 // Client-side management synchronization ES module
-import { listFetch, renameFetch, deleteFetch } from './api.js';
+import {listFetch, renameFetch, deleteFetch} from './api.js';
 
 // Base64URL-encoded User ID string (illustration only)
 const base64UrlUserId = "M2YPl-KGnA8";
@@ -101,7 +101,7 @@ const base64UrlUserId = "M2YPl-KGnA8";
 async function syncAcceptedCredentials(currentCredentialsList) {
   try {
     const credentialIds = currentCredentialsList.map(c => c.id); // Map of Base64URL credential ID strings
-    
+
     await PublicKeyCredential.signalAllAcceptedCredentials({
       rpId, // RP ID must match the one defined on the server
       userId: base64UrlUserId, // User ID Base64URL-encoded string
@@ -115,7 +115,7 @@ async function syncAcceptedCredentials(currentCredentialsList) {
 async function loadManagementPanel() {
   const response = await listFetch();
   const list = await response.json();
-  
+
   renderUI(list);
   // Sync on page load
   await syncAcceptedCredentials(list);
@@ -126,7 +126,7 @@ async function performDelete(credentialId) {
   if (response.ok) {
     const updatedResponse = await listFetch();
     const updatedList = await updatedResponse.json();
-    
+
     renderUI(updatedList);
     // Sync after deletion
     await syncAcceptedCredentials(updatedList);
@@ -134,7 +134,7 @@ async function performDelete(credentialId) {
 }
 
 async function performRename(rpId, userId, updatedName, updatedDisplayName) {
-  const response = await renameFetch({ name: updatedName, displayName: updatedDisplayName });
+  const response = await renameFetch({name: updatedName, displayName: updatedDisplayName});
   if (response.ok) {
     try {
       await PublicKeyCredential.signalCurrentUserDetails({
@@ -191,9 +191,9 @@ fallback (e.g. device name from user-agent, or "Unknown passkey provider") and `
 `undefined`. Only look up the registry for non-zeroed AAGUIDs.
 
 ```javascript
-import aaguids from './aaguids.json' with { type: 'json' };
+import aaguids from './aaguids.json' with {type: 'json'};
 
-const { aaguid } = registrationInfo;
+const {aaguid} = registrationInfo;
 if (aaguid === '00000000-0000-0000-0000-000000000000') {
   // use the device name as the passkey provider based on
   // the information derived from the user agent string,
@@ -235,11 +235,12 @@ If the browser does not support `PublicKeyCredential.parseRequestOptionsFromJSON
 'webauthn-polyfills':
 
 ```html 
-<script type="module"> 
-  if (!PublicKeyCredential.parseRequestOptionsFromJSON) { 
-     await import('https://unpkg.com/webauthn-polyfills'); 
-   } 
- </script> 
+
+<script type="module">
+  if (!PublicKeyCredential.parseRequestOptionsFromJSON) {
+    await import('https://unpkg.com/webauthn-polyfills');
+  }
+</script> 
  ``` 
 
 This will also add support for `PublicKeyCredential.prototype.toJSON`.

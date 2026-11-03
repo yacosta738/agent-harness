@@ -23,6 +23,7 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 3. Place your HTML content inside the `<canvas>` element with the `layoutsubtree` attribute.
 
 ```html
+
 <canvas id="canvas" layoutsubtree>
   <div id="html-content"></div>
 </canvas>
@@ -34,19 +35,19 @@ if ('requestPaint' in HTMLCanvasElement.prototype) {
 const observer = new ResizeObserver(([entry]) => {
   const dpc = entry.devicePixelContentBoxSize;
   canvas.width = dpc
-    ? dpc[0].inlineSize
-    : Math.round(entry.contentRect.width * window.devicePixelRatio);
+      ? dpc[0].inlineSize
+      : Math.round(entry.contentRect.width * window.devicePixelRatio);
   canvas.height = dpc
-    ? dpc[0].blockSize
-    : Math.round(entry.contentRect.height * window.devicePixelRatio);
+      ? dpc[0].blockSize
+      : Math.round(entry.contentRect.height * window.devicePixelRatio);
 });
 
 const supportsDevicePixelContentBox =
-  typeof ResizeObserverEntry !== "undefined" &&
-  "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
+    typeof ResizeObserverEntry !== "undefined" &&
+    "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
 const options = supportsDevicePixelContentBox
-  ? { box: "device-pixel-content-box" }
-  : {};
+    ? {box: "device-pixel-content-box"}
+    : {};
 observer.observe(canvas, options);
 ```
 
@@ -57,12 +58,12 @@ observer.observe(canvas, options);
 canvas.onpaint = () => {
   if (gl.texElementImage2D) {
     gl.texElementImage2D(
-      gl.TEXTURE_2D,
-      0,
-      gl.RGBA,
-      gl.RGBA,
-      gl.UNSIGNED_BYTE,
-      uiElement,
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        uiElement,
     );
   }
 };
@@ -74,17 +75,18 @@ canvas if there has been an update to the descendant HTML elements:
 
   ```js
   function render() {
-    // Request to update the canvas
-    canvas.requestPaint();
-    requestAnimationFrame(render);
-  }
+  // Request to update the canvas
+  canvas.requestPaint();
   requestAnimationFrame(render);
+}
 
-  canvas.onpaint = (event) => {
-    if (event.changedElements && event.changedElements.length > 0) {
-      // Update the texture with texElementImage2D, and update the CSS transform as shown in step 6
-    }
-  };
+requestAnimationFrame(render);
+
+canvas.onpaint = (event) => {
+  if (event.changedElements && event.changedElements.length > 0) {
+    // Update the texture with texElementImage2D, and update the CSS transform as shown in step 6
+  }
+};
   ```
 
 6. Update the CSS transform.
@@ -166,6 +168,7 @@ targetHTMLElement.style.transform = computedTransform.toString();
 ## Example code
 
 ```html
+
 <canvas id="canvas" layoutsubtree style="width: 400px; height: 400px;">
   <div id="ui-element">
     <p>WebGL UI Element</p>
@@ -186,12 +189,12 @@ targetHTMLElement.style.transform = computedTransform.toString();
     // 1. Update texture with HTML content
     if (gl.texElementImage2D) {
       gl.texElementImage2D(
-        gl.TEXTURE_2D,
-        0,
-        gl.RGBA,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        uiElement,
+          gl.TEXTURE_2D,
+          0,
+          gl.RGBA,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          uiElement,
       );
     }
 
@@ -208,20 +211,20 @@ targetHTMLElement.style.transform = computedTransform.toString();
       const gridHeight = uiElement.offsetHeight * dprY;
 
       const cssToUnitSpace = new DOMMatrix()
-        .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
-        .translate(-gridWidth / 2, -gridHeight / 2);
+          .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
+          .translate(-gridWidth / 2, -gridHeight / 2);
 
       const clipToCanvasViewport = new DOMMatrix()
-        .translate(canvas.width / 2, canvas.height / 2)
-        .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
+          .translate(canvas.width / 2, canvas.height / 2)
+          .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
 
       const screenSpaceTransform = clipToCanvasViewport
-        .multiply(mvpDOM)
-        .multiply(cssToUnitSpace);
+          .multiply(mvpDOM)
+          .multiply(cssToUnitSpace);
 
       const computedTransform = canvas.getElementTransform(
-        uiElement,
-        screenSpaceTransform,
+          uiElement,
+          screenSpaceTransform,
       );
       uiElement.style.transform = computedTransform.toString();
     }

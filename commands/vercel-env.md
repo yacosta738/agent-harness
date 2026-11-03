@@ -9,7 +9,7 @@ leakage.
 
 > **🔒 Never-Echo-Secrets Rule**: Environment variable **values** must never appear in command
 > output, summaries, or conversation text. Only show variable **names**, **environments**, and *
-*metadata** (created date, type). This rule applies to all subcommands.
+> *metadata** (created date, type). This rule applies to all subcommands.
 
 ## Preflight
 
@@ -64,8 +64,8 @@ Present results as a table of variable **names only** grouped by environment. **
 
 | Name         | Production | Preview | Development |
 |--------------|------------|---------|-------------|
-| DATABASE_URL | ✓          | ✓       | ✓           |
-| API_KEY      | ✓          | ✓       | —           |
+| DATABASE_URL | ✓         | ✓      | ✓          |
+| API_KEY      | ✓         | ✓      | —           |
 
 ### "pull"
 
@@ -132,7 +132,7 @@ vercel env rm MY_SECRET production
 vercel env rm MY_SECRET
 ```
 
-Confirm the target environment(s) with the user before executing.
+Confirm the target environment (s) with the user before executing.
 
 ### "diff"
 
@@ -251,8 +251,8 @@ vercel env ls
 
 Re-list environment variables and confirm:
 
-- For `add`: the new variable name appears in the expected environment(s).
-- For `rm`: the variable name no longer appears in the target environment(s).
+- For `add`: the new variable name appears in the expected environment (s).
+- For `rm`: the variable name no longer appears in the target environment (s).
 
 If verification fails (variable still present after remove, or missing after add), report the
 discrepancy and suggest retrying.

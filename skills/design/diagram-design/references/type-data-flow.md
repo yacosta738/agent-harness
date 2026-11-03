@@ -17,46 +17,46 @@ This type is **parametric** — the inputs schema in §1 drives every coordinate
 ## 1. Inputs — the parameter contract
 
 ```yaml
-lanes:                              # 1..4 horizontal swimlanes (top to bottom)
-  - { name: ["DATA", "ADMINS"],     key: "ADM" }
-  - { name: ["DATA", "ENGINEERS"],  key: "ENG" }
-  - { name: ["DATA", "SCIENTISTS"], key: "SCI" }
-  - { name: ["DATA", "CONSUMERS"],  key: "CON" }
+lanes: # 1..4 horizontal swimlanes (top to bottom)
+  - { name: [ "DATA", "ADMINS" ],     key: "ADM" }
+  - { name: [ "DATA", "ENGINEERS" ],  key: "ENG" }
+  - { name: [ "DATA", "SCIENTISTS" ], key: "SCI" }
+  - { name: [ "DATA", "CONSUMERS" ],  key: "CON" }
 
-steps:                              # 1..6 columns (left to right)
+steps: # 1..6 columns (left to right)
   - { number: "01", label: "COLLECT" }
   - { number: "02", label: "STORE" }
   - { number: "03", label: "TRANSFORM" }
   - { number: "04", label: "ANALYZE",  focal: true }   # focal step header chip — accent fill
   - { number: "05", label: "PUBLISH" }
 
-nodes:                              # explicit per-cell entries; empty cells render nothing
+nodes: # explicit per-cell entries; empty cells render nothing
   - { lane: "ADM", step: 0, title: "Project Setup",   sub: "create · assign roles",     tool: "Platform console" }
   - { lane: "ADM", step: 1, title: "Access Control",  sub: "bucket policies · LDAP",    tool: "MinIO · LDAP console",
       color: "#b85450" }            # tinted rust-red to flag governance/identity concern
   - { lane: "ENG", step: 0, title: "Source Ingest",   sub: "ext. sources → raw",        tool: "NiFi · API · SFTP",
-      chips: {in: "WB", out: "DB"} }                    # web payload in, dataset out
+      chips: { in: "WB", out: "DB" } }                    # web payload in, dataset out
   - { lane: "ENG", step: 1, title: "Raw Store",       sub: "raw landing zones",         tool: "MinIO raw",
-      chips: {in: "DB", out: "DB"} }                    # raw stays raw inside the landing zone
+      chips: { in: "DB", out: "DB" } }                    # raw stays raw inside the landing zone
   - { lane: "ENG", step: 2, title: "Clean & Stage",   sub: "raw → staging → anon",      tool: "NiFi · Trino",
-      chips: {in: "DB", out: "TB"} }                    # raw dataset → analysis-ready table
+      chips: { in: "DB", out: "TB" } }                    # raw dataset → analysis-ready table
   - { lane: "SCI", step: 3, title: "Explore & Model", sub: "anon data → insights",      tool: "JupyterHub · Trino",
-      chips: {in: "TB", out: "FL"}, focal: true }       # focal — table in, file/report out
+      chips: { in: "TB", out: "FL" }, focal: true }       # focal — table in, file/report out
   - { lane: "SCI", step: 4, title: "Publish Findings", sub: "models → dashboards",      tool: "Superset · Reports",
-      chips: {in: "FL", out: "FL"} }                    # report in, report out (pass-through to publish)
+      chips: { in: "FL", out: "FL" } }                    # report in, report out (pass-through to publish)
   - { lane: "CON", step: 4, title: "Query Insights",   sub: "aggregated views",         tool: "Trino (read-only)",
-      chips: {in: "TB", out: "TB"} }                    # consumers read tables, hand off tables
+      chips: { in: "TB", out: "TB" } }                    # consumers read tables, hand off tables
 
-arrows:                             # explicit edges; styles bind to topology (see §3)
-  - { from: {lane: "ADM", step: 0}, to: {lane: "ADM", step: 1}, style: "muted" }
-  - { from: {lane: "ADM", step: 0}, to: {lane: "ENG", step: 0}, style: "trigger" }   # dashed governance
-  - { from: {lane: "ADM", step: 1}, to: {lane: "ENG", step: 1}, style: "trigger" }
-  - { from: {lane: "ENG", step: 0}, to: {lane: "ENG", step: 1}, style: "muted" }
-  - { from: {lane: "ENG", step: 1}, to: {lane: "ENG", step: 2}, style: "muted" }
-  - { from: {lane: "ENG", step: 2}, to: {lane: "SCI", step: 3}, style: "accent",     # focal cross-role
+arrows: # explicit edges; styles bind to topology (see §3)
+  - { from: { lane: "ADM", step: 0 }, to: { lane: "ADM", step: 1 }, style: "muted" }
+  - { from: { lane: "ADM", step: 0 }, to: { lane: "ENG", step: 0 }, style: "trigger" }   # dashed governance
+  - { from: { lane: "ADM", step: 1 }, to: { lane: "ENG", step: 1 }, style: "trigger" }
+  - { from: { lane: "ENG", step: 0 }, to: { lane: "ENG", step: 1 }, style: "muted" }
+  - { from: { lane: "ENG", step: 1 }, to: { lane: "ENG", step: 2 }, style: "muted" }
+  - { from: { lane: "ENG", step: 2 }, to: { lane: "SCI", step: 3 }, style: "accent",     # focal cross-role
       label: "anon data" }
-  - { from: {lane: "SCI", step: 3}, to: {lane: "SCI", step: 4}, style: "muted" }
-  - { from: {lane: "SCI", step: 4}, to: {lane: "CON", step: 4}, style: "link" }     # teal: published
+  - { from: { lane: "SCI", step: 3 }, to: { lane: "SCI", step: 4 }, style: "muted" }
+  - { from: { lane: "SCI", step: 4 }, to: { lane: "CON", step: 4 }, style: "link" }     # teal: published
 
 dark: false
 ```
@@ -191,13 +191,20 @@ Four styles, bound to topology. Connectors are drawn **before** all node rects (
 **Defs block** (required, three markers):
 
 ```svg
+
 <defs>
   <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
     <circle cx="11" cy="11" r="0.8" fill="{ink @ 0.10}"/>
   </pattern>
-  <marker id="arr-muted"  markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="{muted}"/></marker>
-  <marker id="arr-accent" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="{accent}"/></marker>
-  <marker id="arr-link"   markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="{link}"/></marker>
+  <marker id="arr-muted" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="{muted}"/>
+  </marker>
+  <marker id="arr-accent" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="{accent}"/>
+  </marker>
+  <marker id="arr-link" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+    <path d="M0,0 L6,3 L0,6 Z" fill="{link}"/>
+  </marker>
 </defs>
 ```
 

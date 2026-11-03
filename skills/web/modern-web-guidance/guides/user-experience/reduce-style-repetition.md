@@ -37,8 +37,8 @@ Ensure consistent color gradients across your app by encapsulating gradient logi
 provides a default value to provide consistency that can be overridden.
 
 ```css
-@function --fancy-gradient(--start-color <color>, --end-color <color>, --angle: 98deg) returns <image>{
-  result: linear-gradient(in oklab var(--angle), var(--start-color), var(--end-color) );
+@function --fancy-gradient(--start-color <color>, --end-color <color>, --angle: 98deg) returns <image> {
+  result: linear-gradient(in oklab var(--angle), var(--start-color), var(--end-color));
 }
 
 .card {
@@ -54,7 +54,7 @@ the environment. When using conditional logic in a function, note that the `@fun
 last value that matches based on the screen size, container size, or other query.
 
 ```css
-@function --grid-template(--count <number>){
+@function --grid-template(--count <number>) {
   /* MANDATORY: Put default value first. */
   result: 1fr; /* Default: stack */
   @media (min-width: 800px) {

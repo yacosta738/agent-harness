@@ -44,7 +44,8 @@ picker container.
   </button>
   <option value="system">
     <!-- MANDATORY: Decorative inline SVGs MUST set aria-hidden="true" to prevent redundant screen reader announcement -->
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
       <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
       <line x1="8" y1="21" x2="16" y2="21"></line>
       <line x1="12" y1="17" x2="12" y2="21"></line>
@@ -52,7 +53,8 @@ picker container.
     System Default
   </option>
   <option value="light">
-    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
       <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -108,18 +110,17 @@ picker container.
 .animated-select::picker(select) {
   background: white;
   border-radius: 12px;
-  box-shadow: 0 10px 25px -3px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
   padding: 0.5rem;
   margin-top: 0.25rem;
   width: anchor-size(width);
   overflow: hidden;
 
   /* The crucial transition setting for popover animations */
-  transition:
-    display 0.4s allow-discrete,
-    overlay 0.4s allow-discrete,
-    opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: display 0.4s allow-discrete,
+  overlay 0.4s allow-discrete,
+  opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+  height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 0;
   height: 0;
 }

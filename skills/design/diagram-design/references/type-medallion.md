@@ -19,35 +19,35 @@ checklist read identically across types.
 ## 1. Inputs — the parameter contract
 
 ```yaml
-title:    "Five-Tier Medallion Architecture"
+title: "Five-Tier Medallion Architecture"
 subtitle: "Quarterly survey through Raw → Anonymized → Staging → Aggregated → Archive"
 
-tiers:                                # 3..6 tier columns, ordered left → right
+tiers: # 3..6 tier columns, ordered left → right
   - { name: "Raw",        bucket: "raw-bucket",        style: "outer",
       fields: { tool: "NiFi · raw write",          format: "CSV · Parquet · JSON", writer: "Data Engineer",
-                example: ["Q1 dump · w/ PII", "verbatim CAPI export"] } }
+                example: [ "Q1 dump · w/ PII", "verbatim CAPI export" ] } }
   - { name: "Anonymized", bucket: "anon-bucket",       style: "default",
       fields: { tool: "Trino INSERT",              format: "Iceberg · partitioned", writer: "Data Engineer",
-                example: ["no name · address", "stable household ID"] } }
+                example: [ "no name · address", "stable household ID" ] } }
   - { name: "Staging",    bucket: "staging-bucket",    style: "default",  color: "#c9a23a",   # warm yellow — analytical working zone
       fields: { tool: "Trino · JupyterHub",        format: "Iceberg · cleaned",     writer: "Data Scientist",
-                example: ["weighted records", "harmonised codings"] } }
+                example: [ "weighted records", "harmonised codings" ] } }
   - { name: "Aggregated", bucket: "aggregated-bucket", style: "focal",  focal: true,
       fields: { tool: "Trino INSERT · SAS JDBC",   format: "Iceberg · indicators",  writer: "Data Scientist",
-                example: ["unemployment rate", "labour participation"] } }
+                example: [ "unemployment rate", "labour participation" ] } }
   - { name: "Archive",    bucket: "archive-bucket",    style: "cold",
       fields: { tool: "MinIO lifecycle",           format: "cold tier · immutable", writer: "Data Administrator",
-                example: ["historical Q1–Q4 sets", "5+ years retained"] } }
+                example: [ "historical Q1–Q4 sets", "5+ years retained" ] } }
 
 example_label: "Quarterly survey example" # bottom field label (varies per domain)
 
-promotions:                           # adjacent-tier arrows; len = n_tiers - 1
-  - { from: 0, to: 1, label: "PII REMOVE",    style: "normal"    }
-  - { from: 1, to: 2, label: "CLEAN+WEIGHT",  style: "normal"    }
-  - { from: 2, to: 3, label: "AGGREGATE",     style: "focal"     }    # auto-accent because target is focal
+promotions: # adjacent-tier arrows; len = n_tiers - 1
+  - { from: 0, to: 1, label: "PII REMOVE",    style: "normal" }
+  - { from: 1, to: 2, label: "CLEAN+WEIGHT",  style: "normal" }
+  - { from: 2, to: 3, label: "AGGREGATE",     style: "focal" }    # auto-accent because target is focal
   - { from: 3, to: 4, label: "LIFECYCLE",     style: "lifecycle" }    # dashed
 
-paths:                                # 0..2 write-method cards at the bottom (optional)
+paths: # 0..2 write-method cards at the bottom (optional)
   - { tag: "SQL PATH",      title: "Trino INSERT INTO … SELECT",
       sub: "filter · reshape · join · aggregate — set-based transforms" }
   - { tag: "NOTEBOOK PATH", title: "DuckDB + Python/R in JupyterHub",
@@ -145,9 +145,10 @@ field rows (absolute y):
 26-px gap to the next field's label absorbs the second line cleanly.
 
 ```svg
+
 <foreignObject x="{field_x}" y="{value_top}" width="140" height="24">
   <div xmlns="http://www.w3.org/1999/xhtml"
-       style="font-family: {sublabel}; color: {muted}; line-height: 1.25;">
+    style="font-family: {sublabel}; color: {muted}; line-height: 1.25;">
     {field_value}
   </div>
 </foreignObject>
@@ -188,8 +189,9 @@ the cards, peaking at y ≈ 20. Both the connector and its label remain fully vi
 masks, no overlap with card content.
 
 ```svg
+
 <path d="M {tier_cx(i)},{tier_y} C {tier_cx(i)},0 {tier_cx(i+1)},0 {tier_cx(i+1)},{tier_y}"
-      fill="none" stroke="…" stroke-width="…" marker-end="…"/>
+  fill="none" stroke="…" stroke-width="…" marker-end="…"/>
 ```
 
 Concrete for the canonical 5-tier shape (`tier_y = 80`, tier centers at x = 102, 290, 478, 666,
@@ -276,11 +278,18 @@ Per-card content:
 Three styles, bound to topology. Mirror §3 of `type-process.md` so the rule reads identically.
 
 ```svg
+
 <defs>
-  <marker id="arrow"        markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="{muted}"/></marker>
-  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="{accent}"/></marker>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="{muted}"/>
+  </marker>
+  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="{accent}"/>
+  </marker>
   <!-- Per-color markers: declare one per custom tier color in use. -->
-  <marker id="arrow-yellow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#c9a23a"/></marker>
+  <marker id="arrow-yellow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#c9a23a"/>
+  </marker>
 </defs>
 ```
 

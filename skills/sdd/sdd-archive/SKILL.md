@@ -103,15 +103,16 @@ Return to the orchestrator:
 ```markdown
 ## Change Archived
 
-**Change**: {change-name}
-**Archived to**: .agents/sdd/changes/archive/{YYYY-MM-DD}-{change-name}/
+**Change**: {change-name} **Archived to**: .agents/sdd/changes/archive/{YYYY-MM-DD}-{change-name}/
 
 ### Specs Synced
+
 | Domain | Action | Details |
 |--------|--------|---------|
 | {domain} | Created/Updated | {N added, M modified, K removed requirements} |
 
 ### Archive Contents
+
 - proposal.md ✅
 - specs/ ✅
 - design.md ✅
@@ -120,10 +121,13 @@ Return to the orchestrator:
 - qa-report.md ✅ (preserved acceptance evidence)
 
 ### Source of Truth Updated
+
 The following specs now reflect the new behavior:
+
 - `.agents/sdd/specs/{domain}/spec.md`
 
 ### SDD Cycle Complete
+
 The change has been fully planned, implemented, verified, and archived.
 Ready for the next change.
 ```

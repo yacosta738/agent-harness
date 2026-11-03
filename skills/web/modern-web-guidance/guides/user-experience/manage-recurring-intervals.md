@@ -26,19 +26,19 @@ const startDate = Temporal.PlainDate.from('2024-01-31');
 
 // 2. Add 1 month with default 'constrain' overflow
 // Jan 31 + 1 month -> Feb 29 (2024 is a leap year)
-const nextBillingDate = startDate.add({ months: 1 });
+const nextBillingDate = startDate.add({months: 1});
 console.log(`Next billing: ${nextBillingDate.toString()}`); // 2024-02-29
 
 // 3. Add 1 month to Feb 29
 // Feb 29 + 1 month -> Mar 29
 // Note: Day is preserved if valid, otherwise constrained.
-const thirdBillingDate = nextBillingDate.add({ months: 1 });
+const thirdBillingDate = nextBillingDate.add({months: 1});
 console.log(`Third billing: ${thirdBillingDate.toString()}`); // 2024-03-29
 
 // Example with 'reject' strategy
 try {
   // Jan 31 + 1 month with 'reject' throws because Feb 31 is invalid
-  const invalidDate = startDate.add({ months: 1 }, { overflow: 'reject' });
+  const invalidDate = startDate.add({months: 1}, {overflow: 'reject'});
 } catch (e) {
   console.log("Caught expected error:", e.name); // RangeError
 }
@@ -79,6 +79,6 @@ polyfill. The standard reference polyfill is `@js-temporal/polyfill`.
 
 function initializeApp() {
   const date = Temporal.PlainDate.from('2024-01-31');
-  console.log(date.add({ months: 1 }).toString());
+  console.log(date.add({months: 1}).toString());
 }
 ```

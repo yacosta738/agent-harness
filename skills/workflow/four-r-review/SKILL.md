@@ -63,6 +63,7 @@ Review every meaningful change through these four lenses, in this order:
 - R4 Resilience: ✅ / ⚠️ / ❌ — finding
 
 ### Verdict
+
 - Ship / Ship with fixes / Do not ship
 ```
 

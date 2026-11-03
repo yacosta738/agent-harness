@@ -33,6 +33,7 @@ call traces, incident reconstructions, auth/token refresh paths with branching.
 Define once in `<defs>` and use for fire-and-forget only:
 
 ```svg
+
 <marker id="arrow-open" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
   <polyline points="0 0, 8 3, 0 6" fill="none" stroke="#4f5d75" stroke-width="1.2"/>
 </marker>
@@ -52,13 +53,14 @@ top→down inside the frame.
 ```svg
 <!-- Frame: light ink wash + hairline. Label tab top-left. -->
 <rect x="X" y="Y" width="W" height="H" rx="4"
-      fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
-<!-- Operator tab -->
+  fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+  <!-- Operator tab -->
 <rect x="X" y="Y" width="40" height="16" rx="2"
-      fill="#f5f5f5" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
+fill="#f5f5f5" stroke="rgba(45,49,66,0.22)" stroke-width="1"/>
 <text x="X+20" y="Y+12" fill="#4f5d75" font-size="8"
-      font-family="'Geist Mono', monospace" text-anchor="middle"
-      letter-spacing="0.12em">ALT</text>
+font-family="'Geist Mono', monospace" text-anchor="middle"
+letter-spacing="0.12em">ALT
+</text>
 ```
 
 Dark mode: frame fill `rgba(245,245,245,0.04)`, stroke `rgba(245,245,245,0.22)`, tab fill = dark
@@ -77,11 +79,12 @@ Dark mode: frame fill `rgba(245,245,245,0.04)`, stroke `rgba(245,245,245,0.22)`,
 ```svg
 <!-- Guard: left-aligned inside the frame, mono -->
 <text x="X+12" y="GUARD_Y" fill="#4f5d75" font-size="8"
-      font-family="'Geist Mono', monospace" letter-spacing="0.04em">[token valid]</text>
+  font-family="'Geist Mono', monospace" letter-spacing="0.04em">[token valid]
+</text>
 
-<!-- alt region divider -->
+  <!-- alt region divider -->
 <line x1="X+8" y1="DIV_Y" x2="X+W-8" y2="DIV_Y"
-      stroke="rgba(45,49,66,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
+stroke="rgba(45,49,66,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
 ```
 
 ### Fragment layout rules
@@ -117,15 +120,17 @@ If you exceed, split: overview (happy path) + detail (failure / refresh path).
 ## Lifeline primitive
 
 ```svg
+
 <line x1="CX" y1="TOP" x2="CX" y2="BOTTOM"
-      stroke="rgba(45,49,66,0.20)" stroke-width="1" stroke-dasharray="3,3"/>
+  stroke="rgba(45,49,66,0.20)" stroke-width="1" stroke-dasharray="3,3"/>
 ```
 
 ## Activation bar primitive
 
 ```svg
+
 <rect x="CX-4" y="TOP" width="8" height="H"
-      fill="rgba(45,49,66,0.06)" stroke="#4f5d75" stroke-width="0.8"/>
+  fill="rgba(45,49,66,0.06)" stroke="#4f5d75" stroke-width="0.8"/>
 ```
 
 ## Anti-patterns

@@ -36,14 +36,15 @@ Link your input to its error message using `aria-errormessage` (or `aria-describ
 support).
 
 ```html
+
 <form>
   <div class="field">
     <label for="email">Email</label>
-    <input 
-      type="email" 
-      id="email" 
-      required 
-      aria-errormessage="email-error"
+    <input
+        type="email"
+        id="email"
+        required
+        aria-errormessage="email-error"
     >
     <span id="email-error" class="error-msg">
       Please enter a valid email address.
@@ -84,7 +85,7 @@ const updateAriaState = (event) => {
 
   // Check if the browser currently considers this input "user-invalid"
   const isUserInvalid = input.matches(':user-invalid');
-  
+
   if (isUserInvalid) {
     input.setAttribute('aria-invalid', 'true');
   } else {
@@ -187,14 +188,14 @@ const UserInvalidFallback = (() => {
     if (!input.matches?.('input, textarea, select')) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -212,7 +213,7 @@ const UserInvalidFallback = (() => {
     document.addEventListener('reset', handleEvent, true); // Capture resets
   };
 
-  return { init };
+  return {init};
 })();
 
 // Initialize globally

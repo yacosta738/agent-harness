@@ -28,15 +28,16 @@ page load. It will only match if:
 ### 1. HTML Structure
 
 ```html
+
 <form id="feedback-form">
   <div class="field">
     <label for="full-name">Full Name</label>
     <input
-      type="text"
-      id="full-name"
-      name="full-name"
-      required
-      aria-errormessage="name-error"
+        type="text"
+        id="full-name"
+        name="full-name"
+        required
+        aria-errormessage="name-error"
     >
     <!-- MANDATORY: Include an icon or distinct non-color indicator alongside error text -->
     <div id="name-error" class="error-msg">
@@ -177,14 +178,14 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -202,7 +203,7 @@ const UserInvalidFallback = (() => {
     root.addEventListener('reset', handleEvent, true); // Capture resets
   };
 
-  return { init };
+  return {init};
 })();
 
 // Initialize for a specific form

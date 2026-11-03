@@ -13,6 +13,7 @@ scroll-state containers, and then query that state to style descendants.
 The parent container must have `scroll-snap-type` enabled.
 
 ```html
+
 <div class="carousel">
   <div class="carousel-item">
     <div class="card">Product 1 content</div>
@@ -41,7 +42,7 @@ container.
 .carousel-item {
   /* Define where the item snaps within the container */
   scroll-snap-align: center;
-  
+
   /* MANDATORY: Establish this element as a scroll-state query container */
   container-type: scroll-state;
 }
@@ -61,12 +62,12 @@ problems for some users, so we disable it completely.
 ```css
 /* Specify transition outside of queries so that it is applied regardless of state.  */
 .card {
-  transition:
-    scale 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    background-color 0.4s,
-    color 0.4s,
-    box-shadow 0.4s;
+  transition: scale 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+  background-color 0.4s,
+  color 0.4s,
+  box-shadow 0.4s;
 }
+
 /* 
 Only show the effect for users not requesting reduced motion. Disable completely, including the color change, as it causes a flash that may be problematic.
 */

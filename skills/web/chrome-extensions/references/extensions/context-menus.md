@@ -3,7 +3,11 @@
 ## Setup
 
 ```json
-{ "permissions": ["contextMenus"] }
+{
+  "permissions": [
+    "contextMenus"
+  ]
+}
 ```
 
 ## Creating Menus
@@ -50,15 +54,17 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 ## Submenus
 
 ```js
-chrome.contextMenus.create({ id: 'parent', title: 'My Extension', contexts: ['page'] });
-chrome.contextMenus.create({ id: 'child1', parentId: 'parent', title: 'Option 1', contexts: ['page'] });
-chrome.contextMenus.create({ id: 'child2', parentId: 'parent', title: 'Option 2', contexts: ['page'] });
+chrome.contextMenus.create({id: 'parent', title: 'My Extension', contexts: ['page']});
+chrome.contextMenus.create(
+    {id: 'child1', parentId: 'parent', title: 'Option 1', contexts: ['page']});
+chrome.contextMenus.create(
+    {id: 'child2', parentId: 'parent', title: 'Option 2', contexts: ['page']});
 ```
 
 ## Dynamic Updates
 
 ```js
-chrome.contextMenus.update('save-link', { title: 'New Title' });
+chrome.contextMenus.update('save-link', {title: 'New Title'});
 chrome.contextMenus.remove('save-link');
 chrome.contextMenus.removeAll();
 ```

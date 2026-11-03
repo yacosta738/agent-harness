@@ -59,7 +59,7 @@ category standards instead of hand-rolling cryptography.
 // Options generation example
 const options = {
   challenge: serverGeneratedBase64UrlChallenge, // Cryptographically random challenge
-  rp: { id: "example.com", name: "Secure Application" },
+  rp: {id: "example.com", name: "Secure Application"},
   user: {
     id: userBase64UrlId, // Unique base64url string identifying the account
     name: "user@example.com",
@@ -84,7 +84,7 @@ const options = {
     residentKey: "required",
     requireResidentKey: true,
     userVerification: "preferred",
-    ...(isPromotionFlow && { authenticatorAttachment: "platform" }),
+    ...(isPromotionFlow && {authenticatorAttachment: "platform"}),
   },
 };
 ```
@@ -124,28 +124,28 @@ const options = {
 
 ```javascript
 // optionsFetch and registerVerifyFetch are app-defined HTTP methods
-import { optionsFetch, registerVerifyFetch } from "./api.js";
+import {optionsFetch, registerVerifyFetch} from "./api.js";
 
 async function registerPasskey(isPromotion = false) {
   // Verify passkey capability and conditional UI are available
   const capabilities = await PublicKeyCredential.getClientCapabilities();
   if (
-    !capabilities.passkeyPlatformAuthenticator ||
-    !capabilities.conditionalGet
+      !capabilities.passkeyPlatformAuthenticator ||
+      !capabilities.conditionalGet
   ) {
     // Hide "Create passkey" buttons and fall back to password flows instead
     showStandardPasswordFallbackUI();
     return;
   }
 
-  const creationOptionsJSON = await optionsFetch({ promotion: isPromotion });
+  const creationOptionsJSON = await optionsFetch({promotion: isPromotion});
   const publicKey =
-    PublicKeyCredential.parseCreationOptionsFromJSON(creationOptionsJSON);
+      PublicKeyCredential.parseCreationOptionsFromJSON(creationOptionsJSON);
 
   let credential;
   try {
     // passkey prompt execution
-    credential = await navigator.credentials.create({ publicKey });
+    credential = await navigator.credentials.create({publicKey});
   } catch (err) {
     if (err.name === "InvalidStateError") {
       console.log("A passkey already exists for this account.");

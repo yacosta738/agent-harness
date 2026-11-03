@@ -95,8 +95,15 @@ Controls which requests invoke Functions (auto-generated for most frameworks):
 ```json
 {
   "version": 1,
-  "include": ["/*"],
-  "exclude": ["/build/*", "/static/*", "/assets/*", "/*.{ico,png,jpg,css,js}"]
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/build/*",
+    "/static/*",
+    "/assets/*",
+    "/*.{ico,png,jpg,css,js}"
+  ]
 }
 ```
 

@@ -41,6 +41,7 @@ while fetching the script). The `blocking="render"` attribute ensures the browse
 anything until the script has executed.
 
 ```html
+
 <head>
   <!--
     MANDATORY: Both `async` and `blocking="render"` are required.
@@ -49,9 +50,9 @@ anything until the script has executed.
       ensuring experiment changes are applied before the user sees anything.
   -->
   <script
-    src="https://cdn.example.com/experiment-sdk.js"
-    async
-    blocking="render"
+      src="https://cdn.example.com/experiment-sdk.js"
+      async
+      blocking="render"
   ></script>
 </head>
 ```
@@ -64,6 +65,7 @@ or those added via script do not. Use `blocking="render"` explicitly when the st
 dynamically or when you want to be explicit about the intent.
 
 ```html
+
 <head>
   <!--
     DO: Use blocking="render" on experiment stylesheets that are
@@ -71,9 +73,9 @@ dynamically or when you want to be explicit about the intent.
     This ensures variant styles are applied before first paint.
   -->
   <link
-    rel="stylesheet"
-    href="https://cdn.example.com/experiment-variant-b.css"
-    blocking="render"
+      rel="stylesheet"
+      href="https://cdn.example.com/experiment-variant-b.css"
+      blocking="render"
   >
 </head>
 ```
@@ -85,6 +87,7 @@ If the experiment logic is lightweight enough to inline, use an inline module sc
 DOM changes directly.
 
 ```html
+
 <head>
   <!--
     DO: Use an inline module script when the experiment logic is small.
@@ -94,7 +97,7 @@ DOM changes directly.
   <script type="module" blocking="render">
     // Fetch the experiment configuration from your testing platform.
     const config = await fetch('/api/experiment?id=homepage-cta')
-      .then(res => res.json());
+        .then(res => res.json());
 
     // Apply the variant by setting a data attribute on <html>.
     // CSS rules keyed to this attribute will style the variant.
@@ -147,15 +150,16 @@ DO: Use a lightweight anti-flicker snippet as a fallback only when `blocking="re
 supported. Feature-detect support and skip the fallback in browsers that handle it natively.
 
 ```html
+
 <head>
   <!--
     DO: Load the experiment script with blocking="render" for
     browsers that support it. This is the preferred approach.
   -->
   <script
-    src="https://cdn.example.com/experiment-sdk.js"
-    async
-    blocking="render"
+      src="https://cdn.example.com/experiment-sdk.js"
+      async
+      blocking="render"
   ></script>
 
   <script>

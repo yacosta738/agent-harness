@@ -31,12 +31,12 @@ Then follow the [README.md](README.md#deployment) deployment instructions to run
 
 ## Available npm Scripts
 
-| Command | What it does |
-|---------|-------------|
+| Command            | What it does                                                     |
+|--------------------|------------------------------------------------------------------|
 | `npm run validate` | Validate all `{file:}` refs, adapter includes, and command paths |
-| `npm run list` | List files included in a preset |
-| `npm run render` | Render bundle without validating |
-| `npm run deploy` | Render + validate (full pipeline) |
+| `npm run list`     | List files included in a preset                                  |
+| `npm run render`   | Render bundle without validating                                 |
+| `npm run deploy`   | Render + validate (full pipeline)                                |
 
 ### Flags
 
@@ -47,11 +47,11 @@ npm run deploy -- --preset recommended --output dist/opencode
 npm run validate -- --root dist/opencode    # validate a pre-rendered bundle
 ```
 
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--preset` | `recommended` | Which preset to deploy (from `harness.config.json`) |
-| `--output` | `dist/opencode` | Where to write the bundle |
-| `--validate-only` | `false` | Skip render, only validate an existing bundle |
+| Flag              | Default         | Description                                         |
+|-------------------|-----------------|-----------------------------------------------------|
+| `--preset`        | `recommended`   | Which preset to deploy (from `harness.config.json`) |
+| `--output`        | `dist/opencode` | Where to write the bundle                           |
+| `--validate-only` | `false`         | Skip render, only validate an existing bundle       |
 
 ## Installing Node.js
 
@@ -91,11 +91,13 @@ npm --version
 
 Open a **new** terminal window. The installer updates `PATH` but existing terminals don't see it.
 
-If it still doesn't work, search for "Environment Variables" in Windows Settings → add `C:\Program Files\nodejs\` to your `Path`.
+If it still doesn't work, search for "Environment Variables" in Windows Settings → add
+`C:\Program Files\nodejs\` to your `Path`.
 
 ### `npm run deploy` fails with "bundle dir not found" (validate-only mode)
 
-`--validate-only` skips the render step. The bundle must already exist — run a regular `npm run deploy` once first, or omit `--validate-only`.
+`--validate-only` skips the render step. The bundle must already exist — run a regular
+`npm run deploy` once first, or omit `--validate-only`.
 
 ### Node version too old
 
@@ -128,12 +130,12 @@ every pull.
 The previous Bash (`deploy.sh`) and Python (`check-refs.py`) entrypoints are
 gone. Everything now goes through Node ESM scripts and `npm run`:
 
-| Old | New |
-|-----|-----|
-| `bash scripts/deploy.sh --preset X` | `npm run deploy -- --preset X` |
-| `python3 scripts/check-refs.py` | `npm run validate` |
-| `node scripts/generate-bundle.mjs list` | `npm run list` |
-| `node scripts/generate-bundle.mjs render` | `npm run render` |
+| Old                                                | New                                                |
+|----------------------------------------------------|----------------------------------------------------|
+| `bash scripts/deploy.sh --preset X`                | `npm run deploy -- --preset X`                     |
+| `python3 scripts/check-refs.py`                    | `npm run validate`                                 |
+| `node scripts/generate-bundle.mjs list`            | `npm run list`                                     |
+| `node scripts/generate-bundle.mjs render`          | `npm run render`                                   |
 | `py -3 scripts/check-refs.py --root dist/opencode` | `node scripts/check-refs.mjs --root dist/opencode` |
 
 All scripts are pure Node — no shell, no Python. They use forward slashes in

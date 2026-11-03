@@ -69,20 +69,26 @@ Avoid zoom, parallax, bounce, shake, glow, particles, and indefinite blinking.
   --motion-step: 480ms;
   --motion-hold: 720ms;
   --motion-total: 3600ms; /* five steps × hold; set this per diagram */
-  --motion-ease: cubic-bezier(.2,.8,.2,1);
+  --motion-ease: cubic-bezier(.2, .8, .2, 1);
 }
+
 .motion-ready [data-motion-item] {
   opacity: .12;
   transform: translateY(8px);
   transition: opacity var(--motion-step) var(--motion-ease),
-              transform var(--motion-step) var(--motion-ease);
+  transform var(--motion-step) var(--motion-ease);
 }
+
 .motion-ready [data-motion-item].is-visible,
 .motion-ready[data-frame="end"] [data-motion-item] {
   opacity: 1;
   transform: none;
 }
-[data-motion-controls][hidden] { display: none !important; }
+
+[data-motion-controls][hidden] {
+  display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
@@ -90,13 +96,30 @@ Avoid zoom, parallax, bounce, shake, glow, particles, and indefinite blinking.
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  [data-motion-item] { opacity: 1 !important; transform: none !important; }
-  [data-motion-decorative] { display: none !important; }
-  [data-motion-controls] { display: none !important; }
+
+  [data-motion-item] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-motion-decorative] {
+    display: none !important;
+  }
+
+  [data-motion-controls] {
+    display: none !important;
+  }
 }
+
 @media print {
-  [data-motion-controls], [data-motion-decorative] { display: none !important; }
-  [data-motion-item] { opacity: 1 !important; transform: none !important; }
+  [data-motion-controls], [data-motion-decorative] {
+    display: none !important;
+  }
+
+  [data-motion-item] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 ```
 

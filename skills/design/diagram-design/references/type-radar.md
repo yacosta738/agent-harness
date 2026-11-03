@@ -61,8 +61,9 @@ pixels in SVG render fine, but integers keep the file scannable.**
 Series `[9, 8, 9, 9, 9]` on a 0–10 scale becomes:
 
 ```svg
+
 <polygon points="500,96 622,201 585,356 415,356 363,196"
-         fill="rgba(235,108,54,0.18)" stroke="#eb6c36" stroke-width="1.8"/>
+  fill="rgba(235,108,54,0.18)" stroke="#eb6c36" stroke-width="1.8"/>
 ```
 
 Each vertex: `center + (v/10) · (outer_i − center)`, rounded to the nearest pixel.

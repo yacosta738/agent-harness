@@ -27,22 +27,30 @@ without first verifying that they don't trigger layout or painting.
 /* Slide an element out to the left */
 @keyframes slide-to-left {
   /* Mandatory: animate `transform` instead of inset properties for better performance. */
-  to { transform: translateX(-100%); }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 /* Slide an element in from the right */
 @keyframes slide-from-right {
-  from { transform: translateX(100%); }
+  from {
+    transform: translateX(100%);
+  }
 }
 
 /* Slide an element out to the right */
 @keyframes slide-to-right {
-  to { transform: translateX(100%); }
+  to {
+    transform: translateX(100%);
+  }
 }
 
 /* Slide an element in from the left */
 @keyframes slide-from-left {
-  from { transform: translateX(-100%); }
+  from {
+    transform: translateX(-100%);
+  }
 }
 ```
 
@@ -52,7 +60,7 @@ Use the `::view-transition-group(root)` selector to apply animation settings tha
 all transitions.
 
 ```css
-::view-transition-group(root){
+::view-transition-group(root) {
   animation: 0.4s ease-in-out both;
 }
 ```
@@ -67,6 +75,7 @@ the "forward" or "backward" type is active.
 html:active-view-transition-type(forward)::view-transition-old(root) {
   animation-name: slide-to-left;
 }
+
 html:active-view-transition-type(forward)::view-transition-new(root) {
   animation-name: slide-from-right;
 }
@@ -75,6 +84,7 @@ html:active-view-transition-type(forward)::view-transition-new(root) {
 html:active-view-transition-type(backward)::view-transition-old(root) {
   animation-name: slide-to-right;
 }
+
 html:active-view-transition-type(backward)::view-transition-new(root) {
   animation-name: slide-from-left;
 }

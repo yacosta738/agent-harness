@@ -20,12 +20,12 @@ Lightweight unit testing - provides bindings without full Worker runtime.
 
 ```js
 // vitest.config.js
-export default { test: { environment: "node" } };
+export default {test: {environment: "node"}};
 ```
 
 ```js
-import { env } from "cloudflare:test";
-import { describe, it, expect } from "vitest";
+import {env} from "cloudflare:test";
+import {describe, it, expect} from "vitest";
 
 describe("Business logic", () => {
   it("processes data with KV", async () => {
@@ -47,18 +47,18 @@ npm i -D @cloudflare/vitest-pool-workers
 
 ```js
 // vitest.config.js
-import { defineWorkersConfig } from "@cloudflare/vitest-pool-workers/config";
+import {defineWorkersConfig} from "@cloudflare/vitest-pool-workers/config";
 
 export default defineWorkersConfig({
   test: {
-    poolOptions: { workers: { wrangler: { configPath: "./wrangler.toml" } } },
+    poolOptions: {workers: {wrangler: {configPath: "./wrangler.toml"}}},
   },
 });
 ```
 
 ```js
-import { env, SELF } from "cloudflare:test";
-import { it, expect } from "vitest";
+import {env, SELF} from "cloudflare:test";
+import {it, expect} from "vitest";
 
 it("handles fetch", async () => {
   const res = await SELF.fetch("http://example.com/");
@@ -72,12 +72,12 @@ it("handles fetch", async () => {
 
 ```js
 import assert from "node:assert";
-import test, { after, before } from "node:test";
-import { Miniflare } from "miniflare";
+import test, {after, before} from "node:test";
+import {Miniflare} from "miniflare";
 
 let mf;
 before(() => {
-  mf = new Miniflare({ scriptPath: "src/index.js", kvNamespaces: ["TEST_KV"] });
+  mf = new Miniflare({scriptPath: "src/index.js", kvNamespaces: ["TEST_KV"]});
 });
 
 test("fetch", async () => {
@@ -103,25 +103,30 @@ const count = await storage.get("count");
 // Queue
 const worker = await mf.getWorker();
 await worker.queue("my-queue", [
-  { id: "msg1", timestamp: new Date(), body: { userId: 123 }, attempts: 1 },
+  {id: "msg1", timestamp: new Date(), body: {userId: 123}, attempts: 1},
 ]);
 
 // Scheduled
-await worker.scheduled({ cron: "0 0 * * *" });
+await worker.scheduled({cron: "0 0 * * *"});
 ```
 
 ## Test Isolation & Mocking
 
 ```js
 // Per-test isolation
-beforeEach(() => { mf = new Miniflare({ kvNamespaces: ["TEST"] }); });
+beforeEach(() => {
+  mf = new Miniflare({kvNamespaces: ["TEST"]});
+});
 afterEach(() => mf.dispose());
 
 // Mock external APIs
 new Miniflare({
   workers: [
-    { name: "main", serviceBindings: { API: "mock-api" }, script: `...` },
-    { name: "mock-api", script: `export default { async fetch() { return Response.json({mock: true}); } }` },
+    {name: "main", serviceBindings: {API: "mock-api"}, script: `...`},
+    {
+      name: "mock-api",
+      script: `export default { async fetch() { return Response.json({mock: true}); } }`
+    },
   ],
 });
 ```
@@ -129,7 +134,7 @@ new Miniflare({
 ## Type Safety
 
 ```ts
-import type { KVNamespace } from "@cloudflare/workers-types";
+import type {KVNamespace} from "@cloudflare/workers-types";
 
 interface Env {
   KV: KVNamespace;
@@ -150,7 +155,7 @@ export default {
 
 ```js
 const res = await mf.dispatchFetch("http://localhost/ws", {
-  headers: { Upgrade: "websocket" },
+  headers: {Upgrade: "websocket"},
 });
 assert.strictEqual(res.status, 101);
 ```
@@ -159,19 +164,21 @@ assert.strictEqual(res.status, 101);
 
 ```js
 // Old (deprecated)
-import { unstable_dev } from "wrangler";
+import {unstable_dev} from "wrangler";
+
 const worker = await unstable_dev("src/index.ts");
 
 // New
-import { Miniflare } from "miniflare";
-const mf = new Miniflare({ scriptPath: "src/index.ts" });
+import {Miniflare} from "miniflare";
+
+const mf = new Miniflare({scriptPath: "src/index.ts"});
 ```
 
 ## CI/CD Tips
 
 ```js
 // In-memory storage (faster)
-new Miniflare({ kvNamespaces: ["TEST"] }); // No persist = in-memory
+new Miniflare({kvNamespaces: ["TEST"]}); // No persist = in-memory
 
 // Use dispatchFetch (no port conflicts)
 await mf.dispatchFetch("http://localhost/");

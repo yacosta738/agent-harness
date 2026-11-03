@@ -265,7 +265,8 @@
   </header>
 
   <div class="diagram-wrap">
-    <svg aria-labelledby="queue-animated-title queue-animated-desc" data-motion-primitive="fan-in-queue"
+    <svg aria-labelledby="queue-animated-title queue-animated-desc"
+         data-motion-primitive="fan-in-queue"
          role="img" viewBox="0 0 1160 620"
          xmlns="http://www.w3.org/2000/svg">
       <title id="queue-animated-title">Fan-in Queue and Bottleneck Analysis</title>
@@ -278,20 +279,24 @@
                 refY="5" viewBox="0 0 10 10">
           <path d="M 0 1 L 10 5 L 0 9 z" fill="#2d3142"/>
         </marker>
-        <marker id="arrow-accent" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8"
+        <marker id="arrow-accent" markerHeight="6" markerWidth="6" orient="auto-start-reverse"
+                refX="8"
                 refY="5" viewBox="0 0 10 10">
           <path d="M 0 1 L 10 5 L 0 9 z" fill="#eb6c36"/>
         </marker>
-        <marker id="arrow-muted" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8"
+        <marker id="arrow-muted" markerHeight="6" markerWidth="6" orient="auto-start-reverse"
+                refX="8"
                 refY="5" viewBox="0 0 10 10">
           <path d="M 0 1 L 10 5 L 0 9 z" fill="#4f5d75"/>
         </marker>
       </defs>
 
       <!-- Base Layout: Ingress Sources Region (Static) -->
-      <rect fill="#ececec" height="510" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1" width="240"
+      <rect fill="#ececec" height="510" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1"
+            width="240"
             x="40" y="40"/>
-      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6" x="60"
+      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6"
+            x="60"
             y="72">INGRESS SOURCES
       </text>
 
@@ -336,9 +341,11 @@
       </text>
 
       <!-- Central Queue Buffer Region (Width expanded to 370px for generous text margins) -->
-      <rect fill="#ececec" height="320" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1" width="370"
+      <rect fill="#ececec" height="320" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1"
+            width="370"
             x="340" y="150"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="360"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+            x="360"
             y="182">Central Ingress Queue Buffer
       </text>
       <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="360" y="200">
@@ -346,7 +353,8 @@
       </text>
 
       <!-- STEP 1: Ingress Traffic Arrives (Slots 1 & 2 + Initial 2/5 Queue Depth Badge) -->
-      <g aria-label="Step 1: Web App and Mobile API send steady ingress traffic (7 req/sec total) into queue slots 1 and 2" data-motion-item
+      <g aria-label="Step 1: Web App and Mobile API send steady ingress traffic (7 req/sec total) into queue slots 1 and 2"
+         data-motion-item
          data-step="1">
         <!-- Ingress Flow Arrows 1 & 2 -->
         <path d="M 260 132 L 340 234" fill="none" marker-end="url(#arrow-ink)" stroke="#2d3142"
@@ -355,14 +363,16 @@
               stroke-width="2"/>
 
         <!-- Queue Slot 1 -->
-        <rect fill="#ffffff" height="36" rx="4" stroke="#2d3142" stroke-width="1.5" width="265" x="360"
+        <rect fill="#ffffff" height="36" rx="4" stroke="#2d3142" stroke-width="1.5" width="265"
+              x="360"
               y="216"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="10.5" x="372" y="239">
           Slot 1: req_web_8019 [GET /api]
         </text>
 
         <!-- Queue Slot 2 -->
-        <rect fill="#ffffff" height="36" rx="4" stroke="#2d3142" stroke-width="1.5" width="265" x="360"
+        <rect fill="#ffffff" height="36" rx="4" stroke="#2d3142" stroke-width="1.5" width="265"
+              x="360"
               y="260"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="10.5" x="372" y="283">
           Slot 2: req_mob_4412 [POST /auth]
@@ -370,9 +380,11 @@
 
         <!-- Single Unified Queue Status Badge for Step 1 (DEPTH 2/5 - Spans full height of 5 slots) -->
         <g class="queue-depth-step1">
-          <rect fill="#ffffff" height="212" rx="4" stroke="rgba(45,49,66,0.12)" stroke-width="1" width="60"
+          <rect fill="#ffffff" height="212" rx="4" stroke="rgba(45,49,66,0.12)" stroke-width="1"
+                width="60"
                 x="635" y="216"/>
-          <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="10" text-anchor="middle"
+          <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="10"
+                text-anchor="middle"
                 x="665" y="300">DEPTH
           </text>
           <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="22" font-weight="600"
@@ -382,7 +394,8 @@
       </g>
 
       <!-- STEP 2: Ingress Spike Fills Queue (Slots 3, 4, 5 + Updated 5/5 Full Warn Queue Depth Badge) -->
-      <g aria-label="Step 2: Payment and ERP traffic spike (20 req/sec total) fills queue to 5/5 slots capacity" data-motion-item
+      <g aria-label="Step 2: Payment and ERP traffic spike (20 req/sec total) fills queue to 5/5 slots capacity"
+         data-motion-item
          data-step="2">
         <!-- Ingress Flow Arrows 3 & 4 -->
         <path d="M 260 332 L 340 322" fill="none" marker-end="url(#arrow-accent)" stroke="#eb6c36"
@@ -391,33 +404,40 @@
               stroke-width="2"/>
 
         <!-- Queue Slot 3 -->
-        <rect fill="#ffffff" height="36" rx="4" stroke="#eb6c36" stroke-width="1.5" width="265" x="360"
+        <rect fill="#ffffff" height="36" rx="4" stroke="#eb6c36" stroke-width="1.5" width="265"
+              x="360"
               y="304"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="10.5" x="372" y="327">
           Slot 3: req_pay_9920 [WEBHOOK]
         </text>
 
         <!-- Queue Slot 4 -->
-        <rect fill="rgba(235,108,54,0.08)" height="36" rx="4" stroke="#eb6c36" stroke-width="1.5" width="265"
+        <rect fill="rgba(235,108,54,0.08)" height="36" rx="4" stroke="#eb6c36" stroke-width="1.5"
+              width="265"
               x="360" y="348"/>
-        <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10.5" font-weight="600" x="372"
+        <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10.5"
+              font-weight="600" x="372"
               y="371">Slot 4: req_erp_1044 [BATCH]
         </text>
 
         <!-- Queue Slot 5 -->
-        <rect fill="rgba(235,108,54,0.08)" height="36" rx="4" stroke="#eb6c36" stroke-width="1.5" width="265"
+        <rect fill="rgba(235,108,54,0.08)" height="36" rx="4" stroke="#eb6c36" stroke-width="1.5"
+              width="265"
               x="360" y="392"/>
-        <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10.5" font-weight="600" x="372"
+        <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10.5"
+              font-weight="600" x="372"
               y="415">Slot 5: req_erp_1045 [FULL]
         </text>
 
         <!-- Single Unified Queue Status Badge for Step 2+ (FULL 5/5 WARN - Replaces 2/5 badge seamlessly) -->
-        <rect fill="rgba(235,108,54,0.08)" height="212" rx="4" stroke="#eb6c36" stroke-width="1.5" width="60"
+        <rect fill="rgba(235,108,54,0.08)" height="212" rx="4" stroke="#eb6c36" stroke-width="1.5"
+              width="60"
               x="635" y="216"/>
         <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10" font-weight="600"
               text-anchor="middle" x="665" y="290">FULL
         </text>
-        <text fill="#eb6c36" font-family="'Geist', sans-serif" font-size="24" font-weight="600" text-anchor="middle"
+        <text fill="#eb6c36" font-family="'Geist', sans-serif" font-size="24" font-weight="600"
+              text-anchor="middle"
               x="665" y="325">5/5
         </text>
         <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="9.5" font-weight="600"
@@ -426,16 +446,20 @@
       </g>
 
       <!-- STEP 3: Rate Limiter Diverts Excess Traffic (429 Dropped Sink) -->
-      <g aria-label="Step 3: Overflow backpressure activates, shedding excess 19 req/sec to 429 Rate Limiter sink" data-motion-item
+      <g aria-label="Step 3: Overflow backpressure activates, shedding excess 19 req/sec to 429 Rate Limiter sink"
+         data-motion-item
          data-step="3">
         <!-- Overflow Diverter Connector -->
-        <path d="M 525 150 L 525 92 L 760 92" fill="none" marker-end="url(#arrow-accent)" stroke="#eb6c36"
+        <path d="M 525 150 L 525 92 L 760 92" fill="none" marker-end="url(#arrow-accent)"
+              stroke="#eb6c36"
               stroke-dasharray="4 4" stroke-width="2"/>
 
         <!-- 429 Dropped Traffic Sink Node (Expanded to width 350px) -->
-        <rect fill="rgba(235,108,54,0.08)" height="85" rx="6" stroke="#eb6c36" stroke-width="1.5" width="350"
+        <rect fill="rgba(235,108,54,0.08)" height="85" rx="6" stroke="#eb6c36" stroke-width="1.5"
+              width="350"
               x="760" y="50"/>
-        <text fill="#eb6c36" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="780"
+        <text fill="#eb6c36" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+              x="780"
               y="82">429 Rate Limiter &amp; Overflow Sink
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="780" y="104">
@@ -444,16 +468,19 @@
       </g>
 
       <!-- STEP 4: Worker Service Processing & Downstream Output -->
-      <g aria-label="Step 4: Constrained worker node processes queue at 8 req/sec max emitting 200 OK downstream responses" data-motion-item
+      <g aria-label="Step 4: Constrained worker node processes queue at 8 req/sec max emitting 200 OK downstream responses"
+         data-motion-item
          data-step="4">
         <!-- Worker Processing Connector -->
         <path d="M 710 310 L 760 280" fill="none" marker-end="url(#arrow-ink)" stroke="#2d3142"
               stroke-width="2"/>
 
         <!-- Worker Node A (Expanded to width 350px) -->
-        <rect fill="#ffffff" height="130" rx="6" stroke="#2d3142" stroke-width="1.5" width="350" x="760"
+        <rect fill="#ffffff" height="130" rx="6" stroke="#2d3142" stroke-width="1.5" width="350"
+              x="760"
               y="215"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="780"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+              x="780"
               y="246">Constrained Worker Service
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="780" y="268">
@@ -462,7 +489,8 @@
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="780" y="290">
           Service Capacity: 8 req/sec max
         </text>
-        <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="11" font-weight="600" x="780"
+        <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="11" font-weight="600"
+              x="780"
               y="312">Status: PROCESSING [FIFO]
         </text>
 
@@ -471,9 +499,11 @@
               stroke-width="2"/>
 
         <!-- Downstream Service Node (Expanded to width 350px) -->
-        <rect fill="#ececec" height="85" rx="6" stroke="rgba(45,49,66,0.12)" stroke-width="1" width="350"
+        <rect fill="#ececec" height="85" rx="6" stroke="rgba(45,49,66,0.12)" stroke-width="1"
+              width="350"
               x="760" y="410"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="780"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+              x="780"
               y="440">Downstream Database &amp; Core API
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="780" y="464">
@@ -482,11 +512,14 @@
       </g>
 
       <!-- STEP 5: Equilibrium State & Performance Metrics Summary -->
-      <g aria-label="Step 5: System reaches controlled equilibrium protecting worker from overload while shedding excess traffic" data-motion-item
+      <g aria-label="Step 5: System reaches controlled equilibrium protecting worker from overload while shedding excess traffic"
+         data-motion-item
          data-step="5">
-        <rect fill="#ffffff" height="64" rx="6" stroke="#2d3142" stroke-width="1.5" width="370" x="340"
+        <rect fill="#ffffff" height="64" rx="6" stroke="#2d3142" stroke-width="1.5" width="370"
+              x="340"
               y="490"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="13" font-weight="600" x="360"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="13" font-weight="600"
+              x="360"
               y="516">System State: Controlled Equilibrium
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="360" y="536">
@@ -497,49 +530,56 @@
       <!-- Precision SVG Legend Footer (Exact visual mini-arrows and mini-rects) -->
       <g aria-hidden="true" data-motion-decorative>
         <!-- Flow Line 1: Admitted Flow -->
-        <line marker-end="url(#arrow-ink)" stroke="#2d3142" stroke-width="2" x1="40" x2="65" y1="584"
+        <line marker-end="url(#arrow-ink)" stroke="#2d3142" stroke-width="2" x1="40" x2="65"
+              y1="584"
               y2="584"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="73" y="588">
           Admitted Flow
         </text>
 
         <!-- Flow Line 2: High Ingress -->
-        <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="2" x1="165" x2="190" y1="584"
+        <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="2" x1="165" x2="190"
+              y1="584"
               y2="584"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="198" y="588">
           High Ingress
         </text>
 
         <!-- Flow Line 3: 429 Backpressure -->
-        <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-dasharray="3 3" stroke-width="2" x1="285" x2="310"
+        <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-dasharray="3 3"
+              stroke-width="2" x1="285" x2="310"
               y1="584" y2="584"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="318" y="588">
           429 Backpressure
         </text>
 
         <!-- Box 1: Normal Slot -->
-        <rect fill="#ffffff" height="12" rx="2" stroke="#2d3142" stroke-width="1.5" width="16" x="430"
+        <rect fill="#ffffff" height="12" rx="2" stroke="#2d3142" stroke-width="1.5" width="16"
+              x="430"
               y="577"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="452" y="588">
           Normal Slot
         </text>
 
         <!-- Box 2: Capacity Warn Slot -->
-        <rect fill="#ffffff" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5" width="16" x="540"
+        <rect fill="#ffffff" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5" width="16"
+              x="540"
               y="577"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="562" y="588">
           Capacity Warn
         </text>
 
         <!-- Box 3: Overflown 429 Slot -->
-        <rect fill="rgba(235,108,54,0.08)" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5" width="16"
+        <rect fill="rgba(235,108,54,0.08)" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5"
+              width="16"
               x="660" y="577"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="682" y="588">
           Overflown (429)
         </text>
 
         <!-- Box 4: Depth / Full Counter Badge -->
-        <rect fill="#ffffff" height="12" rx="2" stroke="rgba(45,49,66,0.25)" stroke-width="1" width="16"
+        <rect fill="#ffffff" height="12" rx="2" stroke="rgba(45,49,66,0.25)" stroke-width="1"
+              width="16"
               x="790" y="577"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="812" y="588">
           Queue Depth Badge

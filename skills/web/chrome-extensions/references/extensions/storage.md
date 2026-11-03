@@ -14,10 +14,10 @@ Permission required: `"storage"`
 
 ```js
 // Set
-await chrome.storage.local.set({ key: 'value', count: 42, items: [1,2,3] });
+await chrome.storage.local.set({key: 'value', count: 42, items: [1, 2, 3]});
 
 // Get (with defaults)
-const { key = 'default', count = 0 } = await chrome.storage.local.get(['key', 'count']);
+const {key = 'default', count = 0} = await chrome.storage.local.get(['key', 'count']);
 
 // Get all
 const allData = await chrome.storage.local.get(null);
@@ -34,7 +34,7 @@ await chrome.storage.local.clear();
 
 ```js
 chrome.storage.onChanged.addListener((changes, areaName) => {
-  for (const [key, { oldValue, newValue }] of Object.entries(changes)) {
+  for (const [key, {oldValue, newValue}] of Object.entries(changes)) {
     console.log(`${areaName}.${key}: ${oldValue} → ${newValue}`);
   }
 });

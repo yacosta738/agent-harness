@@ -104,16 +104,20 @@
     <line stroke="rgba(245,245,245,0.22)" stroke-width="1" x1="160" x2="160" y1="80" y2="400"/>
 
     <!-- Lane labels -->
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em"
+          x="60"
           y="124">AUTHOR
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em"
+          x="60"
           y="204">REVIEWER
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em"
+          x="60"
           y="284">EDITOR
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em" x="60"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="9" letter-spacing="0.18em"
+          x="60"
           y="364">CI / CD
     </text>
 
@@ -125,13 +129,15 @@
     <line marker-end="url(#arrow)" stroke="#bfc0c0" stroke-width="1.2" x1="460" x2="500" y1="144"
           y2="176"/>
     <!-- 3. Review → Polish (Reviewer → Editor, vertical down) -->
-    <line marker-end="url(#arrow)" stroke="#bfc0c0" stroke-dasharray="5,4" stroke-width="1.2" x1="570" x2="570"
+    <line marker-end="url(#arrow)" stroke="#bfc0c0" stroke-dasharray="5,4" stroke-width="1.2"
+          x1="570" x2="570"
           y1="224" y2="256"/>
     <!-- 4. Polish → Approve (within Editor) -->
     <line marker-end="url(#arrow)" stroke="#bfc0c0" stroke-width="1.2" x1="640" x2="680" y1="280"
           y2="280"/>
     <!-- 5. Approve → Build (Editor → CI/CD, coral handoff) -->
-    <line marker-end="url(#arrow-accent)" stroke="#f08a59" stroke-width="1.4" x1="750" x2="720" y1="304"
+    <line marker-end="url(#arrow-accent)" stroke="#f08a59" stroke-width="1.4" x1="750" x2="720"
+          y1="304"
           y2="336"/>
     <!-- 6. Build → Deploy (within CI/CD) -->
     <line marker-end="url(#arrow)" stroke="#bfc0c0" stroke-width="1.2" x1="760" x2="800" y1="360"
@@ -139,17 +145,20 @@
 
     <!-- Arrow labels -->
     <rect fill="#2d3142" height="12" rx="2" width="60" x="478" y="140"/>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em"
+          text-anchor="middle"
           x="508" y="150">HANDOFF
     </text>
 
     <rect fill="#393e53" height="12" rx="2" width="52" x="548" y="228"/>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em"
+          text-anchor="middle"
           x="574" y="238">REVISE
     </text>
 
     <rect fill="#2d3142" height="12" rx="2" width="80" x="712" y="308"/>
-    <text fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em" text-anchor="middle"
+    <text fill="#f08a59" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.12em"
+          text-anchor="middle"
           x="752" y="318">DEPLOY TRIGGER
     </text>
 
@@ -157,76 +166,92 @@
     <!-- Author: Draft MDX -->
     <rect fill="#393e53" height="48" rx="6" stroke="#f5f5f5" stroke-width="1" width="120" x="180"
           y="96"/>
-    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600"
+          text-anchor="middle"
           x="240" y="118">Draft MDX
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="240"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle"
+          x="240"
           y="132">src/content/…
     </text>
 
     <!-- Author: Open PR -->
     <rect fill="#393e53" height="48" rx="6" stroke="#f5f5f5" stroke-width="1" width="120" x="340"
           y="96"/>
-    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600"
+          text-anchor="middle"
           x="400" y="118">Open PR
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="400"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle"
+          x="400"
           y="132">gh pr create
     </text>
 
     <!-- Reviewer: Review content -->
     <rect fill="#393e53" height="48" rx="6" stroke="#f5f5f5" stroke-width="1" width="140" x="500"
           y="176"/>
-    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600"
+          text-anchor="middle"
           x="570" y="198">Review content
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="570"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle"
+          x="570"
           y="212">fact-check · voice
     </text>
 
     <!-- Editor: Polish copy -->
     <rect fill="#393e53" height="48" rx="6" stroke="#f5f5f5" stroke-width="1" width="140" x="500"
           y="256"/>
-    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600"
+          text-anchor="middle"
           x="570" y="278">Polish copy
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="570"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle"
+          x="570"
           y="292">style · line edits
     </text>
 
     <!-- Editor: Approve merge -->
     <rect fill="#393e53" height="48" rx="6" stroke="#f5f5f5" stroke-width="1" width="140" x="680"
           y="256"/>
-    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600"
+          text-anchor="middle"
           x="750" y="278">Approve merge
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="750"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle"
+          x="750"
           y="292">squash · main
     </text>
 
     <!-- CI/CD: Build -->
     <rect fill="#393e53" height="48" rx="6" stroke="#f5f5f5" stroke-width="1" width="80" x="680"
           y="336"/>
-    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600"
+          text-anchor="middle"
           x="720" y="358">Build
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="720"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle"
+          x="720"
           y="372">astro build
     </text>
 
     <!-- CI/CD: Deploy (coral focal) -->
-    <rect fill="rgba(240,138,89,0.08)" height="48" rx="6" stroke="#f08a59" stroke-width="1" width="120"
+    <rect fill="rgba(240,138,89,0.08)" height="48" rx="6" stroke="#f08a59" stroke-width="1"
+          width="120"
           x="800" y="336"/>
-    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600" text-anchor="middle"
+    <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="11" font-weight="600"
+          text-anchor="middle"
           x="860" y="358">Deploy
     </text>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle" x="860"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" text-anchor="middle"
+          x="860"
           y="372">cloudflare pages
     </text>
 
     <!-- Legend -->
     <line stroke="rgba(245,245,245,0.10)" stroke-width="0.8" x1="40" x2="960" y1="428" y2="428"/>
-    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em" x="40"
+    <text fill="#bfc0c0" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em"
+          x="40"
           y="444">LEGEND
     </text>
 
@@ -235,7 +260,8 @@
     <text fill="#bfc0c0" font-family="'Geist', sans-serif" font-size="8.5" x="60" y="468">Step
     </text>
 
-    <rect fill="rgba(240,138,89,0.08)" height="10" rx="2" stroke="#f08a59" stroke-width="1" width="14"
+    <rect fill="rgba(240,138,89,0.08)" height="10" rx="2" stroke="#f08a59" stroke-width="1"
+          width="14"
           x="132" y="460"/>
     <text fill="#bfc0c0" font-family="'Geist', sans-serif" font-size="8.5" x="152" y="468">Focal
       outcome
@@ -247,13 +273,15 @@
       Within-lane step
     </text>
 
-    <line marker-end="url(#arrow)" stroke="#bfc0c0" stroke-dasharray="4,3" stroke-width="1.2" x1="444" x2="472"
+    <line marker-end="url(#arrow)" stroke="#bfc0c0" stroke-dasharray="4,3" stroke-width="1.2"
+          x1="444" x2="472"
           y1="466" y2="466"/>
     <text fill="#bfc0c0" font-family="'Geist', sans-serif" font-size="8.5" x="480" y="468">Revision
       loop
     </text>
 
-    <line marker-end="url(#arrow-accent)" stroke="#f08a59" stroke-width="1.4" x1="608" x2="636" y1="466"
+    <line marker-end="url(#arrow-accent)" stroke="#f08a59" stroke-width="1.4" x1="608" x2="636"
+          y1="466"
           y2="466"/>
     <text fill="#bfc0c0" font-family="'Geist', sans-serif" font-size="8.5" x="644" y="468">Critical
       handoff

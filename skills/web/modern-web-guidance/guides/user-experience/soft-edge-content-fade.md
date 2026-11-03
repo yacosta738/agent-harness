@@ -17,10 +17,10 @@ This is useful for indicating that there is more content below in a scrollable a
 .container {
   /* Enable scrolling */
   overflow-y: auto;
-  
+
   /* MANDATORY: Use vendor prefix for wider support in older browsers */
   -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-  
+
   /* Standard property for modern browsers */
   mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
@@ -58,7 +58,7 @@ If a browser does not support `mask-image` or the prefixed version:
   .container {
     position: relative;
   }
-  
+
   .container::after {
     content: '';
     position: absolute;
@@ -67,7 +67,7 @@ If a browser does not support `mask-image` or the prefixed version:
     right: 0;
     height: 20%;
     /* Fallback assumes a solid background color (e.g., white) */
-    background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
     pointer-events: none; /* Allow interaction with text underneath */
   }
 }

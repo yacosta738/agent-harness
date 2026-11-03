@@ -32,6 +32,7 @@ default and only revealed when the browser determines the user has left the fiel
 state.
 
 ```html
+
 <form>
   <div class="field">
     <label for="email">Email Address</label>
@@ -39,13 +40,13 @@ state.
     <span id="email-hint" class="hint">Format: you@example.com</span>
     <!-- DO: Use standard HTML validation attributes like type="email" and required -->
     <input
-      type="email"
-      id="email"
-      name="email"
-      required
-      autocomplete="email"
-      aria-describedby="email-hint"
-      aria-errormessage="email-error"
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        aria-describedby="email-hint"
+        aria-errormessage="email-error"
     >
     <div id="email-error" class="error-msg">
       <span aria-hidden="true">❌</span> Please enter a valid email address.
@@ -95,6 +96,7 @@ MANDATORY: Define the complexity rule using a Regex Lookahead pattern in the `pa
 The rules list is shown above the input to guide the user, and highlighted if there's an error.
 
 ```html
+
 <form>
   <div class="field">
     <label for="password">New Password</label>
@@ -109,13 +111,13 @@ The rules list is shown above the input to guide the user, and highlighted if th
          DO: Match all constraints with lookaheads via pattern attribute
      -->
     <input
-      type="password"
-      id="password"
-      autocomplete="new-password"
-      required
-      pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
-      minlength="8"
-      aria-describedby="password-rules"
+        type="password"
+        id="password"
+        autocomplete="new-password"
+        required
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
+        minlength="8"
+        aria-describedby="password-rules"
     >
   </div>
 </form>
@@ -123,8 +125,8 @@ The rules list is shown above the input to guide the user, and highlighted if th
 
 ```css
 /* DO: State the default styling as neutral */
-.rules-list { 
-  color: #5f6368; 
+.rules-list {
+  color: #5f6368;
   margin-bottom: 0.5rem;
 }
 
@@ -215,14 +217,14 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -240,7 +242,7 @@ const UserInvalidFallback = (() => {
     root.addEventListener('reset', handleEvent, true); // Capture resets
   };
 
-  return { init };
+  return {init};
 })();
 
 // Initialize for a specific form

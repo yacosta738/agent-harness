@@ -18,14 +18,14 @@ Within phase: top-to-bottom, first match wins (unless `skip`)
 await client.rulesets.create({
   phase: 'http_request_firewall_custom',
   rules: [
-    { action: 'block', expression: 'cf.waf.score gt 50' },
-    { action: 'execute', action_parameters: { id: 'managed_id' } }, // WRONG
+    {action: 'block', expression: 'cf.waf.score gt 50'},
+    {action: 'execute', action_parameters: {id: 'managed_id'}}, // WRONG
   ],
 });
 
 // CORRECT: Separate rulesets per phase
-await client.rulesets.create({ phase: 'http_request_firewall_custom', rules: [...] });
-await client.rulesets.create({ phase: 'http_request_firewall_managed', rules: [...] });
+await client.rulesets.create({phase: 'http_request_firewall_custom', rules: [...]});
+await client.rulesets.create({phase: 'http_request_firewall_managed', rules: [...]});
 ```
 
 ## Expression Errors
@@ -56,7 +56,12 @@ Skip types:
 // In http_request_firewall_custom:
 {
   action: 'skip',
-  action_parameters: { ruleset: 'current' },
+      action_parameters
+:
+  {
+    ruleset: 'current'
+  }
+,
   expression: 'ip.src in {192.0.2.0/24}',
 }
 // This only skips remaining custom rules, not managed rules
@@ -64,9 +69,12 @@ Skip types:
 // CORRECT: Skip specific phases
 {
   action: 'skip',
-  action_parameters: {
+      action_parameters
+:
+  {
     phases: ['http_request_firewall_managed', 'http_ratelimit'],
-  },
+  }
+,
   expression: 'ip.src in {192.0.2.0/24}',
 }
 ```
@@ -81,15 +89,15 @@ Skip types:
 await client.rulesets.update({
   zone_id: 'zone_id',
   ruleset_id: 'ruleset_id',
-  rules: [{ action: 'block', expression: 'cf.waf.score gt 50' }],
+  rules: [{action: 'block', expression: 'cf.waf.score gt 50'}],
 });
 
 // CORRECT: Get existing rules first
-const ruleset = await client.rulesets.get({ zone_id: 'zone_id', ruleset_id: 'ruleset_id' });
+const ruleset = await client.rulesets.get({zone_id: 'zone_id', ruleset_id: 'ruleset_id'});
 await client.rulesets.update({
   zone_id: 'zone_id',
   ruleset_id: 'ruleset_id',
-  rules: [...ruleset.rules, { action: 'block', expression: 'cf.waf.score gt 50' }],
+  rules: [...ruleset.rules, {action: 'block', expression: 'cf.waf.score gt 50'}],
 });
 ```
 
@@ -104,11 +112,21 @@ const ruleset = await client.rulesets.get({
   zone_id: 'zone_id',
   ruleset_id: 'efb7b8c949ac4650a09736fc376e9aee',
 });
-console.log(ruleset.rules.map(r => ({ id: r.id, description: r.description })));
+console.log(ruleset.rules.map(r => ({id: r.id, description: r.description})));
 
 // Use correct IDs in overrides
-{ action: 'execute', action_parameters: { id: 'efb7b8c949ac4650a09736fc376e9aee',
-  overrides: { rules: [{ id: '5de7edfa648c4d6891dc3e7f84534ffa', action: 'log' }] } } }
+{
+  action: 'execute', action_parameters
+:
+  {
+    id: 'efb7b8c949ac4650a09736fc376e9aee',
+        overrides
+  :
+    {
+      rules: [{id: '5de7edfa648c4d6891dc3e7f84534ffa', action: 'log'}]
+    }
+  }
+}
 ```
 
 ## False Positives
@@ -129,14 +147,24 @@ Add more characteristics: User-Agent, session cookie, or authorization header
 ```typescript
 {
   action: 'block',
-  expression: 'http.request.uri.path starts_with "/api"',
-  action_parameters: {
+      expression
+:
+  'http.request.uri.path starts_with "/api"',
+      action_parameters
+:
+  {
     ratelimit: {
       characteristics: ['cf.colo.id', 'ip.src', 'http.request.cookies["session"][0]'],
-      period: 60,
-      requests_per_period: 100,
-    },
-  },
+          period
+    :
+      60,
+          requests_per_period
+    :
+      100,
+    }
+  ,
+  }
+,
 }
 ```
 
@@ -177,9 +205,9 @@ Add more characteristics: User-Agent, session cookie, or authorization header
 phase: 'http_request_firewall_custom'
 
 // Error: "Ruleset already exists" → Use update() or list first
-const rulesets = await client.rulesets.list({ zone_id, phase: 'http_request_firewall_custom' });
+const rulesets = await client.rulesets.list({zone_id, phase: 'http_request_firewall_custom'});
 if (rulesets.result.length > 0) {
-  await client.rulesets.update({ zone_id, ruleset_id: rulesets.result[0].id, rules: [...] });
+  await client.rulesets.update({zone_id, ruleset_id: rulesets.result[0].id, rules: [...]});
 }
 
 // Error: "Action not supported" → Check phase/action compatibility

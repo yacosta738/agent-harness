@@ -19,6 +19,7 @@
 ### Code Example
 
 ```html
+
 <form action="/search" method="GET">
   <fieldset>
     <legend>Search Preferences</legend>
@@ -63,6 +64,7 @@ choices are fewer than six; use `<select>` only when space is constrained or the
 ### Code Example
 
 ```html
+
 <div class="field">
   <label for="username">Username:</label>
   <input type="text" id="username" name="username" aria-describedby="user-help" required>
@@ -94,7 +96,8 @@ choices are fewer than six; use `<select>` only when space is constrained or the
 
 ```html
 <label for="zip">ZIP Code:</label>
-<input type="text" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric" pattern="\d{5}">
+<input type="text" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric"
+       pattern="\d{5}">
 ```
 
 ## 4. Constraints and Validation
@@ -192,6 +195,7 @@ input {
 ### Code Example
 
 ```html
+
 <div class="checkbox-container">
   <input type="checkbox" id="sub" name="sub" class="visually-hidden">
   <label for="sub" class="checkbox-label">Subscribe</label>
@@ -209,6 +213,7 @@ input {
     border: 0;
     white-space: nowrap;
   }
+
   .checkbox-label::before {
     content: "";
     display: inline-block;
@@ -216,6 +221,7 @@ input {
     height: 1.25rem;
     border: 2px solid #ccc;
   }
+
   input:focus-visible + .checkbox-label::before {
     outline: 2px solid #0b57d0;
   }
@@ -264,29 +270,32 @@ form.addEventListener('submit', (e) => {
 ### Code Example
 
 ```html
+
 <form method="post">
   <input type="hidden" name="csrf_token" value="secure_token_abc123">
 
   <h1>Sign up</h1>
 
-  <div class="form-group">        
+  <div class="form-group">
     <label for="name">Full name</label>
     <input id="name" name="name" autocomplete="name" required pattern="[\p{L}\.\- ]+">
   </div>
 
-  <div class="form-group">        
+  <div class="form-group">
     <label for="email">Email</label>
     <input id="email" name="email" type="email" autocomplete="username" required>
   </div>
 
   <div class="form-group">
     <label for="password">Password</label>
-    <button id="toggle-password" type="button" aria-pressed="false" aria-label="Show password" aria-describedby="toggle-warning">
+    <button id="toggle-password" type="button" aria-pressed="false" aria-label="Show password"
+            aria-describedby="toggle-warning">
       <img class="icon-eye" src="/icons/eye.svg" alt="" width="20" height="20">
       <img class="icon-eye-off" src="/icons/eye-off.svg" alt="" width="20" height="20">
     </button>
     <span id="toggle-warning" class="visually-hidden">Warning: this will display your password on the screen.</span>
-    <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" aria-describedby="password-constraints" required>
+    <input id="password" name="password" type="password" autocomplete="new-password" minlength="8"
+           aria-describedby="password-constraints" required>
     <div id="password-constraints">Eight or more characters.</div>
   </div>
 
@@ -321,7 +330,8 @@ form.addEventListener('submit', (e) => {
 
   <div class="form-group">
     <label for="address">Address</label>
-    <textarea id="address" name="address" required autocomplete="street-address" maxlength="300"></textarea>
+    <textarea id="address" name="address" required autocomplete="street-address"
+              maxlength="300"></textarea>
   </div>
 
   <button type="submit">Save Address</button>
@@ -344,16 +354,18 @@ form.addEventListener('submit', (e) => {
 ### Code Example
 
 ```html
+
 <form action="/submit" method="POST" id="track-form">
   <label for="postal-code">ZIP or postal code</label>
-  <input type="text" id="postal-code" name="postal-code" autocomplete="postal-code" maxlength="20" required>
+  <input type="text" id="postal-code" name="postal-code" autocomplete="postal-code" maxlength="20"
+         required>
   <button type="submit" id="submit-btn">Submit</button>
 </form>
 
 <script>
   const trackForm = document.getElementById('track-form');
   const trackBtn = document.getElementById('submit-btn');
-  
+
   trackBtn.addEventListener('click', () => {
     console.log('Analytics Event: Submit clicked');
   });
@@ -375,6 +387,7 @@ form.addEventListener('submit', (e) => {
 ### Code Example
 
 ```html
+
 <nav aria-label="Progress">
   <ol class="progress-tracker">
     <li class="step-done">Step 1: Account</li>

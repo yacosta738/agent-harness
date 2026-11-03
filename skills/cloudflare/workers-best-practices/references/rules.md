@@ -120,7 +120,14 @@ are fine to buffer.
 Correct — stream through:
 
 ```ts
-async fetch(request: Request, env: Env): Promise<Response> {
+async
+fetch(request
+:
+Request, env
+:
+Env
+):
+Promise < Response > {
   const response = await fetch("https://api.example.com/large-dataset");
   return new Response(response.body, response);
 }
@@ -129,23 +136,32 @@ async fetch(request: Request, env: Env): Promise<Response> {
 Correct — concatenate multiple streams:
 
 ```ts
-async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+async
+fetch(request
+:
+Request, env
+:
+Env, ctx
+:
+ExecutionContext
+):
+Promise < Response > {
   const urls = ["https://api.example.com/part-1", "https://api.example.com/part-2"];
-  const { readable, writable } = new TransformStream();
+  const {readable, writable} = new TransformStream();
 
   // Track the pipeline promise — don't let it float
   ctx.waitUntil((async () => {
     for (const url of urls) {
       const response = await fetch(url);
       if (response.body) {
-        await response.body.pipeTo(writable, { preventClose: true });
+        await response.body.pipeTo(writable, {preventClose: true});
       }
     }
     await writable.close();
   })());
 
   return new Response(readable, {
-    headers: { "Content-Type": "application/octet-stream" },
+    headers: {"Content-Type": "application/octet-stream"},
   });
 }
 ```
@@ -170,7 +186,16 @@ sent. Keeps response fast. 30-second time limit after response.
 loses the `this` binding and throws "Illegal invocation".
 
 ```ts
-async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+async
+fetch(request
+:
+Request, env
+:
+Env, ctx
+:
+ExecutionContext
+):
+Promise < Response > {
   const data = await processRequest(request);
 
   ctx.waitUntil(logToAnalytics(env, data));
@@ -184,7 +209,7 @@ Anti-pattern:
 
 ```ts
 // Destructuring ctx loses the this binding
-const { waitUntil } = ctx;  // "Illegal invocation" at runtime
+const {waitUntil} = ctx;  // "Illegal invocation" at runtime
 waitUntil(somePromise);
 ```
 
@@ -211,8 +236,8 @@ Anti-pattern:
 ```ts
 // REST API from inside a Worker — unnecessary overhead
 const response = await fetch(
-  "https://api.cloudflare.com/client/v4/accounts/.../r2/buckets/.../objects/my-file",
-  { headers: { Authorization: `Bearer ${env.CF_API_TOKEN}` } }
+    "https://api.cloudflare.com/client/v4/accounts/.../r2/buckets/.../objects/my-file",
+    {headers: {Authorization: `Bearer ${env.CF_API_TOKEN}`}}
 );
 ```
 
@@ -231,16 +256,27 @@ Long-running, retriable, or non-urgent tasks should not block a request.
 Workflows, not done inline in the fetch handler.
 
 ```ts
-async fetch(request: Request, env: Env): Promise<Response> {
+async
+fetch(request
+:
+Request, env
+:
+Env
+):
+Promise < Response > {
   const order = await request.json<{ id: string; type: string }>();
 
-  if (order.type === "simple") {
-    await env.ORDER_QUEUE.send({ orderId: order.id, action: "send-email" });
-  } else {
-    await env.FULFILLMENT_WORKFLOW.create({ params: { orderId: order.id } });
-  }
+  if(order.type === "simple"
+)
+{
+  await env.ORDER_QUEUE.send({orderId: order.id, action: "send-email"});
+}
+else
+{
+  await env.FULFILLMENT_WORKFLOW.create({params: {orderId: order.id}});
+}
 
-  return Response.json({ status: "accepted" }, { status: 202 });
+return Response.json({status: "accepted"}, {status: 202});
 }
 ```
 
@@ -256,11 +292,11 @@ another Worker via its public URL.
 `env.SERVICE_NAME.fetch()`, not `fetch("https://my-other-worker.example.com/...")`.
 
 ```ts
-import { WorkerEntrypoint } from "cloudflare:workers";
+import {WorkerEntrypoint} from "cloudflare:workers";
 
 export class AuthService extends WorkerEntrypoint {
   async verifyToken(token: string): Promise<{ userId: string; valid: boolean }> {
-    return { userId: "user-123", valid: true };
+    return {userId: "user-123", valid: true};
   }
 }
 
@@ -287,10 +323,17 @@ Requires `nodejs_compat`.
 ```
 
 ```ts
-import { Client } from "pg";
+import {Client} from "pg";
 
-async fetch(request: Request, env: Env): Promise<Response> {
-  const client = new Client({ connectionString: env.HYPERDRIVE.connectionString });
+async
+fetch(request
+:
+Request, env
+:
+Env
+):
+Promise < Response > {
+  const client = new Client({connectionString: env.HYPERDRIVE.connectionString});
   await client.connect();
   const result = await client.query("SELECT id, name FROM users LIMIT 10");
   return Response.json(result.rows);
@@ -324,10 +367,17 @@ concatenation.
 
 ```ts
 // Structured JSON — searchable and filterable
-console.log(JSON.stringify({ message: "incoming request", method: request.method, path: url.pathname }));
+console.log(JSON.stringify({
+  message: "incoming request",
+  method: request.method,
+  path: url.pathname
+}));
 
 // Error severity
-console.error(JSON.stringify({ message: "request failed", error: e instanceof Error ? e.message : String(e) }));
+console.error(JSON.stringify({
+  message: "request failed",
+  error: e instanceof Error ? e.message : String(e)
+}));
 ```
 
 Anti-pattern:
@@ -395,17 +445,23 @@ npx oxlint --deny typescript/no-floating-promises src/
 
 ```ts
 // Correct: await when you need the result
-const response = await fetch("https://api.example.com/process", { method: "POST", body: JSON.stringify(data) });
+const response = await fetch("https://api.example.com/process", {
+  method: "POST",
+  body: JSON.stringify(data)
+});
 
 // Correct: waitUntil when you don't need the result before responding
-ctx.waitUntil(fetch("https://api.example.com/webhook", { method: "POST", body: JSON.stringify(data) }));
+ctx.waitUntil(fetch("https://api.example.com/webhook", {
+  method: "POST",
+  body: JSON.stringify(data)
+}));
 ```
 
 Anti-pattern:
 
 ```ts
 // Floating promise — result dropped, error swallowed
-fetch("https://api.example.com/webhook", { method: "POST", body: JSON.stringify(data) });
+fetch("https://api.example.com/webhook", {method: "POST", body: JSON.stringify(data)});
 ```
 
 ### Be aware of platform limits
@@ -478,14 +534,27 @@ error responses.
 JSON error responses and `console.error`.
 
 ```ts
-async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+async
+fetch(request
+:
+Request, env
+:
+Env, ctx
+:
+ExecutionContext
+):
+Promise < Response > {
   try {
     const result = await handleRequest(request, env);
     return Response.json(result);
-  } catch (error) {
+  } catch(error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    console.error(JSON.stringify({ message: "unhandled error", error: message, path: new URL(request.url).pathname }));
-    return Response.json({ error: "Internal server error" }, { status: 500 });
+    console.error(JSON.stringify({
+      message: "unhandled error",
+      error: message,
+      path: new URL(request.url).pathname
+    }));
+    return Response.json({error: "Internal server error"}, {status: 500});
   }
 }
 ```
@@ -507,8 +576,8 @@ code depends on Node.js built-ins.
 `.get()` returning `null`).
 
 ```ts
-import { describe, it, expect } from "vitest";
-import { env } from "cloudflare:test";
+import {describe, it, expect} from "vitest";
+import {env} from "cloudflare:test";
 
 describe("KV operations", () => {
   it("should store and retrieve a value", async () => {

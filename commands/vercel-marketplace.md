@@ -261,8 +261,8 @@ curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" \
 > formats (JSON array of `{type, url, referrer, timestamp, geo, device}` events).
 
 - **Drain present** → Proceed to health check.
-- **No drain found** → Integration may not auto-configure drains. Create one manually via REST API (
-  see `⤳ skill: observability`).
+- **No drain found** → Integration may not auto-configure drains. Create one manually via REST API
+  (see `⤳ skill: observability`).
 - **Drain errored** → Check the drain status in the Vercel Dashboard. Common fixes: endpoint URL
   typo, auth header missing, endpoint not accepting POST.
 

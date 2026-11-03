@@ -133,9 +133,9 @@ globalThis.fetchLater ??= function fetchLater(url, init = {}) {
       // parameters are specified (e.g. custom headers or methods).
       // Otherwise fall back to `navigator.sendBeacon()`.
       if (
-        'keepalive' in Request.prototype ||
-        init.method !== 'POST' ||
-        init.headers
+          'keepalive' in Request.prototype ||
+          init.method !== 'POST' ||
+          init.headers
       ) {
         fetch(url, Object.assign({}, init, {keepalive: true}));
         activated = true;

@@ -15,13 +15,15 @@ Extensions that used the origin trial may still have the old API surface. Remove
 const session = await self.ai.languageModel.create();
 
 // ✅ CURRENT (Chrome 138+)
-const session = await LanguageModel.create({ ... });
+const session = await LanguageModel.create({...});
 ```
 
 Also remove the expired permission from manifest.json:
 
 ```json
-"permissions": ["aiLanguageModelOriginTrial"]  // ❌ remove this
+"permissions": [
+  "aiLanguageModelOriginTrial"
+]  // ❌ remove this
 ```
 
 ## Extension-only: `LanguageModel.params()`
@@ -52,11 +54,23 @@ clicks do NOT activate `activeTab` (see Rule 12).
   "manifest_version": 3,
   "name": "AI Page Summarizer",
   "version": "1.0",
-  "permissions": ["sidePanel", "tabs", "scripting"],
-  "host_permissions": ["<all_urls>"],
-  "background": { "service_worker": "service-worker.js" },
-  "side_panel": { "default_path": "sidepanel/sidepanel.html" },
-  "action": { "default_title": "Summarize Page" }
+  "permissions": [
+    "sidePanel",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "action": {
+    "default_title": "Summarize Page"
+  }
 }
 ```
 
@@ -64,7 +78,7 @@ clicks do NOT activate `activeTab` (see Rule 12).
 
 ```js
 chrome.action.onClicked.addListener(async (tab) => {
-  await chrome.sidePanel.open({ windowId: tab.windowId });
+  await chrome.sidePanel.open({windowId: tab.windowId});
 });
 ```
 
@@ -81,8 +95,8 @@ document.getElementById('summarize').addEventListener('click', async () => {
   }
 
   const availability = await LanguageModel.availability({
-    expectedInputs: [{ type: "text", languages: ["en"] }],
-    expectedOutputs: [{ type: "text", languages: ["en"] }]
+    expectedInputs: [{type: "text", languages: ["en"]}],
+    expectedOutputs: [{type: "text", languages: ["en"]}]
   });
   if (availability === 'unavailable') {
     statusEl.textContent = 'AI model not available on this device.';
@@ -90,9 +104,9 @@ document.getElementById('summarize').addEventListener('click', async () => {
   }
 
   // Requires "tabs" + "host_permissions" — activeTab does NOT work from a side panel button
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const [{ result: pageText }] = await chrome.scripting.executeScript({
-    target: { tabId: tab.id },
+  const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+  const [{result: pageText}] = await chrome.scripting.executeScript({
+    target: {tabId: tab.id},
     func: () => {
       const body = document.body.cloneNode(true);
       body.querySelectorAll('script, style, nav, footer, header').forEach(el => el.remove());
@@ -101,9 +115,9 @@ document.getElementById('summarize').addEventListener('click', async () => {
   });
 
   const session = await LanguageModel.create({
-    expectedInputs: [{ type: "text", languages: ["en"] }],
-    expectedOutputs: [{ type: "text", languages: ["en"] }],
-    initialPrompts: [{ role: 'system', content: 'Summarize web page content in 3-5 bullet points.' }],
+    expectedInputs: [{type: "text", languages: ["en"]}],
+    expectedOutputs: [{type: "text", languages: ["en"]}],
+    initialPrompts: [{role: 'system', content: 'Summarize web page content in 3-5 bullet points.'}],
     monitor(m) {
       m.addEventListener('downloadprogress', (e) => {
         const pct = e.total ? Math.floor((e.loaded / e.total) * 100) : 0;

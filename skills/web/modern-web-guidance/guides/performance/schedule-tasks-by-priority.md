@@ -16,7 +16,7 @@ Use `scheduler.postTask()` to schedule tasks with one of three priorities:
 scheduler.postTask(() => {
   // DO: Handle critical updates that impact user interaction
   handleCriticalUpdate();
-}, { priority: 'user-blocking' });
+}, {priority: 'user-blocking'});
 
 // Schedule a default priority task
 scheduler.postTask(() => {
@@ -28,7 +28,7 @@ scheduler.postTask(() => {
 scheduler.postTask(() => {
   // DO: Perform heavy background work that is not time-critical
   sendAnalytics();
-}, { priority: 'background' });
+}, {priority: 'background'});
 ```
 
 ### Fallback strategies
@@ -59,6 +59,6 @@ function runScheduledTasks() {
   // Now safe to use scheduler.postTask in all browsers
   scheduler.postTask(() => {
     console.log('Task with priority support');
-  }, { priority: 'background' });
+  }, {priority: 'background'});
 }
 ```

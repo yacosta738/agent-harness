@@ -195,9 +195,13 @@ range, so the backdrop fades in and out perfectly synced with the drag.
 
   @keyframes fade-drawer-backdrop {
     /* Scroll position 0 = drawer fully open = backdrop visible. */
-    0% { --drawer-backdrop: 1 }
+    0% {
+      --drawer-backdrop: 1
+    }
     /* Scroll position 100% = drawer fully closed = backdrop hidden. */
-    100% { --drawer-backdrop: 0 }
+    100% {
+      --drawer-backdrop: 0
+    }
   }
 }
 ```
@@ -268,18 +272,18 @@ function onDrawerClosed() {
 const visibleThreshold = 1 / window.innerWidth;
 
 const observer = new IntersectionObserver(
-  (entries) => {
-    // During programmatic scrolling the observer can deliver multiple
-    // entries in one batch. Only the most recent describes the
-    // current state; earlier entries are intermediate positions.
-    const entry = entries.at(-1);
-    if (entry.intersectionRatio < visibleThreshold) onDrawerClosed();
-    if (entry.intersectionRatio === 1) onDrawerOpened();
-  },
-  // root: drawer makes the popover element the intersection root,
-  // so the ratio reflects the sheet's visibility within the popover
-  // (i.e. how much of it has been swiped on-screen).
-  {root: drawer, threshold: [visibleThreshold, 1]},
+    (entries) => {
+      // During programmatic scrolling the observer can deliver multiple
+      // entries in one batch. Only the most recent describes the
+      // current state; earlier entries are intermediate positions.
+      const entry = entries.at(-1);
+      if (entry.intersectionRatio < visibleThreshold) onDrawerClosed();
+      if (entry.intersectionRatio === 1) onDrawerOpened();
+    },
+    // root: drawer makes the popover element the intersection root,
+    // so the ratio reflects the sheet's visibility within the popover
+    // (i.e. how much of it has been swiped on-screen).
+    {root: drawer, threshold: [visibleThreshold, 1]},
 );
 observer.observe(sheet);
 ```
@@ -359,7 +363,7 @@ async function openDrawer() {
     // A single rAF is not enough — the second `scrollTo` would
     // cancel the first before the browser has a chance to apply it.
     await new Promise((r) =>
-      requestAnimationFrame(() => requestAnimationFrame(r))
+        requestAnimationFrame(() => requestAnimationFrame(r))
     );
   }
 

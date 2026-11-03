@@ -194,13 +194,13 @@ if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) 
 
   entries.forEach(entry => {
     const animation = entry.animate(
-      {
-        scale: ['0.5', '1', '0.5']
-      },
-      {
-        duration: 1, // We'll control the time ourselves
-        fill: 'both'
-      }
+        {
+          scale: ['0.5', '1', '0.5']
+        },
+        {
+          duration: 1, // We'll control the time ourselves
+          fill: 'both'
+        }
     );
     animation.pause();
     animations.set(entry, animation);
@@ -215,12 +215,13 @@ if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) 
       if (!animation) return;
 
       const entryRect = entry.getBoundingClientRect();
-      const progress = (entryRect.left + entryRect.width / 2 - scrollerRect.left) / scrollerRect.width;
+      const progress = (entryRect.left + entryRect.width / 2 - scrollerRect.left)
+          / scrollerRect.width;
 
       animation.currentTime = progress;
     });
   };
-    
+
   scroller.addEventListener('scroll', tick);
   tick();
 }

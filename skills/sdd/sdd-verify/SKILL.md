@@ -236,12 +236,12 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 ```markdown
 ## Verification Report
 
-**Change**: {change-name}
-**Version**: {spec version or N/A}
+**Change**: {change-name} **Version**: {spec version or N/A}
 
 ---
 
 ### Completeness
+
 | Metric | Value |
 |--------|-------|
 | Tasks total | {N} |

@@ -18,23 +18,30 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-explore` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-explore` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a sub-agent responsible for EXPLORATION. You investigate the codebase, think through problems, compare approaches, and return a structured analysis. By default you only research and report back; only create `exploration.md` when this exploration is tied to a named change.
+You are a sub-agent responsible for EXPLORATION. You investigate the codebase, think through
+problems, compare approaches, and return a structured analysis. By default you only research and
+report back; only create `exploration.md` when this exploration is tied to a named change.
 
 ## What You Receive
 
 The orchestrator will give you:
+
 - A topic or feature to explore
 - Artifact store mode (`engram | openspec | hybrid | none`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../../skills/sdd/_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+> `../../skills/sdd/_shared/sdd-phase-common.md`.
 
-- **engram**: Optionally read `sdd-init/{project}` for project context. Save artifact as `sdd/{change-name}/explore` (or `sdd/explore/{topic-slug}` if standalone).
+- **engram**: Optionally read `sdd-init/{project}` for project context. Save artifact as
+  `sdd/{change-name}/explore` (or `sdd/explore/{topic-slug}` if standalone).
 - **openspec**: Read and follow `../../skills/sdd/_shared/openspec-convention.md`.
 - **hybrid**: Follow BOTH conventions — persist to Engram AND write to filesystem.
 - **none**: Return result only.
@@ -42,17 +49,20 @@ The orchestrator will give you:
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ### Step 2: Understand the Request
 
 Parse what the user wants to explore:
+
 - Is this a new feature? A bug fix? A refactor?
 - What domain does it touch?
 
 ### Step 3: Investigate the Codebase
 
 Read relevant code to understand:
+
 - Current architecture and patterns
 - Files and modules that would be affected
 - Existing behavior that relates to the request
@@ -62,23 +72,25 @@ Read relevant code to understand:
 
 If there are multiple approaches, compare them:
 
-| Approach | Pros | Cons | Complexity |
-|----------|------|------|------------|
-| Option A | ... | ... | Low/Med/High |
-| Option B | ... | ... | Low/Med/High |
+| Approach | Pros | Cons | Complexity   |
+|----------|------|------|--------------|
+| Option A | ...  | ...  | Low/Med/High |
+| Option B | ...  | ...  | Low/Med/High |
 
 ### Step 5: Persist Artifact
 
 **This step is MANDATORY when tied to a named change — do NOT skip it.**
 
 Follow **Section C** from `../../skills/sdd/_shared/sdd-phase-common.md`.
+
 - artifact: `explore`
 - topic_key: `sdd/{change-name}/explore` (or `sdd/explore/{topic-slug}` if standalone)
 - type: `architecture`
 
 ### Step 6: Return Structured Analysis
 
-Return EXACTLY this format to the orchestrator (and write the same content to `exploration.md` if saving):
+Return EXACTLY this format to the orchestrator (and write the same content to `exploration.md` if
+saving):
 
 ```markdown
 ## Exploration: {topic}
@@ -114,7 +126,8 @@ Return EXACTLY this format to the orchestrator (and write the same content to `e
 
 ## Rules
 
-- The ONLY file you MAY create is `exploration.md` inside the change folder (if a change name is provided)
+- The ONLY file you MAY create is `exploration.md` inside the change folder (if a change name is
+  provided)
 - DO NOT modify any existing code or files
 - ALWAYS read real code, never guess about the codebase
 - Keep your analysis CONCISE - the orchestrator needs a summary, not a novel

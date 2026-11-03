@@ -22,7 +22,7 @@ calls, DB queries, AI invocations **State**: Persisted from step returns; step n
 ## Quick Start
 
 ```typescript
-import { WorkflowEntrypoint, WorkflowStep, WorkflowEvent } from 'cloudflare:workers';
+import {WorkflowEntrypoint, WorkflowStep, WorkflowEvent} from 'cloudflare:workers';
 
 type Env = { MY_WORKFLOW: Workflow; DB: D1Database };
 type Params = { userId: string };
@@ -31,7 +31,7 @@ export class MyWorkflow extends WorkflowEntrypoint<Env, Params> {
   async run(event: WorkflowEvent<Params>, step: WorkflowStep) {
     const user = await step.do('fetch user', async () => {
       return await this.env.DB.prepare('SELECT * FROM users WHERE id = ?')
-        .bind(event.params.userId).first();
+          .bind(event.params.userId).first();
     });
 
     await step.sleep('wait 7 days', '7 days');

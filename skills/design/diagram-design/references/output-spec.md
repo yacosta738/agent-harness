@@ -171,7 +171,9 @@ Geist has no CJK coverage. When labels contain Japanese, Chinese, or Korean text
 on those `<text>` elements — don't swap the whole skin:
 
 ```svg
-<text font-family="'Geist', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', sans-serif">認証サービス</text>
+
+<text font-family="'Geist', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', sans-serif">認証サービス
+</text>
 ```
 
 For mono sublabels use `'Geist Mono', 'Noto Sans Mono CJK JP', monospace`. CJK glyphs render ~10%

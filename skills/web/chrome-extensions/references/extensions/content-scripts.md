@@ -6,12 +6,20 @@
 
 ```json
 {
-  "content_scripts": [{
-    "matches": ["<all_urls>"],
-    "js": ["content/content.js"],
-    "css": ["content/content.css"],
-    "run_at": "document_idle"
-  }]
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
 }
 ```
 
@@ -20,13 +28,13 @@
 ```js
 // Requires "scripting" permission and host access
 chrome.scripting.executeScript({
-  target: { tabId: tabId },
+  target: {tabId: tabId},
   files: ['content/content.js']
 });
 
 // Or inject a function directly
 chrome.scripting.executeScript({
-  target: { tabId: tabId },
+  target: {tabId: tabId},
   func: (param) => {
     document.body.style.backgroundColor = param;
   },
@@ -38,7 +46,10 @@ Use `activeTab` permission for on-click injection (no host_permissions needed):
 
 ```json
 {
-  "permissions": ["activeTab", "scripting"]
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ]
 }
 ```
 
@@ -55,18 +66,18 @@ Content scripts run in an isolated world:
 
 ```js
 // content.js → service worker
-chrome.runtime.sendMessage({ type: 'DATA', payload: data }, (response) => {
+chrome.runtime.sendMessage({type: 'DATA', payload: data}, (response) => {
   console.log('Got response:', response);
 });
 
 // service worker → content script in a specific tab
-chrome.tabs.sendMessage(tabId, { type: 'UPDATE', data: newData });
+chrome.tabs.sendMessage(tabId, {type: 'UPDATE', data: newData});
 
 // content.js: listen for messages
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'GET_CONTENT') {
     const text = document.body.innerText;
-    sendResponse({ text });
+    sendResponse({text});
   }
   return true; // Keep channel open for async sendResponse
 });

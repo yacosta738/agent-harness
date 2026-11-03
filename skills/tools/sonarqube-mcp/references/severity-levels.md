@@ -57,7 +57,13 @@ Issues are also tagged with a clean code attribute explaining why the code is pr
 
 ```json
 {
-  "severities": ["BLOCKER", "HIGH", "MEDIUM", "LOW", "INFO"]
+  "severities": [
+    "BLOCKER",
+    "HIGH",
+    "MEDIUM",
+    "LOW",
+    "INFO"
+  ]
 }
 ```
 

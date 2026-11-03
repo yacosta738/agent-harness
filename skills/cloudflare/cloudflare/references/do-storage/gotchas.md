@@ -10,7 +10,9 @@ Block new requests during storage reads from CURRENT request:
 
 ```typescript
 // SAFE: Input gate active during await
-async increment() {
+async
+increment()
+{
   const val = await this.ctx.storage.get("counter"); // Input gate blocks other requests
   await this.ctx.storage.put("counter", val + 1);
   return val;
@@ -23,7 +25,9 @@ Hold response until ALL writes from current request confirm:
 
 ```typescript
 // SAFE: Output gate waits for put() to confirm before returning response
-async increment() {
+async
+increment()
+{
   const val = await this.ctx.storage.get("counter");
   this.ctx.storage.put("counter", val + 1); // No await
   return new Response(String(val)); // Response delayed until write confirms
@@ -47,7 +51,9 @@ this.ctx.storage.put("key", 3); // Final value: 3
 
 ```typescript
 // UNSAFE: fetch() allows another request to interleave
-async unsafe() {
+async
+unsafe()
+{
   const val = await this.ctx.storage.get("counter");
   await fetch("https://api.example.com"); // Gate broken!
   await this.ctx.storage.put("counter", val + 1); // Race condition possible
@@ -58,7 +64,9 @@ async unsafe() {
 
 ```typescript
 // SAFE: Block concurrent requests explicitly
-async safe() {
+async
+safe()
+{
   return await this.ctx.blockConcurrencyWhile(async () => {
     const val = await this.ctx.storage.get("counter");
     await fetch("https://api.example.com");
@@ -74,7 +82,7 @@ Opt out of input gate for reads that don't need protection:
 
 ```typescript
 // Allow concurrent reads (no consistency guarantee)
-const val = await this.ctx.storage.get("metrics", { allowConcurrency: true });
+const val = await this.ctx.storage.get("metrics", {allowConcurrency: true});
 ```
 
 ## Common Errors

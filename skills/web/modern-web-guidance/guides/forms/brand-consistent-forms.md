@@ -40,6 +40,7 @@ body {
 ```
 
 ```html
+
 <form>
   <!-- Checkbox -->
   <label for="subscribe">

@@ -18,37 +18,37 @@ identically across types.
 ## 1. Inputs — the parameter contract
 
 ```yaml
-lanes:                              # 1..6 horizontal swimlanes (top to bottom)
-  - { name: ["RD&E"],                 key: "RDE" }
-  - { name: ["IT"],                   key: "IT"  }
-  - { name: ["FIELD", "SERVICES"],    key: "FLD" }
-  - { name: ["SURVEY", "SERVICES"],   key: "SVY" }
-  - { name: ["HOUSEHOLD", "UNIT"],    key: "HHU" }
-  - { name: ["COMMS &", "MARKETING"], key: "CMM" }
+lanes: # 1..6 horizontal swimlanes (top to bottom)
+  - { name: [ "RD&E" ],                 key: "RDE" }
+  - { name: [ "IT" ],                   key: "IT" }
+  - { name: [ "FIELD", "SERVICES" ],    key: "FLD" }
+  - { name: [ "SURVEY", "SERVICES" ],   key: "SVY" }
+  - { name: [ "HOUSEHOLD", "UNIT" ],    key: "HHU" }
+  - { name: [ "COMMS &", "MARKETING" ], key: "CMM" }
 
-steps:                              # 1..12 vertical step columns (left to right)
-  - { number: "1",  label: "Design"   }
-  - { number: "2",  label: "Build"    }
+steps: # 1..12 vertical step columns (left to right)
+  - { number: "1",  label: "Design" }
+  - { number: "2",  label: "Build" }
   - { number: "3",  label: "Test", focal: true }       # focal step header chip — accent fill
-  - { number: "4",  label: "Train"    }
+  - { number: "4",  label: "Train" }
   # ... up to 12
 
-nodes:                              # explicit per-cell entries; empty cells render nothing
+nodes: # explicit per-cell entries; empty cells render nothing
   - { lane: "RDE", step: 0,  title: "Survey design",      sub: "questionnaire · sampling", tool: "Excel · CSPro",
-      chips: {in: null,  out: "FL"} }              # first step has no input chip
+      chips: { in: null,  out: "FL" } }              # first step has no input chip
   - { lane: "IT",  step: 1,  title: "Build app",          sub: "form + validation",        tool: "CSPro · scripts",
-      chips: {in: "FL", out: "TB"}, color: "#5a7d9a" }    # slate-blue — data quality concern
+      chips: { in: "FL", out: "TB" }, color: "#5a7d9a" }    # slate-blue — data quality concern
   - { lane: "RDE", step: 2,  title: "Pilot test",         sub: "field debug",              tool: "tablet · script",
-      chips: {in: "TB", out: "TB"}, focal: true }   # focal node — accent border
+      chips: { in: "TB", out: "TB" }, focal: true }   # focal node — accent border
   - { lane: "FLD", step: 3,  title: "Train enumerators",  sub: "protocols · safety",       tool: "manual",
-      chips: {in: "TB", out: "LS"}, color: "#b85450" }    # rust-red — governance / training
+      chips: { in: "TB", out: "LS" }, color: "#b85450" }    # rust-red — governance / training
   # ... etc
 
-arrows:                             # explicit edges; styles bind to topology (see §3)
-  - { from: {lane: "RDE", step: 0}, to: {lane: "IT",  step: 1}, style: "normal" }
-  - { from: {lane: "IT",  step: 1}, to: {lane: "RDE", step: 2}, style: "focal-in" }     # accent — into focal
-  - { from: {lane: "RDE", step: 2}, to: {lane: "FLD", step: 3}, style: "focal-out" }    # accent — out of focal
-  - { from: {lane: "RDE", step: 2}, to: {lane: "IT",  step: 1}, style: "trigger" }      # dashed trigger
+arrows: # explicit edges; styles bind to topology (see §3)
+  - { from: { lane: "RDE", step: 0 }, to: { lane: "IT",  step: 1 }, style: "normal" }
+  - { from: { lane: "IT",  step: 1 }, to: { lane: "RDE", step: 2 }, style: "focal-in" }     # accent — into focal
+  - { from: { lane: "RDE", step: 2 }, to: { lane: "FLD", step: 3 }, style: "focal-out" }    # accent — out of focal
+  - { from: { lane: "RDE", step: 2 }, to: { lane: "IT",  step: 1 }, style: "trigger" }      # dashed trigger
   # ... etc
 
 dark: false
@@ -201,13 +201,20 @@ Three styles, bound to topology. Connectors drawn **before** all node rects (z-o
 **Defs block** (required, three markers):
 
 ```svg
+
 <defs>
   <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
     <circle cx="11" cy="11" r="0.8" fill="rgba(45,49,66,0.10)"/>
   </pattern>
-  <marker id="arrow"        markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
-  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3"   orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
-  <marker id="arrow-sm"     markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto"><polygon points="0 0, 6 2.5, 0 5" fill="#4f5d75"/></marker>
+  <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/>
+  </marker>
+  <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/>
+  </marker>
+  <marker id="arrow-sm" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+    <polygon points="0 0, 6 2.5, 0 5" fill="#4f5d75"/>
+  </marker>
 </defs>
 ```
 
@@ -227,15 +234,15 @@ destination above).
 ```svg
 <!-- Downward (destination lane > source lane) -->
 <path d="M {rx},{src_cy} H {dst_cx - 8} Q {dst_cx},{src_cy} {dst_cx},{src_cy + 8} V {dst_top}"
-      fill="none" stroke="…" stroke-width="…" marker-end="…"/>
+  fill="none" stroke="…" stroke-width="…" marker-end="…"/>
 
-<!-- Upward (destination lane < source lane) -->
+  <!-- Upward (destination lane < source lane) -->
 <path d="M {rx},{src_cy} H {dst_cx - 8} Q {dst_cx},{src_cy} {dst_cx},{src_cy - 8} V {dst_bottom}"
-      fill="none" stroke="…" stroke-width="…" marker-end="…"/>
+fill="none" stroke="…" stroke-width="…" marker-end="…"/>
 
-<!-- Same lane (adjacent step) -->
+  <!-- Same lane (adjacent step) -->
 <line x1="{src_right}" y1="{lane_cy}" x2="{dst_left}" y2="{lane_cy}"
-      stroke="…" stroke-width="…" marker-end="…"/>
+stroke="…" stroke-width="…" marker-end="…"/>
 ```
 
 - **Z-order:** all `<path>` and `<line>` connectors emitted **before** any node `<rect>`.
@@ -460,61 +467,61 @@ parametric contract works end-to-end.
 # 6 lanes × 11 steps, 1 focal step + 1 focal node + 3 custom-colored nodes
 
 lanes:
-  - { name: ["RD&E"],                 key: "RDE" }
-  - { name: ["IT"],                   key: "IT"  }
-  - { name: ["FIELD", "SERVICES"],    key: "FLD" }
-  - { name: ["SURVEY", "SERVICES"],   key: "SVY" }
-  - { name: ["HOUSEHOLD", "UNIT"],    key: "HHU" }
-  - { name: ["COMMS &", "MARKETING"], key: "CMM" }
+  - { name: [ "RD&E" ],                 key: "RDE" }
+  - { name: [ "IT" ],                   key: "IT" }
+  - { name: [ "FIELD", "SERVICES" ],    key: "FLD" }
+  - { name: [ "SURVEY", "SERVICES" ],   key: "SVY" }
+  - { name: [ "HOUSEHOLD", "UNIT" ],    key: "HHU" }
+  - { name: [ "COMMS &", "MARKETING" ], key: "CMM" }
 
 steps:
-  - { number: "1",  label: "Design"   }
-  - { number: "2",  label: "Assign"   }
+  - { number: "1",  label: "Design" }
+  - { number: "2",  label: "Assign" }
   - { number: "3",  label: "Collect",  focal: true }    # focal step header chip
-  - { number: "4",  label: "Review"   }
+  - { number: "4",  label: "Review" }
   - { number: "5",  label: "Validate" }
-  - { number: "6",  label: "Weight"   }
-  - { number: "7",  label: "Clean"    }
+  - { number: "6",  label: "Weight" }
+  - { number: "7",  label: "Clean" }
   - { number: "8",  label: "Tabulate" }
-  - { number: "9",  label: "Approve"  }
-  - { number: "10", label: "Publish"  }
-  - { number: "11", label: "Upload"   }
+  - { number: "9",  label: "Approve" }
+  - { number: "10", label: "Publish" }
+  - { number: "11", label: "Upload" }
 
 nodes:
   - { lane: "RDE", step: 0,  title: "Sample Design",     sub: "Census data → Sample",
-      tool: "SAS · Survey Solutions",      chips: {in: null, out: "LS"} }                # first step: no input chip
+      tool: "SAS · Survey Solutions",      chips: { in: null, out: "LS" } }                # first step: no input chip
   - { lane: "IT",  step: 1,  title: "Field Assignment",  sub: "Sample → Field tasks",
-      tool: "Survey Solutions",            chips: {in: "LS", out: "LS"} }
+      tool: "Survey Solutions",            chips: { in: "LS", out: "LS" } }
   - { lane: "FLD", step: 2,  title: "Data Collection",   sub: "→ 10,464 dwellings",
-      tool: "Survey Solutions",            chips: {in: "LS", out: "DB"},  focal: true }   # focal node
+      tool: "Survey Solutions",            chips: { in: "LS", out: "DB" },  focal: true }   # focal node
   - { lane: "SVY", step: 3,  title: "HQ Review",         sub: "Submissions → Approved",
-      tool: "Survey Sol. HQ",              chips: {in: "DB", out: "DB"},  color: "#b85450" }   # rust-red · governance
+      tool: "Survey Sol. HQ",              chips: { in: "DB", out: "DB" },  color: "#b85450" }   # rust-red · governance
   - { lane: "IT",  step: 4,  title: "Error Checks",      sub: "Approved → Cleaned",
-      tool: "SAS · Scripts",               chips: {in: "DB", out: "DB"},  color: "#5a7d9a" }   # slate-blue · data quality
+      tool: "SAS · Scripts",               chips: { in: "DB", out: "DB" },  color: "#5a7d9a" }   # slate-blue · data quality
   - { lane: "RDE", step: 5,  title: "Weight Calculation", sub: "Cleaned → Weighted",
       tool: "SAS",                         chips: null }                                  # 2-line title — chips skipped
   - { lane: "HHU", step: 6,  title: "2° Cleaning",       sub: "Weighted → Analysis",
-      tool: "SAS · R · SPSS",              chips: {in: "DB", out: "TB"} }
+      tool: "SAS · R · SPSS",              chips: { in: "DB", out: "TB" } }
   - { lane: "HHU", step: 7,  title: "Tables + Brief",    sub: "Analysis → Tables",
-      tool: "Excel · SAS",                 chips: {in: "TB", out: "FL"} }
+      tool: "Excel · SAS",                 chips: { in: "TB", out: "FL" } }
   - { lane: "CMM", step: 8,  title: "Stats Review",      sub: "Tables → Approved",
-      tool: "Internal review",             chips: {in: "FL", out: "FL"} }
+      tool: "Internal review",             chips: { in: "FL", out: "FL" } }
   - { lane: "CMM", step: 9,  title: "Public Release",    sub: "Approved → Public",
-      tool: "Press conference",            chips: {in: "FL", out: "WB"}, color: "#7a8c47" }   # olive-green · data products
+      tool: "Press conference",            chips: { in: "FL", out: "WB" }, color: "#7a8c47" }   # olive-green · data products
   - { lane: "IT",  step: 10, title: "Upload NatStat / SDMX", sub: "Results → Published",
       tool: "Web · SDMX API",              chips: null }                                  # 2-line title — chips skipped
 
 arrows:
-  - { from: {lane: "RDE", step: 0}, to: {lane: "IT",  step: 1},  style: "normal"    }
-  - { from: {lane: "IT",  step: 1}, to: {lane: "FLD", step: 2},  style: "focal-in"  }     # → focal
-  - { from: {lane: "FLD", step: 2}, to: {lane: "SVY", step: 3},  style: "focal-out" }     # ← focal
-  - { from: {lane: "SVY", step: 3}, to: {lane: "IT",  step: 4},  style: "normal"    }     # upward
-  - { from: {lane: "IT",  step: 4}, to: {lane: "RDE", step: 5},  style: "normal"    }     # upward
-  - { from: {lane: "RDE", step: 5}, to: {lane: "HHU", step: 6},  style: "normal"    }     # downward, skips 2 lanes
-  - { from: {lane: "HHU", step: 6}, to: {lane: "HHU", step: 7},  style: "normal"    }     # same lane
-  - { from: {lane: "HHU", step: 7}, to: {lane: "CMM", step: 8},  style: "normal"    }
-  - { from: {lane: "CMM", step: 8}, to: {lane: "CMM", step: 9},  style: "normal"    }     # same lane
-  - { from: {lane: "CMM", step: 9}, to: {lane: "IT",  step: 10}, style: "normal"    }     # upward, skips 4 lanes
+  - { from: { lane: "RDE", step: 0 }, to: { lane: "IT",  step: 1 },  style: "normal" }
+  - { from: { lane: "IT",  step: 1 }, to: { lane: "FLD", step: 2 },  style: "focal-in" }     # → focal
+  - { from: { lane: "FLD", step: 2 }, to: { lane: "SVY", step: 3 },  style: "focal-out" }     # ← focal
+  - { from: { lane: "SVY", step: 3 }, to: { lane: "IT",  step: 4 },  style: "normal" }     # upward
+  - { from: { lane: "IT",  step: 4 }, to: { lane: "RDE", step: 5 },  style: "normal" }     # upward
+  - { from: { lane: "RDE", step: 5 }, to: { lane: "HHU", step: 6 },  style: "normal" }     # downward, skips 2 lanes
+  - { from: { lane: "HHU", step: 6 }, to: { lane: "HHU", step: 7 },  style: "normal" }     # same lane
+  - { from: { lane: "HHU", step: 7 }, to: { lane: "CMM", step: 8 },  style: "normal" }
+  - { from: { lane: "CMM", step: 8 }, to: { lane: "CMM", step: 9 },  style: "normal" }     # same lane
+  - { from: { lane: "CMM", step: 9 }, to: { lane: "IT",  step: 10 }, style: "normal" }     # upward, skips 4 lanes
 
 dark: false
 ```

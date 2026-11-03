@@ -15,34 +15,41 @@
 // paths correctly across OS (forward slashes in args; native resolution at
 // each child). Exit non-zero if either child fails.
 
-import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import {spawnSync} from "node:child_process";
+import {existsSync, readFileSync} from "node:fs";
+import {dirname, resolve} from "node:path";
+import {fileURLToPath} from "node:url";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "..");
 
 function parseArgs(argv) {
-  const out = { preset: null, output: null, validateOnly: false, help: false };
+  const out = {preset: null, output: null, validateOnly: false, help: false};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--preset") out.preset = argv[++i];
-    else if (a === "--output") out.output = argv[++i];
-    else if (a === "--validate-only") out.validateOnly = true;
-    else if (a === "--help" || a === "-h") out.help = true;
+    if (a === "--preset") {
+      out.preset = argv[++i];
+    } else if (a === "--output") {
+      out.output = argv[++i];
+    } else if (a === "--validate-only") {
+      out.validateOnly = true;
+    } else if (a === "--help" || a === "-h") {
+      out.help = true;
+    }
   }
   return out;
 }
 
 function loadDefaultPreset() {
   const p = resolve(REPO, "harness.config.json");
-  if (!existsSync(p)) return "recommended";
+  if (!existsSync(p)) {
+    return "recommended";
+  }
   try {
     const cfg = JSON.parse(readFileSync(p, "utf8"));
     return typeof cfg.preset === "string" && cfg.preset.length > 0
-      ? cfg.preset
-      : "recommended";
+        ? cfg.preset
+        : "recommended";
   } catch {
     return "recommended";
   }
@@ -50,9 +57,9 @@ function loadDefaultPreset() {
 
 function runNode(scriptRel, args) {
   const result = spawnSync(
-    process.execPath,
-    [resolve(HERE, scriptRel), ...args],
-    { stdio: "inherit" },
+      process.execPath,
+      [resolve(HERE, scriptRel), ...args],
+      {stdio: "inherit"},
   );
   return result.status ?? 1;
 }
@@ -61,14 +68,17 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
     console.log(
-      "Usage: node scripts/deploy.mjs [--preset <name>] [--output <dir>] [--validate-only]\n" +
-        "  Defaults: preset from harness.config.json (fallback 'recommended'),\n" +
+        "Usage: node scripts/deploy.mjs [--preset <name>] [--output <dir>] [--validate-only]\n"
+        +
+        "  Defaults: preset from harness.config.json (fallback 'recommended'),\n"
+        +
         "            output = 'dist/opencode'.",
     );
     return 0;
   }
   const preset = args.preset ?? loadDefaultPreset();
-  const output = args.output ? resolve(REPO, args.output) : resolve(REPO, "dist/opencode");
+  const output = args.output ? resolve(REPO, args.output) : resolve(REPO,
+      "dist/opencode");
 
   if (!args.validateOnly) {
     console.log(`rendering bundle (preset: ${preset}) -> ${output}`);
@@ -98,7 +108,7 @@ function main() {
   }
 
   console.log(
-    `bundle ready: ${output} (preset: ${preset}) — now run dotter deploy`,
+      `bundle ready: ${output} (preset: ${preset}) — now run dotter deploy`,
   );
   return 0;
 }

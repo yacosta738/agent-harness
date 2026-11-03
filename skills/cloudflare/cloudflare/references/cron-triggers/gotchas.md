@@ -86,10 +86,10 @@ export default {
 
     // GOOD: Explicit error handling
     ctx.waitUntil(
-      riskyOperation().catch(err => {
-        console.error("Background task failed:", err);
-        return logError(err, env);
-      })
+        riskyOperation().catch(err => {
+          console.error("Background task failed:", err);
+          return logError(err, env);
+        })
     );
   },
 };
@@ -112,7 +112,7 @@ export default {
       return;
     }
 
-    await env.EXECUTIONS.put(executionId, "1", { expirationTtl: 86400 }); // 24h TTL
+    await env.EXECUTIONS.put(executionId, "1", {expirationTtl: 86400}); // 24h TTL
     await performIdempotentOperation(env);
   },
 };
@@ -131,7 +131,7 @@ export default {
 
     // Block __scheduled in production
     if (url.pathname === "/__scheduled" && env.ENVIRONMENT === "production") {
-      return new Response("Not Found", { status: 404 });
+      return new Response("Not Found", {status: 404});
     }
 
     return handleRequest(request, env, ctx);
@@ -156,7 +156,7 @@ export default {
       // Check Cloudflare headers to verify internal request
       const cfRay = request.headers.get("cf-ray");
       if (!cfRay && env.ENVIRONMENT === "production") {
-        return new Response("Not Found", { status: 404 });
+        return new Response("Not Found", {status: 404});
       }
     }
 

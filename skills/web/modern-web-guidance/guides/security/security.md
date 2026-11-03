@@ -156,7 +156,7 @@ window.addEventListener('message', (event) => {
 });
 
 // Sender (Safe)
-targetWindow.postMessage({ action: 'update' }, 'https://trusted-origin.com');
+targetWindow.postMessage({action: 'update'}, 'https://trusted-origin.com');
 ```
 
 ## Phase 2: Discovery & Data Collection (Prerequisites)
@@ -319,6 +319,7 @@ Content-Security-Policy: script-src 'nonce-{RANDOM}' 'strict-dynamic' 'report-sa
 HTML for nonce-based CSP:
 
 ```html
+
 <script nonce="{RANDOM}" src="https://example.com/script.js"></script>
 ```
 
@@ -439,7 +440,8 @@ app.use((req, res, next) => {
   if (['same-origin', 'same-site', 'none'].includes(site)) return next();
 
   // Allow standard navigate GET requests (link clicks)
-  if (site === 'cross-site' && mode === 'navigate' && req.method === 'GET' && !['object', 'embed'].includes(dest)) {
+  if (site === 'cross-site' && mode === 'navigate' && req.method === 'GET' && !['object',
+    'embed'].includes(dest)) {
     return next();
   }
 
@@ -485,6 +487,7 @@ Permissions-Policy: camera=(), geolocation=(), microphone=()
 ```
 
 ```html
+
 <iframe src="https://trusted-video.com/player" allow="fullscreen; camera"></iframe>
 ```
 
@@ -498,7 +501,9 @@ Permissions-Policy: camera=(), geolocation=(), microphone=()
   to fail. SRI is strictly for immutable, versioned assets.
 
 ```html
-<script src="https://cdn.example.com/lib.js" integrity="sha256-H8df...39v" crossorigin="anonymous"></script>
+
+<script src="https://cdn.example.com/lib.js" integrity="sha256-H8df...39v"
+        crossorigin="anonymous"></script>
 ```
 
 #### Cross-Origin Resource Sharing (CORS)

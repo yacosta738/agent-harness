@@ -61,13 +61,13 @@ when the input is focused.
 <!-- Autocomplete tokens must contain webauthn space-separated -->
 <form id="signin-form">
   <input
-    type="text"
-    name="username"
-    autocomplete="username webauthn"
-    autofocus
-    data-testid="username-field"
+      type="text"
+      name="username"
+      autocomplete="username webauthn"
+      autofocus
+      data-testid="username-field"
   />
-  <input type="password" name="password" autocomplete="current-password" />
+  <input type="password" name="password" autocomplete="current-password"/>
   <button type="submit">Sign in</button>
 </form>
 ```
@@ -104,7 +104,7 @@ focus on sign-in fields:
 
 ```javascript
 // optionsFetch and loginVerifyFetch are app-defined HTTP methods
-import { optionsFetch, loginVerifyFetch } from "./api.js";
+import {optionsFetch, loginVerifyFetch} from "./api.js";
 
 let autofillAbortController = new AbortController();
 
@@ -114,7 +114,7 @@ async function initializeConditionalAutofill() {
   if (capabilities.conditionalGet === true) {
     const loginOptionsJSON = await optionsFetch();
     const publicKey =
-      PublicKeyCredential.parseRequestOptionsFromJSON(loginOptionsJSON);
+        PublicKeyCredential.parseRequestOptionsFromJSON(loginOptionsJSON);
 
     try {
       // Initiate Conditional UI form autofill suggestions
@@ -153,7 +153,7 @@ async function triggerButtonAuthentication() {
 
   const loginOptionsJSON = await optionsFetch();
   const publicKey =
-    PublicKeyCredential.parseRequestOptionsFromJSON(loginOptionsJSON);
+      PublicKeyCredential.parseRequestOptionsFromJSON(loginOptionsJSON);
 
   let credential;
   try {

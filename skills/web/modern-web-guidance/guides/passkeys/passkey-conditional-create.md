@@ -68,7 +68,7 @@ if (capabilities.conditionalCreate) {
 
 ```javascript
 // optionsFetch and registerVerifyFetch are app-defined server endpoint requests
-import { optionsFetch, registerVerifyFetch } from './api.js';
+import {optionsFetch, registerVerifyFetch} from './api.js';
 
 async function triggerConditionalCreate(loginAbortController) {
   const capabilities = await PublicKeyCredential.getClientCapabilities();
@@ -80,20 +80,20 @@ async function triggerConditionalCreate(loginAbortController) {
   loginAbortController.abort();
 
   // 2. Fetch creation options signaling the backend that this is a conditional request
-  const creationOptionsJSON = await optionsFetch({ conditional: true });
+  const creationOptionsJSON = await optionsFetch({conditional: true});
   const publicKey = PublicKeyCredential.parseCreationOptionsFromJSON(creationOptionsJSON);
 
   let credential;
   try {
     // 3. Invoke silent credentials creation prompt
-    credential = await navigator.credentials.create({ 
+    credential = await navigator.credentials.create({
       publicKey,
       mediation: 'conditional' // Silent background creation mediation
     });
   } catch (e) {
     // 4. Silently swallow common WebAuthn browser exceptions
     if (['InvalidStateError', 'NotAllowedError', 'AbortError'].includes(e.name)) {
-      return; 
+      return;
     }
     console.error('Unexpected conditional create error:', e);
     return;

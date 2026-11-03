@@ -8,7 +8,7 @@
 **Solution:** Always call `destroy()` when done with keepAlive containers
 
 ```typescript
-const sandbox = getSandbox(env.Sandbox, 'temp', { keepAlive: true });
+const sandbox = getSandbox(env.Sandbox, 'temp', {keepAlive: true});
 try {
   const result = await sandbox.exec('python script.py');
   return result.stdout;
@@ -81,7 +81,7 @@ consistently. `normalizeId: true` lowercases the ID.
 ```typescript
 // These create DIFFERENT sandboxes:
 getSandbox(env.Sandbox, 'MyApp');              // DO ID: hash('MyApp')
-getSandbox(env.Sandbox, 'MyApp', { normalizeId: true });  // DO ID: hash('myapp')
+getSandbox(env.Sandbox, 'MyApp', {normalizeId: true});  // DO ID: hash('myapp')
 ```
 
 ### "Code context variables disappeared"
@@ -105,10 +105,10 @@ const sandbox = getSandbox(env.Sandbox, `user-${userId}`);
 
 ```typescript
 // Cost-optimized
-getSandbox(env.Sandbox, 'id', { sleepAfter: '30m', keepAlive: false });
+getSandbox(env.Sandbox, 'id', {sleepAfter: '30m', keepAlive: false});
 
 // Always-on (requires destroy())
-getSandbox(env.Sandbox, 'id', { keepAlive: true });
+getSandbox(env.Sandbox, 'id', {keepAlive: true});
 ```
 
 ```jsonc
@@ -155,7 +155,7 @@ const token = env.GITHUB_TOKEN;
 
 // Pass to sandbox via exec env
 const result = await sandbox.exec('git clone ...', {
-  env: { GIT_TOKEN: token }
+  env: {GIT_TOKEN: token}
 });
 ```
 

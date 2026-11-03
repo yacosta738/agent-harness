@@ -25,15 +25,17 @@ at a glance.
 ```svg
 <!-- Non-focal task -->
 <rect x="X_start" y="ROW_Y+8" width="DURATION_PX" height="24" rx="4"
-      fill="rgba(79,93,117,0.15)" stroke="#4f5d75" stroke-width="1"/>
+  fill="rgba(79,93,117,0.15)" stroke="#4f5d75" stroke-width="1"/>
 <text x="X_start+8" y="ROW_Y+25" fill="#2d3142" font-size="10" font-weight="600"
-      font-family="'Geist', sans-serif">Task name</text>
+font-family="'Geist', sans-serif">Task name
+</text>
 
-<!-- Focal task -->
+  <!-- Focal task -->
 <rect x="X_start" y="ROW_Y+8" width="DURATION_PX" height="24" rx="4"
-      fill="rgba(235,108,54,0.12)" stroke="#eb6c36" stroke-width="1"/>
+fill="rgba(235,108,54,0.12)" stroke="#eb6c36" stroke-width="1"/>
 <text x="X_start+8" y="ROW_Y+25" fill="#eb6c36" font-size="10" font-weight="600"
-      font-family="'Geist', sans-serif">Key task</text>
+font-family="'Geist', sans-serif">Key task
+</text>
 ```
 
 Duration in pixels: `(end_week - start_week) × pitch`. Pitch = timeline_width / total_weeks.

@@ -169,8 +169,14 @@ Use `search_sonar_issues_in_projects` to find and prioritize issues.
 {
   "name": "search_sonar_issues_in_projects",
   "arguments": {
-    "projects": ["my-backend", "my-frontend"],
-    "severities": ["BLOCKER", "HIGH"],
+    "projects": [
+      "my-backend",
+      "my-frontend"
+    ],
+    "severities": [
+      "BLOCKER",
+      "HIGH"
+    ],
     "p": 1,
     "ps": 50
   }
@@ -183,9 +189,14 @@ Use `search_sonar_issues_in_projects` to find and prioritize issues.
 {
   "name": "search_sonar_issues_in_projects",
   "arguments": {
-    "projects": ["my-service"],
+    "projects": [
+      "my-service"
+    ],
     "pullRequestId": "123",
-    "severities": ["HIGH", "MEDIUM"],
+    "severities": [
+      "HIGH",
+      "MEDIUM"
+    ],
     "p": 1,
     "ps": 100
   }
@@ -303,7 +314,13 @@ Use `get_component_measures` to retrieve detailed metrics for a project, directo
   "name": "get_component_measures",
   "arguments": {
     "projectKey": "my-project-key",
-    "metricKeys": ["coverage", "bugs", "vulnerabilities", "code_smells", "ncloc"]
+    "metricKeys": [
+      "coverage",
+      "bugs",
+      "vulnerabilities",
+      "code_smells",
+      "ncloc"
+    ]
   }
 }
 ```
@@ -365,8 +382,12 @@ the fix.
 {
   "name": "search_sonar_issues_in_projects",
   "arguments": {
-    "projects": ["payment-service"],
-    "severities": ["BLOCKER"],
+    "projects": [
+      "payment-service"
+    ],
+    "severities": [
+      "BLOCKER"
+    ],
     "p": 1,
     "ps": 50
   }

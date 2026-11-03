@@ -18,32 +18,41 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-propose` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-propose` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a sub-agent responsible for creating PROPOSALS. You take the exploration analysis (or direct user input) and produce a structured `proposal.md` document inside the change folder.
+You are a sub-agent responsible for creating PROPOSALS. You take the exploration analysis (or direct
+user input) and produce a structured `proposal.md` document inside the change folder.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name (e.g., "add-dark-mode")
 - Exploration analysis (from sdd-explore) OR direct user description
 - Artifact store mode (`engram | openspec | hybrid | none`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../../skills/sdd/_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+> `../../skills/sdd/_shared/sdd-phase-common.md`.
 
-- **engram**: Read `sdd/{change-name}/explore` (optional) and `sdd-init/{project}` (optional). Save artifact as `sdd/{change-name}/proposal`.
+- **engram**: Read `sdd/{change-name}/explore` (optional) and `sdd-init/{project}` (optional). Save
+  artifact as `sdd/{change-name}/proposal`.
 - **openspec**: Read and follow `../../skills/sdd/_shared/openspec-convention.md`.
-- **hybrid**: Follow BOTH conventions — persist to Engram AND write to filesystem. Retrieve dependencies from Engram (primary) with filesystem fallback.
+- **hybrid**: Follow BOTH conventions — persist to Engram AND write to filesystem. Retrieve
+  dependencies from Engram (primary) with filesystem fallback.
 - **none**: Return result only. Never create or modify project files.
-- Never force `.agents/sdd/` creation unless user requested file-based persistence or mode is `hybrid`.
+- Never force `.agents/sdd/` creation unless user requested file-based persistence or mode is
+  `hybrid`.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ### Step 2: Create Change Directory
@@ -59,9 +68,11 @@ Follow **Section A** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ### Step 3: Read Existing Specs
 
-**IF mode is `openspec` or `hybrid`:** If `.agents/sdd/specs/` has relevant specs, read them to understand current behavior that this change might affect.
+**IF mode is `openspec` or `hybrid`:** If `.agents/sdd/specs/` has relevant specs, read them to
+understand current behavior that this change might affect.
 
-**IF mode is `engram`:** Existing context was already retrieved from Engram in the Persistence Contract. Skip filesystem reads.
+**IF mode is `engram`:** Existing context was already retrieved from Engram in the Persistence
+Contract. Skip filesystem reads.
 
 **IF mode is `none`:** Skip — no existing specs to read.
 
@@ -140,6 +151,7 @@ Reference the recommended approach from exploration if available.}
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../../skills/sdd/_shared/sdd-phase-common.md`.
+
 - artifact: `proposal`
 - topic_key: `sdd/{change-name}/proposal`
 - type: `architecture`
@@ -173,9 +185,12 @@ Ready for specs (sdd-spec) or design (sdd-design).
 - Every proposal MUST have success criteria
 - Use concrete file paths in "Affected Areas" when possible
 - Apply any `rules.proposal` from `.agents/sdd/config.yaml`
-- **ALWAYS fill in the Capabilities section** — this is the contract with sdd-spec. Research `.agents/sdd/specs/` first to use correct existing capability names.
+- **ALWAYS fill in the Capabilities section** — this is the contract with sdd-spec. Research
+  `.agents/sdd/specs/` first to use correct existing capability names.
 - New Capabilities → each will become `.agents/sdd/specs/<name>/spec.md` (new full spec)
 - Modified Capabilities → each will become a delta spec in the change folder
-- If nothing changes at the spec level (pure refactor, config change), explicitly write "None" under both sub-sections — don't leave them as template placeholders
-- **Size budget**: Proposal artifact MUST be under 450 words. Use bullet points and tables over prose. Headers organize, not explain.
+- If nothing changes at the spec level (pure refactor, config change), explicitly write "None" under
+  both sub-sections — don't leave them as template placeholders
+- **Size budget**: Proposal artifact MUST be under 450 words. Use bullet points and tables over
+  prose. Headers organize, not explain.
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.

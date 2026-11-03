@@ -11,14 +11,14 @@ immediately; awaiting blocks processing **Solution:**
 // ❌ WRONG - fire and forget
 export default {
   async tail(events) {
-    fetch(endpoint, { body: JSON.stringify(events) });
+    fetch(endpoint, {body: JSON.stringify(events)});
   }
 };
 
 // ❌ WRONG - blocking await
 export default {
   async tail(events, env, ctx) {
-    await fetch(endpoint, { body: JSON.stringify(events) });
+    await fetch(endpoint, {body: JSON.stringify(events)});
   }
 };
 
@@ -26,10 +26,10 @@ export default {
 export default {
   async tail(events, env, ctx) {
     ctx.waitUntil(
-      (async () => {
-        await fetch(endpoint, { body: JSON.stringify(events) });
-        await processMore();
-      })()
+        (async () => {
+          await fetch(endpoint, {body: JSON.stringify(events)});
+          await processMore();
+        })()
     );
   }
 };
@@ -47,11 +47,14 @@ status
 
 ```typescript
 // ❌ WRONG
-if (event.outcome === 500) { /* never matches */ }
+if (event.outcome === 500) { /* never matches */
+}
 
 // ✅ CORRECT
-if (event.outcome === 'exception') { /* script threw */ }
-if (event.event?.response?.status === 500) { /* HTTP 500 */ }
+if (event.outcome === 'exception') { /* script threw */
+}
+if (event.event?.response?.status === 500) { /* HTTP 500 */
+}
 ```
 
 ### 4. Timestamp Units
@@ -68,9 +71,11 @@ if (event.event?.response?.status === 500) { /* HTTP 500 */ }
 **Problem:** Using `TailItem` type **Cause:** Old docs used `TailItem`, SDK uses `TraceItem`
 
 ```typescript
-import type { TraceItem } from '@cloudflare/workers-types';
+import type {TraceItem} from '@cloudflare/workers-types';
+
 export default {
-  async tail(events: TraceItem[], env, ctx) { /* ... */ }
+  async tail(events: TraceItem[], env, ctx) { /* ... */
+  }
 };
 ```
 
@@ -99,8 +104,11 @@ const safePayload = events.map(e => ({
   logs: e.logs.map(log => ({
     ...log,
     message: log.message.map(m => {
-      try { return JSON.parse(JSON.stringify(m)); }
-      catch { return String(m); }
+      try {
+        return JSON.parse(JSON.stringify(m));
+      } catch {
+        return String(m);
+      }
     })
   }))
 }));
@@ -113,7 +121,7 @@ const safePayload = events.map(e => ({
 ```typescript
 ctx.waitUntil((async () => {
   try {
-    await fetch(env.ENDPOINT, { body: JSON.stringify(events) });
+    await fetch(env.ENDPOINT, {body: JSON.stringify(events)});
   } catch (error) {
     console.error("Tail error:", error);
     await env.FALLBACK_KV.put(`failed:${Date.now()}`, JSON.stringify(events));

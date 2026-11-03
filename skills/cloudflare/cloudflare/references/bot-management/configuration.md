@@ -66,10 +66,15 @@ Update CSP: script-src 'self' /cdn-cgi/challenge-platform/;
 ### Manual JS Injection (API)
 
 ```html
+
 <script>
-function jsdOnload() {
-  window.cloudflare.jsd.executeOnce({ callback: function(result) { console.log('JSD:', result); } });
-}
+  function jsdOnload() {
+    window.cloudflare.jsd.executeOnce({
+      callback: function (result) {
+        console.log('JSD:', result);
+      }
+    });
+  }
 </script>
 <script src="/cdn-cgi/challenge-platform/scripts/jsd/api.js?onload=jsdOnload" async></script>
 ```

@@ -14,7 +14,7 @@ Creates `worker-configuration.d.ts` with typed `Env` interface based on your bin
 // functions/api.ts
 export const onRequest: PagesFunction<Env> = async (ctx) => {
   // ctx.env.KV, ctx.env.DB, etc. are fully typed
-  return Response.json({ ok: true });
+  return Response.json({ok: true});
 };
 ```
 
@@ -26,7 +26,9 @@ interface Env {
   DB: D1Database;
   API_KEY: string;
 }
-export const onRequest: PagesFunction<Env> = async (ctx) => { /* ... */ };
+
+export const onRequest: PagesFunction<Env> = async (ctx) => { /* ... */
+};
 ```
 
 ## wrangler.jsonc
@@ -87,7 +89,15 @@ echo "value" | npx wrangler pages secret put SECRET_KEY --project-name=my-app
 **_routes.json** - Custom routing:
 
 ```json
-{ "version": 1, "include": ["/api/*"], "exclude": ["/static/*"] }
+{
+  "version": 1,
+  "include": [
+    "/api/*"
+  ],
+  "exclude": [
+    "/static/*"
+  ]
+}
 ```
 
 **_headers** - Static headers:

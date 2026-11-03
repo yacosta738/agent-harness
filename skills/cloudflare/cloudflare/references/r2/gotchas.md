@@ -4,11 +4,12 @@
 
 ```typescript
 // ❌ WRONG: Don't compare object count when using include
-while (listed.objects.length < options.limit) { ... }
+while (listed.objects.length < options.limit) { ...
+}
 
 // ✅ CORRECT: Always use truncated property
 while (listed.truncated) {
-  const next = await env.MY_BUCKET.list({ cursor: listed.cursor });
+  const next = await env.MY_BUCKET.list({cursor: listed.cursor});
   // ...
 }
 ```
@@ -31,10 +32,10 @@ Only ONE checksum algorithm allowed per PUT:
 
 ```typescript
 // ❌ WRONG: Multiple checksums
-await env.MY_BUCKET.put(key, data, { md5: hash1, sha256: hash2 }); // Error
+await env.MY_BUCKET.put(key, data, {md5: hash1, sha256: hash2}); // Error
 
 // ✅ CORRECT: Pick one
-await env.MY_BUCKET.put(key, data, { sha256: hash });
+await env.MY_BUCKET.put(key, data, {sha256: hash});
 ```
 
 ## Multipart Requirements
@@ -49,12 +50,12 @@ await env.MY_BUCKET.put(key, data, { sha256: hash });
 ```typescript
 // Precondition failure returns object WITHOUT body
 const object = await env.MY_BUCKET.get(key, {
-  onlyIf: { etagMatches: '"wrong"' }
+  onlyIf: {etagMatches: '"wrong"'}
 });
 
 // Check for body, not just null
-if (!object) return new Response('Not found', { status: 404 });
-if (!object.body) return new Response(null, { status: 304 }); // Precondition failed
+if (!object) return new Response('Not found', {status: 404});
+if (!object.body) return new Response(null, {status: 304}); // Precondition failed
 ```
 
 ## Key Validation
@@ -66,7 +67,7 @@ await env.MY_BUCKET.get(key);
 
 // ✅ SAFE: Validate keys
 if (!key || key.includes('..') || key.startsWith('/')) {
-  return new Response('Invalid key', { status: 400 });
+  return new Response('Invalid key', {status: 400});
 }
 ```
 
@@ -103,14 +104,14 @@ const object = await env.MY_BUCKET.put(key, request.body, {
 // ❌ WRONG: Missing region breaks ALL S3 SDK calls
 const s3 = new S3Client({
   endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
-  credentials: { ... }
+  credentials: {...}
 });
 
 // ✅ CORRECT: MUST set region='auto'
 const s3 = new S3Client({
   region: 'auto', // REQUIRED
   endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
-  credentials: { ... }
+  credentials: {...}
 });
 ```
 
@@ -125,7 +126,9 @@ const s3 = new S3Client({
 // - Memory-backed storage (lost on restart)
 
 // ✅ Use remote bindings for full features
-wrangler dev --remote
+wrangler
+dev--
+remote
 
 // OR: Conditional logic
 if (env.ENVIRONMENT === 'development') {
@@ -139,7 +142,7 @@ if (env.ENVIRONMENT === 'development') {
 
 ```typescript
 // ❌ WRONG: URL expires but no client validation
-const url = await getSignedUrl(s3, command, { expiresIn: 60 });
+const url = await getSignedUrl(s3, command, {expiresIn: 60});
 // 61 seconds later: 403 Forbidden
 
 // ✅ CORRECT: Return expiry to client

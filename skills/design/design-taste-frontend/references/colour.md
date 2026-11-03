@@ -39,12 +39,12 @@ decided rather than tinted.
 
 ```css
 :root {
-  --bg: …;          /* the ground: most of the surface */
-  --surface: …;     /* one tone step from the ground: filled panels, form fields, tiles */
-  --ink: …;         /* main text and the strongest marks */
-  --muted: …;       /* secondary text; still passes contrast on --bg */
-  --accent: …;      /* the one accent */
-  --accent-ink: …;  /* text on the accent */
+  --bg: …; /* the ground: most of the surface */
+  --surface: …; /* one tone step from the ground: filled panels, form fields, tiles */
+  --ink: …; /* main text and the strongest marks */
+  --muted: …; /* secondary text; still passes contrast on --bg */
+  --accent: …; /* the one accent */
+  --accent-ink: …; /* text on the accent */
   /* --field-1 … --field-n and their inks, when the palette has section fields */
 }
 ```
@@ -76,9 +76,21 @@ so. A headline is ink.
 With rules and shadows banned, a surface is told apart from the ground by tone alone:
 
 ```css
-.panel { background: var(--surface); }          /* 2–6 lightness points from --bg */
-.field { background: var(--surface); border: 0; } /* inputs: filled, with a clear focus state */
-.field:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.panel {
+  background: var(--surface);
+}
+
+/* 2–6 lightness points from --bg */
+.field {
+  background: var(--surface);
+  border: 0;
+}
+
+/* inputs: filled, with a clear focus state */
+.field:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 ```
 
 - One step is enough. If a panel does not read, increase padding or separate with space before

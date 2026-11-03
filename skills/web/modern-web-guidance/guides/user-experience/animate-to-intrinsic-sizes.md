@@ -34,7 +34,7 @@ transition between a restricted height and the element's natural size.
   /* 1. Define a fixed initial size (or 0) and hide overflow */
   block-size: 100px;
   overflow: hidden;
-  
+
   /* 2. Transition the sizing property */
   transition: block-size 0.4s ease-out;
 }
@@ -58,7 +58,7 @@ transition between a restricted height and the element's natural size.
 .badge:hover {
   /* calc-size(basis, calculation) */
   /* 'size' refers to the evaluated basis (max-content in this case) */
-  inline-size: calc-size(max-content, size + 20px);
+  inline-size: calc-size(max-content, size+20px);
 }
 ```
 

@@ -16,11 +16,25 @@ drivers for your animations.
 
 ```css
 #tracked {
-  section:nth-child(1){ view-timeline: --tl-1 block; }
-  section:nth-child(2){ view-timeline: --tl-2 block; }
-  section:nth-child(3){ view-timeline: --tl-3 block; }
-  section:nth-child(4){ view-timeline: --tl-4 block; }
-  section:nth-child(5){ view-timeline: --tl-5 block; }
+  section:nth-child(1) {
+    view-timeline: --tl-1 block;
+  }
+
+  section:nth-child(2) {
+    view-timeline: --tl-2 block;
+  }
+
+  section:nth-child(3) {
+    view-timeline: --tl-3 block;
+  }
+
+  section:nth-child(4) {
+    view-timeline: --tl-4 block;
+  }
+
+  section:nth-child(5) {
+    view-timeline: --tl-5 block;
+  }
 }
 ```
 
@@ -34,11 +48,25 @@ created using the `animation-timeline` property.
     animation-range: entry 25% cover 50%, exit 50% exit 75%;
   }
 
-  section:nth-child(1){ animation-timeline: --tl-1; }
-  section:nth-child(2){ animation-timeline: --tl-2; }
-  section:nth-child(3){ animation-timeline: --tl-3; }
-  section:nth-child(4){ animation-timeline: --tl-4; }
-  section:nth-child(5){ animation-timeline: --tl-5; }
+  section:nth-child(1) {
+    animation-timeline: --tl-1;
+  }
+
+  section:nth-child(2) {
+    animation-timeline: --tl-2;
+  }
+
+  section:nth-child(3) {
+    animation-timeline: --tl-3;
+  }
+
+  section:nth-child(4) {
+    animation-timeline: --tl-4;
+  }
+
+  section:nth-child(5) {
+    animation-timeline: --tl-5;
+  }
 }
 ```
 
@@ -70,19 +98,43 @@ html {
 }
 
 #tracked {
-  section:nth-child(1){ view-timeline: --tl-1 block; }
-  section:nth-child(2){ view-timeline: --tl-2 block; }
-  section:nth-child(3){ view-timeline: --tl-3 block; }
-  section:nth-child(4){ view-timeline: --tl-4 block; }
-  section:nth-child(5){ view-timeline: --tl-5 block; }
+  section:nth-child(1) {
+    view-timeline: --tl-1 block;
+  }
+
+  section:nth-child(2) {
+    view-timeline: --tl-2 block;
+  }
+
+  section:nth-child(3) {
+    view-timeline: --tl-3 block;
+  }
+
+  section:nth-child(4) {
+    view-timeline: --tl-4 block;
+  }
+
+  section:nth-child(5) {
+    view-timeline: --tl-5 block;
+  }
 }
 
 @keyframes animate-in {
-  from { scale: 0.5; opacity: 0; transform: rotateY(-180deg); }
-  to { transform: rotateY(0deg); }
+  from {
+    scale: 0.5;
+    opacity: 0;
+    transform: rotateY(-180deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
 }
+
 @keyframes animate-out {
-  to { translate: 100% 0; opacity: 0; }
+  to {
+    translate: 100% 0;
+    opacity: 0;
+  }
 }
 
 #animated {
@@ -92,11 +144,25 @@ html {
     backface-visibility: hidden;
   }
 
-  section:nth-child(1){ animation-timeline: --tl-1; }
-  section:nth-child(2){ animation-timeline: --tl-2; }
-  section:nth-child(3){ animation-timeline: --tl-3; }
-  section:nth-child(4){ animation-timeline: --tl-4; }
-  section:nth-child(5){ animation-timeline: --tl-5; }
+  section:nth-child(1) {
+    animation-timeline: --tl-1;
+  }
+
+  section:nth-child(2) {
+    animation-timeline: --tl-2;
+  }
+
+  section:nth-child(3) {
+    animation-timeline: --tl-3;
+  }
+
+  section:nth-child(4) {
+    animation-timeline: --tl-4;
+  }
+
+  section:nth-child(5) {
+    animation-timeline: --tl-5;
+  }
 }
 
 /* MANDATORY Copy-Paste Safety: Disable continuous storytelling motion for sensitive users */
@@ -167,14 +233,16 @@ const animatedSections = document.querySelectorAll('#animated section');
 
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    const sectionIndex = Array.from(document.querySelectorAll('#tracked section')).indexOf(entry.target);
+    const sectionIndex = Array.from(document.querySelectorAll('#tracked section')).indexOf(
+        entry.target);
     if (sectionIndex !== -1) {
       const animatedSection = animatedSections[sectionIndex];
       const ratio = entry.intersectionRatio;
 
       // Animate-in
       animatedSection.style.opacity = ratio;
-      animatedSection.style.transform = `scale(${0.5 + ratio * 0.5}) rotateY(${-180 + ratio * 180}deg)`;
+      animatedSection.style.transform = `scale(${0.5 + ratio * 0.5}) rotateY(${-180 + ratio
+      * 180}deg)`;
 
       // Animate-out
       if (ratio < 0.5) {
@@ -184,7 +252,7 @@ const observer = new IntersectionObserver((entries) => {
       }
     }
   });
-}, { threshold: Array.from({length: 101}, (_, i) => i / 100) });
+}, {threshold: Array.from({length: 101}, (_, i) => i / 100)});
 
 document.querySelectorAll('#tracked section').forEach(section => {
   observer.observe(section);
@@ -196,7 +264,7 @@ And the accompanying CSS:
 ```css
 #animated section {
   opacity: 0;
-  transform: scale(0.5)  rotateY(-180deg);
+  transform: scale(0.5) rotateY(-180deg);
   backface-visibility: hidden;
 }
 

@@ -32,14 +32,20 @@ This code grows the `#progress` element on scroll using an anonymous scroll-time
 @media (prefers-reduced-motion: no-preference) {
   @supports ((animation-timeline: scroll())) {
     @keyframes grow-progress {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
     }
 
     #progress {
       position: fixed;
-      left: 0; top: 0;
-      width: 100%; height: 1em;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 1em;
       background: red;
 
       transform-origin: 0 50%;
@@ -54,9 +60,10 @@ Because of its location in the DOM, the `scroll()` function will track its neare
 scroller in the `block` direction, which here is the root scroller.
 
 ```html
+
 <body>
-  <!-- MANDATORY: Purely decorative visual scroll progress bars MUST set aria-hidden="true" to remove the empty element from the assistive technology reading tree -->
-  <div id="progress" aria-hidden="true"></div>
+<!-- MANDATORY: Purely decorative visual scroll progress bars MUST set aria-hidden="true" to remove the empty element from the assistive technology reading tree -->
+<div id="progress" aria-hidden="true"></div>
 </body>
 ```
 
@@ -67,8 +74,12 @@ This code grows the `#progress` element on scroll using a named scroll-timeline,
 @media (prefers-reduced-motion: no-preference) {
   @supports ((animation-timeline: scroll())) {
     @keyframes grow-progress {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
     }
 
     :root {
@@ -77,8 +88,10 @@ This code grows the `#progress` element on scroll using a named scroll-timeline,
 
     #progress {
       position: fixed;
-      left: 0; top: 0;
-      width: 100%; height: 1em;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 1em;
       background: red;
 
       transform-origin: 0 50%;
@@ -151,6 +164,7 @@ support scroll-driven animations. It uses a scroll listener to track the scroll 
 element and updates the `transform` property of the progress bar accordingly.
 
 ```html
+
 <script>
   if (!CSS.supports('animation-timeline', 'scroll()')) {
     const progress = document.querySelector('#progress');

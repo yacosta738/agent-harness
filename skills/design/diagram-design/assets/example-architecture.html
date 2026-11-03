@@ -97,18 +97,22 @@
     <rect fill="url(#dots)" height="100%" opacity="0.55" width="100%"/>
 
     <!-- Zone: Content services (drawn before arrows and nodes) -->
-    <rect fill="rgba(45,49,66,0.02)" height="272" rx="8" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"
+    <rect fill="rgba(45,49,66,0.02)" height="272" rx="8" stroke="rgba(45,49,66,0.10)"
+          stroke-width="0.8"
           width="164" x="616" y="128"/>
     <rect fill="#f5f5f5" height="12" rx="2" width="52" x="672" y="132"/>
-    <text fill="rgba(45,49,66,0.40)" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.14em"
+    <text fill="rgba(45,49,66,0.40)" font-family="'Geist Mono', monospace" font-size="7"
+          letter-spacing="0.14em"
           text-anchor="middle"
           x="698" y="141">CONTENT
     </text>
 
     <!-- Arrows first (behind boxes) -->
-    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="168" x2="220" y1="272"
+    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="168" x2="220"
+          y1="272"
           y2="272"/>
-    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="364" x2="416" y1="272"
+    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="364" x2="416"
+          y1="272"
           y2="272"/>
     <!-- Exit Astro top→enter MDX bottom; exit Astro bottom→enter CMS top -->
     <path d="M 496,240 H 692 Q 700,240 700,232 V 224"
@@ -117,86 +121,109 @@
           fill="none" marker-end="url(#arrow)" stroke="#4f5d75" stroke-width="1.2"/>
 
     <!-- Dashed return: Cloudflare→Reader (cached HTML — same orthogonal rules as solid) -->
-    <path d="M 220,288 H 168" fill="none" marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="4,3"
+    <path d="M 220,288 H 168" fill="none" marker-end="url(#arrow)" stroke="#4f5d75"
+          stroke-dasharray="4,3"
           stroke-width="1"/>
 
     <!-- Arrow labels -->
     <rect fill="#f5f5f5" height="12" rx="2" width="48" x="172" y="252"/>
-    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#2e5aa8" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="196" y="262">HTTPS
     </text>
 
     <rect fill="#f5f5f5" height="12" rx="2" width="32" x="172" y="278"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="188" y="287">RESP
     </text>
 
     <rect fill="#f5f5f5" height="12" rx="2" width="48" x="368" y="252"/>
-    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="392" y="262">SSR
     </text>
 
     <rect fill="#f5f5f5" height="12" rx="2" width="60" x="632" y="246"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="662" y="255">READ MDX
     </text>
 
     <rect fill="#f5f5f5" height="12" rx="2" width="44" x="632" y="286"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.08em"
+          text-anchor="middle"
           x="654" y="295">QUERY
     </text>
 
     <!-- Node: Reader -->
     <rect fill="#f5f5f5" height="64" rx="6" width="128" x="40" y="240"/>
-    <rect fill="rgba(79,93,117,0.10)" height="64" rx="6" stroke="#7a8399" stroke-width="1" width="128" x="40"
+    <rect fill="rgba(79,93,117,0.10)" height="64" rx="6" stroke="#7a8399" stroke-width="1"
+          width="128" x="40"
           y="240"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(122,131,153,0.40)" stroke-width="0.8" width="28"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(122,131,153,0.40)" stroke-width="0.8"
+          width="28"
           x="48" y="248"/>
-    <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="62" y="257">EXT
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="104" y="276">Reader
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="104"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="104"
           y="292">Browser
     </text>
 
     <!-- Node: Cloudflare -->
     <rect fill="#f5f5f5" height="64" rx="6" width="144" x="220" y="240"/>
-    <rect fill="rgba(45,49,66,0.03)" height="64" rx="6" stroke="rgba(45,49,66,0.30)" stroke-width="1" width="144"
+    <rect fill="rgba(45,49,66,0.03)" height="64" rx="6" stroke="rgba(45,49,66,0.30)"
+          stroke-width="1" width="144"
           x="220" y="240"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(45,49,66,0.22)" stroke-width="0.8" width="32"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(45,49,66,0.22)" stroke-width="0.8"
+          width="32"
           x="228" y="248"/>
-    <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="244" y="257">EDGE
     </text>
-    <text fill="rgba(45,49,66,0.06)" font-family="'Geist Mono', monospace" font-size="32" font-weight="600" text-anchor="end"
+    <text fill="rgba(45,49,66,0.06)" font-family="'Geist Mono', monospace" font-size="32"
+          font-weight="600" text-anchor="end"
           x="356" y="300">01
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="292" y="276">Cloudflare
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="292"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="292"
           y="292">Pages · cache
     </text>
 
     <!-- Node: Astro (focal coral) -->
     <rect fill="#f5f5f5" height="64" rx="6" width="160" x="416" y="240"/>
-    <rect fill="rgba(235,108,54,0.08)" height="64" rx="6" stroke="#eb6c36" stroke-width="1" width="160"
+    <rect fill="rgba(235,108,54,0.08)" height="64" rx="6" stroke="#eb6c36" stroke-width="1"
+          width="160"
           x="416" y="240"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(235,108,54,0.50)" stroke-width="0.8" width="32"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(235,108,54,0.50)" stroke-width="0.8"
+          width="32"
           x="424" y="248"/>
-    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="440" y="257">ORIG
     </text>
-    <text fill="rgba(235,108,54,0.10)" font-family="'Geist Mono', monospace" font-size="32" font-weight="600" text-anchor="end"
+    <text fill="rgba(235,108,54,0.10)" font-family="'Geist Mono', monospace" font-size="32"
+          font-weight="600" text-anchor="end"
           x="568" y="300">02
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="496" y="276">Astro Origin
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="496"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="496"
           y="292">SSR + MDX
     </text>
 
@@ -204,41 +231,52 @@
     <rect fill="#f5f5f5" height="64" rx="6" width="144" x="628" y="160"/>
     <rect fill="#ffffff" height="64" rx="6" stroke="#2d3142" stroke-width="1" width="144" x="628"
           y="160"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(45,49,66,0.40)" stroke-width="0.8" width="32"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"
+          width="32"
           x="636" y="168"/>
-    <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="652" y="177">BUN
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="700" y="196">MDX Bundle
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="700"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="700"
           y="212">src/content/*.mdx
     </text>
 
     <!-- Node: Content CMS -->
     <rect fill="#f5f5f5" height="64" rx="6" width="144" x="628" y="320"/>
-    <rect fill="rgba(45,49,66,0.05)" height="64" rx="6" stroke="#4f5d75" stroke-width="1" width="144" x="628"
+    <rect fill="rgba(45,49,66,0.05)" height="64" rx="6" stroke="#4f5d75" stroke-width="1"
+          width="144" x="628"
           y="320"/>
-    <rect fill="transparent" height="12" rx="2" stroke="rgba(79,93,117,0.50)" stroke-width="0.8" width="28"
+    <rect fill="transparent" height="12" rx="2" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"
+          width="28"
           x="636" y="328"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em" text-anchor="middle"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="7" letter-spacing="0.08em"
+          text-anchor="middle"
           x="650" y="337">CMS
     </text>
-    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+    <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+          text-anchor="middle"
           x="700" y="356">Content CMS
     </text>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle" x="700"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="9" text-anchor="middle"
+          x="700"
           y="372">assets · og images
     </text>
 
     <!-- Legend strip -->
     <line stroke="rgba(45,49,66,0.10)" stroke-width="0.8" x1="40" x2="960" y1="404" y2="404"/>
-    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em" x="40"
+    <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="8" letter-spacing="0.18em"
+          x="40"
           y="420">LEGEND
     </text>
 
-    <rect fill="rgba(235,108,54,0.08)" height="10" rx="2" stroke="#eb6c36" stroke-width="1" width="14" x="40"
+    <rect fill="rgba(235,108,54,0.08)" height="10" rx="2" stroke="#eb6c36" stroke-width="1"
+          width="14" x="40"
           y="436"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="60" y="444">Focal /
       origin
@@ -250,35 +288,41 @@
       bundle
     </text>
 
-    <rect fill="rgba(45,49,66,0.05)" height="10" rx="2" stroke="#4f5d75" stroke-width="1" width="14" x="340"
+    <rect fill="rgba(45,49,66,0.05)" height="10" rx="2" stroke="#4f5d75" stroke-width="1" width="14"
+          x="340"
           y="436"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="360" y="444">Store
     </text>
 
-    <rect fill="rgba(45,49,66,0.03)" height="10" rx="2" stroke="rgba(45,49,66,0.30)" stroke-width="1" width="14"
+    <rect fill="rgba(45,49,66,0.03)" height="10" rx="2" stroke="rgba(45,49,66,0.30)"
+          stroke-width="1" width="14"
           x="436" y="436"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="456" y="444">Cloud
     </text>
 
-    <rect fill="rgba(79,93,117,0.10)" height="10" rx="2" stroke="#7a8399" stroke-width="1" width="14" x="528"
+    <rect fill="rgba(79,93,117,0.10)" height="10" rx="2" stroke="#7a8399" stroke-width="1"
+          width="14" x="528"
           y="436"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="548" y="444">
       External
     </text>
 
-    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="636" x2="664" y1="442"
+    <line marker-end="url(#arrow-link)" stroke="#2e5aa8" stroke-width="1.2" x1="636" x2="664"
+          y1="442"
           y2="442"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="672" y="444">HTTP
       request
     </text>
 
-    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="784" x2="812" y1="442"
+    <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-width="1.4" x1="784" x2="812"
+          y1="442"
           y2="442"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="820" y="444">Primary
       flow
     </text>
 
-    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="4,3" stroke-width="1" x1="900" x2="928"
+    <line marker-end="url(#arrow)" stroke="#4f5d75" stroke-dasharray="4,3" stroke-width="1" x1="900"
+          x2="928"
           y1="442" y2="442"/>
     <text fill="#4f5d75" font-family="'Geist', sans-serif" font-size="8.5" x="936" y="444">Return /
       async

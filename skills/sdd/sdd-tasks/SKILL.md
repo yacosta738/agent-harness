@@ -169,10 +169,10 @@ Return to the orchestrator:
 ```markdown
 ## Tasks Created
 
-**Change**: {change-name}
-**Location**: .agents/sdd/changes/{change-name}/tasks.md
+**Change**: {change-name} **Location**: .agents/sdd/changes/{change-name}/tasks.md
 
 ### Breakdown
+
 | Phase | Tasks | Focus |
 |-------|-------|-------|
 | Phase 1 | {N} | {Phase name} |
@@ -181,6 +181,7 @@ Return to the orchestrator:
 | Total | {N} | |
 
 ### Review Workload Forecast
+
 - **Budget**: {budget} changed lines
 - **Estimated workload**: {Low | Medium | High}
 - **Chained PRs recommended**: {Yes | No}
@@ -188,10 +189,13 @@ Return to the orchestrator:
 - **Work-unit balance**: {brief rationale}
 
 ### Implementation Order
+
 {Brief description of the recommended order and why}
 
 ### Next Step
-{Ready for implementation (sdd-apply) | Blocked until user chooses stacked PRs, feature branch chain, or size exception.}
+
+{Ready for implementation (sdd-apply) | Blocked until user chooses stacked PRs, feature branch
+chain, or size exception.}
 ```
 
 ## Rules

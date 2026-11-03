@@ -58,27 +58,27 @@
   <title>Dashboard | Platform</title>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-     <h1>Analytics</h1>
-    <search>
-      <form action="/filter" method="GET">
-        <label for="search-input">Scan items:</label>
-        <input type="search" id="search-input" name="q">
-        <button type="submit">Search</button>
-      </form>
-    </search>
-    <article>
-      <h2>First post</h2>
-    </article>
-  </main>
+<header>
+  <nav>
+    <ul>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <h1>Analytics</h1>
+  <search>
+    <form action="/filter" method="GET">
+      <label for="search-input">Scan items:</label>
+      <input type="search" id="search-input" name="q">
+      <button type="submit">Search</button>
+    </form>
+  </search>
+  <article>
+    <h2>First post</h2>
+  </article>
+</main>
 </body>
 </html>
 ```
@@ -115,7 +115,9 @@
 <!-- Quote with attribution using Figure -->
 <figure>
   <blockquote cite="https://html.spec.whatwg.org/">
-    <p>The figure element represents some flow content, optionally with a caption, that is self-contained and is typically referenced as a single unit from the main flow of the document.</p>
+    <p>The figure element represents some flow content, optionally with a caption, that is
+      self-contained and is typically referenced as a single unit from the main flow of the
+      document.</p>
   </blockquote>
   <figcaption>
     Definition of the &lt;figure&gt; element from the <cite>HTML Living Standard</cite>
@@ -124,12 +126,12 @@
 
 <!-- Image with caption -->
 <figure>
-  <img 
-    src="architecture-diagram.webp" 
-    alt="Diagram showing the flow between Client, API Gateway, and Microservices"
-    width="800"
-    height="450"
-    loading="lazy"
+  <img
+      src="architecture-diagram.webp"
+      alt="Diagram showing the flow between Client, API Gateway, and Microservices"
+      width="800"
+      height="450"
+      loading="lazy"
   >
   <figcaption>Figure 1: High-level system architecture overview.</figcaption>
 </figure>
@@ -174,53 +176,53 @@
 
 ```html
 <!-- High-priority hero image with responsive sizes -->
-<img 
-  src="hero-large.webp" 
-  srcset="hero-small.webp 480w, hero-medium.webp 800w, hero-large.webp 1200w"
-  sizes="(max-width: 600px) 100vw, (max-width: 1200px) 80vw, 70vw"
-  alt="Main product view" 
-  fetchpriority="high" 
-  width="1200" 
-  height="600"
+<img
+    src="hero-large.webp"
+    srcset="hero-small.webp 480w, hero-medium.webp 800w, hero-large.webp 1200w"
+    sizes="(max-width: 600px) 100vw, (max-width: 1200px) 80vw, 70vw"
+    alt="Main product view"
+    fetchpriority="high"
+    width="1200"
+    height="600"
 >
 
 <!-- Art direction and format switching with <picture> -->
 <picture>
   <!-- Mobile Art Direction: Different aspect ratio (square) and format (AVIF) -->
-  <source 
-    media="(max-width: 600px)" 
-    srcset="hero-mobile.avif 1x, hero-mobile-2x.avif 2x" 
-    type="image/avif"
-    width="600" 
-    height="600"
+  <source
+      media="(max-width: 600px)"
+      srcset="hero-mobile.avif 1x, hero-mobile-2x.avif 2x"
+      type="image/avif"
+      width="600"
+      height="600"
   >
-  <source 
-    media="(max-width: 600px)" 
-    srcset="hero-mobile.webp 1x, hero-mobile-2x.webp 2x"
-    width="600" 
-    height="600"
+  <source
+      media="(max-width: 600px)"
+      srcset="hero-mobile.webp 1x, hero-mobile-2x.webp 2x"
+      width="600"
+      height="600"
   >
-  
+
   <!-- Desktop: Modern format for primary layout -->
   <source srcset="hero-desktop.avif" type="image/avif">
 
   <!-- Fallback img defines the default aspect ratio (2:1) -->
-  <img 
-    src="hero-desktop.webp" 
-    alt="Platform dashboard overview" 
-    width="1200" 
-    height="600"
-    loading="lazy"
+  <img
+      src="hero-desktop.webp"
+      alt="Platform dashboard overview"
+      width="1200"
+      height="600"
+      loading="lazy"
   >
 </picture>
 
 <!-- Low-priority decorative footer image -->
-<img 
-  src="footer-art.png" 
-  alt="" 
-  loading="lazy" 
-  width="200" 
-  height="100"
+<img
+    src="footer-art.png"
+    alt=""
+    loading="lazy"
+    width="200"
+    height="100"
 >
 ```
 
@@ -269,10 +271,10 @@ fallback strategies for using the Popover API in a cross-browser way.
 <script>
   const dialog = document.getElementById("fav-modal");
   const openModal = document.getElementById("show-dialog");
-  
+
   // Show modal dialog
   openModal.addEventListener('click', () => dialog.showModal());
-  
+
   // Listen for the 'close' event to retrieve the user's choice (returnValue)
   dialog.addEventListener('close', () => {
     console.log(dialog.returnValue); // "confirm" or "cancel"
@@ -387,6 +389,7 @@ modern web forms.
 ### Code Example
 
 ```html
+
 <form>
   <fieldset>
     <legend>Address Information</legend>
@@ -421,11 +424,12 @@ modern web forms.
 ### Code Example
 
 ```html
-<video 
-  controls 
-  width="800" 
-  height="450" 
-  poster="poster.webp"
+
+<video
+    controls
+    width="800"
+    height="450"
+    poster="poster.webp"
 >
   <source src="intro.webm" type="video/webm">
   <source src="intro.mp4" type="video/mp4">
@@ -447,23 +451,25 @@ modern web forms.
 ### Code Example
 
 ```html
+
 <body>
-  <!-- Progress with style-driven color data -->
-  <label for="upload-progress">Upload status:</label>
-  <progress id="upload-progress" class="loading-bar" value="0" max="100" style="--brand-hue: 200;"></progress>
+<!-- Progress with style-driven color data -->
+<label for="upload-progress">Upload status:</label>
+<progress id="upload-progress" class="loading-bar" value="0" max="100"
+          style="--brand-hue: 200;"></progress>
 
-  <script>
-    const updateProgress = (percent, hue) => {
-      const bar = document.querySelector('.loading-bar');
-      bar.value = percent;
-      
-      // Update dynamic style variable 
-      if (hue) bar.style.setProperty('--brand-hue', hue);
-    };
+<script>
+  const updateProgress = (percent, hue) => {
+    const bar = document.querySelector('.loading-bar');
+    bar.value = percent;
 
-    // Example: Move to 85% and shift color to green (120)
-    setTimeout(() => updateProgress(85, 120), 1000);
-  </script>
+    // Update dynamic style variable 
+    if (hue) bar.style.setProperty('--brand-hue', hue);
+  };
+
+  // Example: Move to 85% and shift color to green (120)
+  setTimeout(() => updateProgress(85, 120), 1000);
+</script>
 </body>
 ```
 

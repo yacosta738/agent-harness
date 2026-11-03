@@ -23,14 +23,14 @@ optional.
   /* MANDATORY: Always order your formats from most optimized (AVIF) to least optimized (JPEG/PNG). 
      The browser will stop at the first supported format. */
   background-image: image-set(
-    url("gallery.avif") type("image/avif") 1x,
-    url("gallery-2x.avif") type("image/avif") 2x,
-    url("gallery.webp") type("image/webp") 1x,
-    url("gallery-2x.webp") type("image/webp") 2x,
-    url("gallery.jpg") type("image/jpeg") 1x,
-    url("gallery-2x.jpg") type("image/jpeg") 2x
+      url("gallery.avif") type("image/avif") 1x,
+      url("gallery-2x.avif") type("image/avif") 2x,
+      url("gallery.webp") type("image/webp") 1x,
+      url("gallery-2x.webp") type("image/webp") 2x,
+      url("gallery.jpg") type("image/jpeg") 1x,
+      url("gallery-2x.jpg") type("image/jpeg") 2x
   );
-  
+
   /* Standard decorative properties */
   background-size: cover;
   background-position: center;
@@ -51,13 +51,13 @@ CSS's cascading nature: unsupported rules are ignored.
 .gallery-item {
   /* MANDATORY: Fallback for browsers that do not support image-set() */
   background-image: url("gallery.jpg");
-  
+
   /* Modern browsers will apply this and override the fallback */
   background-image: image-set(
-    url("gallery.avif") type("image/avif") 1x,
-    url("gallery-2x.avif") type("image/avif") 2x,
-    url("gallery.jpg") type("image/jpeg") 1x,
-    url("gallery-2x.jpg") type("image/jpeg") 2x
+      url("gallery.avif") type("image/avif") 1x,
+      url("gallery-2x.avif") type("image/avif") 2x,
+      url("gallery.jpg") type("image/jpeg") 1x,
+      url("gallery-2x.jpg") type("image/jpeg") 2x
   );
 }
 ```

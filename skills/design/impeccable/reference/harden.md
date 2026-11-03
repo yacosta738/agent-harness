@@ -110,12 +110,29 @@ Systematically improve resilience:
 
 ```css
 /* Use logical properties */
-margin-inline-start: 1rem; /* Not margin-left */
-padding-inline: 1rem; /* Not padding-left/right */
-border-inline-end: 1px solid; /* Not border-right */
+margin-inline-start:
+
+1
+rem
+
+; /* Not margin-left */
+padding-inline:
+
+1
+rem
+
+; /* Not padding-left/right */
+border-inline-end:
+
+1
+px solid
+
+; /* Not border-right */
 
 /* Or use dir attribute */
-[dir="rtl"] .arrow { transform: scaleX(-1); }
+[dir="rtl"] .arrow {
+  transform: scaleX(-1);
+}
 ```
 
 **Character set support**:
@@ -132,9 +149,9 @@ border-inline-end: 1px solid; /* Not border-right */
 new Intl.DateTimeFormat('en-US').format(date); // 1/15/2024
 new Intl.DateTimeFormat('de-DE').format(date); // 15.1.2024
 
-new Intl.NumberFormat('en-US', { 
-  style: 'currency', 
-  currency: 'USD' 
+new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
 }).format(1234.56); // $1,234.56
 ```
 
@@ -145,7 +162,7 @@ new Intl.NumberFormat('en-US', {
 `${count} item${count !== 1 ? 's' : ''}`
 
 // ✅ Good: Use proper i18n library
-t('items', { count }) // Handles complex plural rules
+t('items', {count}) // Handles complex plural rules
 ```
 
 ### Error Handling
@@ -160,12 +177,14 @@ t('items', { count }) // Handles complex plural rules
 
 ```jsx
 // Error states with recovery
-{error && (
-  <ErrorMessage>
-    <p>Failed to load data. {error.message}</p>
-    <button onClick={retry}>Try again</button>
-  </ErrorMessage>
-)}
+{
+  error && (
+      <ErrorMessage>
+        <p>Failed to load data. {error.message}</p>
+        <button onClick={retry}>Try again</button>
+      </ErrorMessage>
+  )
+}
 ```
 
 **Form validation errors**:
@@ -260,12 +279,12 @@ t('items', { count }) // Handles complex plural rules
 
 ```html
 <!-- Set clear constraints -->
-<input 
-  type="text"
-  maxlength="100"
-  pattern="[A-Za-z0-9]+"
-  required
-  aria-describedby="username-hint"
+<input
+    type="text"
+    maxlength="100"
+    pattern="[A-Za-z0-9]+"
+    required
+    aria-describedby="username-hint"
 />
 <small id="username-hint">
   Letters and numbers only, up to 100 characters

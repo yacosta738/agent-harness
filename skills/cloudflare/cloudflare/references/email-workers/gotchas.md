@@ -19,12 +19,12 @@ const rawText = new TextDecoder().decode(buffer);
 
 ```typescript
 // ❌ Errors dropped silently
-ctx.waitUntil(fetch(webhookUrl, { method: 'POST', body: data }));
+ctx.waitUntil(fetch(webhookUrl, {method: 'POST', body: data}));
 
 // ✅ Catch and log
 ctx.waitUntil(
-  fetch(webhookUrl, { method: 'POST', body: data })
-    .catch(err => env.ERROR_LOG.put(`error:${Date.now()}`, err.message))
+    fetch(webhookUrl, {method: 'POST', body: data})
+        .catch(err => env.ERROR_LOG.put(`error:${Date.now()}`, err.message))
 );
 ```
 
@@ -41,9 +41,13 @@ const headerFrom = (await PostalMime.parse(buffer)).from?.address; // (untrusted
 ### Input Validation
 
 ```typescript
-if (message.rawSize > 5_000_000) { message.setReject('Too large'); return; }
+if (message.rawSize > 5_000_000) {
+  message.setReject('Too large');
+  return;
+}
 if ((message.headers.get('Subject') || '').length > 1000) {
-  message.setReject('Invalid subject'); return;
+  message.setReject('Invalid subject');
+  return;
 }
 ```
 
@@ -71,7 +75,10 @@ Let postal-mime handle decoding - `email.subject`, `email.text`, `email.html` ar
 
 ```typescript
 // setReject() for SMTP rejection
-if (blockList.includes(message.from)) { message.setReject('Blocked'); return; }
+if (blockList.includes(message.from)) {
+  message.setReject('Blocked');
+  return;
+}
 
 // throw for worker errors
 if (!env.KV) throw new Error('KV not configured');

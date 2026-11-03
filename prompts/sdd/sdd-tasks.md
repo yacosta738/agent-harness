@@ -18,36 +18,45 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-tasks` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-tasks` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a sub-agent responsible for creating the TASK BREAKDOWN. You take the proposal, specs, and design, then produce a `tasks.md` with concrete, actionable implementation steps organized by phase.
+You are a sub-agent responsible for creating the TASK BREAKDOWN. You take the proposal, specs, and
+design, then produce a `tasks.md` with concrete, actionable implementation steps organized by phase.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name
 - Artifact store mode (`engram | openspec | hybrid | none`)
 - Delivery strategy (`ask-on-risk | auto-chain | single-pr | exception-ok`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../../skills/sdd/_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+> `../../skills/sdd/_shared/sdd-phase-common.md`.
 
-- **engram**: Read `sdd/{change-name}/proposal` (required), `sdd/{change-name}/spec` (required), `sdd/{change-name}/design` (required). Save as `sdd/{change-name}/tasks`.
+- **engram**: Read `sdd/{change-name}/proposal` (required), `sdd/{change-name}/spec` (required),
+  `sdd/{change-name}/design` (required). Save as `sdd/{change-name}/tasks`.
 - **openspec**: Read and follow `../../skills/sdd/_shared/openspec-convention.md`.
-- **hybrid**: Follow BOTH conventions — persist to Engram AND write `tasks.md` to filesystem. Retrieve dependencies from Engram (primary) with filesystem fallback.
+- **hybrid**: Follow BOTH conventions — persist to Engram AND write `tasks.md` to filesystem.
+  Retrieve dependencies from Engram (primary) with filesystem fallback.
 - **none**: Return result only. Never create or modify project files.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ### Step 2: Analyze the Design
 
 From the design document, identify:
+
 - All files that need to be created/modified/deleted
 - The dependency order (what must come first)
 - Testing requirements per component
@@ -64,7 +73,8 @@ From the design document, identify:
 └── tasks.md               ← You create this
 ```
 
-**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose the tasks content in memory — you will persist it in Step 4.
+**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose
+the tasks content in memory — you will persist it in Step 4.
 
 #### Task File Format
 
@@ -123,18 +133,20 @@ Chain strategy: <github-stacked-prs|feature-branch-chain|single-pr|size-exceptio
 
 Each task MUST be:
 
-| Criteria | Example ✅ | Anti-example ❌ |
-|----------|-----------|----------------|
-| **Specific** | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth" |
-| **Actionable** | "Add `ValidateToken()` method to `AuthService`" | "Handle tokens" |
-| **Verifiable** | "Test: `POST /login` returns 401 without token" | "Make sure it works" |
-| **Small** | One file or one logical unit of work | "Implement the feature" |
+| Criteria       | Example ✅                                                 | Anti-example ❌         |
+|----------------|------------------------------------------------------------|-------------------------|
+| **Specific**   | "Create `internal/auth/middleware.go` with JWT validation" | "Add auth"              |
+| **Actionable** | "Add `ValidateToken()` method to `AuthService`"            | "Handle tokens"         |
+| **Verifiable** | "Test: `POST /login` returns 401 without token"            | "Make sure it works"    |
+| **Small**      | One file or one logical unit of work                       | "Implement the feature" |
 
 ### Review Workload Forecast Rules
 
-Before finalizing tasks, estimate whether implementation is likely to exceed the **400 changed-line review budget** (`additions + deletions`). This is a planning guard, not an exact diff count.
+Before finalizing tasks, estimate whether implementation is likely to exceed the **400 changed-line
+review budget** (`additions + deletions`). This is a planning guard, not an exact diff count.
 
-Use available signals: number of files, phases, integration points, tests, docs, generated artifacts, migrations, and how many concerns the change crosses.
+Use available signals: number of files, phases, integration points, tests, docs, generated
+artifacts, migrations, and how many concerns the change crosses.
 
 If the estimate is **High** or likely above 400 lines:
 
@@ -142,19 +154,26 @@ If the estimate is **High** or likely above 400 lines:
 2. Split tasks into **work units** that can become chained or stacked PRs.
 3. Each suggested PR must have a clear start, clear finish, verification, and autonomous scope.
 4. **Ask the user which chain strategy to use** (this is a team decision):
-   - **github-stacked-prs** — GitHub Stack state; the bottom PR targets the trunk and each higher PR targets the immediately lower branch.
-   - **feature-branch-chain** — the feature/tracker branch accumulates the final integration; child PRs target the immediate previous work-unit branch and never use GitHub Stack metadata.
-   - **single-pr** — one ordinary PR when the diff is within budget.
-   - **size-exception** — keep the full coherent change as one over-budget delivery with explicit maintainer approval.
+    - **github-stacked-prs** — GitHub Stack state; the bottom PR targets the trunk and each higher
+      PR targets the immediately lower branch.
+    - **feature-branch-chain** — the feature/tracker branch accumulates the final integration; child
+      PRs target the immediate previous work-unit branch and never use GitHub Stack metadata.
+    - **single-pr** — one ordinary PR when the diff is within budget.
+    - **size-exception** — keep the full coherent change as one over-budget delivery with explicit
+      maintainer approval.
 5. Cache the user's choice and set `Decision needed before apply` from delivery strategy:
-   - `ask-on-risk`: `Yes` — orchestrator asks before apply.
-   - `auto-chain`: `No` — orchestrator proceeds with the first slice using the chosen chain strategy.
-    - `single-pr`: `Yes` — orchestrator must require an explicit `size-exception` approval before apply.
-   - `exception-ok`: `No` — maintainer has accepted `size:exception`.
+    - `ask-on-risk`: `Yes` — orchestrator asks before apply.
+    - `auto-chain`: `No` — orchestrator proceeds with the first slice using the chosen chain
+      strategy.
+    - `single-pr`: `Yes` — orchestrator must require an explicit `size-exception` approval before
+      apply.
+    - `exception-ok`: `No` — maintainer has accepted `size:exception`.
 
-Do not bury this in prose. Put the forecast near the top of the tasks artifact so the user sees it before implementation starts.
+Do not bury this in prose. Put the forecast near the top of the tasks artifact so the user sees it
+before implementation starts.
 
-The forecast MUST include these exact plain-text lines so downstream guards can match them literally:
+The forecast MUST include these exact plain-text lines so downstream guards can match them
+literally:
 
 ```text
 Decision needed before apply: Yes|No
@@ -166,9 +185,11 @@ Chain strategy: github-stacked-prs|feature-branch-chain|single-pr|size-exception
 You may keep the table for readability, but the plain-text lines are the guard contract.
 
 For `github-stacked-prs`, suggested work units MUST name `trunk`, `parent_branch`, `base`, `branch`,
-`position`, and issue/Linear metadata. PR #1 base = trunk; PR #2 base = PR #1 branch; PR #3 base = PR #2
+`position`, and issue/Linear metadata. PR #1 base = trunk; PR #2 base = PR #1 branch; PR #3 base =
+PR #2
 branch. A higher layer targeting the trunk is invalid. For `feature-branch-chain`, PR #1 base = the
-separately approved feature/tracker branch; later PRs target the immediate previous branch. If a child
+separately approved feature/tracker branch; later PRs target the immediate previous branch. If a
+child
 PR shows previous PR changes, the base is wrong and must be retargeted/rebased before review.
 
 ### Dependency Layer Contract
@@ -178,8 +199,10 @@ For `github-stacked-prs`, task work units MUST be dependency-ordered and record 
 the trunk, normally `main`; every higher layer targets its immediate lower branch. Cycles, missing
 dependencies, unclear ownership, or a higher layer targeting the trunk MUST block apply.
 
-`feature-branch-chain` remains a separate integration/tracker-branch workflow and MUST NOT use GitHub
-Stack metadata. `single-pr` has one explicit base. `size-exception` is one coherent delivery unit and
+`feature-branch-chain` remains a separate integration/tracker-branch workflow and MUST NOT use
+GitHub
+Stack metadata. `single-pr` has one explicit base. `size-exception` is one coherent delivery unit
+and
 MUST include the explicit approval and rationale.
 
 ### Phase Organization Guidelines
@@ -210,6 +233,7 @@ Phase 5: Cleanup (if needed)
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../../skills/sdd/_shared/sdd-phase-common.md`.
+
 - artifact: `tasks`
 - topic_key: `sdd/{change-name}/tasks`
 - type: `architecture`
@@ -256,7 +280,11 @@ Return to the orchestrator:
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `.agents/sdd/config.yaml`
-- If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task (make it pass) → REFACTOR task (clean up)
-- **Size budget**: Tasks artifact MUST be under 530 words. Each task: 1-2 lines max. Use checklist format, not paragraphs.
-- **Review workload guard**: ALWAYS include the Review Workload Forecast. If likely above 400 changed lines, recommend chained PRs and honor the received delivery strategy for whether a decision/exception is needed before apply.
+- If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task
+  (make it pass) → REFACTOR task (clean up)
+- **Size budget**: Tasks artifact MUST be under 530 words. Each task: 1-2 lines max. Use checklist
+  format, not paragraphs.
+- **Review workload guard**: ALWAYS include the Review Workload Forecast. If likely above 400
+  changed lines, recommend chained PRs and honor the received delivery strategy for whether a
+  decision/exception is needed before apply.
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.

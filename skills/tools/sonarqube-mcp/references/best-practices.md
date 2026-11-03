@@ -34,9 +34,15 @@ If `status: "ERROR"`:
 {
   "name": "search_sonar_issues_in_projects",
   "arguments": {
-    "projects": ["my-service"],
+    "projects": [
+      "my-service"
+    ],
     "pullRequestId": "<pr-number>",
-    "severities": ["BLOCKER", "HIGH", "MEDIUM"],
+    "severities": [
+      "BLOCKER",
+      "HIGH",
+      "MEDIUM"
+    ],
     "p": 1,
     "ps": 100
   }
@@ -86,7 +92,7 @@ Catch issues before they reach the CI pipeline using `analyze_code_snippet`.
   "name": "analyze_code_snippet",
   "arguments": {
     "projectKey": "my-app",
-    "fileContent":"async function getUser(id: string) {\n  const query = `SELECT * FROM users WHERE id = ${id}`;\n  return db.execute(query);\n}",
+    "fileContent": "async function getUser(id: string) {\n  const query = `SELECT * FROM users WHERE id = ${id}`;\n  return db.execute(query);\n}",
     "language": "typescript"
   }
 }
@@ -99,7 +105,7 @@ Catch issues before they reach the CI pipeline using `analyze_code_snippet`.
   "name": "analyze_code_snippet",
   "arguments": {
     "projectKey": "my-java-app",
-    "fileContent":"public class DatabaseConfig {\n  private static final String PASSWORD = \"myS3cr3t\";\n  public Connection connect() { ... }\n}",
+    "fileContent": "public class DatabaseConfig {\n  private static final String PASSWORD = \"myS3cr3t\";\n  public Connection connect() { ... }\n}",
     "language": "java"
   }
 }
@@ -112,7 +118,7 @@ Catch issues before they reach the CI pipeline using `analyze_code_snippet`.
   "name": "analyze_code_snippet",
   "arguments": {
     "projectKey": "my-python-app",
-    "fileContent":"import pickle\n\ndef load_session(data):\n    return pickle.loads(data)",
+    "fileContent": "import pickle\n\ndef load_session(data):\n    return pickle.loads(data)",
     "language": "python"
   }
 }
@@ -125,7 +131,7 @@ Catch issues before they reach the CI pipeline using `analyze_code_snippet`.
   "name": "analyze_code_snippet",
   "arguments": {
     "projectKey": "my-go-service",
-    "fileContent":"func readFile(path string) []byte {\n  data, _ := os.ReadFile(path)\n  return data\n}",
+    "fileContent": "func readFile(path string) []byte {\n  data, _ := os.ReadFile(path)\n  return data\n}",
     "language": "go"
   }
 }
@@ -145,8 +151,12 @@ Always start with BLOCKER issues, then CRITICAL/HIGH:
 {
   "name": "search_sonar_issues_in_projects",
   "arguments": {
-    "projects": ["my-project"],
-    "severities": ["BLOCKER"],
+    "projects": [
+      "my-project"
+    ],
+    "severities": [
+      "BLOCKER"
+    ],
     "p": 1,
     "ps": 100
   }
@@ -192,7 +202,13 @@ After fixes, check the project health:
   "name": "get_component_measures",
   "arguments": {
     "projectKey": "my-project",
-    "metricKeys": ["bugs", "vulnerabilities", "code_smells", "security_rating", "reliability_rating"]
+    "metricKeys": [
+      "bugs",
+      "vulnerabilities",
+      "code_smells",
+      "security_rating",
+      "reliability_rating"
+    ]
   }
 }
 ```
@@ -225,7 +241,9 @@ When working on security-sensitive code (auth, payments, user data):
 {
   "name": "search_sonar_issues_in_projects",
   "arguments": {
-    "projects": ["my-service"],
+    "projects": [
+      "my-service"
+    ],
     "pullRequestId": "<pr-number>",
     "p": 1,
     "ps": 100

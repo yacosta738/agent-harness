@@ -275,7 +275,8 @@
   </header>
 
   <div class="diagram-wrap">
-    <svg aria-labelledby="policy-trace-animated-title policy-trace-animated-desc" data-motion-primitive="policy-evaluation" role="img"
+    <svg aria-labelledby="policy-trace-animated-title policy-trace-animated-desc"
+         data-motion-primitive="policy-evaluation" role="img"
          viewBox="0 0 1200 660"
          xmlns="http://www.w3.org/2000/svg">
       <title id="policy-trace-animated-title">Where two policy evaluations first diverge</title>
@@ -287,31 +288,38 @@
 
       <!-- Persistent trace paths are meaningful in every frame. -->
       <line stroke="rgba(45,49,66,0.30)" stroke-width="1" x1="620" x2="620" y1="104" y2="576"/>
-      <line data-trace-connector="trace-b" stroke="rgba(45,49,66,0.30)" stroke-width="1" x1="936" x2="936"
+      <line data-trace-connector="trace-b" stroke="rgba(45,49,66,0.30)" stroke-width="1" x1="936"
+            x2="936"
             y1="104" y2="336"/>
 
       <!-- Shared rule column and trace headers. -->
-      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" letter-spacing="1.6" x="72"
+      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" letter-spacing="1.6"
+            x="72"
             y="76">ORDERED POLICY
       </text>
       <rect fill="#ffffff" height="60" rx="6" stroke="#2d3142" width="240" x="500" y="44"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+            text-anchor="middle"
             x="620" y="72">Trace A · read-only
       </text>
-      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" text-anchor="middle" x="620"
+      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" text-anchor="middle"
+            x="620"
             y="92">internal metrics request
       </text>
       <rect fill="#ffffff" height="60" rx="6" stroke="#2d3142" width="240" x="816" y="44"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+            text-anchor="middle"
             x="936" y="72">Trace B · sensitive write
       </text>
-      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" text-anchor="middle" x="936"
+      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" text-anchor="middle"
+            x="936"
             y="92">restricted records request
       </text>
 
       <g aria-label="Rule 1: Identity bound passes for both traces" data-motion-item data-step="1">
         <rect class="row-focus" height="68" rx="4" width="1080" x="48" y="124"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" x="72"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+              x="72"
               y="152">1 · Identity bound
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" x="72" y="172">
@@ -332,7 +340,8 @@
       <g aria-label="Rule 2: Internal audience passes for both traces" data-motion-item
          data-step="2">
         <rect class="row-focus" height="68" rx="4" width="1080" x="48" y="200"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" x="72"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+              x="72"
               y="228">2 · Internal audience
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" x="72" y="248">
@@ -350,10 +359,12 @@
         </text>
       </g>
 
-      <g aria-label="Rule 3 is the first divergence: Trace A passes and Trace B fails" data-motion-item
+      <g aria-label="Rule 3 is the first divergence: Trace A passes and Trace B fails"
+         data-motion-item
          data-step="3">
         <rect class="row-focus" height="80" rx="4" width="1080" x="48" y="276"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" x="72"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+              x="72"
               y="304">3 · Data class
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" x="72" y="324">
@@ -364,7 +375,8 @@
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="10" font-weight="600"
               text-anchor="middle" x="620" y="316">✓ PASS
         </text>
-        <rect data-trace-b-terminal="fail" fill="rgba(235,108,54,0.08)" height="52" rx="4" stroke="#eb6c36" stroke-width="1.2"
+        <rect data-trace-b-terminal="fail" fill="rgba(235,108,54,0.08)" height="52" rx="4"
+              stroke="#eb6c36" stroke-width="1.2"
               width="176" x="848" y="284"/>
         <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10" font-weight="600"
               text-anchor="middle" x="936" y="316">× FAIL
@@ -380,28 +392,33 @@
       <g aria-label="Rule 4 is skipped for Trace A and not reached for Trace B" data-motion-item
          data-step="4">
         <rect class="row-focus" height="68" rx="4" width="1080" x="48" y="364"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" x="72"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+              x="72"
               y="392">4 · Human approval
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" x="72" y="412">
           required only for writes
         </text>
-        <rect fill="#f5f5f5" height="52" rx="4" stroke="#7a8399" stroke-dasharray="4 4" width="176" x="532"
+        <rect fill="#f5f5f5" height="52" rx="4" stroke="#7a8399" stroke-dasharray="4 4" width="176"
+              x="532"
               y="372"/>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="10" font-weight="600"
               text-anchor="middle" x="620" y="404">— SKIPPED
         </text>
-        <rect data-trace-b-state="not-reached" fill="rgba(45,49,66,0.02)" height="52" rx="4" stroke="rgba(45,49,66,0.30)" stroke-dasharray="4 4"
+        <rect data-trace-b-state="not-reached" fill="rgba(45,49,66,0.02)" height="52" rx="4"
+              stroke="rgba(45,49,66,0.30)" stroke-dasharray="4 4"
               width="176" x="848" y="372"/>
         <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="10" font-weight="600"
               text-anchor="middle" x="936" y="404">○ NOT REACHED
         </text>
       </g>
 
-      <g aria-label="Rule 5 passes for Trace A and is not reached for Trace B; outcomes are permitted and denied" data-motion-item
+      <g aria-label="Rule 5 passes for Trace A and is not reached for Trace B; outcomes are permitted and denied"
+         data-motion-item
          data-step="5">
         <rect class="row-focus" height="152" rx="4" width="1080" x="48" y="440"/>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" x="72"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+              x="72"
               y="468">5 · Deploy gate
         </text>
         <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="12" x="72" y="488">all
@@ -412,27 +429,33 @@
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="10" font-weight="600"
               text-anchor="middle" x="620" y="480">✓ PASS
         </text>
-        <rect data-trace-b-state="not-reached" fill="rgba(45,49,66,0.02)" height="52" rx="4" stroke="rgba(45,49,66,0.30)" stroke-dasharray="4 4"
+        <rect data-trace-b-state="not-reached" fill="rgba(45,49,66,0.02)" height="52" rx="4"
+              stroke="rgba(45,49,66,0.30)" stroke-dasharray="4 4"
               width="176" x="848" y="448"/>
         <text fill="#7a8399" font-family="'Geist Mono', monospace" font-size="10" font-weight="600"
               text-anchor="middle" x="936" y="480">○ NOT REACHED
         </text>
 
         <rect fill="#2d3142" height="56" rx="6" stroke="#2d3142" width="240" x="500" y="528"/>
-        <text fill="#f5f5f5" font-family="'Geist Mono', monospace" font-size="12" letter-spacing="1.2"
+        <text fill="#f5f5f5" font-family="'Geist Mono', monospace" font-size="12"
+              letter-spacing="1.2"
               text-anchor="middle" x="620" y="552">OUTCOME
         </text>
-        <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+        <text fill="#f5f5f5" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+              text-anchor="middle"
               x="620" y="572">Permitted
         </text>
         <rect data-trace-b-outcome="denied" fill="#f5f5f5" height="56" rx="6" width="240" x="816"
               y="528"/>
-        <rect fill="rgba(235,108,54,0.08)" height="56" rx="6" stroke="#eb6c36" stroke-width="1.2" width="240"
+        <rect fill="rgba(235,108,54,0.08)" height="56" rx="6" stroke="#eb6c36" stroke-width="1.2"
+              width="240"
               x="816" y="528"/>
-        <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="12" letter-spacing="1.2"
+        <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="12"
+              letter-spacing="1.2"
               text-anchor="middle" x="936" y="552">OUTCOME
         </text>
-        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600" text-anchor="middle"
+        <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="12" font-weight="600"
+              text-anchor="middle"
               x="936" y="572">Denied · review
         </text>
       </g>

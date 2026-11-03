@@ -37,6 +37,7 @@ The static HTML is just an empty stack container; views are built in JavaScript 
 user navigates.
 
 ```html
+
 <div class="Stack">
   <!-- Intentionally empty. The initial view is appended by JavaScript
        at init time (step 8). -->
@@ -49,6 +50,7 @@ At any moment the stack has one view per active history entry, left-to-right in 
 After the user has drilled in two levels from the root the rendered DOM looks like this:
 
 ```html
+
 <div class="Stack">
   <!-- Root view. Has whatever content makes sense as the entry point
        of this section of the app. No back button — there is nothing
@@ -214,8 +216,12 @@ read as "cards" stacking over the previous view.
     /* Shadow ramps in during entry, holds across the middle of the
        gesture, and ramps out during exit — so it's only visible while
        the view is mid-transition, not when at rest. */
-    0%, 100% { box-shadow: 0 0 1.5rem #0000; }
-    25%, 75% { box-shadow: 0 0 1.5rem #0004; }
+    0%, 100% {
+      box-shadow: 0 0 1.5rem #0000;
+    }
+    25%, 75% {
+      box-shadow: 0 0 1.5rem #0004;
+    }
   }
 }
 ```
@@ -396,7 +402,7 @@ stack.addEventListener('click', (e) => {
 // returns the user to where they came from.
 function goBack() {
   const atDeepLinkRoot = currentDepth === 0
-    && entriesByDepth.get(0)?.view !== rootView;
+      && entriesByDepth.get(0)?.view !== rootView;
   if (atDeepLinkRoot) {
     synthesizeRootEntry();
   } else {

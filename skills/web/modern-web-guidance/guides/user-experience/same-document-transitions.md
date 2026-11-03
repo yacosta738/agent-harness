@@ -51,13 +51,21 @@ Because there are multiple items on the list view, you can not give the all of t
 
 ```css
 /* In the list view, give each */
-#product-1 { view-transition-name: p1 }
-#product-2 { view-transition-name: p2 }
-#product-3 { view-transition-name: p3 }
+#product-1 {
+  view-transition-name: p1
+}
+
+#product-2 {
+  view-transition-name: p2
+}
+
+#product-3 {
+  view-transition-name: p3
+}
 ```
 
 ```js
-function updateDOM(clickedTransitionName){
+function updateDOM(clickedTransitionName) {
   const hero = document.getElementById("hero");
   hero.style.viewTransitionName = clickedTransitionName;
 }
@@ -71,9 +79,10 @@ The `#hero` element on the detail page and the selected `.thumbnail` element on 
 a `view-transition-name`.
 
 ```css
-#hero{
+#hero {
   view-transition-name: hero;
 }
+
 .thumbnail.selected {
   view-transition-name: hero;
 }
@@ -92,7 +101,7 @@ promise resolves.
 
 ```javascript
 // Function called when a thumbnail is clicked
-function goFromListToDetail(e){
+function goFromListToDetail(e) {
   e.currentTarget.classList.add("selected");
   const hero = document.getElementById("hero");
   const bgColor = getComputedStyle(e.currentTarget).backgroundColor;
@@ -130,9 +139,9 @@ function goFromDetailToList() {
     document.getElementById("list-heading")?.focus();
     // Remove selected classList to remove view-transition-names
     document.querySelectorAll(".selected").forEach(
-      (element) => {
-        element.classList.remove("selected");
-      },
+        (element) => {
+          element.classList.remove("selected");
+        },
     );
   });
 }
@@ -162,7 +171,7 @@ old and new pseudo-elements to 100% of the `::view-transition-pair()` pseudo-ele
 
 ```css
 ::view-transition-old(hero),
-::view-transition-new(hero){
+::view-transition-new(hero) {
   height: 100%;
 }
 ```
@@ -205,7 +214,7 @@ The View Transitions API is designed for progressive enhancement. Browsers that 
 will simply execute the DOM update immediately without animation.
 
 ```javascript
-function navigate(){
+function navigate() {
   if (!document.startViewTransition) {
     // Fallback: Just update the DOM
     updateDOM();

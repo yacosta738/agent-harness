@@ -4,17 +4,17 @@
 
 ```typescript
 // functions/api/todos/[id].ts
-export const onRequestGet: PagesFunction<Env> = async ({ env, params }) => {
+export const onRequestGet: PagesFunction<Env> = async ({env, params}) => {
   const todo = await env.DB.prepare('SELECT * FROM todos WHERE id = ?').bind(params.id).first();
-  if (!todo) return new Response('Not found', { status: 404 });
+  if (!todo) return new Response('Not found', {status: 404});
   return Response.json(todo);
 };
 
-export const onRequestPut: PagesFunction<Env> = async ({ env, params, request }) => {
+export const onRequestPut: PagesFunction<Env> = async ({env, params, request}) => {
   const body = await request.json();
   await env.DB.prepare('UPDATE todos SET title = ?, completed = ? WHERE id = ?')
-    .bind(body.title, body.completed, params.id).run();
-  return Response.json({ success: true });
+      .bind(body.title, body.completed, params.id).run();
+  return Response.json({success: true});
 };
 // Also: onRequestDelete, onRequestPost
 ```
@@ -27,7 +27,7 @@ const auth: PagesFunction<Env> = async (context) => {
   if (context.request.url.includes('/public/')) return context.next();
   const authHeader = context.request.headers.get('Authorization');
   if (!authHeader?.startsWith('Bearer ')) {
-    return new Response('Unauthorized', { status: 401 });
+    return new Response('Unauthorized', {status: 401});
   }
 
   try {
@@ -35,7 +35,7 @@ const auth: PagesFunction<Env> = async (context) => {
     context.data.user = payload;
     return context.next();
   } catch (err) {
-    return new Response('Invalid token', { status: 401 });
+    return new Response('Invalid token', {status: 401});
   }
 };
 export const onRequest = [auth];
@@ -65,22 +65,22 @@ export const onRequest: PagesFunction = async (context) => {
 
 ```typescript
 // functions/api/contact.ts
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+export const onRequestPost: PagesFunction<Env> = async ({request, env}) => {
   const formData = await request.formData();
   await env.QUEUE.send({name: formData.get('name'), email: formData.get('email')});
-  return new Response('<h1>Thanks!</h1>', { headers: { 'Content-Type': 'text/html' } });
+  return new Response('<h1>Thanks!</h1>', {headers: {'Content-Type': 'text/html'}});
 };
 ```
 
 ## Background Tasks
 
 ```typescript
-export const onRequestPost: PagesFunction = async ({ request, waitUntil }) => {
+export const onRequestPost: PagesFunction = async ({request, waitUntil}) => {
   const data = await request.json();
   waitUntil(fetch('https://api.example.com/webhook', {
     method: 'POST', body: JSON.stringify(data)
   }));
-  return Response.json({ queued: true });
+  return Response.json({queued: true});
 };
 ```
 
@@ -94,10 +94,10 @@ const errorHandler: PagesFunction = async (context) => {
   } catch (error) {
     console.error('Error:', error);
     if (context.request.url.includes('/api/')) {
-      return Response.json({ error: error.message }, { status: 500 });
+      return Response.json({error: error.message}, {status: 500});
     }
     return new Response(`<h1>Error</h1><p>${error.message}</p>`, {
-      status: 500, headers: { 'Content-Type': 'text/html' }
+      status: 500, headers: {'Content-Type': 'text/html'}
     });
   }
 };
@@ -108,10 +108,10 @@ export const onRequest = [errorHandler];
 
 ```typescript
 // functions/api/data.ts
-export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
+export const onRequestGet: PagesFunction<Env> = async ({env, request}) => {
   const cacheKey = `data:${new URL(request.url).pathname}`;
   const cached = await env.KV.get(cacheKey, 'json');
-  if (cached) return Response.json(cached, { headers: { 'X-Cache': 'HIT' } });
+  if (cached) return Response.json(cached, {headers: {'X-Cache': 'HIT'}});
 
   const data = await env.DB.prepare('SELECT * FROM data').first();
   await env.KV.put(cacheKey, JSON.stringify(data), {expirationTtl: 3600});
@@ -139,7 +139,7 @@ Enable Smart Placement for apps with D1 or centralized data sources:
 
 ```typescript
 // functions/api/data.ts
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
+export const onRequestGet: PagesFunction<Env> = async ({env}) => {
   // Smart Placement optimizes execution location over time
   // Balances user location vs database location
   const data = await env.DB.prepare('SELECT * FROM products LIMIT 10').all();
@@ -162,9 +162,9 @@ npm create cloudflare@latest my-app -- --framework=svelte
 
 ```typescript
 // src/routes/+page.server.ts
-export const load = async ({ platform }) => {
+export const load = async ({platform}) => {
   const todos = await platform.env.DB.prepare('SELECT * FROM todos').all();
-  return { todos: todos.results };
+  return {todos: todos.results};
 };
 ```
 
@@ -183,7 +183,7 @@ const todos = await DB.prepare('SELECT * FROM todos').all();
 ```typescript
 // server/api/todos.get.ts
 export default defineEventHandler(async (event) => {
-  const { DB } = event.context.cloudflare.env;
+  const {DB} = event.context.cloudflare.env;
   return await DB.prepare('SELECT * FROM todos').all();
 });
 ```

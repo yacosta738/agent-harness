@@ -76,7 +76,9 @@ pnpm dev        # -> works without portless, plain "next dev"
 Use an optional `portless.json` to override defaults (name, script, port):
 
 ```json
-{ "name": "myapp" }
+{
+  "name": "myapp"
+}
 ```
 
 ```bash
@@ -91,8 +93,12 @@ One `portless.json` at the repo root. Portless discovers packages from `pnpm-wor
 ```json
 {
   "apps": {
-    "apps/web": { "name": "myapp" },
-    "apps/api": { "name": "api.myapp" }
+    "apps/web": {
+      "name": "myapp"
+    },
+    "apps/api": {
+      "name": "api.myapp"
+    }
   }
 }
 ```
@@ -117,8 +123,14 @@ For turborepo projects, use portless as the `dev` script with the real command i
 
 ```json
 {
-  "scripts": { "dev": "portless", "dev:app": "next dev" },
-  "portless": { "name": "myapp", "script": "dev:app" }
+  "scripts": {
+    "dev": "portless",
+    "dev:app": "next dev"
+  },
+  "portless": {
+    "name": "myapp",
+    "script": "dev:app"
+  }
 }
 ```
 
@@ -375,13 +387,20 @@ Instead of a separate `portless.json`, you can add a `"portless"` key to your `p
 string value is shorthand for setting the name:
 
 ```json
-{ "portless": "myapp" }
+{
+  "portless": "myapp"
+}
 ```
 
 An object supports all per-app fields (`name`, `script`, `appPort`, `proxy`):
 
 ```json
-{ "portless": { "name": "myapp", "script": "dev:app" } }
+{
+  "portless": {
+    "name": "myapp",
+    "script": "dev:app"
+  }
+}
 ```
 
 Precedence (closest wins): CLI flags > package.json `"portless"` key > portless.json app entry >
@@ -475,11 +494,18 @@ Fix: set `changeOrigin: true` in the proxy config (Vite, webpack-dev-server, etc
 ```ts
 // vite.config.ts
 proxy: {
-  "/api": {
+  "/api"
+:
+  {
     target: "https://api.myapp.localhost",
-    changeOrigin: true,
-    ws: true,
-  },
+        changeOrigin
+  :
+    true,
+        ws
+  :
+    true,
+  }
+,
 }
 ```
 

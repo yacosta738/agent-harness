@@ -28,7 +28,7 @@ identify clusters, outliers, and high/low performers.
 <circle cx="X" cy="Y" r="5" fill="#f5f5f5"/>
 <circle cx="X" cy="Y" r="5" fill="rgba(79,93,117,0.20)" stroke="#4f5d75" stroke-width="1"/>
 
-<!-- Focal point -->
+  <!-- Focal point -->
 <circle cx="X" cy="Y" r="6" fill="#f5f5f5"/>
 <circle cx="X" cy="Y" r="6" fill="rgba(235,108,54,0.15)" stroke="#eb6c36" stroke-width="1.2"/>
 ```

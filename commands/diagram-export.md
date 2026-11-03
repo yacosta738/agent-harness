@@ -48,7 +48,8 @@ $ARGUMENTS = <source.html>
    checkout. These checks happen before any renderer or extractor invocation.
 3. Reject the gallery file `skills/design/diagram-design/assets/index.html` (and its canonical
    equivalent). It contains multiple SVGs; never guess which gallery item to export.
-4. Read the source as inert text and extract the **first** `<svg ...>...</svg>` block, as required by
+4. Read the source as inert text and extract the **first** `<svg ...>...</svg>` block, as required
+   by
    `references/export.md`. If there is no SVG, or its `viewBox` is absent, stop with no output.
    Preserve the authored accessible `<title>`, `<desc>`, `role`, and `aria-labelledby`; do not edit
    the source. A failed packaged `self_check.py` preflight is also a validation failure.
@@ -60,10 +61,12 @@ $ARGUMENTS = <source.html>
 
 For SVG, extract only the diagram SVG, add the SVG namespace when absent, require its `viewBox`,
 preserve accessibility metadata, add the XML declaration, and follow `references/export.md` for
-the merged XML-safe Google Fonts `@import`. Do not wrap it in page cards, headers, or `foreignObject`.
+the merged XML-safe Google Fonts `@import`. Do not wrap it in page cards, headers, or
+`foreignObject`.
 
 For PNG, render the original HTML and screenshot only the first SVG bounding box with a transparent
-background. For motion, use the static query/state described by `export.md`, await `document.fonts.ready`,
+background. For motion, use the static query/state described by `export.md`, await
+`document.fonts.ready`,
 and never use an arbitrary sleep. Before writing anything, prove that both the Python Playwright
 module and a launchable local Chromium are available. If either is absent, report
 `status: UNAVAILABLE` (or `status: BLOCKED` when the environment forbids the probe),

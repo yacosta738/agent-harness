@@ -27,7 +27,7 @@
 ```js
 new Miniflare({
   modules: true,
-  modulesRules: [{ type: "ESModule", include: ["**/*.js"] }],
+  modulesRules: [{type: "ESModule", include: ["**/*.js"]}],
 });
 ```
 
@@ -49,7 +49,7 @@ run compiled JS
 **Cause:** CF data not configured **Solution:**
 
 ```js
-new Miniflare({ cf: true }); // Or cf: "./cf.json"
+new Miniflare({cf: true}); // Or cf: "./cf.json"
 ```
 
 ### "EADDRINUSE" port conflict
@@ -62,8 +62,9 @@ or `port: 0` for auto-assign
 **Cause:** Class export doesn't match config name **Solution:**
 
 ```js
-export class Counter {} // Must match
-new Miniflare({ durableObjects: { COUNTER: "Counter" } });
+export class Counter {
+} // Must match
+new Miniflare({durableObjects: {COUNTER: "Counter"}});
 ```
 
 ## Debugging
@@ -71,8 +72,9 @@ new Miniflare({ durableObjects: { COUNTER: "Counter" } });
 **Enable verbose logging:**
 
 ```js
-import { Log, LogLevel } from "miniflare";
-new Miniflare({ log: new Log(LogLevel.DEBUG) });
+import {Log, LogLevel} from "miniflare";
+
+new Miniflare({log: new Log(LogLevel.DEBUG)});
 ```
 
 **Chrome DevTools:**
@@ -93,7 +95,7 @@ console.log(Object.keys(env));
 
 ```js
 const ns = await mf.getKVNamespace("TEST");
-const { keys } = await ns.list();
+const {keys} = await ns.list();
 ```
 
 ## Best Practices
@@ -141,12 +143,14 @@ const url = await mf.ready; // Promise<URL>
 
 ```js
 // Old (deprecated)
-import { unstable_dev } from "wrangler";
+import {unstable_dev} from "wrangler";
+
 const worker = await unstable_dev("src/index.ts");
 
 // New
-import { Miniflare } from "miniflare";
-const mf = new Miniflare({ scriptPath: "src/index.ts" });
+import {Miniflare} from "miniflare";
+
+const mf = new Miniflare({scriptPath: "src/index.ts"});
 ```
 
 ### From Wrangler Dev
@@ -159,7 +163,7 @@ new Miniflare({
   scriptPath: "dist/worker.js",
   compatibilityDate: "2026-01-01",
   kvNamespaces: ["KV"],
-  bindings: { API_KEY: process.env.API_KEY },
+  bindings: {API_KEY: process.env.API_KEY},
 });
 ```
 

@@ -39,12 +39,12 @@ by setting `pointer-events: none`.
 
 .indicator-top {
   top: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent); /* Example: Shadow */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), transparent); /* Example: Shadow */
 }
 
 .indicator-bottom {
   bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.2), transparent); /* Example: Shadow */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), transparent); /* Example: Shadow */
 }
 ```
 
@@ -126,7 +126,7 @@ if (!CSS.supports('container-type', 'scroll-state')) {
         scroller.classList.toggle('can-scroll-down', !entry.isIntersecting);
       }
     });
-  }, { root: scroller });
+  }, {root: scroller});
 
   observer.observe(topSentinel);
   observer.observe(bottomSentinel);

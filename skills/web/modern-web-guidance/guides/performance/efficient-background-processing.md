@@ -35,7 +35,7 @@ scrollbar jumping.
 .heavy-component {
   /* Defer rendering work when off-screen */
   content-visibility: auto;
-  
+
   /* Mandatory: Provide a placeholder size to prevent layouts shifts.
     - 'auto' is optional and enables the browser to remember the actual size
       once rendered. It must be paired with a <length> value to be used for
@@ -87,7 +87,7 @@ document.addEventListener('contentvisibilityautostatechange', (event) => {
       startSimulation();
     }
   }
-}, { capture: true });
+}, {capture: true});
 ```
 
 ### Fallback strategies

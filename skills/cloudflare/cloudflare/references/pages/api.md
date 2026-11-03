@@ -15,7 +15,7 @@
 ## Request Handlers
 
 ```typescript
-import type { PagesFunction } from '@cloudflare/workers-types';
+import type {PagesFunction} from '@cloudflare/workers-types';
 
 interface Env {
   DB: D1Database;
@@ -29,10 +29,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
 // Method-specific
 export const onRequestGet: PagesFunction<Env> = async (context) => {
-  const { request, env, params, data } = context;
+  const {request, env, params, data} = context;
 
   const user = await env.DB.prepare(
-    'SELECT * FROM users WHERE id = ?'
+      'SELECT * FROM users WHERE id = ?'
   ).bind(params.id).first();
 
   return Response.json(user);
@@ -40,7 +40,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const body = await context.request.json();
-  return Response.json({ success: true });
+  return Response.json({success: true});
 };
 
 // Also: onRequestPut, onRequestPatch, onRequestDelete, onRequestHead, onRequestOptions
@@ -64,13 +64,13 @@ interface EventContext<Env, Params, Data> {
 
 ```typescript
 // Single segment: functions/users/[id].ts
-export const onRequestGet: PagesFunction = async ({ params }) => {
+export const onRequestGet: PagesFunction = async ({params}) => {
   // /users/123 → params.id = "123"
-  return Response.json({ userId: params.id });
+  return Response.json({userId: params.id});
 };
 
 // Multi-segment: functions/files/[[path]].ts
-export const onRequestGet: PagesFunction = async ({ params }) => {
+export const onRequestGet: PagesFunction = async ({params}) => {
   // /files/docs/api/v1.md → params.path = ["docs", "api", "v1.md"]
   const filePath = (params.path as string[]).join('/');
   return new Response(filePath);
@@ -93,13 +93,13 @@ const errorHandler: PagesFunction = async (context) => {
   try {
     return await context.next();
   } catch (err) {
-    return new Response(err.message, { status: 500 });
+    return new Response(err.message, {status: 500});
   }
 };
 
 const auth: PagesFunction = async (context) => {
   const token = context.request.headers.get('Authorization');
-  if (!token) return new Response('Unauthorized', { status: 401 });
+  if (!token) return new Response('Unauthorized', {status: 401});
   context.data.userId = await verifyToken(token);
   return context.next();
 };
@@ -112,7 +112,7 @@ export const onRequest = [errorHandler, auth];
 ## Bindings Usage
 
 ```typescript
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
+export const onRequestGet: PagesFunction<Env> = async ({env}) => {
   // KV
   const cached = await env.KV.get('key', 'json');
   await env.KV.put('key', JSON.stringify({data: 'value'}), {expirationTtl: 3600});
@@ -178,18 +178,20 @@ Access bindings in framework code:
 
 ```typescript
 // SvelteKit
-import type { RequestEvent } from '@sveltejs/kit';
-export async function load({ platform }: RequestEvent) {
+import type {RequestEvent} from '@sveltejs/kit';
+
+export async function load({platform}: RequestEvent) {
   const data = await platform.env.DB.prepare('SELECT * FROM users').all();
-  return { users: data.results };
+  return {users: data.results};
 }
 
 // Astro
-const { DB } = Astro.locals.runtime.env;
+const {DB} = Astro.locals.runtime.env;
 const data = await DB.prepare('SELECT * FROM users').all();
 
 // Solid Start (server function)
-import { getRequestEvent } from 'solid-js/web';
+import {getRequestEvent} from 'solid-js/web';
+
 const event = getRequestEvent();
 const data = await event.locals.runtime.env.DB.prepare('SELECT * FROM users').all();
 ```

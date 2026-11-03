@@ -30,10 +30,9 @@ Place the element inside the container and style it. By default, it should be hi
   visibility: hidden;
   opacity: 0;
   translate: 0 20px;
-  transition:
-    visibility 0.3s,
-    opacity 0.3s ease,
-    translate 0.3s ease;
+  transition: visibility 0.3s,
+  opacity 0.3s ease,
+  translate 0.3s ease;
 }
 ```
 
@@ -82,7 +81,7 @@ element always visible in unsupported browsers.
     visibility: hidden;
     opacity: 0;
   }
-  
+
   @container scroll-state(scrollable: top) {
     .back-to-top {
       visibility: visible;
@@ -132,7 +131,7 @@ if (!CSS.supports('container-type', 'scroll-state')) {
         scroller.classList.remove('scrolled');
       }
     });
-  }, { root: scroller });
+  }, {root: scroller});
 
   observer.observe(sentinel);
 }

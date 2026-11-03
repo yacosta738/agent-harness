@@ -46,7 +46,12 @@ Detects sequential resource access (e.g., `/users/1`, `/users/2`, `/users/3`).
 
 ```javascript
 // Block BOLA enumeration attempts
-(cf.api_gateway.cf-risk-bola-enumeration and http.host eq "api.example.com")
+(cf.api_gateway.cf - risk - bola - enumeration
+and
+http.host
+eq
+"api.example.com"
+)
 // Action: Block or Challenge
 ```
 
@@ -56,7 +61,12 @@ Detects duplicate/excessive parameters in requests.
 
 ```javascript
 // Block parameter pollution
-(cf.api_gateway.cf-risk-bola-pollution and http.host eq "api.example.com")
+(cf.api_gateway.cf - risk - bola - pollution
+and
+http.host
+eq
+"api.example.com"
+)
 // Action: Block
 ```
 
@@ -64,8 +74,14 @@ Detects duplicate/excessive parameters in requests.
 
 ```javascript
 // Comprehensive BOLA rule
-(cf.api_gateway.cf-risk-bola-enumeration or cf.api_gateway.cf-risk-bola-pollution)
-and http.host eq "api.example.com"
+(cf.api_gateway.cf - risk - bola - enumeration
+or
+cf.api_gateway.cf - risk - bola - pollution
+)
+and
+http.host
+eq
+"api.example.com"
 // Action: Block
 ```
 
@@ -75,7 +91,12 @@ and http.host eq "api.example.com"
 
 ```javascript
 // Log endpoints lacking authentication
-(cf.api_gateway.cf-risk-missing-auth and http.host eq "api.example.com")
+(cf.api_gateway.cf - risk - missing - auth
+and
+http.host
+eq
+"api.example.com"
+)
 // Action: Log (for audit)
 ```
 
@@ -83,7 +104,12 @@ and http.host eq "api.example.com"
 
 ```javascript
 // Alert on inconsistent auth patterns
-(cf.api_gateway.cf-risk-mixed-auth and http.host eq "api.example.com")
+(cf.api_gateway.cf - risk - mixed - auth
+and
+http.host
+eq
+"api.example.com"
+)
 // Action: Log (review required)
 ```
 
@@ -91,7 +117,12 @@ and http.host eq "api.example.com"
 
 ```javascript
 // WAF Custom Rule
-(cf.api_gateway.fallthrough_triggered and http.host eq "api.example.com")
+(cf.api_gateway.fallthrough_triggered
+and
+http.host
+eq
+"api.example.com"
+)
 // Action: Log (discover unknown) or Block (strict)
 ```
 
@@ -99,8 +130,12 @@ and http.host eq "api.example.com"
 
 ```javascript
 // Rate Limiting Rule (modern syntax)
-(http.host eq "api.example.com" and
- is_jwt_valid(http.request.jwt.payload["{config_id}"][0]))
+(http.host
+eq
+"api.example.com"
+and
+is_jwt_valid(http.request.jwt.payload["{config_id}"][0])
+)
 
 // Rate: 100 req/60s
 // Counting expression: lookup_json_string(http.request.jwt.payload["{config_id}"][0], "sub")
@@ -110,12 +145,25 @@ and http.host eq "api.example.com"
 
 ```javascript
 // Detect abnormal traffic spikes
-(cf.api_gateway.volumetric_abuse_detected and http.host eq "api.example.com")
+(cf.api_gateway.volumetric_abuse_detected
+and
+http.host
+eq
+"api.example.com"
+)
 // Action: Challenge or Rate Limit
 
 // Combined with rate limiting
-(cf.api_gateway.volumetric_abuse_detected or
- cf.threat_score gt 50) and http.host eq "api.example.com"
+(cf.api_gateway.volumetric_abuse_detected
+or
+cf.threat_score
+gt
+50
+)
+and
+http.host
+eq
+"api.example.com"
 // Action: JS Challenge
 ```
 
@@ -123,13 +171,25 @@ and http.host eq "api.example.com"
 
 ```javascript
 // Block oversized queries
-(http.request.uri.path eq "/graphql" and
- cf.api_gateway.graphql_query_size gt 100000)
+(http.request.uri.path
+eq
+"/graphql"
+and
+cf.api_gateway.graphql_query_size
+gt
+100000
+)
 // Action: Block
 
 // Block deep nested queries
-(http.request.uri.path eq "/graphql" and
- cf.api_gateway.graphql_query_depth gt 10)
+(http.request.uri.path
+eq
+"/graphql"
+and
+cf.api_gateway.graphql_query_depth
+gt
+10
+)
 // Action: Block
 ```
 

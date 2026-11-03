@@ -6,7 +6,9 @@ Add to manifest.json:
 
 ```json
 {
-  "permissions": ["sidePanel"],
+  "permissions": [
+    "sidePanel"
+  ],
   "side_panel": {
     "default_path": "sidepanel/sidepanel.html"
   }
@@ -26,7 +28,7 @@ and use `chrome.action.onClicked` to open the side panel:
 ```js
 // service-worker.js
 chrome.action.onClicked.addListener(async (tab) => {
-  await chrome.sidePanel.open({ windowId: tab.windowId });
+  await chrome.sidePanel.open({windowId: tab.windowId});
 });
 ```
 
@@ -40,15 +42,15 @@ trigger.
 // Open from a context menu item
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === 'open-panel') {
-    await chrome.sidePanel.open({ windowId: tab.windowId });
+    await chrome.sidePanel.open({windowId: tab.windowId});
   }
 });
 
 // Open from a keyboard shortcut (defined in manifest commands)
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === 'open-side-panel') {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-    await chrome.sidePanel.open({ windowId: tab.windowId });
+    const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+    await chrome.sidePanel.open({windowId: tab.windowId});
   }
 });
 ```
@@ -56,7 +58,7 @@ chrome.commands.onCommand.addListener(async (command) => {
 You can also open it for a specific tab:
 
 ```js
-await chrome.sidePanel.open({ tabId: tab.id });
+await chrome.sidePanel.open({tabId: tab.id});
 ```
 
 ### Simplest: Auto-open via setPanelBehavior
@@ -66,7 +68,7 @@ as a one-liner instead of an `onClicked` listener:
 
 ```js
 // service-worker.js
-chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+chrome.sidePanel.setPanelBehavior({openPanelOnActionClick: true});
 ```
 
 ⚠️ **The property is `openPanelOnActionClick` — NOT `openPanelOnActionIconClick`.**
@@ -99,8 +101,8 @@ To get data from the active tab's content script:
 ```js
 // In side panel JS
 async function getPageContent() {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  const response = await chrome.tabs.sendMessage(tab.id, { type: 'GET_CONTENT' });
+  const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+  const response = await chrome.tabs.sendMessage(tab.id, {type: 'GET_CONTENT'});
   return response;
 }
 ```
@@ -109,8 +111,8 @@ Or use `chrome.scripting.executeScript` from the side panel (requires `scripting
 permissions):
 
 ```js
-const [{ result }] = await chrome.scripting.executeScript({
-  target: { tabId: tab.id },
+const [{result}] = await chrome.scripting.executeScript({
+  target: {tabId: tab.id},
   func: () => document.body.innerText
 });
 ```
@@ -142,8 +144,14 @@ If your side panel needs to read or modify page content (e.g., a "Summarize" but
 
 ```json
 {
-  "permissions": ["tabs", "scripting", "sidePanel"],
-  "host_permissions": ["<all_urls>"]
+  "permissions": [
+    "tabs",
+    "scripting",
+    "sidePanel"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ]
 }
 ```
 

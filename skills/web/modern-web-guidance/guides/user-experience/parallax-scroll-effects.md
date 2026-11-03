@@ -234,7 +234,7 @@ if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) 
         window.removeEventListener('scroll', onScroll);
       }
     });
-  }, { threshold: 0 });
+  }, {threshold: 0});
 
   observer.observe(wrapper);
 
@@ -246,8 +246,9 @@ if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) 
     const windowHeight = window.innerHeight;
 
     if (scrollY >= wrapperTop - windowHeight && scrollY <= wrapperTop + wrapperHeight) {
-      const scrollPercent = (scrollY - (wrapperTop - windowHeight)) / (wrapperHeight + windowHeight);
-      
+      const scrollPercent = (scrollY - (wrapperTop - windowHeight)) / (wrapperHeight
+          + windowHeight);
+
       layers.forEach((layer, index) => {
         // This matches the effect as defined in the CSS example above.
         // Customize this further if needed.

@@ -67,12 +67,13 @@ alignment.
 .button {
   display: inline-flex;
   align-items: center;
-  gap: 8px; 
+  gap: 8px;
 }
+
 /* 
   text-box does NOT inherit, and must be applied directly to the text element.
 */
-.button-text{
+.button-text {
   /* 
     The flex container now centers against the 
     visible letters, not the invisible font box.

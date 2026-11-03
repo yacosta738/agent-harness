@@ -7,6 +7,7 @@ essay rather than technical docs.
 ## Grammar
 
 ```svg
+
 <defs>
   <filter id="sketchy" x="-2%" y="-2%" width="104%" height="104%">
     <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="4"/>
@@ -14,12 +15,12 @@ essay rather than technical docs.
   </filter>
 </defs>
 
-<!-- Apply to a group wrapping shapes — NOT text -->
+  <!-- Apply to a group wrapping shapes — NOT text -->
 <g filter="url(#sketchy)">
-  <!-- rects, paths, circles, lines go here -->
+<!-- rects, paths, circles, lines go here -->
 </g>
 
-<!-- Text sits OUTSIDE the filtered group — legibility stays crisp -->
+  <!-- Text sits OUTSIDE the filtered group — legibility stays crisp -->
 <text ...>Labels go here</text>
 ```
 

@@ -29,16 +29,16 @@ persistent background pages, you CANNOT rely on in-memory state.
 let count = 0;
 chrome.webNavigation.onCompleted.addListener(() => {
   count++;
-  chrome.action.setBadgeText({ text: String(count) });
+  chrome.action.setBadgeText({text: String(count)});
 });
 
 // ✅ GOOD: State in storage
 chrome.webNavigation.onCompleted.addListener(async (details) => {
   if (details.frameId !== 0) return; // Main frame only
-  const data = await chrome.storage.local.get({ visitCount: 0 });
+  const data = await chrome.storage.local.get({visitCount: 0});
   data.visitCount++;
   await chrome.storage.local.set(data);
-  chrome.action.setBadgeText({ text: String(data.visitCount) });
+  chrome.action.setBadgeText({text: String(data.visitCount)});
 });
 ```
 
@@ -49,7 +49,7 @@ chrome.webNavigation.onCompleted.addListener(async (details) => {
 setInterval(() => checkForUpdates(), 60000);
 
 // ✅ GOOD: Alarm persists
-chrome.alarms.create('check-updates', { periodInMinutes: 1 });
+chrome.alarms.create('check-updates', {periodInMinutes: 1});
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'check-updates') {
     checkForUpdates();
@@ -65,7 +65,7 @@ Minimum alarm interval: 0.5 minutes.
 // Set up defaults and context menus on install
 chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === 'install') {
-    await chrome.storage.local.set({ settings: defaultSettings });
+    await chrome.storage.local.set({settings: defaultSettings});
   }
   // Context menus must be re-created (they persist, but re-creating is idempotent)
   chrome.contextMenus.create({
@@ -86,7 +86,7 @@ Occasionally you need the SW alive for a long-running operation. Use one of:
 
 ```js
 // Port-based keepalive from popup/side panel
-const port = chrome.runtime.connect({ name: 'keepalive' });
+const port = chrome.runtime.connect({name: 'keepalive'});
 // The SW stays alive as long as this port is open
 ```
 
@@ -105,11 +105,12 @@ chrome.webNavigation.onCompleted.addListener(handleNavigation);
 
 // ❌ BAD: Conditional or async registration
 async function setup() {
-  const { enabled } = await chrome.storage.local.get('enabled');
+  const {enabled} = await chrome.storage.local.get('enabled');
   if (enabled) {
     chrome.tabs.onUpdated.addListener(handleTabUpdate); // Too late!
   }
 }
+
 setup();
 ```
 
@@ -117,7 +118,7 @@ Instead, register all listeners and check conditions inside them:
 
 ```js
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  const { enabled } = await chrome.storage.local.get('enabled');
+  const {enabled} = await chrome.storage.local.get('enabled');
   if (!enabled) return;
   // Process...
 });
@@ -133,16 +134,17 @@ function getToday() {
 }
 
 async function incrementDailyCount() {
-  const { dailyCount = 0, countDate = '' } = await chrome.storage.local.get(['dailyCount', 'countDate']);
+  const {dailyCount = 0, countDate = ''} = await chrome.storage.local.get(
+      ['dailyCount', 'countDate']);
   const today = getToday();
 
   if (countDate !== today) {
     // New day — reset
-    await chrome.storage.local.set({ dailyCount: 1, countDate: today });
+    await chrome.storage.local.set({dailyCount: 1, countDate: today});
     return 1;
   } else {
     const newCount = dailyCount + 1;
-    await chrome.storage.local.set({ dailyCount: newCount });
+    await chrome.storage.local.set({dailyCount: newCount});
     return newCount;
   }
 }

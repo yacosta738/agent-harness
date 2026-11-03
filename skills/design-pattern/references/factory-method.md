@@ -26,7 +26,9 @@ Product, ConcreteProduct, Creator, ConcreteCreator.
 ## Kotlin/JVM sketch
 
 ```kotlin
-interface Notification { fun send(message: String) }
+interface Notification {
+    fun send(message: String)
+}
 
 class EmailNotification : Notification {
     override fun send(message: String) = println("email: $message")

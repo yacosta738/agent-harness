@@ -28,14 +28,15 @@ as an interaction, so the field stays neutral until they actively attempt a sele
 The "placeholder" option is key here.
 
 ```html
+
 <form>
   <div class="field">
     <label for="country">Country</label>
     <select
-      id="country"
-      name="country"
-      required
-      aria-errormessage="country-error"
+        id="country"
+        name="country"
+        required
+        aria-errormessage="country-error"
     >
       <option value="" disabled selected>Select a country...</option>
       <option value="us">United States</option>
@@ -143,14 +144,14 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {hasInteracted: false, hasBlurred: false};
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -168,7 +169,7 @@ const UserInvalidFallback = (() => {
     root.addEventListener('reset', handleEvent, true); // Capture resets
   };
 
-  return { init };
+  return {init};
 })();
 
 // Initialize for a specific form

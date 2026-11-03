@@ -50,7 +50,7 @@ Defining `"side_panel": {"default_path": "..."}` does NOT make it openable. Add 
 // In service-worker.js — open side panel on extension icon click
 // IMPORTANT: chrome.action.onClicked ONLY fires when there is NO default_popup
 chrome.action.onClicked.addListener(async (tab) => {
-  await chrome.sidePanel.open({ windowId: tab.windowId });
+  await chrome.sidePanel.open({windowId: tab.windowId});
 });
 ```
 
@@ -74,12 +74,14 @@ eval(userCode); // CSP blocks this
 
 // ✅ OPTION A: Sandbox in manifest + postMessage
 // manifest.json: { "sandbox": { "pages": ["sandbox.html"] } }
-iframe.contentWindow.postMessage({ html, css, js }, '*');
+iframe.contentWindow.postMessage({html, css, js}, '*');
 // sandbox.html receives and runs:
-window.addEventListener('message', (e) => { eval(e.data.js); /* allowed in sandbox */ });
+window.addEventListener('message', (e) => {
+  eval(e.data.js); /* allowed in sandbox */
+});
 
 // ✅ OPTION B: Blob URL (creates separate origin, bypasses extension CSP)
-iframe.src = URL.createObjectURL(new Blob([doc], { type: 'text/html' }));
+iframe.src = URL.createObjectURL(new Blob([doc], {type: 'text/html'}));
 
 // ✅ OPTION C: srcdoc
 iframe.srcdoc = `<style>${css}</style>${html}<script>${js}<\/script>`;
@@ -93,7 +95,11 @@ Without it, `tab.url` silently returns `undefined` — no error thrown.
 
 ```js
 // manifest.json — REQUIRED if you read tab.url or tab.title anywhere:
-{ "permissions": ["tabs"] }
+{
+  "permissions"
+:
+  ["tabs"]
+}
 ```
 
 See `references/extensions/tab-management.md`.
@@ -103,12 +109,13 @@ See `references/extensions/tab-management.md`.
 ```js
 // ❌ BAD
 chrome.tabs.query({active: true, currentWindow: true}).then(tabs => {
-  chrome.scripting.executeScript({target: {tabId: tabs[0].id}, files: ['content.js']}).then(() => {});
+  chrome.scripting.executeScript({target: {tabId: tabs[0].id}, files: ['content.js']}).then(() => {
+  });
 });
 
 // ✅ GOOD
-const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['content.js'] });
+const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+await chrome.scripting.executeScript({target: {tabId: tab.id}, files: ['content.js']});
 ```
 
 For `runtime.onMessage` listeners that do async work:
@@ -117,7 +124,7 @@ For `runtime.onMessage` listeners that do async work:
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
     const data = await chrome.storage.local.get('key');
-    sendResponse({ data });
+    sendResponse({data});
   })();
   return true; // keeps channel open
 });
@@ -147,14 +154,16 @@ See `references/extensions/content-scripts.md`.
 ```js
 // ❌ BROKEN — state lost when SW terminates (~30s of inactivity)
 let count = 0;
-chrome.tabs.onUpdated.addListener(() => { count++; });
+chrome.tabs.onUpdated.addListener(() => {
+  count++;
+});
 
 // ✅ CORRECT — persist in chrome.storage, read on every event
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
   if (changeInfo.status !== 'complete') return;
-  const { count = 0 } = await chrome.storage.local.get('count');
-  await chrome.storage.local.set({ count: count + 1 });
-  await chrome.action.setBadgeText({ text: String(count + 1) });
+  const {count = 0} = await chrome.storage.local.get('count');
+  await chrome.storage.local.set({count: count + 1});
+  await chrome.action.setBadgeText({text: String(count + 1)});
 });
 ```
 
@@ -203,13 +212,26 @@ an `"action"` key in manifest.json — even if it's empty. Without it, `chrome.a
 
 ```js
 // ❌ BROKEN — manifest has no "action" key
-await chrome.action.setBadgeText({ text: '5' });
+await chrome.action.setBadgeText({text: '5'});
 // TypeError: Cannot read properties of undefined (reading 'setBadgeText')
 
 // ✅ FIX — add "action" to manifest.json (at minimum an empty object)
-{ "action": {} }
+{
+  "action"
+:
+  {
+  }
+}
 // or with a popup:
-{ "action": { "default_popup": "popup/popup.html" } }
+{
+  "action"
+:
+  {
+    "default_popup"
+  :
+    "popup/popup.html"
+  }
+}
 ```
 
 #### 12. `activeTab` only works on direct user gestures — not from side panels
@@ -227,8 +249,9 @@ or any programmatic trigger.
 ```js
 // ❌ BROKEN — activeTab does NOT work from a side panel button click
 document.getElementById('summarize').addEventListener('click', async () => {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: () => document.body.innerText });
+  const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+  await chrome.scripting.executeScript(
+      {target: {tabId: tab.id}, func: () => document.body.innerText});
 });
 
 // ✅ FIX — use "tabs" permission + specific host_permissions instead
@@ -259,10 +282,10 @@ are unavailable, including `chrome.downloads`, `chrome.tabs`, `chrome.action`, a
 
 ```js
 // ❌ BROKEN — chrome.downloads is undefined in offscreen documents
-chrome.downloads.download({ url, filename: 'recording.webm' }); // TypeError
+chrome.downloads.download({url, filename: 'recording.webm'}); // TypeError
 
 // ❌ BROKEN — chrome.action is undefined in offscreen documents
-chrome.action.setBadgeText({ text: 'REC' }); // TypeError
+chrome.action.setBadgeText({text: 'REC'}); // TypeError
 ```
 
 **The only APIs available in offscreen documents are:**
@@ -293,7 +316,8 @@ chrome.notifications.create('reminder', {
 // ✅ Generate a data URL at runtime via OffscreenCanvas — no file needed.
 // See `references/extensions/icons.md` for a reusable implementation.
 const iconUrl = await getIconDataUrl();
-chrome.notifications.create('reminder', { type: 'basic', iconUrl, title: 'Reminder', message: 'Time is up!' });
+chrome.notifications.create('reminder',
+    {type: 'basic', iconUrl, title: 'Reminder', message: 'Time is up!'});
 ```
 
 This applies to ALL image references in chrome.* APIs — notifications, `chrome.action.setIcon`,
@@ -309,35 +333,41 @@ easily trigger this. Use explicit state locking:
 // ❌ BROKEN — no guard against rapid clicks
 let isRecording = false;
 chrome.action.onClicked.addListener(async (tab) => {
-  if (isRecording) { stopRecording(); isRecording = false; }
-  else { isRecording = true; startRecording(tab); } // Second click = "active stream" error
+  if (isRecording) {
+    stopRecording();
+    isRecording = false;
+  } else {
+    isRecording = true;
+    startRecording(tab);
+  } // Second click = "active stream" error
 });
 
 // ✅ CORRECT — use transitional states to lock out concurrent operations
 // State machine: 'idle' → 'starting' → 'recording' → 'stopping' → 'idle'
 // Store state in chrome.storage.session (survives SW restart, cleared on browser close)
 chrome.action.onClicked.addListener(async (tab) => {
-  const { recordingState = 'idle' } = await chrome.storage.session.get('recordingState');
+  const {recordingState = 'idle'} = await chrome.storage.session.get('recordingState');
 
   if (recordingState === 'starting' || recordingState === 'stopping') return;
 
   if (recordingState === 'idle') {
-    await chrome.storage.session.set({ recordingState: 'starting' });
+    await chrome.storage.session.set({recordingState: 'starting'});
     try {
       await startRecording(tab);
-      await chrome.storage.session.set({ recordingState: 'recording' });
-      await chrome.action.setBadgeText({ text: 'REC' });
-      await chrome.action.setBadgeBackgroundColor({ color: '#FF0000' });
+      await chrome.storage.session.set({recordingState: 'recording'});
+      await chrome.action.setBadgeText({text: 'REC'});
+      await chrome.action.setBadgeBackgroundColor({color: '#FF0000'});
     } catch (err) {
       console.error('Failed to start recording:', err);
-      await chrome.storage.session.set({ recordingState: 'idle' });
+      await chrome.storage.session.set({recordingState: 'idle'});
     }
   } else if (recordingState === 'recording') {
-    await chrome.storage.session.set({ recordingState: 'stopping' });
-    try { await stopRecording(); }
-    finally {
-      await chrome.storage.session.set({ recordingState: 'idle' });
-      await chrome.action.setBadgeText({ text: '' });
+    await chrome.storage.session.set({recordingState: 'stopping'});
+    try {
+      await stopRecording();
+    } finally {
+      await chrome.storage.session.set({recordingState: 'idle'});
+      await chrome.action.setBadgeText({text: ''});
     }
   }
 });
@@ -355,17 +385,19 @@ which requires the `"tabs"` permission.
 
 ```js
 // ❌ BROKEN — called without targetTab from service worker
-chrome.desktopCapture.chooseDesktopMedia(['screen', 'window'], (streamId) => { ... });
+chrome.desktopCapture.chooseDesktopMedia(['screen', 'window'], (streamId) => { ...
+});
 // Error: "A target tab is required when called from a service worker context."
 
 // ❌ BROKEN — tab doesn't have url field (missing "tabs" permission)
-const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-chrome.desktopCapture.chooseDesktopMedia(['screen', 'window'], tab, (streamId) => { ... });
+const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+chrome.desktopCapture.chooseDesktopMedia(['screen', 'window'], tab, (streamId) => { ...
+});
 // Error: "targetTab doesn't have URL field set."
 
 // ✅ CORRECT — "tabs" permission in manifest + pass tab object
 // manifest.json: { "permissions": ["tabs", "desktopCapture"] }
-const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
 chrome.desktopCapture.chooseDesktopMedia(['screen', 'window'], tab, (streamId) => {
   if (!streamId) return; // User cancelled
 });
@@ -381,13 +413,13 @@ Unlike `chrome.tabs.query()`, the `chrome.windows` API does NOT have a `.query()
 
 ```js
 // ❌ BROKEN — chrome.windows.query does not exist
-const windows = await chrome.windows.query({ focused: true });
+const windows = await chrome.windows.query({focused: true});
 // TypeError: chrome.windows.query is not a function
 
 // ✅ CORRECT — use the right method for your need
-const focused = await chrome.windows.getLastFocused({ populate: true });
-const current = await chrome.windows.getCurrent({ populate: true });
-const all     = await chrome.windows.getAll({ populate: true });
+const focused = await chrome.windows.getLastFocused({populate: true});
+const current = await chrome.windows.getCurrent({populate: true});
+const all = await chrome.windows.getAll({populate: true});
 ```
 
 **`chrome.windows` methods:** `getAll`, `getLastFocused`, `getCurrent`, `get(windowId)`, `create`,

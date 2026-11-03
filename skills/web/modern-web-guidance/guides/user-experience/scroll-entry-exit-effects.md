@@ -85,9 +85,8 @@ view-timeline**:
     }
 
     .scroller > * {
-      animation:
-        grow auto linear backwards,
-        shrink auto linear forwards;
+      animation: grow auto linear backwards,
+      shrink auto linear forwards;
       animation-timeline: view(inline);
       animation-range: entry, exit;
     }
@@ -117,9 +116,8 @@ scroll using an **named view-timeline**:
 
     .scroller > * {
       view-timeline: --tl inline;
-      animation:
-        grow auto linear backwards,
-        shrink auto linear forwards;
+      animation: grow auto linear backwards,
+      shrink auto linear forwards;
       animation-timeline: --tl;
       animation-range: entry, exit;
     }
@@ -189,19 +187,20 @@ support scroll-driven animations. It uses an `IntersectionObserver` to track the
 `.wrapper` element and updates the `transform` property of the layers based on the scroll position.
 
 ```html
+
 <script>
   if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) {
     const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          // This matches the effect as defined in the CSS example above.
-          // Customize this further if needed.
-          entry.target.style.scale = 0.5 + entry.intersectionRatio * 0.5;
+        (entries) => {
+          for (const entry of entries) {
+            // This matches the effect as defined in the CSS example above.
+            // Customize this further if needed.
+            entry.target.style.scale = 0.5 + entry.intersectionRatio * 0.5;
+          }
+        },
+        {
+          threshold: Array.from({length: 101}, (_, i) => i / 100),
         }
-      },
-      {
-        threshold: Array.from({ length: 101 }, (_, i) => i / 100),
-      }
     );
 
     document.querySelectorAll('.scroller > *').forEach((el) => {

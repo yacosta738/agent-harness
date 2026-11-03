@@ -64,13 +64,13 @@ export default {
 ### Method 2: Hono Framework
 
 ```typescript
-import { Hono } from 'hono';
+import {Hono} from 'hono';
 
 const app = new Hono<{ Bindings: Env }>();
 
 app.get('/', async (c) => {
   const value = await c.env.MY_KV.get('key');
-  return c.json({ value });
+  return c.json({value});
 });
 
 export default app;
@@ -122,10 +122,10 @@ automatically if `@cloudflare/workers-types` is in `tsconfig.json` `"types"` arr
 **KV:**
 
 ```typescript
-await env.MY_KV.get(key, { type: 'json' });  // text|json|arrayBuffer|stream
-await env.MY_KV.put(key, value, { expirationTtl: 3600 });
+await env.MY_KV.get(key, {type: 'json'});  // text|json|arrayBuffer|stream
+await env.MY_KV.put(key, value, {expirationTtl: 3600});
 await env.MY_KV.delete(key);
-await env.MY_KV.list({ prefix: 'user:' });
+await env.MY_KV.list({prefix: 'user:'});
 ```
 
 **R2:**
@@ -134,7 +134,7 @@ await env.MY_KV.list({ prefix: 'user:' });
 await env.BUCKET.get(key);
 await env.BUCKET.put(key, value);
 await env.BUCKET.delete(key);
-await env.BUCKET.list({ prefix: 'images/' });
+await env.BUCKET.list({prefix: 'images/'});
 ```
 
 **D1:**
@@ -153,13 +153,13 @@ await env.MY_SERVICE.fetch(new Request('https://fake/path'));
 **Workers AI:**
 
 ```typescript
-await env.AI.run('@cf/meta/llama-3.1-8b-instruct', { prompt: 'Hello' });
+await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {prompt: 'Hello'});
 ```
 
 **Queues:**
 
 ```typescript
-await env.MY_QUEUE.send({ userId: 123, action: 'process' });
+await env.MY_QUEUE.send({userId: 123, action: 'process'});
 ```
 
 **Durable Objects:**
@@ -190,10 +190,26 @@ npx wrangler types
 
 ```typescript
 // ❌ BAD
-async fetch(request: Request, env: any) { }
+async
+fetch(request
+:
+Request, env
+:
+any
+)
+{
+}
 
 // ✅ GOOD
-async fetch(request: Request, env: Env) { }
+async
+fetch(request
+:
+Request, env
+:
+Env
+)
+{
+}
 ```
 
 2. **Run wrangler types after config changes:**

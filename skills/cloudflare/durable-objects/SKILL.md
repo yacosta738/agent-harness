@@ -73,7 +73,7 @@ Search: `blockConcurrencyWhile`, `idFromName`, `getByName`, `setAlarm`, `sql.exe
 ### Basic Durable Object Pattern
 
 ```typescript
-import { DurableObject } from "cloudflare:workers";
+import {DurableObject} from "cloudflare:workers";
 
 export interface Env {
   MY_DO: DurableObjectNamespace<MyDurableObject>;
@@ -94,8 +94,8 @@ export class MyDurableObject extends DurableObject<Env> {
 
   async addItem(data: string): Promise<number> {
     const result = this.ctx.storage.sql.exec<{ id: number }>(
-      "INSERT INTO items (data) VALUES (?) RETURNING id",
-      data
+        "INSERT INTO items (data) VALUES (?) RETURNING id",
+        data
     );
     return result.one().id;
   }
@@ -105,7 +105,7 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const stub = env.MY_DO.getByName("my-instance");
     const id = await stub.addItem("hello");
-    return Response.json({ id });
+    return Response.json({id});
   },
 };
 ```
@@ -162,7 +162,10 @@ const val = await this.ctx.storage.get<Type>("key");
 await this.ctx.storage.setAlarm(Date.now() + 60_000);
 
 // Handler
-async alarm(): Promise<void> {
+async
+alarm()
+:
+Promise < void > {
   // Process scheduled work
   // Optionally reschedule: await this.ctx.storage.setAlarm(...)
 }
@@ -174,8 +177,8 @@ await this.ctx.storage.deleteAlarm();
 ## Testing Quick Start
 
 ```typescript
-import { env } from "cloudflare:test";
-import { describe, it, expect } from "vitest";
+import {env} from "cloudflare:test";
+import {describe, it, expect} from "vitest";
 
 describe("MyDO", () => {
   it("should work", async () => {

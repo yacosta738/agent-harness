@@ -61,6 +61,7 @@ Trigger reauthentication when a user presses a "Verify Identity" or "Proceed wit
 button.
 
 ```html
+
 <button id="reauth-btn" data-testid="reauth-button">Confirm Transaction</button>
 ```
 
@@ -77,7 +78,7 @@ async function triggerButtonReauth() {
   });
   const optionsJSON = await optionsResponse.json();
   const publicKey =
-    PublicKeyCredential.parseRequestOptionsFromJSON(optionsJSON);
+      PublicKeyCredential.parseRequestOptionsFromJSON(optionsJSON);
 
   try {
     const credential = await navigator.credentials.get({
@@ -89,7 +90,7 @@ async function triggerButtonReauth() {
       const encodedCredential = credential.toJSON();
       const verifyResponse = await fetch("/api/reauth/verify", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(encodedCredential),
       });
 
@@ -110,8 +111,8 @@ async function triggerButtonReauth() {
 }
 
 document
-  .getElementById("reauth-btn")
-  .addEventListener("click", triggerButtonReauth);
+    .getElementById("reauth-btn")
+    .addEventListener("click", triggerButtonReauth);
 ```
 
 ## Fallback Strategies

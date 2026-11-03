@@ -15,9 +15,9 @@ value for each child. This ensures a consistent gradient effect regardless of th
   /* Calculate hue by dividing the full 360deg circle by total siblings */
   /* and multiplying by the current element's 1-based index */
   background-color: hsl(
-    calc(360deg / sibling-count() * sibling-index()),
-    70%,
-    50%
+      calc(360deg / sibling-count() * sibling-index()),
+      70%,
+      50%
   );
 }
 ```
@@ -56,8 +56,8 @@ perfect circle without any manual coordinates.
 
   /* Position each element around the parent center */
   transform: translate(
-    calc(cos(var(--angle)) * var(--radius)),
-    calc(sin(var(--angle)) * var(--radius))
+      calc(cos(var(--angle)) * var(--radius)),
+      calc(sin(var(--angle)) * var(--radius))
   );
 }
 ```

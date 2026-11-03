@@ -21,7 +21,7 @@ connector rules). Two-bend elbow path with `r=8`:
 ```svg
 <!-- right+down: from (x1,y1) to (x2,y2), mid = (x1+x2)/2 -->
 <path d="M x1,y1 H mid-8 Q mid,y1 mid,y1+8 V y2-8 Q mid,y2 mid+8,y2 H x2"
-      fill="none" stroke="…" stroke-width="1.2" marker-end="url(#arrow)"/>
+  fill="none" stroke="…" stroke-width="1.2" marker-end="url(#arrow)"/>
 ```
 
 Flip the vertical signs for right+up. Use a plain `<line>` only when endpoints share the same x or
@@ -36,7 +36,7 @@ port:
 ```svg
 <!-- entering a node from its bottom (destination above source) -->
 <path d="M x1,y_src H x2-8 Q x2,y_src x2,y_src-8 V y_dst"
-      fill="none" stroke="…" stroke-width="1.2" marker-end="url(#arrow)"/>
+  fill="none" stroke="…" stroke-width="1.2" marker-end="url(#arrow)"/>
 ```
 
 Reserve left/right ports for connections that travel primarily horizontally. Entering a node from
@@ -61,7 +61,7 @@ at the crossing point. The more important arrow is drawn uninterrupted.
 ```svg
 <!-- Horizontal hop over a vertical crossing at x=cx, on a line at y -->
 <path d="M x1,y H cx-8 a 8,8 0 0,1 16,0 H x2"
-      fill="none" stroke="…" stroke-width="1.2" marker-end="url(#arrow)"/>
+  fill="none" stroke="…" stroke-width="1.2" marker-end="url(#arrow)"/>
 ```
 
 `a 8,8 0 0,1 16,0` is an SVG arc: rx=ry=8, large-arc=0, sweep=1 (curves visually upward), advancing
@@ -77,11 +77,13 @@ Group 2+ nodes that serve the same tier or trust boundary with a zone rect — d
 and nodes (z-order: bg → zones → arrows → nodes):
 
 ```svg
+
 <rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8"
-      fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+  fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
 <rect x="{label_x}" y="{y+4}" width="{label_w}" height="12" rx="2" fill="{paper}"/>
 <text x="{label_cx}" y="{y+13}" fill="rgba(45,49,66,0.40)" font-size="7"
-      font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">LAYER</text>
+font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.14em">LAYER
+</text>
 ```
 
 Rules:

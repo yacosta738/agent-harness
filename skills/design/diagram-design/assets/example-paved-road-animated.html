@@ -255,7 +255,8 @@
   </header>
 
   <div class="diagram-wrap">
-    <svg aria-labelledby="paved-road-animated-title paved-road-animated-desc" data-motion-primitive="secure-paved-road"
+    <svg aria-labelledby="paved-road-animated-title paved-road-animated-desc"
+         data-motion-primitive="secure-paved-road"
          role="img" viewBox="0 0 1160 620"
          xmlns="http://www.w3.org/2000/svg">
       <title id="paved-road-animated-title">Secure Paved Road Architecture</title>
@@ -268,16 +269,19 @@
                 refY="5" viewBox="0 0 10 10">
           <path d="M 0 1 L 10 5 L 0 9 z" fill="#2d3142"/>
         </marker>
-        <marker id="arrow-accent" markerHeight="6" markerWidth="6" orient="auto-start-reverse" refX="8"
+        <marker id="arrow-accent" markerHeight="6" markerWidth="6" orient="auto-start-reverse"
+                refX="8"
                 refY="5" viewBox="0 0 10 10">
           <path d="M 0 1 L 10 5 L 0 9 z" fill="#eb6c36"/>
         </marker>
       </defs>
 
       <!-- Base Layout: Trust Zone 1 - Public Ingress -->
-      <rect fill="#ececec" height="490" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1" width="240"
+      <rect fill="#ececec" height="490" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1"
+            width="240"
             x="40" y="40"/>
-      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6" x="60"
+      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6"
+            x="60"
             y="72">PUBLIC INGRESS ZONE
       </text>
 
@@ -302,16 +306,20 @@
       </text>
 
       <!-- Base Layout: Trust Zone 2 - Corporate CI/CD & Governance -->
-      <rect fill="#ececec" height="490" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1" width="380"
+      <rect fill="#ececec" height="490" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1"
+            width="380"
             x="330" y="40"/>
-      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6" x="350"
+      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6"
+            x="350"
             y="72">CORPORATE GOVERNANCE ZONE
       </text>
 
       <!-- Node: CI/CD Pipeline -->
-      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="340" x="350"
+      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="340"
+            x="350"
             y="96"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="370"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+            x="370"
             y="128">CI/CD Paved Road Pipeline
       </text>
       <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="370" y="148">
@@ -319,9 +327,11 @@
       </text>
 
       <!-- Node: Privileged Security Gate -->
-      <rect fill="#ffffff" height="76" rx="6" stroke="#2d3142" stroke-width="1.5" width="340" x="350"
+      <rect fill="#ffffff" height="76" rx="6" stroke="#2d3142" stroke-width="1.5" width="340"
+            x="350"
             y="210"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="370"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+            x="370"
             y="238">Privileged Security Gate
       </text>
       <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="370" y="258">
@@ -329,19 +339,24 @@
       </text>
 
       <!-- Node: Boundary Firewall & WAF (Left side x=350..560) -->
-      <rect fill="rgba(235,108,54,0.08)" height="72" rx="6" stroke="#eb6c36" stroke-width="1.5" width="210"
+      <rect fill="rgba(235,108,54,0.08)" height="72" rx="6" stroke="#eb6c36" stroke-width="1.5"
+            width="210"
             x="350" y="325"/>
-      <text fill="#eb6c36" font-family="'Geist', sans-serif" font-size="13" font-weight="600" x="366"
+      <text fill="#eb6c36" font-family="'Geist', sans-serif" font-size="13" font-weight="600"
+            x="366"
             y="355">Boundary Firewall &amp; WAF
       </text>
-      <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10.5" font-weight="600" x="366"
+      <text fill="#eb6c36" font-family="'Geist Mono', monospace" font-size="10.5" font-weight="600"
+            x="366"
             y="375">Status: × BLOCKED
       </text>
 
       <!-- Node: Audit Log Service -->
-      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="340" x="350"
+      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="340"
+            x="350"
             y="435"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="370"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+            x="370"
             y="465">Centralized Audit Log Service
       </text>
       <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="370" y="485">
@@ -349,16 +364,20 @@
       </text>
 
       <!-- Base Layout: Trust Zone 3 - Isolated Production Runtime -->
-      <rect fill="#ececec" height="490" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1" width="360"
+      <rect fill="#ececec" height="490" rx="8" stroke="rgba(45,49,66,0.12)" stroke-width="1"
+            width="360"
             x="760" y="40"/>
-      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6" x="780"
+      <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" letter-spacing="1.6"
+            x="780"
             y="72">ISOLATED PRODUCTION RUNTIME
       </text>
 
       <!-- Node: Production API Gateway -->
-      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="320" x="780"
+      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="320"
+            x="780"
             y="96"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="800"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+            x="800"
             y="128">Production API Gateway
       </text>
       <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="800" y="148">
@@ -366,9 +385,11 @@
       </text>
 
       <!-- Node: Production Database -->
-      <rect fill="#ffffff" height="76" rx="6" stroke="#2d3142" stroke-width="1.5" width="320" x="780"
+      <rect fill="#ffffff" height="76" rx="6" stroke="#2d3142" stroke-width="1.5" width="320"
+            x="780"
             y="210"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="800"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+            x="800"
             y="238">Isolated Core Database
       </text>
       <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="800" y="258">
@@ -376,9 +397,11 @@
       </text>
 
       <!-- Node: Security Operations Center -->
-      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="320" x="780"
+      <rect fill="#ffffff" height="72" rx="6" stroke="#2d3142" stroke-width="1.5" width="320"
+            x="780"
             y="435"/>
-      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600" x="800"
+      <text fill="#2d3142" font-family="'Geist', sans-serif" font-size="14" font-weight="600"
+            x="800"
             y="465">Security Operations Center
       </text>
       <text fill="#4f5d75" font-family="'Geist Mono', monospace" font-size="11" x="800" y="485">
@@ -386,7 +409,8 @@
       </text>
 
       <!-- STEP 1: Authorized Developer Code Ingress -->
-      <g aria-label="Step 1: Developer workstation pushes signed code commit into CI/CD Paved Road pipeline" data-motion-item
+      <g aria-label="Step 1: Developer workstation pushes signed code commit into CI/CD Paved Road pipeline"
+         data-motion-item
          data-step="1">
         <path d="M 260 132 L 350 132" fill="none" marker-end="url(#arrow-ink)" stroke="#2d3142"
               stroke-width="2"/>
@@ -398,11 +422,13 @@
       </g>
 
       <!-- STEP 2: CI/CD Build & Cryptographic Signing -->
-      <g aria-label="Step 2: CI/CD pipeline builds binary and generates cryptographic provenance signature" data-motion-item
+      <g aria-label="Step 2: CI/CD pipeline builds binary and generates cryptographic provenance signature"
+         data-motion-item
          data-step="2">
         <path d="M 520 168 L 520 210" fill="none" marker-end="url(#arrow-ink)" stroke="#2d3142"
               stroke-width="2"/>
-        <rect fill="#ffffff" height="20" rx="4" stroke="#2d3142" stroke-width="1" width="160" x="440"
+        <rect fill="#ffffff" height="20" rx="4" stroke="#2d3142" stroke-width="1" width="160"
+              x="440"
               y="178"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9" font-weight="600"
               text-anchor="middle" x="520" y="192">PROVENANCE
@@ -411,7 +437,8 @@
       </g>
 
       <!-- STEP 3: Security Gate Approval → Production Gateway → Database Deployment -->
-      <g aria-label="Step 3: Security gate verifies OPA policy, approves artifact, and deploys via Production API Gateway to Isolated Core Database" data-motion-item
+      <g aria-label="Step 3: Security gate verifies OPA policy, approves artifact, and deploys via Production API Gateway to Isolated Core Database"
+         data-motion-item
          data-step="3">
         <!-- Gate ✓ PASS → Production API Gateway (diagonal: gate right edge to gateway left edge) -->
         <path d="M 690 230 L 780 132" fill="none" marker-end="url(#arrow-ink)" stroke="#2d3142"
@@ -427,7 +454,8 @@
       </g>
 
       <!-- STEP 4: Unauthorized Bypass Attempt Blocked at Boundary Firewall -->
-      <g aria-label="Step 4: Unauthorized attacker connection attempt is blocked at trust boundary firewall" data-motion-item
+      <g aria-label="Step 4: Unauthorized attacker connection attempt is blocked at trust boundary firewall"
+         data-motion-item
          data-step="4">
         <path d="M 260 361 L 350 361" fill="none" marker-end="url(#arrow-accent)" stroke="#eb6c36"
               stroke-dasharray="4 4" stroke-width="2"/>
@@ -439,7 +467,8 @@
       </g>
 
       <!-- STEP 5: Audit Log & SIEM Security Monitoring Record -->
-      <g aria-label="Step 5: Immutable SIEM audit log records both authorized deployment and blocked attack attempt" data-motion-item
+      <g aria-label="Step 5: Immutable SIEM audit log records both authorized deployment and blocked attack attempt"
+         data-motion-item
          data-step="5">
         <!-- Gate Audit Trail (Runs cleanly down the right side x=620, clear of Firewall node x=350..560!) -->
         <path d="M 620 286 L 620 435" fill="none" marker-end="url(#arrow-ink)" stroke="#2d3142"
@@ -451,7 +480,8 @@
         <path d="M 690 471 L 780 471" fill="none" marker-end="url(#arrow-ink)" stroke="#2d3142"
               stroke-width="2"/>
         <!-- Audit Badge Chip -->
-        <rect fill="#ffffff" height="20" rx="3" stroke="#2d3142" stroke-width="1" width="100" x="570"
+        <rect fill="#ffffff" height="20" rx="3" stroke="#2d3142" stroke-width="1" width="100"
+              x="570"
               y="350"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9" font-weight="600"
               text-anchor="middle" x="620" y="364">AUDIT LOGGED
@@ -461,35 +491,40 @@
       <!-- Precision SVG Legend Footer (Exact visual mini-arrows and mini-rects) -->
       <g aria-hidden="true" data-motion-decorative>
         <!-- Flow Line 1: Authorized Paved Road -->
-        <line marker-end="url(#arrow-ink)" stroke="#2d3142" stroke-width="2" x1="40" x2="65" y1="584"
+        <line marker-end="url(#arrow-ink)" stroke="#2d3142" stroke-width="2" x1="40" x2="65"
+              y1="584"
               y2="584"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="73" y="588">
           Authorized Paved Road
         </text>
 
         <!-- Flow Line 2: Blocked Bypass Attempt -->
-        <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-dasharray="3 3" stroke-width="2" x1="225" x2="250"
+        <line marker-end="url(#arrow-accent)" stroke="#eb6c36" stroke-dasharray="3 3"
+              stroke-width="2" x1="225" x2="250"
               y1="584" y2="584"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="258" y="588">
           Blocked Bypass Attempt
         </text>
 
         <!-- Box 1: Paved Road Node -->
-        <rect fill="#ffffff" height="12" rx="2" stroke="#2d3142" stroke-width="1.5" width="16" x="425"
+        <rect fill="#ffffff" height="12" rx="2" stroke="#2d3142" stroke-width="1.5" width="16"
+              x="425"
               y="577"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="447" y="588">
           Paved Road Node
         </text>
 
         <!-- Box 2: Attacker Node (White Fill + Orange Border) -->
-        <rect fill="#ffffff" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5" width="16" x="565"
+        <rect fill="#ffffff" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5" width="16"
+              x="565"
               y="577"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="587" y="588">
           Attacker Node
         </text>
 
         <!-- Box 3: Firewall Blocked Node (Orange Tint Fill + Orange Border) -->
-        <rect fill="rgba(235,108,54,0.08)" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5" width="16"
+        <rect fill="rgba(235,108,54,0.08)" height="12" rx="2" stroke="#eb6c36" stroke-width="1.5"
+              width="16"
               x="690" y="577"/>
         <text fill="#2d3142" font-family="'Geist Mono', monospace" font-size="9.5" x="712" y="588">
           Firewall Blocked

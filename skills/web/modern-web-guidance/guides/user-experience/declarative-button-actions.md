@@ -130,7 +130,7 @@ if (!supportsInvokers) {
     if (target && command) {
       target.dispatchEvent(new CustomEvent('command', {
         bubbles: true,
-        detail: { command }
+        detail: {command}
       }));
     }
   });

@@ -21,7 +21,10 @@ const config = {
   rules: [{
     expression: "true",
     action: "execute",
-    action_parameters: { id: managedRulesetId, overrides: { sensitivity_level: "default", action: "block" } },
+    action_parameters: {
+      id: managedRulesetId,
+      overrides: {sensitivity_level: "default", action: "block"}
+    },
   }],
 };
 ```

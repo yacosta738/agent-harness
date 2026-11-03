@@ -56,6 +56,7 @@ speculations were made.
 ### Example of a simple URL list rule for prefetching predefined URLs
 
 ```html
+
 <script type="speculationrules">
   {
     "tag": "product-page-speculations",
@@ -71,6 +72,7 @@ speculations were made.
 ### Example of a simple document rule for prerendering all same-origin links on a page
 
 ```html
+
 <script type="speculationrules">
   {
     "tag": "all-links-speculations",
@@ -84,6 +86,7 @@ speculations were made.
 ### Example of a complex document rule for prerendering links with exclusions for interactive sites
 
 ```html
+
 <script type="speculationrules">
   {
     "tag": "speculations-with-exclusions",
@@ -108,6 +111,7 @@ This example shows a rule set that prefetches all links eagerly, and then goes f
 prerender those same links when it gets more signals with `moderate` eagerness.
 
 ```html
+
 <script type="speculationrules">
   {
     "prefetch": [{

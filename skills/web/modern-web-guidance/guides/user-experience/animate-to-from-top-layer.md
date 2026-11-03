@@ -64,10 +64,9 @@ dialog::backdrop,
 [popover]::backdrop {
   background-color: rgba(0, 0, 0, 0);
   /* The transition shorthand can also be used with allow-discrete */
-  transition:
-    display 0.3s allow-discrete,
-    overlay 0.3s allow-discrete,
-    background-color 0.3s ease-out;
+  transition: display 0.3s allow-discrete,
+  overlay 0.3s allow-discrete,
+  background-color 0.3s ease-out;
 }
 
 dialog[open]::backdrop,
@@ -130,9 +129,9 @@ and wait for `transitionend` events or use the Web Animations API.
 ```javascript
 // Feature detection for top-layer animations
 const supportsTopLayerAnimation =
-  window.CSS &&
-  CSS.supports('transition-behavior', 'allow-discrete') &&
-  CSS.supports('overlay', 'auto');
+    window.CSS &&
+    CSS.supports('transition-behavior', 'allow-discrete') &&
+    CSS.supports('overlay', 'auto');
 
 if (!supportsTopLayerAnimation) {
   // Manual JS fallback for entry/exit animations:
@@ -150,6 +149,7 @@ Supported by: Chrome 116 (Aug 2023), Edge 116 (Aug 2023), Firefox 125 (Apr 2024)
 If the browser does not support Popover, use the `@oddbird/popover-polyfill`:
 
 ```html
+
 <script type="module">
   if (!HTMLElement.prototype.hasOwnProperty('popover')) {
     await import('https://unpkg.com/@oddbird/popover-polyfill');

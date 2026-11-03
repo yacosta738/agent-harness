@@ -57,9 +57,9 @@ underutilized periods.
 ```typescript
 export default {
   async scheduled(
-    controller: ScheduledController,
-    env: Env,
-    ctx: ExecutionContext,
+      controller: ScheduledController,
+      env: Env,
+      ctx: ExecutionContext,
   ): Promise<void> {
     console.log("Cron:", controller.cron);
     console.log("Time:", new Date(controller.scheduledTime));

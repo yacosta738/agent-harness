@@ -108,8 +108,11 @@ class EmailConfig {
 }
 
 class EmailSender {
-  constructor(private config: EmailConfig) {}
-  send(to: string, body: string) { /* ... */ }
+  constructor(private config: EmailConfig) {
+  }
+
+  send(to: string, body: string) { /* ... */
+  }
 }
 ```
 
@@ -117,8 +120,11 @@ class EmailSender {
 
 ```typescript
 class EmailSender {
-  constructor(private host: string, private port: number) {}
-  send(to: string, body: string) { /* ... */ }
+  constructor(private host: string, private port: number) {
+  }
+
+  send(to: string, body: string) { /* ... */
+  }
 }
 ```
 
@@ -136,11 +142,11 @@ function validateEmail(email: string): boolean {
 
 ```typescript
 function validateEmail(email: string): { valid: boolean; reason?: string } {
-  if (!email) return { valid: false, reason: "Email is required" };
+  if (!email) return {valid: false, reason: "Email is required"};
   if (!/\S+@\S+\.\S+/.test(email)) {
-    return { valid: false, reason: "Invalid email format" };
+    return {valid: false, reason: "Invalid email format"};
   }
-  return { valid: true };
+  return {valid: true};
 }
 ```
 
@@ -151,7 +157,9 @@ function validateEmail(email: string): { valid: boolean; reason?: string } {
 ```typescript
 interface UserRepository {
   findById(id: string): Promise<User | null>;
+
   findByEmail(email: string): Promise<User | null>;
+
   findByUsername(username: string): Promise<User | null>;
 }
 ```
@@ -161,7 +169,7 @@ interface UserRepository {
 ```typescript
 interface UserRepository {
   find(criteria: { id?: string; email?: string; username?: string }):
-    Promise<User | null>;
+      Promise<User | null>;
 }
 ```
 
@@ -175,18 +183,18 @@ Present findings as:
 ### Shallow Modules Identified
 
 1. **[Module Name]**
-   - Interface: [brief description]
-   - Implementation: [brief description]
-   - Depth: Low (interface ~= implementation)
-   - Recommendation: [Inline | Absorb | Deepen | Reframe]
+    - Interface: [brief description]
+    - Implementation: [brief description]
+    - Depth: Low (interface ~= implementation)
+    - Recommendation: [Inline | Absorb | Deepen | Reframe]
 
 ### Deepening Opportunities
 
 1. **[Opportunity Name]**
-   - Current state: [description]
-   - Proposed state: [description]
-   - Benefit: [testability | isolation | leverage]
-   - Effort: [Low | Medium | High]
+    - Current state: [description]
+    - Proposed state: [description]
+    - Benefit: [testability | isolation | leverage]
+    - Effort: [Low | Medium | High]
 ```
 
 ## 5. When NOT to Deepen

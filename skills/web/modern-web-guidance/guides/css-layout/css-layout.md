@@ -56,10 +56,27 @@ within each-other and each decision is based on the use-case for that container.
 - Use `aspect-ratio` to reserve space for media and prevent layout shift before assets load.
 
 ```css
-.sidebar       { inline-size: max-content; }    /* Size to longest unbreakable token. */
-.main-content  { inline-size: fit-content; }    /* Grow to available space, no further. */
-.media         { aspect-ratio: 16 / 9; inline-size: 100%; block-size: auto; }
-body.centered  { display: grid; place-content: center; min-block-size: 100dvb; }
+.sidebar {
+  inline-size: max-content;
+}
+
+/* Size to longest unbreakable token. */
+.main-content {
+  inline-size: fit-content;
+}
+
+/* Grow to available space, no further. */
+.media {
+  aspect-ratio: 16 / 9;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+body.centered {
+  display: grid;
+  place-content: center;
+  min-block-size: 100dvb;
+}
 ```
 
 > For `calc-size()` and constraint-aware intrinsic sizing, see `calculate-with-intrinsic-sizes` (via
@@ -110,10 +127,26 @@ axis. Reach for it for navbars, toolbars, item rows, and any single-row-or-colum
   the single source of truth for sizing flex items.
 
 ```css
-.card-grid        { display: flex; flex-flow: row wrap; gap: 1rem; }
-.card-item        { flex: 1 1 250px; }                  /* grow, shrink, basis */
-.card-item-action { margin-inline-start: auto; }        /* Push to main-axis end. */
-.toolbar          { display: flex; align-items: safe center; }
+.card-grid {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
+}
+
+.card-item {
+  flex: 1 1 250px;
+}
+
+/* grow, shrink, basis */
+.card-item-action {
+  margin-inline-start: auto;
+}
+
+/* Push to main-axis end. */
+.toolbar {
+  display: flex;
+  align-items: safe center;
+}
 ```
 
 ## 3 Grid and subgrid
@@ -198,9 +231,17 @@ Page shell: `<main class="page-layout">` contains `<header>`, `<aside>`, a
   gap: 1.5rem;
 }
 
-header  { grid-area: header; }
-aside   { grid-area: sidebar; }
-footer  { grid-area: footer; }
+header {
+  grid-area: header;
+}
+
+aside {
+  grid-area: sidebar;
+}
+
+footer {
+  grid-area: footer;
+}
 
 .card-grid {
   grid-area: main;
@@ -343,15 +384,15 @@ Manage layout shifts, scrollbars, and clipping predictably.
 .scrollable-list {
   max-block-size: 400px;
   overflow-y: auto;
-  scrollbar-gutter: stable;       /* Reserve scrollbar space. */
-  overscroll-behavior: contain;   /* No scroll chaining into the page. */
+  scrollbar-gutter: stable; /* Reserve scrollbar space. */
+  overscroll-behavior: contain; /* No scroll chaining into the page. */
 }
 
 .snippet {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  line-clamp: 3;                  /* Ignored where unsupported. */
+  line-clamp: 3; /* Ignored where unsupported. */
   overflow: clip;
 }
 ```
@@ -359,7 +400,8 @@ Manage layout shifts, scrollbars, and clipping predictably.
 > For `overflow: clip` and `overflow-clip-margin` in depth, see `overflow-clipping-control` (via
 > `npx -y modern-web-guidance@latest retrieve "overflow-clipping-control"`). For scrollbar color,
 > sizing, and theming, see `customize-scrollbar-color-and-thickness` (via
-> `npx -y modern-web-guidance@latest retrieve "customize-scrollbar-color-and-thickness"`), `dark-mode`
+> `npx -y modern-web-guidance@latest retrieve "customize-scrollbar-color-and-thickness"`),
+> `dark-mode`
 > (via `npx -y modern-web-guidance@latest retrieve "dark-mode"`), and
 > `adapt-scrollbar-to-contrast-preferences` (via
 > `npx -y modern-web-guidance@latest retrieve "adapt-scrollbar-to-contrast-preferences"`).
@@ -402,8 +444,15 @@ ship it in stable as of this writing.
   up.
 
 ```css
-.gallery       { columns: 3 200px; column-gap: 1rem; }
-.gallery > *   { break-inside: avoid; margin-block-end: 1rem; }
+.gallery {
+  columns: 3 200px;
+  column-gap: 1rem;
+}
+
+.gallery > * {
+  break-inside: avoid;
+  margin-block-end: 1rem;
+}
 
 @supports (grid-template-rows: masonry) {
   .gallery {

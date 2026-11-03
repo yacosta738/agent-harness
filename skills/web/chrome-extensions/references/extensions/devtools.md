@@ -18,7 +18,7 @@ The devtools page runs ONLY when DevTools is open. It's invisible — its job is
 <!DOCTYPE html>
 <html>
 <body>
-  <script src="devtools.js"></script>
+<script src="devtools.js"></script>
 </body>
 </html>
 ```
@@ -27,13 +27,13 @@ The devtools page runs ONLY when DevTools is open. It's invisible — its job is
 
 ```js
 chrome.devtools.panels.create(
-  'My Panel',                    // Title shown in DevTools tab
-  'icons/icon-16.png',           // Icon (optional, can be empty string)
-  'devtools/panel/panel.html',   // Panel content page — RELATIVE TO EXTENSION ROOT
-  (panel) => {
-    // panel.onShown.addListener((window) => { ... });
-    // panel.onHidden.addListener(() => { ... });
-  }
+    'My Panel',                    // Title shown in DevTools tab
+    'icons/icon-16.png',           // Icon (optional, can be empty string)
+    'devtools/panel/panel.html',   // Panel content page — RELATIVE TO EXTENSION ROOT
+    (panel) => {
+      // panel.onShown.addListener((window) => { ... });
+      // panel.onHidden.addListener(() => { ... });
+    }
 );
 ```
 
@@ -73,7 +73,8 @@ chrome.devtools.network.onRequestFinished.addListener((request) => {
 
 // Get all captured requests
 chrome.devtools.network.getHAR((harLog) => {
-  harLog.entries.forEach((entry) => { /* process */ });
+  harLog.entries.forEach((entry) => { /* process */
+  });
 });
 ```
 
@@ -84,14 +85,16 @@ in all cases. Use a connection pattern:
 
 ```js
 // In panel JS — connect to service worker
-const port = chrome.runtime.connect({ name: 'devtools-panel' });
-port.postMessage({ type: 'INIT', tabId: chrome.devtools.inspectedWindow.tabId });
-port.onMessage.addListener((msg) => { /* handle */ });
+const port = chrome.runtime.connect({name: 'devtools-panel'});
+port.postMessage({type: 'INIT', tabId: chrome.devtools.inspectedWindow.tabId});
+port.onMessage.addListener((msg) => { /* handle */
+});
 
 // In service worker
 chrome.runtime.onConnect.addListener((port) => {
   if (port.name === 'devtools-panel') {
-    port.onMessage.addListener((msg) => { /* handle */ });
+    port.onMessage.addListener((msg) => { /* handle */
+    });
   }
 });
 ```

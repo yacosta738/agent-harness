@@ -34,17 +34,16 @@ image files.
 
 ```css
 .patterned-element {
-  --checkerboard-gradient: 
-    linear-gradient(45deg, #000 25%, transparent 25%), 
-    linear-gradient(-45deg, #000 25%, transparent 25%), 
-    linear-gradient(45deg, transparent 75%, #000 75%), 
-    linear-gradient(-45deg, transparent 75%, #000 75%);
+  --checkerboard-gradient: linear-gradient(45deg, #000 25%, transparent 25%),
+  linear-gradient(-45deg, #000 25%, transparent 25%),
+  linear-gradient(45deg, transparent 75%, #000 75%),
+  linear-gradient(-45deg, transparent 75%, #000 75%);
 
   /* Apply a checkerboard pattern as a mask */
   -webkit-mask-image: var(--checkerboard-gradient);
   -webkit-mask-size: 20px 20px;
   -webkit-mask-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-  
+
   mask-image: var(--checkerboard-gradient);
   mask-size: 20px 20px;
   mask-position: 0 0, 0 10px, 10px -10px, -10px 0px;

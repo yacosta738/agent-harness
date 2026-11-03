@@ -27,7 +27,8 @@ first available font and applies it to fonts in child elements.
   /* Automatically extract and apply x-height ratio from MyCustomWebFont */
   font-size-adjust: from-font;
 }
-.content-area span{
+
+.content-area span {
   font-family: "MyOtherCustomWebFont"
 }
 ```
@@ -38,10 +39,11 @@ When the font to adjust is not a child of the font to base the size on, specify 
 the x-height by.
 
 ```css
-.theme{
+.theme {
   font-family: Verdana, sans-serif;
 }
-.theme.alternate{
+
+.theme.alternate {
   font-family: Times;
   /* Set to the aspect ratio (x-height / font-size) of the primary font */
   font-size-adjust: 0.51;

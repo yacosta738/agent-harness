@@ -18,35 +18,45 @@ metadata:
 
 ## Executor Override
 
-If you ARE the `sdd-design` sub-agent (NOT the orchestrator), the gate above does NOT apply to you. Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the executor — execute.
+If you ARE the `sdd-design` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
+Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
+executor — execute.
 
 ## Purpose
 
-You are a sub-agent responsible for TECHNICAL DESIGN. You take the proposal and specs, then produce a `design.md` that captures HOW the change will be implemented — architecture decisions, data flow, file changes, and technical rationale.
+You are a sub-agent responsible for TECHNICAL DESIGN. You take the proposal and specs, then produce
+a `design.md` that captures HOW the change will be implemented — architecture decisions, data flow,
+file changes, and technical rationale.
 
 ## What You Receive
 
 From the orchestrator:
+
 - Change name
 - Artifact store mode (`engram | openspec | hybrid | none`)
 
 ## Execution and Persistence Contract
 
-> Follow **Section B** (retrieval) and **Section C** (persistence) from `../../skills/sdd/_shared/sdd-phase-common.md`.
+> Follow **Section B** (retrieval) and **Section C** (persistence) from
+> `../../skills/sdd/_shared/sdd-phase-common.md`.
 
-- **engram**: Read `sdd/{change-name}/proposal` (required) and `sdd/{change-name}/spec` (optional — may not exist if running in parallel with sdd-spec). Save as `sdd/{change-name}/design`.
+- **engram**: Read `sdd/{change-name}/proposal` (required) and `sdd/{change-name}/spec` (optional —
+  may not exist if running in parallel with sdd-spec). Save as `sdd/{change-name}/design`.
 - **openspec**: Read and follow `../../skills/sdd/_shared/openspec-convention.md`.
-- **hybrid**: Follow BOTH conventions — persist to Engram AND write `design.md` to filesystem. Retrieve dependencies from Engram (primary) with filesystem fallback.
+- **hybrid**: Follow BOTH conventions — persist to Engram AND write `design.md` to filesystem.
+  Retrieve dependencies from Engram (primary) with filesystem fallback.
 - **none**: Return result only. Never create or modify project files.
 
 ## What to Do
 
 ### Step 1: Load Skills
+
 Follow **Section A** from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ### Step 2: Read the Codebase
 
 Before designing, read the actual code that will be affected:
+
 - Entry points and module structure
 - Existing patterns and conventions
 - Dependencies and interfaces
@@ -63,7 +73,8 @@ Before designing, read the actual code that will be affected:
 └── design.md              ← You create this
 ```
 
-**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose the design content in memory — you will persist it in Step 4.
+**IF mode is `engram` or `none`:** Do NOT create any `.agents/sdd/` directories or files. Compose
+the design content in memory — you will persist it in Step 4.
 
 #### Design Document Format
 
@@ -135,6 +146,7 @@ If not applicable, state "No migration required."}
 **This step is MANDATORY — do NOT skip it.**
 
 Follow **Section C** from `../../skills/sdd/_shared/sdd-phase-common.md`.
+
 - artifact: `design`
 - topic_key: `sdd/{change-name}/design`
 - type: `architecture`
@@ -168,9 +180,11 @@ Ready for tasks (sdd-tasks).
 - Every decision MUST have a rationale (the "why")
 - Include concrete file paths, not abstract descriptions
 - Use the project's ACTUAL patterns and conventions, not generic best practices
-- If you find the codebase uses a pattern different from what you'd recommend, note it but FOLLOW the existing pattern unless the change specifically addresses it
+- If you find the codebase uses a pattern different from what you'd recommend, note it but FOLLOW
+  the existing pattern unless the change specifically addresses it
 - Keep ASCII diagrams simple — clarity over beauty
 - Apply any `rules.design` from `.agents/sdd/config.yaml`
 - If you have open questions that BLOCK the design, say so clearly — don't guess
-- **Size budget**: Design artifact MUST be under 800 words. Architecture decisions as tables (option | tradeoff | decision). Code snippets only for non-obvious patterns.
+- **Size budget**: Design artifact MUST be under 800 words. Architecture decisions as tables
+  (option | tradeoff | decision). Code snippets only for non-obvious patterns.
 - Return envelope per **Section D** from `../../skills/sdd/_shared/sdd-phase-common.md`.

@@ -48,11 +48,11 @@ is the ceiling. The common failure is nine sizes that are all near each other (1
 
 ```css
 :root {
-  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);   /* 13–14px  captions, legal */
-  --step-body:  clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);    /* 17–19px  paragraphs */
-  --step-lead:  clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);      /* 20–26px  supporting line, large body */
-  --step-head:  clamp(2rem, 1.3rem + 3.2vw, 4rem);             /* 32–64px  section headings */
-  --step-display: clamp(3rem, 1rem + 9vw, 9rem);               /* set by the hero blueprint */
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem); /* 13–14px  captions, legal */
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem); /* 17–19px  paragraphs */
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem); /* 20–26px  supporting line, large body */
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem); /* 32–64px  section headings */
+  --step-display: clamp(3rem, 1rem + 9vw, 9rem); /* set by the hero blueprint */
 }
 ```
 
@@ -71,11 +71,11 @@ Large type exposes spacing that is invisible at text size. Apply all of these to
 ```css
 .display {
   font-size: var(--step-display);
-  line-height: 0.95;              /* 0.85–1.05; tighter for capitals and condensed faces */
-  letter-spacing: -0.035em;       /* -0.02 to -0.05em; use the value on the direction sheet */
+  line-height: 0.95; /* 0.85–1.05; tighter for capitals and condensed faces */
+  letter-spacing: -0.035em; /* -0.02 to -0.05em; use the value on the direction sheet */
   font-kerning: normal;
   text-wrap: balance;
-  max-width: 14ch;                /* choose the measure so lines break where you want */
+  max-width: 14ch; /* choose the measure so lines break where you want */
   margin: 0;
 }
 ```
@@ -102,11 +102,33 @@ Large type exposes spacing that is invisible at text size. Apply all of these to
 ## 4. Setting text
 
 ```css
-body { font-size: var(--step-body); line-height: 1.5; font-kerning: normal; text-rendering: optimizeLegibility; }
-p { max-width: 62ch; text-wrap: pretty; margin: 0; }
-p + p { margin-top: 0.9em; }
-.lead { font-size: var(--step-lead); line-height: 1.35; max-width: 40ch; }
-small, .caption { font-size: var(--step-small); line-height: 1.45; }
+body {
+  font-size: var(--step-body);
+  line-height: 1.5;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+p {
+  max-width: 62ch;
+  text-wrap: pretty;
+  margin: 0;
+}
+
+p + p {
+  margin-top: 0.9em;
+}
+
+.lead {
+  font-size: var(--step-lead);
+  line-height: 1.35;
+  max-width: 40ch;
+}
+
+small, .caption {
+  font-size: var(--step-small);
+  line-height: 1.45;
+}
 ```
 
 - Measure: 45–75 characters. Wider than that and the eye loses the next line; the inspector warns
@@ -123,6 +145,7 @@ small, .caption { font-size: var(--step-small); line-height: 1.45; }
 The sheet gives a `<link>` tag. Use it exactly; do not swap in a face you prefer.
 
 ```html
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="…from the direction sheet…" rel="stylesheet">

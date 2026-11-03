@@ -63,7 +63,7 @@ To build a component that changes its layout based on its content:
 <!-- Assume an <h1> precedes these components in the document layout -->
 <!-- A card WITH an image (will use row layout) -->
 <article class="article-card">
-  <img src="thumbnail.jpg" alt="Article thumbnail" />
+  <img src="thumbnail.jpg" alt="Article thumbnail"/>
   <div class="content">
     <h2>Card With Image</h2>
     <p>This card lays out its content horizontally.</p>
@@ -74,7 +74,8 @@ To build a component that changes its layout based on its content:
 <article class="article-card">
   <div class="content">
     <h2>Text-Only Card</h2>
-    <p>This card lays out its content vertically, and gets its background color from the :not(:has()) rule.</p>
+    <p>This card lays out its content vertically, and gets its background color from the
+      :not(:has()) rule.</p>
   </div>
 </article>
 ```
@@ -114,7 +115,7 @@ detect the content and append the class on load or after dynamic content injecti
     flex-direction: row;
     align-items: center;
   }
-  
+
   .article-card:not(.has-image) {
     background-color: #f9f9f9;
   }
@@ -127,7 +128,7 @@ detect the content and append the class on load or after dynamic content injecti
 if (!CSS.supports('selector(:has(*))')) {
   // Find all components that need checking
   const cards = document.querySelectorAll('.article-card');
-  
+
   cards.forEach(card => {
     // If the critical content exists, manually add the fallback class
     if (card.querySelector('img')) {

@@ -33,7 +33,10 @@
 ## TypeScript Types
 
 ```typescript
-interface Env { DB: D1Database; ANALYTICS_DB?: D1Database; }
+interface Env {
+  DB: D1Database;
+  ANALYTICS_DB?: D1Database;
+}
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -51,28 +54,30 @@ File structure: `migrations/0001_initial_schema.sql`, `0002_add_posts.sql`, etc.
 
 ```sql
 -- migrations/0001_initial_schema.sql
-CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  email TEXT UNIQUE NOT NULL,
-  name TEXT NOT NULL,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS users
+(
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    email      TEXT UNIQUE NOT NULL,
+    name       TEXT        NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_email ON users (email);
 
-CREATE TABLE IF NOT EXISTS posts (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id INTEGER NOT NULL,
-  title TEXT NOT NULL,
-  content TEXT,
-  published BOOLEAN DEFAULT 0,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS posts
+(
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    INTEGER NOT NULL,
+    title      TEXT    NOT NULL,
+    content    TEXT,
+    published  BOOLEAN DEFAULT 0,
+    created_at TEXT    DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE INDEX idx_posts_user_id ON posts(user_id);
-CREATE INDEX idx_posts_published ON posts(published);
+CREATE INDEX idx_posts_user_id ON posts (user_id);
+CREATE INDEX idx_posts_published ON posts (published);
 ```
 
 ### Running Migrations
@@ -101,16 +106,16 @@ migrations
 
 ```sql
 -- Index frequently queried columns
-CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_email ON users (email);
 
 -- Composite indexes for multi-column queries
-CREATE INDEX idx_posts_user_published ON posts(user_id, published);
+CREATE INDEX idx_posts_user_published ON posts (user_id, published);
 
 -- Covering indexes (include queried columns)
-CREATE INDEX idx_users_email_name ON users(email, name);
+CREATE INDEX idx_users_email_name ON users (email, name);
 
 -- Partial indexes for filtered queries
-CREATE INDEX idx_active_users ON users(email) WHERE active = 1;
+CREATE INDEX idx_active_users ON users (email) WHERE active = 1;
 
 -- Check if query uses index
 EXPLAIN QUERY PLAN SELECT * FROM users WHERE email = ?;
@@ -122,20 +127,26 @@ EXPLAIN QUERY PLAN SELECT * FROM users WHERE email = ?;
 // drizzle.config.ts
 export default {
   schema: './src/schema.ts', out: './migrations', dialect: 'sqlite', driver: 'd1-http',
-  dbCredentials: { accountId: process.env.CLOUDFLARE_ACCOUNT_ID!, databaseId: process.env.D1_DATABASE_ID!, token: process.env.CLOUDFLARE_API_TOKEN! }
+  dbCredentials: {
+    accountId: process.env.CLOUDFLARE_ACCOUNT_ID!,
+    databaseId: process.env.D1_DATABASE_ID!,
+    token: process.env.CLOUDFLARE_API_TOKEN!
+  }
 } satisfies Config;
 
 // schema.ts
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import {sqliteTable, text, integer} from 'drizzle-orm/sqlite-core';
+
 export const users = sqliteTable('users', {
-  id: integer('id').primaryKey({ autoIncrement: true }),
+  id: integer('id').primaryKey({autoIncrement: true}),
   email: text('email').notNull().unique(),
   name: text('name').notNull()
 });
 
 // worker.ts
-import { drizzle } from 'drizzle-orm/d1';
-import { users } from './schema';
+import {drizzle} from 'drizzle-orm/d1';
+import {users} from './schema';
+
 export default {
   async fetch(request: Request, env: Env) {
     const db = drizzle(env.DB);

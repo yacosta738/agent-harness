@@ -44,11 +44,19 @@ below are hand tallies from those notes, so read them as "about").
 
 ```css
 :root {
-  --margin: clamp(1rem, 2.2vw, 2rem);   /* 16–32px: tight, so content reaches the edges */
+  --margin: clamp(1rem, 2.2vw, 2rem); /* 16–32px: tight, so content reaches the edges */
   --gutter: clamp(0.75rem, 1.4vw, 1.5rem);
 }
-.wrap { padding-inline: var(--margin); }
-.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+
+.wrap {
+  padding-inline: var(--margin);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
 ```
 
 - One pair of margins and one grid for the whole page. Every left edge is a column line.

@@ -5,7 +5,8 @@ fullstack architect, plus team sub-agents, a Spec-Driven Development (SDD) pipel
 auto-discovered skills and commands.
 
 The filesystem is the source of truth: `skills/**/SKILL.md` for skills, `commands/*.md` for
-commands, `adapters/opencode/opencode.json` for MCP/permissions, and `adapters/opencode/adapter.json`
+commands, `adapters/opencode/opencode.json` for MCP/permissions, and
+`adapters/opencode/adapter.json`
 for deploy composition.
 
 ## Operating model
@@ -20,7 +21,8 @@ Every request gets an explicit route before acting:
 - **Explicit SDD** — only on explicit request or an accepted proposal naming the durable
   coordination problem it solves.
 
-For substantial work, track it in `.agents/rpi/plan/tasks/<feature>.md` and mirror to Engram. Optional
+For substantial work, track it in `.agents/rpi/plan/tasks/<feature>.md` and mirror to Engram.
+Optional
 Receipt-Driven Development (RDD) reviews an immutable candidate but never authorizes delivery.
 
 When adopting this harness in a project with existing RPI plans, the first substantial RPI task
@@ -62,8 +64,8 @@ output contract; it does not claim official ASD-STE100 compliance.
 
 - **kerrigan** — primary. Senior fullstack architect (15+ years). Warm, direct, practical.
   Answers simple questions directly, delegates the rest, challenges bad decisions with evidence.
-- **linear-pm** — Linear issues, sprints, priorities (P0–P3), states
-  (Backlog → Todo → In Progress → In Review → Done).
+- **linear-pm** — Linear issues, sprints, priorities (P0–P3), states (Backlog → Todo → In Progress →
+  In Review → Done).
 - **Team specialists** (`prompts`, 10) — `tech-lead`, `senior-dev`, `devops-engineer`,
   `qa-engineer`, `security-engineer`, `performance-engineer`, `ux-designer`, `data-engineer`,
   `product-manager`, `code-reviewer`.
@@ -86,21 +88,21 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 **Phase commands** (13 total: 10 phase + 3 meta) route to their dedicated agent via
 `agent:` / `subtask:` frontmatter:
 
-| Command | Agent | Purpose |
-|---|---|---|
-| `/sdd-init` | sdd-init | Bootstrap SDD artifact structure, detect stack |
-| `/sdd-explore` | sdd-explore | Investigate before committing |
-| `/sdd-propose` | sdd-propose | Proposal with scope and rollback |
-| `/sdd-spec` | sdd-spec | Delta specs, Given/When/Then |
-| `/sdd-design` | sdd-design | Technical design, ADRs |
-| `/sdd-tasks` | sdd-tasks | Implementation checklist |
-| `/sdd-apply` | sdd-apply | Implement (TDD when configured) |
-| `/sdd-verify` | sdd-verify | Technical + spec-compliance gate |
-| `/sdd-qa` | sdd-qa | Acceptance evidence, `qa-report.md` |
-| `/sdd-archive` | sdd-archive | Two-report gate, sync + archive |
-| `/sdd-new` | kerrigan | explore + propose |
-| `/sdd-ff` | kerrigan | propose + [spec + design] + tasks |
-| `/sdd-continue` | kerrigan | Resume from `state.yaml` |
+| Command         | Agent       | Purpose                                        |
+|-----------------|-------------|------------------------------------------------|
+| `/sdd-init`     | sdd-init    | Bootstrap SDD artifact structure, detect stack |
+| `/sdd-explore`  | sdd-explore | Investigate before committing                  |
+| `/sdd-propose`  | sdd-propose | Proposal with scope and rollback               |
+| `/sdd-spec`     | sdd-spec    | Delta specs, Given/When/Then                   |
+| `/sdd-design`   | sdd-design  | Technical design, ADRs                         |
+| `/sdd-tasks`    | sdd-tasks   | Implementation checklist                       |
+| `/sdd-apply`    | sdd-apply   | Implement (TDD when configured)                |
+| `/sdd-verify`   | sdd-verify  | Technical + spec-compliance gate               |
+| `/sdd-qa`       | sdd-qa      | Acceptance evidence, `qa-report.md`            |
+| `/sdd-archive`  | sdd-archive | Two-report gate, sync + archive                |
+| `/sdd-new`      | kerrigan    | explore + propose                              |
+| `/sdd-ff`       | kerrigan    | propose + [spec + design] + tasks              |
+| `/sdd-continue` | kerrigan    | Resume from `state.yaml`                       |
 
 Artifacts (mode `openspec`) live under `.agents/sdd/changes/<name>/`
 (`proposal.md`, `design.md`, `tasks.md`, `verify-report.md`, `qa-report.md`, `state.yaml`)
@@ -122,38 +124,38 @@ Two standards, split on purpose:
 - **Standalone** (everything else) — frontmatter carries only `description:`; the command runs
   as a self-contained expert prompt or playbook.
 
-| Group | Commands |
-|---|---|
-| SDD (13) | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
-| Diagram (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid` |
-| Vercel (5) | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace` |
-| Misc (7) | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop`, `pr-watch` |
+| Group       | Commands                                                                                                                                                                 |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SDD (13)    | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
+| Diagram (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
+| Vercel (5)  | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace`                                                                                 |
+| Misc (7)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop`, `pr-watch`                                                             |
 
 ## Skills (122)
 
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
 
-| Group | # | What |
-|---|---|---|
-| `workflow/` | 26 | Brainstorming, debugging, planning, reviews, worktrees, RPI/RDD, output control |
-| `testing/` | 1 | Test-driven development and test design |
-| `design-pattern/` | 1 | Consolidated GoF pattern skill (22 patterns in `references/`) |
-| `design/` | 8 | Brand, frontend taste, diagram-design, imagegen, impeccable, … |
-| `web/` | 11 | A11y, SEO, performance, Core Web Vitals, nothing-design, … |
-| `macos/` | 11 | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry |
-| `sdd/` | 10 | One skill per SDD phase + `_shared/` protocol |
-| `github/` | 9 | Actions, PR flow, stacked PRs, CI fixes, reviews, `yeet` |
-| `cloudflare/` | 8 | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox |
-| `tools/` | 7 | Linear, Sentry, webapp-testing, portless, jules-cli, … |
-| `ios/` | 6 | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor |
-| `obsidian/` | 5 | CLI, markdown, bases, canvas, defuddle |
-| `devops/` | 4 | Docker, Grafana, Make, SQL optimization |
-| `notion/` | 4 | Capture, meetings, research docs, spec→implementation |
-| `security/` | 5 (+12 attack classes) | Orchestrator + threat model, finding discovery/triage/fix; attack-classes library in `_shared/` |
-| `personal/` | 3 | `haci` (IRPF España), `imagegen`, `yuniel-writing-style` |
-| `languages/` | 2 | TypeScript, Rust (Ratatui) |
-| `android/` | 1 | Emulator QA |
+| Group             | #                      | What                                                                                            |
+|-------------------|------------------------|-------------------------------------------------------------------------------------------------|
+| `workflow/`       | 26                     | Brainstorming, debugging, planning, reviews, worktrees, RPI/RDD, output control                 |
+| `testing/`        | 1                      | Test-driven development and test design                                                         |
+| `design-pattern/` | 1                      | Consolidated GoF pattern skill (22 patterns in `references/`)                                   |
+| `design/`         | 8                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
+| `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                      |
+| `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                |
+| `sdd/`            | 10                     | One skill per SDD phase + `_shared/` protocol                                                   |
+| `github/`         | 9                      | Actions, PR flow, stacked PRs, CI fixes, reviews, `yeet`                                        |
+| `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                               |
+| `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                          |
+| `ios/`            | 6                      | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor                               |
+| `obsidian/`       | 5                      | CLI, markdown, bases, canvas, defuddle                                                          |
+| `devops/`         | 4                      | Docker, Grafana, Make, SQL optimization                                                         |
+| `notion/`         | 4                      | Capture, meetings, research docs, spec→implementation                                           |
+| `security/`       | 5 (+12 attack classes) | Orchestrator + threat model, finding discovery/triage/fix; attack-classes library in `_shared/` |
+| `personal/`       | 3                      | `haci` (IRPF España), `imagegen`, `yuniel-writing-style`                                        |
+| `languages/`      | 2                      | TypeScript, Rust (Ratatui)                                                                      |
+| `android/`        | 1                      | Emulator QA                                                                                     |
 
 Notable: `skills/design/diagram-design` is a pinned offline-first snapshot (upstream release
 2.3.5) with local `references/`, `scripts/`, `assets/` trees and `/diagram-*` command adapters.
@@ -178,10 +180,10 @@ Ahrefs, Stitch, etc.). Enable one by flipping `enabled` and providing its env ke
 Some MCP integrations and the AI provider endpoint accept environment variables for full
 personalization. Copy `.env.example` to `.env.local` and edit:
 
-| Variable | Default | Purpose |
-|---|---|---|
-| `ROOK_BASE_URL` | `https://api.openai.com/v1` | AI router/proxy base URL. Omit or use default to go direct to OpenAI |
-| `N8N_MCP_URL` | `https://n8n.example.com/mcp-server/http` | Your n8n MCP server URL |
+| Variable        | Default                                   | Purpose                                                              |
+|-----------------|-------------------------------------------|----------------------------------------------------------------------|
+| `ROOK_BASE_URL` | `https://api.openai.com/v1`               | AI router/proxy base URL. Omit or use default to go direct to OpenAI |
+| `N8N_MCP_URL`   | `https://n8n.example.com/mcp-server/http` | Your n8n MCP server URL                                              |
 
 **Using your own router or proxy:** Set `ROOK_BASE_URL` to your endpoint. Omit it to use
 the default OpenAI endpoint directly — no custom infrastructure required.

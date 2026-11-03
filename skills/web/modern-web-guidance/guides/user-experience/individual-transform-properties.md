@@ -31,7 +31,7 @@ animation, apply an identity transformation to the base element. This ensures th
 stacking context and containment do not change when a transform is applied.
 
 ```css
-.element{
+.element {
   /* MANDATORY: Apply identity transformations for properties that will
      change on state changes (like :hover). This prevents unexpected layout
      or z-index shifts caused by creating a new stacking context only on hover. */
@@ -39,7 +39,8 @@ stacking context and containment do not change when a transform is applied.
   rotate: 0deg;
   scale: 1;
 }
-.element:hover{
+
+.element:hover {
   translate: 10px 10px;
   rotate: 20deg;
   scale: 0.8;
@@ -55,7 +56,7 @@ different properties without conflict.
 .card {
   /* Define independent animations that don't overwrite each other */
   animation: float 3s infinite ease-in-out;
-  
+
   /* Transition only the scale property for hover states */
   transition: scale 0.3s ease;
 
@@ -69,8 +70,12 @@ different properties without conflict.
 }
 
 @keyframes float {
-  0%, 100% { translate: 0 0; }
-  50% { translate: 0 -10px; }
+  0%, 100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -10px;
+  }
 }
 ```
 

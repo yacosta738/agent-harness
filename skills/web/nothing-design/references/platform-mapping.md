@@ -17,7 +17,7 @@ for spacing/borders. Dark/light via `prefers-color-scheme` or class toggle.
   --text-primary: #E8E8E8;
   --text-display: #FFFFFF;
   --accent: #D71921;
-  --accent-subtle: rgba(215,25,33,0.15);
+  --accent-subtle: rgba(215, 25, 33, 0.15);
   --success: #4A9E5C;
   --warning: #D4A843;
   --interactive: #5B9BF6;
@@ -85,7 +85,7 @@ Load fonts through `next/font`, a Google Fonts `<link>`, or CSS `@import`. Map d
 variables for color + typography consistency.
 
 ```tsx
-import { Space_Grotesk, Space_Mono } from 'next/font/google'
+import {Space_Grotesk, Space_Mono} from 'next/font/google'
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],

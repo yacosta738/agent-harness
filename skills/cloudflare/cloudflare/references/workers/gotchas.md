@@ -73,18 +73,28 @@ Then import: `import type { Env } from './.wrangler/types/runtime';`
 // ❌ Old fetch pattern
 export class MyDO {
   async fetch(request: Request) {
-    const { method } = await request.json();
+    const {method} = await request.json();
     if (method === 'increment') return new Response(String(await this.increment()));
   }
-  async increment() { return ++this.value; }
+
+  async increment() {
+    return ++this.value;
+  }
 }
+
 const stub = env.DO.get(id);
-const res = await stub.fetch('http://x', { method: 'POST', body: JSON.stringify({ method: 'increment' }) });
+const res = await stub.fetch('http://x', {
+  method: 'POST',
+  body: JSON.stringify({method: 'increment'})
+});
 
 // ✅ RPC pattern (type-safe, no serialization overhead)
 export class MyDO {
-  async increment() { return ++this.value; }
+  async increment() {
+    return ++this.value;
+  }
 }
+
 const stub = env.DO.get(id);
 const count = await stub.increment(); // Direct method call
 ```
@@ -99,6 +109,7 @@ export class WebSocketDO {
   async webSocketMessage(ws: WebSocket, message: string) {
     // Handle message
   }
+
   async webSocketClose(ws: WebSocket, code: number) {
     // Cleanup
   }
@@ -114,9 +125,12 @@ Hibernation automatically suspends inactive connections, wakes on events
 
 ```typescript
 // ✅ Hono (Workers-native)
-import { Hono } from 'hono';
+import {Hono} from 'hono';
+
 const app = new Hono();
-app.use('*', async (c, next) => { /* middleware */ await next(); });
+app.use('*', async (c, next) => { /* middleware */
+  await next();
+});
 ```
 
 See [frameworks.md](./frameworks.md) for full patterns

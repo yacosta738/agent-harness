@@ -19,15 +19,16 @@ browser synthesizes a JSON Schema from the form inputs and handles agent interac
 ### Example
 
 ```html
-<form toolname="search-cars" 
-      tooldescription="Perform a car make/model search" 
+
+<form toolname="search-cars"
+      tooldescription="Perform a car make/model search"
       toolautosubmit>
   <label for="make">Vehicle Make</label>
   <input type="text" id="make" name="make" required>
-  
+
   <label for="model">Vehicle Model</label>
   <input type="text" id="model" name="model" toolparamdescription="e.g., 330i, F-150" required>
-  
+
   <button type="submit">Search</button>
 </form>
 ```
@@ -47,10 +48,10 @@ document.querySelector('form').addEventListener('submit', (event) => {
   if (formValidationErrors.length > 0) {
     if (event.agentInvoked) {
       const errorString =
-        'Validation failed: ' +
-        formValidationErrors
-          .map((err) => `${err.field} (${err.message})`)
-          .join(', ');
+          'Validation failed: ' +
+          formValidationErrors
+              .map((err) => `${err.field} (${err.message})`)
+              .join(', ');
 
       event.respondWith(Promise.resolve(errorString));
     }
@@ -71,11 +72,11 @@ document.querySelector('form').addEventListener('submit', (event) => {
 The window emits events when agents start or stop interacting with a tool:
 
 ```javascript
-window.addEventListener('toolactivated', ({ toolName }) => {
+window.addEventListener('toolactivated', ({toolName}) => {
   console.log(`Tool "${toolName}" was activated by the agent.`);
 });
 
-window.addEventListener('toolcancel', ({ toolName }) => {
+window.addEventListener('toolcancel', ({toolName}) => {
   console.log(`Tool "${toolName}" interaction was cancelled.`);
 });
 ```

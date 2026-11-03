@@ -59,11 +59,13 @@ Be specific about the user need or technical debt being addressed.}
 ## Scope
 
 ### In Scope
+
 - {Concrete deliverable 1}
 - {Concrete deliverable 2}
 - {Concrete deliverable 3}
 
 ### Out of Scope
+
 - {What we're explicitly NOT doing}
 - {Future work that's related but deferred}
 
@@ -105,16 +107,17 @@ Return to the orchestrator:
 ```markdown
 ## Proposal Created
 
-**Change**: {change-name}
-**Location**: .agents/sdd/changes/{change-name}/proposal.md
+**Change**: {change-name} **Location**: .agents/sdd/changes/{change-name}/proposal.md
 
 ### Summary
+
 - **Intent**: {one-line summary}
 - **Scope**: {N deliverables in, M items deferred}
 - **Approach**: {one-line approach}
 - **Risk Level**: {Low/Medium/High}
 
 ### Next Step
+
 Ready for specs (sdd-spec) or design (sdd-design).
 ```
 

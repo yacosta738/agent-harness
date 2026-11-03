@@ -29,7 +29,8 @@ and use get more bandwidth resources.
 <link rel="preload" href="/images/hero-background.jpg" as="image" fetchpriority="high">
 
 <!-- Deprioritize a secondary font to avoid network contention -->
-<link rel="preload" href="/fonts/secondary-font.woff2" as="font" type="font/woff2" fetchpriority="low" crossorigin>
+<link rel="preload" href="/fonts/secondary-font.woff2" as="font" type="font/woff2"
+      fetchpriority="low" crossorigin>
 ```
 
 ## Best Practices

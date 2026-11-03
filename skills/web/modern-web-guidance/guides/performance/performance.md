@@ -34,13 +34,22 @@ painted pixels.
 ```html
 <!-- Inline critical styles directly in head -->
 <style>
-  body { margin: 0; font-family: system-ui; }
-  .hero { min-height: 100vh; }
+  body {
+    margin: 0;
+    font-family: system-ui;
+  }
+
+  .hero {
+    min-height: 100vh;
+  }
 </style>
 
 <!-- Defer non-critical CSS -->
-<link rel="preload" href="non-critical.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="non-critical.css"></noscript>
+<link rel="preload" href="non-critical.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link rel="stylesheet" href="non-critical.css">
+</noscript>
 
 <!-- Load CSS conditionally based on viewport -->
 <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)">
@@ -93,13 +102,13 @@ viewport. Optimize LCP by prioritizing visible elements and prepolishing.
 
 ```html
 <!-- Standard LCP Image -->
-<img 
-  src="/images/hero.webp" 
-  alt="Hero Product" 
-  fetchpriority="high" 
-  decoding="sync"
-  width="1200" 
-  height="600"
+<img
+    src="/images/hero.webp"
+    alt="Hero Product"
+    fetchpriority="high"
+    decoding="sync"
+    width="1200"
+    height="600"
 >
 
 <!-- Preloading a CSS-based LCP background -->
@@ -154,7 +163,7 @@ async function yieldToMain() {
 async function processLargeList(items) {
   for (let i = 0; i < items.length; i++) {
     processItem(items[i]);
-    
+
     // Yield every 50 iterations to allow rendering/interaction
     if (i % 50 === 0) {
       await yieldToMain();
@@ -276,33 +285,37 @@ negotiation, responsive sizing, and layout stabilization.
 **HTML: Comprehensive Responsive Image Component**
 
 ```html
+
 <picture>
   <!-- Modern Formats with Source Negotiation -->
-  <source type="image/avif" srcset="hero-400w.avif 400w, hero-800w.avif 800w" sizes="(max-width: 600px) 100vw, 50vw">
-  <source type="image/webp" srcset="hero-400w.webp 400w, hero-800w.webp 800w" sizes="(max-width: 600px) 100vw, 50vw">
-  
+  <source type="image/avif" srcset="hero-400w.avif 400w, hero-800w.avif 800w"
+          sizes="(max-width: 600px) 100vw, 50vw">
+  <source type="image/webp" srcset="hero-400w.webp 400w, hero-800w.webp 800w"
+          sizes="(max-width: 600px) 100vw, 50vw">
+
   <!-- Fallback + Dimensions + Priority for Above-The-Fold -->
-  <img 
-    src="hero-800w.jpg" 
-    alt="Descriptive text" 
-    width="800" 
-    height="600"
-    fetchpriority="high"
-    loading="eager"
+  <img
+      src="hero-800w.jpg"
+      alt="Descriptive text"
+      width="800"
+      height="600"
+      fetchpriority="high"
+      loading="eager"
   >
 </picture>
 
 <!-- Below-The-Fold Image -->
-<img 
-    src="footer-icon.png" 
-    alt="Footer Logo" 
-    width="100" 
+<img
+    src="footer-icon.png"
+    alt="Footer Logo"
+    width="100"
     height="100"
     loading="lazy"
 >
 
 <!-- DO: Use native lazy loading for below the fold iframes -->
-<iframe src="https://example.com/map" width="800" height="600" loading="lazy" title="Example Map"></iframe>
+<iframe src="https://example.com/map" width="800" height="600" loading="lazy"
+        title="Example Map"></iframe>
 ```
 
 ## Service Workers & Caching Strategies
@@ -337,38 +350,38 @@ resources from disk/memory.
 **JS: Service Worker Caching via Workbox**
 
 ```javascript
-import { registerRoute } from 'workbox-routing';
-import { CacheFirst, StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies';
-import { ExpirationPlugin } from 'workbox-expiration';
-import { CacheableResponsePlugin } from 'workbox-cacheable-response';
+import {registerRoute} from 'workbox-routing';
+import {CacheFirst, StaleWhileRevalidate, NetworkFirst} from 'workbox-strategies';
+import {ExpirationPlugin} from 'workbox-expiration';
+import {CacheableResponsePlugin} from 'workbox-cacheable-response';
 
 // 1. HTML Documents: Network First
 registerRoute(
-  ({ request }) => request.mode === 'navigate',
-  new NetworkFirst({ cacheName: 'pages-cache' })
+    ({request}) => request.mode === 'navigate',
+    new NetworkFirst({cacheName: 'pages-cache'})
 );
 
 // 2. Static Assets (JS, CSS, Fonts): Cache First
 registerRoute(
-  ({ request }) => ['style', 'script', 'font'].includes(request.destination),
-  new CacheFirst({
-    cacheName: 'static-resources',
-    plugins: [
-      new CacheableResponsePlugin({ statuses: [0, 200] }),
-      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 30 * 24 * 60 * 60 })
-    ]
-  })
+    ({request}) => ['style', 'script', 'font'].includes(request.destination),
+    new CacheFirst({
+      cacheName: 'static-resources',
+      plugins: [
+        new CacheableResponsePlugin({statuses: [0, 200]}),
+        new ExpirationPlugin({maxEntries: 50, maxAgeSeconds: 30 * 24 * 60 * 60})
+      ]
+    })
 );
 
 // 3. API Responses: Stale While Revalidate
 registerRoute(
-  ({ url }) => url.pathname.startsWith('/api/v1/content'),
-  new StaleWhileRevalidate({
-    cacheName: 'api-cache',
-    plugins: [
-      new CacheableResponsePlugin({ statuses: [0, 200] })
-    ]
-  })
+    ({url}) => url.pathname.startsWith('/api/v1/content'),
+    new StaleWhileRevalidate({
+      cacheName: 'api-cache',
+      plugins: [
+        new CacheableResponsePlugin({statuses: [0, 200]})
+      ]
+    })
 );
 ```
 
@@ -436,12 +449,13 @@ preserving Cumulative Layout Shift (CLS) stability.
 **HTML: Accessible and Dynamic Video Loader**
 
 ```html
-<video 
-  controls 
-  width="1200" 
-  height="675"
-  poster="/images/video-poster.webp" 
-  preload="none"
+
+<video
+    controls
+    width="1200"
+    height="675"
+    poster="/images/video-poster.webp"
+    preload="none"
 >
   <source src="/videos/intro.webm" type="video/webm">
   <source src="/videos/intro.mp4" type="video/mp4">
@@ -474,7 +488,7 @@ download bytes required for the immediate viewport.
 ```javascript
 // Dynamic import of heavy module only when button is clicked
 document.getElementById('heavy-btn').addEventListener('click', async () => {
-  const { heavyFunction } = await import('./heavy-module.js');
+  const {heavyFunction} = await import('./heavy-module.js');
   heavyFunction();
 });
 ```

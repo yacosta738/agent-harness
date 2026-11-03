@@ -6,7 +6,7 @@
 
 ```js
 // sender (popup, content script, etc.)
-chrome.runtime.sendMessage({ type: 'LOG', data: 'hello' });
+chrome.runtime.sendMessage({type: 'LOG', data: 'hello'});
 
 // receiver (service worker)
 chrome.runtime.onMessage.addListener((message, sender) => {
@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 
 ```js
 // sender
-const response = await chrome.runtime.sendMessage({ type: 'GET_DATA' });
+const response = await chrome.runtime.sendMessage({type: 'GET_DATA'});
 console.log(response.data);
 
 // receiver — IIFE keeps the channel open until sendResponse is called
@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'GET_DATA') {
     (async () => {
       const data = await chrome.storage.local.get('key');
-      sendResponse({ data });
+      sendResponse({data});
     })();
     return true; // REQUIRED — tells Chrome to keep the channel open
   }
@@ -53,10 +53,10 @@ mix the two styles. If you return a Promise, do NOT also call `sendResponse` or 
 
 ```js
 // content script → service worker
-const result = await chrome.runtime.sendMessage({ type: 'FETCH_DATA', url: location.href });
+const result = await chrome.runtime.sendMessage({type: 'FETCH_DATA', url: location.href});
 
 // service worker → specific tab's content script
-await chrome.tabs.sendMessage(tabId, { type: 'HIGHLIGHT', selector: '.important' });
+await chrome.tabs.sendMessage(tabId, {type: 'HIGHLIGHT', selector: '.important'});
 ```
 
 ## Service worker → content script (targeted)
@@ -81,8 +81,8 @@ Use ports when you need a persistent channel (e.g., streaming data, DevTools pan
 
 ```js
 // opener (popup or content script)
-const port = chrome.runtime.connect({ name: 'my-channel' });
-port.postMessage({ type: 'START' });
+const port = chrome.runtime.connect({name: 'my-channel'});
+port.postMessage({type: 'START'});
 port.onMessage.addListener((msg) => console.log('received:', msg));
 port.onDisconnect.addListener(() => console.log('disconnected'));
 
@@ -91,7 +91,7 @@ chrome.runtime.onConnect.addListener((port) => {
   if (port.name !== 'my-channel') return;
   port.onMessage.addListener((msg) => {
     if (msg.type === 'START') {
-      port.postMessage({ status: 'ok' });
+      port.postMessage({status: 'ok'});
     }
   });
 });
@@ -122,12 +122,12 @@ on `tabs.onUpdated`, the content script may not be listening yet. Use a handshak
 
 ```js
 // content script — announce it's ready
-chrome.runtime.sendMessage({ type: 'CONTENT_READY' });
+chrome.runtime.sendMessage({type: 'CONTENT_READY'});
 
 // service worker — wait for CONTENT_READY before sending
 chrome.runtime.onMessage.addListener((msg, sender) => {
   if (msg.type === 'CONTENT_READY' && sender.tab) {
-    chrome.tabs.sendMessage(sender.tab.id, { type: 'INIT_DATA', ... });
+    chrome.tabs.sendMessage(sender.tab.id, {type: 'INIT_DATA', ...});
   }
 });
 ```

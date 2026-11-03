@@ -11,13 +11,28 @@ metadata
 
 ```typescript
 // ❌ Wrong - lost on hibernation
-private userCount = 0;
-async webSocketMessage(ws: WebSocket, msg: string) {
+private
+userCount = 0;
+async
+webSocketMessage(ws
+:
+WebSocket, msg
+:
+string
+)
+{
   this.userCount++;  // Lost!
 }
 
 // ✅ Right - persisted
-async webSocketMessage(ws: WebSocket, msg: string) {
+async
+webSocketMessage(ws
+:
+WebSocket, msg
+:
+string
+)
+{
   const count = this.ctx.storage.kv.get("userCount") || 0;
   this.ctx.storage.kv.put("userCount", count + 1);
 }
@@ -34,7 +49,11 @@ setTimeout(() => this.cleanup(), 3600000);
 
 // ✅ Right - survives eviction
 await this.ctx.storage.setAlarm(Date.now() + 3600000);
-async alarm() { await this.cleanup(); }
+async
+alarm()
+{
+  await this.cleanup();
+}
 ```
 
 ### "Constructor Runs on Every Wake"
@@ -50,14 +69,23 @@ async alarm() { await this.cleanup(); }
 
 ```typescript
 // ❌ Wrong - expensive on every wake
-constructor(ctx: DurableObjectState, env: Env) {
+constructor(ctx
+:
+DurableObjectState, env
+:
+Env
+)
+{
   super(ctx, env);
   this.heavyData = this.loadExpensiveData();  // Slow!
 }
 
 // ✅ Right - lazy load
-private heavyData?: HeavyData;
-private getHeavyData() {
+private
+heavyData ? : HeavyData;
+private
+getHeavyData()
+{
   if (!this.heavyData) this.heavyData = this.loadExpensiveData();
   return this.heavyData;
 }
@@ -106,21 +134,27 @@ interleaving (await = yield point)
 
 ```typescript
 // ❌ Wrong - race condition
-async incrementCounter() {
+async
+incrementCounter()
+{
   const count = await this.ctx.storage.get("count") || 0;
   // ⚠️ Another request could execute here during await
   await this.ctx.storage.put("count", count + 1);
 }
 
 // ✅ Right - atomic operation
-async incrementCounter() {
+async
+incrementCounter()
+{
   return this.ctx.storage.sql.exec(
-    "INSERT INTO counters (id, value) VALUES (1, 1) ON CONFLICT(id) DO UPDATE SET value = value + 1 RETURNING value"
+      "INSERT INTO counters (id, value) VALUES (1, 1) ON CONFLICT(id) DO UPDATE SET value = value + 1 RETURNING value"
   ).one().value;
 }
 
 // ✅ Right - explicit locking
-async criticalOperation() {
+async
+criticalOperation()
+{
   await this.ctx.blockConcurrencyWhile(async () => {
     const count = await this.ctx.storage.get("count") || 0;
     await this.ctx.storage.put("count", count + 1);

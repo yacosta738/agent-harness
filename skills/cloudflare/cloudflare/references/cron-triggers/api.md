@@ -69,10 +69,17 @@ export default {
 export default {
   async scheduled(controller, env, ctx) {
     switch (controller.cron) {
-      case "*/3 * * * *": ctx.waitUntil(updateRecentData(env)); break;
-      case "0 * * * *": ctx.waitUntil(processHourlyAggregation(env)); break;
-      case "0 2 * * *": ctx.waitUntil(performDailyMaintenance(env)); break;
-      default: console.warn(`Unhandled: ${controller.cron}`);
+      case "*/3 * * * *":
+        ctx.waitUntil(updateRecentData(env));
+        break;
+      case "0 * * * *":
+        ctx.waitUntil(processHourlyAggregation(env));
+        break;
+      case "0 2 * * *":
+        ctx.waitUntil(performDailyMaintenance(env));
+        break;
+      default:
+        console.warn(`Unhandled: ${controller.cron}`);
     }
   },
 };
@@ -98,7 +105,7 @@ export default {
 ## Workflow Integration
 
 ```typescript
-import { WorkflowEntrypoint } from "cloudflare:workers";
+import {WorkflowEntrypoint} from "cloudflare:workers";
 
 export class DataProcessingWorkflow extends WorkflowEntrypoint {
   async run(event, step) {
@@ -111,7 +118,7 @@ export class DataProcessingWorkflow extends WorkflowEntrypoint {
 export default {
   async scheduled(controller, env, ctx) {
     const instance = await env.MY_WORKFLOW.create({
-      params: { scheduledTime: controller.scheduledTime, cron: controller.cron },
+      params: {scheduledTime: controller.scheduledTime, cron: controller.cron},
     });
     console.log(`Started workflow: ${instance.id}`);
   },
@@ -145,21 +152,40 @@ by anyone. Block it or implement authentication - see [gotchas.md](./gotchas.md#
 
 ```typescript
 // test/scheduled.test.ts
-import { describe, it, expect } from "vitest";
-import { env } from "cloudflare:test";
+import {describe, it, expect} from "vitest";
+import {env} from "cloudflare:test";
 import worker from "../src/index";
 
 describe("Scheduled Handler", () => {
   it("processes scheduled event", async () => {
-    const controller = { scheduledTime: Date.now(), cron: "*/5 * * * *", type: "scheduled" as const, noRetry: () => {} };
-    const ctx = { waitUntil: (p: Promise<any>) => p, passThroughOnException: () => {} };
+    const controller = {
+      scheduledTime: Date.now(),
+      cron: "*/5 * * * *",
+      type: "scheduled" as const,
+      noRetry: () => {
+      }
+    };
+    const ctx = {
+      waitUntil: (p: Promise<any>) => p, passThroughOnException: () => {
+      }
+    };
     await worker.scheduled(controller, env, ctx);
     expect(await env.MY_KV.get("last_run")).toBeDefined();
   });
 
   it("handles multiple crons", async () => {
-    const ctx = { waitUntil: () => {}, passThroughOnException: () => {} };
-    await worker.scheduled({ scheduledTime: Date.now(), cron: "*/5 * * * *", type: "scheduled", noRetry: () => {} }, env, ctx);
+    const ctx = {
+      waitUntil: () => {
+      }, passThroughOnException: () => {
+      }
+    };
+    await worker.scheduled({
+      scheduledTime: Date.now(),
+      cron: "*/5 * * * *",
+      type: "scheduled",
+      noRetry: () => {
+      }
+    }, env, ctx);
     expect(await env.MY_KV.get("last_type")).toBe("frequent");
   });
 });

@@ -93,6 +93,7 @@ their data.
 **Inline Transparency (HTML)**
 
 ```html
+
 <div>
   <label for="phone">Phone Number (Optional)</label>
   <input id="phone" type="tel" name="phone">
@@ -189,25 +190,26 @@ third parties you bring into your application.
 
 ```html
 <!-- No JS SDK required -->
-<a href="https://x.com/intent/tweet?text=Check%20this%20out&url=https%3A%2F%2Fexample.com" 
+<a href="https://x.com/intent/tweet?text=Check%20this%20out&url=https%3A%2F%2Fexample.com"
    rel="noopener" target="_blank">
-   Share on X
+  Share on X
 </a>
 ```
 
 **Video Façade Pattern (HTML/JS)**
 
 ```html
+
 <div id="video-container" data-video-id="abc123">
   <img src="https://img.youtube.com/vi/abc123/maxresdefault.jpg" alt="Play Video" id="play-btn">
 </div>
 
 <script>
-document.getElementById('play-btn').addEventListener('click', function() {
-  const container = document.getElementById('video-container');
-  const videoId = container.dataset.videoId;
-  container.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1" allowfullscreen></iframe>`;
-});
+  document.getElementById('play-btn').addEventListener('click', function () {
+    const container = document.getElementById('video-container');
+    const videoId = container.dataset.videoId;
+    container.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1" allowfullscreen></iframe>`;
+  });
 </script>
 ```
 
@@ -297,9 +299,9 @@ if ('IntersectionObserver' in window) {
 ```javascript
 if (navigator.userAgentData) {
   navigator.userAgentData.getHighEntropyValues(["platformVersion", "architecture"])
-    .then(ua => {
-      console.log(ua.platformVersion);
-    });
+      .then(ua => {
+        console.log(ua.platformVersion);
+      });
 }
 ```
 

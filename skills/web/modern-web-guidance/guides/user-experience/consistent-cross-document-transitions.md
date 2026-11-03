@@ -66,6 +66,7 @@ theme class or affect the layout), mark it with `blocking="render"`. Without thi
 or `type="module"` scripts may execute after the transition has already started.
 
 ```html
+
 <head>
   <!--
     DO: Mark layout-critical scripts with blocking="render".
@@ -74,7 +75,7 @@ or `type="module"` scripts may execute after the transition has already started.
     // Example: apply a stored theme before the page renders,
     // so the transition snapshot reflects the correct theme.
     document.documentElement.dataset.theme =
-      localStorage.getItem('theme') || 'light';
+        localStorage.getItem('theme') || 'light';
   </script>
 </head>
 ```
@@ -101,6 +102,7 @@ parsed, the cross-fade animates from the old page to a blank or incomplete page.
 an element that marks the end of the visible above-the-fold content.
 
 ```html
+
 <head>
   <link rel="stylesheet" href="/css/styles.css">
 
@@ -113,13 +115,13 @@ an element that marks the end of the visible above-the-fold content.
   <link rel="expect" href="#main-content" blocking="render">
 </head>
 <body>
-  <header>...</header>
-  <main id="main-content">
-    <h1>Page Title</h1>
-    <p>Above-the-fold content the user should see immediately.</p>
-  </main>
-  <!-- Content below the fold does NOT need to be blocked on -->
-  <section>...</section>
+<header>...</header>
+<main id="main-content">
+  <h1>Page Title</h1>
+  <p>Above-the-fold content the user should see immediately.</p>
+</main>
+<!-- Content below the fold does NOT need to be blocked on -->
+<section>...</section>
 </body>
 ```
 
@@ -131,6 +133,7 @@ cannot find it — the morph degrades to separate exit and entry animations. Blo
 element with the `view-transition-name` has been parsed.
 
 ```html
+
 <head>
   <link rel="stylesheet" href="/css/styles.css">
 
@@ -151,11 +154,11 @@ element with the `view-transition-name` has been parsed.
   <script async blocking="render" src="/js/transition-setup.js"></script>
 </head>
 <body>
-  <header>...</header>
-  <section id="hero">
-    <h1 style="view-transition-name: page-title">Product Name</h1>
-    <img style="view-transition-name: hero-image" src="/img/product.webp" alt="Product">
-  </section>
+<header>...</header>
+<section id="hero">
+  <h1 style="view-transition-name: page-title">Product Name</h1>
+  <img style="view-transition-name: hero-image" src="/img/product.webp" alt="Product">
+</section>
 </body>
 ```
 
@@ -166,6 +169,7 @@ attribute on `<link rel="expect">` to block rendering only for the content visib
 viewport width.
 
 ```html
+
 <head>
   <!--
     DO: Use media queries to conditionally block rendering.
@@ -174,16 +178,16 @@ viewport width.
     hero is visible initially.
   -->
   <link
-    rel="expect"
-    href="#hero"
-    blocking="render"
-    media="screen and (width <= 768px)"
+      rel="expect"
+      href="#hero"
+      blocking="render"
+      media="screen and (width <= 768px)"
   >
   <link
-    rel="expect"
-    href="#sidebar"
-    blocking="render"
-    media="screen and (width > 768px)"
+      rel="expect"
+      href="#sidebar"
+      blocking="render"
+      media="screen and (width > 768px)"
   >
 </head>
 ```
@@ -198,6 +202,7 @@ If `view-transition-name` values are assigned statically in CSS, or if you are o
 default full-page cross-fade, skip this step entirely.
 
 ```html
+
 <head>
   <!--
     MANDATORY: The pagereveal listener must be registered before

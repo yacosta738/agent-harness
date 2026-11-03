@@ -20,7 +20,7 @@ interface BotManagement {
 // request.cf.clientTrustScore (legacy, duplicate of botManagement.score)
 
 // Access via request.cf
-import type { IncomingRequestCfProperties } from '@cloudflare/workers-types';
+import type {IncomingRequestCfProperties} from '@cloudflare/workers-types';
 
 export default {
   async fetch(request: Request): Promise<Response> {
@@ -29,8 +29,8 @@ export default {
 
     if (!botMgmt) return fetch(request);
     if (botMgmt.verifiedBot) return fetch(request); // Allow verified bots
-    if (botMgmt.score === 1) return new Response('Blocked', { status: 403 });
-    if (botMgmt.score < 30) return new Response('Challenge required', { status: 429 });
+    if (botMgmt.score === 1) return new Response('Blocked', {status: 403});
+    if (botMgmt.score < 30) return new Response('Challenge required', {status: 429});
 
     return fetch(request);
   }
@@ -63,7 +63,7 @@ request.cf.verifiedBotCategory
 ## JA4 Signals (Enterprise)
 
 ```typescript
-import type { IncomingRequestCfProperties } from '@cloudflare/workers-types';
+import type {IncomingRequestCfProperties} from '@cloudflare/workers-types';
 
 interface JA4Signals {
   // Ratios (0.0-1.0)
@@ -94,7 +94,7 @@ export default {
     const browserRatio = ja4Signals.browser_ratio_1h ?? 0;
 
     if (heuristicRatio > 0.5 || browserRatio < 0.3) {
-      return new Response('Suspicious traffic', { status: 403 });
+      return new Response('Suspicious traffic', {status: 403});
     }
 
     return fetch(request);
@@ -167,9 +167,9 @@ Miniflare provides mock botManagement data for local development:
 **Override in tests:**
 
 ```typescript
-import { getPlatformProxy } from 'wrangler';
+import {getPlatformProxy} from 'wrangler';
 
-const { cf, dispose } = await getPlatformProxy();
+const {cf, dispose} = await getPlatformProxy();
 // cf.botManagement is frozen mock object
 expect(cf.botManagement.score).toBe(99);
 ```

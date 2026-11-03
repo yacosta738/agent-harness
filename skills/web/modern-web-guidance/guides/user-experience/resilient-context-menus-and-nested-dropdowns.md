@@ -27,6 +27,7 @@ trigger — its value (`menu`, `listbox`, `tree`, `grid`, or the legacy `true`) 
 target exposes a matching role, which this pattern does not.
 
 ```html
+
 <button popovertarget="action-panel">
   Open Actions
 </button>
@@ -51,7 +52,7 @@ relative to the anchor.
      aligned to the start of the anchor and spanning to its end (span-inline-end).
   */
   position-area: block-end span-inline-end;
-  
+
   /* Reset insets to allow the grid to take control */
   inset: auto;
 }
@@ -86,8 +87,9 @@ Supported by: Chrome 116 (Aug 2023), Edge 116 (Aug 2023), Firefox 125 (Apr 2024)
 Popover must conditionally be polyfilled with the `@oddbird/popover-polyfill` polyfill.
 
 ```html
+
 <script type="module">
-  if(!HTMLElement.prototype.hasOwnProperty("popover")){
+  if (!HTMLElement.prototype.hasOwnProperty("popover")) {
     await import("https://unpkg.com/@oddbird/popover-polyfill@latest");
   }
 </script>
