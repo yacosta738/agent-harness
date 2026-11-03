@@ -4,5 +4,5 @@ focus: trace
 weight: 1
 ---
 
-El agente investiga dependencia del reloj y estado compartido, y no presenta reintentos o esperas
-arbitrarias como solución permanente.
+The agent investigates clock dependence and shared state, and does not present retries or arbitrary
+waits as a permanent solution.

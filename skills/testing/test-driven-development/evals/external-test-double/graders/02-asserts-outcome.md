@@ -4,5 +4,5 @@ focus: trace
 weight: 1
 ---
 
-El test usa una pasarela que aprueba el pago y verifica que el resultado observable de checkout sea
-confirmado; no depende del conteo u orden de llamadas internas.
+The test uses a gateway that approves the payment and verifies that the observable checkout result is
+confirmed; it does not depend on the count or order of internal calls.

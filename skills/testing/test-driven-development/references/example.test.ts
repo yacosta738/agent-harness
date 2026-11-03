@@ -37,7 +37,7 @@ class FakePaymentGateway implements PaymentGateway {
   }
 }
 
-test("confirma una compra cuando el pago se aprueba", async () => {
+test("confirms a purchase when the payment is approved", async () => {
   const gateway = new FakePaymentGateway(true);
   const checkout = new CheckoutService(gateway);
 
@@ -47,7 +47,7 @@ test("confirma una compra cuando el pago se aprueba", async () => {
   assert.equal(gateway.chargedAmountCents, 2400);
 });
 
-test("rechaza una compra cuando el pago se deniega", async () => {
+test("rejects a purchase when the payment is declined", async () => {
   const checkout = new CheckoutService(new FakePaymentGateway(false));
 
   const result = await checkout.checkout({totalCents: 1800});

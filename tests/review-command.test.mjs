@@ -10,13 +10,13 @@ test('/review routes PR URLs to the PR and no URL to the local worktree',
     () => {
       const command = readFileSync(path.join(root, 'commands/review.md'), 'utf8');
 
-      assert.match(command, /URL de pull request|URL de PR/i);
-      assert.match(command, /working tree|working tree local/i);
+      assert.match(command, /HTTPS pull request URL|PR URL/i);
+      assert.match(command, /working tree|local working tree/i);
       assert.match(command, /--required/);
       assert.match(command, /review\.mjs start/);
       assert.match(command, /--pr-url/);
       assert.doesNotMatch(command, /git fetch/);
-      assert.match(command, /no uses\s+`gh pr checkout`/i);
+      assert.match(command, /do not use\s+`gh pr checkout`/i);
     });
 
 test('the general review skill mandates RDD and all four 4R lenses', () => {

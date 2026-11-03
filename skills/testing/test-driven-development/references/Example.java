@@ -1,4 +1,4 @@
-final class EjemploJava {
+final class Example {
 
   public static void main(String[] args) {
     FakePaymentGateway gateway = new FakePaymentGateway(true);

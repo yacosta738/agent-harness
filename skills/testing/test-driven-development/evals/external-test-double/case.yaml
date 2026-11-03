@@ -1,4 +1,4 @@
 schema_version: "1.1"
 name: external-test-double
 expected_outcome: |
-  El agente mantiene real el comportamiento interno, usa un doble mínimo para la pasarela externa y verifica que el checkout queda confirmado sin acoplarse a llamadas internas.
+  The agent keeps internal behavior real, uses a minimal double for the external gateway, and verifies that the checkout is confirmed without coupling to internal calls.

@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "default_agent": "kerrigan",
   "autoupdate": true,
   "plugin": [
     "@wakatime/opencode-wakatime"
@@ -232,210 +233,148 @@
           "sdd-propose": "allow",
           "sdd-spec": "allow",
           "sdd-tasks": "allow",
-          "sdd-verify": "allow"
-        }
-      },
-      "tools": {
-        "read": true,
-        "search": true,
-        "bash": true,
-        "write": true,
-        "edit": true,
-        "delegate": true,
-        "delegation_read": true,
-        "delegation_list": true
-      },
-      "subagents": {
-        "tech-lead": {
-          "description": "Tech Lead - Architecture and technical leadership",
-          "prompt": "{file:./prompts/team/tech-lead.md}"
-        },
-        "senior-dev": {
-          "description": "Senior Developer - Implementation and code quality",
-          "prompt": "{file:./prompts/team/senior-dev.md}"
-        },
-        "devops-engineer": {
-          "description": "DevOps Engineer - CI/CD and Infrastructure",
-          "prompt": "{file:./prompts/team/devops-engineer.md}"
-        },
-        "qa-engineer": {
-          "description": "QA Engineer - Testing and quality",
-          "prompt": "{file:./prompts/team/qa-engineer.md}"
-        },
-        "security-engineer": {
-          "description": "Security Engineer - Security and compliance",
-          "prompt": "{file:./prompts/team/security-engineer.md}"
-        },
-        "product-manager": {
-          "description": "Product Manager - Vision and prioritization",
-          "prompt": "{file:./prompts/team/product-manager.md}"
-        },
-        "code-reviewer": {
-          "description": "Code Reviewer - Thorough reviews",
-          "prompt": "{file:./prompts/team/code-reviewer.md}"
-        },
-        "performance-engineer": {
-          "description": "Performance Engineer - Optimization and scalability",
-          "prompt": "{file:./prompts/team/performance-engineer.md}"
-        },
-        "ux-designer": {
-          "description": "UX Designer - User experience",
-          "prompt": "{file:./prompts/team/ux-designer.md}"
-        },
-        "data-engineer": {
-          "description": "Data Engineer - Data and analytics",
-          "prompt": "{file:./prompts/team/data-engineer.md}"
+          "sdd-verify": "allow",
+          "tech-lead": "allow",
+          "senior-dev": "allow",
+          "devops-engineer": "allow",
+          "qa-engineer": "allow",
+          "security-engineer": "allow",
+          "performance-engineer": "allow",
+          "ux-designer": "allow",
+          "data-engineer": "allow",
+          "product-manager": "allow",
+          "code-reviewer": "allow"
         }
       }
+    },
+    "tech-lead": {
+      "mode": "subagent",
+      "description": "Tech Lead - Architecture and technical leadership",
+      "prompt": "{file:./prompts/team/tech-lead.md}"
+    },
+    "senior-dev": {
+      "mode": "subagent",
+      "description": "Senior Developer - Implementation and code quality",
+      "prompt": "{file:./prompts/team/senior-dev.md}"
+    },
+    "devops-engineer": {
+      "mode": "subagent",
+      "description": "DevOps Engineer - CI/CD and Infrastructure",
+      "prompt": "{file:./prompts/team/devops-engineer.md}"
+    },
+    "qa-engineer": {
+      "mode": "subagent",
+      "description": "QA Engineer - Testing and quality",
+      "prompt": "{file:./prompts/team/qa-engineer.md}"
+    },
+    "security-engineer": {
+      "mode": "subagent",
+      "description": "Security Engineer - Security and compliance",
+      "prompt": "{file:./prompts/team/security-engineer.md}"
+    },
+    "performance-engineer": {
+      "mode": "subagent",
+      "description": "Performance Engineer - Optimization and scalability",
+      "prompt": "{file:./prompts/team/performance-engineer.md}"
+    },
+    "ux-designer": {
+      "mode": "subagent",
+      "description": "UX Designer - User experience",
+      "prompt": "{file:./prompts/team/ux-designer.md}"
+    },
+    "data-engineer": {
+      "mode": "subagent",
+      "description": "Data Engineer - Data and analytics",
+      "prompt": "{file:./prompts/team/data-engineer.md}"
+    },
+    "product-manager": {
+      "mode": "subagent",
+      "description": "Product Manager - Vision and prioritization",
+      "prompt": "{file:./prompts/team/product-manager.md}"
+    },
+    "code-reviewer": {
+      "mode": "subagent",
+      "description": "Code Reviewer - Thorough reviews",
+      "prompt": "{file:./prompts/team/code-reviewer.md}"
     },
     "linear-pm": {
       "mode": "subagent",
       "description": "Project management specialist for Linear - manages issues, projects, and tracks progress",
-      "prompt": "{file:./prompts/linear-pm.md}",
-      "tools": {
-        "read": true,
-        "search": true
-      }
+      "prompt": "{file:./prompts/linear-pm.md}"
     },
     "sdd-apply": {
       "description": "Implement code changes from task definitions",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-apply.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-apply.md}"
     },
     "sdd-archive": {
       "description": "Archive completed change artifacts",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-archive.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-archive.md}"
     },
     "sdd-qa": {
       "description": "Run capability-driven acceptance QA and write qa-report.md",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-qa.md}",
-      "tools": {
-        "bash": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-qa.md}"
     },
     "sdd-design": {
       "description": "Create technical design from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-design.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-design.md}"
     },
     "sdd-explore": {
       "description": "Investigate codebase and think through ideas",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-explore.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-explore.md}"
     },
     "sdd-init": {
       "description": "Bootstrap SDD context and project configuration",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-init.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-init.md}"
     },
     "sdd-propose": {
       "description": "Create change proposals from explorations",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-propose.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-propose.md}"
     },
     "sdd-spec": {
       "description": "Write detailed specifications from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-spec.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-spec.md}"
     },
     "sdd-tasks": {
       "description": "Break down specs and designs into implementation tasks",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-tasks.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-tasks.md}"
     },
     "sdd-verify": {
       "description": "Validate implementation against specs",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-verify.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-verify.md}"
     },
     "scalpel": {
       "description": "Surgical fix agent for judgment-day protocol",
       "hidden": false,
       "mode": "subagent",
-      "prompt": "{file:./prompts/scalpel.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/scalpel.md}"
     },
     "lens": {
       "description": "Adversarial code reviewer — blind judge A for judgment-day protocol",
       "hidden": false,
       "mode": "subagent",
       "prompt": "{file:./prompts/lens.md}",
-      "tools": {
-        "bash": true,
-        "read": true
+      "permission": {
+        "edit": "deny"
       }
     },
     "mirror": {
@@ -443,9 +382,8 @@
       "hidden": false,
       "mode": "subagent",
       "prompt": "{file:./prompts/mirror.md}",
-      "tools": {
-        "bash": true,
-        "read": true
+      "permission": {
+        "edit": "deny"
       }
     }
   },

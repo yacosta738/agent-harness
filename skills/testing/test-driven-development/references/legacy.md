@@ -1,24 +1,22 @@
-# Tests en código legacy
+# Tests in legacy code
 
-## Captura primero lo que el sistema ya hace
+## Capture what the system already does
 
-Cuando el comportamiento existe pero no está documentado, escribe un **test de caracterización** con
-ejemplos observables y ejecuta el test contra el sistema actual. Es normal que pase desde el primer
-intento: registra la conducta que se debe preservar; no pretende demostrar una funcionalidad
-ausente.
+When behavior exists but is undocumented, write a **characterization test** with observable examples
+and run it against the current system. It is normal for it to pass on the first attempt: it records
+the behavior that must be preserved; it does not try to prove a missing capability.
 
-Cuando corriges un bug o agregas una regla nueva, escribe un **test de regresión** que represente el
-resultado exigido. Ese test debe fallar por la conducta incorrecta antes de implementar el cambio.
+When you fix a defect or add a new rule, write a **regression test** that represents the required
+outcome. That test must fail because of the incorrect behavior before you implement the change.
 
-## Avanza por riesgo y por cortes pequeños
+## Advance by risk and by small slices
 
-1. Identifica el código que cambiará y los resultados que los usuarios ya observan.
-2. Cubre primero los caminos críticos o las zonas que se modifican con frecuencia.
-3. Usa la interfaz disponible. Si no hay una frontera práctica para probar, introduce el cambio más
-   pequeño que permita observar el comportamiento sin rediseñar todo el sistema.
-4. Refactoriza después de tener una caracterización útil y conserva los tests verdes.
-5. Añade el siguiente test cerca del próximo cambio, en lugar de perseguir cobertura total antes de
-   trabajar.
+1. Identify the code that will change and the outcomes users already observe.
+2. Cover the critical paths or the areas that change most often first.
+3. Use the available interface. If there is no practical boundary to test, introduce the smallest
+   change that makes the behavior observable without redesigning the whole system.
+4. Refactor after you have a useful characterization, and keep the tests green.
+5. Add the next test near the next change, instead of chasing full coverage before working.
 
-No describas un test de caracterización que pasa como el RED de TDD. Después de fijar la conducta
-existente, vuelve al ciclo test-first para cada bug o requisito nuevo.
+Do not describe a passing characterization test as the RED of TDD. After you pin the existing
+behavior, return to the test-first cycle for each new defect or requirement.

@@ -3,70 +3,71 @@ name: code-review
 description: Use when the user requests a code review, provides a pull request URL, asks whether changes are ready to merge, or needs a 4R/RDD assessment.
 ---
 
-# Revisión de código
+# Code review
 
-## Regla principal
+## Primary rule
 
-Toda revisión cubre las cuatro lentes de `four-r-review`: **R1 Risk**, **R2 Readability**,
-**R3 Reliability** y **R4 Resilience**. Una revisión no puede limitarse a estilo ni declarar un
-resultado sin evidencia.
+Every review covers the four lenses of `four-r-review`: **R1 Risk**, **R2 Readability**,
+**R3 Reliability**, and **R4 Resilience**. A review cannot be limited to style, and it cannot declare
+an outcome without evidence.
 
-Cada invocación explícita de `/review` inicia RDD, aunque el modo global de RDD esté desactivado.
-RDD registra una revisión; no autoriza cambios, commits, push, comentarios en GitHub ni entrega.
+Each explicit `/review` invocation starts RDD, even when the global RDD mode is disabled. RDD records
+a review; it does not authorize changes, commits, push, GitHub comments, or delivery.
 
-## Selección del objetivo
+## Target selection
 
-- Si el usuario proporciona una URL de pull request, revisa esa PR.
-- Si no proporciona una URL, revisa el working tree actual respecto a `HEAD`, incluidos cambios
-  staged, unstaged y archivos untracked.
-- Si proporciona otro argumento que no es una URL de PR, no lo conviertas en un comando o ruta de
-  shell. Pregunta si quiere revisar la PR por URL o el working tree.
+- If the user provides a pull request URL, review that PR.
+- If the user provides no URL, review the current working tree against `HEAD`, including staged,
+  unstaged, and untracked files.
+- If the user provides an argument that is not a PR URL, do not turn it into a shell command or path.
+  Ask whether they want to review the PR by URL or the working tree.
 
-### Objetivo de pull request
+### Pull request target
 
-1. Inicia RDD para la URL. El control plane verifica autenticación y URL canónica, identifica el
-   remoto base, obtiene los refs mediante argumentos Git separados y vuelve a comprobar los OID sin
-   cambiar el working tree:
+1. Start RDD for the URL. The control plane verifies authentication and the canonical URL, identifies
+   the base remote, fetches the refs through separate Git arguments, and re-checks the OIDs without
+   changing the working tree:
 
    ```bash
    node ~/.config/opencode/scripts/review.mjs start --required --cwd "$PWD" --pr-url "<url>"
    ```
 
-   Usa `baseSha`, `headSha` y `changedPaths` de la respuesta. Si no puede verificar la PR o traer ambos
-   commits, detente. Nunca elijas otro objetivo como sustituto y no uses `gh pr checkout`.
+   Use `baseSha`, `headSha`, and `changedPaths` from the response. If it cannot verify the PR or fetch
+   both commits, stop. Never pick another target as a substitute, and do not use `gh pr checkout`.
 
-2. El control plane calcula el merge base y el diff hasta `head` antes de iniciar la transacción RDD.
+2. The control plane computes the merge base and the diff up to `head` before it opens the RDD
+   transaction.
 
-### Objetivo local
+### Local target
 
-Sin URL de PR, inicia RDD para el working tree:
+Without a PR URL, start RDD for the working tree:
 
 ```bash
 node ~/.config/opencode/scripts/review.mjs start --required --cwd "$PWD"
 ```
 
-`--required` hace que `/review` inicie RDD sin habilitarlo globalmente. No omitas este flag. No
-mezcles un review de PR con cambios locales que no forman parte de esa PR.
+`--required` makes `/review` start RDD without enabling it globally. Do not omit this flag. Do not mix
+a PR review with local changes that are not part of that PR.
 
-## Revisión y evidencia RDD
+## Review and RDD evidence
 
-1. Sigue la secuencia de `rdd-review`. Usa el binding, el `subjectHash`, los revisores y el
-   `next_transition` que devuelve el control plane. No reconstruyas tokens ni identidades.
-2. Materializa la revisión con `review.mjs materialize` y entrega a los revisores solo esa copia con
-   permisos de escritura eliminados. No les pidas que inspeccionen el working tree vivo.
-   En Windows, el bit `read-only` de un directorio no sustituye una ACL; el control plane comprueba
-   otra vez el árbol durante `capture`. Si hay procesos locales no confiables, usa un entorno Unix.
-3. Usa `changedPaths` devuelto por el control plane para delimitar el diff. Revisa esos archivos y
-   el contexto necesario dentro del candidato materializado; no revises todo el repositorio ni uses
-   el working tree vivo para reconstruir el alcance.
-4. Ejecuta los revisores indicados por el resultado de RDD. Usa `code-reviewer` para una revisión
-   focalizada y `lens` más `mirror` en paralelo para una revisión de riesgo alto. Una revisión
-   documental pasiva también recibe lectura estructural con las cuatro lentes.
-5. Clasifica cada hallazgo bajo su lente primaria de 4R. Registra severidad, ruta, impacto y si el
-   hallazgo lo causa el candidato. Cada objeto de `findings` incluye `lens` (`R1`–`R4`), `severity`,
-   `candidateCaused`, `file` y `description`. Explica por qué una lente no aplica.
-6. Captura los hallazgos con los bindings exactos de `start` y los revisores exactos que devolvió el
-   control plane:
+1. Follow the `rdd-review` sequence. Use the binding, the `subjectHash`, the reviewers, and the
+   `next_transition` returned by the control plane. Do not reconstruct tokens or identities.
+2. Materialize the review with `review.mjs materialize` and give the reviewers only that copy with
+   write permissions removed. Do not ask them to inspect the live working tree.
+   On Windows, the read-only bit on a directory does not replace an ACL; the control plane re-checks
+   the tree during `capture`. If untrusted local processes are present, use a Unix environment.
+3. Use the `changedPaths` returned by the control plane to bound the diff. Review those files and the
+   necessary context inside the materialized candidate; do not review the whole repository, and do
+   not use the live working tree to reconstruct the scope.
+4. Run the reviewers indicated by the RDD result. Use `code-reviewer` for a focused review, and `lens`
+   plus `mirror` in parallel for a high-risk review. A passive documentation review also receives a
+   structural reading with the four lenses.
+5. Classify each finding under its primary 4R lens. Record severity, path, impact, and whether the
+   candidate causes the finding. Each object in `findings` includes `lens` (`R1`–`R4`), `severity`,
+   `candidateCaused`, `file`, and `description`. Explain why a lens does not apply.
+6. Capture the findings with the exact `start` bindings and the exact reviewers the control plane
+   returned:
 
    ```bash
    node ~/.config/opencode/scripts/review.mjs materialize --cwd "$PWD" \
@@ -77,16 +78,16 @@ mezcles un review de PR con cambios locales que no forman parte de esa PR.
      --findings '<JSON>' --reviewers "<names>" --review-evidence '<JSON>'
    ```
 
-   `review-evidence` debe incluir un registro por revisor asignado, con `reviewer`, `subjectHash`,
-   `candidatePath`, `verdict` (`CLEAN` o `FINDINGS`), `findings` y un arreglo `lenses` con cuatro
-   objetos. Cada objeto identifica una lente (`R1`, `R2`, `R3` o `R4`), un `outcome` (`PASS`,
-   `FINDING` o `NOT_APPLICABLE`) y una `rationale` no vacía. Cada hallazgo lleva un `id` estable y
-   los mismos datos (`lens`, `severity`, `candidateCaused`, `file`, `description`) en la lista global
-   y en la evidencia de al menos un revisor. El control plane rechaza capturas sin el candidato
-   materializado exacto, con hallazgos inconsistentes o sin evidencia de las cuatro lentes.
+   `review-evidence` must include one record per assigned reviewer, with `reviewer`, `subjectHash`,
+   `candidatePath`, `verdict` (`CLEAN` or `FINDINGS`), `findings`, and a `lenses` array with four
+   objects. Each object identifies one lens (`R1`, `R2`, `R3`, or `R4`), an `outcome` (`PASS`,
+   `FINDING`, or `NOT_APPLICABLE`), and a non-empty `rationale`. Each finding carries a stable `id`
+   and the same data (`lens`, `severity`, `candidateCaused`, `file`, `description`) in the global list
+   and in the evidence of at least one reviewer. The control plane rejects captures without the exact
+   materialized candidate, with inconsistent findings, or without evidence for all four lenses.
 
-7. Continúa solo según el `next_transition` devuelto. Si el estado es `approved`, usa su binding y
-   token exactos para cerrar el recibo:
+7. Continue only according to the returned `next_transition`. If the state is `approved`, use its
+   exact binding and token to close the receipt:
 
    ```bash
    node ~/.config/opencode/scripts/review.mjs acknowledge-approved --cwd "$PWD" \
@@ -94,47 +95,47 @@ mezcles un review de PR con cambios locales que no forman parte de esa PR.
      --subject-hash "<subjectHash>" --acknowledgement "<token>"
    ```
 
-    Si el estado es `escalated` o el candidato no se puede materializar, informa el bloqueo y pide al
-    usuario si quiere abandonar o diferir esta revisión. Solo con esa decisión usa
-    el binding exacto y el token de recuperación devueltos:
+   If the state is `escalated` or the candidate cannot be materialized, report the blocker and ask the
+   user whether to abandon or defer this review. Only with that decision, use the exact binding and
+   recovery token returned:
 
-    ```bash
-    node ~/.config/opencode/scripts/review.mjs close --cwd "$PWD" \
-      --lineage "<lineage>" --revision "<revision>" --target "<target>" \
-      --subject-hash "<subjectHash>" --recovery-token "<token>" \
-      --resolution "<decisión del usuario>"
-    ```
+   ```bash
+   node ~/.config/opencode/scripts/review.mjs close --cwd "$PWD" \
+     --lineage "<lineage>" --revision "<revision>" --target "<target>" \
+     --subject-hash "<subjectHash>" --recovery-token "<token>" \
+     --resolution "<user decision>"
+   ```
 
-    El cierre queda como `closed_without_approval`; nunca lo presentes como aprobación.
+   The close is recorded as `closed_without_approval`; never present it as an approval.
 
-8. Si el estado es `correction_pending`, detente y pide autorización; no edites código durante una
-   revisión. Después de una corrección autorizada, ejecuta `review.mjs assess` para obtener el
-   `candidateTree` sucesor. Valida ese candidato en una copia aislada y registra cada comprobación
-   con `command`, `status`, `exitCode` y el mismo `candidateTree`. Para una PR, vuelve a consultar los
-   OID de la misma URL; la URL no puede cambiar. Captura el sucesor con
-    `capture-correction --validator-status PASS --validation-evidence <JSON> --pr-url <url>` para
-    una PR; el control plane volverá a resolver la URL. No captures `PASS` sin validaciones aprobadas y
-    ligadas al hash del árbol. Materializa el
-   candidato sucesor y vuelve a revisarlo con 4R y los revisores que devuelve el control plane. Usa el
-   nuevo binding para capturar esa revisión. Un hallazgo CRITICAL/P0/P1 adicional escala y no permite
-   otra corrección.
+8. If the state is `correction_pending`, stop and ask for authorization; do not edit code during a
+   review. After an authorized correction, run `review.mjs assess` to obtain the successor
+   `candidateTree`. Validate that candidate in an isolated copy and record each check with `command`,
+   `status`, `exitCode`, and the same `candidateTree`. For a PR, re-query the OIDs of the same URL; the
+   URL cannot change. Capture the successor with
+   `capture-correction --validator-status PASS --validation-evidence <JSON> --pr-url <url>` for a PR;
+   the control plane resolves the URL again. Do not capture `PASS` without validations that are
+   approved and bound to the tree hash. Materialize the successor candidate and review it again with
+   4R and the reviewers returned by the control plane. Use the new binding to capture that review. An
+   additional CRITICAL/P0/P1 finding escalates and does not allow another correction.
 
-El control plane valida la estructura y el binding de `validationEvidence`, pero no ejecuta el
-comando que el agente registra. Conserva el resultado real del proceso y no presentes esta evidencia
-como verificación independiente del control plane.
+The control plane validates the structure and binding of `validationEvidence`, but it does not run the
+command the agent records. Preserve the real process result, and do not present this evidence as an
+independent verification by the control plane.
 
-## Herramientas relacionadas
+## Related tools
 
-- Usa `coderabbit-review` cuando el usuario solicite CodeRabbit o cuando el flujo aprobado lo
-  requiera. Clasifica sus hallazgos con 4R, pero no los presentes como revisión manual.
-- Usa `double-blind-review` para revisiones adversariales explícitas o cuando el riesgo requiera dos
-  revisores. El ciclo RDD de alto riesgo ya exige `lens` y `mirror`; no dupliques una segunda ronda
-  con el mismo objetivo sin una razón.
-- `/pr-watch` conserva la propiedad de comentarios, hilos y workflows. Usa esta skill para evaluar
-  código cuando un hilo o una corrección lo necesite; no inicies otro ciclo RDD desde `/pr-watch`.
+- Use `coderabbit-review` when the user requests CodeRabbit or when the approved workflow requires it.
+  Classify its findings with 4R, but do not present them as a manual review.
+- Use `double-blind-review` for explicit adversarial reviews or when risk requires two reviewers. The
+  high-risk RDD cycle already requires `lens` and `mirror`; do not duplicate a second round for the
+  same target without a reason.
+- `/pr-watch` keeps ownership of comments, threads, and workflows. Use this skill to evaluate code when
+  a thread or a correction needs it; do not start another RDD cycle from `/pr-watch`.
 
-## Informe
+## Report
 
-Presenta primero hallazgos por severidad y lente, después evidencia de las cuatro lentes, objetivo y
-OID/estado RDD, validaciones ejecutadas, limitaciones y la siguiente transición o decisión humana.
-No declares aprobación si falta evidencia o si el control plane devuelve `Needs your decision`.
+Present findings by severity and lens first, then the evidence for the four lenses, the target and the
+RDD OID/state, the validations you ran, the limitations, and the next transition or human decision.
+Do not declare approval when evidence is missing or when the control plane returns
+`Needs your decision`.

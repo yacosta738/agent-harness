@@ -246,7 +246,7 @@ badges, level indicators, and section header icons.
 │  PLAYER 01  ♥♥♥  XP ████████░░  [BADGE: ROLE TITLE]            │  ← HUD bar
 │─────────────────────────────────────────────────────────────────│
 │  ┌─ HERO PORTRAIT (left 35%) ─┐  ┌─ STATS (right 65%) ────────┐ │
-│  │  [Pixel art / stylized      │  │  NIVEL: XX  [RANK BADGE]   │ │
+│  │  [Pixel art / stylized      │  │  LEVEL: XX  [RANK BADGE]   │ │
 │  │   avatar or portrait]       │  │                             │ │
 │  │                             │  │  ▸ STAT 1  ████████░░  95  │ │
 │  │  [NAME — large display]     │  │  ▸ STAT 2  ███████░░░  87  │ │
@@ -254,20 +254,20 @@ badges, level indicators, and section header icons.
 │  │                             │  │  ▸ STAT 4  █████████░  90  │ │
 │  │  Bio text (2-3 lines)       │  │                             │ │
 │  │                             │  │  ┌─ SPECIAL TRAIT ────────┐ │ │
-│  │  ★ MISIÓN:                  │  │  │ [Icon] Title           │ │ │
+│  │  ★ MISSION:                 │  │  │ [Icon] Title           │ │ │
 │  │  [One-liner mission stmt]   │  │  │ Trait 1 · Trait 2      │ │ │
 │  └─────────────────────────────┘  └─────────────────────────────┘ │
 │─────────────────────────────────────────────────────────────────│
 │  [KPI 1]  [KPI 2]  [KPI 3]  [KPI 4]          ← Achievement row  │
 │─────────────────────────────────────────────────────────────────│
-│  ┌─ HABILIDADES ──┐  ┌─ EXPERIENCIA ──┐  ┌─ CATEGORÍAS ───────┐ │
+│  ┌─ SKILLS ───────┐  ┌─ EXPERIENCE ───┐  ┌─ CATEGORIES ───────┐ │
 │  │ • Skill 1      │  │ Company        │  │ ■ Industry 1        │ │
 │  │   description  │  │ 2020–2024      │  │ ■ Industry 2        │ │
 │  │ • Skill 2      │  │ Role title     │  │ ■ Industry 3        │ │
 │  │   description  │  │ Description    │  │                     │ │
 │  └────────────────┘  └────────────────┘  └─────────────────────┘ │
 │─────────────────────────────────────────────────────────────────│
-│  ♥ FILOSOFÍA: [Name]  │  [Tagline / motto]  │  [Logo/icon]       │  ← Footer
+│  ♥ PHILOSOPHY: [Name] │  [Tagline / motto]  │  [Logo/icon]       │  ← Footer
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -327,11 +327,11 @@ COMPOSITION:
 - HUD top bar: "PLAYER 01 ♥♥♥ XP [bar]" + role badge pill with teal border
 - Left column (35%): [avatar/portrait], large name, role subtitle, bio 2-3 lines,
   mission statement in teal-bordered box
-- Right column (65%): NIVEL [XX] + [RANK], then stat bars for [SKILL 1–5]
+- Right column (65%): LEVEL [XX] + [RANK], then stat bars for [SKILL 1–5]
   each with teal filled blocks and numeric score
   + special trait box: [trait name] + [3 sub-traits as icons]
 - Achievement strip: [KPI 1] [KPI 2] [KPI 3] [KPI 4] — icon + large number + label
-- Bottom thirds: [HABILIDADES panel] [EXPERIENCIA panel] [CATEGORIES panel]
+- Bottom thirds: [SKILLS panel] [EXPERIENCE panel] [CATEGORIES panel]
   each with teal left-border icons and clean list content
 - Footer bar: philosophy/motto + tagline + small icon/logo
 
@@ -446,7 +446,7 @@ AVOID: Color fills, gradients, icons, sans-serif fonts.
 
 ### Example 3 — RPG Character Card (Personal Brand)
 
-> User: "Crea una infografía de perfil personal estilo RPG card"
+> User: "Create an RPG-card style personal brand infographic"
 
 ```
 Create an RPG Character Card style personal brand infographic for a LinkedIn post
@@ -469,7 +469,7 @@ COMPOSITION:
     content from Valencia, Spain."
     Mission box (teal left border): "Turning complex systems into clear knowledge."
 - Right column (65%):
-    NIVEL: 7  [EXPERTO] badge — teal filled
+    LEVEL: 7  [EXPERT] badge — teal filled
     Stat bars (█ block style, teal filled / #233554 empty):
       DISTRIBUTED SYSTEMS  ████████████░░  92
       RUST / SYSTEMS       ███████████░░░  88
@@ -483,12 +483,12 @@ COMPOSITION:
     🏠 HOMELAB     📝 +50 POSTS    🦀 RUST TOOLS    🎬 YOUTUBE
     RUNNING        PUBLISHED       SHIPPED          ACTIVE
 - Bottom thirds:
-    LEFT — HABILIDADES CLAVE (teal section header):
+    LEFT — KEY SKILLS (teal section header):
       • Distributed Systems — Kafka, event-driven arch
       • Systems Programming — Rust, async/Tokio
       • Observability — OpenTelemetry, wide events
       • Technical Writing — Blog, LinkedIn, YouTube
-    CENTER — EXPERIENCIA:
+    CENTER — EXPERIENCE:
       GFT
       2022 – Present
       Senior Software Engineer
@@ -497,7 +497,7 @@ COMPOSITION:
       ■ Rust  ■ Kotlin  ■ Kafka
       ■ Proxmox  ■ OpenTelemetry
       ■ Kubernetes  ■ PostgreSQL
-- Footer bar: "⚡ YUNIELACOSTA.COM" | "Building in public desde Valencia" | small Rust crab icon
+- Footer bar: "⚡ YUNIELACOSTA.COM" | "Building in public from Valencia" | small Rust crab icon
 
 TYPOGRAPHY:
 - Name: large bold heavy display
