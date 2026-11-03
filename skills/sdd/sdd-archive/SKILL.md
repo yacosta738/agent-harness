@@ -39,11 +39,26 @@ Follow **Section A** from `../_shared/sdd-phase-common.md`.
 ### Step 2: Validate the Two-Report Acceptance Gate
 
 The lifecycle is `apply → verify → qa → archive`. Before syncing or moving the change, require both
-`verify-report.md` and `qa-report.md` at the change root. Verification must be `PASS` or
-`PASS WITH WARNINGS`; block missing reports, failed verification, QA `FAIL`, unresolved `CRITICAL`
-/P0/P1 findings, and acceptance-relevant `BLOCKED`/`NOT TESTED`. Documentation/config-only changes
-may proceed only with an explicit rationale and visible warning; preserve the original QA verdict
-and evidence. P2/P3 findings are warnings unless configuration says otherwise.
+`verify-report.md` and `qa-report.md` at the change root. Apply any additional `rules.archive` in
+`.agents/sdd/config.yaml` as a stricter gate; project rules MUST NOT weaken the defaults below.
+
+- Verification MUST be `PASS` or `PASS WITH WARNINGS`. Missing reports, failed verification, QA
+  `FAIL`, and unresolved `CRITICAL`, `P0`, or `P1` findings always block archive.
+- QA `FAIL` always blocks archive. QA `BLOCKED` or `NOT TESTED` blocks archive when any
+  acceptance scenario is untested or any acceptance-relevant capability is unavailable. QA `PASS`
+  or `PASS WITH WARNINGS` satisfies the QA gate only when every applicable acceptance scenario has
+  observable evidence and the report has no unresolved blocking finding.
+- The narrow documentation/configuration-only exception applies only when every changed path and
+  every completed task is documentation, generated output, or non-runtime configuration; no task
+  changes executable, runtime, security, deployment, or data behavior. In that case, QA
+  `BLOCKED`/`NOT TESTED` may proceed only if the report identifies the untested scope, states why no
+  applicable runtime acceptance test exists, records the artifact checks performed, and gives an
+  explicit rationale. Preserve the original verdict and add a visible archive warning.
+- An unresolved P2/P3 finding blocks archive if the QA report marks its acceptance scenario failed,
+  blocked, untested, or otherwise unresolved. It is a warning only when the report records evidence
+  that all affected acceptance scenarios pass and explains why the finding is non-blocking.
+- `rules.archive` may add stricter requirements. It cannot permit archive when any unconditional
+  blocker above remains.
 
 ### Step 3: Sync Delta Specs to Main Specs
 
@@ -134,10 +149,9 @@ Ready for the next change.
 
 ## Rules
 
-- NEVER archive a change with missing reports, failed verification, QA `FAIL`, or unresolved
-  `CRITICAL`, `P0`, or `P1` findings
-- Acceptance-relevant QA `BLOCKED`/`NOT TESTED` blocks archive unless config permits a documented
-  non-runtime exception; preserve the original verdict
+- NEVER archive a change that violates the deterministic two-report acceptance gate above.
+- Preserve the original QA verdict and evidence when the narrow documentation/configuration-only
+  exception applies; do not rewrite `BLOCKED` or `NOT TESTED` as `PASS`.
 - ALWAYS sync delta specs BEFORE moving to archive
 - When merging into existing specs, PRESERVE requirements not mentioned in the delta
 - Use ISO date format (YYYY-MM-DD) for archive folder prefix

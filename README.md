@@ -60,7 +60,7 @@ output contract; it does not claim official ASD-STE100 compliance.
 
 ## Agents
 
-16 agents registered in `adapters/opencode/opencode.json`:
+15 agents registered in `adapters/opencode/opencode.json`:
 
 - **kerrigan** — primary. Senior fullstack architect (15+ years). Warm, direct, practical.
   Answers simple questions directly, delegates the rest, challenges bad decisions with evidence.
@@ -69,9 +69,12 @@ output contract; it does not claim official ASD-STE100 compliance.
 - **Team specialists** (`prompts`, 10) — `tech-lead`, `senior-dev`, `devops-engineer`,
   `qa-engineer`, `security-engineer`, `performance-engineer`, `ux-designer`, `data-engineer`,
   `product-manager`, `code-reviewer`.
-- **SDD phase executors** (`prompts`, 11) — `sdd-init`, `sdd-explore`, `sdd-propose`,
-  `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`,
-  plus `sdd-onboard`.
+- **SDD phase executors** (`prompts`, 10) — `sdd-init`, `sdd-explore`, `sdd-propose`,
+  `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`.
+  Each delegated prompt is a brief contract; the procedure lives in `skills/sdd/<phase>/SKILL.md`
+  and the shared protocol `skills/sdd/_shared/sdd-phase-common.md`.
+- **SDD onboarding** (`skills/sdd/sdd-onboard/SKILL.md`) — inline skill, not a sub-agent. It guides
+  the user through one complete cycle on the real codebase and delegates every phase.
 - **Review protocol** — `lens`, `mirror` (blind judges), `scalpel` (surgical fixes only).
 
 Kerrigan never executes SDD phase work inline — it delegates to the phase agent.
@@ -81,8 +84,7 @@ Kerrigan never executes SDD phase work inline — it delegates to the phase agen
 Phase DAG:
 
 ```
-init → explore → propose → [spec + design] → tasks → apply → verify → qa → archive
-                              (parallel)
+init → explore → propose → spec → design → tasks → apply → verify → qa → archive
 ```
 
 **Phase commands** (13 total: 10 phase + 3 meta) route to their dedicated agent via
@@ -101,7 +103,7 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 | `/sdd-qa`       | sdd-qa      | Acceptance evidence, `qa-report.md`            |
 | `/sdd-archive`  | sdd-archive | Two-report gate, sync + archive                |
 | `/sdd-new`      | kerrigan    | explore + propose                              |
-| `/sdd-ff`       | kerrigan    | propose + [spec + design] + tasks              |
+| `/sdd-ff`       | kerrigan    | propose + spec + design + tasks                |
 | `/sdd-continue` | kerrigan    | Resume from `state.yaml`                       |
 
 Artifacts (mode `openspec`) live under `.agents/sdd/changes/<name>/`
@@ -145,7 +147,7 @@ Two standards, split on purpose:
 | Vercel (5)  | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace`                                                                                 |
 | Misc (6)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                    |
 
-## Skills (121)
+## Skills (122)
 
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
@@ -158,7 +160,7 @@ trust the filesystem, not this table:
 | `design/`         | 7                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
 | `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                      |
 | `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                |
-| `sdd/`            | 10                     | One skill per SDD phase + `_shared/` protocol                                                   |
+| `sdd/`            | 11                     | Ten phase skills, inline onboarding, and the `_shared/` protocol                                                   |
 | `github/`         | 9                      | Actions, PR flow, stacked PRs, CI fixes, reviews, `yeet`                                        |
 | `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                               |
 | `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                          |
@@ -217,9 +219,9 @@ Also in `adapters/opencode/opencode.json`:
 
 ```
 agent-harness/
-├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
+├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (10), linear-pm, lens/mirror/scalpel
 ├── commands/                ← 27 slash commands (13 sdd + 3 diagram + 5 vercel + 6 misc)
-├── skills/                  ← 121 skills in 18 groups (filesystem = truth)
+├── skills/                  ← 122 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides

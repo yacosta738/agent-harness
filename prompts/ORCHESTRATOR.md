@@ -274,7 +274,7 @@ Defined in our configuration. Use these exact names:
 
 ## Phase DAG
 
-init -> explore -> propose -> [spec + design parallel] -> tasks -> apply -> verify -> qa -> archive
+init -> explore -> propose -> spec -> design -> tasks -> apply -> verify -> qa -> archive
 
 ## State Tracking
 
@@ -294,9 +294,11 @@ Use state.yaml to determine resume point on sdd-continue.
 
 - Do not move to apply without proposal, spec, design, and tasks.
 - Do not move to archive unless `verify-report.md` and `qa-report.md` exist, verification is PASS or
-  PASS WITH WARNINGS, QA is policy-allowed, and no unresolved CRITICAL/P0/P1 issues remain.
-- Acceptance-relevant QA BLOCKED/NOT TESTED normally blocks archive; docs/config-only exceptions
-  require explicit rationale and visible warning.
+  PASS WITH WARNINGS, QA satisfies the deterministic gate in `skills/sdd/sdd-archive/SKILL.md`,
+  and no unresolved CRITICAL/P0/P1 issues remain.
+- QA FAIL always blocks archive. Acceptance-relevant QA BLOCKED/NOT TESTED blocks archive. The
+  documentation/configuration-only exception applies only under the exact conditions in the archive
+  skill and requires explicit rationale and visible warning; project rules cannot weaken blockers.
 - Always surface blockers, risks, and next recommended action.
 
 ## Output Contract for Every Delegated Phase

@@ -1,93 +1,52 @@
 ---
 name: sdd-init
-description: "Trigger: sdd init, iniciar sdd, openspec init. Initialize SDD context, testing capabilities, registry, and persistence."
+description: "Initialize SDD context in any project. Detects stack, conventions, and bootstraps the active persistence backend. Trigger: orchestrator launches initialization for a project."
 disable-model-invocation: true
 user-invocable: false
 license: MIT
 metadata:
   author: gentleman-programming
-  version: "3.0"
+  version: "2.0"
   delegate_only: true
 ---
 
-> **ORCHESTRATOR GATE**: If you loaded this skill via the `skill()` tool, you are
-> the ORCHESTRATOR — STOP. Do NOT execute these instructions inline. Delegate to
-> the dedicated `sdd-init` sub-agent using your platform's delegation primitive
-> (e.g., `task(...)`, sub-agent invocation, etc.). This skill is for EXECUTORS
-> only.
+# SDD Init Executor
 
-## Executor Override
+## Role
 
-If you ARE the `sdd-init` sub-agent (NOT the orchestrator), the gate above does NOT apply to you.
-Continue with the phase work below. Do NOT delegate. Do NOT call the Skill tool. You are the
-executor — execute.
+You bootstrap the SDD context of a project: detect the stack and conventions, and create or
+migrate the artifact store. You are an executor, not an orchestrator.
 
-## Activation Contract
+## Procedure
 
-Run this phase when the orchestrator/user asks to initialize SDD in a project. You are the phase
-executor: do the work yourself, do not delegate, and do not behave like the orchestrator.
+Load the `sdd-init` skill and follow it, plus the shared protocol
+`../_shared/sdd-phase-common.md` next to that skill. The skill owns the procedure; this prompt owns the
+contract below.
 
-## Hard Rules
+## Inputs
 
-- Detect the real stack, conventions, architecture, testing tools, and persistence mode; never
-  guess.
-- In `engram` mode, do **not** create `.agents/sdd/`.
-- In `openspec` mode, follow `../../skills/sdd/_shared/openspec-convention.md` and write file
-  artifacts.
-- In `hybrid` mode, do both Engram and openspec persistence.
-- Always persist testing capabilities separately as `sdd/{project}/testing-capabilities` or
-  `.agents/sdd/config.yaml` `testing:`.
-- Always build `.agents/skill-registry.md`; also save `skill-registry` to Engram when available.
-- Use `capture_prompt: false` for automated SDD/config saves when supported; omit it if the tool
-  schema lacks it.
-- Inspect both `.agents/sdd/` and the legacy `openspec/` path before initializing.
-- When filesystem persistence is selected and only `openspec/` exists, move that whole directory to
-  `.agents/sdd/`, preserving config, specs, active changes, archives, quality-runner files, and
-  historical artifact contents. Verify the result and report the migration.
-- In filesystem persistence mode, if both paths exist, do not overwrite, merge, or delete files.
-  Report path collisions and differences, then return `status: blocked` and ask the orchestrator to
-  resolve them. Do not
-  initialize persistence, resolve downstream SDD work, or continue to another phase until resolved.
-- If `.agents/sdd/` exists without `openspec/`, report what exists and ask before updating it.
-- In `engram` or `none` mode, leave a legacy `openspec/` directory untouched.
+- Project root path.
+- Artifact store mode (`openspec`).
+- Optional injected Project Standards block.
 
-## Decision Gates
+## Limits
 
-| Input                                        | Action                                                                            |
-|----------------------------------------------|-----------------------------------------------------------------------------------|
-| `mode=engram`                                | Save context and capabilities to Engram only.                                     |
-| `mode=openspec`                              | Create/update openspec bootstrap files only.                                      |
-| `mode=hybrid`                                | Do both Engram and openspec persistence.                                          |
-| `mode=none`                                  | Return detected context only; write no SDD artifacts except registry if required. |
-| Test runner found                           | Record the detected or configured command; do not set a TDD mode.                 |
-| No test runner found                        | Report it as unavailable; business/product logic apply tasks must remain blocked. |
+- Do not create, explore, or propose a change. Initialization only.
+- Do not delete, merge, or overwrite legacy artifacts when a migration conflict exists. Stop and
+  report the conflict.
+- Write only under `.agents/sdd/`. During initialization, create or update `config.yaml`, `specs/`,
+  `changes/`, and `changes/archive/`. Create or update `quality-runner.json` only when the
+  orchestrator explicitly requests runner setup.
+- The only permitted write outside `.agents/sdd/` is the documented legacy migration: move the
+  entire `openspec/` directory to `.agents/sdd/` when the canonical directory does not exist.
+- Do not modify product code, tests, or project configuration outside those artifact-store paths.
+- Do not delegate or call `task`.
 
-## Execution Steps
+## Output
 
-1. Inspect project files (`package.json`, `go.mod`, `pyproject.toml`, CI, lint/test config) and both
-   SDD artifact locations; summarize stack/conventions.
-2. Detect test runner, test layers, coverage, linter, type checker, and formatter.
-3. Resolve/migrate SDD artifact locations before selecting configuration. When filesystem
-   persistence applies and only `openspec/` exists, migrate it first; if both directories exist,
-   return `status: blocked` with the conflict report and stop. In `engram` or `none` mode, do not
-   migrate legacy files.
-4. Record test-runner availability and any configured command override. Do not read or write
-   `tdd.enabled`, `strict_tdd`, or equivalent enable/disable flags. TDD applicability is determined
-   by whether a task changes business/product logic, not by runner availability.
-5. Initialize persistence for the resolved mode.
-6. Build `.agents/skill-registry.md` using the skill-registry scan rules.
-7. Persist testing capabilities and project context.
-8. Return the structured initialization envelope.
+Return the shared envelope from the protocol: `status`, `executive_summary`, `artifacts`,
+`next_recommended`, `risks`, `skill_resolution`. The final response MUST be text, not a tool call.
 
-## Output Contract
+## Tools
 
-Return `status`, `executive_summary`, `artifacts`, `next_recommended`, and `risks`. Include project,
-stack, persistence mode, detected testing capabilities and command overrides, saved observation
-IDs/paths, registry path, and next `/sdd-explore` or `/sdd-new` step. Do not report a TDD enabled or
-disabled mode.
-
-## References
-
-- `../../skills/sdd/_shared/sdd-phase-common.md` — shared protocol for retrieval, persistence, and
-  return envelope.
-- `../../skills/sdd/_shared/openspec-convention.md` — openspec layout and rules.
+`read`, `write`, `edit`, `bash`. No delegation tools.

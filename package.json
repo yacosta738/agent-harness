@@ -10,6 +10,7 @@
     "deploy": "node scripts/deploy.mjs",
     "validate": "node scripts/check-refs.mjs",
     "test:refs": "node --test tests/check-refs.test.mjs",
+    "test:sdd": "node --test tests/sdd-agents.test.mjs",
     "test:review": "node --test tests/review-command.test.mjs tests/review-lib.test.mjs",
     "list": "node scripts/generate-bundle.mjs list",
     "render": "node scripts/generate-bundle.mjs render"

@@ -73,16 +73,15 @@ If there are multiple approaches, compare them:
 
 ### Step 4: Optionally Save Exploration
 
-If the orchestrator provided a change name (i.e., this exploration is part of `/sdd-new`), save your
-analysis to:
+Only if the orchestrator explicitly provides a change name as an input (i.e., this exploration is
+part of `/sdd-new`), create or update only this artifact:
 
 ```
-.agents/sdd/changes/{change-name}/
-└── exploration.md          ← You create this
+.agents/sdd/changes/{change-name}/exploration.md
 ```
 
-If no change name was provided (standalone `/sdd-explore`), skip file creation — just return the
-analysis.
+If no change name was provided (standalone `/sdd-explore`), do not create or modify files; return
+the analysis only.
 
 ### Step 5: Return Structured Analysis
 
@@ -129,9 +128,9 @@ saving):
 
 ## Rules
 
-- The ONLY file you MAY create is `exploration.md` inside the change folder (if a change name is
-  provided)
-- DO NOT modify any existing code or files
+- Only when the orchestrator explicitly provides a change name, the ONLY file you MAY create or
+  update is `.agents/sdd/changes/{change-name}/exploration.md`
+- DO NOT modify any existing code or files except the explicitly authorized exploration artifact above
 - ALWAYS read real code, never guess about the codebase
 - Keep your analysis CONCISE - the orchestrator needs a summary, not a novel
 - If you can't find enough information, say so clearly

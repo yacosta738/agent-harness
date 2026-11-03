@@ -229,7 +229,6 @@
           "sdd-design": "allow",
           "sdd-explore": "allow",
           "sdd-init": "allow",
-          "sdd-onboard": "allow",
           "sdd-propose": "allow",
           "sdd-spec": "allow",
           "sdd-tasks": "allow",
@@ -447,18 +446,6 @@
       "tools": {
         "bash": true,
         "read": true
-      }
-    },
-    "sdd-onboard": {
-      "description": "Guide users through the full SDD cycle using their real codebase",
-      "hidden": false,
-      "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-onboard.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
       }
     }
   },

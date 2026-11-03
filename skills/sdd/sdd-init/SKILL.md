@@ -21,6 +21,13 @@ backend.
 > `../_shared/sdd-phase-common.md`.
 
 - **openspec**: Read and follow `../_shared/openspec-convention.md`. Run full bootstrap.
+- Write or update SDD context only under `.agents/sdd/`. The only permitted write outside that
+  root is moving the entire legacy `openspec/` directory to `.agents/sdd/` when `.agents/sdd/` does
+  not exist. Do not modify project files while detecting stack, conventions, or test capabilities.
+- During initialization, create or update only `.agents/sdd/config.yaml`, `.agents/sdd/specs/`,
+  `.agents/sdd/changes/`, and `.agents/sdd/changes/archive/`. Read an existing
+  `.agents/sdd/quality-runner.json` when checking capabilities, but create or modify that optional
+  runner configuration only when the orchestrator explicitly requests runner setup.
 
 ## What to Do
 
@@ -62,6 +69,12 @@ documentation, generated files, or non-business configuration, CI, infrastructur
 continue with relevant artifact checks and no TDD claim.
 
 ### Step 2: Initialize Persistence Backend
+
+In `openspec` mode, write only these paths inside `.agents/sdd/`: `config.yaml`, `specs/`,
+`changes/`, and `changes/archive/`. Detecting runners or capabilities does not authorize edits to
+project manifests, CI, source, or tests. If the project opts into the optional runner adapter,
+read its config at `.agents/sdd/quality-runner.json`; create or update it only when the orchestrator
+explicitly requests runner setup.
 
 Create this directory structure:
 
