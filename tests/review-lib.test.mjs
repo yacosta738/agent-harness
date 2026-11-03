@@ -179,13 +179,15 @@ function configureFakePullRequest(root, remote, fakeBin, {baseSha, headSha}) {
     '        ? Number(fs.readFileSync(countFile, "utf8")) : 0;',
     '    fs.writeFileSync(countFile, String(count + 1));',
     '  }',
-    '  if (process.env.TEST_GH_STARTED_FILE) {',
+    '  if (process.env.TEST_GH_STARTED_FILE',
+    '      && !fs.existsSync(process.env.TEST_GH_STARTED_FILE)) {',
     '    fs.writeFileSync(process.env.TEST_GH_STARTED_FILE, "started\\n");',
     '    const gate = new Int32Array(new SharedArrayBuffer(4));',
     '    while (!fs.existsSync(process.env.TEST_GH_RELEASE_FILE)) {',
     '      Atomics.wait(gate, 0, 0, 10);',
     '    }',
     '  }',
+    '  if (process.env.TEST_GH_FAIL === "1") process.exit(2);',
     '  if (process.env.TEST_GH_HANG === "1") {',
     '    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 1000);',
     '  }',
@@ -209,6 +211,7 @@ function configureFakePullRequest(root, remote, fakeBin, {baseSha, headSha}) {
     TEST_BASE_SHA: process.env.TEST_BASE_SHA,
     TEST_HEAD_SHA: process.env.TEST_HEAD_SHA,
     TEST_GH_HANG: process.env.TEST_GH_HANG,
+    TEST_GH_FAIL: process.env.TEST_GH_FAIL,
     TEST_GH_STARTED_FILE: process.env.TEST_GH_STARTED_FILE,
     TEST_GH_RELEASE_FILE: process.env.TEST_GH_RELEASE_FILE,
     TEST_GH_COUNT_FILE: process.env.TEST_GH_COUNT_FILE
@@ -221,6 +224,13 @@ function configureFakePullRequest(root, remote, fakeBin, {baseSha, headSha}) {
     setOids(nextBaseSha, nextHeadSha) {
       process.env.TEST_BASE_SHA = nextBaseSha;
       process.env.TEST_HEAD_SHA = nextHeadSha;
+    },
+    setGhFailure(enabled) {
+      if (enabled) {
+        process.env.TEST_GH_FAIL = '1';
+      } else {
+        delete process.env.TEST_GH_FAIL;
+      }
     },
     setGhHang(enabled) {
       if (enabled) {
@@ -1632,9 +1642,16 @@ test('rejects a read-only candidate directory whose content changed', async (t) 
   const {root, baseSha, headSha} = createPullRequestRepository();
   const configHome = mkdtempSync(
       path.join(os.tmpdir(), 'agent-harness-review-config-'));
+  const remote = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-remote-'));
+  const fakeBin = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-bin-'));
+  const fakePullRequest = configureFakePullRequest(root, remote, fakeBin,
+      {baseSha, headSha});
   t.after(() => {
+    fakePullRequest.restore();
     removeTree(root);
     removeTree(configHome);
+    removeTree(remote);
+    removeTree(fakeBin);
   });
   const started = await startReview(root, {
     configHome,
@@ -1941,9 +1958,16 @@ test('requires a new commit from the same PR before capturing a correction', asy
   const {root, baseSha, headSha} = createPullRequestRepository();
   const configHome = mkdtempSync(
       path.join(os.tmpdir(), 'agent-harness-review-config-'));
+  const remote = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-remote-'));
+  const fakeBin = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-bin-'));
+  const fakePullRequest = configureFakePullRequest(root, remote, fakeBin,
+      {baseSha, headSha});
   t.after(() => {
+    fakePullRequest.restore();
     removeTree(root);
     removeTree(configHome);
+    removeTree(remote);
+    removeTree(fakeBin);
   });
   const started = await startReview(root, {
     configHome,
@@ -2474,9 +2498,16 @@ test('rejects a correction commit outside the reviewed PR head lineage',
       const {root, baseSha, headSha} = createPullRequestRepository();
       const configHome = mkdtempSync(
           path.join(os.tmpdir(), 'agent-harness-review-config-'));
+      const remote = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-remote-'));
+      const fakeBin = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-bin-'));
+      const fakePullRequest = configureFakePullRequest(root, remote, fakeBin,
+          {baseSha, headSha});
       t.after(() => {
+        fakePullRequest.restore();
         removeTree(root);
         removeTree(configHome);
+        removeTree(remote);
+        removeTree(fakeBin);
       });
       const url = 'https://github.com/acme/widget/pull/42';
       const started = await startReview(root, {
@@ -2661,3 +2692,304 @@ test('does not close a legacy transaction when both recovery tokens are absent',
       });
       assert.equal(closed.status, 'closed_without_approval');
     });
+
+test('rejects a start request whose pull-request URL has no value', async (t) => {
+  const {root} = createPullRequestRepository();
+  const configHome = mkdtempSync(
+      path.join(os.tmpdir(), 'agent-harness-review-config-'));
+  t.after(() => {
+    removeTree(root);
+    removeTree(configHome);
+  });
+  writeFileSync(path.join(root, 'local-change.js'),
+      'export const localChange = true;\n');
+  const reviewScript = fileURLToPath(new URL(
+      '../adapters/opencode/scripts/review.mjs', import.meta.url));
+
+  const failure = await new Promise((resolve) => {
+    execFile(process.execPath, [reviewScript, 'start', '--cwd', root,
+      '--config-home', configHome, '--required', '--pr-url'],
+    {encoding: 'utf8'}, (error, stdout, stderr) => {
+      resolve({error, stdout, stderr});
+    });
+  });
+
+  assert.notEqual(failure.error, null);
+  assert.match(failure.stderr, /pull_request_url_value_required/);
+  assert.equal(existsSync(path.join(root, '.git', 'agent-harness-review',
+      'transaction.json')), false);
+});
+
+test('classifies agent instruction files as high risk', (t) => {
+  for (const candidatePath of [
+    'AGENTS.md',
+    'CLAUDE.md',
+    'prompts/sdd/sdd-init.md',
+    'skills/github/yeet/SKILL.md'
+  ]) {
+    const {root} = createPullRequestRepository();
+    t.after(() => removeTree(root));
+    const file = path.join(root, candidatePath);
+    mkdirSync(path.dirname(file), {recursive: true});
+    writeFileSync(file, 'changed agent instructions\n');
+
+    const assessment = assessCandidate(root);
+
+    assert.equal(assessment.risk, 'high', candidatePath);
+  }
+});
+
+test('classifies an extensionless executable file as high risk', async (t) => {
+  if (process.platform === 'win32') {
+    t.skip('Windows does not record the executable bit in the Git index');
+    return;
+  }
+  const {root} = createPullRequestRepository();
+  const configHome = mkdtempSync(
+      path.join(os.tmpdir(), 'agent-harness-review-config-'));
+  t.after(() => {
+    removeTree(root);
+    removeTree(configHome);
+  });
+  mkdirSync(path.join(root, 'scripts'));
+  const executable = path.join(root, 'scripts', 'deploy');
+  writeFileSync(executable, '#!/bin/sh\nexit 0\n');
+  chmodSync(executable, 0o755);
+
+  const assessment = assessCandidate(root);
+
+  assert.equal(assessment.risk, 'high');
+  assert.deepEqual(assessment.changedPaths, ['scripts/deploy']);
+
+  const started = await startReview(root, {configHome, required: true});
+
+  assert.equal(started.risk, 'high');
+  assert.deepEqual(started.reviewers, ['lens', 'mirror']);
+});
+
+test('times out the working-tree status scan and releases the review lock',
+    async (t) => {
+      const {root} = createPullRequestRepository();
+      const configHome = mkdtempSync(
+          path.join(os.tmpdir(), 'agent-harness-review-config-'));
+      t.after(() => {
+        removeTree(root);
+        removeTree(configHome);
+      });
+      writeFileSync(path.join(root, 'local-change.js'),
+          'export const localChange = true;\n');
+      const indexesBefore = new Set(readdirSync(os.tmpdir()).filter((entry) =>
+        entry.startsWith('agent-harness-review-') && entry.endsWith('.index')));
+
+      await assert.rejects(() => startReview(root, {configHome, required: true},
+          {gitStatusTimeoutMs: 1}), (error) => error.code === 'ETIMEDOUT');
+
+      const indexesAfter = readdirSync(os.tmpdir()).filter((entry) =>
+        entry.startsWith('agent-harness-review-') && entry.endsWith('.index'));
+      assert.deepEqual(indexesAfter.filter((entry) => !indexesBefore.has(entry)),
+          []);
+      assert.equal(existsSync(path.join(root, '.git', 'agent-harness-review',
+          'transaction.json.lock')), false);
+      assert.equal(existsSync(path.join(root, '.git', 'agent-harness-review',
+          'transaction.json')), false);
+
+      const started = await startReview(root, {configHome, required: true});
+
+      assert.equal(started.status, 'reviewing');
+    });
+
+test('keeps an existing matching history receipt and the transaction coherent',
+    async (t) => {
+      const {root} = createPullRequestRepository();
+      const configHome = mkdtempSync(
+          path.join(os.tmpdir(), 'agent-harness-review-config-'));
+      t.after(() => {
+        removeTree(root);
+        removeTree(configHome);
+      });
+      writeFileSync(path.join(root, 'local-change.js'),
+          'export const localChange = true;\n');
+      const started = await startReview(root, {configHome, required: true});
+      const captured = await captureCandidateReview(root, started.binding,
+          configHome, [{candidateCaused: true, severity: 'WARNING', lens: 'R1',
+            file: 'local-change.js', description: 'A non-blocking warning.'}],
+          ['lens', 'mirror']);
+      const stateFile = path.join(root, '.git', 'agent-harness-review',
+          'transaction.json');
+      const state = JSON.parse(readFileSync(stateFile, 'utf8'));
+      const historyDirectory = path.join(path.dirname(stateFile), 'history');
+      mkdirSync(historyDirectory, {recursive: true});
+      const historyFile = path.join(historyDirectory,
+          `${state.lineage}-${state.revision}-approved.json`);
+      const preExisting = `${JSON.stringify({
+        ...state, receiptOrigin: 'pre-existing'
+      }, null, 2)}\n`;
+      writeFileSync(historyFile, preExisting);
+      const receiptStatBefore = statSync(historyFile);
+
+      const burned = await acknowledgeApproved(root, {
+        ...captured.binding,
+        acknowledgement: captured.next_transition.token,
+        configHome
+      });
+
+      assert.equal(burned.status, 'burned');
+      assert.equal(readFileSync(historyFile, 'utf8'), preExisting);
+      if (process.platform !== 'win32') {
+        assert.equal(statSync(historyFile).ino, receiptStatBefore.ino);
+      }
+      assert.equal(existsSync(stateFile), false);
+    });
+
+test('refuses to overwrite a different history receipt and keeps the transaction',
+    async (t) => {
+      const {root} = createPullRequestRepository();
+      const configHome = mkdtempSync(
+          path.join(os.tmpdir(), 'agent-harness-review-config-'));
+      t.after(() => {
+        removeTree(root);
+        removeTree(configHome);
+      });
+      writeFileSync(path.join(root, 'local-change.js'),
+          'export const localChange = true;\n');
+      const started = await startReview(root, {configHome, required: true});
+      const captured = await captureCandidateReview(root, started.binding,
+          configHome, [{candidateCaused: true, severity: 'WARNING', lens: 'R1',
+            file: 'local-change.js', description: 'A non-blocking warning.'}],
+          ['lens', 'mirror']);
+      const stateFile = path.join(root, '.git', 'agent-harness-review',
+          'transaction.json');
+      const state = JSON.parse(readFileSync(stateFile, 'utf8'));
+      const historyDirectory = path.join(path.dirname(stateFile), 'history');
+      mkdirSync(historyDirectory, {recursive: true});
+      const historyFile = path.join(historyDirectory,
+          `${state.lineage}-${state.revision}-approved.json`);
+      const conflicting = `${JSON.stringify({
+        ...state, subjectHash: 'a-different-candidate', receiptOrigin: 'conflict'
+      }, null, 2)}\n`;
+      writeFileSync(historyFile, conflicting);
+
+      await assert.rejects(() => acknowledgeApproved(root, {
+        ...captured.binding,
+        acknowledgement: captured.next_transition.token,
+        configHome
+      }), /review_history_receipt_conflict/);
+
+      assert.equal(readFileSync(historyFile, 'utf8'), conflicting);
+      assert.equal(existsSync(stateFile), true);
+      assert.equal(JSON.parse(readFileSync(stateFile, 'utf8')).status,
+          'approved');
+    });
+
+test('rejects a capture when the pull-request head moved after the start',
+    async (t) => {
+      const {root, baseSha, headSha} = createPullRequestRepository();
+      const configHome = mkdtempSync(
+          path.join(os.tmpdir(), 'agent-harness-review-config-'));
+      const remote = mkdtempSync(
+          path.join(os.tmpdir(), 'agent-harness-review-remote-'));
+      const fakeBin = mkdtempSync(
+          path.join(os.tmpdir(), 'agent-harness-review-bin-'));
+      const fakePullRequest = configureFakePullRequest(root, remote, fakeBin,
+          {baseSha, headSha});
+      t.after(() => {
+        fakePullRequest.restore();
+        removeTree(root);
+        removeTree(configHome);
+        removeTree(remote);
+        removeTree(fakeBin);
+      });
+      const url = 'https://github.com/acme/widget/pull/42';
+      const started = await startReview(root, {
+        configHome,
+        required: true,
+        candidate: {kind: 'pull-request', url, baseSha, headSha}
+      });
+      git(root, ['checkout', 'feature']);
+      writeFileSync(path.join(root, 'src-feature.js'),
+          'export const feature = true;\n// advanced head\n');
+      git(root, ['commit', '-am', 'advance the pull-request head']);
+      const advancedHead = git(root, ['rev-parse', 'HEAD']);
+      git(root, ['checkout', 'main']);
+      fakePullRequest.setOids(baseSha, advancedHead);
+
+      await assert.rejects(() => captureCandidateReview(root, started.binding,
+          configHome, [{candidateCaused: true, severity: 'WARNING', lens: 'R1',
+            file: 'src-feature.js', description: 'A non-blocking warning.'}],
+          ['lens', 'mirror']), /candidate_pull_request_oid_stale/);
+
+      const stateFile = path.join(root, '.git', 'agent-harness-review',
+          'transaction.json');
+      const state = JSON.parse(readFileSync(stateFile, 'utf8'));
+      assert.equal(state.status, 'invalidated');
+      assert.equal(state.invalidatedReason, 'candidate_pull_request_oid_stale');
+    });
+
+test('fails closed on GitHub lookup errors during PR review capture', async (t) => {
+  const {root, baseSha, headSha} = createPullRequestRepository();
+  const configHome = mkdtempSync(
+      path.join(os.tmpdir(), 'agent-harness-review-config-'));
+  const remote = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-remote-'));
+  const fakeBin = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-bin-'));
+  const fakePullRequest = configureFakePullRequest(root, remote, fakeBin,
+      {baseSha, headSha});
+  t.after(() => {
+    fakePullRequest.restore();
+    removeTree(root);
+    removeTree(configHome);
+    removeTree(remote);
+    removeTree(fakeBin);
+  });
+  const started = await startReview(root, {
+    configHome,
+    required: true,
+    candidate: {kind: 'pull-request',
+      url: 'https://github.com/acme/widget/pull/42', baseSha, headSha}
+  });
+  const stateFile = path.join(root, '.git', 'agent-harness-review',
+      'transaction.json');
+  const before = readFileSync(stateFile, 'utf8');
+  fakePullRequest.setGhFailure(true);
+
+  await assert.rejects(() => captureCandidateReview(root, started.binding,
+      configHome, [], started.reviewers), /pull_request_freshness_check_failed/);
+
+  assert.equal(readFileSync(stateFile, 'utf8'), before);
+  assert.equal(JSON.parse(before).status, 'reviewing');
+});
+
+test('fails closed on GitHub lookup errors during PR review close', async (t) => {
+  const {root, baseSha, headSha} = createPullRequestRepository();
+  const configHome = mkdtempSync(
+      path.join(os.tmpdir(), 'agent-harness-review-config-'));
+  const remote = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-remote-'));
+  const fakeBin = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-review-bin-'));
+  const fakePullRequest = configureFakePullRequest(root, remote, fakeBin,
+      {baseSha, headSha});
+  t.after(() => {
+    fakePullRequest.restore();
+    removeTree(root);
+    removeTree(configHome);
+    removeTree(remote);
+    removeTree(fakeBin);
+  });
+  const started = await startReview(root, {
+    configHome,
+    required: true,
+    candidate: {kind: 'pull-request',
+      url: 'https://github.com/acme/widget/pull/42', baseSha, headSha}
+  });
+  const stateFile = path.join(root, '.git', 'agent-harness-review',
+      'transaction.json');
+  const before = readFileSync(stateFile, 'utf8');
+  fakePullRequest.setGhFailure(true);
+
+  await assert.rejects(() => reviewControl.closeReview(root, {
+    ...started.binding,
+    recoveryToken: started.recovery_transition.token,
+    resolution: 'Close after GitHub lookup failure.'
+  }), /pull_request_freshness_check_failed/);
+
+  assert.equal(readFileSync(stateFile, 'utf8'), before);
+  assert.equal(JSON.parse(before).status, 'reviewing');
+});

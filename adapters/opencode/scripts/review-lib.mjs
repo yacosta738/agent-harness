@@ -12,6 +12,8 @@ const GIT_OUTPUT_MAX_BUFFER = 128 * 1024 * 1024;
 const GIT_ARCHIVE_TIMEOUT_MS = 30_000;
 const TAR_EXTRACT_TIMEOUT_MS = 30_000;
 const GIT_ADD_TIMEOUT_MS = 30_000;
+const GIT_COMMAND_TIMEOUT_MS = 30_000;
+const GIT_STATUS_TIMEOUT_MS = 30_000;
 const GH_TIMEOUT_MS = 30_000;
 const GIT_FETCH_TIMEOUT_MS = 60_000;
 const REVIEW_SEVERITIES = new Set([
@@ -30,8 +32,8 @@ function gitExec(args, options = {}) {
   });
 }
 
-function git(root, args, env = {}) {
-  return gitExec(['-C', root, ...args], {encoding: 'utf8', env}).trim();
+function git(root, args, env = {}, timeout = GIT_COMMAND_TIMEOUT_MS) {
+  return gitExec(['-C', root, ...args], {encoding: 'utf8', env, timeout}).trim();
 }
 
 function configPath(configHome) {
@@ -234,6 +236,33 @@ async function writeJson(file, value) {
   }
 }
 
+async function writeHistoryReceiptExclusive(file, value) {
+  const content = `${JSON.stringify(value, null, 2)}\n`;
+  try {
+    await fs.writeFile(file, content, {
+      encoding: 'utf8', flag: 'wx', mode: 0o600
+    });
+    return;
+  } catch (error) {
+    if (error.code !== 'EEXIST') {
+      throw error;
+    }
+  }
+  let existing;
+  try {
+    existing = await readJson(file);
+  } catch {
+    throw new Error('review_history_receipt_conflict');
+  }
+  if (existing?.lineage !== value.lineage
+      || existing?.revision !== value.revision
+      || existing?.subjectHash !== value.subjectHash
+      || JSON.stringify(existing?.candidate ?? null)
+        !== JSON.stringify(value.candidate ?? null)) {
+    throw new Error('review_history_receipt_conflict');
+  }
+}
+
 function digest(value) {
   return createHash('sha256').update(JSON.stringify(value)).digest('hex');
 }
@@ -431,7 +460,7 @@ export async function resolvePullRequestCandidate(root, url, {
     const frozen = freezeCandidate(root, undefined, candidate);
     return {
       version: ASSESSMENT_VERSION,
-      ...assessPaths(frozen.paths),
+      ...assessPaths(frozen.paths, frozen.executablePaths),
       candidate: frozen.candidate,
       candidateTree: frozen.candidateTree,
       subjectHash: frozen.subjectHash
@@ -440,14 +469,17 @@ export async function resolvePullRequestCandidate(root, url, {
   throw new Error('pull_request_changed_during_fetch');
 }
 
-function candidatePaths(root, candidate) {
+function candidatePaths(root, candidate, {
+  gitStatusTimeoutMs = GIT_STATUS_TIMEOUT_MS,
+  gitTimeoutMs = GIT_COMMAND_TIMEOUT_MS
+} = {}) {
   if (candidate?.kind === 'pull-request') {
     const target = pullRequestCandidate(root, candidate);
     const changedPaths = gitExec([
       '-C', root, 'diff', '--name-only', '-z', '--no-renames',
       target.mergeBaseSha, target.headSha
-    ], {encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER})
-        .split('\0').filter(Boolean).sort();
+    ], {encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER,
+      timeout: gitTimeoutMs}).split('\0').filter(Boolean).sort();
     return {candidate: target, changedPaths};
   }
   if (candidate !== undefined && candidate?.kind !== 'working-tree') {
@@ -455,27 +487,68 @@ function candidatePaths(root, candidate) {
   }
 
   const status = gitExec([
-    '-C', root, 'status', '--porcelain=v1', '-z', '--no-renames',
-    '--untracked-files=all'
-  ], {encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER});
+    '-C', root, '--no-optional-locks', 'status', '--porcelain=v1', '-z',
+    '--no-renames', '--untracked-files=all'
+  ], {encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER,
+    timeout: gitStatusTimeoutMs});
   const changedPaths = [...new Set(status.split('\0').filter(Boolean).map(
       (entry) => entry.slice(3)))].sort();
   return {candidate: {kind: 'working-tree'}, changedPaths};
 }
 
-function assessPaths(changedPaths) {
+function trackedExecutablePaths(root, tree, paths, {
+  gitTimeoutMs = GIT_COMMAND_TIMEOUT_MS,
+  indexEnv
+} = {}) {
+  if (paths.length === 0) {
+    return [];
+  }
+  const readModes = (env) => gitExec([
+    '-C', root, 'ls-files', '--stage', '-z'
+  ], {env: {...process.env, ...env}, encoding: 'utf8',
+    maxBuffer: GIT_OUTPUT_MAX_BUFFER, timeout: gitTimeoutMs});
+  let output;
+  if (indexEnv) {
+    output = readModes(indexEnv);
+  } else {
+    const index = path.join(os.tmpdir(),
+        `agent-harness-review-${process.pid}-${randomUUID()}.index`);
+    try {
+      git(root, ['read-tree', tree], {GIT_INDEX_FILE: index}, gitTimeoutMs);
+      output = readModes({GIT_INDEX_FILE: index});
+    } finally {
+      rmSync(index, {force: true});
+    }
+  }
+  const wanted = new Set(paths);
+  return output.split('\0').filter(Boolean).flatMap((entry) => {
+    const separator = entry.indexOf('\t');
+    if (separator < 0 || entry.slice(0, separator).split(' ')[0] !== '100755') {
+      return [];
+    }
+    const file = entry.slice(separator + 1);
+    return wanted.has(file) ? [file] : [];
+  });
+}
+
+function assessPaths(changedPaths, executablePaths = []) {
+  const executablePathSet = new Set(executablePaths);
   const high = changedPaths.some((file) => {
     const normalized = file.replace(/\\/g, '/');
     const sensitiveEnvironmentFile = /(^|\/)\.env(?:\.[^/]*)?$/i.test(
         normalized)
         && !/\.(example|sample|template)$/i.test(normalized);
-    return sensitiveEnvironmentFile
+    return executablePathSet.has(file)
+        || sensitiveEnvironmentFile
+        || /(^|\/)(AGENTS|CLAUDE|GEMINI|COPILOT|INSTRUCTIONS|CONVENTIONS)\.md$/i.test(
+            normalized)
+        || /(^|\/)\.(cursorrules|windsurfrules|clinerules)$/i.test(normalized)
         || /(^|\/)\.envrc$/i.test(normalized)
         || /(^|\/)(\.husky|\.githooks)(\/|$)/i.test(normalized)
         || /(^|\/)(auth|security|secrets?|credentials?|infra|infrastructure|terraform|k8s|kubernetes|migrations)(\/|\.|$)/i.test(
             normalized)
         || /(^|\/)(Makefile|Taskfile\.ya?ml|\.npmrc)$/i.test(normalized)
-        || /(^|\/)(commands|skills\/workflow)(\/|$)/i.test(normalized)
+        || /(^|\/)(commands|prompts|skills)(\/|$)/i.test(normalized)
         || /(^|\/)(\.github\/(workflows|actions)|\.circleci|\.buildkite)(\/|$)/i.test(
             normalized)
         || /(^|\/)(wrangler\.(toml|jsonc)|vercel\.json)$/i.test(normalized)
@@ -543,12 +616,13 @@ export async function reviewStatus(root, {configHome} = {}) {
   };
 }
 
-export function assessCandidate(root, requestedCandidate) {
-  const {candidate, paths, candidateTree, subjectHash} = freezeCandidate(
-      root, undefined, requestedCandidate);
+export function assessCandidate(root, requestedCandidate, testOptions = {}) {
+  const {candidate, paths, candidateTree, subjectHash, executablePaths} =
+      freezeCandidate(root, undefined, requestedCandidate, undefined,
+          testOptions);
   return {
     version: ASSESSMENT_VERSION,
-    ...assessPaths(paths),
+    ...assessPaths(paths, executablePaths),
     candidate,
     candidateTree,
     subjectHash
@@ -556,12 +630,19 @@ export function assessCandidate(root, requestedCandidate) {
 }
 
 function freezeCandidate(root, destination, requestedCandidate,
-    localBaseSha, {gitAddTimeoutMs = GIT_ADD_TIMEOUT_MS} = {}) {
-  const resolved = candidatePaths(root, requestedCandidate);
+    localBaseSha, {
+      gitAddTimeoutMs = GIT_ADD_TIMEOUT_MS,
+      gitStatusTimeoutMs = GIT_STATUS_TIMEOUT_MS,
+      gitTimeoutMs = GIT_COMMAND_TIMEOUT_MS
+    } = {}) {
+  const resolved = candidatePaths(root, requestedCandidate,
+      {gitStatusTimeoutMs, gitTimeoutMs});
   const {candidate, changedPaths} = resolved;
   if (candidate.kind === 'pull-request') {
     const candidateTree = git(root,
         ['rev-parse', '--verify', `${candidate.headSha}^{tree}`]);
+    const executablePaths = trackedExecutablePaths(root, candidateTree,
+        changedPaths, {gitTimeoutMs});
     const subjectHash = digest({
       root: path.resolve(root), candidate, candidateTree, paths: changedPaths
     });
@@ -569,18 +650,19 @@ function freezeCandidate(root, destination, requestedCandidate,
       const target = path.join(destination, subjectHash);
       gitExec(
           ['-C', root, 'archive', candidateTree, '-o', `${target}.tar`],
-          {encoding: 'utf8'});
+          {encoding: 'utf8', timeout: GIT_ARCHIVE_TIMEOUT_MS});
     }
     return {
       baseSha: candidate.mergeBaseSha,
       candidate,
       candidateTree,
       paths: changedPaths,
+      executablePaths,
       subjectHash
     };
   }
 
-  assertNoStagedWorktreeConflicts(root);
+  assertNoStagedWorktreeConflicts(root, {gitTimeoutMs});
   const baseSha = localBaseSha ?? git(root, ['rev-parse', 'HEAD']);
   const indexBaseSha = git(root, ['rev-parse', 'HEAD']);
   const index = path.join(os.tmpdir(),
@@ -595,25 +677,32 @@ function freezeCandidate(root, destination, requestedCandidate,
     const paths = gitExec([
       '-C', root, 'diff', '--name-only', '-z', '--no-renames', baseSha, tree
     ], {env: {...process.env, ...env}, encoding: 'utf8',
-      maxBuffer: GIT_OUTPUT_MAX_BUFFER}).split('\0').filter(Boolean).sort();
+      maxBuffer: GIT_OUTPUT_MAX_BUFFER,
+      timeout: gitTimeoutMs}).split('\0').filter(Boolean).sort();
+    const executablePaths = trackedExecutablePaths(root, undefined, paths,
+        {gitTimeoutMs, indexEnv: env});
     const subjectHash = digest({
       root: path.resolve(root), candidate, baseSha, tree, paths
     });
     if (destination) {
       const target = path.join(destination, subjectHash);
       gitExec(['-C', root, 'archive', tree, '-o', target + '.tar'],
-          {encoding: 'utf8'});
+          {encoding: 'utf8', timeout: GIT_ARCHIVE_TIMEOUT_MS});
     }
-    return {baseSha, candidate, candidateTree: tree, paths, subjectHash};
+    return {
+      baseSha, candidate, candidateTree: tree, paths, executablePaths, subjectHash
+    };
   } finally {
     rmSync(index, {force: true});
   }
 }
 
-function assertNoStagedWorktreeConflicts(root) {
+function assertNoStagedWorktreeConflicts(root,
+    {gitTimeoutMs = GIT_COMMAND_TIMEOUT_MS} = {}) {
   const files = (args) => new Set(gitExec(['-C', root, ...args], {
     encoding: 'utf8',
-    maxBuffer: GIT_OUTPUT_MAX_BUFFER
+    maxBuffer: GIT_OUTPUT_MAX_BUFFER,
+    timeout: gitTimeoutMs
   }).split('\0').filter(Boolean));
   const staged = files(['diff', '--cached', '--name-only', '-z', '--no-renames']);
   const unstaged = files(['diff', '--name-only', '-z', '--no-renames']);
@@ -653,6 +742,29 @@ function requireBinding(state, input) {
   }
 }
 
+async function invalidateStalePullRequest(root, state) {
+  if (state.candidate?.kind !== 'pull-request') {
+    return false;
+  }
+  const identity = pullRequestIdentity(state.candidate.url);
+  let current;
+  try {
+    current = readPullRequest(state.candidate.url, identity);
+  } catch {
+    throw new Error('pull_request_freshness_check_failed');
+  }
+  if (current.baseRefOid === state.candidate.baseSha
+      && current.headRefOid === state.candidate.headSha) {
+    return false;
+  }
+  state.status = 'invalidated';
+  state.invalidatedReason = 'candidate_pull_request_oid_stale';
+  state.invalidatedAt = new Date().toISOString();
+  delete state.next_transition;
+  await writeReviewState(root, state);
+  return true;
+}
+
 function requireCorrectionPending(state, input) {
   if (!state) {
     throw new Error('transaction_not_found');
@@ -665,7 +777,11 @@ function requireCorrectionPending(state, input) {
 
 export async function startReview(root,
     {configHome, required = false, candidate: requestedCandidate} = {},
-    {gitAddTimeoutMs = GIT_ADD_TIMEOUT_MS} = {}) {
+    {
+      gitAddTimeoutMs = GIT_ADD_TIMEOUT_MS,
+      gitStatusTimeoutMs = GIT_STATUS_TIMEOUT_MS,
+      gitTimeoutMs = GIT_COMMAND_TIMEOUT_MS
+    } = {}) {
   const mode = await reviewStatus(root, {configHome});
   if (!required && mode.mode !== 'enabled') {
     return {
@@ -677,7 +793,7 @@ export async function startReview(root,
   return withReviewLock(root, async () => {
   const current = await readReviewState(root);
    const candidate = freezeCandidate(root, undefined, requestedCandidate,
-       undefined, {gitAddTimeoutMs});
+       undefined, {gitAddTimeoutMs, gitStatusTimeoutMs, gitTimeoutMs});
   if (current) {
     if (current.subjectHash === candidate.subjectHash) {
       return {
@@ -694,7 +810,7 @@ export async function startReview(root,
     }
     throw new Error('active_transaction_exists');
   }
-  const assessment = assessPaths(candidate.paths);
+  const assessment = assessPaths(candidate.paths, candidate.executablePaths);
   const state = {
     version: REVIEW_VERSION,
     status: 'reviewing',
@@ -858,7 +974,7 @@ async function assertSymlinkCapability() {
 function gitTreeEntries(root, tree) {
   const output = gitExec([
     '-C', root, 'ls-tree', '-r', '-z', '--full-tree', tree
-  ], {maxBuffer: GIT_OUTPUT_MAX_BUFFER});
+  ], {maxBuffer: GIT_OUTPUT_MAX_BUFFER, timeout: GIT_COMMAND_TIMEOUT_MS});
   return output.toString('utf8').split('\0').filter(Boolean).map((entry) => {
     const separator = entry.indexOf('\t');
     const [mode, type, oid] = entry.slice(0, separator).split(' ');
@@ -1254,6 +1370,9 @@ export async function captureReview(root, input) {
   if (state.status !== 'reviewing' && !correctionReview) {
     throw new Error('transition_not_allowed');
   }
+  if (await invalidateStalePullRequest(root, state)) {
+    throw new Error('candidate_pull_request_oid_stale');
+  }
   const materialized = await materializeCandidateUnlocked(root, {
     subjectHash: state.subjectHash
   });
@@ -1492,7 +1611,7 @@ export async function captureCorrection(root, input, {
   state.validationEvidence = input.validationEvidence;
   state.correctionCount = 1;
   state.revision += 1;
-  state.risk = assessPaths(successor.paths).risk;
+  state.risk = assessPaths(successor.paths, successor.executablePaths).risk;
   state.reviewers = state.risk === 'high' ? ['lens', 'mirror'] :
     ['code-reviewer'];
   state.status = validationPassed
@@ -1527,11 +1646,15 @@ export async function closeReview(root, input) {
   }
   requireBinding(state, input);
   if (!['reviewing', 'correction_pending', 'reviewing_correction',
-    'escalated'].includes(state.status)) {
+    'escalated', 'invalidated'].includes(state.status)) {
     throw new Error('close_not_allowed');
   }
   if (typeof input.resolution !== 'string' || !input.resolution.trim()) {
     throw new Error('close_resolution_required');
+  }
+  if (state.status !== 'invalidated'
+      && await invalidateStalePullRequest(root, state)) {
+    throw new Error('candidate_pull_request_oid_stale');
   }
   if (typeof state.recovery_transition?.token !== 'string'
       || !state.recovery_transition.token) {
@@ -1599,7 +1722,7 @@ export async function closeReview(root, input) {
   delete state.next_transition;
   delete state.recovery_transition;
   await safeStatePath(root);
-  await writeJson(historyPath, state);
+  await writeHistoryReceiptExclusive(historyPath, state);
   await fs.rm(file, {force: true});
   return {
     version: REVIEW_VERSION,
@@ -1622,6 +1745,9 @@ export async function acknowledgeApproved(root, input) {
   if (state.status !== 'approved') {
     throw new Error(
         'acknowledgement_not_allowed');
+  }
+  if (await invalidateStalePullRequest(root, state)) {
+    throw new Error('candidate_pull_request_oid_stale');
   }
   if (input.acknowledgement !== state.next_transition?.token) {
     throw new Error(
@@ -1673,7 +1799,7 @@ export async function acknowledgeApproved(root, input) {
   delete state.next_transition;
   delete state.recovery_transition;
   state.acknowledgedAt = new Date().toISOString();
-  await writeJson(historyPath, state);
+  await writeHistoryReceiptExclusive(historyPath, state);
   await fs.rm(stateFile, {force: true});
   return {
     version: REVIEW_VERSION,

@@ -23,8 +23,22 @@ function value(flag) {
   return index >= 0 ? args[index + 1] : undefined;
 }
 
+function option(flag) {
+  const index = args.indexOf(flag);
+  if (index < 0) {
+    return {provided: false, value: undefined};
+  }
+  const value = args[index + 1];
+  return {provided: true,
+    value: value && !value.startsWith('--') ? value : undefined};
+}
+
 async function reviewCandidate({resolve = true} = {}) {
-  const url = value('--pr-url');
+  const urlOption = option('--pr-url');
+  const url = urlOption.value;
+  if (urlOption.provided && !url) {
+    throw new Error('pull_request_url_value_required');
+  }
   const baseSha = value('--base-sha');
   const headSha = value('--head-sha');
   if (!url && !baseSha && !headSha) {
