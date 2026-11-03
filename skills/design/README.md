@@ -1,6 +1,6 @@
 # Design skills — routing and precedence
 
-Eight skills live in this directory. Two are systems with tooling; the rest are prompt
+Seven skills live in this directory. Two are systems with tooling; the rest are prompt
 collections or asset pipelines. This file is the decision layer: which one to load, which one wins
 in a conflict, and what is known to be broken in this install.
 
@@ -11,11 +11,10 @@ behavior on its own.
 
 | The task is…                                                                                                                                 | Load                                                         | Why                                                                                                                                                   |
 |----------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Build, redesign, audit, polish, or refine any frontend interface — web or native, marketing or product                                       | **`impeccable`**                                             | Default and only owner of UI execution. Has modes, persistent `PRODUCT.md`/`DESIGN.md` context, a defect detector, and live browser iteration.        |
+| Build, redesign, audit, polish, or refine any frontend interface — web or native, marketing or product, including from a user-supplied reference | **`impeccable`**                                             | Default and only owner of UI execution. A supplied image is input to the user's brief; it does not require a separate image-first workflow.          |
 | A diagram, chart, or structural visual: architecture, sequence, state machine, ER, timeline, swimlane, quadrant, Gantt, medallion, data flow | **`diagram-design`**                                         | Separate domain with 27 visual types, semantic patterns, and hard layout rules. Does not compete with UI work.                                        |
 | Reference images before writing code: site section comps, app screen concepts                                                                | **`imagegen-frontend-web`** / **`imagegen-frontend-mobile`** | Produce direction references only. They do not write production UI.                                                                                   |
 | An identity board: logo system, palette, brand guidelines                                                                                    | **`brandkit`**                                               | Presentation artifact. Not a UI skill.                                                                                                                |
-| Implement an approved design image as code                                                                                                   | **`image-to-code`**                                          | Image → analysis → implementation, with the image as the contract.                                                                                    |
 | A landing page or portfolio where you want a check against AI sameness and no design system exists yet                                       | **`design-taste-frontend`**                                  | Brief-inference-first, conservative scope. Use it *instead of* `impeccable` only when there is no incumbent visual authority.                         |
 | Upgrade a legacy site that has no tokens, no `DESIGN.md`, and no direction                                                                   | **`impeccable`**                                             | Redesign mode replaces the visual world while keeping product truth. Audit first inside `$impeccable critique` when the current state needs evidence. |
 | An explicit named aesthetic: Nothing                                                                                                         | **`nothing-design`** (`skills/web/`)                         | One named aesthetic outlives generic presets. Execution still belongs to `impeccable`.                                                                |
@@ -69,7 +68,7 @@ for each recorded in that directory's `README.md`: `redesign-existing-projects`,
 `high-end-visual-design`, `gpt-taste`, `minimalist-ui`, `industrial-brutalist-ui`, and
 `web/frontend-design`.
 
-What remains is deliberate: two systems with tooling, four asset and pipeline skills that do work
+What remains is deliberate: two systems with tooling, three asset and pipeline skills that do work
 no one else does, one narrow brief-first skill, one named aesthetic, and one external-tool
 formatter.
 

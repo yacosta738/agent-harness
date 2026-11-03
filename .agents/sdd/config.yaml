@@ -16,4 +16,7 @@ rules:
   tasks:
     - Keep tasks small, ordered, and independently verifiable.
   apply:
+    - For business/product logic, use the canonical test-driven-development skill; TDD is mandatory and has no enable/disable flag.
+    - For documentation, generated files, and non-business configuration, CI, infrastructure, or automation, use relevant artifact checks instead of TDD.
+    - If a business/product logic task has no runnable test command, block implementation and request a runner.
     - Preserve Markdown frontmatter and JSON conventions used by the harness.

@@ -20,11 +20,11 @@ cd agent-harness
 # Validate references in the live repo
 npm run validate
 
-# List what a preset would deploy
-npm run list -- --preset recommended
+# List the complete bundle
+npm run list
 
 # Render + verify the deployable bundle (dist/ is gitignored — required after clone/pull)
-npm run deploy -- --preset recommended
+npm run deploy
 ```
 
 Then follow the [README.md](README.md#deployment) deployment instructions to run `dotter deploy`.
@@ -34,24 +34,27 @@ Then follow the [README.md](README.md#deployment) deployment instructions to run
 | Command            | What it does                                                     |
 |--------------------|------------------------------------------------------------------|
 | `npm run validate` | Validate all `{file:}` refs, adapter includes, and command paths |
-| `npm run list`     | List files included in a preset                                  |
+| `npm run list`     | List files included in the complete bundle                       |
 | `npm run render`   | Render bundle without validating                                 |
 | `npm run deploy`   | Render + validate (full pipeline)                                |
 
-### Flags
+### Options
 
-All scripts accept these flags:
+Bundle commands:
 
 ```powershell
-npm run deploy -- --preset recommended --output dist/opencode
+npm run deploy -- --output dist/opencode
 npm run validate -- --root dist/opencode    # validate a pre-rendered bundle
 ```
 
-| Flag              | Default         | Description                                         |
-|-------------------|-----------------|-----------------------------------------------------|
-| `--preset`        | `recommended`   | Which preset to deploy (from `harness.config.json`) |
-| `--output`        | `dist/opencode` | Where to write the bundle                           |
-| `--validate-only` | `false`         | Skip render, only validate an existing bundle       |
+| Flag              | Default         | Description                                   |
+|-------------------|-----------------|-----------------------------------------------|
+| `--output`        | `dist/opencode` | Where to write the complete bundle            |
+| `--validate-only` | `false`         | Skip render, only validate an existing bundle |
+
+`npm run validate` also accepts `--root <dir>` to validate a pre-rendered bundle instead of the source tree.
+
+Deploy always renders the complete bundle. It has no preset or profile selection.
 
 ## Installing Node.js
 
@@ -132,7 +135,7 @@ gone. Everything now goes through Node ESM scripts and `npm run`:
 
 | Old                                                | New                                                |
 |----------------------------------------------------|----------------------------------------------------|
-| `bash scripts/deploy.sh --preset X`                | `npm run deploy -- --preset X`                     |
+| `bash scripts/deploy.sh`                           | `npm run deploy`                                   |
 | `python3 scripts/check-refs.py`                    | `npm run validate`                                 |
 | `node scripts/generate-bundle.mjs list`            | `npm run list`                                     |
 | `node scripts/generate-bundle.mjs render`          | `npm run render`                                   |

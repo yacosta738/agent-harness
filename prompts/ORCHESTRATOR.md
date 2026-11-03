@@ -217,10 +217,16 @@ decision, reference it to be consistent.
 - Understand context before delegating.
 - For architecture work, prioritize scalability, maintainability, testability, and security.
 - TypeScript guidance: strongly typed (avoid any unless strictly justified).
-- TDD follows explicit project/session configuration. When enabled,
-  write a failing test first, then RED → GREEN → REFACTOR; when disabled, run ordinary functional
-  checks and record the selected mode and runner.
-- When fixing bugs, first add a regression test that fails before applying the fix.
+- In RPI and SDD, changes to business/product logic MUST follow TDD. For new or changed behavior,
+  load `test-driven-development` and complete RED → GREEN → REFACTOR. For a behavior-preserving
+  refactor, verify that existing tests protect the contract or add a characterization test first.
+  TDD has no enabled/disabled configuration switch.
+- Do not use TDD for documentation, generated files, or configuration, CI, infrastructure, or
+  automation changes that contain no business or product logic. Run the validation that fits those
+  artifacts. If a script or workflow contains business logic, apply TDD to that logic.
+- If a business/product logic change has no runnable test command, STOP before implementation and
+  ask to configure or identify a runner. Do not silently downgrade to tests-after.
+- For a business-behavior bug fix, write a failing regression test before the fix.
 - Ask questions only when truly blocked by ambiguity, security risk, or missing credentials.
 - Never invent APIs, commands, or tool names.
 
@@ -268,7 +274,7 @@ Defined in our configuration. Use these exact names:
 
 ## Phase DAG
 
-init -> explore -> propose -> [spec + design parallel] -> tasks -> apply -> verify -> qa -> archive
+init -> explore -> propose -> spec -> design -> tasks -> apply -> verify -> qa -> archive
 
 ## State Tracking
 
@@ -288,9 +294,11 @@ Use state.yaml to determine resume point on sdd-continue.
 
 - Do not move to apply without proposal, spec, design, and tasks.
 - Do not move to archive unless `verify-report.md` and `qa-report.md` exist, verification is PASS or
-  PASS WITH WARNINGS, QA is policy-allowed, and no unresolved CRITICAL/P0/P1 issues remain.
-- Acceptance-relevant QA BLOCKED/NOT TESTED normally blocks archive; docs/config-only exceptions
-  require explicit rationale and visible warning.
+  PASS WITH WARNINGS, QA satisfies the deterministic gate in `skills/sdd/sdd-archive/SKILL.md`,
+  and no unresolved CRITICAL/P0/P1 issues remain.
+- QA FAIL always blocks archive. Acceptance-relevant QA BLOCKED/NOT TESTED blocks archive. The
+  documentation/configuration-only exception applies only under the exact conditions in the archive
+  skill and requires explicit rationale and visible warning; project rules cannot weaken blockers.
 - Always surface blockers, risks, and next recommended action.
 
 ## Output Contract for Every Delegated Phase

@@ -75,52 +75,27 @@ layer may use the trunk as `base`; every higher layer MUST use its immediate par
 missing, stale, ambiguous, or legacy strategy values, dirty state, or scope outside the assigned
 layer.
 
-### Step 4: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
+### Step 4: Apply the behavior-based test policy
 
-TDD IS MANDATORY. EVERY task follows this cycle — no exceptions:
+Classify each assigned task before implementation:
 
-```
-FOR EACH TASK:
-├── 1. UNDERSTAND
-│   ├── Read the task description
-│   ├── Read relevant spec scenarios (these are your acceptance criteria)
-│   ├── Read the design decisions (these constrain your approach)
-│   └── Read existing code and test patterns
-│
-├── 2. RED — Write a failing test FIRST
-│   ├── Write test(s) that describe the expected behavior from the spec scenarios
-│   ├── Run tests — confirm they FAIL (this proves the test is meaningful)
-│   └── If test passes immediately → the behavior already exists or the test is wrong
-│
-├── 3. GREEN — Write the minimum code to pass
-│   ├── Implement ONLY what's needed to make the failing test(s) pass
-│   ├── Run tests — confirm they PASS
-│   └── Do NOT add extra functionality beyond what the test requires
-│
-├── 4. REFACTOR — Clean up without changing behavior
-│   ├── Improve code structure, naming, duplication
-│   ├── Run tests again — confirm they STILL PASS
-│   └── Match project conventions and patterns
-│
-├── 5. Mark task as complete [x] in tasks.md
-└── 6. Note any issues or deviations
-```
+| Task scope | Required approach |
+|---|---|
+| Changes business/product logic (new behavior, behavior bug, or logic refactor) | TDD is mandatory in SDD. Load `skills/testing/test-driven-development/SKILL.md`; use RED → GREEN → REFACTOR for new/changed behavior and existing or characterization tests before behavior-preserving refactors. |
+| Documentation, generated files, or configuration, CI, infrastructure, or automation with no business/product logic | Do not use TDD or invent tests. Run checks that apply to the artifact. |
+| Mixed scope | Separate the behavior change from non-business artifact work. Apply TDD to the behavior and relevant checks to the other files. |
 
-Detect the test runner for execution:
+TDD has no enabled/disabled mode. A project may configure a runner command, but it may not disable
+TDD for business/product logic.
 
-```
-Detect test runner from:
-├── .agents/sdd/config.yaml → rules.apply.test_command (highest priority)
-├── package.json → scripts.test
-├── pyproject.toml / pytest.ini → pytest
-├── Makefile → make test
-└── Fallback: report that tests couldn't be run automatically
-```
+For business/product logic, use the first non-empty runner command from
+`.agents/sdd/config.yaml` → `testing.apply_test_command`, legacy `rules.apply.test_command`,
+`package.json` → `scripts.test`, `pyproject.toml` or `pytest.ini`, `Makefile`, or the project's
+documented test command.
 
-If no test runner is found, follow the repository's configured exception: do not invent a runner or
-fixture app, use focused JSON/YAML/Markdown/path smoke checks where possible, and explicitly report
-that RED→GREEN→REFACTOR evidence cannot be claimed. For this repository, continue the
-documentation/configuration slice while recording the no-runner limitation.
+If no runner exists for a business/product logic task, stop before implementing that behavior
+and return `status: blocked`. Ask the orchestrator to configure or identify a runner. A task limited
+to non-business artifacts may continue with relevant checks and no TDD claim.
 
 **Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`,
 `vitest/SKILL.md`), read and follow those skill patterns for writing tests.
@@ -151,8 +126,8 @@ Return to the orchestrator:
 ```markdown
 ## Implementation Progress
 
-**Change**: {change-name} **Mode**: Documentation pressure scenarios + static validation (no
-executable project test runner)
+**Change**: {change-name} **Testing scope**: {TDD for business/product logic | relevant artifact
+validation for non-business changes}
 
 ### Completed Tasks
 
@@ -175,15 +150,15 @@ executable project test runner)
 - **Implemented slice/batch**: {scope implemented}
 - **Budget concern**: {None | Needs rebalance | Needs user decision}
 
-### RED→GREEN→REFACTOR Evidence
+### TDD Evidence (business/product logic tasks only)
 
 | Task | Test File | RED (fail) | GREEN (pass) | REFACTOR |
 |------|-----------|------------|--------------|----------|
 | 1.1 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 | 1.2 | `path/to/test.ext` | ✅ Failed as expected | ✅ Passed | ✅ Clean |
 
-**TDD compliance**: Not claimed. This repository has no test runner; only focused
-JSON/YAML/Markdown/path smoke checks were executed.
+For non-business tasks, report `Not applicable` and list the relevant artifact checks instead. Do
+not claim TDD evidence when the RED and GREEN runs were not observed.
 
 ### Deviations from Design
 
@@ -216,15 +191,21 @@ If none, say "None."}
 - If a task is blocked by something unexpected, STOP and report back
 - If Review Workload Forecast is High without approved delivery strategy, STOP before writing code
 - NEVER implement tasks that weren't assigned to you
-- Load and follow any relevant coding skills for the project stack (e.g., react-19, typescript,
-  django-drf, tdd, pytest, vitest) if available in the user's skill set
+- Load relevant coding and test-framework skills for project conventions and runner syntax. Use
+  `test-driven-development` as the canonical source for TDD applicability and procedure; other skills
+  must not change whether TDD is required.
 - Apply any `rules.apply` from `.agents/sdd/config.yaml`
 - Keep implementation batches aligned with work-unit commits: behavior, tests, and docs stay
   together
-- TDD is mandatory when a runner exists; when no runner exists, do not invent one and explicitly
-  report that RED → GREEN → REFACTOR evidence is unavailable
-  RED (writing the failing test first). Standard Mode does not exist. If you detect code written
-  before tests, STOP and delete the code — start over with the failing test first.
+- TDD is mandatory for business/product logic in RPI and SDD; follow the canonical
+  `test-driven-development` skill. No configuration flag can disable it.
+- Do not apply TDD to documentation, generated files, or non-business configuration, CI,
+  infrastructure, or automation. Run relevant artifact checks instead.
+- If a business/product logic task has no runnable test command, stop before implementing that
+  behavior and report `status: blocked`.
+- If new or changed business behavior was implemented before its required failing test, stop and
+  report the TDD violation. For a behavior-preserving refactor, require baseline and post-refactor
+  test evidence instead. Do not claim TDD compliance or delete source code without approval.
 - **Fast feedback during TDD is OK; final claims are not.**
     - During the RED→GREEN→REFACTOR cycle of a single task, it is fine to run a single test file
       or `--tests 'pattern'` for speed and signal.

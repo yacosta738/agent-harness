@@ -4,7 +4,9 @@ import {
   assessCandidate,
   captureCorrection,
   captureReview,
+  closeReview,
   materializeCandidate,
+  resolvePullRequestCandidate,
   reviewStatus,
   setReviewMode,
   startReview
@@ -19,6 +21,41 @@ const scope = value('--scope') ?? 'global';
 function value(flag) {
   const index = args.indexOf(flag);
   return index >= 0 ? args[index + 1] : undefined;
+}
+
+function option(flag) {
+  const index = args.indexOf(flag);
+  if (index < 0) {
+    return {provided: false, value: undefined};
+  }
+  const value = args[index + 1];
+  return {provided: true,
+    value: value && !value.startsWith('--') ? value : undefined};
+}
+
+async function reviewCandidate({resolve = true} = {}) {
+  const urlOption = option('--pr-url');
+  const url = urlOption.value;
+  if (urlOption.provided && !url) {
+    throw new Error('pull_request_url_value_required');
+  }
+  const baseSha = value('--base-sha');
+  const headSha = value('--head-sha');
+  if (!url && !baseSha && !headSha) {
+    return undefined;
+  }
+  if (!url || Boolean(baseSha) !== Boolean(headSha)) {
+    throw new Error('pull_request_target_requires_url_base_sha_head_sha');
+  }
+  if (!resolve) {
+    return {kind: 'pull-request', url, ...(baseSha ? {baseSha, headSha} : {})};
+  }
+  const resolved = await resolvePullRequestCandidate(root, url);
+  if (baseSha && (baseSha !== resolved.candidate.baseSha
+      || headSha !== resolved.candidate.headSha)) {
+    throw new Error('pull_request_oid_mismatch');
+  }
+  return resolved.candidate;
 }
 
 function json(result) {
@@ -41,12 +78,18 @@ try {
     result = action === 'status' ? await reviewStatus(root, {configHome})
         : await setReviewMode(root, action, {configHome, scope});
   } else if (command === 'assess') {
-    result = assessCandidate(root);
+    result = assessCandidate(root, await reviewCandidate());
+  } else if (command === 'prepare-pr') {
+    result = await resolvePullRequestCandidate(root, value('--pr-url'));
   } else if (command === 'status') {
     result = await reviewStatus(root,
         {configHome});
   } else if (command === 'start') {
-    result = await startReview(root, {configHome});
+    result = await startReview(root, {
+      configHome,
+      required: args.includes('--required'),
+      candidate: await reviewCandidate()
+    });
   } else if (command === 'materialize') {
     result = await materializeCandidate(root,
         {
@@ -58,16 +101,26 @@ try {
       ...binding(),
       findings: JSON.parse(value('--findings') ?? '[]'),
       reviewers: value('--reviewers')?.split(',').filter(Boolean),
+      candidatePath: value('--candidate-path'),
+      reviewEvidence: JSON.parse(value('--review-evidence') ?? '[]'),
       configHome
     });
   } else if (command === 'capture-correction') {
     result = await captureCorrection(
         root,
-        {
+      {
           ...binding(),
           validatorStatus: value('--validator-status'),
+          candidate: await reviewCandidate({resolve: false}),
+          validationEvidence: JSON.parse(value('--validation-evidence') ?? '[]'),
           configHome
         });
+  } else if (command === 'close') {
+    result = await closeReview(root, {
+      ...binding(),
+      recoveryToken: value('--recovery-token'),
+      resolution: value('--resolution')
+    });
   } else if (command
       === 'acknowledge-approved') {
     result = await acknowledgeApproved(root,
@@ -78,7 +131,7 @@ try {
         });
   } else {
     throw new Error(
-        'usage: review.mjs mode|assess|status|start|materialize|capture|capture-correction|acknowledge-approved');
+        'usage: review.mjs mode|assess|prepare-pr|status|start|materialize|capture|capture-correction|acknowledge-approved|close');
   }
   json(result);
 } catch (error) {

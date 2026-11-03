@@ -1,6 +1,6 @@
 ---
 name: test-driven-development
-description: Usa esta skill al implementar o cambiar comportamiento, corregir errores o refactorizar con test-first; también cuando se solicite TDD, Red–Green–Refactor, diseño de tests unitarios/integración/E2E, cobertura, dobles de prueba, diagnóstico de tests intermitentes o tests para código legacy.
+description: Usa esta skill para cambiar comportamiento de negocio o producto en RPI o SDD, corregir errores de esa lógica, o cuando se solicite TDD, Red–Green–Refactor, diseño de tests, cobertura, dobles de prueba, diagnóstico de tests intermitentes o tests para código legacy.
 license: MIT
 ---
 
@@ -13,10 +13,20 @@ lo implementa. Un refactor que conserva el comportamiento no debería obligar a 
 
 ## Cuándo usarla
 
-- Usa test-first para cambios de comportamiento, funcionalidades y correcciones de errores, salvo
-  que las instrucciones del proyecto o de la sesión definan otro modo.
-- Para documentación, código generado y cambios sin efecto de comportamiento, sigue las reglas del
-  proyecto; no inventes una prueba que no aporta señal.
+- TDD es obligatorio en RPI y SDD cuando una tarea cambia lógica de negocio o del producto, incluidas
+  funcionalidades, errores de comportamiento y refactors de esa lógica. No existe un modo que el
+  proyecto pueda apagar.
+- Para comportamiento nuevo o modificado, escribe primero un test que falle y completa
+  RED → GREEN → REFACTOR. Para un refactor que conserva el comportamiento, empieza con tests existentes
+  que protejan el contrato o añade un test de caracterización antes de refactorizar.
+- No uses TDD para documentación, código generado ni cambios de configuración, CI, infraestructura
+  o automatización que no contengan lógica de negocio o producto. Ejecuta las validaciones adecuadas
+  para esos artefactos y no inventes tests sin señal.
+- Si un script o workflow implementa lógica de negocio, usa TDD para esa lógica y valida por separado
+  su configuración o empaquetado.
+- Si una tarea debe cambiar lógica de negocio o producto y no hay un test runner ejecutable, detén esa
+  parte del trabajo y pide configurar o identificar un runner. No sustituyas TDD por tests escritos
+  después.
 - Antes de cambiar código, revisa las instrucciones del proyecto, el vocabulario de dominio y las
   decisiones de arquitectura cercanas.
 

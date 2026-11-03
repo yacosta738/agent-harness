@@ -22,8 +22,8 @@ Every request gets an explicit route before acting:
   coordination problem it solves.
 
 For substantial work, track it in `.agents/rpi/plan/tasks/<feature>.md` and mirror to Engram.
-Optional
-Receipt-Driven Development (RDD) reviews an immutable candidate but never authorizes delivery.
+Every `/review` runs Receipt-Driven Development (RDD) on a materialized candidate snapshot and applies 4R;
+RDD never authorizes delivery.
 
 When adopting this harness in a project with existing RPI plans, the first substantial RPI task
 checks the legacy `plan/tasks/` path. If only that path exists, its contents move to
@@ -36,16 +36,16 @@ and pauses for conflict resolution without merging or overwriting files.
 # Validate references in the live repo
 npm run validate
 
-# List what a preset would deploy
-npm run list -- --preset recommended
+# List every file in the complete bundle
+npm run list
 
-# Render + verify the deployable bundle (dist/ is gitignored)
-npm run deploy -- --preset recommended
+# Render + verify the complete deployable bundle (dist/ is gitignored)
+npm run deploy
 ```
 
 Deploy keeps this repo canonical and maps it 1:1 onto `~/.config/opencode`, except
 every `adapters/opencode/**` file lands with that prefix stripped (`opencode.json`,
-`cli.json`, `scripts/`, `plugins/`, `themes/` at bundle root — no `adapters/` dir).
+`cli.json`, `scripts/`, `themes/` at bundle root — no `adapters/` dir).
 The V2 bundle intentionally ships no legacy `tui.json` or unported plugin implementations.
 The orchestrator prompt ships as-is at `prompts` (kerrigan loads it via `{file:}`). See
 [Deployment](#deployment) for the dotter mapping.
@@ -60,7 +60,7 @@ output contract; it does not claim official ASD-STE100 compliance.
 
 ## Agents
 
-16 agents registered in `adapters/opencode/opencode.json`:
+15 agents registered in `adapters/opencode/opencode.json`:
 
 - **kerrigan** — primary. Senior fullstack architect (15+ years). Warm, direct, practical.
   Answers simple questions directly, delegates the rest, challenges bad decisions with evidence.
@@ -69,9 +69,12 @@ output contract; it does not claim official ASD-STE100 compliance.
 - **Team specialists** (`prompts`, 10) — `tech-lead`, `senior-dev`, `devops-engineer`,
   `qa-engineer`, `security-engineer`, `performance-engineer`, `ux-designer`, `data-engineer`,
   `product-manager`, `code-reviewer`.
-- **SDD phase executors** (`prompts`, 11) — `sdd-init`, `sdd-explore`, `sdd-propose`,
-  `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`,
-  plus `sdd-onboard`.
+- **SDD phase executors** (`prompts`, 10) — `sdd-init`, `sdd-explore`, `sdd-propose`,
+  `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`.
+  Each delegated prompt is a brief contract; the procedure lives in `skills/sdd/<phase>/SKILL.md`
+  and the shared protocol `skills/sdd/_shared/sdd-phase-common.md`.
+- **SDD onboarding** (`skills/sdd/sdd-onboard/SKILL.md`) — inline skill, not a sub-agent. It guides
+  the user through one complete cycle on the real codebase and delegates every phase.
 - **Review protocol** — `lens`, `mirror` (blind judges), `scalpel` (surgical fixes only).
 
 Kerrigan never executes SDD phase work inline — it delegates to the phase agent.
@@ -81,8 +84,7 @@ Kerrigan never executes SDD phase work inline — it delegates to the phase agen
 Phase DAG:
 
 ```
-init → explore → propose → [spec + design] → tasks → apply → verify → qa → archive
-                              (parallel)
+init → explore → propose → spec → design → tasks → apply → verify → qa → archive
 ```
 
 **Phase commands** (13 total: 10 phase + 3 meta) route to their dedicated agent via
@@ -96,12 +98,12 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 | `/sdd-spec`     | sdd-spec    | Delta specs, Given/When/Then                   |
 | `/sdd-design`   | sdd-design  | Technical design, ADRs                         |
 | `/sdd-tasks`    | sdd-tasks   | Implementation checklist                       |
-| `/sdd-apply`    | sdd-apply   | Implement (TDD when configured)                |
+| `/sdd-apply`    | sdd-apply   | Implement (mandatory TDD for business logic)     |
 | `/sdd-verify`   | sdd-verify  | Technical + spec-compliance gate               |
 | `/sdd-qa`       | sdd-qa      | Acceptance evidence, `qa-report.md`            |
 | `/sdd-archive`  | sdd-archive | Two-report gate, sync + archive                |
 | `/sdd-new`      | kerrigan    | explore + propose                              |
-| `/sdd-ff`       | kerrigan    | propose + [spec + design] + tasks              |
+| `/sdd-ff`       | kerrigan    | propose + spec + design + tasks                |
 | `/sdd-continue` | kerrigan    | Resume from `state.yaml`                       |
 
 Artifacts (mode `openspec`) live under `.agents/sdd/changes/<name>/`
@@ -116,7 +118,21 @@ Quality gates:
 - This repo has no app under test and no general test runner: harness checks cannot claim
   product acceptance. Record `NOT TESTED` / `BLOCKED` with evidence where applicable.
 
-## Commands (28)
+## Flujo de revisión
+
+`/review <PR URL>` inicia RDD sobre el diff de esa pull request entre su merge base y `head`. Sin
+URL, `/review` inicia RDD sobre el working tree local respecto a `HEAD`. Ambas rutas aplican siempre
+R1 Risk, R2 Readability, R3 Reliability y R4 Resilience. La revisión no autoriza cambios, comentarios
+en GitHub, commits ni push. `/pr-watch` conserva la gestión de hilos y workflows en una sola pasada.
+
+Valida las pruebas del flujo con `npm run test:review`.
+En Windows, las PR con symlinks requieren permiso del sistema para crearlos; si no está disponible,
+`/review` se detiene y no sustituye el candidato por otro.
+Windows no aplica el bit `read-only` de directorios como una ACL que impida agregar entradas. El
+control plane vuelve a verificar el árbol al capturar la revisión y rechaza cambios; para una
+garantía de solo lectura frente a procesos locales concurrentes, usa un entorno Unix.
+
+## Commands (27)
 
 Two standards, split on purpose:
 
@@ -129,7 +145,7 @@ Two standards, split on purpose:
 | SDD (13)    | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
 | Diagram (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
 | Vercel (5)  | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace`                                                                                 |
-| Misc (7)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop`, `pr-watch`                                                             |
+| Misc (6)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                    |
 
 ## Skills (122)
 
@@ -141,10 +157,10 @@ trust the filesystem, not this table:
 | `workflow/`       | 26                     | Brainstorming, debugging, planning, reviews, worktrees, RPI/RDD, output control                 |
 | `testing/`        | 1                      | Test-driven development and test design                                                         |
 | `design-pattern/` | 1                      | Consolidated GoF pattern skill (22 patterns in `references/`)                                   |
-| `design/`         | 8                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
+| `design/`         | 7                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
 | `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                      |
 | `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                |
-| `sdd/`            | 10                     | One skill per SDD phase + `_shared/` protocol                                                   |
+| `sdd/`            | 11                     | Ten phase skills, inline onboarding, and the `_shared/` protocol                                                   |
 | `github/`         | 9                      | Actions, PR flow, stacked PRs, CI fixes, reviews, `yeet`                                        |
 | `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                               |
 | `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                          |
@@ -203,15 +219,15 @@ Also in `adapters/opencode/opencode.json`:
 
 ```
 agent-harness/
-├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
-├── commands/                ← 28 slash commands (13 sdd + 3 diagram + 5 vercel + 7 misc)
+├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (10), linear-pm, lens/mirror/scalpel
+├── commands/                ← 27 slash commands (13 sdd + 3 diagram + 5 vercel + 6 misc)
 ├── skills/                  ← 122 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
-├── adapters/opencode/       ← opencode.json, cli.json, adapter.json, themes/, plugins/, scripts/
-├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list presets), deploy.mjs (render+verify)
-└── harness.config.json      ← preset, persona, TDD toggle
+├── adapters/opencode/       ← opencode.json, cli.json, adapter.json, themes/, scripts/
+├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list bundle), deploy.mjs (render+verify)
+└── harness.config.json      ← persona
 ```
 
 ## Platform setup
@@ -229,7 +245,7 @@ clone → `npm run deploy` → dotter deploy. Re-run `npm run deploy` after ever
 pull, otherwise dotter symlinks dangle:
 
 ```bash
-npm run deploy -- --preset recommended --output dist/opencode
+npm run deploy -- --output dist/opencode
 # = render bundle + verify 27/27 {file:} refs resolve inside it
 ```
 
@@ -239,7 +255,6 @@ yours; re-render after pulling):
 ```toml
 "editors/agents/agent-harness/dist/opencode/opencode.json" = "~/.config/opencode/opencode.json"
 "editors/agents/agent-harness/dist/opencode/cli.json" = "~/.config/opencode/cli.json"
-"editors/agents/agent-harness/dist/opencode/plugins" = "~/.config/opencode/plugins"
 "editors/agents/agent-harness/dist/opencode/themes" = "~/.config/opencode/themes"
 "editors/agents/agent-harness/dist/opencode/scripts" = "~/.config/opencode/scripts"
 "editors/agents/agent-harness/dist/opencode/prompts" = "~/.config/opencode/prompts"
@@ -250,8 +265,8 @@ yours; re-render after pulling):
 
 No-build alternative: symlink the source tree 1:1 instead, stripping the
 `adapters/opencode/` prefix by hand (`opencode.json`, `cli.json`, `scripts/`,
-`plugins/`, `themes/` land at target root). You lose preset pruning — every
-`{file:}` must resolve, i.e. only `recommended`/`full` content works.
+`themes/` land at target root). The source tree contains the complete harness, so every `{file:}`
+reference in the full bundle must resolve.
 
 ---
 

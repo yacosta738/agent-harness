@@ -8,6 +8,11 @@ description: Reviews code changes using CodeRabbit AI. Use when user asks for co
 Use this skill to run CodeRabbit from the terminal, summarize the findings, and help implement
 follow-up fixes.
 
+For code-review requests, `/review` owns target selection and the RDD receipt. Use this skill as a
+finding provider inside that target; do not start a parallel review transaction. If a request asks
+only for CodeRabbit output, still route through `/review` and preserve its PR-URL/local-working-tree
+selection.
+
 Default synthesis rubric: load `four-r-review` when converting CodeRabbit output into a human review
 summary. Keep CodeRabbit as the source of findings, but classify each finding under the most
 relevant
@@ -95,12 +100,13 @@ with `-c` to improve review quality.
 ```
 
 - Include file path, impact, and the concrete fix direction.
-- End with a compact 4R rollup when findings exist:
+- End every result with a compact 4R rollup, including zero counts when no findings exist:
     - `R1 Risk: N`
     - `R2 Readability: N`
     - `R3 Reliability: N`
     - `R4 Resilience: N`
-- If there are no findings, say `CodeRabbit found 0 findings.` and do not invent issues.
+- If there are no findings, say `CodeRabbit found 0 findings.` and report zero counts for each 4R
+  lens. Do not invent issues.
 
 ## Guardrails
 

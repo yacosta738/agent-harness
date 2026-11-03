@@ -33,7 +33,6 @@ This skill is not for:
 - websites
 - landing pages
 - desktop dashboards
-- image-to-code
 - frontend implementation
 - code generation
 

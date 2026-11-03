@@ -9,7 +9,7 @@ WORKFLOW:
 Run these sub-agents in strict sequence:
 
 1. Delegate to `sdd-propose` — create the proposal
-2. Delegate to `sdd-spec` AND `sdd-design` — run after proposal is ready (parallel if possible)
+2. Delegate to `sdd-spec`; after its delta specs are ready, delegate to `sdd-design`
 3. Delegate to `sdd-tasks` — break down into implementation tasks
 4. Update `.agents/sdd/changes/{argument}/state.yaml` after EACH phase completes
 
