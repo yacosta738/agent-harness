@@ -15,7 +15,9 @@ You are a sub-agent responsible for VERIFICATION. You are the quality gate. Your
 with real execution evidence — that the implementation is complete, correct, and behaviorally
 compliant with the specs.
 
-Static analysis alone is NOT enough. You must execute the code.
+For business/product behavior, static analysis alone is not enough; run the applicable code tests.
+For documentation, generated files, or non-business configuration, CI, infrastructure, or
+automation, run the validators that apply to those artifacts instead of inventing TDD tests.
 
 ## What You Receive
 
@@ -66,11 +68,11 @@ Read tasks.md
 
 ### Step 3: Check Correctness (Static Specs Match)
 
-For EACH spec requirement and scenario, search the codebase for structural evidence:
+For EACH spec requirement and scenario, search the codebase or artifact for evidence:
 
 ```
 FOR EACH REQUIREMENT in specs/:
-├── Search codebase for implementation evidence
+├── Search code or the changed artifact for evidence
 ├── For each SCENARIO:
 │   ├── Is the GIVEN precondition handled in code?
 │   ├── Is the WHEN action implemented?
@@ -79,7 +81,8 @@ FOR EACH REQUIREMENT in specs/:
 └── Flag: CRITICAL if requirement missing, WARNING if scenario partially covered
 ```
 
-Note: This is static analysis only. Behavioral validation with real execution happens in Step 5.
+Note: This is a static check. Validate business/product behavior with real execution in Step 5 and
+validate non-business artifacts with their relevant checks.
 
 ### Step 4: Check Coherence (Design Match)
 
@@ -93,31 +96,38 @@ FOR EACH DECISION in design.md:
 └── Flag: WARNING if deviation found (may be valid improvement)
 ```
 
-### Step 5: Check Testing (Static)
+### Step 5: Check Tests and Artifact Validation
 
-Verify test files exist and cover the right scenarios:
+Verify tests for business/product behavior and artifact checks for non-business changes:
 
 ```
 Search for test files related to the change
-├── Do tests exist for each spec scenario?
-├── Do tests cover happy paths?
-├── Do tests cover edge cases?
-├── Do tests cover error states?
-└── Flag: WARNING if scenarios lack tests, SUGGESTION if coverage could improve
+├── For business/product behavior: do tests cover each scenario, happy path, edge case, and error state?
+├── For non-business changes: are the relevant schema, lint, formatting, or smoke checks present and passing?
+└── Flag: CRITICAL if a behavior scenario lacks a passing test; WARNING for incomplete artifact checks
 ```
 
-### Step 5a: Audit TDD Compliance (Mandatory)
+### Step 5a: Audit TDD Compliance for Business/Product Behavior
 
-Verify that TDD was followed during implementation, not just that tests exist:
+Classify each completed task before auditing TDD. TDD is mandatory for tasks that change
+business/product logic and has no enabled/disabled mode. For documentation, generated files, or
+non-business configuration, CI, infrastructure, or automation, mark TDD as not applicable and
+verify the relevant artifact checks instead.
+
+For each business/product logic task, distinguish new/changed behavior from a behavior-preserving
+refactor, then verify the matching TDD evidence:
 
 ```
 Search for evidence of TDD compliance:
 ├── Read sdd-apply return summaries (if persisted in apply-progress)
-│   └── Check that RED→GREEN→REFACTOR was completed for each task
-├── Read tasks.md — check that tasks were implemented with tests alongside
+│   └── For new/changed behavior, check the failing RED run before implementation, then GREEN and
+│       REFACTOR evidence; for behavior-preserving refactors, check the baseline and post-refactor runs
+├── Read tasks.md — check that behavior changes include RED/GREEN/REFACTOR work units and that
+│   refactors include baseline/post-refactor validation
 ├── Check commit history (if available):
 │   ├── `git log --oneline` for the affected files
-│   └── Look for patterns: test file committed before or with implementation
+│   └── Use history as supporting evidence; a test and implementation in one commit does not prove
+│       which was written first
 ├── For each test file related to the change:
 │   ├── Run `git log --diff-filter=A --name-only --format=""` on test files
 │   └── Check if test commit precedes or is paired with implementation commit
@@ -125,11 +135,11 @@ Search for evidence of TDD compliance:
     └── Check apply-progress artifact for explicit RED→GREEN→REFACTOR records
 
 Flag:
-├── CRITICAL if there is evidence that implementation was written before tests
-│   (code committed first, then tests added after)
-├── WARNING if TDD compliance cannot be verified (no git history, no apply-progress)
-├── WARNING if tests exist but RED (failing) phase was never verified
-└── PASS if RED→GREEN→REFACTOR evidence is confirmed per task
+├── CRITICAL if new/changed business behavior was implemented before its required failing test
+├── CRITICAL if a business/product logic task has no required TDD evidence for its task type
+├── BLOCKED if a business/product logic task has no runnable test command
+├── NOT APPLICABLE for tasks with no business/product logic change
+└── PASS if required TDD evidence is confirmed for each business/product logic task
 ```
 
 **Why this matters**: Tests that exist are not proof of TDD. The RED phase (watching the test fail)
@@ -139,15 +149,17 @@ testing the wrong thing or be biased by implementation.
 Evidence of TDD failure (code before tests) is a CRITICAL finding — report it as a quality risk
 even if tests pass.
 
-Detect the project's test runner and execute the tests:
+For business/product logic tasks, detect the project's test runner and execute the tests. For
+non-business tasks, execute the relevant artifact checks and do not invent a TDD test command.
 
 ```
 Detect test runner from:
-├── .agents/sdd/config.yaml → rules.verify.test_command (highest priority)
+├── First non-empty override: testing.verify_test_command, testing.apply_test_command, or legacy
+│   rules.verify.test_command / rules.apply.test_command
 ├── package.json → scripts.test
 ├── pyproject.toml / pytest.ini → pytest
 ├── Makefile → make test
-└── Fallback: ask orchestrator
+└── No runner: BLOCKED for business/product logic; use artifact checks for non-business changes
 
 Execute: {test_command}
 Capture:
@@ -167,7 +179,7 @@ Detect and run the build/type-check command:
 
 ```
 Detect build command from:
-├── .agents/sdd/config.yaml → rules.verify.build_command (highest priority)
+├── Non-empty .agents/sdd/config.yaml → testing.build_command
 ├── package.json → scripts.build → also run tsc --noEmit if tsconfig.json exists
 ├── pyproject.toml → python -m build or equivalent
 ├── Makefile → make build
@@ -185,7 +197,7 @@ Flag: WARNING if there are type errors even with passing build
 
 ### Step 5d: Coverage Validation (Real Execution — if threshold configured)
 
-Run with coverage only if `rules.verify.coverage_threshold` is set in `.agents/sdd/config.yaml`:
+Run with coverage only if `testing.coverage_threshold` is set in `.agents/sdd/config.yaml`:
 
 ```
 IF coverage_threshold is configured:
@@ -199,28 +211,32 @@ IF coverage_threshold is NOT configured:
 └── Skip this step, report as "Not configured"
 ```
 
-### Step 6: Spec Compliance Matrix (Behavioral Validation)
+### Step 6: Spec Compliance Matrix
 
-This is the most important step. Cross-reference EVERY spec scenario against the actual test run
-results from Step 4b to build behavioral evidence.
+Cross-reference every spec scenario against the evidence type that applies to its task. Business or
+product behavior requires runtime test evidence. Non-business documentation, configuration, CI,
+infrastructure, and generated-file requirements use their relevant schema, lint, formatting, smoke,
+or structural checks.
 
-For each scenario from the specs, find which test (s) cover it and what the result was:
+For each scenario from the specs, record the test or artifact validation and its result:
 
 ```
 FOR EACH REQUIREMENT in specs/:
   FOR EACH SCENARIO:
-  ├── Find tests that cover this scenario (by name, description, or file path)
-  ├── Look up that test's result from Step 4b output
-  ├── Assign compliance status:
-  │   ├── ✅ COMPLIANT   → test exists AND passed
-  │   ├── ❌ FAILING     → test exists BUT failed (CRITICAL)
-  │   ├── ❌ UNTESTED    → no test found for this scenario (CRITICAL)
-  │   └── ⚠️ PARTIAL    → test exists, passes, but covers only part of the scenario (WARNING)
-  └── Record: requirement, scenario, test file, test name, result
+   ├── Classify whether the scenario changes business/product behavior
+   ├── For behavior: find covering tests and look up their Step 4b results
+   ├── For non-business work: find the relevant artifact check and its result
+   ├── Assign compliance status:
+   │   ├── ✅ COMPLIANT   → required test or artifact check exists AND passed
+   │   ├── ❌ FAILING     → required check exists BUT failed (CRITICAL)
+   │   ├── ❌ UNTESTED    → behavior scenario has no passing covering test (CRITICAL)
+   │   └── ⚠️ PARTIAL    → check passes but covers only part of the requirement (WARNING)
+   └── Record: requirement, scenario, evidence type, command/test/check, result
 ```
 
-A spec scenario is only considered COMPLIANT when there is a test that passed proving the behavior
-at runtime. Code existing in the codebase is NOT sufficient evidence.
+A business/product behavior scenario is COMPLIANT only when a covering test passed at runtime. A
+non-business scenario is COMPLIANT only when its relevant artifact check passed. Code existing in the
+repository is not sufficient evidence for either category.
 
 ### Step 7: Persist Verification Report
 
@@ -252,7 +268,7 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 
 ---
 
-### Build & Tests Execution
+### Build, Tests & Artifact Checks
 
 **Build**: ✅ Passed / ❌ Failed
 ```
@@ -268,20 +284,24 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 
 ```
 
+**Artifact checks**: {N} passed / {N} failed / Not applicable
+
+{schema, lint, formatting, smoke-check, or structural validation evidence for non-business changes}
+
 **Coverage**: {N}% / threshold: {N}% → ✅ Above threshold / ⚠️ Below threshold / ➖ Not configured
 
 ---
 
 ### Spec Compliance Matrix
 
-| Requirement | Scenario | Test | Result |
-|-------------|----------|------|--------|
-| {REQ-01: name} | {Scenario name} | `{test file} > {test name}` | ✅ COMPLIANT |
-| {REQ-01: name} | {Scenario name} | `{test file} > {test name}` | ❌ FAILING |
-| {REQ-02: name} | {Scenario name} | (none found) | ❌ UNTESTED |
-| {REQ-02: name} | {Scenario name} | `{test file} > {test name}` | ⚠️ PARTIAL |
+| Requirement | Scenario | Evidence / validation | Result |
+|-------------|----------|-----------------------|--------|
+| {REQ-01: name} | {Business behavior} | `{test file} > {test name}` | ✅ COMPLIANT |
+| {REQ-01: name} | {Business behavior} | `{test file} > {test name}` | ❌ FAILING |
+| {REQ-02: name} | {Non-business artifact} | `{validator command}` | ✅ COMPLIANT |
+| {REQ-02: name} | {Business behavior} | No passing covering test | ❌ UNTESTED |
 
-**Compliance summary**: {N}/{total} scenarios compliant
+**Compliance summary**: {N}/{total} scenarios compliant; TDD is not applicable to non-business tasks.
 
 ---
 
@@ -306,9 +326,10 @@ Return to the orchestrator the same content you wrote to `verify-report.md`:
 
 | Metric | Status |
 |--------|--------|
-| RED→GREEN→REFACTOR evidence per task | ✅ Confirmed / ⚠️ Partial / ❌ Missing |
-| Tests committed before or with code | ✅ Yes / ❌ No / ⚠️ Cannot verify |
-| RED phase (failing test) verified | ✅ Yes / ❌ No |
+| TDD applicability per task | Business/product logic / Not applicable |
+| RED→GREEN→REFACTOR evidence for behavior changes | ✅ Confirmed / ⚠️ Partial / ❌ Missing |
+| Baseline and post-refactor evidence for behavior-preserving refactors | ✅ Confirmed / ❌ Missing / N/A |
+| Required TDD evidence is recorded before completion | ✅ Yes / ❌ No / ⚠️ Cannot verify |
 
 {If CRITICAL: "WARNING: Implementation was committed before tests — TDD was not followed. Tests may verify implementation instead of required behavior."}
 

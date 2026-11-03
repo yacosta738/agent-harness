@@ -59,9 +59,8 @@ executor: do the work yourself, do not delegate, and do not behave like the orch
 | `mode=openspec`                              | Create/update openspec bootstrap files only.                                      |
 | `mode=hybrid`                                | Do both Engram and openspec persistence.                                          |
 | `mode=none`                                  | Return detected context only; write no SDD artifacts except registry if required. |
-| Strict TDD marker or `rules.apply.tdd` found | Use the explicit value before considering runner fallback.                        |
-| no marker/config but test runner exists      | Default `strict_tdd: true`.                                                       |
-| no test runner                               | Set `strict_tdd: false` and explain unavailable.                                  |
+| Test runner found                           | Record the detected or configured command; do not set a TDD mode.                 |
+| No test runner found                        | Report it as unavailable; business/product logic apply tasks must remain blocked. |
 
 ## Execution Steps
 
@@ -72,12 +71,9 @@ executor: do the work yourself, do not delegate, and do not behave like the orch
    persistence applies and only `openspec/` exists, migrate it first; if both directories exist,
    return `status: blocked` with the conflict report and stop. In `engram` or `none` mode, do not
    migrate legacy files.
-4. Resolve Strict TDD in this order: explicit agent marker; Boolean `rules.apply.tdd` in
-   `.agents/sdd/config.yaml`; Boolean `rules.apply.tdd` in legacy `openspec/config.yaml` if that is
-   the only available SDD config (read it without moving files in `engram`/`none` mode); detected
-   test-runner fallback (`true` when a runner exists); then `false` when no runner exists. An
-   explicit config value of `false` also takes precedence over runner detection. When both configs
-   exist without a filesystem migration, prefer `.agents/sdd/config.yaml`.
+4. Record test-runner availability and any configured command override. Do not read or write
+   `tdd.enabled`, `strict_tdd`, or equivalent enable/disable flags. TDD applicability is determined
+   by whether a task changes business/product logic, not by runner availability.
 5. Initialize persistence for the resolved mode.
 6. Build `.agents/skill-registry.md` using the skill-registry scan rules.
 7. Persist testing capabilities and project context.
@@ -86,8 +82,9 @@ executor: do the work yourself, do not delegate, and do not behave like the orch
 ## Output Contract
 
 Return `status`, `executive_summary`, `artifacts`, `next_recommended`, and `risks`. Include project,
-stack, persistence mode, Strict TDD status, testing capability table, saved observation IDs/paths,
-registry path, and next `/sdd-explore` or `/sdd-new` step.
+stack, persistence mode, detected testing capabilities and command overrides, saved observation
+IDs/paths, registry path, and next `/sdd-explore` or `/sdd-new` step. Do not report a TDD enabled or
+disabled mode.
 
 ## References
 

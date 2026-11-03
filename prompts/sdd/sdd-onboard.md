@@ -153,7 +153,9 @@ Implement the tasks following `sdd-apply` behavior. Narrate each task as you com
  ✓ Done — [brief note on what was created/changed]"
 ```
 
-If Strict TDD mode is active, apply the TDD cycle and explain it:
+For tasks that change business/product logic, apply the canonical TDD skill and explain the cycle.
+TDD has no enabled/disabled mode. For non-business documentation, configuration, CI, or
+infrastructure work, explain the relevant artifact checks instead:
 
 ```
 "Notice: RED → GREEN → TRIANGULATE → REFACTOR.

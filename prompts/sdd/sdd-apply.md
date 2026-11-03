@@ -133,55 +133,36 @@ bottom layer's base MUST be the trunk; every child base MUST be the immediate pa
 one
 explicit base. Stop rather than widening scope or guessing.
 
-### Step 4: Implement Tasks (TDD Workflow — RED → GREEN → REFACTOR)
+### Step 4: Apply the behavior-based test policy
 
-TDD IS MANDATORY. EVERY task follows this cycle — no exceptions:
+Classify each assigned task before implementation:
 
-```
-FOR EACH TASK:
-├── 1. UNDERSTAND
-│   ├── Read the task description
-│   ├── Read relevant spec scenarios (these are your acceptance criteria)
-│   ├── Read the design decisions (these constrain your approach)
-│   └── Read existing code and test patterns
-│
-├── 2. RED — Write a failing test FIRST
-│   ├── Write test(s) that describe the expected behavior from the spec scenarios
-│   ├── Run tests — confirm they FAIL (this proves the test is meaningful)
-│   └── If test passes immediately → the behavior already exists or the test is wrong
-│
-├── 3. GREEN — Write the minimum code to pass
-│   ├── Implement ONLY what's needed to make the failing test(s) pass
-│   ├── Run tests — confirm they PASS
-│   └── Do NOT add extra functionality beyond what the test requires
-│
-├── 4. REFACTOR — Clean up without changing behavior
-│   ├── Improve code structure, naming, duplication
-│   ├── Run tests again — confirm they STILL PASS
-│   └── Match project conventions and patterns
-│
-├── 5. Mark task as complete [x] in tasks.md
-└── 6. Note any issues or deviations
-```
+| Task scope | Required approach |
+|---|---|
+| Changes business/product logic (new behavior, behavior bug, or logic refactor) | TDD is mandatory in SDD. Load `skills/testing/test-driven-development/SKILL.md`; use RED → GREEN → REFACTOR for new/changed behavior and existing or characterization tests before behavior-preserving refactors. |
+| Documentation, generated files, or configuration, CI, infrastructure, or automation with no business/product logic | Do not use TDD or invent tests. Run checks that apply to the artifact, such as schema validation, lint, formatting, or focused smoke checks. |
+| Mixed scope | Separate the behavior change from non-business artifact work. Apply TDD to the behavior and relevant checks to the other files. |
 
-Detect the test runner for execution:
+TDD has no enabled/disabled mode. A project may configure a runner command, but it may not disable
+TDD for business/product logic.
 
-```
-Detect test runner from:
-├── .agents/sdd/config.yaml → rules.apply.test_command (highest priority)
-├── package.json → scripts.test
-├── pyproject.toml / pytest.ini → pytest
-├── Makefile → make test
-└── Fallback: STOP — TDD requires a test runner to confirm RED and GREEN
-```
+For a business/product logic task, detect the runnable test command from:
 
-If no test runner is found, follow the repository's configured exception: do not invent a runner or
-fixture app, use focused JSON/YAML/Markdown/path smoke checks where possible, and explicitly report
-that RED→GREEN→REFACTOR evidence cannot be claimed. For this repository, continue the
-documentation/configuration slice while recording the no-runner limitation.
+1. A non-empty `.agents/sdd/config.yaml` → `testing.apply_test_command`.
+2. A non-empty legacy `.agents/sdd/config.yaml` → `rules.apply.test_command`.
+3. `package.json` → `scripts.test`.
+4. `pyproject.toml` or `pytest.ini` → `pytest`.
+5. `Makefile` → `make test`.
+6. The project's documented test command.
 
-**Important**: If any user coding skills are installed (e.g., `tdd/SKILL.md`, `pytest/SKILL.md`,
-`vitest/SKILL.md`), read and follow those skill patterns for writing tests.
+If no runner exists for a business/product logic task, stop before implementing that behavior and
+return `status: blocked`. Ask the orchestrator to configure or identify a runner. Do not mark the task
+as a non-TDD task to continue. A task limited to non-business artifacts may continue with relevant
+checks and no TDD claim.
+
+**Important**: Read framework-specific testing skills (for example, pytest or Vitest) for runner
+syntax and project conventions. `test-driven-development` remains the canonical source for TDD
+applicability and RED → GREEN → REFACTOR; a framework skill must not change that policy.
 
 ### Step 5: Mark Tasks Complete
 
@@ -224,7 +205,7 @@ Return to the orchestrator:
 ## Implementation Progress
 
 **Change**: {change-name}
-**Mode**: Documentation pressure scenarios + static validation (no executable project test runner)
+**Testing scope**: {TDD for business/product logic | relevant artifact validation for non-business changes}
 
 ### Completed Tasks
 - [x] {task 1.1 description}
@@ -270,11 +251,15 @@ it MUST NOT duplicate acceptance checks or fabricate product evidence.
 
 - ALWAYS read specs before implementing — specs are your acceptance criteria
 - ALWAYS follow the design decisions — don't freelance a different approach
-- TDD is MANDATORY. ALWAYS follow RED → GREEN → REFACTOR. Standard Mode does not exist.
-- If you detect code written before tests, STOP and delete the code — start with the failing test
-  first.
-- If no test runner is configured, STOP and report `status: blocked` — TDD cannot execute without
-  one.
+- TDD is mandatory for business/product logic in RPI and SDD; follow the canonical
+  `test-driven-development` skill. No configuration flag can disable it.
+- Do not apply TDD to documentation, generated files, or non-business configuration, CI,
+  infrastructure, or automation. Run relevant artifact checks instead.
+- If a business/product logic task has no runnable test command, stop before implementing that
+  behavior and report `status: blocked`.
+- If new or changed business behavior was implemented before its required failing test, stop and
+  report the TDD violation. For a behavior-preserving refactor, require baseline and post-refactor
+  test evidence instead. Do not claim TDD compliance or delete source code without approval.
 - ALWAYS match existing code patterns and conventions in the project
 - In `openspec` mode, mark tasks complete in `tasks.md` AS you go, not at the end
 - If you discover the design is wrong or incomplete, NOTE IT in your return summary — don't silently

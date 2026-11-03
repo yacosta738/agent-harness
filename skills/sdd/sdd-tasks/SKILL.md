@@ -81,7 +81,8 @@ Create the task file:
 
 ## Phase 2: {Phase Name} (e.g., Core Implementation)
 
-Each implementation task is split into RED→GREEN→REFACTOR per TDD:
+For each task that adds or changes business/product behavior, split implementation into RED → GREEN
+→ REFACTOR tasks using the canonical `test-driven-development` skill:
 
 - [ ] 2.1 RED: Write failing test for {component/behavior}
 - [ ] 2.2 GREEN: Implement minimum code to pass
@@ -89,6 +90,10 @@ Each implementation task is split into RED→GREEN→REFACTOR per TDD:
 - [ ] 2.4 RED: Write failing test for {next behavior}
 - [ ] 2.5 GREEN: Implement minimum code to pass
 - [ ] 2.6 REFACTOR: Clean up, verify tests still pass
+
+For a behavior-preserving business-logic refactor, plan a passing baseline test (or a
+characterization test if coverage is missing), then refactor and rerun it. Do not invent a failing
+behavior test.
 
 ## Phase 3: {Phase Name} (e.g., Integration / E2E Testing)
 
@@ -214,11 +219,19 @@ chain, or size exception.}
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `.agents/sdd/config.yaml`
-- TDD IS MANDATORY. Each implementation task MUST be split into:
+- TDD IS MANDATORY for business/product logic in RPI and SDD. For a task that adds or changes
+  behavior, split it into:
     - RED task: write the failing test FIRST
     - GREEN task: write minimum code to pass
     - REFACTOR task: clean up without changing behavior
-      Do NOT bundle implementation and testing into a single task — that hides the TDD cycle.
+      Do NOT bundle implementation and testing into a single task — that hides the TDD cycle. For
+      behavior-preserving refactors, include a passing baseline/characterization test and a
+      post-refactor run instead of a fabricated RED phase. For documentation, generated files, or
+      non-business configuration, CI, infrastructure, or automation, specify artifact checks instead.
+- For a behavior-preserving refactor, include a passing baseline or characterization test and a
+  post-refactor run instead of a fabricated RED phase.
+- If a task changes business/product logic and no runnable test command exists, mark it blocked
+  before apply and request a runner. Do not treat missing infrastructure as TDD disabled.
 - **Size budget**: Tasks artifact SHOULD stay under 650 words including the Review Workload
   Forecast. Each task: 1-2 lines max. Use checklist format, not paragraphs.
 - Return envelope per **Section D** from `../_shared/sdd-phase-common.md`.

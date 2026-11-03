@@ -114,15 +114,21 @@ rules:
     - Keep tasks completable in one session
   apply:
     - Follow existing code patterns
-    tdd: true            # STRICT TDD: RED → GREEN → REFACTOR is MANDATORY
-    test_command: ""     # e.g., "npm test", "pytest"
+    - Use the canonical TDD skill for business/product logic; do not add a TDD mode flag
   verify:
-    test_command: ""     # Override for verification
-    build_command: ""    # Override for build check
-    coverage_threshold: 0  # Set > 0 to enable coverage check
+    - Verify TDD evidence for business/product logic tasks
+    - Use relevant artifact checks for non-business changes
   archive:
     - Warn before merging destructive deltas
+testing:
+  apply_test_command: ""   # Optional non-empty override; otherwise detect the project runner
+  verify_test_command: ""  # Optional non-empty verification override
+  build_command: ""        # Optional non-empty build check
+  coverage_threshold: 0    # Set > 0 to enable coverage checks
 ```
+
+Legacy runner overrides under `rules.apply.test_command` and `rules.verify.test_command` remain
+accepted as command selectors. They do not enable or disable TDD.
 
 ## Archive Structure
 

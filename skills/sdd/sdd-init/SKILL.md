@@ -49,22 +49,17 @@ When the resolved persistence mode includes filesystem artifacts:
 - If neither directory exists, continue with a fresh bootstrap.
 - In `engram` or `none` mode, leave any legacy `openspec/` directory untouched.
 
-### Resolve Strict TDD
+### Detect Testing Capabilities
 
-Resolve Strict TDD only after inspecting the artifact locations and migrating the legacy directory
-when filesystem persistence applies. Use this precedence:
+After inspecting the artifact locations and migrating the legacy directory when filesystem
+persistence applies, detect the project's test runner and any command overrides. Do not read or
+write `tdd.enabled`, `strict_tdd`, or equivalent enable/disable flags. TDD applies to
+business/product logic in both RPI and SDD; runner availability does not change that policy.
 
-1. Explicit agent marker.
-2. Boolean `rules.apply.tdd` in `.agents/sdd/config.yaml`.
-3. Boolean `rules.apply.tdd` in `openspec/config.yaml` when it is the only available SDD config;
-   read it without moving files in `engram` or `none` mode.
-4. Detected test-runner fallback (`true` when a runner exists).
-5. `false` if no runner exists.
-
-An explicit `false` from a marker or config takes precedence over runner detection. In filesystem
-persistence mode, if both SDD directories exist, report the migration conflict and stop before
-resolving or using a config. In `engram` or `none` mode, leave the legacy tree untouched and prefer
-`.agents/sdd/config.yaml` when both configs exist.
+If no runner is available, record that capability as unavailable. SDD apply must block a task that
+changes business/product logic until a runner is configured or identified. A task limited to
+documentation, generated files, or non-business configuration, CI, infrastructure, or automation may
+continue with relevant artifact checks and no TDD claim.
 
 ### Step 2: Initialize Persistence Backend
 
@@ -110,10 +105,18 @@ rules:
     - Follow existing code patterns and conventions
     - Load relevant coding skills for the project stack
   verify:
-    - Run tests if test infrastructure exists
+    - Verify business/product logic with the configured test runner
+    - Validate non-business artifacts with checks appropriate to their format
     - Compare implementation against every spec scenario
   archive:
     - Warn before merging destructive deltas (large removals)
+
+# Optional runner overrides. Use non-empty values; omit or leave blank when standard detection is sufficient.
+testing:
+  apply_test_command: ""
+  verify_test_command: ""
+  build_command: ""
+  coverage_threshold: 0
 ```
 
 ### Step 4: Return Summary
@@ -126,6 +129,7 @@ Return a structured summary:
 **Project**: {project name}
 **Stack**: {detected stack}
 **Persistence**: openspec
+**Testing capabilities**: {runner and command | unavailable}; TDD applicability is behavior-based, not a mode.
 
 ### Structure Created
 - .agents/sdd/config.yaml ← Project config with detected context

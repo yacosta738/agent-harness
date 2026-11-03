@@ -96,7 +96,7 @@ init → explore → propose → [spec + design] → tasks → apply → verify 
 | `/sdd-spec`     | sdd-spec    | Delta specs, Given/When/Then                   |
 | `/sdd-design`   | sdd-design  | Technical design, ADRs                         |
 | `/sdd-tasks`    | sdd-tasks   | Implementation checklist                       |
-| `/sdd-apply`    | sdd-apply   | Implement (TDD when configured)                |
+| `/sdd-apply`    | sdd-apply   | Implement (mandatory TDD for business logic)     |
 | `/sdd-verify`   | sdd-verify  | Technical + spec-compliance gate               |
 | `/sdd-qa`       | sdd-qa      | Acceptance evidence, `qa-report.md`            |
 | `/sdd-archive`  | sdd-archive | Two-report gate, sync + archive                |
@@ -211,7 +211,7 @@ agent-harness/
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
 ├── adapters/opencode/       ← opencode.json, cli.json, adapter.json, themes/, plugins/, scripts/
 ├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list presets), deploy.mjs (render+verify)
-└── harness.config.json      ← preset, persona, TDD toggle
+└── harness.config.json      ← preset, persona
 ```
 
 ## Platform setup

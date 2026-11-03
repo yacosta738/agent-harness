@@ -30,8 +30,9 @@ completion with source inspection plus real execution evidence.
 ## Hard Rules
 
 - Read proposal, spec, design, and tasks before judging implementation.
-- Execute relevant tests; static analysis alone is never verification.
-- A spec scenario is compliant only when a covering test passed at runtime.
+- Execute relevant checks for each change. Business/product behavior requires passing tests; non-business
+  documentation, configuration, CI, or infrastructure requires its applicable validators.
+- A business/product behavior scenario is compliant only when a covering test passed at runtime.
 - Compare specs first, design second, task completion third.
 - Do not fix issues; report them for the orchestrator/user.
 - Persist `verify-report` according to mode: Engram, openspec file, hybrid both, or inline-only for
@@ -45,32 +46,38 @@ completion with source inspection plus real execution evidence.
   `UNAVAILABLE` remains unavailable and is not a pass. If the runner is disabled/unavailable, label
   the report
   `fallback` and state that deterministic enforcement was not available.
-- If Strict TDD is active, load `skills/sdd/sdd-verify/strict-tdd-verify.md` from this skill
-  directory; if inactive, never load it.
+- For tasks that change business/product logic, verify the required TDD evidence using
+  `skills/testing/test-driven-development/SKILL.md`. For non-business tasks, mark TDD as not
+  applicable and verify the relevant artifact checks.
 - Return the Section D envelope from `../../skills/sdd/_shared/sdd-phase-common.md`.
 
 ## Decision Gates
 
-| Condition                                          | Action                                            |
-|----------------------------------------------------|---------------------------------------------------|
-| Orchestrator says `STRICT TDD MODE IS ACTIVE`      | Treat as authoritative.                           |
-| Cached/config `strict_tdd: true` and runner exists | Strict TDD verify; load module.                   |
-| Strict TDD false or no runner                      | Standard verify; skip TDD checks.                 |
-| Task incomplete                                    | CRITICAL for core task, WARNING for cleanup task. |
-| Test command exits non-zero                        | CRITICAL.                                         |
-| Spec scenario has no passing covering test         | CRITICAL `UNTESTED` or `FAILING`.                 |
-| Design deviation exists                            | WARNING unless it breaks a spec.                  |
+| Condition | Action |
+|---|---|
+| Task changes business/product logic | TDD is mandatory and has no mode flag. Require RED → GREEN → REFACTOR for new/changed behavior. |
+| Behavior-preserving business-logic refactor | Require a passing baseline or characterization test and a post-refactor test run; do not require a fabricated RED phase. |
+| Task is documentation, generated output, or non-business configuration/CI/infrastructure | Mark TDD not applicable; verify the relevant artifact checks. |
+| Business/product logic has no runnable test command or required test evidence | `FAIL` or `BLOCKED`; do not claim compliance. |
+| Task incomplete | CRITICAL for core task, WARNING for cleanup task. |
+| Applicable test command exits non-zero | CRITICAL. |
+| Business/product behavior scenario has no passing covering test | CRITICAL `UNTESTED` or `FAILING`. |
+| Design deviation exists | WARNING unless it breaks a spec. |
 
 ## Execution Steps
 
 1. Load relevant skills via shared SDD Section A.
 2. Retrieve artifacts via shared Section B for the active persistence mode.
-3. Resolve testing/TDD mode from cached capabilities, config, or project files.
+3. Classify each task by behavior. Resolve the test command from the first non-empty value among
+   `testing.verify_test_command`, `testing.apply_test_command`, legacy `rules.verify.test_command`,
+   and `rules.apply.test_command`; otherwise detect it from project files. These values select
+   commands only; they do not enable or disable TDD.
 4. Count completed and incomplete tasks.
-5. Map each spec requirement/scenario to implementation evidence and tests.
+5. Map each spec requirement/scenario to a passing test for business/product behavior, or to the
+   relevant artifact validation for non-business changes.
 6. Check design decisions against changed code.
 7. Run test, build/type-check, and coverage commands when available.
-8. Build the behavioral compliance matrix from actual test results.
+8. Build the compliance matrix from the tests or artifact checks that apply to each scenario.
 9. Persist and return the verification report.
 
 ## Output Contract
@@ -78,7 +85,7 @@ completion with source inspection plus real execution evidence.
 Return `## Verification Report` with:
 
 - change, mode, completeness table
-- build/tests/coverage evidence
+- build, behavior-test, non-business artifact-check, and coverage evidence
 - spec compliance matrix
 - correctness table
 - design coherence table
@@ -99,5 +106,5 @@ Return `## Verification Report` with:
 
 - `../../skills/sdd/_shared/sdd-phase-common.md` — skill loading, retrieval, persistence, and return
   envelope.
-- `../../skills/sdd/sdd-verify` — strict-tdd-verify.md and report-format.md references (load only
-  when Strict TDD is active).
+- `../../skills/testing/test-driven-development/SKILL.md` — canonical TDD procedure and applicability.
+- `../../skills/sdd/sdd-verify/SKILL.md` — verification report requirements.

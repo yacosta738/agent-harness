@@ -280,8 +280,16 @@ Return to the orchestrator:
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
 - Apply any `rules.tasks` from `.agents/sdd/config.yaml`
-- If the project uses TDD, integrate test-first tasks: RED task (write failing test) → GREEN task
-  (make it pass) → REFACTOR task (clean up)
+- For every task that adds or changes business/product behavior, split the plan into RED → GREEN →
+  REFACTOR tasks using `test-driven-development`; this applies in SDD without a project
+  enable/disable flag.
+- For a behavior-preserving business-logic refactor, plan a passing baseline test (or a
+  characterization test if coverage is missing), then refactor and rerun it; do not invent a failing
+  behavior test.
+  For documentation, generated files, and non-business configuration, CI, infrastructure, or
+  automation, specify relevant artifact checks instead of inventing TDD tasks.
+- If business/product logic needs to change and no runner exists, mark the apply work blocked and
+  request a runner; do not plan tests-after as a substitute for TDD.
 - **Size budget**: Tasks artifact MUST be under 530 words. Each task: 1-2 lines max. Use checklist
   format, not paragraphs.
 - **Review workload guard**: ALWAYS include the Review Workload Forecast. If likely above 400
