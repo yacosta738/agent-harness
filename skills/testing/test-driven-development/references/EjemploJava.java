@@ -23,6 +23,7 @@ final class EjemploJava {
             this.payments = payments;
         }
 
+        /** Returns CONFIRMED only when the gateway approves the order total. */
         CheckoutStatus checkout(Order order) {
             return payments.charge(order.totalCents)
                     ? CheckoutStatus.CONFIRMED

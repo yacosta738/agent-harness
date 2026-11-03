@@ -16,6 +16,7 @@ trait PaymentGateway {
 struct CheckoutService;
 
 impl CheckoutService {
+    /// Returns `Confirmed` only when the gateway approves the order total.
     fn checkout<G: PaymentGateway>(order: &Order, payments: &mut G) -> CheckoutStatus {
         if payments.charge(order.total_cents) {
             CheckoutStatus::Confirmed

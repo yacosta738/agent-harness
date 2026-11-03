@@ -10,6 +10,7 @@ fun interface PaymentGateway {
 }
 
 class CheckoutService(private val payments: PaymentGateway) {
+    /** Returns [CheckoutStatus.CONFIRMED] only when the gateway approves the order total. */
     fun checkout(order: Order): CheckoutStatus =
         if (payments.charge(order.totalCents)) CheckoutStatus.CONFIRMED
         else CheckoutStatus.REJECTED

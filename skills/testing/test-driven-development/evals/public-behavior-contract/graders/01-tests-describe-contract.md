@@ -4,4 +4,4 @@ focus: trace
 weight: 1
 ---
 
-El test describe el resultado observable de `shippingCost` para clientes gold y no gold, no una llamada a un helper privado.
+Los tests de la función pública `shippingCost` verifican que gold con 9 999 centavos paga 500, gold con exactamente 10 000 paga 0 y standard con exactamente 10 000 paga 500; no verifican llamadas a helpers privados.

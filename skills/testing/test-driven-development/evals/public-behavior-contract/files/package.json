@@ -1,0 +1,11 @@
+{
+  "name": "public-behavior-contract-eval",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.12.0"
+  },
+  "scripts": {
+    "test": "node --test shipping-cost.test.ts"
+  }
+}

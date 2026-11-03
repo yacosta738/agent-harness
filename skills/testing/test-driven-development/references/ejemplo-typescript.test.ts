@@ -16,6 +16,7 @@ class CheckoutService {
     this.payments = payments;
   }
 
+  /** Confirms checkout only when the payment gateway approves the order total. */
   async checkout(order: Order): Promise<CheckoutStatus> {
     const payment = await this.payments.charge(order.totalCents);
     return payment.approved ? "confirmed" : "rejected";
