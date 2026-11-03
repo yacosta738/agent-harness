@@ -13,8 +13,8 @@
 //      every glob prefix (before **) exists as a directory.
 //   3. commands/sdd-*.md absolute ~/.config/opencode/... paths map to repo files.
 //
-// Bundle mode (--root dist/opencode): resolves the bundle's opencode.json
-// {file:} refs against the bundle root, so every preset ships self-contained.
+// Bundle mode (--root dist/opencode): resolves the complete bundle's opencode.json
+// {file:} refs against the bundle root.
 // Exit non-zero on any failure.
 //
 // Cross-platform: no shell, no Python. Node 18+ built-ins only.
@@ -322,9 +322,8 @@ function main() {
     return 0;
   }
   if (args.root) {
-    // Bundle mode: opencode.json must be self-contained (pruned at render).
-    // Command bodies keep source-mode validation: their absolute refs
-    // assume the full deployed layout, not a minimal slice.
+    // Bundle mode: opencode.json must be self-contained. Command bodies keep
+    // source-mode validation because their absolute refs use the deployed layout.
     const root = resolve(args.root);
     checkOpencodeRefs(root, "opencode.json");
   } else {

@@ -36,16 +36,16 @@ and pauses for conflict resolution without merging or overwriting files.
 # Validate references in the live repo
 npm run validate
 
-# List what a preset would deploy
-npm run list -- --preset recommended
+# List every file in the complete bundle
+npm run list
 
-# Render + verify the deployable bundle (dist/ is gitignored)
-npm run deploy -- --preset recommended
+# Render + verify the complete deployable bundle (dist/ is gitignored)
+npm run deploy
 ```
 
 Deploy keeps this repo canonical and maps it 1:1 onto `~/.config/opencode`, except
 every `adapters/opencode/**` file lands with that prefix stripped (`opencode.json`,
-`cli.json`, `scripts/`, `plugins/`, `themes/` at bundle root — no `adapters/` dir).
+`cli.json`, `scripts/`, `themes/` at bundle root — no `adapters/` dir).
 The V2 bundle intentionally ships no legacy `tui.json` or unported plugin implementations.
 The orchestrator prompt ships as-is at `prompts` (kerrigan loads it via `{file:}`). See
 [Deployment](#deployment) for the dotter mapping.
@@ -209,9 +209,9 @@ agent-harness/
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
-├── adapters/opencode/       ← opencode.json, cli.json, adapter.json, themes/, plugins/, scripts/
-├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list presets), deploy.mjs (render+verify)
-└── harness.config.json      ← preset, persona
+├── adapters/opencode/       ← opencode.json, cli.json, adapter.json, themes/, scripts/
+├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list bundle), deploy.mjs (render+verify)
+└── harness.config.json      ← persona
 ```
 
 ## Platform setup
@@ -229,7 +229,7 @@ clone → `npm run deploy` → dotter deploy. Re-run `npm run deploy` after ever
 pull, otherwise dotter symlinks dangle:
 
 ```bash
-npm run deploy -- --preset recommended --output dist/opencode
+npm run deploy -- --output dist/opencode
 # = render bundle + verify 27/27 {file:} refs resolve inside it
 ```
 
@@ -239,7 +239,6 @@ yours; re-render after pulling):
 ```toml
 "editors/agents/agent-harness/dist/opencode/opencode.json" = "~/.config/opencode/opencode.json"
 "editors/agents/agent-harness/dist/opencode/cli.json" = "~/.config/opencode/cli.json"
-"editors/agents/agent-harness/dist/opencode/plugins" = "~/.config/opencode/plugins"
 "editors/agents/agent-harness/dist/opencode/themes" = "~/.config/opencode/themes"
 "editors/agents/agent-harness/dist/opencode/scripts" = "~/.config/opencode/scripts"
 "editors/agents/agent-harness/dist/opencode/prompts" = "~/.config/opencode/prompts"
@@ -250,8 +249,8 @@ yours; re-render after pulling):
 
 No-build alternative: symlink the source tree 1:1 instead, stripping the
 `adapters/opencode/` prefix by hand (`opencode.json`, `cli.json`, `scripts/`,
-`plugins/`, `themes/` land at target root). You lose preset pruning — every
-`{file:}` must resolve, i.e. only `recommended`/`full` content works.
+`themes/` land at target root). The source tree contains the complete harness, so every `{file:}`
+reference in the full bundle must resolve.
 
 ---
 

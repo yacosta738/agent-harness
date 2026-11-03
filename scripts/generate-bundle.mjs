@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// Render a deployable OpenCode bundle from adapter.json presets.
+// Render the complete deployable OpenCode bundle from adapter.json components.
 //
-//   node scripts/generate-bundle.mjs render [--preset <name>] [--output <dir>]
-//   node scripts/generate-bundle.mjs list  [--preset <name>]
+//   node scripts/generate-bundle.mjs render [--output <dir>]
+//   node scripts/generate-bundle.mjs list
 //
 // Convention: bundle root mirrors ~/.config/opencode — every
 // adapters/opencode/** file lands with that prefix stripped
-// (opencode.json, cli.json, scripts/*, plugins/*, themes/*).
+// (opencode.json, cli.json, scripts/*, themes/*).
 // Everything else keeps its repo-relative path.
 // The orchestrator prompt ships as-is at prompts/ORCHESTRATOR.md (no composed
 // AGENTS.md — kerrigan loads it via {file:./prompts/ORCHESTRATOR.md}).
@@ -29,8 +29,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ADAPTER_PREFIX = "adapters/opencode/";
 
 // Bundle root mirrors ~/.config/opencode: every adapters/opencode/** file
-// lands with the prefix stripped (opencode.json, cli.json, scripts/*,
-// plugins/*, themes/*, adapter.json). Unsupported V1 plugin files are absent.
+// lands with the prefix stripped (opencode.json, cli.json, scripts/*, themes/*,
+// adapter.json).
 function destFor(repoPath) {
   return repoPath.startsWith(ADAPTER_PREFIX) ? repoPath.slice(
       ADAPTER_PREFIX.length) : repoPath;
@@ -113,19 +113,9 @@ function matchPart(glob, name) {
   return rx.test(name);
 }
 
-function resolvePreset(adapter, presetName) {
-  const preset = adapter.presets[presetName];
-  if (!preset) {
-    throw new Error(
-        `unknown preset '${presetName}' (have: ${Object.keys(
-            adapter.presets).join(", ")})`);
-  }
+function resolveBundle(adapter) {
   const seen = new Set();
-  for (const comp of preset) {
-    const spec = adapter.components[comp];
-    if (!spec) {
-      throw new Error(`unknown component '${comp}'`);
-    }
+  for (const [comp, spec] of Object.entries(adapter.components ?? {})) {
     for (const pat of spec.include) {
       for (const f of expand(pat)) {
         seen.add(f);
@@ -143,8 +133,8 @@ function fileRefs(prompt) {
       (m) => m[1].replace(/^\.\//, ""));
 }
 
-// Drop agent registrations whose prompt files are not in this bundle,
-// so every preset ships a self-contained opencode.json. Returns pruned names.
+// Drop agent registrations whose prompt files are not in the complete bundle,
+// so the generated opencode.json stays self-contained. Returns pruned names.
 function pruneAgents(cfg, bundled) {
   const pruned = [];
   const agents = cfg.agent ?? {};
@@ -169,9 +159,9 @@ function pruneAgents(cfg, bundled) {
   return pruned.sort();
 }
 
-function render(presetName, outDir) {
+function render(outDir) {
   const adapter = loadJson("adapters/opencode/adapter.json");
-  const files = resolvePreset(adapter, presetName);
+  const files = resolveBundle(adapter);
   rmSync(outDir, {recursive: true, force: true});
   const bundled = new Set();
   for (const f of files) {
@@ -192,7 +182,6 @@ function render(presetName, outDir) {
   }
   const manifest = {
     generator: "scripts/generate-bundle.mjs",
-    preset: presetName,
     flatten: {[`${ADAPTER_PREFIX}**`]: "**"},
     pruned,
     files: [...bundled].sort(),
@@ -200,15 +189,15 @@ function render(presetName, outDir) {
   writeFileSync(join(outDir, "manifest.json"),
       JSON.stringify(manifest, null, 2) + "\n");
   console.log(
-      `preset '${presetName}': ${manifest.files.length} files, pruned ${pruned.length} -> ${outDir}`);
+      `complete bundle: ${manifest.files.length} files, pruned ${pruned.length} agents -> ${outDir}`);
   if (pruned.length > 0) {
     console.log(`  pruned: ${pruned.join(", ")}`);
   }
 }
 
-function list(presetName) {
+function list() {
   const adapter = loadJson("adapters/opencode/adapter.json");
-  for (const f of resolvePreset(adapter, presetName)) {
+  for (const f of resolveBundle(adapter)) {
     console.log(destFor(f));
   }
 }
@@ -216,16 +205,28 @@ function list(presetName) {
 const require = createRequire(import.meta.url);
 
 const [, , cmd = "render", ...rest] = process.argv;
-const args = Object.fromEntries(rest.flatMap(
-    (a, i, arr) => (a.startsWith("--") ? [[a.slice(2), arr[i + 1]]] : [])));
-const harness = loadJson("harness.config.json");
-const preset = args.preset ?? harness.preset ?? "recommended";
+const args = {};
+for (let i = 0; i < rest.length; i += 1) {
+  const option = rest[i];
+  if (option !== "--output") {
+    throw new Error(`unknown option '${option}' (supported: --output)`);
+  }
+  const value = rest[++i];
+  if (!value || value.startsWith("--")) {
+    throw new Error("--output requires a directory path");
+  }
+  args.output = value;
+}
 const output = resolve(ROOT, args.output ?? "dist/opencode");
 
 if (cmd === "render") {
-  render(preset, output);
+  render(output);
 } else if (cmd === "list") {
-  list(preset);
+  list();
+} else if (cmd === "--help" || cmd === "-h") {
+  console.log(
+      "Usage: node scripts/generate-bundle.mjs [render|list] [--output <dir>]",
+  );
 } else {
   throw new Error(`unknown command '${cmd}' (render|list)`);
 }

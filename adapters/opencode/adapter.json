@@ -7,12 +7,6 @@
     "adapter",
     "runtime"
   ],
-  "defaultPreset": "recommended",
-  "presetOrder": [
-    "minimal",
-    "recommended",
-    "full"
-  ],
   "components": {
     "core": {
       "include": [
@@ -96,43 +90,8 @@
       "include": [
         "adapters/opencode/scripts/**",
         "adapters/opencode/themes/**",
-        "adapters/opencode/plugins/**",
         "adapters/opencode/cli.json"
       ]
     }
-  },
-  "presets": {
-    "minimal": [
-      "core",
-      "skills",
-      "permissions",
-      "persona"
-    ],
-    "recommended": [
-      "core",
-      "skills",
-      "permissions",
-      "persona",
-      "delegation",
-      "engram",
-      "context7",
-      "sdd",
-      "rdd",
-      "judgment-day"
-    ],
-    "full": [
-      "core",
-      "skills",
-      "permissions",
-      "persona",
-      "delegation",
-      "engram",
-      "context7",
-      "sdd",
-      "rdd",
-      "judgment-day",
-      "theme",
-      "integrations"
-    ]
   }
 }
