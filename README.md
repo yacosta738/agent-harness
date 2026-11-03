@@ -60,15 +60,17 @@ output contract; it does not claim official ASD-STE100 compliance.
 
 ## Agents
 
-15 agents registered in `adapters/opencode/opencode.json`:
+25 agents registered in `adapters/opencode/opencode.json`, with `default_agent` set to `kerrigan` so
+a new session starts with the orchestrator:
 
 - **kerrigan** — primary. Senior fullstack architect (15+ years). Warm, direct, practical.
   Answers simple questions directly, delegates the rest, challenges bad decisions with evidence.
 - **linear-pm** — Linear issues, sprints, priorities (P0–P3), states (Backlog → Todo → In Progress →
   In Review → Done).
-- **Team specialists** (`prompts`, 10) — `tech-lead`, `senior-dev`, `devops-engineer`,
-  `qa-engineer`, `security-engineer`, `performance-engineer`, `ux-designer`, `data-engineer`,
-  `product-manager`, `code-reviewer`.
+- **Team specialists** (10) — `tech-lead`, `senior-dev`, `devops-engineer`, `qa-engineer`,
+  `security-engineer`, `performance-engineer`, `ux-designer`, `data-engineer`, `product-manager`,
+  `code-reviewer`. Registered as flat `subagent` agents and listed in Kerrigan's `permission.task`
+  allowlist. Kerrigan cannot spawn an agent that is missing from that allowlist.
 - **SDD phase executors** (`prompts`, 10) — `sdd-init`, `sdd-explore`, `sdd-propose`,
   `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`.
   Each delegated prompt is a brief contract; the procedure lives in `skills/sdd/<phase>/SKILL.md`
@@ -76,6 +78,12 @@ output contract; it does not claim official ASD-STE100 compliance.
 - **SDD onboarding** (`skills/sdd/sdd-onboard/SKILL.md`) — inline skill, not a sub-agent. It guides
   the user through one complete cycle on the real codebase and delegates every phase.
 - **Review protocol** — `lens`, `mirror` (blind judges), `scalpel` (surgical fixes only).
+
+Agent registration is verified against the runtime, not only against the JSON: `npm run test:agents`
+starts an isolated OpenCode instance and asserts that every declared agent appears in
+`opencode debug agents`. A nested `subagents` block looks valid but is silently ignored, so the JSON
+shape alone is not evidence.
+
 
 Kerrigan never executes SDD phase work inline — it delegates to the phase agent.
 

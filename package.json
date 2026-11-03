@@ -13,7 +13,8 @@
     "test:sdd": "node --test tests/sdd-agents.test.mjs",
     "test:review": "node --test tests/review-command.test.mjs tests/review-lib.test.mjs",
     "test:language": "node --test tests/language.test.mjs",
-    "test": "npm run test:refs && npm run test:sdd && npm run test:review && npm run test:language",
+    "test:agents": "node --test tests/agents.test.mjs",
+    "test": "npm run test:refs && npm run test:sdd && npm run test:review && npm run test:agents && npm run test:language",
     "list": "node scripts/generate-bundle.mjs list",
     "render": "node scripts/generate-bundle.mjs render"
   }
