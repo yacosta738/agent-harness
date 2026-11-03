@@ -131,7 +131,7 @@ Two standards, split on purpose:
 | Vercel (5)  | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace`                                                                                 |
 | Misc (7)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop`, `pr-watch`                                                             |
 
-## Skills (122)
+## Skills (121)
 
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
@@ -141,7 +141,7 @@ trust the filesystem, not this table:
 | `workflow/`       | 26                     | Brainstorming, debugging, planning, reviews, worktrees, RPI/RDD, output control                 |
 | `testing/`        | 1                      | Test-driven development and test design                                                         |
 | `design-pattern/` | 1                      | Consolidated GoF pattern skill (22 patterns in `references/`)                                   |
-| `design/`         | 8                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
+| `design/`         | 7                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
 | `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                      |
 | `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                |
 | `sdd/`            | 10                     | One skill per SDD phase + `_shared/` protocol                                                   |
@@ -205,7 +205,7 @@ Also in `adapters/opencode/opencode.json`:
 agent-harness/
 ├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
 ├── commands/                ← 28 slash commands (13 sdd + 3 diagram + 5 vercel + 7 misc)
-├── skills/                  ← 122 skills in 18 groups (filesystem = truth)
+├── skills/                  ← 121 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
