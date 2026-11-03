@@ -245,13 +245,6 @@
           "product-manager": "allow",
           "code-reviewer": "allow"
         }
-      },
-      "tools": {
-        "read": true,
-        "search": true,
-        "bash": true,
-        "write": true,
-        "edit": true
       }
     },
     "tech-lead": {
@@ -307,151 +300,81 @@
     "linear-pm": {
       "mode": "subagent",
       "description": "Project management specialist for Linear - manages issues, projects, and tracks progress",
-      "prompt": "{file:./prompts/linear-pm.md}",
-      "tools": {
-        "read": true,
-        "search": true
-      }
+      "prompt": "{file:./prompts/linear-pm.md}"
     },
     "sdd-apply": {
       "description": "Implement code changes from task definitions",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-apply.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-apply.md}"
     },
     "sdd-archive": {
       "description": "Archive completed change artifacts",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-archive.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-archive.md}"
     },
     "sdd-qa": {
       "description": "Run capability-driven acceptance QA and write qa-report.md",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-qa.md}",
-      "tools": {
-        "bash": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-qa.md}"
     },
     "sdd-design": {
       "description": "Create technical design from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-design.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-design.md}"
     },
     "sdd-explore": {
       "description": "Investigate codebase and think through ideas",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-explore.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-explore.md}"
     },
     "sdd-init": {
       "description": "Bootstrap SDD context and project configuration",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-init.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-init.md}"
     },
     "sdd-propose": {
       "description": "Create change proposals from explorations",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-propose.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-propose.md}"
     },
     "sdd-spec": {
       "description": "Write detailed specifications from proposals",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-spec.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-spec.md}"
     },
     "sdd-tasks": {
       "description": "Break down specs and designs into implementation tasks",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-tasks.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-tasks.md}"
     },
     "sdd-verify": {
       "description": "Validate implementation against specs",
       "hidden": true,
       "mode": "subagent",
-      "prompt": "{file:./prompts/sdd/sdd-verify.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/sdd/sdd-verify.md}"
     },
     "scalpel": {
       "description": "Surgical fix agent for judgment-day protocol",
       "hidden": false,
       "mode": "subagent",
-      "prompt": "{file:./prompts/scalpel.md}",
-      "tools": {
-        "bash": true,
-        "edit": true,
-        "read": true,
-        "write": true
-      }
+      "prompt": "{file:./prompts/scalpel.md}"
     },
     "lens": {
       "description": "Adversarial code reviewer — blind judge A for judgment-day protocol",
       "hidden": false,
       "mode": "subagent",
       "prompt": "{file:./prompts/lens.md}",
-      "tools": {
-        "bash": true,
-        "read": true
+      "permission": {
+        "edit": "deny"
       }
     },
     "mirror": {
@@ -459,9 +382,8 @@
       "hidden": false,
       "mode": "subagent",
       "prompt": "{file:./prompts/mirror.md}",
-      "tools": {
-        "bash": true,
-        "read": true
+      "permission": {
+        "edit": "deny"
       }
     }
   },

@@ -77,12 +77,17 @@ a new session starts with the orchestrator:
   and the shared protocol `skills/sdd/_shared/sdd-phase-common.md`.
 - **SDD onboarding** (`skills/sdd/sdd-onboard/SKILL.md`) — inline skill, not a sub-agent. It guides
   the user through one complete cycle on the real codebase and delegates every phase.
-- **Review protocol** — `lens`, `mirror` (blind judges), `scalpel` (surgical fixes only).
+- **Review protocol** — `lens`, `mirror` (blind judges, with `edit` denied so they cannot modify the
+  candidate), `scalpel` (surgical fixes only).
 
 Agent registration is verified against the runtime, not only against the JSON: `npm run test:agents`
 starts an isolated OpenCode instance and asserts that every declared agent appears in
 `opencode debug agents`. A nested `subagents` block looks valid but is silently ignored, so the JSON
 shape alone is not evidence.
+
+Agent capability is declared with `permission`, which the runtime enforces. The legacy `tools` map is
+translated into permission rules that use the tool name as the action, so a key such as `delegate`
+becomes a permission action nothing ever matches, and `tools: true` only restates the default allow.
 
 
 Kerrigan never executes SDD phase work inline — it delegates to the phase agent.

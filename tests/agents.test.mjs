@@ -35,6 +35,9 @@ const TEAM_SPECIALISTS = [
 
 const PHANTOM_TOOLS = ['delegate', 'delegation_read', 'delegation_list'];
 
+// Agents whose whole purpose is to judge without modifying the candidate.
+const READ_ONLY_AGENTS = ['lens', 'mirror'];
+
 test('kerrigan is the configured default agent', () => {
   assert.equal(config.default_agent, 'kerrigan',
       'config must set default_agent so a new session starts with the orchestrator');
@@ -70,16 +73,17 @@ test('kerrigan may spawn every team specialist', () => {
   }
 });
 
-test('no agent references a tool that OpenCode does not provide', () => {
-  const declared = new Set();
+test('no agent uses the legacy tools map', () => {
   for (const [name, agent] of Object.entries(agents)) {
-    for (const tool of Object.keys(agent.tools ?? {})) {
-      declared.add(tool);
-    }
-    for (const tool of Object.keys(agent.tools ?? {})) {
-      assert.ok(!PHANTOM_TOOLS.includes(tool),
-          `${name} declares tool "${tool}", which no OpenCode version provides`);
-    }
+    assert.ok(!('tools' in agent),
+        `${name} uses the legacy "tools" map; express capability with "permission" instead`);
+  }
+});
+
+test('blind judges deny edits', () => {
+  for (const name of READ_ONLY_AGENTS) {
+    assert.equal(agents[name]?.permission?.edit, 'deny',
+        `${name} must deny edits: it is a blind judge, not a fixer`);
   }
 });
 
@@ -126,6 +130,30 @@ test('runtime registers every declared agent', {skip: !opencodeAvailable() &&
       assert.equal(agent.mode, 'subagent', `runtime registers "${name}" with the wrong mode`);
     }
     assert.ok(registered.has('kerrigan'), 'runtime does not register kerrigan');
+
+    // The global default allows everything and specific rules append, so the last matching
+    // edit rule decides. No rule means the default allow still stands.
+    const editEffect = (agent) => {
+      const rules = agent.permissions.filter((rule) => rule.action === 'edit');
+      return rules.length ? rules.at(-1).effect : 'allow';
+    };
+
+    for (const name of READ_ONLY_AGENTS) {
+      assert.equal(editEffect(registered.get(name)), 'deny',
+          `runtime lets "${name}" edit, so the blind judge is not read-only`);
+    }
+
+    for (const name of ['sdd-apply', 'scalpel']) {
+      assert.notEqual(editEffect(registered.get(name)), 'deny',
+          `runtime blocks edits for "${name}", which has to write code`);
+    }
+
+    for (const agent of registered.values()) {
+      for (const rule of agent.permissions) {
+        assert.ok(!PHANTOM_TOOLS.includes(rule.action),
+            `${agent.id} exposes phantom permission action "${rule.action}"`);
+      }
+    }
   } finally {
     rmSync(home, {recursive: true, force: true});
   }
