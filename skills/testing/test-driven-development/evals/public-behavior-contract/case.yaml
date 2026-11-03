@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: public-behavior-contract
+expected_outcome: |
+  El caso aporta un servicio TypeScript existente y un test runner sin dependencias externas. El agente comprueba que gold por debajo de 10 000 centavos paga 500, gold en el umbral paga 0 y standard en el umbral paga 500. Ejecuta RED, implementa el cambio mínimo y verifica GREEN sin probar helpers privados.
+context:
+  scaffold_script: place-files.sh

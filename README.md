@@ -129,15 +129,15 @@ Two standards, split on purpose:
 | Vercel (5) | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace` |
 | Misc (7) | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `goal`, `loop`, `pr-watch` |
 
-## Skills (173)
+## Skills (122)
 
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
 
 | Group | # | What |
 |---|---|---|
-| `vercel/` | 48 | Next.js, functions, CLI/API, AI, infra, auth/payments/CMS, UI |
-| `workflow/` | 29 | Brainstorming, debugging, TDD, planning, reviews, worktrees, RPI/RDD, output control |
+| `workflow/` | 26 | Brainstorming, debugging, planning, reviews, worktrees, RPI/RDD, output control |
+| `testing/` | 1 | Test-driven development and test design |
 | `design-pattern/` | 1 | Consolidated GoF pattern skill (22 patterns in `references/`) |
 | `design/` | 8 | Brand, frontend taste, diagram-design, imagegen, impeccable, … |
 | `web/` | 11 | A11y, SEO, performance, Core Web Vitals, nothing-design, … |
@@ -145,7 +145,7 @@ trust the filesystem, not this table:
 | `sdd/` | 10 | One skill per SDD phase + `_shared/` protocol |
 | `github/` | 9 | Actions, PR flow, stacked PRs, CI fixes, reviews, `yeet` |
 | `cloudflare/` | 8 | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox |
-| `tools/` | 8 | Linear, Sentry, webapp-testing, portless, jules-cli, … |
+| `tools/` | 7 | Linear, Sentry, webapp-testing, portless, jules-cli, … |
 | `ios/` | 6 | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor |
 | `obsidian/` | 5 | CLI, markdown, bases, canvas, defuddle |
 | `devops/` | 4 | Docker, Grafana, Make, SQL optimization |
@@ -158,7 +158,8 @@ trust the filesystem, not this table:
 Notable: `skills/design/diagram-design` is a pinned offline-first snapshot (upstream release
 2.3.5) with local `references/`, `scripts/`, `assets/` trees and `/diagram-*` command adapters.
 It never fetches, installs, or renders remotely; missing PNG/Chromium capability reports
-`UNAVAILABLE`/`BLOCKED`.
+`UNAVAILABLE`/`BLOCKED`. `skills/vercel.zip` is a preserved archive and is not included in the
+auto-discovered skill count.
 
 Routing across the 8 design skills — which one to load, which one wins in a conflict, and the
 known install limitations — is in `skills/design/README.md`. Six overlapping design skills were
@@ -202,7 +203,7 @@ Also in `adapters/opencode/opencode.json`:
 agent-harness/
 ├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (11), linear-pm, lens/mirror/scalpel
 ├── commands/                ← 28 slash commands (13 sdd + 3 diagram + 5 vercel + 7 misc)
-├── skills/                  ← 211 skills in 19 groups (filesystem = truth)
+├── skills/                  ← 122 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
