@@ -57,25 +57,27 @@ Use `receiving-code-review` when processing feedback directed at our code.
 ### Request a change
 
 ```markdown
-Buen enfoque. Aquí separaría la validación del wiring de UI porque ahora el PR mezcla dos decisiones distintas.
+Good direction. I would separate the validation from the UI wiring here, because the PR currently
+mixes two different decisions.
 
-Eso reduce la carga de revisión y deja el rollback más claro si falla la integración.
+That lowers the review load and makes the rollback clearer if the integration fails.
 ```
 
 ### Ask for a split
 
 ```markdown
-Este PR ya está por encima del presupuesto razonable de review. Mejor lo dividimos antes de seguir.
+This PR is already above a reasonable review budget. Let's split it before going further.
 
-Mi sugerencia: primero foundation con tests, después integración, después docs. Así cada review tiene inicio y fin claros.
+My suggestion: foundation with tests first, then integration, then docs. That way each review has a
+clear start and end.
 ```
 
 ### Approve with note
 
 ```markdown
-Está bien encaminado y el scope se entiende rápido.
+This is on the right track and the scope is easy to follow.
 
-Lo apruebo. Para el próximo PR, agrega el link al anterior y al siguiente para que la cadena quede navegable.
+Approved. For the next PR, link the previous and the next one so the chain stays navigable.
 ```
 
 ## Common Mistakes

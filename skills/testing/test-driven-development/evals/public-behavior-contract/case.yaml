@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: public-behavior-contract
 expected_outcome: |
-  El caso aporta un servicio TypeScript existente y un test runner sin dependencias externas. El agente comprueba que gold por debajo de 10 000 centavos paga 500, gold en el umbral paga 0 y standard en el umbral paga 500. Ejecuta RED, implementa el cambio mínimo y verifica GREEN sin probar helpers privados.
+  The case provides an existing TypeScript service and a test runner with no external dependencies. The agent verifies that gold below 10,000 cents pays 500, gold at the threshold pays 0, and standard at the threshold pays 500. It runs RED, implements the minimum change, and verifies GREEN without testing private helpers.
 context:
   scaffold_script: place-files.sh

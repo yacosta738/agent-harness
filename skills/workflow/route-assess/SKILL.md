@@ -26,11 +26,11 @@ Use this skill when ANY of these are true:
 
 ### Step 1: Surface Area Analysis
 
-Ask: **"¿Cuántas partes del sistema toca esto?"**
+Ask: **"How many parts of the system does this touch?"**
 
-- **1 superficie** (un comportamiento aislado) → Direct
-- **2-3 superficies** (un workflow, configuración) → Direct or Delegated direct
-- **4+ superficies** (múltiples features, servicios) → Delegated direct unless Explicit SDD is
+- **1 surface** (one isolated behavior) → Direct
+- **2-3 surfaces** (a workflow, configuration) → Direct or Delegated direct
+- **4+ surfaces** (multiple features, services) → Delegated direct unless Explicit SDD is
   requested
 
 Count independently changing behaviors, not files. Updating one exact default across repeated
@@ -38,7 +38,7 @@ module declarations is one surface. Multiple files alone never force SDD.
 
 ### Step 2: Durability Check
 
-Ask: **"¿Necesitamos una especificación durable para decidir o coordinar este cambio?"**
+Ask: **"Do we need a durable specification to decide or coordinate this change?"**
 
 - Exact requested outcome, no unresolved trade-off → Direct
 - Temporary design reasoning or a scoped choice → brainstorming inside RPI
@@ -50,7 +50,7 @@ change persists. Long-term behavior alone is not an SDD signal.
 
 ### Step 3: Reversibility Check
 
-Ask: **"¿Qué pasa si nos equivocamos?"**
+Ask: **"What happens if we get this wrong?"**
 
 - Easy to revert, low blast radius → Direct if no design choice remains; otherwise use internal
   brainstorming within RPI
@@ -58,7 +58,7 @@ Ask: **"¿Qué pasa si nos equivocamos?"**
 
 ### Step 4: Coupling Check
 
-Ask: **"¿Está aislado o depende de otras cosas?"**
+Ask: **"Is it isolated, or does it depend on other things?"**
 
 - Independent, no downstream effects → Direct or Delegated direct
 - Coupled to other systems → Delegated direct, unless durable SDD artifacts are explicitly requested
@@ -104,10 +104,10 @@ After assessment, provide:
 
 Use these when assessment is unclear:
 
-1. **"¿Esto es un fix puntual o el inicio de algo más grande?"**
-2. **"¿Necesitamos guardar specs de esto para después o es para ahora?"**
-3. **"¿Afecta a otras partes del sistema o está aislado?"**
-4. **"¿Qué pasa si mañana necesitamos cambiar esto?"**
+1. **"Is this a one-off fix or the start of something bigger?"**
+2. **"Do we need to keep specs for this later, or is it for now?"**
+3. **"Does it affect other parts of the system, or is it isolated?"**
+4. **"What happens if we need to change this tomorrow?"**
 
 ## Anti-Patterns
 

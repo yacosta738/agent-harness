@@ -4,5 +4,5 @@ focus: trace
 weight: 1
 ---
 
-El agente ejecuta el test antes de implementar y confirma que falla por la regla ausente, implementa
-solo el cambio necesario y vuelve a ejecutar el test para confirmar que pasa.
+The agent runs the test before implementing and confirms that it fails because the rule is missing,
+implements only the necessary change, and runs the test again to confirm that it passes.

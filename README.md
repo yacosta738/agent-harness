@@ -118,19 +118,20 @@ Quality gates:
 - This repo has no app under test and no general test runner: harness checks cannot claim
   product acceptance. Record `NOT TESTED` / `BLOCKED` with evidence where applicable.
 
-## Flujo de revisión
+## Review flow
 
-`/review <PR URL>` inicia RDD sobre el diff de esa pull request entre su merge base y `head`. Sin
-URL, `/review` inicia RDD sobre el working tree local respecto a `HEAD`. Ambas rutas aplican siempre
-R1 Risk, R2 Readability, R3 Reliability y R4 Resilience. La revisión no autoriza cambios, comentarios
-en GitHub, commits ni push. `/pr-watch` conserva la gestión de hilos y workflows en una sola pasada.
+`/review <PR URL>` starts RDD on that pull request's diff between its merge base and `head`. Without a
+URL, `/review` starts RDD on the local working tree against `HEAD`. Both paths always apply
+R1 Risk, R2 Readability, R3 Reliability, and R4 Resilience. A review does not authorize changes,
+GitHub comments, commits, or push. `/pr-watch` keeps ownership of threads and workflows in a single
+pass.
 
-Valida las pruebas del flujo con `npm run test:review`.
-En Windows, las PR con symlinks requieren permiso del sistema para crearlos; si no está disponible,
-`/review` se detiene y no sustituye el candidato por otro.
-Windows no aplica el bit `read-only` de directorios como una ACL que impida agregar entradas. El
-control plane vuelve a verificar el árbol al capturar la revisión y rechaza cambios; para una
-garantía de solo lectura frente a procesos locales concurrentes, usa un entorno Unix.
+Validate the flow tests with `npm run test:review`.
+On Windows, pull requests that contain symlinks need system permission to create them; when that
+permission is unavailable, `/review` stops and does not substitute another candidate.
+Windows does not apply a directory's read-only bit as an ACL that prevents adding entries. The control
+plane re-checks the tree when it captures the review and rejects changes; for a read-only guarantee
+against concurrent local processes, use a Unix environment.
 
 ## Commands (27)
 
@@ -169,7 +170,7 @@ trust the filesystem, not this table:
 | `devops/`         | 4                      | Docker, Grafana, Make, SQL optimization                                                         |
 | `notion/`         | 4                      | Capture, meetings, research docs, spec→implementation                                           |
 | `security/`       | 5 (+12 attack classes) | Orchestrator + threat model, finding discovery/triage/fix; attack-classes library in `_shared/` |
-| `personal/`       | 3                      | `haci` (IRPF España), `imagegen`, `yuniel-writing-style`                                        |
+| `personal/`       | 3                      | `haci` (Spanish IRPF), `imagegen`, `yuniel-writing-style`                                       |
 | `languages/`      | 2                      | TypeScript, Rust (Ratatui)                                                                      |
 | `android/`        | 1                      | Emulator QA                                                                                     |
 

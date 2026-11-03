@@ -1,64 +1,62 @@
 ---
 name: test-driven-development
-description: Usa esta skill para cambiar comportamiento de negocio o producto en RPI o SDD, corregir errores de esa lógica, o cuando se solicite TDD, Red–Green–Refactor, diseño de tests, cobertura, dobles de prueba, diagnóstico de tests intermitentes o tests para código legacy.
+description: Use this skill to change business or product behavior in RPI or SDD, to fix defects in that logic, or when the user requests TDD, Red–Green–Refactor, test design, coverage, test doubles, intermittent-test diagnosis, or tests for legacy code.
 license: MIT
 ---
 
-# Desarrollo dirigido por tests
+# Test-driven development
 
-## Principio
+## Principle
 
-Usa los tests para describir el comportamiento que exige el contrato, no la estructura interna que
-lo implementa. Un refactor que conserva el comportamiento no debería obligar a reescribir los tests.
+Use tests to describe the behavior the contract requires, not the internal structure that implements
+it. A behavior-preserving refactor must not force the tests to be rewritten.
 
-## Cuándo usarla
+## When to use it
 
-- TDD es obligatorio en RPI y SDD cuando una tarea cambia lógica de negocio o del producto, incluidas
-  funcionalidades, errores de comportamiento y refactors de esa lógica. No existe un modo que el
-  proyecto pueda apagar.
-- Para comportamiento nuevo o modificado, escribe primero un test que falle y completa
-  RED → GREEN → REFACTOR. Para un refactor que conserva el comportamiento, empieza con tests existentes
-  que protejan el contrato o añade un test de caracterización antes de refactorizar.
-- No uses TDD para documentación, código generado ni cambios de configuración, CI, infraestructura
-  o automatización que no contengan lógica de negocio o producto. Ejecuta las validaciones adecuadas
-  para esos artefactos y no inventes tests sin señal.
-- Si un script o workflow implementa lógica de negocio, usa TDD para esa lógica y valida por separado
-  su configuración o empaquetado.
-- Si una tarea debe cambiar lógica de negocio o producto y no hay un test runner ejecutable, detén esa
-  parte del trabajo y pide configurar o identificar un runner. No sustituyas TDD por tests escritos
-  después.
-- Antes de cambiar código, revisa las instrucciones del proyecto, el vocabulario de dominio y las
-  decisiones de arquitectura cercanas.
+- TDD is mandatory in RPI and SDD when a task changes business or product logic, including features,
+  behavioral defects, and refactors of that logic. The project cannot switch it off.
+- For new or modified behavior, write a failing test first and complete RED → GREEN → REFACTOR. For a
+  behavior-preserving refactor, start from existing tests that protect the contract, or add a
+  characterization test before refactoring.
+- Do not use TDD for documentation, generated code, or configuration, CI, infrastructure, or
+  automation changes that contain no business or product logic. Run the validation that fits those
+  artifacts, and do not invent tests without signal.
+- If a script or workflow implements business logic, use TDD for that logic and validate its
+  configuration or packaging separately.
+- If a task must change business or product logic and no runnable test runner exists, stop that part
+  of the work and ask to configure or identify a runner. Do not replace TDD with tests written
+  afterward.
+- Before changing code, review the project instructions, the domain vocabulary, and the nearest
+  architecture decisions.
 
-## Ciclo Red–Green–Refactor
+## Red–Green–Refactor cycle
 
-1. **Define el resultado observable.** Identifica el requisito y la frontera pública adecuada. Elige
-   la capa que ofrece señal útil sin hacer el test más amplio de lo necesario. Explica la frontera
-   elegida; pregunta solo si el contrato o el alcance no están claros.
-2. **RED — escribe un test para una conducta.** Usa la interfaz pública y un resultado esperado
-   independiente. Ejecuta el test. Confirma que falla por la conducta ausente, no por errores de
-   sintaxis o configuración. Si pasa porque la conducta ya existe, trata el caso como
-   caracterización y consulta `references/legacy.md` cuando corresponda.
-3. **GREEN — implementa lo mínimo.** Cambia solo lo necesario para pasar el test. Ejecuta el test
-   otra vez.
-4. **REFACTOR — limpia sin cambiar el comportamiento.** Reduce duplicación o aclara nombres. Mantén
-   los tests verdes y vuelve a ejecutarlos después de refactorizar.
-5. **Repite en cortes verticales.** Avanza una conducta por ciclo; no escribas toda la batería de
-   tests antes de entender lo que enseña cada resultado.
+1. **Define the observable outcome.** Identify the requirement and the appropriate public boundary.
+   Choose the layer that provides useful signal without making the test broader than necessary.
+   Explain the chosen boundary; ask only if the contract or the scope is unclear.
+2. **RED — write one test for one behavior.** Use the public interface and an expected result that is
+   independent of the implementation. Run the test. Confirm that it fails because the behavior is
+   missing, not because of syntax or configuration errors. If it passes because the behavior already
+   exists, treat the case as characterization and consult `references/legacy.md` when appropriate.
+3. **GREEN — implement the minimum.** Change only what the test requires. Run the test again.
+4. **REFACTOR — clean up without changing behavior.** Remove duplication or clarify names. Keep the
+   tests green and run them again after refactoring.
+5. **Repeat in vertical slices.** Advance one behavior per cycle; do not write the whole test suite
+   before you understand what each result teaches.
 
-Usa el runner y los comandos que ya define el proyecto. Ejecuta primero el test afectado y después
-la validación relevante del proyecto. No reportes RED o GREEN sin la salida que lo demuestra.
+Use the runner and commands the project already defines. Run the affected test first, then the
+relevant project validation. Do not report RED or GREEN without the output that proves it.
 
-## Carga referencias solo cuando apliquen
+## Load references only when they apply
 
-No leas todas las referencias al activar la skill. Elige las que resuelvan la pregunta actual.
+Do not read every reference when the skill loads. Choose the ones that answer the current question.
 
-| Necesidad                                                                     | Referencia                                                     |
-|-------------------------------------------------------------------------------|----------------------------------------------------------------|
-| Definir una unidad de prueba, elegir niveles o interpretar cobertura          | [Fundamentos y niveles de prueba](references/fundamentos.md)   |
-| Mejorar estructura, nombres, AAA/GWT, responsabilidad única o datos de prueba | [Diseño y legibilidad de tests](references/diseno-de-tests.md) |
-| Elegir entre Dummy, Stub, Fake, Spy y Mock                                    | [Dobles de prueba](references/dobles-de-prueba.md)             |
-| Diagnosticar flakiness o reducir falsas señales de confianza                  | [Fiabilidad de los tests](references/fiabilidad.md)            |
-| Añadir tests a código sin cobertura o refactorizar código legacy              | [Tests en código legacy](references/legacy.md)                 |
-| Acordar prácticas TDD en un equipo                                            | [Flujo de equipo](references/flujo-de-equipo.md)               |
-| Consultar ejemplos de código por lenguaje                                     | [Ejemplos de código](references/ejemplos-de-codigo.md)         |
+| Need                                                                          | Reference                                              |
+|-------------------------------------------------------------------------------|--------------------------------------------------------|
+| Define a test unit, choose levels, or interpret coverage                      | [Fundamentals and test levels](references/fundamentals.md) |
+| Improve structure, naming, AAA/GWT, single responsibility, or test data       | [Test design and readability](references/test-design.md)   |
+| Choose between Dummy, Stub, Fake, Spy, and Mock                               | [Test doubles](references/test-doubles.md)                 |
+| Diagnose flakiness or reduce false confidence signals                         | [Test reliability](references/reliability.md)              |
+| Add tests to uncovered code or refactor legacy code                           | [Tests in legacy code](references/legacy.md)               |
+| Agree on TDD practice across a team                                           | [Team workflow](references/team-workflow.md)               |
+| Consult code examples per language                                            | [Code examples](references/code-examples.md)               |
