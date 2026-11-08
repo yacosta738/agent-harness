@@ -13,7 +13,7 @@
 //      every glob prefix (before **) exists as a directory.
 //   3. commands/sdd-*.md absolute ~/.config/opencode/... paths map to repo files.
 //
-// Bundle mode (--root dist/opencode): resolves the complete bundle's opencode.json
+// Bundle mode (--root distribution/opencode): resolves the complete bundle's opencode.json
 // {file:} refs against the bundle root.
 // Exit non-zero on any failure.
 //
