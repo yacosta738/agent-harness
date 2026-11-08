@@ -1,4 +1,5 @@
 /dist/
+/distribution/
 
 # Local tooling indexes (machine-specific, never commit)
 .codegraph/
@@ -21,4 +22,5 @@
 *.log
 
 .agents/rpi/
+/tmp/plans/
 /node_modules/

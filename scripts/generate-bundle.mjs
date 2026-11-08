@@ -217,7 +217,7 @@ for (let i = 0; i < rest.length; i += 1) {
   }
   args.output = value;
 }
-const output = resolve(ROOT, args.output ?? "dist/opencode");
+const output = resolve(ROOT, args.output ?? "distribution/opencode");
 
 if (cmd === "render") {
   render(output);

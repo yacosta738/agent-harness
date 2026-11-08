@@ -23,7 +23,7 @@ npm run validate
 # List the complete bundle
 npm run list
 
-# Render + verify the deployable bundle (dist/ is gitignored — required after clone/pull)
+# Render + verify the deployable bundle (distribution/ is gitignored — required after clone/pull)
 npm run deploy
 ```
 
@@ -43,13 +43,13 @@ Then follow the [README.md](README.md#deployment) deployment instructions to run
 Bundle commands:
 
 ```powershell
-npm run deploy -- --output dist/opencode
-npm run validate -- --root dist/opencode    # validate a pre-rendered bundle
+npm run deploy -- --output distribution/opencode
+npm run validate -- --root distribution/opencode    # validate a pre-rendered bundle
 ```
 
 | Flag              | Default         | Description                                   |
 |-------------------|-----------------|-----------------------------------------------|
-| `--output`        | `dist/opencode` | Where to write the complete bundle            |
+| `--output`        | `distribution/opencode` | Where to write the complete bundle            |
 | `--validate-only` | `false`         | Skip render, only validate an existing bundle |
 
 `npm run validate` also accepts `--root <dir>` to validate a pre-rendered bundle instead of the source tree.
@@ -139,7 +139,7 @@ gone. Everything now goes through Node ESM scripts and `npm run`:
 | `python3 scripts/check-refs.py`                    | `npm run validate`                                 |
 | `node scripts/generate-bundle.mjs list`            | `npm run list`                                     |
 | `node scripts/generate-bundle.mjs render`          | `npm run render`                                   |
-| `py -3 scripts/check-refs.py --root dist/opencode` | `node scripts/check-refs.mjs --root dist/opencode` |
+| `py -3 scripts/check-refs.py --root distribution/opencode` | `node scripts/check-refs.mjs --root distribution/opencode` |
 
 All scripts are pure Node — no shell, no Python. They use forward slashes in
 paths internally (Node handles Windows path resolution natively), so no

@@ -39,7 +39,7 @@ npm run validate
 # List every file in the complete bundle
 npm run list
 
-# Render + verify the complete deployable bundle (dist/ is gitignored)
+# Render + verify the complete deployable bundle (distribution/ is gitignored)
 npm run deploy
 ```
 
@@ -136,8 +136,11 @@ Quality gates:
 `/review <PR URL>` starts RDD on that pull request's diff between its merge base and `head`. Without a
 URL, `/review` starts RDD on the local working tree against `HEAD`. Both paths always apply
 R1 Risk, R2 Readability, R3 Reliability, and R4 Resilience. A review does not authorize changes,
-GitHub comments, commits, or push. `/pr-watch` keeps ownership of threads and workflows in a single
-pass.
+GitHub comments, commits, or push. `/pr-watch` owns PR threads and workflow checks. It runs an initial
+pass and uses the global `loop` skill for five-minute follow-ups for at most one hour only when the
+runtime provides a compatible scheduler. Without one, it reports a single-pass fallback and does not
+claim ongoing monitoring. It stops on merge/closure, timeout, user request, or an auth/ambiguity
+block; it does not commit or push.
 
 Validate the flow tests with `npm run test:review`.
 On Windows, pull requests that contain symlinks need system permission to create them; when that
@@ -146,22 +149,27 @@ Windows does not apply a directory's read-only bit as an ACL that prevents addin
 plane re-checks the tree when it captures the review and rejects changes; for a read-only guarantee
 against concurrent local processes, use a Unix environment.
 
-## Commands (27)
+## Comandos (22)
 
-Two standards, split on purpose:
+Se usan dos estándares, separados de forma intencional:
 
-- **Routed** (`sdd-*`) — frontmatter carries `agent:` + `subtask: true`; the command delegates.
-- **Standalone** (everything else) — frontmatter carries only `description:`; the command runs
-  as a self-contained expert prompt or playbook.
+- **Delegados** (`sdd-*`) — el frontmatter contiene `agent:` y `subtask: true`; el comando delega
+  la ejecución.
+- **Independientes** (los demás) — el frontmatter contiene solo `description:`; el comando se
+  ejecuta como una instrucción experta o una guía autónoma.
 
-| Group       | Commands                                                                                                                                                                 |
+| Grupo       | Comandos                                                                                                                                                                 |
 |-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | SDD (13)    | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
-| Diagram (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
-| Vercel (5)  | `vercel-deploy`, `vercel-status`, `vercel-env`, `vercel-bootstrap`, `vercel-marketplace`                                                                                 |
-| Misc (6)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                    |
+| Diagramas (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                    |
+| Varios (6)  | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                    |
 
-## Skills (122)
+Los cinco comandos de Vercel se retiraron del catálogo activo. Se conservaron, junto con las
+skills de Vercel, en el ZIP canónico local `~/Documents/vercel.zip`, fuera del repositorio. El ZIP
+no forma parte del repositorio ni del bundle desplegable; no se debe buscar una copia en `skills/`
+o `distribution/`.
+
+## Skills (123)
 
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
@@ -175,7 +183,7 @@ trust the filesystem, not this table:
 | `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                      |
 | `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                |
 | `sdd/`            | 11                     | Ten phase skills, inline onboarding, and the `_shared/` protocol                                                   |
-| `github/`         | 9                      | Actions, PR flow, stacked PRs, CI fixes, reviews, `yeet`                                        |
+| `github/`         | 10                     | Actions, PR flow, stacked PRs, CI fixes, reviews, `pr-watch`, `yeet`                             |
 | `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                               |
 | `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                          |
 | `ios/`            | 6                      | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor                               |
@@ -190,8 +198,8 @@ trust the filesystem, not this table:
 Notable: `skills/design/diagram-design` is a pinned offline-first snapshot (upstream release
 2.3.5) with local `references/`, `scripts/`, `assets/` trees and `/diagram-*` command adapters.
 It never fetches, installs, or renders remotely; missing PNG/Chromium capability reports
-`UNAVAILABLE`/`BLOCKED`. `skills/vercel.zip` is a preserved archive and is not included in the
-auto-discovered skill count.
+`UNAVAILABLE`/`BLOCKED`. El ZIP externo de skills y comandos de Vercel está archivado en
+`~/Documents/vercel.zip` y no se incluye en el conteo de skills auto-descubiertas.
 
 Routing across the 8 design skills — which one to load, which one wins in a conflict, and the
 known install limitations — is in `skills/design/README.md`. Six overlapping design skills were
@@ -234,8 +242,8 @@ Also in `adapters/opencode/opencode.json`:
 ```
 agent-harness/
 ├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (10), linear-pm, lens/mirror/scalpel
-├── commands/                ← 27 slash commands (13 sdd + 3 diagram + 5 vercel + 6 misc)
-├── skills/                  ← 122 skills in 18 groups (filesystem = truth)
+├── commands/                ← 22 comandos (13 SDD + 3 diagramas + 6 varios)
+├── skills/                  ← 123 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
@@ -253,13 +261,13 @@ For platform-specific installation instructions, see:
 
 ## Deployment (render bundle + dotter)
 
-The repo is canonical; `dist/` (gitignored by design — generated artifacts
+The repo is canonical; `distribution/` (gitignored by design — generated artifacts
 don't belong in git) is the deployable bundle. Fresh machine sequence:
 clone → `npm run deploy` → dotter deploy. Re-run `npm run deploy` after every
 pull, otherwise dotter symlinks dangle:
 
 ```bash
-npm run deploy -- --output dist/opencode
+npm run deploy -- --output distribution/opencode
 # = render bundle + verify 27/27 {file:} refs resolve inside it
 ```
 
@@ -267,14 +275,14 @@ Dotter maps the bundle → `~/.config/opencode` (adjust the submodule path to
 yours; re-render after pulling):
 
 ```toml
-"editors/agents/agent-harness/dist/opencode/opencode.json" = "~/.config/opencode/opencode.json"
-"editors/agents/agent-harness/dist/opencode/cli.json" = "~/.config/opencode/cli.json"
-"editors/agents/agent-harness/dist/opencode/themes" = "~/.config/opencode/themes"
-"editors/agents/agent-harness/dist/opencode/scripts" = "~/.config/opencode/scripts"
-"editors/agents/agent-harness/dist/opencode/prompts" = "~/.config/opencode/prompts"
-"editors/agents/agent-harness/dist/opencode/skills" = "~/.config/opencode/skills"
-"editors/agents/agent-harness/dist/opencode/commands" = "~/.config/opencode/commands"
-"editors/agents/agent-harness/dist/opencode/harness.config.json" = "~/.config/opencode/harness.config.json"
+"editors/agents/agent-harness/distribution/opencode/opencode.json" = "~/.config/opencode/opencode.json"
+"editors/agents/agent-harness/distribution/opencode/cli.json" = "~/.config/opencode/cli.json"
+"editors/agents/agent-harness/distribution/opencode/themes" = "~/.config/opencode/themes"
+"editors/agents/agent-harness/distribution/opencode/scripts" = "~/.config/opencode/scripts"
+"editors/agents/agent-harness/distribution/opencode/prompts" = "~/.config/opencode/prompts"
+"editors/agents/agent-harness/distribution/opencode/skills" = "~/.config/opencode/skills"
+"editors/agents/agent-harness/distribution/opencode/commands" = "~/.config/opencode/commands"
+"editors/agents/agent-harness/distribution/opencode/harness.config.json" = "~/.config/opencode/harness.config.json"
 ```
 
 No-build alternative: symlink the source tree 1:1 instead, stripping the

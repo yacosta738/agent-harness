@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// Render + verify the deployable bundle. dist/ is gitignored by design —
+// Render + verify the deployable bundle. distribution/ is gitignored by design —
 // run this after cloning/pulling, before (re)running dotter.
 //
 //   node scripts/deploy.mjs [--output <dir>] [--validate-only]
 //
 // Defaults:
-//   output  = "dist/opencode"
+//   output  = "distribution/opencode"
 //
 // Step 1: invoke generate-bundle.mjs render
 // Step 2: invoke check-refs.mjs --root <output> (bundle mode)
@@ -58,12 +58,12 @@ function main() {
     console.log(
         "Usage: node scripts/deploy.mjs [--output <dir>] [--validate-only]\n" +
         "  Renders the complete Agent Harness bundle.\n" +
-        "  Default output: 'dist/opencode'.",
+        "  Default output: 'distribution/opencode'.",
     );
     return 0;
   }
   const output = args.output ? resolve(REPO, args.output) : resolve(REPO,
-      "dist/opencode");
+      "distribution/opencode");
 
   if (!args.validateOnly) {
     console.log(`rendering complete bundle -> ${output}`);
