@@ -116,11 +116,116 @@ test('skill frontmatter descriptions are English', () => {
   }
 });
 
-test('the Spanish IRPF skill stays excluded from the English rule', () => {
+test('the haci skill stays in Spanish and stays excluded from the English rule', () => {
   const skill = read('skills/personal/haci/SKILL.md');
   assert.ok(skill.length > 0, 'haci skill is missing');
+
+  // It is the Spanish tax authority skill: it stays in Spanish on purpose.
+  for (const term of ['IRPF', 'AEAT', 'declaración de la renta']) {
+    assert.ok(skill.includes(term), `haci skill lost its Spanish source text: ${term}`);
+  }
 
   const readme = read('README.md');
   assert.match(readme, /`haci` \(Spanish IRPF\)/,
       'README must document the haci exclusion');
+});
+
+// Whole-catalog sweep. Every instruction artifact (Markdown and YAML) must read as English,
+// with one documented exception.
+//
+// The detector counts Spanish-only vocabulary per line. A single Spanish function word is not
+// evidence, because English documents legitimately contain words such as "no" or "so". Three or
+// more distinct Spanish-only words on the same line is a Spanish sentence, not a coincidence.
+//
+// skills/personal/haci/ is excluded on purpose: it is the Spanish IRPF (Agencia Tributaria)
+// skill and stays in Spanish, like the authority it serves. Its statutory names, regional
+// deductions, and AEAT terminology are the source content, not drift.
+
+const SPANISH_ONLY_WORDS = new Set([
+  // Function words that are not valid English words.
+  'al', 'ante', 'antes', 'aqui', 'asi', 'cada', 'como', 'con', 'cual', 'cuales', 'cuando',
+  'de', 'del', 'desde', 'donde', 'durante', 'el', 'ella', 'ellas', 'ellos', 'en', 'entre',
+  'era', 'eramos', 'eran', 'eres', 'es', 'esa', 'esas', 'ese', 'eso', 'esos', 'esta',
+  'estaba', 'estan', 'estar', 'este', 'esto', 'estos', 'estoy', 'fue', 'fueron', 'ha',
+  'haber', 'habia', 'hacia', 'hasta', 'hay', 'la', 'las', 'le', 'les', 'lo', 'los',
+  'mas', 'mucho', 'muy', 'nada', 'ni', 'nos', 'nosotros', 'nuestra',
+  'nuestro', 'o', 'os', 'otra', 'otro', 'para', 'pero', 'poco', 'por', 'porque', 'puede',
+  'pueden', 'que', 'quien', 'se', 'segun', 'ser', 'si', 'sin', 'sobre', 'son',
+  'su', 'sus', 'tambien', 'tiene', 'tienen', 'todo', 'todos', 'tras', 'tu', 'tus',
+  'un', 'una', 'uno', 'unos', 'unas', 'usted', 'va', 'van', 'y', 'ya',
+  // Domain vocabulary that has no English counterpart in these documents.
+  'archivo', 'archivos', 'cambio', 'cambios', 'codigo', 'contenido', 'contenidos',
+  'datos', 'decision', 'decisiones', 'deduccion', 'documentacion', 'ejemplo', 'ejemplos',
+  'estado', 'estrategia', 'estrategias', 'evidencia', 'fase', 'fases', 'guia',
+  'implementacion', 'informacion', 'informe', 'informes', 'opcion', 'opciones', 'paso',
+  'pasos', 'plantilla', 'problema', 'problemas', 'proceso', 'procesos', 'prueba', 'pruebas',
+  'proyecto', 'proyectos', 'punto', 'puntos', 'referencia', 'referencias', 'requisito',
+  'requisitos', 'resultado', 'resultados', 'reunion', 'revisar', 'revision', 'revisiones',
+  'riesgo', 'riesgos', 'sistema', 'sistemas', 'siguiente', 'tarea', 'tareas', 'valor',
+  'valores', 'verificacion',
+]);
+
+const INSTRUCTION_EXTENSIONS = new Set(['.md', '.yaml', '.yml']);
+const SWEEP_SKIP_DIRS = new Set([
+  '.git', 'node_modules', 'distribution', '.codegraph', '.idea', 'tmp',
+]);
+const SWEEP_SKIP_FILES = new Set([
+  path.join('tests', 'language.test.mjs'),
+]);
+
+function collectInstructionFiles(dir, root, out = []) {
+  for (const entry of readdirSync(dir, {withFileTypes: true})) {
+    if (entry.isDirectory()) {
+      if (SWEEP_SKIP_DIRS.has(entry.name)) continue;
+      collectInstructionFiles(path.join(dir, entry.name), root, out);
+      continue;
+    }
+    if (!INSTRUCTION_EXTENSIONS.has(path.extname(entry.name))) continue;
+    const relative = path.relative(root, path.join(dir, entry.name));
+    if (SWEEP_SKIP_FILES.has(relative)) continue;
+    out.push(relative);
+  }
+  return out;
+}
+
+// Strip diacritics so "código" and "codigo" resolve to the same token.
+const normalize = (word) => word.normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+// Prose only. Inline code spans and fenced code blocks carry identifiers, locale codes, and
+// sample payloads, not instructions.
+const proseOf = (line) => line.replace(/`[^`]*`/g, ' ');
+
+function proseLines(body) {
+  const out = [];
+  let inFence = false;
+  for (const line of body.split('\n')) {
+    if (/^\s*(```|~~~)/.test(line)) {
+      inFence = !inFence;
+      out.push('');
+      continue;
+    }
+    out.push(inFence ? '' : proseOf(line));
+  }
+  return out;
+}
+
+test('every instruction artifact is written in English', () => {
+  const files = collectInstructionFiles(root, root)
+      .filter((relative) => !relative.startsWith(path.join('skills', 'personal', 'haci')));
+
+  assert.ok(files.length > 100, `Expected the catalog to be large, found ${files.length} files`);
+
+  const offenders = [];
+  for (const relative of files) {
+    proseLines(read(relative)).forEach((line, index) => {
+      const words = (line.toLowerCase().match(/[a-záéíóúñü]+/g) || []);
+      const hits = new Set(words.filter((word) => SPANISH_ONLY_WORDS.has(normalize(word))));
+      if (hits.size >= 3) {
+        offenders.push(`${relative}:${index + 1} ${line.trim().slice(0, 120)}`);
+      }
+    });
+  }
+
+  assert.deepEqual(offenders, [],
+      `Spanish prose found in instruction artifacts:\n${offenders.join('\n')}`);
 });

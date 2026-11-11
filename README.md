@@ -149,25 +149,25 @@ Windows does not apply a directory's read-only bit as an ACL that prevents addin
 plane re-checks the tree when it captures the review and rejects changes; for a read-only guarantee
 against concurrent local processes, use a Unix environment.
 
-## Comandos (22)
+## Commands (22)
 
-Se usan dos estándares, separados de forma intencional:
+Two standards are used, separated on purpose:
 
-- **Delegados** (`sdd-*`) — el frontmatter contiene `agent:` y `subtask: true`; el comando delega
-  la ejecución.
-- **Independientes** (los demás) — el frontmatter contiene solo `description:`; el comando se
-  ejecuta como una instrucción experta o una guía autónoma.
+- **Delegated** (`sdd-*`) — the frontmatter contains `agent:` and `subtask: true`; the command
+  delegates the execution.
+- **Standalone** (the rest) — the frontmatter contains only `description:`; the command runs as an
+  expert instruction or a self-contained guide.
 
-| Grupo       | Comandos                                                                                                                                                                 |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| SDD (13)    | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
-| Diagramas (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                    |
-| Varios (6)  | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                    |
+| Group         | Commands                                                                                                                                                                  |
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SDD (13)      | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
+| Diagrams (3)  | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                         |
+| Assorted (6)  | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                     |
 
-Los cinco comandos de Vercel se retiraron del catálogo activo. Se conservaron, junto con las
-skills de Vercel, en el ZIP canónico local `~/Documents/vercel.zip`, fuera del repositorio. El ZIP
-no forma parte del repositorio ni del bundle desplegable; no se debe buscar una copia en `skills/`
-o `distribution/`.
+The five Vercel commands were retired from the active catalog. They are preserved, together with the
+Vercel skills, in the local canonical ZIP `~/Documents/vercel.zip`, outside the repository. The ZIP
+is not part of the repository or of the deployable bundle; do not look for a copy in `skills/` or
+`distribution/`.
 
 ## Skills (123)
 
@@ -198,8 +198,8 @@ trust the filesystem, not this table:
 Notable: `skills/design/diagram-design` is a pinned offline-first snapshot (upstream release
 2.3.5) with local `references/`, `scripts/`, `assets/` trees and `/diagram-*` command adapters.
 It never fetches, installs, or renders remotely; missing PNG/Chromium capability reports
-`UNAVAILABLE`/`BLOCKED`. El ZIP externo de skills y comandos de Vercel está archivado en
-`~/Documents/vercel.zip` y no se incluye en el conteo de skills auto-descubiertas.
+`UNAVAILABLE`/`BLOCKED`. The external ZIP with the Vercel skills and commands is archived in
+`~/Documents/vercel.zip` and is not included in the auto-discovered skill count.
 
 Routing across the 8 design skills — which one to load, which one wins in a conflict, and the
 known install limitations — is in `skills/design/README.md`. Six overlapping design skills were

@@ -1,12 +1,16 @@
 ---
-description: Revisa una PR y, si el runtime lo permite, programa seguimiento limitado.
+description: Review a pull request and, when the runtime allows it, schedule limited follow-up monitoring.
 ---
 
-# Vigilar una pull request
+# Watch a pull request
 
-Carga `skills/github/pr-watch/SKILL.md` y sigue sus instrucciones. Transmite `$ARGUMENTS` sin
-alterarlo como identificador opcional de PR (número o URL); si está vacío, la skill resolverá la PR
-de la rama actual. Invocar `/pr-watch` autoriza cambios locales dentro del alcance y respuestas o
-resoluciones de hilos justificadas por evidencia, pero no autoriza commit ni push. Las instrucciones
-explícitas de solo lectura prevalecen. Las correcciones de GitHub Actions requieren la aprobación
-explícita exigida por `gh-fix-ci`.
+Load `skills/github/pr-watch/SKILL.md` and follow its instructions. Pass `$ARGUMENTS` through
+unchanged as an optional pull request identifier (number or URL); when it is empty, the skill
+resolves the pull request for the current branch. Invoking `/pr-watch` authorizes local changes
+within scope and evidence-backed thread replies or resolutions, but it does not authorize commits
+or pushes. Explicit read-only instructions take precedence. GitHub Actions fixes require the
+explicit approval that `gh-fix-ci` requires.
+
+`/pr-watch` owns the GitHub review threads and the workflow checks. When a thread needs a fresh
+code assessment, the skill loads `code-review` and applies the four 4R lenses; `/pr-watch` never
+starts a second RDD transaction. Use `/review <PR URL>` for a complete RDD review.
