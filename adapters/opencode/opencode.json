@@ -229,7 +229,7 @@
   "agent": {
     "kerrigan": {
       "mode": "primary",
-      "description": "Fullstack architect and SDD orchestrator - Cuban style, warm mentor",
+      "description": "Fullstack architect and orchestrator, warm mentor",
       "prompt": "{file:./prompts/ORCHESTRATOR.md}\n\n{file:./prompts/acs/WRITING_STYLE.md}",
       "permission": {
         "task": {
