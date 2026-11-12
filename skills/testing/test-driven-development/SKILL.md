@@ -15,7 +15,8 @@ it. A behavior-preserving refactor must not force the tests to be rewritten.
 
 - TDD is mandatory in RPI and SDD when a task changes business or product logic, including features,
   behavioral defects, and refactors of that logic. The project cannot switch it off.
-- For new or modified behavior, write a failing test first and complete RED → GREEN → REFACTOR. For a
+- For new or modified behavior, write a failing test first and complete RED → GREEN → REFACTOR. For
+  a
   behavior-preserving refactor, start from existing tests that protect the contract, or add a
   characterization test before refactoring.
 - Do not use TDD for documentation, generated code, or configuration, CI, infrastructure, or
@@ -34,7 +35,8 @@ it. A behavior-preserving refactor must not force the tests to be rewritten.
 1. **Define the observable outcome.** Identify the requirement and the appropriate public boundary.
    Choose the layer that provides useful signal without making the test broader than necessary.
    Explain the chosen boundary; ask only if the contract or the scope is unclear.
-2. **RED — write one test for one behavior.** Use the public interface and an expected result that is
+2. **RED — write one test for one behavior.** Use the public interface and an expected result that
+   is
    independent of the implementation. Run the test. Confirm that it fails because the behavior is
    missing, not because of syntax or configuration errors. If it passes because the behavior already
    exists, treat the case as characterization and consult `references/legacy.md` when appropriate.
@@ -51,12 +53,12 @@ relevant project validation. Do not report RED or GREEN without the output that 
 
 Do not read every reference when the skill loads. Choose the ones that answer the current question.
 
-| Need                                                                          | Reference                                              |
-|-------------------------------------------------------------------------------|--------------------------------------------------------|
-| Define a test unit, choose levels, or interpret coverage                      | [Fundamentals and test levels](references/fundamentals.md) |
-| Improve structure, naming, AAA/GWT, single responsibility, or test data       | [Test design and readability](references/test-design.md)   |
-| Choose between Dummy, Stub, Fake, Spy, and Mock                               | [Test doubles](references/test-doubles.md)                 |
-| Diagnose flakiness or reduce false confidence signals                         | [Test reliability](references/reliability.md)              |
-| Add tests to uncovered code or refactor legacy code                           | [Tests in legacy code](references/legacy.md)               |
-| Agree on TDD practice across a team                                           | [Team workflow](references/team-workflow.md)               |
-| Consult code examples per language                                            | [Code examples](references/code-examples.md)               |
+| Need                                                                    | Reference                                                  |
+|-------------------------------------------------------------------------|------------------------------------------------------------|
+| Define a test unit, choose levels, or interpret coverage                | [Fundamentals and test levels](references/fundamentals.md) |
+| Improve structure, naming, AAA/GWT, single responsibility, or test data | [Test design and readability](references/test-design.md)   |
+| Choose between Dummy, Stub, Fake, Spy, and Mock                         | [Test doubles](references/test-doubles.md)                 |
+| Diagnose flakiness or reduce false confidence signals                   | [Test reliability](references/reliability.md)              |
+| Add tests to uncovered code or refactor legacy code                     | [Tests in legacy code](references/legacy.md)               |
+| Agree on TDD practice across a team                                     | [Team workflow](references/team-workflow.md)               |
+| Consult code examples per language                                      | [Code examples](references/code-examples.md)               |

@@ -2,22 +2,39 @@
 
 ## Overview
 
-A stack drill-down is a hierarchical navigation pattern, common in mobile apps, where activating a link pushes a new full-screen view on top of the previous one. The view's content is application-defined — a settings sub-page, a thread inside a feed, a folder inside a file browser, a detail page inside a gallery, etc. The user returns by swiping the current view off-screen to the right or by tapping a back button. Browser history stays in sync so the OS-level Back gesture, deep links, and forward/back navigation all work coherently.
+A stack drill-down is a hierarchical navigation pattern, common in mobile apps, where activating a
+link pushes a new full-screen view on top of the previous one. The view's content is
+application-defined — a settings sub-page, a thread inside a feed, a folder inside a file browser, a
+detail page inside a gallery, etc. The user returns by swiping the current view off-screen to the
+right or by tapping a back button. Browser history stays in sync so the OS-level Back gesture, deep
+links, and forward/back navigation all work coherently.
 
 This guide implements the stack as:
 
-- A horizontal CSS scroll-snap container where each view is exactly one snap stop. Drilling down appends a new view and smooth-scrolls to it; the swipe-back gesture is handled natively by the browser, giving momentum, velocity, and interruption tracking for free with no pointer-event JavaScript.
-- A `scrollsnapchange` event listener on the stack that fires when the snap target changes. This is used as the single source of truth for "the active view changed" — so swipe, click, programmatic scroll, and `popstate` paths all converge in one callback that updates `inert`, restores focus, prunes views the user swiped past, and reconciles browser history.
-- A `pushState` / `popstate` integration so every drill-down adds a history entry, the OS-level Back gesture works, and deep links open directly into the right view.
-- An (optional) scroll-driven `view()` animation on each view that produces a parallax + dim + shadow effect tied directly to the swipe gesture, so the visible motion is driven by the user's finger, not a tween.
+- A horizontal CSS scroll-snap container where each view is exactly one snap stop. Drilling down
+  appends a new view and smooth-scrolls to it; the swipe-back gesture is handled natively by the
+  browser, giving momentum, velocity, and interruption tracking for free with no pointer-event
+  JavaScript.
+- A `scrollsnapchange` event listener on the stack that fires when the snap target changes. This is
+  used as the single source of truth for "the active view changed" — so swipe, click, programmatic
+  scroll, and `popstate` paths all converge in one callback that updates `inert`, restores focus,
+  prunes views the user swiped past, and reconciles browser history.
+- A `pushState` / `popstate` integration so every drill-down adds a history entry, the OS-level Back
+  gesture works, and deep links open directly into the right view.
+- An (optional) scroll-driven `view()` animation on each view that produces a parallax + dim +
+  shadow effect tied directly to the swipe gesture, so the visible motion is driven by the user's
+  finger, not a tween.
 
-This approach is preferred over JavaScript-driven `transform` animations because the snap mechanism gives the user direct gestural control of the panel's position (their finger drives it, not a tween) and matches the interaction patterns users expect from native mobile apps.
+This approach is preferred over JavaScript-driven `transform` animations because the snap mechanism
+gives the user direct gestural control of the panel's position (their finger drives it, not a tween)
+and matches the interaction patterns users expect from native mobile apps.
 
 ## Implementation
 
 ### 1. Markup
 
-The static HTML is just an empty stack container; views are built in JavaScript and appended as the user navigates.
+The static HTML is just an empty stack container; views are built in JavaScript and appended as the
+user navigates.
 
 ```html
 <div class="Stack">
@@ -26,7 +43,10 @@ The static HTML is just an empty stack container; views are built in JavaScript 
 </div>
 ```
 
-Each view is a `.Stack-view` direct child of `.Stack` (the snap target) with a `.Stack-viewContent` wrapper inside it (where view content lives, and where the parallax transform applies — see step 2). At any moment the stack has one view per active history entry, left-to-right in drill-down order. After the user has drilled in two levels from the root the rendered DOM looks like this:
+Each view is a `.Stack-view` direct child of `.Stack` (the snap target) with a `.Stack-viewContent`
+wrapper inside it (where view content lives, and where the parallax transform applies — see step 2).
+At any moment the stack has one view per active history entry, left-to-right in drill-down order.
+After the user has drilled in two levels from the root the rendered DOM looks like this:
 
 ```html
 <div class="Stack">
@@ -71,14 +91,18 @@ Each view is a `.Stack-view` direct child of `.Stack` (the snap target) with a `
 
 Notes:
 
-- All views except the currently-visible one carry the `inert` attribute. This is applied/removed automatically by the `scrollsnapchange` handler in step 7 — do not set it from your view builders.
-- Views the user swipes back past are removed from the DOM (also by step 7) so the stack never grows beyond `currentDepth + 1` children. They are rebuilt on demand from their cached URL paths if forward navigation returns to them.
+- All views except the currently-visible one carry the `inert` attribute. This is applied/removed
+  automatically by the `scrollsnapchange` handler in step 7 — do not set it from your view builders.
+- Views the user swipes back past are removed from the DOM (also by step 7) so the stack never grows
+  beyond `currentDepth + 1` children. They are rebuilt on demand from their cached URL paths if
+  forward navigation returns to them.
 
 ### 2. Styles
 
 #### The stack scroller
 
-The stack is a horizontal grid where each child view is exactly the width of the container, with CSS scroll-snap enforcing one-view-per-snap. This is what gives the swipe-back gesture its native feel.
+The stack is a horizontal grid where each child view is exactly the width of the container, with CSS
+scroll-snap enforcing one-view-per-snap. This is what gives the swipe-back gesture its native feel.
 
 ```css
 .Stack {
@@ -144,7 +168,9 @@ The stack is a horizontal grid where each child view is exactly the width of the
 
 #### The "stack" effect (parallax / dim / shadow)
 
-A scroll-driven `view(inline)` animation tracks each view's progress through the stack scroller and applies a parallax + dim to the exiting view, plus a shadow on incoming drill-down views so they read as "cards" stacking over the previous view.
+A scroll-driven `view(inline)` animation tracks each view's progress through the stack scroller and
+applies a parallax + dim to the exiting view, plus a shadow on incoming drill-down views so they
+read as "cards" stacking over the previous view.
 
 ```css
 /* MANDATORY: Wrap the animation block in @supports. Browsers without
@@ -194,7 +220,8 @@ A scroll-driven `view(inline)` animation tracks each view's progress through the
 }
 ```
 
-NOTE: This effect is popular in modern native stack applications and is a good starting point, but the exact visual effects can be customized to fit existing transition styles as needed.
+NOTE: This effect is popular in modern native stack applications and is a good starting point, but
+the exact visual effects can be customized to fit existing transition styles as needed.
 
 ### 3. Module state
 
@@ -229,7 +256,8 @@ const entriesByDepth = new Map();
 let currentDepth = 0;
 ```
 
-Plus three application-specific helpers — the only places where your app's routing and view rendering plug in:
+Plus three application-specific helpers — the only places where your app's routing and view
+rendering plug in:
 
 ```js
 // Resolve a URL path to the data your app needs to render the
@@ -290,7 +318,9 @@ function getCurrentUrlPath() {
 
 ### 4. Drill down
 
-A drill-down does four things in this order: push a history entry, build the new view, append it, smooth-scroll to it. The `scrollsnapchange` handler (step 7) picks up from there once the snap settles.
+A drill-down does four things in this order: push a history entry, build the new view, append it,
+smooth-scroll to it. The `scrollsnapchange` handler (step 7) picks up from there once the snap
+settles.
 
 ```js
 function drillDown(urlPath) {
@@ -325,7 +355,8 @@ function drillDown(urlPath) {
 
 ### 5. Click and back-button handling
 
-Intercept link clicks inside the stack and convert them to drill-downs. Preserve modifier-key behavior so cmd/middle-click still opens the link in a new tab.
+Intercept link clicks inside the stack and convert them to drill-downs. Preserve modifier-key
+behavior so cmd/middle-click still opens the link in a new tab.
 
 ```js
 stack.addEventListener('click', (e) => {
@@ -404,7 +435,9 @@ function synthesizeRootEntry() {
 
 ### 6. Sync from history (popstate)
 
-`popstate` fires when the user uses the browser/OS back or forward button, or when JavaScript calls `history.back()` / `.go()`. This handler is the only path that scrolls the stack in response to a history change.
+`popstate` fires when the user uses the browser/OS back or forward button, or when JavaScript calls
+`history.back()` / `.go()`. This handler is the only path that scrolls the stack in response to a
+history change.
 
 ```js
 window.addEventListener('popstate', (event) => {
@@ -482,9 +515,13 @@ function updateFromHistoryState(state, behaviorOverride) {
 
 ### 7. `scrollsnapchange`: the single source of truth
 
-After every snap commit — whether triggered by a swipe, a click, or a programmatic scroll — the browser fires a `scrollsnapchange` event on the scroll container, with the newly snapped element exposed as `event.snapTargetInline` (for horizontal snapping). Putting all state transitions inside this one handler is what keeps the swipe path, the click path, and the `popstate` path coherent.
+After every snap commit — whether triggered by a swipe, a click, or a programmatic scroll — the
+browser fires a `scrollsnapchange` event on the scroll container, with the newly snapped element
+exposed as `event.snapTargetInline` (for horizontal snapping). Putting all state transitions inside
+this one handler is what keeps the swipe path, the click path, and the `popstate` path coherent.
 
-The handler is extracted into a standalone `onActiveViewChanged` function so the fallback (see "Fallback strategies" below) can reuse it without duplicating the logic.
+The handler is extracted into a standalone `onActiveViewChanged` function so the fallback (see
+"Fallback strategies" below) can reuse it without duplicating the logic.
 
 ```js
 function onActiveViewChanged(currentView) {
@@ -555,7 +592,10 @@ stack.addEventListener('scrollsnapchange', (event) => {
 
 ### 8. Initialization (including deep links)
 
-When the page loads, the URL may already point at a deep view (a shared link, a bookmark, a refresh on a deep page). Build whichever initial view matches the URL — root or deep-linked, but never both — append it to the empty stack, seed the depth-0 history entry, and run an initial scroll pass with `behavior: 'instant'` so the parallax doesn't animate on first paint.
+When the page loads, the URL may already point at a deep view (a shared link, a bookmark, a refresh
+on a deep page). Build whichever initial view matches the URL — root or deep-linked, but never
+both — append it to the empty stack, seed the depth-0 history entry, and run an initial scroll pass
+with `behavior: 'instant'` so the parallax doesn't animate on first paint.
 
 ```js
 const initialUrlPath = getCurrentUrlPath();
@@ -585,34 +625,71 @@ updateFromHistoryState(history.state, 'instant');
 
 ### Best practices
 
-- **DO** use the `scrollsnapchange` event (with an `IntersectionObserver` fallback — see "Fallback strategies") as the source of truth for "the active view changed", not scroll-event coordinates. Snap commit is the only event that fires consistently across swipe, click, programmatic scroll, and `popstate` paths.
-- **DO** apply transforms to a child of the snap target, never to the snap target itself. A transform on the snap target feeds back into the scroll container's snap geometry and the scroller will glitch mid-gesture.
-- **DO** apply `inert` to every view except the currently visible one. Without this, focus and screen-reader navigation leak into views hidden behind the parallax — invisible to sighted users but a severe accessibility failure.
-- **DO** push a history entry on every drill-down and handle `popstate` so the OS-level Back gesture and the browser back/forward buttons work. This is what makes the pattern feel like a native app.
-- **DO** reconcile history from the active-view-changed handler when a swipe-back lands on a view whose depth doesn't match `currentDepth`. Without this, a subsequent OS Back returns the user somewhere unexpected because the browser's history cursor is out of sync with what's on screen.
-- **DO** prune views the user swiped past from the DOM. A long drill-down session can otherwise accumulate dozens of detached subtrees. The cached URL path in `entriesByDepth` is enough to rebuild any view if forward navigation returns to it.
-- **DO** call `.focus({preventScroll: true})` when restoring focus inside the stack. The default `preventScroll: false` makes the browser scroll the focus target into view, which fights the snap container and can land the user mid-snap.
-- **DO** preserve cmd/ctrl/middle-click on internal links so URLs remain shareable and openable in a new tab.
-- **DO** use `behavior: 'instant'` for multi-step history jumps AND for spatial-forward popstate transitions (`toIdx > fromIdx`). Multi-step jumps would otherwise fire `scrollsnapchange` at every intermediate snap and do N rounds of inert/focus/history work. Forward popstates are often spurious — iOS Safari treats edge swipes as browser forward even with `overscroll-behavior-x: none` set, and an instant swap is much less misleading than animating a "drilldown" the user didn't initiate. The user-initiated drill-down path (`drillDown`) is unaffected because it scrolls directly, not via `popstate`.
-- **DO** respect `prefers-reduced-motion`: declare `scroll-behavior: smooth` only inside `@media (prefers-reduced-motion: no-preference)` and call `scrollTo` / `scrollBy` with `behavior: 'auto'` (not `'smooth'`) so the OS-level preference takes effect without per-call JS branching. Hard-coding `behavior: 'smooth'` bypasses the user's setting.
-- **DO** render real `<a href>` elements as drill-down triggers, not `<button onclick>` or `<div>`. Real anchors get URL preview on hover, shareability, middle-click, screen-reader role, and SEO for free.
-- **DO** include an explicit back button in every drill-down view. The swipe gesture only works on touch — keyboard, pointer, and desktop users need a visible affordance.
-- **DO NOT** call `history.pushState` from the `popstate` handler — that pushes *new* entries while the user is trying to go back and breaks the browser back button.
-- **DO NOT** drive the parallax with a `scroll` event listener when scroll-driven animations are available. The CSS path runs on the compositor; a JS scroll listener runs on the main thread and will visibly drop frames during the gesture.
-- **DO NOT** mutate views you removed from the DOM after a swipe-back. Treat `entriesByDepth` as the canonical record: a pruned entry has `view: null` and is rebuilt on demand in `updateFromHistoryState`.
+- **DO** use the `scrollsnapchange` event (with an `IntersectionObserver` fallback — see "Fallback
+  strategies") as the source of truth for "the active view changed", not scroll-event coordinates.
+  Snap commit is the only event that fires consistently across swipe, click, programmatic scroll,
+  and `popstate` paths.
+- **DO** apply transforms to a child of the snap target, never to the snap target itself. A
+  transform on the snap target feeds back into the scroll container's snap geometry and the scroller
+  will glitch mid-gesture.
+- **DO** apply `inert` to every view except the currently visible one. Without this, focus and
+  screen-reader navigation leak into views hidden behind the parallax — invisible to sighted users
+  but a severe accessibility failure.
+- **DO** push a history entry on every drill-down and handle `popstate` so the OS-level Back gesture
+  and the browser back/forward buttons work. This is what makes the pattern feel like a native app.
+- **DO** reconcile history from the active-view-changed handler when a swipe-back lands on a view
+  whose depth doesn't match `currentDepth`. Without this, a subsequent OS Back returns the user
+  somewhere unexpected because the browser's history cursor is out of sync with what's on screen.
+- **DO** prune views the user swiped past from the DOM. A long drill-down session can otherwise
+  accumulate dozens of detached subtrees. The cached URL path in `entriesByDepth` is enough to
+  rebuild any view if forward navigation returns to it.
+- **DO** call `.focus({preventScroll: true})` when restoring focus inside the stack. The default
+  `preventScroll: false` makes the browser scroll the focus target into view, which fights the snap
+  container and can land the user mid-snap.
+- **DO** preserve cmd/ctrl/middle-click on internal links so URLs remain shareable and openable in a
+  new tab.
+- **DO** use `behavior: 'instant'` for multi-step history jumps AND for spatial-forward popstate
+  transitions (`toIdx > fromIdx`). Multi-step jumps would otherwise fire `scrollsnapchange` at every
+  intermediate snap and do N rounds of inert/focus/history work. Forward popstates are often
+  spurious — iOS Safari treats edge swipes as browser forward even with
+  `overscroll-behavior-x: none` set, and an instant swap is much less misleading than animating a
+  "drilldown" the user didn't initiate. The user-initiated drill-down path (`drillDown`) is
+  unaffected because it scrolls directly, not via `popstate`.
+- **DO** respect `prefers-reduced-motion`: declare `scroll-behavior: smooth` only inside
+  `@media (prefers-reduced-motion: no-preference)` and call `scrollTo` / `scrollBy` with
+  `behavior: 'auto'` (not `'smooth'`) so the OS-level preference takes effect without per-call JS
+  branching. Hard-coding `behavior: 'smooth'` bypasses the user's setting.
+- **DO** render real `<a href>` elements as drill-down triggers, not `<button onclick>` or `<div>`.
+  Real anchors get URL preview on hover, shareability, middle-click, screen-reader role, and SEO for
+  free.
+- **DO** include an explicit back button in every drill-down view. The swipe gesture only works on
+  touch — keyboard, pointer, and desktop users need a visible affordance.
+- **DO NOT** call `history.pushState` from the `popstate` handler — that pushes *new* entries while
+  the user is trying to go back and breaks the browser back button.
+- **DO NOT** drive the parallax with a `scroll` event listener when scroll-driven animations are
+  available. The CSS path runs on the compositor; a JS scroll listener runs on the main thread and
+  will visibly drop frames during the gesture.
+- **DO NOT** mutate views you removed from the DOM after a swipe-back. Treat `entriesByDepth` as the
+  canonical record: a pruned entry has `view: null` and is rebuilt on demand in
+  `updateFromHistoryState`.
 
 ### Fallback strategies
 
 Baseline status for Scroll snap: Widely available. It's been Baseline since 2020-01-15.
-Supported by: Chrome 69 (Sep 2018), Edge 79 (Jan 2020), Firefox 68 (Jul 2019), and Safari 11 (Sep 2017).
+Supported by: Chrome 69 (Sep 2018), Edge 79 (Jan 2020), Firefox 68 (Jul 2019), and Safari 11 (Sep
+2017).
 
 Baseline status for Intersection observer: Widely available. It's been Baseline since 2019-03-25.
-Supported by: Chrome 58 (Apr 2017), Edge 16 (Oct 2017), Firefox 55 (Aug 2017), Safari 12.1 (Mar 2019), and Safari iOS 12.2 (Mar 2019).
+Supported by: Chrome 58 (Apr 2017), Edge 16 (Oct 2017), Firefox 55 (Aug 2017), Safari 12.1 (Mar
+2019), and Safari iOS 12.2 (Mar 2019).
 
 Baseline status for inert: Widely available. It's been Baseline since 2023-04-11.
-Supported by: Chrome 102 (May 2022), Edge 102 (May 2022), Firefox 112 (Apr 2023), and Safari 15.5 (May 2022).
+Supported by: Chrome 102 (May 2022), Edge 102 (May 2022), Firefox 112 (Apr 2023), and Safari 15.5
+(May 2022).
 
-The features that may require fallbacks are scroll-snap-events and scroll-driven-animations, both of which have robust fallback or progressive enhancement stories, and are safe to use for this use case:
+The features that may require fallbacks are scroll-snap-events and scroll-driven-animations, both of
+which have robust fallback or progressive enhancement stories, and are safe to use for this use
+case:
 
 #### Scroll snap events
 
@@ -620,7 +697,11 @@ Browser support for Scroll snap events: Limited availability.
 Supported by: Chrome 129 (Sep 2024) and Edge 129 (Sep 2024).
 Unsupported in: Firefox and Safari.
 
-The `scrollsnapchange` event is the cleanest way to detect "the active view changed" — one listener on the stack, fired exactly once per snap commit. In browsers without it, the same effect can be polyfilled with an `IntersectionObserver` watching each view for full visibility inside the stack. The fallback dispatches into the same `onActiveViewChanged` function the primary path uses, so all the state-transition logic stays in one place.
+The `scrollsnapchange` event is the cleanest way to detect "the active view changed" — one listener
+on the stack, fired exactly once per snap commit. In browsers without it, the same effect can be
+polyfilled with an `IntersectionObserver` watching each view for full visibility inside the stack.
+The fallback dispatches into the same `onActiveViewChanged` function the primary path uses, so all
+the state-transition logic stays in one place.
 
 ```js
 // MANDATORY when supporting browsers that haven't shipped scroll-snap-events
@@ -667,9 +748,15 @@ Browser support for Scroll-driven animations: Limited availability.
 Supported by: Chrome 115 (Jul 2023), Edge 115 (Jul 2023), and Safari 26 (Sep 2025).
 Unsupported in: Firefox.
 
-The scroll-driven parallax / dim / shadow effect is a progressive enhancement on top of the navigation core. The CSS `@supports (animation-timeline: view())` gate (shown in step 2) confines the animation to supporting browsers; everywhere else the views simply cut between snap stops with no transition. The component is fully functional without the parallax — snap, history sync, focus management, and `inert` all still work.
+The scroll-driven parallax / dim / shadow effect is a progressive enhancement on top of the
+navigation core. The CSS `@supports (animation-timeline: view())` gate (shown in step 2) confines
+the animation to supporting browsers; everywhere else the views simply cut between snap stops with
+no transition. The component is fully functional without the parallax — snap, history sync, focus
+management, and `inert` all still work.
 
-If a parallax fallback is required for older baseline targets, attach a `scroll` listener to the stack and write a CSS custom property describing each view's progress through the scrollport, then drive `transform` and `filter` from that property:
+If a parallax fallback is required for older baseline targets, attach a `scroll` listener to the
+stack and write a CSS custom property describing each view's progress through the scrollport, then
+drive `transform` and `filter` from that property:
 
 ```js
 if (!CSS.supports('animation-timeline: view()')) {

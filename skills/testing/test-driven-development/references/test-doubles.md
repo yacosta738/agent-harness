@@ -4,13 +4,13 @@ Use a double when the real dependency makes the test slow, non-deterministic, ex
 of producing an external effect. Prefer the real dependency first, then a test environment, then a
 small fake implementation. Do not simulate internal collaborators just to control every call.
 
-| Type      | Purpose                                                | Example use                                                                         |
-|-----------|--------------------------------------------------------|-------------------------------------------------------------------------------------|
-| **Dummy** | Fills a parameter the scenario does not use            | A context required by an interface, irrelevant to the behavior under test           |
-| **Stub**  | Returns a prepared response                            | A rejection response from an external gateway                                       |
-| **Fake**  | Has a simplified but working implementation            | An in-memory repository that stores and retrieves data                              |
-| **Spy**   | Records an interaction so it can be observed later     | Confirming that a required message was sent to a specific recipient                 |
-| **Mock**  | Defines expectations about interactions                | Checking an external contract when the outcome alone cannot be observed             |
+| Type      | Purpose                                            | Example use                                                               |
+|-----------|----------------------------------------------------|---------------------------------------------------------------------------|
+| **Dummy** | Fills a parameter the scenario does not use        | A context required by an interface, irrelevant to the behavior under test |
+| **Stub**  | Returns a prepared response                        | A rejection response from an external gateway                             |
+| **Fake**  | Has a simplified but working implementation        | An in-memory repository that stores and retrieves data                    |
+| **Spy**   | Records an interaction so it can be observed later | Confirming that a required message was sent to a specific recipient       |
+| **Mock**  | Defines expectations about interactions            | Checking an external contract when the outcome alone cannot be observed   |
 
 Do not treat all doubles as equivalent. Choose the smallest one that preserves the behavior the test
 needs:

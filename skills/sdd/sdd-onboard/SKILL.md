@@ -61,7 +61,8 @@ scope, and what stays out of scope.
 
 ### Step 5: Spec and design
 
-Delegate `sdd-spec` first. After the delta specs are ready, delegate `sdd-design`, because the design
+Delegate `sdd-spec` first. After the delta specs are ready, delegate `sdd-design`, because the
+design
 must use the requirements and scenarios. Show the requirements first, then the design.
 
 ### Step 6: Tasks

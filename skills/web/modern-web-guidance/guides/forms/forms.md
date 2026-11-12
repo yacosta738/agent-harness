@@ -5,7 +5,8 @@
 ### Guidelines
 
 - **DO** use the `<form>` element to wrap interactive controls for data collection.
-- **DO** use `method="POST"` for sensitive data and mutations; use `method="GET"` for idempotent requests (e.g., search).
+- **DO** use `method="POST"` for sensitive data and mutations; use `method="GET"` for idempotent
+  requests (e.g., search).
 - **DO** specify the `action` attribute for the destination URL.
 - **DO** specify a `name` attribute for every form control to identify data on submission.
 - **DO** use semantic tags like `<button type="submit">`, `<textarea>`, and `<select>`.
@@ -32,14 +33,15 @@
 
 ### Selection Control Decision Matrix
 
-| Options Count | Choice Type | Recommended Element | Usability & Accessibility Logic |
-| :--- | :--- | :--- | :--- |
-| **1–5** | Single (Exclusive) | `<input type="radio">` | **Zero-click scanning**: All choices are immediately visible. Faster scan time. |
-| **6+** | Single (Exclusive) | `<select>` | **Space conservation**: Use only when vertical space is premium or the list is long. |
-| **10+ / Dynamic** | Single (Exclusive) | `<input list="id">` (`<datalist>`) | **Fuzzy Search**: Prevents scrolling fatigue in massive sets (e.g., countries). |
-| **Any** | Multi-select | `<input type="checkbox">` | **Standard semantics**: Native non-exclusive toggles. |
+| Options Count     | Choice Type        | Recommended Element                | Usability & Accessibility Logic                                                      |
+|:------------------|:-------------------|:-----------------------------------|:-------------------------------------------------------------------------------------|
+| **1–5**           | Single (Exclusive) | `<input type="radio">`             | **Zero-click scanning**: All choices are immediately visible. Faster scan time.      |
+| **6+**            | Single (Exclusive) | `<select>`                         | **Space conservation**: Use only when vertical space is premium or the list is long. |
+| **10+ / Dynamic** | Single (Exclusive) | `<input list="id">` (`<datalist>`) | **Fuzzy Search**: Prevents scrolling fatigue in massive sets (e.g., countries).      |
+| **Any**           | Multi-select       | `<input type="checkbox">`          | **Standard semantics**: Native non-exclusive toggles.                                |
 
-**Single-Sentence Mental Model**: "Expose mutually exclusive options as visible radio buttons when choices are fewer than six; use `<select>` only when space is constrained or the list is long."
+**Single-Sentence Mental Model**: "Expose mutually exclusive options as visible radio buttons when
+choices are fewer than six; use `<select>` only when space is constrained or the list is long."
 
 ## 2. Accessible Labeling and State
 
@@ -48,7 +50,8 @@
 - **DO** always associate `<label>` with its input using `for` and `id`.
 - **DO** place labels above form controls to enable faster scanning.
 - **DO** use visible labels; do not rely on `placeholder` alone.
-- **DO** ensure the vertical margin between a label and its input is less than the margin between form groups (**Gestalt Proximity Rule**).
+- **DO** ensure the vertical margin between a label and its input is less than the margin between
+  form groups (**Gestalt Proximity Rule**).
 - **DO** use `aria-describedby` to link inputs with help text or error messages.
 - **DO** define the `lang` attribute on `<html>` for proper device translation.
 - **DO** use non-color visual cues (icons, text) to communicate state (don't rely on color alone).
@@ -80,14 +83,21 @@
 
 ### Guidelines
 
-- **DO** use the `autocomplete` attribute to specify expected data (e.g., `email`, `tel`, `current-password`, `new-password`).
+- **DO** use the `autocomplete` attribute to specify expected data (e.g., `email`, `tel`,
+  `current-password`, `new-password`).
 - **DO** use `inputmode` to optimize on-screen keyboards (e.g., `inputmode="numeric"` for PINs).
 - **DO** use `enterkeyhint` to set the Enter key label (e.g., `next`, `done`).
-- **DO** turn off text correction on fields that hold identifiers rather than prose: `autocorrect="off"` (plus `autocapitalize="off"` and `spellcheck="false"`) on usernames, emails, URLs, codes, and search inputs. Leave the defaults on for free-text fields like messages and comments.
+- **DO** turn off text correction on fields that hold identifiers rather than prose:
+  `autocorrect="off"` (plus `autocapitalize="off"` and `spellcheck="false"`) on usernames, emails,
+  URLs, codes, and search inputs. Leave the defaults on for free-text fields like messages and
+  comments.
 - **DO** use single-field inputs for complex numbers (credit cards, phones) to help autofill.
-- **DO** use a single `<input type="text" inputmode="numeric" autocomplete="one-time-code">` and the WebOTP API for SMS one-time passcode verification. See guide `sms-otp-form` (via `npx -y modern-web-guidance@latest retrieve "sms-otp-form"`).
+- **DO** use a single `<input type="text" inputmode="numeric" autocomplete="one-time-code">` and the
+  WebOTP API for SMS one-time passcode verification. See guide `sms-otp-form` (via
+  `npx -y modern-web-guidance@latest retrieve "sms-otp-form"`).
 
-- **DON'T** use `type="number"` for credit cards, ZIP codes, or one-time passcodes (causes UI scroll issues and removes leading zeros).
+- **DON'T** use `type="number"` for credit cards, ZIP codes, or one-time passcodes (causes UI scroll
+  issues and removes leading zeros).
 
 ### Code Example
 
@@ -107,7 +117,8 @@
 - **DO** use CSS pseudo-classes `:invalid:user-invalid` for non-intrusive styling.
 - **DO** use the ValidityState API (`setCustomValidity`) for custom messaging.
 
-- **DON'T** disable submit buttons to block validation; let users submit and highlight errors. However, **DO** disable the button *after* a valid submission is clicked to prevent double-posts.
+- **DON'T** disable submit buttons to block validation; let users submit and highlight errors.
+  However, **DO** disable the button *after* a valid submission is clicked to prevent double-posts.
 
 ### Code Example
 
@@ -128,15 +139,17 @@
 
 ### Validation Event Timing Matrix
 
-| Event Trigger | Phase | Action Allowed | UX / Accessibility Logic |
-| :--- | :--- | :--- | :--- |
-| **`input`** | Active Typing | **Clear** existing errors only. | **Non-intrusive**: Do not yell at the user before they finish typing. |
-| **`blur` / `focusout`** | Exiting Field | **Run** check and show error. | **Contextual validation**: Validate once the user indicates they are "done" with a field. |
-| **`submit`** | Final Attempt | **Block** and route focus. | **Final gatekeeper**: Intercepts bad payloads and forces screen reader focus to the summary. |
+| Event Trigger           | Phase         | Action Allowed                  | UX / Accessibility Logic                                                                     |
+|:------------------------|:--------------|:--------------------------------|:---------------------------------------------------------------------------------------------|
+| **`input`**             | Active Typing | **Clear** existing errors only. | **Non-intrusive**: Do not yell at the user before they finish typing.                        |
+| **`blur` / `focusout`** | Exiting Field | **Run** check and show error.   | **Contextual validation**: Validate once the user indicates they are "done" with a field.    |
+| **`submit`**            | Final Attempt | **Block** and route focus.      | **Final gatekeeper**: Intercepts bad payloads and forces screen reader focus to the summary. |
 
-**Single-Sentence Mental Model**: "Validate on `blur` to avoid premature warnings while typing, and reset error states on `input` as soon as the user attempts a correction."
+**Single-Sentence Mental Model**: "Validate on `blur` to avoid premature warnings while typing, and
+reset error states on `input` as soon as the user attempts a correction."
 
-**Security vs UX Scale**: Client-side validation is for User Experience; Server-side validation is for Security. Never treat browser constraints as a data integrity defense.
+**Security vs UX Scale**: Client-side validation is for User Experience; Server-side validation is
+for Security. Never treat browser constraints as a data integrity defense.
 
 ## 5. Responsive Design and Typography
 
@@ -183,8 +196,10 @@ input {
 
 - **DO** use `accent-color` for quick branding of native radios/checkboxes.
 - **DO** use `appearance: none` for custom dropdown arrows without breaking semantics.
-- **DO** ensure inputs are clearly visible with adequate border contrast (e.g., `#ccc` or darker on white backgrounds).
-- **DO** hide inputs visually using the canonical `.visually-hidden` recipe (`clip-path: inset(50%)` with 1px dimensions) — NOT `display: none`, which removes them from the accessibility tree.
+- **DO** ensure inputs are clearly visible with adequate border contrast (e.g., `#ccc` or darker on
+  white backgrounds).
+- **DO** hide inputs visually using the canonical `.visually-hidden` recipe (`clip-path: inset(50%)`
+  with 1px dimensions) — NOT `display: none`, which removes them from the accessibility tree.
 
 ### Code Example
 
@@ -223,7 +238,10 @@ input {
 
 ### Guidelines
 
-- **DO** check `KeyboardEvent.isComposing` before treating the `Enter` key as a submit action in chat or text inputs to ensure IME text composition is not interrupted. See guide `ime-safe-enter-submit` (via `npx -y modern-web-guidance@latest retrieve "ime-safe-enter-submit"`).
+- **DO** check `KeyboardEvent.isComposing` before treating the `Enter` key as a submit action in
+  chat or text inputs to ensure IME text composition is not interrupted. See guide
+  `ime-safe-enter-submit` (via
+  `npx -y modern-web-guidance@latest retrieve "ime-safe-enter-submit"`).
 - **DO** prevent default navigation on form submit for AJAX (`e.preventDefault()`).
 - **DO** use `ValidityState` interfaces for real-time validation checks.
 - **DO** use `aria-expanded` and `aria-controls` for dynamic UI reveals.
@@ -244,7 +262,8 @@ form.addEventListener('submit', (e) => {
 
 ### Guidelines
 
-- **DO** use `autocomplete="new-password"` for sign-up and `autocomplete="current-password"` for sign-in.
+- **DO** use `autocomplete="new-password"` for sign-up and `autocomplete="current-password"` for
+  sign-in.
 - **DO** allow pasting into password fields.
 - **DO** provide a toggle capability allowing users to unmask password input.
 - **DO** indicate exact amounts on pay buttons (e.g., "Pay $100").
@@ -255,7 +274,8 @@ form.addEventListener('submit', (e) => {
 - **DO** implement spam protection (honeypots or CAPTCHA) for open forms.
 
 - **DON'T** utilize HTTP `GET` for endpoints executing state changes.
-- **DON'T** use inline JavaScript (e.g., `onclick="..."`) directly within form markup to satisfy strict Content Security Policies (CSP).
+- **DON'T** use inline JavaScript (e.g., `onclick="..."`) directly within form markup to satisfy
+  strict Content Security Policies (CSP).
 
 ### Code Example
 
@@ -290,14 +310,16 @@ form.addEventListener('submit', (e) => {
 </form>
 ```
 
-
 ## 9. Address Collection
 
 ### Guidelines
 
 - **DO** use a single field for names.
 - **DO** use `autocomplete="street-address"`.
-- If the site has users in different countries, **DO** use the `<textarea>` element for addresses, to accommodate different address formats in different geographical regions. If the form uses separate inputs for address parts (e.g. Street, City), **DO** use `autocomplete` values `address-line1`, `address-line2`, etc.
+- If the site has users in different countries, **DO** use the `<textarea>` element for addresses,
+  to accommodate different address formats in different geographical regions. If the form uses
+  separate inputs for address parts (e.g. Street, City), **DO** use `autocomplete` values
+  `address-line1`, `address-line2`, etc.
 - **DO** make postal codes optional.
 
 - **DON'T** split name inputs into rigid variables ("First", "Last") for global audiences.
@@ -321,7 +343,6 @@ form.addEventListener('submit', (e) => {
   <button type="submit">Save Address</button>
 </form>
 ```
-
 
 ## 10. Usability Testing and Analytics
 
@@ -359,10 +380,13 @@ form.addEventListener('submit', (e) => {
 
 ### Guidelines
 
-- **DO** clearly display progress through a multi-page form with clear labels and progress indicators.
+- **DO** clearly display progress through a multi-page form with clear labels and progress
+  indicators.
 - **DO** allow users to navigate backwards and forwards between pages.
-- **DO** use context-specific `enterkeyhint` values (e.g., `"previous"`, `"next"`) to guide navigation via on-screen keyboards.
-- **DO** design layouts so that the mobile keyboard does not obscure inputs or buttons (e.g., by placing them in the upper half of the viewport when focused or using CSS scroll-padding).
+- **DO** use context-specific `enterkeyhint` values (e.g., `"previous"`, `"next"`) to guide
+  navigation via on-screen keyboards.
+- **DO** design layouts so that the mobile keyboard does not obscure inputs or buttons (e.g., by
+  placing them in the upper half of the viewport when focused or using CSS scroll-padding).
 
 ### Code Example
 

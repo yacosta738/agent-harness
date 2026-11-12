@@ -2,7 +2,10 @@
 
 ## Overview
 
-Improve the user experience of floating buttons, like a "Back to Top" link, by showing them only when they are useful. This guide shows how to build these elements using CSS `container-scroll-state-queries`, which allows styling elements based on the scroll position of their container without relying on JavaScript scroll listeners or observers.
+Improve the user experience of floating buttons, like a "Back to Top" link, by showing them only
+when they are useful. This guide shows how to build these elements using CSS
+`container-scroll-state-queries`, which allows styling elements based on the scroll position of
+their container without relying on JavaScript scroll listeners or observers.
 
 ## Implementation
 
@@ -37,11 +40,14 @@ Place the element inside the container and style it. By default, it should be hi
 ```
 
 > [!IMPORTANT]
-> Sticky or floating elements hover above the scrollable content. Ensure that the main content has sufficient bottom padding or margin so that the last few elements are not permanently covered by the button when the user scrolls completely to the bottom.
+> Sticky or floating elements hover above the scrollable content. Ensure that the main content has
+sufficient bottom padding or margin so that the last few elements are not permanently covered by the
+button when the user scrolls completely to the bottom.
 
 ### 3. Respond to the Scroll State
 
-Use the `@container` rule with the `scroll-state` function. To check if the user has scrolled down, check if the container is scrollable to the top.
+Use the `@container` rule with the `scroll-state` function. To check if the user has scrolled down,
+check if the container is scrollable to the top.
 
 ```css
 /* When the container can be scrolled toward the top, it means the user has scrolled down */
@@ -61,7 +67,10 @@ Supported by: Chrome 133 (Feb 2025) and Edge 133 (Feb 2025).
 Unsupported in: Firefox and Safari.
 
 ### Basic Fallback
-If `container-scroll-state-queries` is not supported, the floating element will remain invisible because of the default `visibility: hidden`. To ensure functionality, you can choose to make the element always visible in unsupported browsers.
+
+If `container-scroll-state-queries` is not supported, the floating element will remain invisible
+because of the default `visibility: hidden`. To ensure functionality, you can choose to make the
+element always visible in unsupported browsers.
 
 ```css
 /* Fallback for browsers that do not support the feature */
@@ -88,7 +97,9 @@ If `container-scroll-state-queries` is not supported, the floating element will 
 ```
 
 ### Advanced Fallback (Intersection Observer)
-If dynamic visibility is required, use an `IntersectionObserver` to toggle a class when a sentinel element at the top of the scroller goes out of view.
+
+If dynamic visibility is required, use an `IntersectionObserver` to toggle a class when a sentinel
+element at the top of the scroller goes out of view.
 
 ```html
 <!-- Sentinel element placed at the top of the scroller -->

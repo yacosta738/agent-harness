@@ -29,8 +29,10 @@ function option(flag) {
     return {provided: false, value: undefined};
   }
   const value = args[index + 1];
-  return {provided: true,
-    value: value && !value.startsWith('--') ? value : undefined};
+  return {
+    provided: true,
+    value: value && !value.startsWith('--') ? value : undefined
+  };
 }
 
 async function reviewCandidate({resolve = true} = {}) {
@@ -108,11 +110,12 @@ try {
   } else if (command === 'capture-correction') {
     result = await captureCorrection(
         root,
-      {
+        {
           ...binding(),
           validatorStatus: value('--validator-status'),
           candidate: await reviewCandidate({resolve: false}),
-          validationEvidence: JSON.parse(value('--validation-evidence') ?? '[]'),
+          validationEvidence: JSON.parse(
+              value('--validation-evidence') ?? '[]'),
           configHome
         });
   } else if (command === 'close') {

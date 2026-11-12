@@ -1,12 +1,23 @@
 # Custom text decorations
 
-Use the native `text-decoration` properties to style underlines, overlines, and strikethroughs, instead of faking them with borders, background gradients, or pseudo-elements. A native decoration follows the text across wrapped lines, tracks the font's metrics, skips glyph descenders, and inherits through nested elements, so none of that needs to be reimplemented. Reach for the box-based techniques at the end of this guide only when the decoration must outline or wrap the text rather than run along it.
+Use the native `text-decoration` properties to style underlines, overlines, and strikethroughs,
+instead of faking them with borders, background gradients, or pseudo-elements. A native decoration
+follows the text across wrapped lines, tracks the font's metrics, skips glyph descenders, and
+inherits through nested elements, so none of that needs to be reimplemented. Reach for the box-based
+techniques at the end of this guide only when the decoration must outline or wrap the text rather
+than run along it.
 
-Text decorations apply to any text, not only links. Where underlined text is not a link, make sure it cannot be mistaken for one. When decorating a link, use a real `<a href>` pointing at the destination (add `target="_blank" rel="noopener"` to open a new tab), not `href="javascript:void(0)"` with a script handler. A real link keeps middle-click, copy-link, and screen reader behavior.
+Text decorations apply to any text, not only links. Where underlined text is not a link, make sure
+it cannot be mistaken for one. When decorating a link, use a real `<a href>` pointing at the
+destination (add `target="_blank" rel="noopener"` to open a new tab), not
+`href="javascript:void(0)"` with a script handler. A real link keeps middle-click, copy-link, and
+screen reader behavior.
 
 ## Style the line
 
-Set line, style, color, and thickness with the `text-decoration` shorthand, and the gap from the text with `text-underline-offset`. Wrap the selector in `:where()` so the defaults have zero specificity and any later override wins, without needing custom properties.
+Set line, style, color, and thickness with the `text-decoration` shorthand, and the gap from the
+text with `text-underline-offset`. Wrap the selector in `:where()` so the defaults have zero
+specificity and any later override wins, without needing custom properties.
 
 ```css
 :where(.decorated) {
@@ -33,20 +44,26 @@ Set line, style, color, and thickness with the `text-decoration` shorthand, and 
 .decorated-through { text-decoration-line: line-through; }
 ```
 
-`text-decoration-style` accepts `solid`, `double`, `dotted`, `dashed`, and `wavy`. `text-underline-offset` applies to underlines only.
+`text-decoration-style` accepts `solid`, `double`, `dotted`, `dashed`, and `wavy`.
+`text-underline-offset` applies to underlines only.
 
 Starting points for the design:
 
-* **Thickness:** about `0.06em` to `0.1em` for body text. Go thicker (`0.1em` to `0.15em`) for headings and emphasized states.
-* **Offset:** about `0.15em` to `0.25em`. Dotted and wavy lines need a little more room than solid ones, so raise the offset for them.
-* **Color:** `currentColor` keeps the line matched to the text. A softer mix of the text color that firms up on hover keeps long runs of links calm.
-* **Style:** `solid` for links, `dotted` for terms and abbreviations, and `wavy` for annotations such as errors.
+* **Thickness:** about `0.06em` to `0.1em` for body text. Go thicker (`0.1em` to `0.15em`) for
+  headings and emphasized states.
+* **Offset:** about `0.15em` to `0.25em`. Dotted and wavy lines need a little more room than solid
+  ones, so raise the offset for them.
+* **Color:** `currentColor` keeps the line matched to the text. A softer mix of the text color that
+  firms up on hover keeps long runs of links calm.
+* **Style:** `solid` for links, `dotted` for terms and abbreviations, and `wavy` for annotations
+  such as errors.
 
 ## Control where the line is skipped
 
 ### Ink skipping
 
-By default, underlines and overlines break around glyph parts that cross them, such as descenders. Set `text-decoration-skip-ink` to choose the behavior:
+By default, underlines and overlines break around glyph parts that cross them, such as descenders.
+Set `text-decoration-skip-ink` to choose the behavior:
 
 ```css
 .decorated {
@@ -57,13 +74,15 @@ By default, underlines and overlines break around glyph parts that cross them, s
 ```
 
 * Keep `auto` for Latin text, and do not declare it: it is the default.
-* Use `all` when the underline sits close enough to the baseline to cross ideographic glyphs, or when mixed-script text must look consistent.
-* Use `none` for a very thick line, or a deliberately decorative one, where gaps would look like breaks.
-
+* Use `all` when the underline sits close enough to the baseline to cross ideographic glyphs, or
+  when mixed-script text must look consistent.
+* Use `none` for a very thick line, or a deliberately decorative one, where gaps would look like
+  breaks.
 
 #### Skip spaces
 
-`text-decoration-skip-spaces` decides whether the line is drawn under spaces. The default, `start end`, leaves leading and trailing spaces undecorated.
+`text-decoration-skip-spaces` decides whether the line is drawn under spaces. The default,
+`start end`, leaves leading and trailing spaces undecorated.
 
 ```css
 .decorated {
@@ -76,11 +95,15 @@ By default, underlines and overlines break around glyph parts that cross them, s
 }
 ```
 
-Do not declare `text-decoration-skip-spaces` unless the decoration should visibly cover padding (`none`) or break between every word (`all`). Ordinary inline text, such as the text of a link, has no leading or trailing spaces, so the declaration does nothing.
+Do not declare `text-decoration-skip-spaces` unless the decoration should visibly cover padding
+(`none`) or break between every word (`all`). Ordinary inline text, such as the text of a link, has
+no leading or trailing spaces, so the declaration does nothing.
 
 ## Trim or extend the line with an inset
 
-`text-decoration-inset` moves the start and end of the line. A positive value pulls an end inward, a negative value pushes it outward. One value moves both ends; two values set start and end separately. Percentages refer to the inline size of the decorated box.
+`text-decoration-inset` moves the start and end of the line. A positive value pulls an end inward, a
+negative value pushes it outward. One value moves both ends; two values set start and end
+separately. Percentages refer to the inline size of the decorated box.
 
 ```css
 /* Small insets soften the ends of the line; larger ones read as a deliberately short line.
@@ -89,7 +112,8 @@ Do not declare `text-decoration-skip-spaces` unless the decoration should visibl
 .extended { text-decoration-inset: calc(var(--deco-inset, 0.1em) * -1); }
 ```
 
-To reveal an underline on hover without a border or background gradient, trim the end by 100% and transition it back to 0:
+To reveal an underline on hover without a border or background gradient, trim the end by 100% and
+transition it back to 0:
 
 ```css
 .reveal {
@@ -114,7 +138,8 @@ To reveal an underline on hover without a border or background gradient, trim th
 
 ## Draw a custom line with a pseudo-element
 
-Use a pseudo-element when the line must be a shape `text-decoration` cannot draw, such as a squiggle, and reveal it by clipping. No extra markup is needed, so the link stays a plain `<a>`.
+Use a pseudo-element when the line must be a shape `text-decoration` cannot draw, such as a
+squiggle, and reveal it by clipping. No extra markup is needed, so the link stays a plain `<a>`.
 
 ```html
 <a class="draw" href="#">Hover to draw underline</a>
@@ -164,7 +189,8 @@ Use a pseudo-element when the line must be a shape `text-decoration` cannot draw
 
 ## Outline text with a box instead
 
-Two box properties decorate text by outlining it rather than running a line along it. Give the text padding so the outline does not touch it.
+Two box properties decorate text by outlining it rather than running a line along it. Give the text
+padding so the outline does not touch it.
 
 ```css
 /* Gradient outline with a see-through middle */
@@ -188,9 +214,12 @@ Two box properties decorate text by outlining it rather than running a line alon
 }
 ```
 
-`border-shape` replaces only the border. The background is still the rectangular box, so do not rely on it to fill a shape.
+`border-shape` replaces only the border. The background is still the rectangular box, so do not rely
+on it to fill a shape.
 
-When only the corners need a different shape, such as a beveled, scooped, or notched label, use `corner-shape` with `border-radius` instead. It keeps the background and border following the corners, and unsupported browsers fall back to ordinary rounded corners.
+When only the corners need a different shape, such as a beveled, scooped, or notched label, use
+`corner-shape` with `border-radius` instead. It keeps the background and border following the
+corners, and unsupported browsers fall back to ordinary rounded corners.
 
 ```css
 .label {
@@ -203,27 +232,42 @@ When only the corners need a different shape, such as a beveled, scooped, or not
 
 ## Choose a technique
 
-* **`text-decoration`** (line, ink skipping, spaces, inset): the line should run along the text, wrap with it, and follow its font metrics. This is the default choice.
-* **Pseudo-element with `border-shape` and `clip-path`**: the line is a custom shape or needs a draw-on animation. Choose it only when `text-decoration-style` cannot produce the look, because it needs extra positioning.
-* **`background-clip: border-area`**: the text needs a gradient outline. Use plain `border-color` when a solid outline is enough.
-* **`corner-shape`**: only the corners need a different shape, such as beveled, scooped, or notched. Pair it with `border-radius`, which sets the corner size.
-* **`border-shape`**: the outline needs a shape `border-radius` cannot draw, such as a tag or arrow. Use `border-radius` when rounded corners are enough.
-* **Inset hover reveal**: worth adding when a link needs a hover affordance beyond a color change. Skip it for text that is not interactive.
+* **`text-decoration`** (line, ink skipping, spaces, inset): the line should run along the text,
+  wrap with it, and follow its font metrics. This is the default choice.
+* **Pseudo-element with `border-shape` and `clip-path`**: the line is a custom shape or needs a
+  draw-on animation. Choose it only when `text-decoration-style` cannot produce the look, because it
+  needs extra positioning.
+* **`background-clip: border-area`**: the text needs a gradient outline. Use plain `border-color`
+  when a solid outline is enough.
+* **`corner-shape`**: only the corners need a different shape, such as beveled, scooped, or notched.
+  Pair it with `border-radius`, which sets the corner size.
+* **`border-shape`**: the outline needs a shape `border-radius` cannot draw, such as a tag or arrow.
+  Use `border-radius` when rounded corners are enough.
+* **Inset hover reveal**: worth adding when a link needs a hover affordance beyond a color change.
+  Skip it for text that is not interactive.
 
 ## Fallback Strategies
 
-Each fallback keeps the text readable and keeps the core decoration. Frame the need in terms of your Baseline target: if it includes browsers without a property, apply the matching fallback.
+Each fallback keeps the text readable and keeps the core decoration. Frame the need in terms of your
+Baseline target: if it includes browsers without a property, apply the matching fallback.
 
 ### Ink skipping `all`
 
-Baseline status for text-decoration-skip-ink: all: Newly available. It's been Baseline since 2026-05-07.
-Supported by: Chrome 148 (May 2026), Edge 148 (May 2026), Firefox 75 (Apr 2020), and Safari 15.4 (Mar 2022).
+Baseline status for text-decoration-skip-ink: all: Newly available. It's been Baseline since
+2026-05-07.
+Supported by: Chrome 148 (May 2026), Edge 148 (May 2026), Firefox 75 (Apr 2020), and Safari 15.4
+(Mar 2022).
 
-If your Baseline target does not support `text-decoration-skip-ink: all`, the declaration is ignored and the browser keeps `auto`. Latin descenders are still skipped; only scripts that `auto` does not cover, such as Japanese, lose ink skipping. This is graceful degradation, so no extra code is needed.
+If your Baseline target does not support `text-decoration-skip-ink: all`, the declaration is ignored
+and the browser keeps `auto`. Latin descenders are still skipped; only scripts that `auto` does not
+cover, such as Japanese, lose ink skipping. This is graceful degradation, so no extra code is
+needed.
 
 ### Skip spaces
 
-If your Baseline target does not support `text-decoration-skip-spaces`, the browser uses its own default handling of spaces. This is graceful degradation: the line is drawn under spaces the browser does not skip.
+If your Baseline target does not support `text-decoration-skip-spaces`, the browser uses its own
+default handling of spaces. This is graceful degradation: the line is drawn under spaces the browser
+does not skip.
 
 ### Inset
 
@@ -238,9 +282,14 @@ Browser support for background-clip: border-area: Limited availability.
 Supported by: Chrome 150 (Jun 2026), Edge 150 (Jul 2026), and Safari 18.2 (Dec 2024).
 Unsupported in: Firefox.
 
-If your Baseline target does not support `background-clip: border-area`, the declaration is ignored and the background paints under the whole border box, filling the text instead of only its outline. Do NOT settle for a plain solid border when the gradient is part of the design. Reproduce the gradient instead, and apply `background-clip: border-area` only inside `@supports`.
+If your Baseline target does not support `background-clip: border-area`, the declaration is ignored
+and the background paints under the whole border box, filling the text instead of only its outline.
+Do NOT settle for a plain solid border when the gradient is part of the design. Reproduce the
+gradient instead, and apply `background-clip: border-area` only inside `@supports`.
 
-Use an opaque layer when the element's background is a known flat color. Paint the surface color over the padding box and the gradient under the border box, so the gradient shows only through the transparent border:
+Use an opaque layer when the element's background is a known flat color. Paint the surface color
+over the padding box and the gradient under the border box, so the gradient shows only through the
+transparent border:
 
 ```css
 .ring {
@@ -259,7 +308,8 @@ Use an opaque layer when the element's background is a known flat color. Paint t
 }
 ```
 
-Use a masked pseudo-element when the inside must stay transparent. The pseudo-element carries the gradient, and a mask cuts out everything but its padding ring:
+Use a masked pseudo-element when the inside must stay transparent. The pseudo-element carries the
+gradient, and a mask cuts out everything but its padding ring:
 
 ```css
 @supports not (background-clip: border-area) {
@@ -289,9 +339,14 @@ Browser support for border-shape: Limited availability.
 Supported by: Chrome 147 (Apr 2026) and Edge 147 (Apr 2026).
 Unsupported in: Firefox and Safari.
 
-If your Baseline target does not support `border-shape`, the declaration is ignored and the element keeps its rectangular border. A rounded rectangle is only an acceptable fallback when the shape is purely decorative. When the shape carries meaning, such as a tag, arrow, or callout, reproduce it as closely as possible, and apply `border-shape` only inside `@supports`.
+If your Baseline target does not support `border-shape`, the declaration is ignored and the element
+keeps its rectangular border. A rounded rectangle is only an acceptable fallback when the shape is
+purely decorative. When the shape carries meaning, such as a tag, arrow, or callout, reproduce it as
+closely as possible, and apply `border-shape` only inside `@supports`.
 
-Draw the outline with a clipped pseudo-element. Keep a transparent border so the box is the same size as in the supported case, fill the pseudo-element with the outline color, and cut it into a ring with an `evenodd` `clip-path`: the outer shape, then the same shape inset by the stroke width.
+Draw the outline with a clipped pseudo-element. Keep a transparent border so the box is the same
+size as in the supported case, fill the pseudo-element with the outline color, and cut it into a
+ring with an `evenodd` `clip-path`: the outer shape, then the same shape inset by the stroke width.
 
 ```css
 .tag {
@@ -328,8 +383,13 @@ Draw the outline with a clipped pseudo-element. Keep a transparent border so the
 }
 ```
 
-For a filled shape rather than an outline, put `clip-path: polygon(...)` with the same points directly on the element.
+For a filled shape rather than an outline, put `clip-path: polygon(...)` with the same points
+directly on the element.
 
-For the pseudo-element underline, draw a straight line with `border-block-end` on `.draw::after`, and apply the `block-size`, `border`, and `border-shape` squiggle only inside `@supports (border-shape: circle(50%))`. The line is straight but still draws on, because the `clip-path` animation does not depend on the shape.
+For the pseudo-element underline, draw a straight line with `border-block-end` on `.draw::after`,
+and apply the `block-size`, `border`, and `border-shape` squiggle only inside
+`@supports (border-shape: circle(50%))`. The line is straight but still draws on, because the
+`clip-path` animation does not depend on the shape.
 
-`clip-path` also clips focus rings and `box-shadow`. Do not rely on an outline on the clipped element to show focus; style `:focus-visible` with a color or background change instead.
+`clip-path` also clips focus rings and `box-shadow`. Do not rely on an outline on the clipped
+element to show focus; style `:focus-visible` with a color or background change instead.

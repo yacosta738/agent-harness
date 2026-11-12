@@ -1,16 +1,33 @@
 # Identify heavy-running JavaScript
 
-Heavy-running JavaScript can have a detrimental effect on both page load performance and interactivity. Modern web applications are more heavily reliant on JavaScript than ever before, from multiple sources. These include the application code itself (and the framework code it relies on), as well as third-party scripts that add functionality like chat widgets and video players. Behind-the-scenes analytics and marketing scripts are also common contributors that are all too easy to forget.
+Heavy-running JavaScript can have a detrimental effect on both page load performance and
+interactivity. Modern web applications are more heavily reliant on JavaScript than ever before, from
+multiple sources. These include the application code itself (and the framework code it relies on),
+as well as third-party scripts that add functionality like chat widgets and video players.
+Behind-the-scenes analytics and marketing scripts are also common contributors that are all too easy
+to forget.
 
-Identifying root causes of an unresponsive web page can be tricky with certain expertise required to run web performance tracing or profiling and how to interpret the results. Additionally field data is often very different to lab data, which only replicates a small subset of real user scenarios. This can make it difficult to identify the root causes of poor performance, especially for interactions.
+Identifying root causes of an unresponsive web page can be tricky with certain expertise required to
+run web performance tracing or profiling and how to interpret the results. Additionally field data
+is often very different to lab data, which only replicates a small subset of real user scenarios.
+This can make it difficult to identify the root causes of poor performance, especially for
+interactions.
 
-The Long Animation Frames API is a lightweight API that can be used to identify heavy-running JavaScript in the field. A heavy-running script can be either a single long-running script, or a script that runs multiple times during the page lifecycle.
+The Long Animation Frames API is a lightweight API that can be used to identify heavy-running
+JavaScript in the field. A heavy-running script can be either a single long-running script, or a
+script that runs multiple times during the page lifecycle.
 
 ## How to implement
 
-Long animation frames are monitored using the `PerformanceObserver` interface. It emits a `long-animation-frame` entry when an animation frame takes longer than 50ms to render. The entry contains information about the long animation frame, including the duration of the frame and the scripts that were executed during the frame.
+Long animation frames are monitored using the `PerformanceObserver` interface. It emits a
+`long-animation-frame` entry when an animation frame takes longer than 50ms to render. The entry
+contains information about the long animation frame, including the duration of the frame and the
+scripts that were executed during the frame.
 
-The `long-animation-frame` entry contains a `scripts` property which is an array of `PerformanceScript` objects. Each `PerformanceScript` object contains information about the script that was executed during the long animation frame, including the `sourceURL` and `duration` of the script.
+The `long-animation-frame` entry contains a `scripts` property which is an array of
+`PerformanceScript` objects. Each `PerformanceScript` object contains information about the script
+that was executed during the long animation frame, including the `sourceURL` and `duration` of the
+script.
 
 ### Example of identifying the longest running scripts that contribute to long animation frames
 
@@ -56,7 +73,8 @@ observer.observe({type: 'long-animation-frame', buffered: true});
 
 ## Best Practices
 
-- **DO** prefer the Long Animation Frames API over alternatives like the JS Self-Profiling API, which carries higher runtime overhead.
+- **DO** prefer the Long Animation Frames API over alternatives like the JS Self-Profiling API,
+  which carries higher runtime overhead.
 - **DO** summarize the key information as the Long Animation Frames API contains a lot of detail.
 - **DO** send the required information to an analytics service in production.
 
@@ -66,4 +84,6 @@ Browser support for Long animation frames performance entries: Limited availabil
 Supported by: Chrome 123 (Mar 2024) and Edge 123 (Mar 2024).
 Unsupported in: Firefox and Safari..
 
-The Long Animation Frames API is ignored by browsers that do not support it, so it can be safely used without fallbacks. In most cases the performance opportunities it identifies will apply to other browsers as well.
+The Long Animation Frames API is ignored by browsers that do not support it, so it can be safely
+used without fallbacks. In most cases the performance opportunities it identifies will apply to
+other browsers as well.

@@ -1,10 +1,14 @@
 # Styling siblings based on count and index
 
-Historically, applying unique styles to each sibling in a list required complex `:nth-child` loops or JavaScript to inject inline styles. Modern CSS provides `sibling-index()` and `sibling-count()` to perform these calculations directly in your stylesheet, enabling dynamic layouts and color systems that automatically adapt as elements are added or removed.
+Historically, applying unique styles to each sibling in a list required complex `:nth-child` loops
+or JavaScript to inject inline styles. Modern CSS provides `sibling-index()` and `sibling-count()`
+to perform these calculations directly in your stylesheet, enabling dynamic layouts and color
+systems that automatically adapt as elements are added or removed.
 
 ## Dynamic color systems
 
-You can create a color spectrum across a group of siblings by calculating a unique hue or lightness value for each child. This ensures a consistent gradient effect regardless of the number of items.
+You can create a color spectrum across a group of siblings by calculating a unique hue or lightness
+value for each child. This ensures a consistent gradient effect regardless of the number of items.
 
 ```css
 .swatch {
@@ -20,7 +24,8 @@ You can create a color spectrum across a group of siblings by calculating a uniq
 
 ## Symmetrical layout and fan effects
 
-To create symmetrical effects (like a "fan" or centering items), use the total count to find the midpoint of the list.
+To create symmetrical effects (like a "fan" or centering items), use the total count to find the
+midpoint of the list.
 
 ```css
 .card {
@@ -35,7 +40,8 @@ To create symmetrical effects (like a "fan" or centering items), use the total c
 
 ## Circular and complex positioning
 
-By combining these functions with CSS trigonometry (`sin()`, `cos()`), you can place elements in a perfect circle without any manual coordinates.
+By combining these functions with CSS trigonometry (`sin()`, `cos()`), you can place elements in a
+perfect circle without any manual coordinates.
 
 ```css
 .orb {
@@ -58,10 +64,14 @@ By combining these functions with CSS trigonometry (`sin()`, `cos()`), you can p
 
 ### Fallback strategies
 
-Baseline status for sibling-count() and sibling-index(): Newly available. It's been Baseline since 2026-08-18.
-Supported by: Chrome 138 (Jun 2025), Edge 138 (Jun 2025), Firefox 154 (Aug 2026), and Safari 26.2 (Dec 2025).
+Baseline status for sibling-count () and sibling-index (): Newly available. It's been Baseline since
+2026-08-18.
+Supported by: Chrome 138 (Jun 2025), Edge 138 (Jun 2025), Firefox 154 (Aug 2026), and Safari 26.2
+(Dec 2025).
 
-If `sibling-index()` and `sibling-count()` are not supported, provide a fallback by injecting CSS custom properties via JavaScript. **MANDATORY:** Use feature detection with `CSS.supports()` to ensure the script only runs when necessary.
+If `sibling-index()` and `sibling-count()` are not supported, provide a fallback by injecting CSS
+custom properties via JavaScript. **MANDATORY:** Use feature detection with `CSS.supports()` to
+ensure the script only runs when necessary.
 
 ```js
 /* MANDATORY: Check for native support before applying fallback */
@@ -75,7 +85,9 @@ if (!CSS.supports('top: calc(sibling-index() * 1px)')) {
 }
 ```
 
-In your CSS, use these variables as a base and override them with native functions inside an `@supports` block. **MANDATORY:** You MUST wrap the native function overrides in `@supports` to ensure the variables remain valid in older browsers.
+In your CSS, use these variables as a base and override them with native functions inside an
+`@supports` block. **MANDATORY:** You MUST wrap the native function overrides in `@supports` to
+ensure the variables remain valid in older browsers.
 
 ```css
 .item {

@@ -227,7 +227,8 @@ chain, or size exception.}
       Do NOT bundle implementation and testing into a single task — that hides the TDD cycle. For
       behavior-preserving refactors, include a passing baseline/characterization test and a
       post-refactor run instead of a fabricated RED phase. For documentation, generated files, or
-      non-business configuration, CI, infrastructure, or automation, specify artifact checks instead.
+      non-business configuration, CI, infrastructure, or automation, specify artifact checks
+      instead.
 - For a behavior-preserving refactor, include a passing baseline or characterization test and a
   post-refactor run instead of a fabricated RED phase.
 - If a task changes business/product logic and no runnable test command exists, mark it blocked

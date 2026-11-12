@@ -211,6 +211,19 @@
       "type": "remote",
       "url": "https://mcp.resend.com/mcp",
       "enabled": false
+    },
+    "servers": {
+      "resolve-ai-bridge": {
+        "enabled": false,
+        "type": "local",
+        "command": [
+          "/Users/acosta/.resolve-ai-bridge/.venv/bin/python",
+          "/Users/acosta/.resolve-ai-bridge/bridge/server.py"
+        ],
+        "environment": {
+          "RESOLVE_AI_BRIDGE_HOME": "/Users/acosta/.resolve-ai-bridge"
+        }
+      }
     }
   },
   "agent": {

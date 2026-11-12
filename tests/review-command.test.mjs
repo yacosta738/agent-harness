@@ -8,7 +8,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 test('/review routes PR URLs to the PR and no URL to the local worktree',
     () => {
-      const command = readFileSync(path.join(root, 'commands/review.md'), 'utf8');
+      const command = readFileSync(path.join(root, 'commands/review.md'),
+          'utf8');
 
       assert.match(command, /HTTPS pull request URL|PR URL/i);
       assert.match(command, /working tree|local working tree/i);
@@ -29,25 +30,28 @@ test('the general review skill mandates RDD and all four 4R lenses', () => {
     'double-blind-review', 'materialize', 'capture-correction',
     'acknowledge-approved'
   ]) {
-    assert.ok(skill.includes(term), `Missing required review contract: ${term}`);
+    assert.ok(skill.includes(term),
+        `Missing required review contract: ${term}`);
   }
 });
 
-test('the recovery command example includes the exact transaction binding', () => {
-  const skill = readFileSync(
-      path.join(root, 'skills/workflow/code-review/SKILL.md'), 'utf8');
-  const closeSection = skill.slice(skill.indexOf('review.mjs close'));
+test('the recovery command example includes the exact transaction binding',
+    () => {
+      const skill = readFileSync(
+          path.join(root, 'skills/workflow/code-review/SKILL.md'), 'utf8');
+      const closeSection = skill.slice(skill.indexOf('review.mjs close'));
 
-  for (const flag of [
-    '--lineage', '--revision', '--target', '--subject-hash',
-    '--recovery-token', '--resolution'
-  ]) {
-    assert.ok(closeSection.includes(flag),
-        `Missing exact recovery flag: ${flag}`);
-  }
-});
+      for (const flag of [
+        '--lineage', '--revision', '--target', '--subject-hash',
+        '--recovery-token', '--resolution'
+      ]) {
+        assert.ok(closeSection.includes(flag),
+            `Missing exact recovery flag: ${flag}`);
+      }
+    });
 
-test('pr-watch keeps GitHub thread and workflow ownership while sharing code review',
+test(
+    'pr-watch keeps GitHub thread and workflow ownership while sharing code review',
     () => {
       const command = readFileSync(
           path.join(root, 'commands/pr-watch.md'), 'utf8');

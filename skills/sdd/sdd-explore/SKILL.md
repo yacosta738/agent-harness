@@ -130,7 +130,8 @@ saving):
 
 - Only when the orchestrator explicitly provides a change name, the ONLY file you MAY create or
   update is `.agents/sdd/changes/{change-name}/exploration.md`
-- DO NOT modify any existing code or files except the explicitly authorized exploration artifact above
+- DO NOT modify any existing code or files except the explicitly authorized exploration artifact
+  above
 - ALWAYS read real code, never guess about the codebase
 - Keep your analysis CONCISE - the orchestrator needs a summary, not a novel
 - If you can't find enough information, say so clearly

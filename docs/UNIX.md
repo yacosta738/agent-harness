@@ -51,12 +51,13 @@ npm run deploy -- --output distribution/opencode
 npm run validate -- --root distribution/opencode    # validate a pre-rendered bundle
 ```
 
-| Flag              | Default         | Description                                   |
-|-------------------|-----------------|-----------------------------------------------|
+| Flag              | Default                 | Description                                   |
+|-------------------|-------------------------|-----------------------------------------------|
 | `--output`        | `distribution/opencode` | Where to write the complete bundle            |
-| `--validate-only` | `false`         | Skip render, only validate an existing bundle |
+| `--validate-only` | `false`                 | Skip render, only validate an existing bundle |
 
-`npm run validate` also accepts `--root <dir>` to validate a pre-rendered bundle instead of the source tree.
+`npm run validate` also accepts `--root <dir>` to validate a pre-rendered bundle instead of the
+source tree.
 
 Deploy always renders the complete bundle. It has no preset or profile selection.
 
@@ -162,10 +163,10 @@ npm run deploy
 The previous Bash (`deploy.sh`) and Python (`check-refs.py`) entrypoints are
 gone. Everything now goes through Node ESM scripts and `npm run`:
 
-| Old                                                | New                                                |
-|----------------------------------------------------|----------------------------------------------------|
-| `bash scripts/deploy.sh`                           | `npm run deploy`                                   |
-| `python3 scripts/check-refs.py`                    | `npm run validate`                                 |
-| `node scripts/generate-bundle.mjs list`            | `npm run list`                                     |
-| `node scripts/generate-bundle.mjs render`          | `npm run render`                                   |
+| Old                                                        | New                                                        |
+|------------------------------------------------------------|------------------------------------------------------------|
+| `bash scripts/deploy.sh`                                   | `npm run deploy`                                           |
+| `python3 scripts/check-refs.py`                            | `npm run validate`                                         |
+| `node scripts/generate-bundle.mjs list`                    | `npm run list`                                             |
+| `node scripts/generate-bundle.mjs render`                  | `npm run render`                                           |
 | `py -3 scripts/check-refs.py --root distribution/opencode` | `node scripts/check-refs.mjs --root distribution/opencode` |

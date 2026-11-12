@@ -1,12 +1,17 @@
 # Ensure text readability with dynamic background colors
 
-When building reusable UI components (like badges or buttons) or supporting dynamic themes, ensuring text is readable against an unpredictable background color can be challenging. The `contrast-color()` CSS function resolves to `black` or `white`, maximizing the contrast ratio against the specified background color.
+When building reusable UI components (like badges or buttons) or supporting dynamic themes, ensuring
+text is readable against an unpredictable background color can be challenging. The
+`contrast-color()` CSS function resolves to `black` or `white`, maximizing the contrast ratio
+against the specified background color.
 
 ## Determine optimal text color
 
-When an element has a variable or dynamically injected background color, you can rely on the browser to compute the safest text color.
+When an element has a variable or dynamically injected background color, you can rely on the browser
+to compute the safest text color.
 
-MANDATORY: Set the `color` property using the `contrast-color()` function, passing the background color (or its custom property) as the argument.
+MANDATORY: Set the `color` property using the `contrast-color()` function, passing the background
+color (or its custom property) as the argument.
 
 ```css
 .badge {
@@ -18,13 +23,18 @@ MANDATORY: Set the `color` property using the `contrast-color()` function, passi
 }
 ```
 
-DO NOT: Use `contrast-color()` for `background-color`. It is specifically designed for foreground colors (like text or borders) to contrast against a given background color.
+DO NOT: Use `contrast-color()` for `background-color`. It is specifically designed for foreground
+colors (like text or borders) to contrast against a given background color.
 
 ## Integrate with theming
 
-Because `contrast-color()` accepts any valid `<color>` value, including CSS custom properties, it is especially powerful within design systems. By centralizing your background themes as variables, you ensure that foreground content automatically updates its contrast whenever the theme shifts, even to user-specified colors.
+Because `contrast-color()` accepts any valid `<color>` value, including CSS custom properties, it is
+especially powerful within design systems. By centralizing your background themes as variables, you
+ensure that foreground content automatically updates its contrast whenever the theme shifts, even to
+user-specified colors.
 
-DO: Reference shared background variables inside `contrast-color()` to guarantee synchronization across your application.
+DO: Reference shared background variables inside `contrast-color()` to guarantee synchronization
+across your application.
 
 ```css
 .theme-card {
@@ -43,29 +53,35 @@ DO: Reference shared background variables inside `contrast-color()` to guarantee
 }
 ```
 
-DO NOT: Hard-code a separate text color for each interaction state when the background is dynamic. Doing so reintroduces the very mismatch `contrast-color()` exists to prevent.
+DO NOT: Hard-code a separate text color for each interaction state when the background is dynamic.
+Doing so reintroduces the very mismatch `contrast-color()` exists to prevent.
 
 ## Fallback strategies
 
-Baseline status for contrast-color(): Newly available. It's been Baseline since 2026-04-10.
-Supported by: Chrome 147 (Apr 2026), Edge 147 (Apr 2026), Firefox 146 (Dec 2025), and Safari 26 (Sep 2025).
+Baseline status for contrast-color (): Newly available. It's been Baseline since 2026-04-10.
+Supported by: Chrome 147 (Apr 2026), Edge 147 (Apr 2026), Firefox 146 (Dec 2025), and Safari 26 (Sep
+2025).
 
-To support browsers without `contrast-color()`, you must provide a fallback. If the background color is known and fixed, use a hard-coded contrasting color. For dynamic backgrounds where the color is unknown, choose a strategy from the table below based on your UI requirements and browser support targets.
+To support browsers without `contrast-color()`, you must provide a fallback. If the background color
+is known and fixed, use a hard-coded contrasting color. For dynamic backgrounds where the color is
+unknown, choose a strategy from the table below based on your UI requirements and browser support
+targets.
 
-| Strategy | Best For... | Considerations |
-| :--- | :--- | :--- |
-| **Relative Color Syntax** | Automated, high-quality CSS-only contrast calculation. | Highest quality CSS-only fallback. |
-| **Text Shadow** | Quick readability boost on any background. | Can look "dirty" or "glowy"; may not fit all designs. |
-| **Text Stroke** | Preserving font weight while ensuring edge contrast. | Use `paint-order` to avoid thinning letterforms, if available. |
-| **Translucent Overlay** | Ensuring a minimum contrast area behind the text. | Changes the look of the background color under the text, requires a separate text element. |
-| **SVG Filters** | Reactive contrast that updates as the background changes. | Requires a separate text element; hacky implementation. |
+| Strategy                  | Best For...                                               | Considerations                                                                             |
+|:--------------------------|:----------------------------------------------------------|:-------------------------------------------------------------------------------------------|
+| **Relative Color Syntax** | Automated, high-quality CSS-only contrast calculation.    | Highest quality CSS-only fallback.                                                         |
+| **Text Shadow**           | Quick readability boost on any background.                | Can look "dirty" or "glowy"; may not fit all designs.                                      |
+| **Text Stroke**           | Preserving font weight while ensuring edge contrast.      | Use `paint-order` to avoid thinning letterforms, if available.                             |
+| **Translucent Overlay**   | Ensuring a minimum contrast area behind the text.         | Changes the look of the background color under the text, requires a separate text element. |
+| **SVG Filters**           | Reactive contrast that updates as the background changes. | Requires a separate text element; hacky implementation.                                    |
 
 ### Recommended: Relative Color Syntax (RCS)
 
 For browsers that support it, RCS provides the most robust automated fallback for dynamic colors.
 
 Baseline status for Relative colors: Newly available. It's been Baseline since 2024-09-16.
-Supported by: Chrome 125 (May 2024), Edge 125 (May 2024), Firefox 128 (Jul 2024), and Safari 18 (Sep 2024).
+Supported by: Chrome 125 (May 2024), Edge 125 (May 2024), Firefox 128 (Jul 2024), and Safari 18 (Sep
+2024).
 
 ```css
 @supports (color: oklch(from red l c h)) {
@@ -86,19 +102,22 @@ Supported by: Chrome 125 (May 2024), Edge 125 (May 2024), Firefox 128 (Jul 2024)
 
 ### Alternative CSS Fallbacks
 
-DO: Select the fallback that best matches your design constraints if RCS is not sufficient or supported.
+DO: Select the fallback that best matches your design constraints if RCS is not sufficient or
+supported.
 
 #### Option 1: Text Stroke
 
-Baseline status for Text stroke and fill  (compatibility prefixes): Widely available. It's been Baseline since 2017-04-05.
-Supported by: Chrome 4 (Jan 2010), Edge 15 (Apr 2017), Firefox 49 (Sep 2016), Safari 3 (Oct 2007), and Safari iOS 2 (Jul 2008).
+Baseline status for Text stroke and fill (compatibility prefixes): Widely available. It's been
+Baseline since 2017-04-05.
+Supported by: Chrome 4 (Jan 2010), Edge 15 (Apr 2017), Firefox 49 (Sep 2016), Safari 3 (Oct 2007),
+and Safari iOS 2 (Jul 2008).
 
 ```css
 .badge--stroke {
   -webkit-text-stroke: 4px black;
 }
 ```
-  
+
 #### Option 2: Text Stroke with `paint-order` to preserve letterforms
 
 Baseline status for paint-order: Widely available. It's been Baseline since 2024-03-22.
@@ -143,9 +162,14 @@ Supported by: Chrome 123 (Mar 2024), Edge 123 (Mar 2024), Firefox ≤66, and Saf
 #### Option 5: SVG Filters
 
 Baseline status for SVG filters: Widely available. It's been Baseline since 2015-07-29.
-Supported by: Chrome 5 (May 2010), Edge 12 (Jul 2015), Firefox 3 (Jun 2008), and Safari 6 (Jul 2012).
+Supported by: Chrome 5 (May 2010), Edge 12 (Jul 2015), Firefox 3 (Jun 2008), and Safari 6 (Jul
+2012).
 
-1. Load this SVG filter definition. It must be added directly to the HTML document if you need to support Safari versions affected by [this WebKit bug](https://bugs.webkit.org/show_bug.cgi?id=320118), which prevents external and data url references for filters. Otherwise, it should be loaded from an external file, either an SVG file or inlined in CSS.
+1. Load this SVG filter definition. It must be added directly to the HTML document if you need to
+   support Safari versions affected
+   by [this WebKit bug](https://bugs.webkit.org/show_bug.cgi?id=320118), which prevents external and
+   data url references for filters. Otherwise, it should be loaded from an external file, either an
+   SVG file or inlined in CSS.
 
 ```html
 <!-- Technique from https://miunau.com/posts/dynamic-text-contrast-in-css/ -->

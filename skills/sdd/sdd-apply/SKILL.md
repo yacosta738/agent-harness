@@ -79,11 +79,11 @@ layer.
 
 Classify each assigned task before implementation:
 
-| Task scope | Required approach |
-|---|---|
-| Changes business/product logic (new behavior, behavior bug, or logic refactor) | TDD is mandatory in SDD. Load `skills/testing/test-driven-development/SKILL.md`; use RED → GREEN → REFACTOR for new/changed behavior and existing or characterization tests before behavior-preserving refactors. |
-| Documentation, generated files, or configuration, CI, infrastructure, or automation with no business/product logic | Do not use TDD or invent tests. Run checks that apply to the artifact. |
-| Mixed scope | Separate the behavior change from non-business artifact work. Apply TDD to the behavior and relevant checks to the other files. |
+| Task scope                                                                                                         | Required approach                                                                                                                                                                                                 |
+|--------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Changes business/product logic (new behavior, behavior bug, or logic refactor)                                     | TDD is mandatory in SDD. Load `skills/testing/test-driven-development/SKILL.md`; use RED → GREEN → REFACTOR for new/changed behavior and existing or characterization tests before behavior-preserving refactors. |
+| Documentation, generated files, or configuration, CI, infrastructure, or automation with no business/product logic | Do not use TDD or invent tests. Run checks that apply to the artifact.                                                                                                                                            |
+| Mixed scope                                                                                                        | Separate the behavior change from non-business artifact work. Apply TDD to the behavior and relevant checks to the other files.                                                                                   |
 
 TDD has no enabled/disabled mode. A project may configure a runner command, but it may not disable
 TDD for business/product logic.
@@ -192,7 +192,8 @@ If none, say "None."}
 - If Review Workload Forecast is High without approved delivery strategy, STOP before writing code
 - NEVER implement tasks that weren't assigned to you
 - Load relevant coding and test-framework skills for project conventions and runner syntax. Use
-  `test-driven-development` as the canonical source for TDD applicability and procedure; other skills
+  `test-driven-development` as the canonical source for TDD applicability and procedure; other
+  skills
   must not change whether TDD is required.
 - Apply any `rules.apply` from `.agents/sdd/config.yaml`
 - Keep implementation batches aligned with work-unit commits: behavior, tests, and docs stay

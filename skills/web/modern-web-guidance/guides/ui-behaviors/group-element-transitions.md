@@ -1,12 +1,18 @@
 # Group Element Transitions
 
-As items are added or removed from a list, or rearranged, transitions can help users maintain context. View transitions provide a way to transition between two states of an element by giving the element a unique `view-transition-name`. When multiple elements on a page share the same transition behavior, `view-transition-class` allows you to define that logic once in CSS rather than repeating it for every unique `view-transition-name`. This keeps your stylesheets maintainable while ensuring consistent animations across a group of elements.
+As items are added or removed from a list, or rearranged, transitions can help users maintain
+context. View transitions provide a way to transition between two states of an element by giving the
+element a unique `view-transition-name`. When multiple elements on a page share the same transition
+behavior, `view-transition-class` allows you to define that logic once in CSS rather than repeating
+it for every unique `view-transition-name`. This keeps your stylesheets maintainable while ensuring
+consistent animations across a group of elements.
 
 ### Implementation steps
 
 1. **Assign unique names and a shared class**
 
-Each element that needs to be tracked individually during a transition must have a unique `view-transition-name`.
+Each element that needs to be tracked individually during a transition must have a unique
+`view-transition-name`.
 
 ```html
 <!-- Mandatory: Each element must have a unique view-transition-name -->
@@ -23,8 +29,9 @@ To apply shared styles, also assign a `view-transition-class`.
 ```
 
 2. **Define the shared transition logic**
-   
-Use the `::view-transition-group()` pseudo-element with the class selector to apply styles to all members of that group.
+
+Use the `::view-transition-group()` pseudo-element with the class selector to apply styles to all
+members of that group.
 
 ```css
 /* Targets any view transition group that has the 'list-item' class */
@@ -46,7 +53,10 @@ Use the `::view-transition-group()` pseudo-element with the class selector to ap
 
 3. **Optional: Define entry and exit animations**
 
-Use the `:only-child` selector to add specific transitions to the elements that are added or removed. `::view-transition-new()` and `::view-transition-old()` pseudo-elements are children of a `::view-transition-image-pair()` pseudo-element, so we can determine it is an added or removed element if it is the only child.
+Use the `:only-child` selector to add specific transitions to the elements that are added or
+removed. `::view-transition-new()` and `::view-transition-old()` pseudo-elements are children of a
+`::view-transition-image-pair()` pseudo-element, so we can determine it is an added or removed
+element if it is the only child.
 
 ```css
 /* A `::view-transition-new()` element is the only child if it wasn't present before the view transition, so it is an added element. */
@@ -76,7 +86,8 @@ Use the `:only-child` selector to add specific transitions to the elements that 
 
 4. **Trigger the transition**
 
-Wrap the DOM update in `document.startViewTransition()`. The browser will capture the old state, perform the update, and then animate to the new state.
+Wrap the DOM update in `document.startViewTransition()`. The browser will capture the old state,
+perform the update, and then animate to the new state.
 
 ```javascript
 function updateList(newData) {
@@ -89,7 +100,10 @@ function updateList(newData) {
 
 5. **Maintain interactivity of non-transitioned elements**
 
-View transitions work by overlaying snapshots of the DOM elements, and then transitioning the snapshots. This means that during the transition, elements are not interactive. If there are interactive elements that are not transitioned, you can make them interactive by disabling touch events on the view transitions.
+View transitions work by overlaying snapshots of the DOM elements, and then transitioning the
+snapshots. This means that during the transition, elements are not interactive. If there are
+interactive elements that are not transitioned, you can make them interactive by disabling touch
+events on the view transitions.
 
 ```css
 ::view-transition {
@@ -98,7 +112,10 @@ View transitions work by overlaying snapshots of the DOM elements, and then tran
 }
 ```
 
-In addition, by default, the `:root` element has a view transition named `root`, which enables default full-page transitions. If there are no changes to the root element, this will be a transition between two identical snapshots, which are not interactive. Because we are only transitioning specific elements, and not the entire screen, we can disable the `root` transition. 
+In addition, by default, the `:root` element has a view transition named `root`, which enables
+default full-page transitions. If there are no changes to the root element, this will be a
+transition between two identical snapshots, which are not interactive. Because we are only
+transitioning specific elements, and not the entire screen, we can disable the `root` transition.
 
 ```css
 :root {
@@ -110,9 +127,12 @@ In addition, by default, the `:root` element has a view transition named `root`,
 ### Fallback strategies
 
 Baseline status for view-transition-class: Newly available. It's been Baseline since 2025-10-14.
-Supported by: Chrome 125 (May 2024), Edge 125 (May 2024), Firefox 144 (Oct 2025), and Safari 18.2 (Dec 2024).
+Supported by: Chrome 125 (May 2024), Edge 125 (May 2024), Firefox 144 (Oct 2025), and Safari 18.2
+(Dec 2024).
 
-View Transitions are a progressive enhancement. If the browser does not support `document.startViewTransition`, the DOM update should still occur immediately, providing a functional but non-animated experience.
+View Transitions are a progressive enhancement. If the browser does not support
+`document.startViewTransition`, the DOM update should still occur immediately, providing a
+functional but non-animated experience.
 
 ```javascript
 if (document.startViewTransition) {
@@ -123,4 +143,5 @@ if (document.startViewTransition) {
 }
 ```
 
-For CSS, browsers that do not recognize `view-transition-class` or the `::view-transition-group()` class selector will simply ignore those rules, and no animation will be applied.
+For CSS, browsers that do not recognize `view-transition-class` or the `::view-transition-group()`
+class selector will simply ignore those rules, and no animation will be applied.

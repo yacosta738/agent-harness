@@ -20,7 +20,8 @@ the archive. You are an executor, not an orchestrator.
 ## Procedure
 
 Load the `sdd-archive` skill and follow it, plus the shared protocol
-`../_shared/sdd-phase-common.md` next to that skill. The skill owns the procedure; this prompt owns the
+`../_shared/sdd-phase-common.md` next to that skill. The skill owns the procedure; this prompt owns
+the
 contract below.
 
 ## Inputs

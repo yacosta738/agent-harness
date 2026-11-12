@@ -1,21 +1,28 @@
 # Loading spinner
 
-A loading spinner (or activity indicator) informs users that a process is underway when the exact duration is unknown. Unlike a progress ring, a spinner is "indeterminate" and typically uses animation to signal activity.
+A loading spinner (or activity indicator) informs users that a process is underway when the exact
+duration is unknown. Unlike a progress ring, a spinner is "indeterminate" and typically uses
+animation to signal activity.
 
 This guide implements a spinner by:
 
-- Using the native `<progress>` element as the semantic foundation. By omitting the `value` attribute, the browser treats it as an indeterminate progress bar, ensuring correct announcement by assistive technologies.
-- Styling the component with `conic-gradient()` to create a visual "trail" and `background-clip: border-area` to hollow out the center into a ring.
-- Animating the spinner efficiently using CSS transforms and respecting `prefers-reduced-motion` to ensure a comfortable experience for all users.
+- Using the native `<progress>` element as the semantic foundation. By omitting the `value`
+  attribute, the browser treats it as an indeterminate progress bar, ensuring correct announcement
+  by assistive technologies.
+- Styling the component with `conic-gradient()` to create a visual "trail" and
+  `background-clip: border-area` to hollow out the center into a ring.
+- Animating the spinner efficiently using CSS transforms and respecting `prefers-reduced-motion` to
+  ensure a comfortable experience for all users.
 
-See `progress-ring` (via `npx -y modern-web-guidance@latest retrieve "progress-ring"`) for handling determinate tasks with a known duration.
-
+See `progress-ring` (via `npx -y modern-web-guidance@latest retrieve "progress-ring"`) for handling
+determinate tasks with a known duration.
 
 ## Implementation
 
 ### 1. Markup
 
-Use the native `<progress>` element as both the semantic source of truth and the visual component. Without a `value` attribute, it is implicitly indeterminate.
+Use the native `<progress>` element as both the semantic source of truth and the visual component.
+Without a `value` attribute, it is implicitly indeterminate.
 
 ```html
 <progress aria-label="Loading" class="loading-spinner"></progress>
@@ -24,7 +31,9 @@ Use the native `<progress>` element as both the semantic source of truth and the
 ### 2. Styles
 
 #### Hiding Native UI
-To style the `<progress>` element as a spinner, first hide the default browser styling for indeterminate progress bars.
+
+To style the `<progress>` element as a spinner, first hide the default browser styling for
+indeterminate progress bars.
 
 ```css
 /* Hide native bars */
@@ -47,6 +56,7 @@ progress.loading-spinner:indeterminate::slider-fill {
 ```
 
 #### Spinner Ring and Trail
+
 The spinner uses a `conic-gradient` to create a visual trail.
 
 ```css
@@ -130,7 +140,9 @@ progress.loading-spinner:indeterminate {
 
 #### Respecting Motion Preferences
 
-Users with motion sensitivities may find fast-spinning elements disorienting. Always respect the `prefers-reduced-motion` media query. Set the internal `--_used-spinner-duration` property to override the user's `--spinner-duration` value.
+Users with motion sensitivities may find fast-spinning elements disorienting. Always respect the
+`prefers-reduced-motion` media query. Set the internal `--_used-spinner-duration` property to
+override the user's `--spinner-duration` value.
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -144,16 +156,22 @@ Users with motion sensitivities may find fast-spinning elements disorienting. Al
 
 ## Fallback strategies
 
-Baseline status for Registered custom properties: Newly available. It's been Baseline since 2024-07-09.
-Supported by: Chrome 85 (Aug 2020), Edge 85 (Aug 2020), Firefox 128 (Jul 2024), and Safari 16.4 (Mar 2023).
+Baseline status for Registered custom properties: Newly available. It's been Baseline since
+2024-07-09.
+Supported by: Chrome 85 (Aug 2020), Edge 85 (Aug 2020), Firefox 128 (Jul 2024), and Safari 16.4 (Mar
+2023).
 
-If `@property` is supported, the dash animation is automatically included via the `--progress-dash-animation` property's `initial-value`. In browsers without `@property` support, the property registration is ignored, and the animation falls back to a simple rotation. No JavaScript is required for this fallback.
+If `@property` is supported, the dash animation is automatically included via the
+`--progress-dash-animation` property's `initial-value`. In browsers without `@property` support, the
+property registration is ignored, and the animation falls back to a simple rotation. No JavaScript
+is required for this fallback.
 
 Browser support for background-clip: border-area: Limited availability.
 Supported by: Chrome 150 (Jun 2026), Edge 150 (Jul 2026), and Safari 18.2 (Dec 2024).
 Unsupported in: Firefox.
 
-For browsers that don't yet support `background-clip: border-area`, fall back to a `mask-image` to hollow out the center.
+For browsers that don't yet support `background-clip: border-area`, fall back to a `mask-image` to
+hollow out the center.
 
 ```css
 /* Fallback: use mask-image to create the ring */

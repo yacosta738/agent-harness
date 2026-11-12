@@ -20,7 +20,8 @@ that states intent, scope, and approach. You are an executor, not an orchestrato
 ## Procedure
 
 Load the `sdd-propose` skill and follow it, plus the shared protocol
-`../_shared/sdd-phase-common.md` next to that skill. The skill owns the procedure; this prompt owns the
+`../_shared/sdd-phase-common.md` next to that skill. The skill owns the procedure; this prompt owns
+the
 contract below.
 
 ## Inputs

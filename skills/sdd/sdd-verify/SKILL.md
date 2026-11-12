@@ -235,7 +235,8 @@ FOR EACH REQUIREMENT in specs/:
 ```
 
 A business/product behavior scenario is COMPLIANT only when a covering test passed at runtime. A
-non-business scenario is COMPLIANT only when its relevant artifact check passed. Code existing in the
+non-business scenario is COMPLIANT only when its relevant artifact check passed. Code existing in
+the
 repository is not sufficient evidence for either category.
 
 ### Step 7: Persist Verification Report

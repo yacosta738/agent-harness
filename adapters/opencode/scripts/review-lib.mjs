@@ -33,7 +33,8 @@ function gitExec(args, options = {}) {
 }
 
 function git(root, args, env = {}, timeout = GIT_COMMAND_TIMEOUT_MS) {
-  return gitExec(['-C', root, ...args], {encoding: 'utf8', env, timeout}).trim();
+  return gitExec(['-C', root, ...args],
+      {encoding: 'utf8', env, timeout}).trim();
 }
 
 function configPath(configHome) {
@@ -211,7 +212,8 @@ async function acquireReviewLock(lockFile, depth = 0) {
       } catch {
         throw new Error('review_transaction_lock_corrupt');
       }
-      if (!Number.isInteger(currentLock?.pid) || lockOwnerIsAlive(currentLock)) {
+      if (!Number.isInteger(currentLock?.pid) || lockOwnerIsAlive(
+          currentLock)) {
         throw new Error('review_transaction_busy');
       }
       await fs.rm(lockFile, {force: true});
@@ -258,7 +260,7 @@ async function writeHistoryReceiptExclusive(file, value) {
       || existing?.revision !== value.revision
       || existing?.subjectHash !== value.subjectHash
       || JSON.stringify(existing?.candidate ?? null)
-        !== JSON.stringify(value.candidate ?? null)) {
+      !== JSON.stringify(value.candidate ?? null)) {
     throw new Error('review_history_receipt_conflict');
   }
 }
@@ -343,7 +345,8 @@ function gitRemoteRepository(value) {
     if (parts.length < 2) {
       return undefined;
     }
-    return `${parsed.host.toLowerCase()}/${parts.slice(-2).join('/').toLowerCase()}`;
+    return `${parsed.host.toLowerCase()}/${parts.slice(-2).join(
+        '/').toLowerCase()}`;
   } catch {
     const match = value.match(/^(?:[^@/]+@)?([^/:]+):(.+)$/);
     if (!match) {
@@ -387,7 +390,8 @@ function readPullRequest(url, identity, timeout = GH_TIMEOUT_MS) {
     throw new Error('pull_request_lookup_failed');
   }
   const actual = pullRequestIdentity(pullRequest.url);
-  if (actual.url !== identity.url || String(pullRequest.number) !== identity.number
+  if (actual.url !== identity.url || String(pullRequest.number)
+      !== identity.number
       || typeof pullRequest.baseRefName !== 'string'
       || typeof pullRequest.headRefName !== 'string'
       || !pullRequest.baseRefName || !pullRequest.headRefName) {
@@ -439,7 +443,7 @@ export async function resolvePullRequestCandidate(root, url, {
         '-C', root, 'fetch', '--no-tags', remote,
         `refs/pull/${identity.number}/head`,
         `refs/heads/${before.baseRefName}`
-        ], {stdio: 'ignore', timeout: fetchTimeoutMs});
+      ], {stdio: 'ignore', timeout: fetchTimeoutMs});
     } catch {
       throw new Error('pull_request_fetch_failed');
     }
@@ -478,8 +482,10 @@ function candidatePaths(root, candidate, {
     const changedPaths = gitExec([
       '-C', root, 'diff', '--name-only', '-z', '--no-renames',
       target.mergeBaseSha, target.headSha
-    ], {encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER,
-      timeout: gitTimeoutMs}).split('\0').filter(Boolean).sort();
+    ], {
+      encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER,
+      timeout: gitTimeoutMs
+    }).split('\0').filter(Boolean).sort();
     return {candidate: target, changedPaths};
   }
   if (candidate !== undefined && candidate?.kind !== 'working-tree') {
@@ -489,8 +495,10 @@ function candidatePaths(root, candidate, {
   const status = gitExec([
     '-C', root, '--no-optional-locks', 'status', '--porcelain=v1', '-z',
     '--no-renames', '--untracked-files=all'
-  ], {encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER,
-    timeout: gitStatusTimeoutMs});
+  ], {
+    encoding: 'utf8', maxBuffer: GIT_OUTPUT_MAX_BUFFER,
+    timeout: gitStatusTimeoutMs
+  });
   const changedPaths = [...new Set(status.split('\0').filter(Boolean).map(
       (entry) => entry.slice(3)))].sort();
   return {candidate: {kind: 'working-tree'}, changedPaths};
@@ -505,8 +513,10 @@ function trackedExecutablePaths(root, tree, paths, {
   }
   const readModes = (env) => gitExec([
     '-C', root, 'ls-files', '--stage', '-z'
-  ], {env: {...process.env, ...env}, encoding: 'utf8',
-    maxBuffer: GIT_OUTPUT_MAX_BUFFER, timeout: gitTimeoutMs});
+  ], {
+    env: {...process.env, ...env}, encoding: 'utf8',
+    maxBuffer: GIT_OUTPUT_MAX_BUFFER, timeout: gitTimeoutMs
+  });
   let output;
   if (indexEnv) {
     output = readModes(indexEnv);
@@ -536,7 +546,7 @@ function assessPaths(changedPaths, executablePaths = []) {
   const high = changedPaths.some((file) => {
     const normalized = file.replace(/\\/g, '/');
     const sensitiveEnvironmentFile = /(^|\/)\.env(?:\.[^/]*)?$/i.test(
-        normalized)
+            normalized)
         && !/\.(example|sample|template)$/i.test(normalized);
     return executablePathSet.has(file)
         || sensitiveEnvironmentFile
@@ -671,14 +681,18 @@ function freezeCandidate(root, destination, requestedCandidate,
   try {
     git(root, ['read-tree', indexBaseSha], env);
     gitExec(['-C', root, 'add', '-A'],
-        {env: {...process.env, ...env}, encoding: 'utf8',
-          timeout: gitAddTimeoutMs});
+        {
+          env: {...process.env, ...env}, encoding: 'utf8',
+          timeout: gitAddTimeoutMs
+        });
     const tree = git(root, ['write-tree'], env);
     const paths = gitExec([
       '-C', root, 'diff', '--name-only', '-z', '--no-renames', baseSha, tree
-    ], {env: {...process.env, ...env}, encoding: 'utf8',
+    ], {
+      env: {...process.env, ...env}, encoding: 'utf8',
       maxBuffer: GIT_OUTPUT_MAX_BUFFER,
-      timeout: gitTimeoutMs}).split('\0').filter(Boolean).sort();
+      timeout: gitTimeoutMs
+    }).split('\0').filter(Boolean).sort();
     const executablePaths = trackedExecutablePaths(root, undefined, paths,
         {gitTimeoutMs, indexEnv: env});
     const subjectHash = digest({
@@ -690,7 +704,12 @@ function freezeCandidate(root, destination, requestedCandidate,
           {encoding: 'utf8', timeout: GIT_ARCHIVE_TIMEOUT_MS});
     }
     return {
-      baseSha, candidate, candidateTree: tree, paths, executablePaths, subjectHash
+      baseSha,
+      candidate,
+      candidateTree: tree,
+      paths,
+      executablePaths,
+      subjectHash
     };
   } finally {
     rmSync(index, {force: true});
@@ -704,7 +723,8 @@ function assertNoStagedWorktreeConflicts(root,
     maxBuffer: GIT_OUTPUT_MAX_BUFFER,
     timeout: gitTimeoutMs
   }).split('\0').filter(Boolean));
-  const staged = files(['diff', '--cached', '--name-only', '-z', '--no-renames']);
+  const staged = files(
+      ['diff', '--cached', '--name-only', '-z', '--no-renames']);
   const unstaged = files(['diff', '--name-only', '-z', '--no-renames']);
   const untracked = files(['ls-files', '--others', '--exclude-standard', '-z']);
   if ([...staged].some((file) => unstaged.has(file) || untracked.has(file))) {
@@ -791,56 +811,57 @@ export async function startReview(root,
     };
   }
   return withReviewLock(root, async () => {
-  const current = await readReviewState(root);
-   const candidate = freezeCandidate(root, undefined, requestedCandidate,
-       undefined, {gitAddTimeoutMs, gitStatusTimeoutMs, gitTimeoutMs});
-  if (current) {
-    if (current.subjectHash === candidate.subjectHash) {
-      return {
-        version: REVIEW_VERSION,
-        status: 'replayed',
-        binding: binding(current),
-        candidate: current.candidate,
-        risk: current.risk,
-        changedPaths: current.paths,
-        reviewers: current.reviewers,
-        next_transition: current.next_transition,
-        recovery_transition: current.recovery_transition
-      };
+    const current = await readReviewState(root);
+    const candidate = freezeCandidate(root, undefined, requestedCandidate,
+        undefined, {gitAddTimeoutMs, gitStatusTimeoutMs, gitTimeoutMs});
+    if (current) {
+      if (current.subjectHash === candidate.subjectHash) {
+        return {
+          version: REVIEW_VERSION,
+          status: 'replayed',
+          binding: binding(current),
+          candidate: current.candidate,
+          risk: current.risk,
+          changedPaths: current.paths,
+          reviewers: current.reviewers,
+          next_transition: current.next_transition,
+          recovery_transition: current.recovery_transition
+        };
+      }
+      throw new Error('active_transaction_exists');
     }
-    throw new Error('active_transaction_exists');
-  }
-  const assessment = assessPaths(candidate.paths, candidate.executablePaths);
-  const state = {
-    version: REVIEW_VERSION,
-    status: 'reviewing',
-    lineage: randomUUID(),
-    revision: 1,
-    target: path.resolve(root),
-    activation: required ? 'explicit' : 'mode',
-    risk: assessment.risk, ...candidate,
-    correctionCount: 0
-  };
-  state.reviewers = state.risk === 'high' ? ['lens', 'mirror'] :
-    ['code-reviewer'];
-  state.next_transition = transition(state, 'capture');
-  state.recovery_transition = transition(state, 'close-without-approval');
-  await writeReviewState(root, state);
-  return {
-    version: REVIEW_VERSION,
-    status: state.status,
-    binding: binding(state),
-    risk: state.risk,
-    candidate: state.candidate,
-    changedPaths: state.paths,
-    reviewers: state.reviewers,
-    next_transition: state.next_transition,
-    recovery_transition: state.recovery_transition
-  };
+    const assessment = assessPaths(candidate.paths, candidate.executablePaths);
+    const state = {
+      version: REVIEW_VERSION,
+      status: 'reviewing',
+      lineage: randomUUID(),
+      revision: 1,
+      target: path.resolve(root),
+      activation: required ? 'explicit' : 'mode',
+      risk: assessment.risk, ...candidate,
+      correctionCount: 0
+    };
+    state.reviewers = state.risk === 'high' ? ['lens', 'mirror'] :
+        ['code-reviewer'];
+    state.next_transition = transition(state, 'capture');
+    state.recovery_transition = transition(state, 'close-without-approval');
+    await writeReviewState(root, state);
+    return {
+      version: REVIEW_VERSION,
+      status: state.status,
+      binding: binding(state),
+      risk: state.risk,
+      candidate: state.candidate,
+      changedPaths: state.paths,
+      reviewers: state.reviewers,
+      next_transition: state.next_transition,
+      recovery_transition: state.recovery_transition
+    };
   });
 }
 
-export async function materializeCandidate(root, options = {}, testOptions = {}) {
+export async function materializeCandidate(root, options = {},
+    testOptions = {}) {
   return withReviewLock(root,
       () => materializeCandidateUnlocked(root, options, testOptions));
 }
@@ -982,7 +1003,8 @@ function gitTreeEntries(root, tree) {
   });
 }
 
-export function validateCandidateTreePaths(entries, root, platform = process.platform) {
+export function validateCandidateTreePaths(entries, root,
+    platform = process.platform) {
   const rootPath = path.resolve(root);
   const windowsRoot = path.win32.resolve(root);
   const caseSensitivePaths = new Map();
@@ -992,7 +1014,7 @@ export function validateCandidateTreePaths(entries, root, platform = process.pla
     }
     const components = entry.path.split('/');
     if (components.some((component) =>
-      !component || component === '.' || component === '..')) {
+        !component || component === '.' || component === '..')) {
       throw new Error('candidate_path_invalid');
     }
     const destination = path.resolve(rootPath, ...components);
@@ -1018,7 +1040,8 @@ export function validateCandidateTreePaths(entries, root, platform = process.pla
       caseSensitivePaths.set(key, normalized);
     }
     const windowsDestination = path.win32.resolve(windowsRoot, ...components);
-    const windowsRelative = path.win32.relative(windowsRoot, windowsDestination);
+    const windowsRelative = path.win32.relative(windowsRoot,
+        windowsDestination);
     if (windowsRelative === '..'
         || windowsRelative.startsWith(`..${path.win32.sep}`)
         || path.win32.isAbsolute(windowsRelative)) {
@@ -1075,9 +1098,12 @@ async function repairCandidateFromTree(root, entries, directory) {
       await removeCandidateTree(destination);
     }
     const contents = gitExec(
-        ['-C', root, 'cat-file', 'blob', entry.oid], {maxBuffer: 64 * 1024 * 1024});
-    await fs.writeFile(destination, contents, {mode: entry.mode === '100755'
-      ? 0o755 : 0o644});
+        ['-C', root, 'cat-file', 'blob', entry.oid],
+        {maxBuffer: 64 * 1024 * 1024});
+    await fs.writeFile(destination, contents, {
+      mode: entry.mode === '100755'
+          ? 0o755 : 0o644
+    });
   }
 }
 
@@ -1099,6 +1125,7 @@ export function candidateSymlinkType(linkPath, linkTarget, entries,
 
 async function candidateEntries(root, directory, objectFormat) {
   const actual = new Map();
+
   async function collect(current, prefix = '') {
     for (const entry of await fs.readdir(current, {withFileTypes: true})) {
       const file = path.join(current, entry.name);
@@ -1122,6 +1149,7 @@ async function candidateEntries(root, directory, objectFormat) {
       }
     }
   }
+
   await collect(directory);
   return actual;
 }
@@ -1223,21 +1251,23 @@ async function inspectCandidateTree(directory, root, makeReadOnly,
     return;
   }
 
-  for (const entry of await fs.readdir(actualDirectory, {withFileTypes: true})) {
+  for (const entry of
+      await fs.readdir(actualDirectory, {withFileTypes: true})) {
     const file = path.join(actualDirectory, entry.name);
     const childStat = await fs.lstat(file);
     if (childStat.isSymbolicLink()) {
       const link = await fs.readlink(file);
-      const resolved = await resolveCandidateLink(root, path.dirname(file), link,
+      const resolved = await resolveCandidateLink(root, path.dirname(file),
+          link,
           new Set([file]));
       try {
-      const targetStat = await fs.stat(resolved);
-      if (targetStat.isDirectory()) {
-        const targetDirectory = await fs.realpath(resolved);
-        directoryEdges.push([
+        const targetStat = await fs.stat(resolved);
+        if (targetStat.isDirectory()) {
+          const targetDirectory = await fs.realpath(resolved);
+          directoryEdges.push([
             path.relative(root, actualDirectory).replace(/\\/g, '/') || '.',
             path.relative(root, targetDirectory).replace(/\\/g, '/') || '.'
-        ]);
+          ]);
         }
       } catch (error) {
         if (error.code !== 'ENOENT') {
@@ -1277,6 +1307,7 @@ function assertAcyclicCandidateDirectories(edges) {
   }
   const visiting = new Set();
   const visited = new Set();
+
   function visit(directory) {
     if (visiting.has(directory)) {
       throw new Error('candidate_symlink_cycle');
@@ -1291,6 +1322,7 @@ function assertAcyclicCandidateDirectories(edges) {
     visiting.delete(directory);
     visited.add(directory);
   }
+
   for (const directory of graph.keys()) {
     visit(directory);
   }
@@ -1361,140 +1393,140 @@ function isWithinCandidate(root, candidate) {
 
 export async function captureReview(root, input) {
   return withReviewLock(root, async () => {
-  const state = await readReviewState(root);
-  if (!state) {
-    throw new Error('transaction_not_found');
-  }
-  requireBinding(state, input);
-  const correctionReview = state.status === 'reviewing_correction';
-  if (state.status !== 'reviewing' && !correctionReview) {
-    throw new Error('transition_not_allowed');
-  }
-  if (await invalidateStalePullRequest(root, state)) {
-    throw new Error('candidate_pull_request_oid_stale');
-  }
-  const materialized = await materializeCandidateUnlocked(root, {
-    subjectHash: state.subjectHash
-  });
-  if (input.candidatePath !== materialized.path) {
-    throw new Error('candidate_path_binding_mismatch');
-  }
-  if (!Array.isArray(input.findings)) {
-    throw new Error('review_findings_invalid');
-  }
-  if (!input.findings.every(validReviewFinding)) {
-    throw new Error('review_finding_invalid');
-  }
-  const aggregateFindings = new Map();
-  for (const finding of input.findings) {
-    const fingerprint = reviewFindingFingerprint(finding);
-    if (aggregateFindings.has(finding.id)) {
+    const state = await readReviewState(root);
+    if (!state) {
+      throw new Error('transaction_not_found');
+    }
+    requireBinding(state, input);
+    const correctionReview = state.status === 'reviewing_correction';
+    if (state.status !== 'reviewing' && !correctionReview) {
+      throw new Error('transition_not_allowed');
+    }
+    if (await invalidateStalePullRequest(root, state)) {
+      throw new Error('candidate_pull_request_oid_stale');
+    }
+    const materialized = await materializeCandidateUnlocked(root, {
+      subjectHash: state.subjectHash
+    });
+    if (input.candidatePath !== materialized.path) {
+      throw new Error('candidate_path_binding_mismatch');
+    }
+    if (!Array.isArray(input.findings)) {
+      throw new Error('review_findings_invalid');
+    }
+    if (!input.findings.every(validReviewFinding)) {
       throw new Error('review_finding_invalid');
     }
-    aggregateFindings.set(finding.id, fingerprint);
-  }
-  const reviewers = new Set(input.reviewers ?? []);
-  const reviewEvidence = Array.isArray(input.reviewEvidence)
-      ? input.reviewEvidence : [];
-  const evidence = new Map(reviewEvidence.map((item) => [
-    item?.reviewer, item
-  ]));
-  const evidenceFindings = new Map();
-  const reviewerFindingsValid = reviewEvidence.every((item) => {
-    if (!Array.isArray(item?.findings)
-        || !item.findings.every(validReviewFinding)) {
-      return false;
-    }
-    const reviewerFindingIds = new Set();
-    for (const finding of item.findings) {
+    const aggregateFindings = new Map();
+    for (const finding of input.findings) {
       const fingerprint = reviewFindingFingerprint(finding);
-      if (reviewerFindingIds.has(finding.id)) {
-        return false;
+      if (aggregateFindings.has(finding.id)) {
+        throw new Error('review_finding_invalid');
       }
-      reviewerFindingIds.add(finding.id);
-      const previous = evidenceFindings.get(finding.id);
-      if (previous && previous !== fingerprint) {
-        return false;
-      }
-      evidenceFindings.set(finding.id, fingerprint);
+      aggregateFindings.set(finding.id, fingerprint);
     }
-    return true;
-  });
-  if (!reviewerFindingsValid) {
-    throw new Error('review_evidence_incomplete');
-  }
-  const findingsMatch = reviewerFindingsValid
-      && aggregateFindings.size === evidenceFindings.size
-      && [...aggregateFindings].every(([id, fingerprint]) =>
-        evidenceFindings.get(id) === fingerprint);
-  if (!findingsMatch) {
-    throw new Error('review_evidence_findings_mismatch');
-  }
-  const inspectionComplete = reviewers.size === state.reviewers.length
-      && state.reviewers.every((reviewer) => {
-        const item = evidence.get(reviewer);
-        const lenses = Array.isArray(item?.lenses) ? item.lenses : [];
-        const lensMap = new Map(lenses.map((lens) => [lens?.lens, lens]));
-        const lensFindingLenses = new Set(lenses.filter(
-            (lens) => lens?.outcome === 'FINDING').map((lens) => lens.lens));
-        const reviewerFindingLenses = new Set((item?.findings ?? []).map(
-            (finding) => finding.lens));
-        return reviewers.has(reviewer)
-            && item?.subjectHash === state.subjectHash
-            && item?.candidatePath === materialized.path
-            && item?.verdict && ['CLEAN', 'FINDINGS'].includes(item.verdict)
-            && (item.verdict === 'FINDINGS') === (item.findings.length > 0)
-            && lenses.length === REVIEW_LENSES.length
-            && lensMap.size === REVIEW_LENSES.length
-            && REVIEW_LENSES.every((lens) => {
-              const assessment = lensMap.get(lens);
-              return ['PASS', 'FINDING', 'NOT_APPLICABLE'].includes(
-                  assessment?.outcome)
-                  && typeof assessment.rationale === 'string'
-                  && assessment.rationale.trim().length > 0;
-            })
-            && lensFindingLenses.size === reviewerFindingLenses.size
-            && [...reviewerFindingLenses].every(
-                (lens) => lensFindingLenses.has(lens));
-      })
-      && evidence.size === state.reviewers.length;
-  if (!inspectionComplete) {
-    throw new Error('review_evidence_incomplete');
-  }
-  const severe = (input.findings ?? []).some(
-      (finding) => finding?.candidateCaused === true && ['CRITICAL', 'P0',
-        'P1'].includes(normalizedReviewSeverity(finding.severity)));
-  state.findings = input.findings;
-  state.reviewerEvidence = reviewEvidence;
-  state.revision += 1;
-  if (!inspectionComplete) {
-    state.status = 'escalated';
-    delete state.next_transition;
-  } else if (severe && !correctionReview && state.correctionCount < 1) {
-    state.status = 'correction_pending';
-    state.next_transition = transition(state, 'capture-correction');
-  } else if (severe) {
-    state.status = 'escalated';
-    delete state.next_transition;
-  } else {
-    state.status = 'approved';
-    state.next_transition = transition(state, 'acknowledge-approved');
-  }
-  if (state.status === 'approved') {
-    delete state.recovery_transition;
-  } else {
-    state.recovery_transition = transition(state, 'close-without-approval');
-  }
-  await writeReviewState(root, state);
-  return {
-    version: REVIEW_VERSION,
-    status: state.status,
-    binding: binding(state),
-    candidate: state.candidate,
-    changedPaths: state.paths,
-    recovery_transition: state.recovery_transition, ...(state.next_transition
-        ? {next_transition: state.next_transition} : {})
-  };
+    const reviewers = new Set(input.reviewers ?? []);
+    const reviewEvidence = Array.isArray(input.reviewEvidence)
+        ? input.reviewEvidence : [];
+    const evidence = new Map(reviewEvidence.map((item) => [
+      item?.reviewer, item
+    ]));
+    const evidenceFindings = new Map();
+    const reviewerFindingsValid = reviewEvidence.every((item) => {
+      if (!Array.isArray(item?.findings)
+          || !item.findings.every(validReviewFinding)) {
+        return false;
+      }
+      const reviewerFindingIds = new Set();
+      for (const finding of item.findings) {
+        const fingerprint = reviewFindingFingerprint(finding);
+        if (reviewerFindingIds.has(finding.id)) {
+          return false;
+        }
+        reviewerFindingIds.add(finding.id);
+        const previous = evidenceFindings.get(finding.id);
+        if (previous && previous !== fingerprint) {
+          return false;
+        }
+        evidenceFindings.set(finding.id, fingerprint);
+      }
+      return true;
+    });
+    if (!reviewerFindingsValid) {
+      throw new Error('review_evidence_incomplete');
+    }
+    const findingsMatch = reviewerFindingsValid
+        && aggregateFindings.size === evidenceFindings.size
+        && [...aggregateFindings].every(([id, fingerprint]) =>
+            evidenceFindings.get(id) === fingerprint);
+    if (!findingsMatch) {
+      throw new Error('review_evidence_findings_mismatch');
+    }
+    const inspectionComplete = reviewers.size === state.reviewers.length
+        && state.reviewers.every((reviewer) => {
+          const item = evidence.get(reviewer);
+          const lenses = Array.isArray(item?.lenses) ? item.lenses : [];
+          const lensMap = new Map(lenses.map((lens) => [lens?.lens, lens]));
+          const lensFindingLenses = new Set(lenses.filter(
+              (lens) => lens?.outcome === 'FINDING').map((lens) => lens.lens));
+          const reviewerFindingLenses = new Set((item?.findings ?? []).map(
+              (finding) => finding.lens));
+          return reviewers.has(reviewer)
+              && item?.subjectHash === state.subjectHash
+              && item?.candidatePath === materialized.path
+              && item?.verdict && ['CLEAN', 'FINDINGS'].includes(item.verdict)
+              && (item.verdict === 'FINDINGS') === (item.findings.length > 0)
+              && lenses.length === REVIEW_LENSES.length
+              && lensMap.size === REVIEW_LENSES.length
+              && REVIEW_LENSES.every((lens) => {
+                const assessment = lensMap.get(lens);
+                return ['PASS', 'FINDING', 'NOT_APPLICABLE'].includes(
+                        assessment?.outcome)
+                    && typeof assessment.rationale === 'string'
+                    && assessment.rationale.trim().length > 0;
+              })
+              && lensFindingLenses.size === reviewerFindingLenses.size
+              && [...reviewerFindingLenses].every(
+                  (lens) => lensFindingLenses.has(lens));
+        })
+        && evidence.size === state.reviewers.length;
+    if (!inspectionComplete) {
+      throw new Error('review_evidence_incomplete');
+    }
+    const severe = (input.findings ?? []).some(
+        (finding) => finding?.candidateCaused === true && ['CRITICAL', 'P0',
+          'P1'].includes(normalizedReviewSeverity(finding.severity)));
+    state.findings = input.findings;
+    state.reviewerEvidence = reviewEvidence;
+    state.revision += 1;
+    if (!inspectionComplete) {
+      state.status = 'escalated';
+      delete state.next_transition;
+    } else if (severe && !correctionReview && state.correctionCount < 1) {
+      state.status = 'correction_pending';
+      state.next_transition = transition(state, 'capture-correction');
+    } else if (severe) {
+      state.status = 'escalated';
+      delete state.next_transition;
+    } else {
+      state.status = 'approved';
+      state.next_transition = transition(state, 'acknowledge-approved');
+    }
+    if (state.status === 'approved') {
+      delete state.recovery_transition;
+    } else {
+      state.recovery_transition = transition(state, 'close-without-approval');
+    }
+    await writeReviewState(root, state);
+    return {
+      version: REVIEW_VERSION,
+      status: state.status,
+      binding: binding(state),
+      candidate: state.candidate,
+      changedPaths: state.paths,
+      recovery_transition: state.recovery_transition, ...(state.next_transition
+          ? {next_transition: state.next_transition} : {})
+    };
   });
 }
 
@@ -1536,278 +1568,280 @@ export async function captureCorrection(root, input, {
   }
 
   return withReviewLock(root, async () => {
-  const state = await readReviewState(root);
-  requireCorrectionPending(state, input);
-  if (digest(state) !== preparedStateDigest) {
-    throw new Error('correction_receipt_changed');
-  }
-  let successor;
-  if (state.candidate?.kind === 'pull-request') {
-    if (!preparedPullRequest) {
-      throw new Error('candidate_pull_request_successor_required');
+    const state = await readReviewState(root);
+    requireCorrectionPending(state, input);
+    if (digest(state) !== preparedStateDigest) {
+      throw new Error('correction_receipt_changed');
     }
-    const requested = preparedPullRequest.requestedCandidate
-        ?? preparedPullRequest.resolvedCandidate;
-    const resolved = preparedPullRequest.resolvedCandidate;
-    if (preparedPullRequest.requestUrl !== state.candidate.url
-        || requested.url !== state.candidate.url
-        || resolved.url !== state.candidate.url) {
-      throw new Error('candidate_pull_request_target_mismatch');
+    let successor;
+    if (state.candidate?.kind === 'pull-request') {
+      if (!preparedPullRequest) {
+        throw new Error('candidate_pull_request_successor_required');
+      }
+      const requested = preparedPullRequest.requestedCandidate
+          ?? preparedPullRequest.resolvedCandidate;
+      const resolved = preparedPullRequest.resolvedCandidate;
+      if (preparedPullRequest.requestUrl !== state.candidate.url
+          || requested.url !== state.candidate.url
+          || resolved.url !== state.candidate.url) {
+        throw new Error('candidate_pull_request_target_mismatch');
+      }
+      if (requested.baseSha !== resolved.baseSha
+          || requested.headSha !== resolved.headSha) {
+        throw new Error('candidate_pull_request_not_current');
+      }
+      try {
+        git(root, ['merge-base', '--is-ancestor', state.candidate.headSha,
+          requested.headSha]);
+      } catch {
+        throw new Error('candidate_pull_request_successor_not_descendant');
+      }
+      successor = freezeCandidate(root, undefined, requested);
+    } else {
+      successor = freezeCandidate(root, undefined, undefined, state.baseSha);
     }
-    if (requested.baseSha !== resolved.baseSha
-        || requested.headSha !== resolved.headSha) {
-      throw new Error('candidate_pull_request_not_current');
+    if (successor.candidateTree === state.candidateTree) {
+      throw new Error('candidate_correction_unchanged');
     }
-    try {
-      git(root, ['merge-base', '--is-ancestor', state.candidate.headSha,
-        requested.headSha]);
-    } catch {
-      throw new Error('candidate_pull_request_successor_not_descendant');
+    if (!['PASS', 'FAIL'].includes(input.validatorStatus)
+        || !Array.isArray(input.validationEvidence)
+        || input.validationEvidence.length === 0
+        || !input.validationEvidence.every((item) => item
+            && typeof item.command === 'string' && item.command.trim().length
+            > 0
+            && item.candidateTree === successor.candidateTree
+            && ['PASS', 'FAIL'].includes(item.status)
+            && Number.isInteger(item.exitCode)
+            && (item.status === 'PASS' ? item.exitCode === 0 : item.exitCode
+                !== 0))) {
+      throw new Error('correction_validation_evidence_incomplete');
     }
-    successor = freezeCandidate(root, undefined, requested);
-  } else {
-    successor = freezeCandidate(root, undefined, undefined, state.baseSha);
-  }
-  if (successor.candidateTree === state.candidateTree) {
-    throw new Error('candidate_correction_unchanged');
-  }
-  if (!['PASS', 'FAIL'].includes(input.validatorStatus)
-      || !Array.isArray(input.validationEvidence)
-      || input.validationEvidence.length === 0
-      || !input.validationEvidence.every((item) => item
-        && typeof item.command === 'string' && item.command.trim().length > 0
-        && item.candidateTree === successor.candidateTree
-        && ['PASS', 'FAIL'].includes(item.status)
-        && Number.isInteger(item.exitCode)
-        && (item.status === 'PASS' ? item.exitCode === 0 : item.exitCode !== 0))) {
-    throw new Error('correction_validation_evidence_incomplete');
-  }
-  const validationPassed = input.validationEvidence.every((item) =>
-    item.status === 'PASS' && item.exitCode === 0);
-  if ((input.validatorStatus === 'PASS' && !validationPassed)
-      || (input.validatorStatus === 'FAIL' && validationPassed)) {
-    throw new Error('correction_validation_evidence_mismatch');
-  }
-  state.correctionHistory ??= [];
-  state.correctionHistory.push({
-    subjectHash: state.subjectHash,
-    candidate: state.candidate,
-    candidateTree: state.candidateTree,
-    baseSha: state.baseSha,
-    paths: state.paths,
-    risk: state.risk,
-    reviewers: state.reviewers,
-    findings: state.findings,
-    reviewerEvidence: state.reviewerEvidence
-  });
-  state.findings = [];
-  state.reviewerEvidence = [];
-  state.successorTree = successor.candidateTree;
-  state.baseSha = successor.baseSha;
-  state.candidate = successor.candidate;
-  state.candidateTree = successor.candidateTree;
-  state.paths = successor.paths;
-  state.subjectHash = successor.subjectHash;
-  state.validationEvidence = input.validationEvidence;
-  state.correctionCount = 1;
-  state.revision += 1;
-  state.risk = assessPaths(successor.paths, successor.executablePaths).risk;
-  state.reviewers = state.risk === 'high' ? ['lens', 'mirror'] :
-    ['code-reviewer'];
-  state.status = validationPassed
-      ? 'reviewing_correction' : 'escalated';
-  if (state.status === 'reviewing_correction') {
-    state.next_transition = transition(state, 'capture-correction-review');
-  } else {
-    delete state.next_transition;
-  }
-  state.recovery_transition = transition(state, 'close-without-approval');
-  await writeReviewState(root, state);
-  return {
-    version: REVIEW_VERSION,
-    status: state.status,
-    binding: binding(state),
-    candidate: state.candidate,
-    risk: state.risk,
-    changedPaths: state.paths,
-    reviewers: state.reviewers,
-    recovery_transition: state.recovery_transition, ...(state.next_transition
-        ? {next_transition: state.next_transition} : {})
-  };
+    const validationPassed = input.validationEvidence.every((item) =>
+        item.status === 'PASS' && item.exitCode === 0);
+    if ((input.validatorStatus === 'PASS' && !validationPassed)
+        || (input.validatorStatus === 'FAIL' && validationPassed)) {
+      throw new Error('correction_validation_evidence_mismatch');
+    }
+    state.correctionHistory ??= [];
+    state.correctionHistory.push({
+      subjectHash: state.subjectHash,
+      candidate: state.candidate,
+      candidateTree: state.candidateTree,
+      baseSha: state.baseSha,
+      paths: state.paths,
+      risk: state.risk,
+      reviewers: state.reviewers,
+      findings: state.findings,
+      reviewerEvidence: state.reviewerEvidence
+    });
+    state.findings = [];
+    state.reviewerEvidence = [];
+    state.successorTree = successor.candidateTree;
+    state.baseSha = successor.baseSha;
+    state.candidate = successor.candidate;
+    state.candidateTree = successor.candidateTree;
+    state.paths = successor.paths;
+    state.subjectHash = successor.subjectHash;
+    state.validationEvidence = input.validationEvidence;
+    state.correctionCount = 1;
+    state.revision += 1;
+    state.risk = assessPaths(successor.paths, successor.executablePaths).risk;
+    state.reviewers = state.risk === 'high' ? ['lens', 'mirror'] :
+        ['code-reviewer'];
+    state.status = validationPassed
+        ? 'reviewing_correction' : 'escalated';
+    if (state.status === 'reviewing_correction') {
+      state.next_transition = transition(state, 'capture-correction-review');
+    } else {
+      delete state.next_transition;
+    }
+    state.recovery_transition = transition(state, 'close-without-approval');
+    await writeReviewState(root, state);
+    return {
+      version: REVIEW_VERSION,
+      status: state.status,
+      binding: binding(state),
+      candidate: state.candidate,
+      risk: state.risk,
+      changedPaths: state.paths,
+      reviewers: state.reviewers,
+      recovery_transition: state.recovery_transition, ...(state.next_transition
+          ? {next_transition: state.next_transition} : {})
+    };
   });
 }
 
 export async function closeReview(root, input) {
   return withReviewLock(root, async () => {
-  const file = await safeStatePath(root);
-  const state = await readReviewState(root);
-  if (!state) {
-    throw new Error('transaction_not_found');
-  }
-  requireBinding(state, input);
-  if (!['reviewing', 'correction_pending', 'reviewing_correction',
-    'escalated', 'invalidated'].includes(state.status)) {
-    throw new Error('close_not_allowed');
-  }
-  if (typeof input.resolution !== 'string' || !input.resolution.trim()) {
-    throw new Error('close_resolution_required');
-  }
-  if (state.status !== 'invalidated'
-      && await invalidateStalePullRequest(root, state)) {
-    throw new Error('candidate_pull_request_oid_stale');
-  }
-  if (typeof state.recovery_transition?.token !== 'string'
-      || !state.recovery_transition.token) {
-    state.recovery_transition = transition(state, 'close-without-approval');
-    await writeReviewState(root, state);
-    return {
-      version: REVIEW_VERSION,
-      status: 'recovery_required',
-      binding: binding(state),
-      recovery_transition: state.recovery_transition
-    };
-  }
-  if (typeof state.recovery_transition?.token !== 'string'
-      || !state.recovery_transition.token
-      || input.recoveryToken !== state.recovery_transition.token) {
-    throw new Error('recovery_token_invalid');
-  }
-
-  const historyDirectory = path.join(path.dirname(file), 'history');
-  const historyPath = path.join(historyDirectory,
-      `${state.lineage}-${state.revision}-closed.json`);
-  let historyDirectoryStat;
-  try {
-    historyDirectoryStat = await fs.lstat(historyDirectory);
-  } catch (error) {
-    if (error.code !== 'ENOENT') {
-      throw error;
+    const file = await safeStatePath(root);
+    const state = await readReviewState(root);
+    if (!state) {
+      throw new Error('transaction_not_found');
     }
-    await fs.mkdir(historyDirectory, {mode: 0o700});
-    historyDirectoryStat = await fs.lstat(historyDirectory);
-  }
-  if (!historyDirectoryStat.isDirectory()
-      || historyDirectoryStat.isSymbolicLink()) {
-    throw new Error('review_history_path_invalid');
-  }
-  if (process.platform !== 'win32') {
-    await fs.chmod(historyDirectory, 0o700);
-  }
-  try {
-    const historyFileStat = await fs.lstat(historyPath);
-    if (!historyFileStat.isFile() || historyFileStat.isSymbolicLink()) {
+    requireBinding(state, input);
+    if (!['reviewing', 'correction_pending', 'reviewing_correction',
+      'escalated', 'invalidated'].includes(state.status)) {
+      throw new Error('close_not_allowed');
+    }
+    if (typeof input.resolution !== 'string' || !input.resolution.trim()) {
+      throw new Error('close_resolution_required');
+    }
+    if (state.status !== 'invalidated'
+        && await invalidateStalePullRequest(root, state)) {
+      throw new Error('candidate_pull_request_oid_stale');
+    }
+    if (typeof state.recovery_transition?.token !== 'string'
+        || !state.recovery_transition.token) {
+      state.recovery_transition = transition(state, 'close-without-approval');
+      await writeReviewState(root, state);
+      return {
+        version: REVIEW_VERSION,
+        status: 'recovery_required',
+        binding: binding(state),
+        recovery_transition: state.recovery_transition
+      };
+    }
+    if (typeof state.recovery_transition?.token !== 'string'
+        || !state.recovery_transition.token
+        || input.recoveryToken !== state.recovery_transition.token) {
+      throw new Error('recovery_token_invalid');
+    }
+
+    const historyDirectory = path.join(path.dirname(file), 'history');
+    const historyPath = path.join(historyDirectory,
+        `${state.lineage}-${state.revision}-closed.json`);
+    let historyDirectoryStat;
+    try {
+      historyDirectoryStat = await fs.lstat(historyDirectory);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        throw error;
+      }
+      await fs.mkdir(historyDirectory, {mode: 0o700});
+      historyDirectoryStat = await fs.lstat(historyDirectory);
+    }
+    if (!historyDirectoryStat.isDirectory()
+        || historyDirectoryStat.isSymbolicLink()) {
       throw new Error('review_history_path_invalid');
     }
     if (process.platform !== 'win32') {
-      await fs.chmod(historyPath, 0o600);
+      await fs.chmod(historyDirectory, 0o700);
     }
-  } catch (error) {
-    if (error.code !== 'ENOENT') {
-      throw error;
+    try {
+      const historyFileStat = await fs.lstat(historyPath);
+      if (!historyFileStat.isFile() || historyFileStat.isSymbolicLink()) {
+        throw new Error('review_history_path_invalid');
+      }
+      if (process.platform !== 'win32') {
+        await fs.chmod(historyPath, 0o600);
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        throw error;
+      }
     }
-  }
-  const cleanupWarnings = await cleanupCandidateCopies(root, state);
-  if (cleanupWarnings.length > 0) {
+    const cleanupWarnings = await cleanupCandidateCopies(root, state);
+    if (cleanupWarnings.length > 0) {
+      return {
+        version: REVIEW_VERSION,
+        status: 'cleanup_pending',
+        binding: binding(state),
+        recovery_transition: state.recovery_transition,
+        cleanupWarnings
+      };
+    }
+    state.status = 'closed_without_approval';
+    state.resolution = input.resolution.trim();
+    state.closedAt = new Date().toISOString();
+    delete state.next_transition;
+    delete state.recovery_transition;
+    await safeStatePath(root);
+    await writeHistoryReceiptExclusive(historyPath, state);
+    await fs.rm(file, {force: true});
     return {
       version: REVIEW_VERSION,
-      status: 'cleanup_pending',
-      binding: binding(state),
-      recovery_transition: state.recovery_transition,
-      cleanupWarnings
+      status: state.status,
+      lineage: state.lineage,
+      revision: state.revision,
+      resolution: state.resolution,
+      historyPath
     };
-  }
-  state.status = 'closed_without_approval';
-  state.resolution = input.resolution.trim();
-  state.closedAt = new Date().toISOString();
-  delete state.next_transition;
-  delete state.recovery_transition;
-  await safeStatePath(root);
-  await writeHistoryReceiptExclusive(historyPath, state);
-  await fs.rm(file, {force: true});
-  return {
-    version: REVIEW_VERSION,
-    status: state.status,
-    lineage: state.lineage,
-    revision: state.revision,
-    resolution: state.resolution,
-    historyPath
-  };
   });
 }
 
 export async function acknowledgeApproved(root, input) {
   return withReviewLock(root, async () => {
-  const state = await readReviewState(root);
-  if (!state) {
-    throw new Error('transaction_not_found');
-  }
-  requireBinding(state, input);
-  if (state.status !== 'approved') {
-    throw new Error(
-        'acknowledgement_not_allowed');
-  }
-  if (await invalidateStalePullRequest(root, state)) {
-    throw new Error('candidate_pull_request_oid_stale');
-  }
-  if (input.acknowledgement !== state.next_transition?.token) {
-    throw new Error(
-        'acknowledgement_invalid');
-  }
-  const stateFile = await safeStatePath(root);
-  const historyDirectory = path.join(path.dirname(stateFile), 'history');
-  const historyPath = path.join(historyDirectory,
-      `${state.lineage}-${state.revision}-approved.json`);
-  let historyDirectoryStat;
-  try {
-    historyDirectoryStat = await fs.lstat(historyDirectory);
-  } catch (error) {
-    if (error.code !== 'ENOENT') {
-      throw error;
+    const state = await readReviewState(root);
+    if (!state) {
+      throw new Error('transaction_not_found');
     }
-    await fs.mkdir(historyDirectory, {mode: 0o700});
-    historyDirectoryStat = await fs.lstat(historyDirectory);
-  }
-  if (!historyDirectoryStat.isDirectory()
-      || historyDirectoryStat.isSymbolicLink()) {
-    throw new Error('review_history_path_invalid');
-  }
-  if (process.platform !== 'win32') {
-    await fs.chmod(historyDirectory, 0o700);
-  }
-  try {
-    const historyFileStat = await fs.lstat(historyPath);
-    if (!historyFileStat.isFile() || historyFileStat.isSymbolicLink()) {
+    requireBinding(state, input);
+    if (state.status !== 'approved') {
+      throw new Error(
+          'acknowledgement_not_allowed');
+    }
+    if (await invalidateStalePullRequest(root, state)) {
+      throw new Error('candidate_pull_request_oid_stale');
+    }
+    if (input.acknowledgement !== state.next_transition?.token) {
+      throw new Error(
+          'acknowledgement_invalid');
+    }
+    const stateFile = await safeStatePath(root);
+    const historyDirectory = path.join(path.dirname(stateFile), 'history');
+    const historyPath = path.join(historyDirectory,
+        `${state.lineage}-${state.revision}-approved.json`);
+    let historyDirectoryStat;
+    try {
+      historyDirectoryStat = await fs.lstat(historyDirectory);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        throw error;
+      }
+      await fs.mkdir(historyDirectory, {mode: 0o700});
+      historyDirectoryStat = await fs.lstat(historyDirectory);
+    }
+    if (!historyDirectoryStat.isDirectory()
+        || historyDirectoryStat.isSymbolicLink()) {
       throw new Error('review_history_path_invalid');
     }
     if (process.platform !== 'win32') {
-      await fs.chmod(historyPath, 0o600);
+      await fs.chmod(historyDirectory, 0o700);
     }
-  } catch (error) {
-    if (error.code !== 'ENOENT') {
-      throw error;
+    try {
+      const historyFileStat = await fs.lstat(historyPath);
+      if (!historyFileStat.isFile() || historyFileStat.isSymbolicLink()) {
+        throw new Error('review_history_path_invalid');
+      }
+      if (process.platform !== 'win32') {
+        await fs.chmod(historyPath, 0o600);
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        throw error;
+      }
     }
-  }
-  const cleanupWarnings = await cleanupCandidateCopies(root, state);
-  if (cleanupWarnings.length > 0) {
+    const cleanupWarnings = await cleanupCandidateCopies(root, state);
+    if (cleanupWarnings.length > 0) {
+      return {
+        version: REVIEW_VERSION,
+        status: 'cleanup_pending',
+        binding: binding(state),
+        cleanupWarnings
+      };
+    }
+    delete state.next_transition;
+    delete state.recovery_transition;
+    state.acknowledgedAt = new Date().toISOString();
+    await writeHistoryReceiptExclusive(historyPath, state);
+    await fs.rm(stateFile, {force: true});
     return {
       version: REVIEW_VERSION,
-      status: 'cleanup_pending',
-      binding: binding(state),
-      cleanupWarnings
+      status: 'burned',
+      lineage: state.lineage,
+      revision: state.revision,
+      historyPath
     };
-  }
-  delete state.next_transition;
-  delete state.recovery_transition;
-  state.acknowledgedAt = new Date().toISOString();
-  await writeHistoryReceiptExclusive(historyPath, state);
-  await fs.rm(stateFile, {force: true});
-  return {
-    version: REVIEW_VERSION,
-    status: 'burned',
-    lineage: state.lineage,
-    revision: state.revision,
-    historyPath
-  };
   });
 }
 

@@ -8,7 +8,7 @@
 // guard fails on a regression and does not flag legitimate non-English domain content.
 
 import assert from 'node:assert/strict';
-import {existsSync, readFileSync, readdirSync} from 'node:fs';
+import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -78,7 +78,8 @@ test('translated instruction artifacts keep no retired Spanish strings', () => {
 });
 
 test('reference filenames in the TDD skill are English', () => {
-  const dir = path.join(root, 'skills/testing/test-driven-development/references');
+  const dir = path.join(root,
+      'skills/testing/test-driven-development/references');
   const retired = [
     'fundamentos.md', 'diseno-de-tests.md', 'dobles-de-prueba.md',
     'fiabilidad.md', 'flujo-de-equipo.md', 'ejemplos-de-codigo.md',
@@ -97,7 +98,8 @@ test('reference filenames in the TDD skill are English', () => {
     'team-workflow.md', 'code-examples.md', 'example.test.ts', 'Example.kt',
     'Example.java', 'example.rs'
   ]) {
-    assert.ok(present.includes(name), `Expected English reference missing: ${name}`);
+    assert.ok(present.includes(name),
+        `Expected English reference missing: ${name}`);
   }
 });
 
@@ -116,19 +118,21 @@ test('skill frontmatter descriptions are English', () => {
   }
 });
 
-test('the haci skill stays in Spanish and stays excluded from the English rule', () => {
-  const skill = read('skills/personal/haci/SKILL.md');
-  assert.ok(skill.length > 0, 'haci skill is missing');
+test('the haci skill stays in Spanish and stays excluded from the English rule',
+    () => {
+      const skill = read('skills/personal/haci/SKILL.md');
+      assert.ok(skill.length > 0, 'haci skill is missing');
 
-  // It is the Spanish tax authority skill: it stays in Spanish on purpose.
-  for (const term of ['IRPF', 'AEAT', 'declaración de la renta']) {
-    assert.ok(skill.includes(term), `haci skill lost its Spanish source text: ${term}`);
-  }
+      // It is the Spanish tax authority skill: it stays in Spanish on purpose.
+      for (const term of ['IRPF', 'AEAT', 'declaración de la renta']) {
+        assert.ok(skill.includes(term),
+            `haci skill lost its Spanish source text: ${term}`);
+      }
 
-  const readme = read('README.md');
-  assert.match(readme, /`haci` \(Spanish IRPF\)/,
-      'README must document the haci exclusion');
-});
+      const readme = read('README.md');
+      assert.match(readme, /`haci` \(Spanish IRPF\)/,
+          'README must document the haci exclusion');
+    });
 
 // Whole-catalog sweep. Every instruction artifact (Markdown and YAML) must read as English,
 // with one documented exception.
@@ -143,25 +147,39 @@ test('the haci skill stays in Spanish and stays excluded from the English rule',
 
 const SPANISH_ONLY_WORDS = new Set([
   // Function words that are not valid English words.
-  'al', 'ante', 'antes', 'aqui', 'asi', 'cada', 'como', 'con', 'cual', 'cuales', 'cuando',
-  'de', 'del', 'desde', 'donde', 'durante', 'el', 'ella', 'ellas', 'ellos', 'en', 'entre',
-  'era', 'eramos', 'eran', 'eres', 'es', 'esa', 'esas', 'ese', 'eso', 'esos', 'esta',
-  'estaba', 'estan', 'estar', 'este', 'esto', 'estos', 'estoy', 'fue', 'fueron', 'ha',
-  'haber', 'habia', 'hacia', 'hasta', 'hay', 'la', 'las', 'le', 'les', 'lo', 'los',
+  'al', 'ante', 'antes', 'aqui', 'asi', 'cada', 'como', 'con', 'cual', 'cuales',
+  'cuando',
+  'de', 'del', 'desde', 'donde', 'durante', 'el', 'ella', 'ellas', 'ellos',
+  'en', 'entre',
+  'era', 'eramos', 'eran', 'eres', 'es', 'esa', 'esas', 'ese', 'eso', 'esos',
+  'esta',
+  'estaba', 'estan', 'estar', 'este', 'esto', 'estos', 'estoy', 'fue', 'fueron',
+  'ha',
+  'haber', 'habia', 'hacia', 'hasta', 'hay', 'la', 'las', 'le', 'les', 'lo',
+  'los',
   'mas', 'mucho', 'muy', 'nada', 'ni', 'nos', 'nosotros', 'nuestra',
-  'nuestro', 'o', 'os', 'otra', 'otro', 'para', 'pero', 'poco', 'por', 'porque', 'puede',
+  'nuestro', 'o', 'os', 'otra', 'otro', 'para', 'pero', 'poco', 'por', 'porque',
+  'puede',
   'pueden', 'que', 'quien', 'se', 'segun', 'ser', 'si', 'sin', 'sobre', 'son',
-  'su', 'sus', 'tambien', 'tiene', 'tienen', 'todo', 'todos', 'tras', 'tu', 'tus',
+  'su', 'sus', 'tambien', 'tiene', 'tienen', 'todo', 'todos', 'tras', 'tu',
+  'tus',
   'un', 'una', 'uno', 'unos', 'unas', 'usted', 'va', 'van', 'y', 'ya',
   // Domain vocabulary that has no English counterpart in these documents.
-  'archivo', 'archivos', 'cambio', 'cambios', 'codigo', 'contenido', 'contenidos',
-  'datos', 'decision', 'decisiones', 'deduccion', 'documentacion', 'ejemplo', 'ejemplos',
+  'archivo', 'archivos', 'cambio', 'cambios', 'codigo', 'contenido',
+  'contenidos',
+  'datos', 'decision', 'decisiones', 'deduccion', 'documentacion', 'ejemplo',
+  'ejemplos',
   'estado', 'estrategia', 'estrategias', 'evidencia', 'fase', 'fases', 'guia',
-  'implementacion', 'informacion', 'informe', 'informes', 'opcion', 'opciones', 'paso',
-  'pasos', 'plantilla', 'problema', 'problemas', 'proceso', 'procesos', 'prueba', 'pruebas',
-  'proyecto', 'proyectos', 'punto', 'puntos', 'referencia', 'referencias', 'requisito',
-  'requisitos', 'resultado', 'resultados', 'reunion', 'revisar', 'revision', 'revisiones',
-  'riesgo', 'riesgos', 'sistema', 'sistemas', 'siguiente', 'tarea', 'tareas', 'valor',
+  'implementacion', 'informacion', 'informe', 'informes', 'opcion', 'opciones',
+  'paso',
+  'pasos', 'plantilla', 'problema', 'problemas', 'proceso', 'procesos',
+  'prueba', 'pruebas',
+  'proyecto', 'proyectos', 'punto', 'puntos', 'referencia', 'referencias',
+  'requisito',
+  'requisitos', 'resultado', 'resultados', 'reunion', 'revisar', 'revision',
+  'revisiones',
+  'riesgo', 'riesgos', 'sistema', 'sistemas', 'siguiente', 'tarea', 'tareas',
+  'valor',
   'valores', 'verificacion',
 ]);
 
@@ -176,13 +194,19 @@ const SWEEP_SKIP_FILES = new Set([
 function collectInstructionFiles(dir, root, out = []) {
   for (const entry of readdirSync(dir, {withFileTypes: true})) {
     if (entry.isDirectory()) {
-      if (SWEEP_SKIP_DIRS.has(entry.name)) continue;
+      if (SWEEP_SKIP_DIRS.has(entry.name)) {
+        continue;
+      }
       collectInstructionFiles(path.join(dir, entry.name), root, out);
       continue;
     }
-    if (!INSTRUCTION_EXTENSIONS.has(path.extname(entry.name))) continue;
+    if (!INSTRUCTION_EXTENSIONS.has(path.extname(entry.name))) {
+      continue;
+    }
     const relative = path.relative(root, path.join(dir, entry.name));
-    if (SWEEP_SKIP_FILES.has(relative)) continue;
+    if (SWEEP_SKIP_FILES.has(relative)) {
+      continue;
+    }
     out.push(relative);
   }
   return out;
@@ -211,15 +235,18 @@ function proseLines(body) {
 
 test('every instruction artifact is written in English', () => {
   const files = collectInstructionFiles(root, root)
-      .filter((relative) => !relative.startsWith(path.join('skills', 'personal', 'haci')));
+      .filter((relative) => !relative.startsWith(
+          path.join('skills', 'personal', 'haci')));
 
-  assert.ok(files.length > 100, `Expected the catalog to be large, found ${files.length} files`);
+  assert.ok(files.length > 100,
+      `Expected the catalog to be large, found ${files.length} files`);
 
   const offenders = [];
   for (const relative of files) {
     proseLines(read(relative)).forEach((line, index) => {
       const words = (line.toLowerCase().match(/[a-záéíóúñü]+/g) || []);
-      const hits = new Set(words.filter((word) => SPANISH_ONLY_WORDS.has(normalize(word))));
+      const hits = new Set(
+          words.filter((word) => SPANISH_ONLY_WORDS.has(normalize(word))));
       if (hits.size >= 3) {
         offenders.push(`${relative}:${index + 1} ${line.trim().slice(0, 120)}`);
       }

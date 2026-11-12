@@ -1,10 +1,13 @@
 # Language Model
 
-The Prompt API allows developers to run natural language processing tasks directly in the browser using **Gemini Nano**. This built-in AI approach ensures user privacy, reduces server costs, and enables offline functionality.
+The Prompt API allows developers to run natural language processing tasks directly in the browser
+using **Gemini Nano**. This built-in AI approach ensures user privacy, reduces server costs, and
+enables offline functionality.
 
 ## 1. Getting Started and Hardware Requirements
 
-The Prompt API is currently available in Chrome as of version 148 (Desktop) for Windows, macOS, Linux, and Chromebook Plus.
+The Prompt API is currently available in Chrome as of version 148 (Desktop) for Windows, macOS,
+Linux, and Chromebook Plus.
 
 ### Hardware Prerequisites
 
@@ -35,13 +38,16 @@ if (availability !== 'unavailable') {
 
 ## 2. Core Prompting Capabilities
 
-Session examples in this section omit `session.destroy()` for brevity. Always call `session.destroy()` when a session is no longer needed to free device memory (see Section 5).
+Session examples in this section omit `session.destroy()` for brevity. Always call
+`session.destroy()` when a session is no longer needed to free device memory (see Section 5).
 
 ### Basic and Streamed Output
 
-For short responses, use `prompt()`. For longer content, use `promptStreaming()` to provide a more responsive UI.
+For short responses, use `prompt()`. For longer content, use `promptStreaming()` to provide a more
+responsive UI.
 
-**MANDATORY**: Never assign model output to `innerHTML`. Model output is untrusted and can contain injected markup. Always use `textContent` or a sanitizer.
+**MANDATORY**: Never assign model output to `innerHTML`. Model output is untrusted and can contain
+injected markup. Always use `textContent` or a sanitizer.
 
 ```javascript
 const session = await LanguageModel.create();
@@ -90,11 +96,14 @@ Sessions allow the model to maintain context across multiple interactions.
 
 ### Context and Quota
 
-Each session has a maximum token limit. You can monitor usage via `session.contextUsage` and `session.contextWindow`. If the window overflows, the oldest messages (except the system prompt) are dropped.
+Each session has a maximum token limit. You can monitor usage via `session.contextUsage` and
+`session.contextWindow`. If the window overflows, the oldest messages (except the system prompt) are
+dropped.
 
 ### Cloning Sessions
 
-Cloning is efficient for starting parallel conversations that share the same initial context (like a "system" personality) without re-initializing.
+Cloning is efficient for starting parallel conversations that share the same initial context (like a
+"system" personality) without re-initializing.
 
 ```javascript
 const mainSession = await LanguageModel.create({
@@ -109,9 +118,11 @@ mainSession.destroy();
 
 ### Restoring Past Sessions
 
-While a native "restore" feature is in development, you can recreate a session by feeding previous history into `initialPrompts`.
+While a native "restore" feature is in development, you can recreate a session by feeding previous
+history into `initialPrompts`.
 
-**Note**: `localStorage` is unencrypted and persistent. Stored conversation history may include user PII — consider the privacy implications before persisting chat history.
+**Note**: `localStorage` is unencrypted and persistent. Stored conversation history may include user
+PII — consider the privacy implications before persisting chat history.
 
 ```javascript
 // || '[]' ensures JSON.parse never receives null when the key doesn't exist yet.
@@ -123,7 +134,9 @@ const session = await LanguageModel.create({
 
 ## 4. Structured Output with JSON Schema
 
-To prevent the model from adding "chatter" (e.g., "Sure, here is your JSON:"), use a **JSON Schema** via the `responseConstraint` field. This ensures the output is valid JSON that can be parsed immediately.
+To prevent the model from adding "chatter" (e.g., "Sure, here is your JSON:"), use a **JSON Schema**
+via the `responseConstraint` field. This ensures the output is valid JSON that can be parsed
+immediately.
 
 ### Example: Sentiment Classification
 
@@ -160,30 +173,45 @@ const character = await session.prompt([
 
 ## 5. Best Practices and Safety
 
-- **Resource Cleanup**: Always call `session.destroy()` when a conversation is finished to free up memory.
-- **Output Safety**: Model output is untrusted. Always write results to `textContent`, not `innerHTML`, to prevent XSS injection from malicious model output.
+- **Resource Cleanup**: Always call `session.destroy()` when a conversation is finished to free up
+  memory.
+- **Output Safety**: Model output is untrusted. Always write results to `textContent`, not
+  `innerHTML`, to prevent XSS injection from malicious model output.
 - Use a sanitizer like the native Sanitizer API or DOMPurify if you need to allow limited HTML.
-- **Aborting Tasks**: Use `AbortController` to allow users to stop long-running generations. Pass the `signal` to `prompt()` or `promptStreaming()`, not to `LanguageModel.create()`.
-- **Security**: Use Permission Policies to control access in iframes: `<iframe src="..." allow="language-model"></iframe>`.
-- **Design**: Review the [People + AI Guidebook](https://pair.withgoogle.com/guidebook/) to ensure responsible AI implementation.
+- **Aborting Tasks**: Use `AbortController` to allow users to stop long-running generations. Pass
+  the `signal` to `prompt()` or `promptStreaming()`, not to `LanguageModel.create()`.
+- **Security**: Use Permission Policies to control access in iframes:
+  `<iframe src="..." allow="language-model"></iframe>`.
+- **Design**: Review the [People + AI Guidebook](https://pair.withgoogle.com/guidebook/) to ensure
+  responsible AI implementation.
 
-By combining structured outputs with robust session management, developers can build complex, stateful AI applications that run entirely on the user's device.
+By combining structured outputs with robust session management, developers can build complex,
+stateful AI applications that run entirely on the user's device.
 
 ### Dos and Don'ts
 
-For the full detailed list of dos and don'ts, see https://developer.chrome.com/docs/ai/built-in-ai-dos-donts.md.txt. Below is the gist:
+For the full detailed list of dos and don'ts,
+see https://developer.chrome.com/docs/ai/built-in-ai-dos-donts.md.txt. Below is the gist:
 
 #### Prepare the model at a reasonable time
 
 *Applies to: all APIs, for example, Summarizer, Translator, and Writer.*
 
-**Do:** Initialize the session as soon as you've clearly established the user's intention to use the AI feature, for example, when a user navigates into a relevant AI tools surface, hovers over an AI workspace, or interacts with the feature's surrounding UI. Pre-warming the session allows the model to load into memory quietly in the background while the user is setting up their task, eliminating avoidable cold-start latency.
-Try to be one step ahead by starting the next most likely AI task as soon as you start rendering the current result, for example, if the feature is designed for iterative use.
+**Do:** Initialize the session as soon as you've clearly established the user's intention to use the
+AI feature, for example, when a user navigates into a relevant AI tools surface, hovers over an AI
+workspace, or interacts with the feature's surrounding UI. Pre-warming the session allows the model
+to load into memory quietly in the background while the user is setting up their task, eliminating
+avoidable cold-start latency.
+Try to be one step ahead by starting the next most likely AI task as soon as you start rendering the
+current result, for example, if the feature is designed for iterative use.
 
-**Don't:** Unless necessary, don't wait for the user to click "Generate" to initialize the session. This leads to a cold start delay, because the model must first load into memory and prepare its execution pipeline.
+**Don't:** Unless necessary, don't wait for the user to click "Generate" to initialize the session.
+This leads to a cold start delay, because the model must first load into memory and prepare its
+execution pipeline.
 
 > [!CAUTION]
-> For the Prompt API, wait until you have the `initialPrompts` ready before calling `create()`, because these can only be set during session creation.
+> For the Prompt API, wait until you have the `initialPrompts` ready before calling `create()`,
+because these can only be set during session creation.
 
 #### Set initial prompts during creation
 
@@ -209,19 +237,26 @@ only what you need.
 
 **Do:**
 
-- Create a base session: To handle unrelated tasks efficiently, create a base session that contains only your system instructions and no previous conversational context.
-- Clone the baseline: Use `clone()` on that base session for new tasks to save the overhead of re-parsing system instructions. This lets you create parallel conversations or reset a task to its baseline.
+- Create a base session: To handle unrelated tasks efficiently, create a base session that contains
+  only your system instructions and no previous conversational context.
+- Clone the baseline: Use `clone()` on that base session for new tasks to save the overhead of
+  re-parsing system instructions. This lets you create parallel conversations or reset a task to its
+  baseline.
 
 **Don't:**
 
-- Don't reuse the same session for unrelated tasks, and avoid cloning any session that already contains unnecessary interaction history. Both patterns can cause unrelated previous context to interfere with your current task.
-- Don't repeatedly call `create()` with identical system instructions. Use the cloning pattern instead to optimize performance.
+- Don't reuse the same session for unrelated tasks, and avoid cloning any session that already
+  contains unnecessary interaction history. Both patterns can cause unrelated previous context to
+  interfere with your current task.
+- Don't repeatedly call `create()` with identical system instructions. Use the cloning pattern
+  instead to optimize performance.
 
 #### Destroy unused sessions
 
 *Applies to: All APIs.*
 
-**Do:** Explicitly call [`destroy()`](https://developer.chrome.com/docs/ai/prompt-api#terminate_a_session) on
+**Do:** Explicitly call [
+`destroy()`](https://developer.chrome.com/docs/ai/prompt-api#terminate_a_session) on
 sessions that you no longer need, to free up memory when a feature
 is no longer in use. If you use a cloning pattern, keep the base session and
 destroy the clones you no longer need.
@@ -282,7 +317,8 @@ schemas](https://developer.chrome.com/docs/ai/structured-output-for-prompt-api).
 logic to truncate the text to fit your UI.
 
 **Don't:** Enforce strict character limits like `maxLength: 125` using
-[structured output schemas](https://developer.chrome.com/docs/ai/structured-output-for-prompt-api). When a
+[structured output schemas](https://developer.chrome.com/docs/ai/structured-output-for-prompt-api).
+When a
 model's response is longer than the limit you set, the model might switch to
 high-density tokens like foreign languages or emoji to compress meaning,
 resulting in nonsensical output.
@@ -291,13 +327,20 @@ resulting in nonsensical output.
 
 *Applies to: All APIs.*
 
-**Do:** Depending on the complexity and expected duration of the task, use animations, visual cues, and progress indicators to keep the user informed. The
+**Do:** Depending on the complexity and expected duration of the task, use animations, visual cues,
+and progress indicators to keep the user informed. The
 optimal approach depends on your use case and the expected length of the API
 output. Some ideas:
 
-- Streaming for long content: For summaries or chat, streaming creates a per-token typewriter effect by default. This can feel natural and provide immediate feedback.
-- Non-streaming for short tasks (or long async tasks): For short outputs, for example, alt-text, non-streaming can create a more polished UI. It also provides time to speculatively prepare the next AI task while the current one renders. This approach also works for longer asynchronous or background tasks. If the user is not blocked on the output to continue their journey, there is no urgent need to produce the output as it happens. Signal that the process is ongoing in the UI.
-- Visual transitions for updates: When translating or rewriting text, use animations, for example, word-morphing.
+- Streaming for long content: For summaries or chat, streaming creates a per-token typewriter effect
+  by default. This can feel natural and provide immediate feedback.
+- Non-streaming for short tasks (or long async tasks): For short outputs, for example, alt-text,
+  non-streaming can create a more polished UI. It also provides time to speculatively prepare the
+  next AI task while the current one renders. This approach also works for longer asynchronous or
+  background tasks. If the user is not blocked on the output to continue their journey, there is no
+  urgent need to produce the output as it happens. Signal that the process is ongoing in the UI.
+- Visual transitions for updates: When translating or rewriting text, use animations, for example,
+  word-morphing.
 
 **Don't:** Update the UI without visual cues.
 
@@ -327,7 +370,8 @@ liked without a way to go back, revert, or compare versions.
 
 *Applies to: All APIs.*
 
-**Do:** Make the user the final editor of all generated content. Provide intuitive overrides so the user maintains full ownership for the final output. The APIs may produce incorrect results.
+**Do:** Make the user the final editor of all generated content. Provide intuitive overrides so the
+user maintains full ownership for the final output. The APIs may produce incorrect results.
 
 **Don't:** Force an AI-generated result as the only option.
 
@@ -343,7 +387,9 @@ time to live (TTL) for your cache (or serve cached results while updating them
 in the background). Let the user trigger a fresh inference if the result is
 unsatisfying.
 
-**Don't:** Re-run the same inference for a repeated search query or identical data input where variability isn't desirable, for example when a user navigates back and forth between search results.
+**Don't:** Re-run the same inference for a repeated search query or identical data input where
+variability isn't desirable, for example when a user navigates back and forth between search
+results.
 This optimizes responsiveness and efficient use of local compute.
 
 ## 6. Fallback strategies
@@ -362,7 +408,10 @@ if ('LanguageModel' in self) {
 }
 ```
 
-If the Prompt API is unsupported or availability checks return 'unavailable', you must gracefully fall back:
+If the Prompt API is unsupported or availability checks return 'unavailable', you must gracefully
+fall back:
 
-* Remote API Fallback: Redirect the detection request to a server endpoint or a cloud API (such as the Vertex AI Gemini API).
-* Local API Fallback: Redirect the detection request to a local endpoint, for example, using Transformers.js. 
+* Remote API Fallback: Redirect the detection request to a server endpoint or a cloud API (such as
+  the Vertex AI Gemini API).
+* Local API Fallback: Redirect the detection request to a local endpoint, for example, using
+  Transformers.js. 

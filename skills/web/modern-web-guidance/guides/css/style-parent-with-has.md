@@ -1,20 +1,26 @@
-# Style Parent with :has()
+# Style Parent with :has ()
 
 ## The Problem
-Often, an error state requires styling elements *outside* the input itself—for example, changing the color of a parent `fieldset` border, highlighting the `<label>`, or showing a global error icon in the card header. Historically, this required JavaScript to toggle classes on parent elements.
+
+Often, an error state requires styling elements *outside* the input itself—for example, changing the
+color of a parent `fieldset` border, highlighting the `<label>`, or showing a global error icon in
+the card header. Historically, this required JavaScript to toggle classes on parent elements.
 
 ## The Solution
-By combining `:has()` with `:user-invalid`, we can declaratively style any ancestor based on the validity state of a specific descendant. This keeps all presentation logic in CSS.
+
+By combining `:has()` with `:user-invalid`, we can declaratively style any ancestor based on the
+validity state of a specific descendant. This keeps all presentation logic in CSS.
 
 ### Implementation Strategy
 
-1.  **Selector**: Use `.parent:has(:user-invalid)` to target the container.
-2.  **Scope**: Be specific to avoid performance issues. Target `.field-group` rather than `body`.
-3.  **Fallback**: Requires JS to toggle classes on the parent if `:has()` is not supported.
+1. **Selector**: Use `.parent:has(:user-invalid)` to target the container.
+2. **Scope**: Be specific to avoid performance issues. Target `.field-group` rather than `body`.
+3. **Fallback**: Requires JS to toggle classes on the parent if `:has()` is not supported.
 
 ## Implementation Guide
 
 ### 1. HTML Structure
+
 ```html
 <form>
   <div class="card-section">
@@ -32,6 +38,7 @@ By combining `:has()` with `:user-invalid`, we can declaratively style any ances
 ```
 
 ### 2. CSS
+
 ```css
 /* Default State */
 .card-section {
@@ -56,10 +63,13 @@ By combining `:has()` with `:user-invalid`, we can declaratively style any ances
 
 ## Fallbacking & Browser Support
 
-Baseline status for :user-valid and :user-invalid: Widely available. It's been Baseline since 2023-11-02.
-Supported by: Chrome 119 (Oct 2023), Edge 119 (Nov 2023), Firefox 88 (Apr 2021), and Safari 16.5 (May 2023).
+Baseline status for :user-valid and :user-invalid: Widely available. It's been Baseline since
+2023-11-02.
+Supported by: Chrome 119 (Oct 2023), Edge 119 (Nov 2023), Firefox 88 (Apr 2021), and Safari 16.5
+(May 2023).
 
 ### CSS for Fallback
+
 We use a class `.has-error` on the parent to mimic the `:has()` behavior.
 
 ```css
@@ -76,7 +86,8 @@ We use a class `.has-error` on the parent to mimic the `:has()` behavior.
 
 ### JavaScript Fallback
 
-Use a reusable utility that tracks interaction state using a `WeakMap`. This avoids polluting the DOM with "dirty" classes or data attributes.
+Use a reusable utility that tracks interaction state using a `WeakMap`. This avoids polluting the
+DOM with "dirty" classes or data attributes.
 
 ```javascript
 const UserInvalidFallback = (() => {
@@ -184,7 +195,8 @@ form.addEventListener('reset', () => {
 
 ## Other Considerations
 
-1.  **Accessibility**: Native `:user-invalid` does not automatically sync with ARIA attributes. Add the following JavaScript to keep `aria-invalid` in sync with the visual state:
+1. **Accessibility**: Native `:user-invalid` does not automatically sync with ARIA attributes. Add
+   the following JavaScript to keep `aria-invalid` in sync with the visual state:
 
 ```javascript
 // Sync aria-invalid with the CSS :user-invalid state

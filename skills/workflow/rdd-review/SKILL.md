@@ -30,7 +30,8 @@ candidate tree again before it accepts review evidence.
   does not start another correction.
 - Missing, malformed, stale, or unavailable evidence is `Needs your decision`, never approval.
 - An escalated or unmaterializable transaction can be closed only after the user chooses to defer or
-  abandon it. Use the exact `recovery_transition` token with `review.mjs close`; closure is recorded as
+  abandon it. Use the exact `recovery_transition` token with `review.mjs close`; closure is recorded
+  as
   `closed_without_approval` and does not approve the candidate.
 
 Manual `double-blind-review` remains available and does not create RDD authority.

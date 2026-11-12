@@ -22,7 +22,8 @@ Every request gets an explicit route before acting:
   coordination problem it solves.
 
 For substantial work, track it in `.agents/rpi/plan/tasks/<feature>.md` and mirror to Engram.
-Every `/review` runs Receipt-Driven Development (RDD) on a materialized candidate snapshot and applies 4R;
+Every `/review` runs Receipt-Driven Development (RDD) on a materialized candidate snapshot and
+applies 4R;
 RDD never authorizes delivery.
 
 When adopting this harness in a project with existing RPI plans, the first substantial RPI task
@@ -85,10 +86,10 @@ starts an isolated OpenCode instance and asserts that every declared agent appea
 `opencode debug agents`. A nested `subagents` block looks valid but is silently ignored, so the JSON
 shape alone is not evidence.
 
-Agent capability is declared with `permission`, which the runtime enforces. The legacy `tools` map is
+Agent capability is declared with `permission`, which the runtime enforces. The legacy `tools` map
+is
 translated into permission rules that use the tool name as the action, so a key such as `delegate`
 becomes a permission action nothing ever matches, and `tools: true` only restates the default allow.
-
 
 Kerrigan never executes SDD phase work inline — it delegates to the phase agent.
 
@@ -111,7 +112,7 @@ init → explore → propose → spec → design → tasks → apply → verify 
 | `/sdd-spec`     | sdd-spec    | Delta specs, Given/When/Then                   |
 | `/sdd-design`   | sdd-design  | Technical design, ADRs                         |
 | `/sdd-tasks`    | sdd-tasks   | Implementation checklist                       |
-| `/sdd-apply`    | sdd-apply   | Implement (mandatory TDD for business logic)     |
+| `/sdd-apply`    | sdd-apply   | Implement (mandatory TDD for business logic)   |
 | `/sdd-verify`   | sdd-verify  | Technical + spec-compliance gate               |
 | `/sdd-qa`       | sdd-qa      | Acceptance evidence, `qa-report.md`            |
 | `/sdd-archive`  | sdd-archive | Two-report gate, sync + archive                |
@@ -133,10 +134,12 @@ Quality gates:
 
 ## Review flow
 
-`/review <PR URL>` starts RDD on that pull request's diff between its merge base and `head`. Without a
+`/review <PR URL>` starts RDD on that pull request's diff between its merge base and `head`. Without
+a
 URL, `/review` starts RDD on the local working tree against `HEAD`. Both paths always apply
 R1 Risk, R2 Readability, R3 Reliability, and R4 Resilience. A review does not authorize changes,
-GitHub comments, commits, or push. `/pr-watch` owns PR threads and workflow checks. It runs an initial
+GitHub comments, commits, or push. `/pr-watch` owns PR threads and workflow checks. It runs an
+initial
 pass and uses the global `loop` skill for five-minute follow-ups for at most one hour only when the
 runtime provides a compatible scheduler. Without one, it reports a single-pass fallback and does not
 claim ongoing monitoring. It stops on merge/closure, timeout, user request, or an auth/ambiguity
@@ -145,7 +148,8 @@ block; it does not commit or push.
 Validate the flow tests with `npm run test:review`.
 On Windows, pull requests that contain symlinks need system permission to create them; when that
 permission is unavailable, `/review` stops and does not substitute another candidate.
-Windows does not apply a directory's read-only bit as an ACL that prevents adding entries. The control
+Windows does not apply a directory's read-only bit as an ACL that prevents adding entries. The
+control
 plane re-checks the tree when it captures the review and rejects changes; for a read-only guarantee
 against concurrent local processes, use a Unix environment.
 
@@ -158,11 +162,11 @@ Two standards are used, separated on purpose:
 - **Standalone** (the rest) — the frontmatter contains only `description:`; the command runs as an
   expert instruction or a self-contained guide.
 
-| Group         | Commands                                                                                                                                                                  |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| SDD (13)      | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
-| Diagrams (3)  | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                         |
-| Assorted (6)  | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                     |
+| Group        | Commands                                                                                                                                                                 |
+|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SDD (13)     | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
+| Diagrams (3) | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
+| Assorted (6) | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                   |
 
 The five Vercel commands were retired from the active catalog. They are preserved, together with the
 Vercel skills, in the local canonical ZIP `~/Documents/vercel.zip`, outside the repository. The ZIP
@@ -182,8 +186,8 @@ trust the filesystem, not this table:
 | `design/`         | 7                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
 | `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                      |
 | `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                |
-| `sdd/`            | 11                     | Ten phase skills, inline onboarding, and the `_shared/` protocol                                                   |
-| `github/`         | 10                     | Actions, PR flow, stacked PRs, CI fixes, reviews, `pr-watch`, `yeet`                             |
+| `sdd/`            | 11                     | Ten phase skills, inline onboarding, and the `_shared/` protocol                                |
+| `github/`         | 10                     | Actions, PR flow, stacked PRs, CI fixes, reviews, `pr-watch`, `yeet`                            |
 | `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                               |
 | `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                          |
 | `ios/`            | 6                      | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor                               |

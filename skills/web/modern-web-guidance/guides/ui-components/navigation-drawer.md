@@ -2,22 +2,33 @@
 
 ## Overview
 
-A navigation drawer is a panel that slides in from the edge of the viewport over the page content, dimming everything behind it. It is opened from a trigger button and dismissed by swiping the panel off-screen, tapping the dimmed backdrop, or pressing Escape.
+A navigation drawer is a panel that slides in from the edge of the viewport over the page content,
+dimming everything behind it. It is opened from a trigger button and dismissed by swiping the panel
+off-screen, tapping the dimmed backdrop, or pressing Escape.
 
 This guide implements the drawer as:
 
-- A `popover="manual"` element promoted to the top layer so the panel and its `::backdrop` overlay every other element on the page, regardless of stacking context.
-- A horizontally scrolling container with two CSS scroll-snap stops — one for "open", one for "closed" — so the swipe gesture is handled natively by the browser. This delivers momentum, velocity, and interruption tracking for free, with no JavaScript pointer-event code.
-- A scroll-driven animation that ties the backdrop's opacity to the scroll position, so the dim fades in and out smoothly as the user drags the panel.
-- An `IntersectionObserver` on the panel that detects when it has fully entered or fully left the viewport, and uses those moments to update focus, `aria-expanded`, and `inert`.
+- A `popover="manual"` element promoted to the top layer so the panel and its `::backdrop` overlay
+  every other element on the page, regardless of stacking context.
+- A horizontally scrolling container with two CSS scroll-snap stops — one for "open", one for
+  "closed" — so the swipe gesture is handled natively by the browser. This delivers momentum,
+  velocity, and interruption tracking for free, with no JavaScript pointer-event code.
+- A scroll-driven animation that ties the backdrop's opacity to the scroll position, so the dim
+  fades in and out smoothly as the user drags the panel.
+- An `IntersectionObserver` on the panel that detects when it has fully entered or fully left the
+  viewport, and uses those moments to update focus, `aria-expanded`, and `inert`.
 
-This approach is preferred over JavaScript-driven `transform` animations because the scroll mechanism gives the user direct control of the panel's position (their finger drives it, not a tween) and it much more closely matches the interaction patterns that users are accustomed to in native mobile apps.
+This approach is preferred over JavaScript-driven `transform` animations because the scroll
+mechanism gives the user direct control of the panel's position (their finger drives it, not a
+tween) and it much more closely matches the interaction patterns that users are accustomed to in
+native mobile apps.
 
 ## Implementation
 
 ### 1. Markup
 
-The drawer is a single popover containing a horizontal scroller, which contains the visible "sheet". The trigger button lives in the page content.
+The drawer is a single popover containing a horizontal scroller, which contains the visible "sheet".
+The trigger button lives in the page content.
 
 ```html
 <!-- popover="manual" is REQUIRED. Do not use popover="auto" or "hint". -->
@@ -56,7 +67,9 @@ The drawer is a single popover containing a horizontal scroller, which contains 
 
 #### Reset the popover and fill the viewport
 
-The popover must cover the whole viewport so its `::backdrop` dims the entire page and the swipe surface extends edge-to-edge. The default user-agent popover styles (centered, auto-sized, bordered) get in the way and must be reset.
+The popover must cover the whole viewport so its `::backdrop` dims the entire page and the swipe
+surface extends edge-to-edge. The default user-agent popover styles (centered, auto-sized, bordered)
+get in the way and must be reset.
 
 ```css
 .Drawer {
@@ -89,7 +102,9 @@ The popover must cover the whole viewport so its `::backdrop` dims the entire pa
 
 #### Build the swipe surface with scroll snap
 
-The scroller is a horizontal grid wider than the viewport: column 1 holds the sheet (width `--drawer-width`), column 2 is an empty pseudo-element spacer the width of the viewport. Snapping between the two columns is what opens and closes the drawer.
+The scroller is a horizontal grid wider than the viewport: column 1 holds the sheet (width
+`--drawer-width`), column 2 is an empty pseudo-element spacer the width of the viewport. Snapping
+between the two columns is what opens and closes the drawer.
 
 ```css
 .Drawer-scroller {
@@ -145,7 +160,8 @@ The scroller is a horizontal grid wider than the viewport: column 1 holds the sh
 
 #### Tie the backdrop opacity to the scroll position
 
-A scroll-driven animation maps `--drawer-backdrop` from 1 (open) to 0 (closed) across the scroller's range, so the backdrop fades in and out perfectly synced with the drag.
+A scroll-driven animation maps `--drawer-backdrop` from 1 (open) to 0 (closed) across the scroller's
+range, so the backdrop fades in and out perfectly synced with the drag.
 
 ```css
 /* MANDATORY: Wrap this entire block in @supports. Browsers that don't
@@ -190,7 +206,9 @@ A scroll-driven animation maps `--drawer-backdrop` from 1 (open) to 0 (closed) a
 
 ### 3. Open and close the drawer
 
-Opening is two steps: promote the popover to the top layer, then scroll the sheet into view. Closing is one step: scroll back to the spacer; an observer (step 4) hides the popover once the sheet is fully off-screen.
+Opening is two steps: promote the popover to the top layer, then scroll the sheet into view. Closing
+is one step: scroll back to the spacer; an observer (step 4) hides the popover once the sheet is
+fully off-screen.
 
 ```js
 const drawer = document.getElementById('drawer');
@@ -224,7 +242,9 @@ function closeDrawer() {
 
 ### 4. Detect open and closed state
 
-Use an `IntersectionObserver` on the sheet — not the scroll position — as the source of truth for the drawer's state. The observer fires regardless of how the sheet moved (user swipe, programmatic scroll, snap settle), so all dismissal paths converge in the same callback.
+Use an `IntersectionObserver` on the sheet — not the scroll position — as the source of truth for
+the drawer's state. The observer fires regardless of how the sheet moved (user swipe, programmatic
+scroll, snap settle), so all dismissal paths converge in the same callback.
 
 ```js
 function onDrawerOpened() {
@@ -290,15 +310,20 @@ document.addEventListener('keydown', (event) => {
 ### Fallback strategies
 
 Baseline status for Scroll snap: Widely available. It's been Baseline since 2020-01-15.
-Supported by: Chrome 69 (Sep 2018), Edge 79 (Jan 2020), Firefox 68 (Jul 2019), and Safari 11 (Sep 2017).
+Supported by: Chrome 69 (Sep 2018), Edge 79 (Jan 2020), Firefox 68 (Jul 2019), and Safari 11 (Sep
+2017).
 
 Baseline status for Intersection observer: Widely available. It's been Baseline since 2019-03-25.
-Supported by: Chrome 58 (Apr 2017), Edge 16 (Oct 2017), Firefox 55 (Aug 2017), Safari 12.1 (Mar 2019), and Safari iOS 12.2 (Mar 2019).
+Supported by: Chrome 58 (Apr 2017), Edge 16 (Oct 2017), Firefox 55 (Aug 2017), Safari 12.1 (Mar
+2019), and Safari iOS 12.2 (Mar 2019).
 
 Baseline status for inert: Widely available. It's been Baseline since 2023-04-11.
-Supported by: Chrome 102 (May 2022), Edge 102 (May 2022), Firefox 112 (Apr 2023), and Safari 15.5 (May 2022).
+Supported by: Chrome 102 (May 2022), Edge 102 (May 2022), Firefox 112 (Apr 2023), and Safari 15.5
+(May 2022).
 
-The popover API, the scroll-driven animation that fades the backdrop, and `scroll-initial-target` are progressive enhancements with simple fallbacks that can be easily implemented if wide browser support is required.
+The popover API, the scroll-driven animation that fades the backdrop, and `scroll-initial-target`
+are progressive enhancements with simple fallbacks that can be easily implemented if wide browser
+support is required.
 
 #### Backdrop fade fallback (no `animation-timeline` support):
 
@@ -306,7 +331,9 @@ Browser support for Scroll-driven animations: Limited availability.
 Supported by: Chrome 115 (Jul 2023), Edge 115 (Jul 2023), and Safari 26 (Sep 2025).
 Unsupported in: Firefox.
 
-Detect with `CSS.supports('animation-timeline: scroll()')` and write `--drawer-backdrop` from a `scroll` event listener if not supported. The CSS `@supports` block in step 2 ensures the keyframes never apply in unsupported browsers, so the JavaScript value is the only writer.
+Detect with `CSS.supports('animation-timeline: scroll()')` and write `--drawer-backdrop` from a
+`scroll` event listener if not supported. The CSS `@supports` block in step 2 ensures the keyframes
+never apply in unsupported browsers, so the JavaScript value is the only writer.
 
 ```js
 if (!CSS.supports('animation-timeline: scroll()')) {
@@ -325,7 +352,9 @@ Browser support for scroll-initial-target: Limited availability.
 Supported by: Chrome 133 (Feb 2025) and Edge 133 (Feb 2025).
 Unsupported in: Firefox and Safari.
 
-Detect with `CSS.supports('scroll-initial-target', 'nearest')` and inside `openDrawer()`, jump-scroll the scroller to the closed position immediately after `showPopover()`. Without this, the drawer would appear instantly in the open position with no slide-in animation.
+Detect with `CSS.supports('scroll-initial-target', 'nearest')` and inside `openDrawer()`,
+jump-scroll the scroller to the closed position immediately after `showPopover()`. Without this, the
+drawer would appear instantly in the open position with no slide-in animation.
 
 ```js
 async function openDrawer() {
@@ -349,17 +378,33 @@ async function openDrawer() {
 
 #### `@property` fallback (no registered custom properties):
 
-Baseline status for Registered custom properties: Newly available. It's been Baseline since 2024-07-09.
-Supported by: Chrome 85 (Aug 2020), Edge 85 (Aug 2020), Firefox 128 (Jul 2024), and Safari 16.4 (Mar 2023).
+Baseline status for Registered custom properties: Newly available. It's been Baseline since
+2024-07-09.
+Supported by: Chrome 85 (Aug 2020), Edge 85 (Aug 2020), Firefox 128 (Jul 2024), and Safari 16.4 (Mar
+2023).
 
-`@property` is only needed because the scroll-driven animation interpolates `--drawer-backdrop` between keyframes — without registration, the property would be treated as a string and would jump between 0 and 1 with no fade. If the scroll-driven animation fallback above is in place, that JavaScript writes a fresh numeric string to `--drawer-backdrop` on every scroll frame and never interpolates, so no separate `@property` fallback is needed since all browsers that support scroll-driven animations also support `@property`.
-
+`@property` is only needed because the scroll-driven animation interpolates `--drawer-backdrop`
+between keyframes — without registration, the property would be treated as a string and would jump
+between 0 and 1 with no fade. If the scroll-driven animation fallback above is in place, that
+JavaScript writes a fresh numeric string to `--drawer-backdrop` on every scroll frame and never
+interpolates, so no separate `@property` fallback is needed since all browsers that support
+scroll-driven animations also support `@property`.
 
 #### Popover API fallback (no `popover` attribute support):
 
-Baseline status for the api.HTMLElement.showPopover capability: Widely available. It's been Baseline since 2024-04-16.
-Supported by: Chrome 114 (May 2023), Edge 114 (Jun 2023), Firefox 125 (Apr 2024), and Safari 17 (Sep 2023).
+Baseline status for the api.HTMLElement.showPopover capability: Widely available. It's been Baseline
+since 2024-04-16.
+Supported by: Chrome 114 (May 2023), Edge 114 (Jun 2023), Firefox 125 (Apr 2024), and Safari 17 (Sep
+2023).
 
-Because this component uses `popover="manual"` and implements dismissal entirely from JavaScript, it does not depend on the popover API's defining behaviors — light-dismiss, the `popovertarget` attribute, top-layer-managed Escape handling, or focus management. The only popover features it actually uses are top-layer promotion (via `showPopover()`) and the `::backdrop` pseudo-element.
+Because this component uses `popover="manual"` and implements dismissal entirely from JavaScript, it
+does not depend on the popover API's defining behaviors — light-dismiss, the `popovertarget`
+attribute, top-layer-managed Escape handling, or focus management. The only popover features it
+actually uses are top-layer promotion (via `showPopover()`) and the `::backdrop` pseudo-element.
 
-If wider browser support is needed, do not branch on feature detection — simply do not use popover at all. Drop the `popover="manual"` attribute, replace top-layer promotion with `position: fixed` and a high `z-index`, replace `::backdrop` with a sibling element styled identically (using the same `--drawer-backdrop` custom property), and toggle visibility from a class instead of `showPopover()`/`hidePopover()`. The rest of the component (scroll snap, the scroll-driven backdrop animation, the `IntersectionObserver`, and the dismissal handlers) is unchanged.
+If wider browser support is needed, do not branch on feature detection — simply do not use popover
+at all. Drop the `popover="manual"` attribute, replace top-layer promotion with `position: fixed`
+and a high `z-index`, replace `::backdrop` with a sibling element styled identically (using the same
+`--drawer-backdrop` custom property), and toggle visibility from a class instead of `showPopover()`/
+`hidePopover()`. The rest of the component (scroll snap, the scroll-driven backdrop animation, the
+`IntersectionObserver`, and the dismissal handlers) is unchanged.

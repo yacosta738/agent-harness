@@ -54,9 +54,12 @@ test('no agent declares a nested subagents block', () => {
 test('every team specialist is a flat subagent with a prompt', () => {
   for (const name of TEAM_SPECIALISTS) {
     const agent = agents[name];
-    assert.ok(agent, `agent "${name}" is not declared in adapters/opencode/opencode.json`);
-    assert.equal(agent.mode, 'subagent', `agent "${name}" must declare mode "subagent"`);
-    assert.ok(agent.description, `agent "${name}" needs a description for subagent selection`);
+    assert.ok(agent,
+        `agent "${name}" is not declared in adapters/opencode/opencode.json`);
+    assert.equal(agent.mode, 'subagent',
+        `agent "${name}" must declare mode "subagent"`);
+    assert.ok(agent.description,
+        `agent "${name}" needs a description for subagent selection`);
     assert.match(agent.prompt ?? '', /^\{file:\.\/prompts\/team\//,
         `agent "${name}" must load its prompt from prompts/team/`);
   }
@@ -103,15 +106,18 @@ function opencodeAvailable() {
   }
 }
 
-test('runtime registers every declared agent', {skip: !opencodeAvailable() &&
-      'opencode CLI not available; install it to run the runtime assertion'}, () => {
+test('runtime registers every declared agent', {
+  skip: !opencodeAvailable() &&
+      'opencode CLI not available; install it to run the runtime assertion'
+}, () => {
   // An isolated config home keeps the real user config out of the result. --standalone starts a
   // private server, because the shared background service keeps the config location it started
   // with and would answer from a stale cache.
   const home = mkdtempSync(path.join(os.tmpdir(), 'agent-harness-agents-'));
   try {
     const configDir = path.join(home, 'opencode');
-    cpSync(path.join(root, 'prompts'), path.join(configDir, 'prompts'), {recursive: true});
+    cpSync(path.join(root, 'prompts'), path.join(configDir, 'prompts'),
+        {recursive: true});
     cpSync(configPath, path.join(configDir, 'opencode.json'));
 
     const raw = execFileSync('opencode', ['--standalone', 'debug', 'agents'], {
@@ -122,12 +128,14 @@ test('runtime registers every declared agent', {skip: !opencodeAvailable() &&
       maxBuffer: 32 * 1024 * 1024,
     });
 
-    const registered = new Map(JSON.parse(raw).map((agent) => [agent.id, agent]));
+    const registered = new Map(
+        JSON.parse(raw).map((agent) => [agent.id, agent]));
 
     for (const name of TEAM_SPECIALISTS) {
       const agent = registered.get(name);
       assert.ok(agent, `runtime does not register "${name}"`);
-      assert.equal(agent.mode, 'subagent', `runtime registers "${name}" with the wrong mode`);
+      assert.equal(agent.mode, 'subagent',
+          `runtime registers "${name}" with the wrong mode`);
     }
     assert.ok(registered.has('kerrigan'), 'runtime does not register kerrigan');
 

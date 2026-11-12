@@ -1,13 +1,15 @@
 # Translator
 
-The **Translator API** allows developers to perform client-side text translation using built-in AI models in Chrome and Edge. This approach eliminates the need for cloud-based translation services for ephemeral content, reducing costs and improving privacy by keeping data on the user's device.
-
+The **Translator API** allows developers to perform client-side text translation using built-in AI
+models in Chrome and Edge. This approach eliminates the need for cloud-based translation services
+for ephemeral content, reducing costs and improving privacy by keeping data on the user's device.
 
 ## Prerequisites & Requirements
 
 ### API Surface & Global Scope
 
-- **MANDATORY:** Access the Translator API exclusively via the global `Translator` interface (`window.Translator` / `self.Translator`).
+- **MANDATORY:** Access the Translator API exclusively via the global `Translator` interface
+  (`window.Translator` / `self.Translator`).
 - **DO NOT** use or check the deprecated `window.ai.translator` namespace.
 
 ### Browser Support
@@ -31,16 +33,26 @@ To run Gemini Nano and associated models, the system needs:
 
 ### 1. Checking Availability & Model Management
 
-**Mandatory Options Passing:** You must pass the identical configuration options object containing `sourceLanguage` and `targetLanguage` to both `Translator.availability(options)` and `Translator.create(options)`.
+**Mandatory Options Passing:** You must pass the identical configuration options object containing
+`sourceLanguage` and `targetLanguage` to both `Translator.availability(options)` and
+`Translator.create(options)`.
 
-**Recommended Progress Monitoring:** You should implement a monitor for model download progress by providing a `monitor(m)` callback to `Translator.create()` and adding a listener for the `downloadprogress` event, so the user can see model download progress.
+**Recommended Progress Monitoring:** You should implement a monitor for model download progress by
+providing a `monitor(m)` callback to `Translator.create()` and adding a listener for the
+`downloadprogress` event, so the user can see model download progress.
 
-**User Gesture Requirement:** When calling `availability(options)` returns `'downloadable'` or `'downloading'`, calling `Translator.create()` triggers the download of the language pack and **strictly requires a user gesture** (such as a button click) to prevent a `NotAllowedError`.
+**User Gesture Requirement:** When calling `availability(options)` returns `'downloadable'` or
+`'downloading'`, calling `Translator.create()` triggers the download of the language pack and
+**strictly requires a user gesture** (such as a button click) to prevent a `NotAllowedError`.
 
 `Translator.availability(options)` returns one of four string statuses:
-- `'available'`: The language pair model is already downloaded on the device and ready for immediate translation.
-- `'downloadable'`: The language pair is supported, but the model needs to be downloaded. A user gesture is required to initiate `Translator.create()`.
-- `'downloading'`: The language pack is currently in the process of downloading. Calling `Translator.create()` with a user gesture attaches to the download.
+
+- `'available'`: The language pair model is already downloaded on the device and ready for immediate
+  translation.
+- `'downloadable'`: The language pair is supported, but the model needs to be downloaded. A user
+  gesture is required to initiate `Translator.create()`.
+- `'downloading'`: The language pack is currently in the process of downloading. Calling
+  `Translator.create()` with a user gesture attaches to the download.
 - `'unavailable'`: The language pair or device is not supported. Execute your fallback strategy.
 
 ```javascript
@@ -76,7 +88,8 @@ if (availability === 'available') {
 
 ### 2. Executing Translations
 
-The API supports both static and streaming responses. Always include download progress monitoring when instantiating the translator.
+The API supports both static and streaming responses. Always include download progress monitoring
+when instantiating the translator.
 
 **Standard Translation:**
 
@@ -110,7 +123,8 @@ for await (const chunk of stream) {
 
 ## Supported Languages
 
-The API supports a wide range of BCP 47 language codes: Here are the languages supported by Chrome's implementation of the Translator API:
+The API supports a wide range of BCP 47 language codes: Here are the languages supported by Chrome's
+implementation of the Translator API:
 
 - **ar**: Arabic
 - **bg**: Bulgarian
@@ -179,11 +193,23 @@ if ('Translator' in self) {
 }
 ```
 
-If the `Translator` API is unsupported or availability checks return `'unavailable'`, you must gracefully fall back. 
+If the `Translator` API is unsupported or availability checks return `'unavailable'`, you must
+gracefully fall back.
 
 Recommended options:
-1. **Remote API Fallback**: Redirect the translation request to a server endpoint or cloud remote API (such as the Vertex AI Gemini API) to deliver translation functionality.
-2. **Graceful Degradation**: Visually disable translation control elements or buttons while showing an end-user friendly note (e.g., `"Client-side translation is currently unsupported in this browser"`). Do not allow unhandled exceptions.
-3. **Polyfill Fallback**: You can use community-maintained polyfills like `built-in-ai-task-apis-polyfills` or `prompt-api-polyfill` to emulate the API surface using remote services.
 
-> **Privacy and Cost Implications:** These polyfills possibly proxy requests to remote servers (such as Gemini API over the cloud), though local processing is an option, too. Remote processing completely nullifies the on-device privacy guarantees of the native Built-in AI APIs and will often incur server-side API usage costs.
+1. **Remote API Fallback**: Redirect the translation request to a server endpoint or cloud remote
+   API (such as the Vertex AI Gemini API) to deliver translation functionality.
+2. **Graceful Degradation**: Visually disable translation control elements or buttons while showing
+   an end-user friendly note (e.g.,
+   `"Client-side translation is currently unsupported in this browser"`). Do not allow unhandled
+   exceptions.
+3. **Polyfill Fallback**: You can use community-maintained polyfills like
+   `built-in-ai-task-apis-polyfills` or `prompt-api-polyfill` to emulate the API surface using
+   remote services.
+
+> **Privacy and Cost Implications:** These polyfills possibly proxy requests to remote servers (such
+> as Gemini API over the cloud), though local processing is an option, too. Remote processing
+> completely nullifies the on-device privacy guarantees of the native Built-in AI APIs and will
+> often
+> incur server-side API usage costs.

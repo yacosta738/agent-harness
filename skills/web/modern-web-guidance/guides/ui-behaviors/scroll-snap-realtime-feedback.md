@@ -1,12 +1,19 @@
 # Scroll Snap Real-Time Feedback
 
 ## Overview
-Users expect immediate visual feedback when interacting with UI elements like carousels or galleries. Traditional scroll snap only provides feedback *after* the scroll gesture completes and the element settles. By using Scroll Snap Events, specifically `scrollsnapchanging`, you can provide real-time feedback during the scroll gesture, highlighting the pending snap target before the user releases their touch or mouse.
+
+Users expect immediate visual feedback when interacting with UI elements like carousels or
+galleries. Traditional scroll snap only provides feedback *after* the scroll gesture completes and
+the element settles. By using Scroll Snap Events, specifically `scrollsnapchanging`, you can provide
+real-time feedback during the scroll gesture, highlighting the pending snap target before the user
+releases their touch or mouse.
 
 ## Implementation
 
 ### 1. Listen for `scrollsnapchanging`
-Attach an event listener for `scrollsnapchanging` to the scroll container. This event fires when the browser determines a new snap target is likely to be selected.
+
+Attach an event listener for `scrollsnapchanging` to the scroll container. This event fires when the
+browser determines a new snap target is likely to be selected.
 
 ```javascript
 const container = document.querySelector('#gallery');
@@ -28,10 +35,13 @@ container.addEventListener('scrollsnapchanging', (event) => {
 });
 ```
 
-This example uses `snapTargetInline` because the gallery scrolls horizontally. If your scroll container scrolls vertically, use `snapTargetBlock` instead.
+This example uses `snapTargetInline` because the gallery scrolls horizontally. If your scroll
+container scrolls vertically, use `snapTargetBlock` instead.
 
 ### 2. Listen for `scrollsnapchange`
-To finalize the state when the scroll gesture completes and the element actually snaps, listen for the `scrollsnapchange` event. This is required to establish the final active state.
+
+To finalize the state when the scroll gesture completes and the element actually snaps, listen for
+the `scrollsnapchange` event. This is required to establish the final active state.
 
 ```javascript
 container.addEventListener('scrollsnapchange', (event) => {
@@ -52,7 +62,10 @@ container.addEventListener('scrollsnapchange', (event) => {
 ```
 
 ### 3. Sync initial state
-When the page loads, the scroll position might be restored by the browser (e.g., via history traversal or an anchor link). Neither `scrollsnapchange` nor `scroll` events will fire automatically. Run a one-off geometric check to sync the UI with the initial scroll position.
+
+When the page loads, the scroll position might be restored by the browser (e.g., via history
+traversal or an anchor link). Neither `scrollsnapchange` nor `scroll` events will fire
+automatically. Run a one-off geometric check to sync the UI with the initial scroll position.
 
 ```javascript
 // Note: For item.offsetLeft to be relative to the container, 
@@ -95,18 +108,24 @@ if (document.readyState === 'complete') {
 ```
 
 ### Fallback strategies
+
 Browser support for Scroll snap events: Limited availability.
 Supported by: Chrome 129 (Sep 2024) and Edge 129 (Sep 2024).
 Unsupported in: Firefox and Safari.
 
 Baseline status for Scroll snap: Widely available. It's been Baseline since 2020-01-15.
-Supported by: Chrome 69 (Sep 2018), Edge 79 (Jan 2020), Firefox 68 (Jul 2019), and Safari 11 (Sep 2017).
+Supported by: Chrome 69 (Sep 2018), Edge 79 (Jan 2020), Firefox 68 (Jul 2019), and Safari 11 (Sep
+2017).
 
-For browsers that do not support `scrollsnapchanging`, the UI will not provide eager feedback during the scroll gesture by default, and the linked UI will desynchronize from the content.
+For browsers that do not support `scrollsnapchanging`, the UI will not provide eager feedback during
+the scroll gesture by default, and the linked UI will desynchronize from the content.
 
-**MANDATORY:** Provide a fallback for browsers without support, or the linked UI will desynchronize from the content.
+**MANDATORY:** Provide a fallback for browsers without support, or the linked UI will desynchronize
+from the content.
 
-**DO** simulate the real-time nature of `scrollsnapchanging` with a `scroll` event listener coupled with `requestAnimationFrame` and geometric distance calculations to determine the closest snap target while the user is actively scrolling.
+**DO** simulate the real-time nature of `scrollsnapchanging` with a `scroll` event listener coupled
+with `requestAnimationFrame` and geometric distance calculations to determine the closest snap
+target while the user is actively scrolling.
 
 ```javascript
 if ('onscrollsnapchanging' in Element.prototype) {
@@ -153,4 +172,7 @@ if ('onscrollsnapchanging' in Element.prototype) {
 }
 ```
 
-The geometric `scroll` + `requestAnimationFrame` fallback closely emulates the behavior of native snap prediction, including handling programmatic scrolling correctly. Because functions like `scrollIntoView` naturally fire `scroll` events during their execution, the UI will stay smoothly synchronized throughout the scroll animation without requiring additional custom logic.
+The geometric `scroll` + `requestAnimationFrame` fallback closely emulates the behavior of native
+snap prediction, including handling programmatic scrolling correctly. Because functions like
+`scrollIntoView` naturally fire `scroll` events during their execution, the UI will stay smoothly
+synchronized throughout the scroll animation without requiring additional custom logic.

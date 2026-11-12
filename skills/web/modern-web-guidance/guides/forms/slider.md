@@ -2,18 +2,27 @@
 
 ## Use the native range input
 
-Use a labeled `<input type="range">` rather than recreating a slider with `<div>` elements or custom pointer handlers. The native control preserves keyboard and pointer interaction, touch behavior, and accessibility support. Configure `min`, `max`, `step`, and `value` for the use case.
+Use a labeled `<input type="range">` rather than recreating a slider with `<div>` elements or custom
+pointer handlers. The native control preserves keyboard and pointer interaction, touch behavior, and
+accessibility support. Configure `min`, `max`, `step`, and `value` for the use case.
 
 ```html
 <label for="range-slider">Volume</label>
 <input type="range" id="range-slider" value="70"/>
 ```
 
-If the value requires a formatted label or unit, expose it in ordinary DOM content and update `aria-valuetext` when changed. Do not use `::before` or `::after` on slider pseudo-elements, as generated content on form controls is not interoperable. If a tooltip that follows the thumb is required, anchor it to the thumb with CSS anchor positioning; see `position-aware-tooltips` (via `npx -y modern-web-guidance@latest retrieve "position-aware-tooltips"`) for tooltips that stay correctly oriented when they flip.
+If the value requires a formatted label or unit, expose it in ordinary DOM content and update
+`aria-valuetext` when changed. Do not use `::before` or `::after` on slider pseudo-elements, as
+generated content on form controls is not interoperable. If a tooltip that follows the thumb is
+required, anchor it to the thumb with CSS anchor positioning; see `position-aware-tooltips` (via
+`npx -y modern-web-guidance@latest retrieve "position-aware-tooltips"`) for tooltips that stay
+correctly oriented when they flip.
 
 ## Choose the styling approach
 
-For simple color customization, use `brand-consistent-forms` (via `npx -y modern-web-guidance@latest retrieve "brand-consistent-forms"`) and retain the browser’s native rendering:
+For simple color customization, use `brand-consistent-forms` (via
+`npx -y modern-web-guidance@latest retrieve "brand-consistent-forms"`) and retain the browser’s
+native rendering:
 
 ```css
 input[type="range"] {
@@ -21,11 +30,18 @@ input[type="range"] {
 }
 ```
 
-`accent-color` is not a complete slider styling API. Its effect on the thumb, track, and fill is user-agent-dependent. Use the pseudo-elements below when the track, thumb, dimensions, shape, or fill must be controlled.
+`accent-color` is not a complete slider styling API. Its effect on the thumb, track, and fill is
+user-agent-dependent. Use the pseudo-elements below when the track, thumb, dimensions, shape, or
+fill must be controlled.
 
 ## Style the track and thumb
 
-Reset default OS styling with `appearance: none`, `margin: 0`, and `border: 0`. To normalize cross-browser rendering, declare WebKit and Firefox pseudo-elements in separate rule blocks, and center the WebKit thumb using `margin-block-start: calc((var(--slider-track-size) - var(--slider-thumb-size)) / 2)` (Firefox centers the thumb automatically). Keep consumer-facing values as custom properties on the input so themes do not target pseudo-elements directly.
+Reset default OS styling with `appearance: none`, `margin: 0`, and `border: 0`. To normalize
+cross-browser rendering, declare WebKit and Firefox pseudo-elements in separate rule blocks, and
+center the WebKit thumb using
+`margin-block-start: calc((var(--slider-track-size) - var(--slider-thumb-size)) / 2)` (Firefox
+centers the thumb automatically). Keep consumer-facing values as custom properties on the input so
+themes do not target pseudo-elements directly.
 
 ```css
 input[type="range"] {
@@ -110,7 +126,8 @@ input[type="range"]::-moz-range-thumb {
 }
 ```
 
-Always provide a visible keyboard focus indicator after removing the native appearance. Do not use color alone:
+Always provide a visible keyboard focus indicator after removing the native appearance. Do not use
+color alone:
 
 ```css
 input[type="range"]:focus-visible {
@@ -121,7 +138,9 @@ input[type="range"]:focus-visible {
 
 ## Style the active track
 
-When the filled portion of the track is styled differently from the unfilled track, Firefox exposes it via `::-moz-range-progress`. WebKit/Blink do not provide an equivalent pseudo-element, so sync the live input value to `--control-value` on `input` events:
+When the filled portion of the track is styled differently from the unfilled track, Firefox exposes
+it via `::-moz-range-progress`. WebKit/Blink do not provide an equivalent pseudo-element, so sync
+the live input value to `--control-value` on `input` events:
 
 ```js
 const slider = document.querySelector('#range-slider');
@@ -136,22 +155,26 @@ slider.addEventListener('input', syncSliderValue);
 
 ## Limitations
 
-- Do not combine WebKit and Firefox pseudo-selectors into a single comma-separated list (e.g. `::-webkit-slider-thumb, ::-moz-range-thumb`); browsers drop the entire rule if an unrecognized vendor pseudo-element is encountered.
+- Do not combine WebKit and Firefox pseudo-selectors into a single comma-separated list (e.g.
+  `::-webkit-slider-thumb, ::-moz-range-thumb`); browsers drop the entire rule if an unrecognized
+  vendor pseudo-element is encountered.
 
 ## Fallbacks
 
 ### Fallbacks & browser support for accent-color
 
 Browser support for accent-color: Limited availability.
-Supported by: Chrome 93 (Aug 2021), Edge 93 (Sep 2021), Firefox 92 (Sep 2021), and Safari 26.2 (Dec 2025).
+Supported by: Chrome 93 (Aug 2021), Edge 93 (Sep 2021), Firefox 92 (Sep 2021), and Safari 26.2 (Dec
+2025).
 
 The `accent-color` property is progressive enhancement.
 Browsers that do not support this property will ignore it and use their default UI colors.
 
 ### Fallbacks & browser support for `progress()` and `attr()`
 
-Baseline status for progress(): Newly available. It's been Baseline since 2026-09-01.
-Supported by: Chrome 138 (Jun 2025), Edge 138 (Jun 2025), Firefox 155 (Sep 2026), and Safari 26 (Sep 2025).
+Baseline status for progress (): Newly available. It's been Baseline since 2026-09-01.
+Supported by: Chrome 138 (Jun 2025), Edge 138 (Jun 2025), Firefox 155 (Sep 2026), and Safari 26 (Sep
+2025).
 
 When `progress()` is unsupported, compute `--slider-progress` with `calc()`:
 
@@ -166,11 +189,12 @@ When `progress()` is unsupported, compute `--slider-progress` with `calc()`:
 }
 ```
 
-Browser support for attr(): Limited availability.
+Browser support for attr (): Limited availability.
 Supported by: Chrome 133 (Feb 2025), Edge 133 (Feb 2025), and Firefox 155 (Sep 2026).
 Unsupported in: Safari.
 
-When typed `attr()` is unsupported, sync `--attr-min` and `--attr-max` from the input's `min` and `max` attributes in JavaScript:
+When typed `attr()` is unsupported, sync `--attr-min` and `--attr-max` from the input's `min` and
+`max` attributes in JavaScript:
 
 ```js
 function syncSliderValue() {

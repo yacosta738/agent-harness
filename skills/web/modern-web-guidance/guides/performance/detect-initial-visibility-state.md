@@ -1,12 +1,19 @@
 # Detect Initial Visibility State
 
-Determining if a page was initially loaded in the background (e.g., opened in a new background tab) is critical for accurate performance monitoring. Pages loaded in the background often have delayed rendering and longer metric times (like First Contentful Paint). Identifying these pages allows you to filter them out of performance analytics to avoid skewed data.
+Determining if a page was initially loaded in the background (e.g., opened in a new background tab)
+is critical for accurate performance monitoring. Pages loaded in the background often have delayed
+rendering and longer metric times (like First Contentful Paint). Identifying these pages allows you
+to filter them out of performance analytics to avoid skewed data.
 
-The most accurate way to measure this is by using the `VisibilityStateEntry` API, which reliably records visibility changes on the browser's performance timeline, regardless of when your script actually executes.
+The most accurate way to measure this is by using the `VisibilityStateEntry` API, which reliably
+records visibility changes on the browser's performance timeline, regardless of when your script
+actually executes.
 
 ### Detecting initial visibility and background time
 
-MANDATORY: Use `performance.getEntriesByType('visibility-state')` to access the exact visibility history. Do not rely solely on checking `document.visibilityState` at execution time, as it is susceptible to race conditions.
+MANDATORY: Use `performance.getEntriesByType('visibility-state')` to access the exact visibility
+history. Do not rely solely on checking `document.visibilityState` at execution time, as it is
+susceptible to race conditions.
 
 ```javascript
 /**
@@ -49,9 +56,17 @@ Browser support for Page visibility state performance entries: Limited availabil
 Supported by: Chrome 115 (Jul 2023) and Edge 115 (Jul 2023).
 Unsupported in: Firefox and Safari.
 
-For unsupported environments, you may fall back to checking the `document.visibilityState` property or listening for the `visibilitychange` event.
+For unsupported environments, you may fall back to checking the `document.visibilityState` property
+or listening for the `visibilitychange` event.
 
-**MANDATORY:** You must understand that this fallback approach is often **highly inaccurate for determining initial background state**. Because scripts can load and execute asynchronously, a page could be opened in a background tab and then foregrounded by the user *before* your script has finished downloading and executing. When your script finally runs, `document.visibilityState` will synchronously read as `'visible'`, and you will incorrectly assume the page was loaded in the foreground, completely missing its initial hidden state. Furthermore, the fallback timestamp lacks the internal precision of the Performance API. If precision is a high priority, do not use the fallback.
+**MANDATORY:** You must understand that this fallback approach is often **highly inaccurate for
+determining initial background state**. Because scripts can load and execute asynchronously, a page
+could be opened in a background tab and then foregrounded by the user *before* your script has
+finished downloading and executing. When your script finally runs, `document.visibilityState` will
+synchronously read as `'visible'`, and you will incorrectly assume the page was loaded in the
+foreground, completely missing its initial hidden state. Furthermore, the fallback timestamp lacks
+the internal precision of the Performance API. If precision is a high priority, do not use the
+fallback.
 
 ```javascript
 /**

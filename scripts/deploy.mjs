@@ -37,7 +37,8 @@ function parseArgs(argv) {
     } else if (a === "--help" || a === "-h") {
       out.help = true;
     } else {
-      throw new Error(`Unknown option '${a}'. Use --help for supported options.`);
+      throw new Error(
+          `Unknown option '${a}'. Use --help for supported options.`);
     }
   }
   return out;

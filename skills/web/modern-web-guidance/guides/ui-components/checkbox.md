@@ -1,12 +1,16 @@
 # Styling Checkboxes
 
-Use semantic, accessible HTML with each checkbox associated with its label, either by nesting the `<input>` inside the `<label>` or by matching the label’s `for` attribute to the input’s `id`.
+Use semantic, accessible HTML with each checkbox associated with its label, either by nesting the
+`<input>` inside the `<label>` or by matching the label’s `for` attribute to the input’s `id`.
 
-Modern CSS provides two approaches to styling checkboxes: customize the native appearance with `accent-color`, or override the default presentation with `appearance: none` on the `<input type="checkbox">` element.
+Modern CSS provides two approaches to styling checkboxes: customize the native appearance with
+`accent-color`, or override the default presentation with `appearance: none` on the
+`<input type="checkbox">` element.
 
 ## Native customization with `accent-color`
 
-For simple, brand-consistent styling that retains native rendering, keyboard behavior, validation, and operating-system focus indicators, use `accent-color`.
+For simple, brand-consistent styling that retains native rendering, keyboard behavior, validation,
+and operating-system focus indicators, use `accent-color`.
 
 ```css
 .checkbox-native {
@@ -26,7 +30,9 @@ Use `appearance: none` when the design requires control over the checkbox’s
 shape, size, states, or indicators. This removes the native visual styling while
 leaving the `<input>` as the interactive target.
 
-Set explicit relative sizes for `--checkbox-size` and `--checkbox-icon-size` because `appearance: none` removes the browser’s default dimensions. Keep the icon smaller than the checkbox to provide space for its border and visual padding.
+Set explicit relative sizes for `--checkbox-size` and `--checkbox-icon-size` because
+`appearance: none` removes the browser’s default dimensions. Keep the icon smaller than the checkbox
+to provide space for its border and visual padding.
 
 ```css
 /* Reusable SVG assets */
@@ -90,13 +96,16 @@ Set explicit relative sizes for `--checkbox-size` and `--checkbox-icon-size` bec
 }
 ```
 
-
 ## The indeterminate state
 
-The indeterminate state cannot be set via an HTML attribute; set the `indeterminate` DOM property in JavaScript (`checkbox.indeterminate = true`) and ensure the `:indeterminate` pseudo-class is visually distinct from both `:checked` and unchecked states:
+The indeterminate state cannot be set via an HTML attribute; set the `indeterminate` DOM property in
+JavaScript (`checkbox.indeterminate = true`) and ensure the `:indeterminate` pseudo-class is
+visually distinct from both `:checked` and unchecked states:
 
-* **Native (`accent-color`):** Automatically styled by the browser using the element's `accent-color` (no extra `:indeterminate` CSS rule needed).
-* **Custom (`appearance: none`):** Swap `--checkbox-icon` to `var(--icon-dash)` on `.checkbox-custom:indeterminate` as shown above.
+* **Native (`accent-color`):** Automatically styled by the browser using the element's
+  `accent-color` (no extra `:indeterminate` CSS rule needed).
+* **Custom (`appearance: none`):** Swap `--checkbox-icon` to `var(--icon-dash)` on
+  `.checkbox-custom:indeterminate` as shown above.
 
 ```js
 const selectAll = document.querySelector("#select-all");
@@ -105,9 +114,11 @@ selectAll.indeterminate = true;
 
 ## Accessibility and interaction
 
-- **DO** use `:focus-visible` rather than `:focus` to style focus indicators on custom checkboxes so a distinct outline appears for keyboard navigation without showing on pointer clicks.
+- **DO** use `:focus-visible` rather than `:focus` to style focus indicators on custom checkboxes so
+  a distinct outline appears for keyboard navigation without showing on pointer clicks.
 - **DO NOT** use `outline: none` or hide focus indicators on checkboxes.
-- **DO** ensure the checkbox or its wrapping `<label>` provides an interactive hit target of at least `44px x 44px` while keeping the visual checkbox box sized in relative units:
+- **DO** ensure the checkbox or its wrapping `<label>` provides an interactive hit target of at
+  least `44px x 44px` while keeping the visual checkbox box sized in relative units:
   ```css
   label {
     display: inline-flex;
@@ -117,21 +128,29 @@ selectAll.indeterminate = true;
     cursor: pointer;
   }
   ```
-- **DO** provide a `:disabled` style variant that lowers opacity and sets `cursor: not-allowed` to convey inactive states clearly.
+- **DO** provide a `:disabled` style variant that lowers opacity and sets `cursor: not-allowed` to
+  convey inactive states clearly.
 
 ### Issues to be aware of when using accent-color
 
 Browser rendering of `accent-color` varies.
-For indicators generally painted over an accent color background, such as checkbox marks and radio-button dots, browsers may apply different treatments:
+For indicators generally painted over an accent color background, such as checkbox marks and
+radio-button dots, browsers may apply different treatments:
+
 - **Chromium** and **Firefox** generally select a contrasting indicator color.
-- **Safari** may instead preserve a white indicator in light mode or a black indicator in dark mode, while modifying the accent color behind it. This adjustment does not always provide sufficient contrast for every supplied color, so test important combinations in Safari, including both light and dark color schemes. Do not assume that Safari will automatically choose whichever indicator color provides the best contrast.
+- **Safari** may instead preserve a white indicator in light mode or a black indicator in dark mode,
+  while modifying the accent color behind it. This adjustment does not always provide sufficient
+  contrast for every supplied color, so test important combinations in Safari, including both light
+  and dark color schemes. Do not assume that Safari will automatically choose whichever indicator
+  color provides the best contrast.
 
 ## Fallback strategies
 
 ### Fallbacks & browser support for accent-color
 
 Browser support for accent-color: Limited availability.
-Supported by: Chrome 93 (Aug 2021), Edge 93 (Sep 2021), Firefox 92 (Sep 2021), and Safari 26.2 (Dec 2025).
+Supported by: Chrome 93 (Aug 2021), Edge 93 (Sep 2021), Firefox 92 (Sep 2021), and Safari 26.2 (Dec
+2025).
 
 The `accent-color` property is progressive enhancement.
 Browsers that do not support this property will ignore it and use their default UI colors.
@@ -139,4 +158,5 @@ Browsers that do not support this property will ignore it and use their default 
 ### CSS Masks
 
 Baseline status for Masks: Widely available. It's been Baseline since 2023-12-07.
-Supported by: Chrome 120 (Dec 2023), Edge 120 (Dec 2023), Firefox 53 (Apr 2017), and Safari 15.4 (Mar 2022).
+Supported by: Chrome 120 (Dec 2023), Edge 120 (Dec 2023), Firefox 53 (Apr 2017), and Safari 15.4
+(Mar 2022).

@@ -1,11 +1,18 @@
 # Scroll Snap State Sync
 
-Synchronizing UI state with a scrollable container's snap position traditionally required complex scroll event listeners, manual calculations of scroll offsets, and intersection observers. The `scrollsnapchange` event provides a native, efficient way to detect when a scroller has settled on a new snap target, making it useful for synchronizing sidebars or highlighting the active section in a table of contents.
+Synchronizing UI state with a scrollable container's snap position traditionally required complex
+scroll event listeners, manual calculations of scroll offsets, and intersection observers. The
+`scrollsnapchange` event provides a native, efficient way to detect when a scroller has settled on a
+new snap target, making it useful for synchronizing sidebars or highlighting the active section in a
+table of contents.
 
 ## Implementation
 
 ### 1. Configure Scroll Snap in CSS
-The container must have `scroll-snap-type` defined, and have children with `scroll-snap-align` for the browser to track snap targets. In a long article with a table of contents, you can use this to snap section headers to the top of the viewport.
+
+The container must have `scroll-snap-type` defined, and have children with `scroll-snap-align` for
+the browser to track snap targets. In a long article with a table of contents, you can use this to
+snap section headers to the top of the viewport.
 
 ```css
 main {
@@ -21,7 +28,10 @@ h2 {
 ```
 
 ### 2. Listen for Snap Changes
-Use the `scrollsnapchange` event on the scroll container to react when the user finishes scrolling and the browser snaps to a new element. In our TOC demo, we use this to highlight the active link in the sidebar.
+
+Use the `scrollsnapchange` event on the scroll container to react when the user finishes scrolling
+and the browser snaps to a new element. In our TOC demo, we use this to highlight the active link in
+the sidebar.
 
 ```html
 <!-- MANDATORY: Wrap table of contents links inside a proper navigation landmark -->
@@ -48,15 +58,18 @@ main.addEventListener('scrollsnapchange', (event) => {
 });
 ```
 
-
 ## Accessibility
 
-Caution: While Scroll Snap Events make it possible to visually synchronize other content to the state of the scroller, it does not automatically expose that information programmatically. Relationships between elements, active states, and live content must be reflected in the Accessibility Tree.
+Caution: While Scroll Snap Events make it possible to visually synchronize other content to the
+state of the scroller, it does not automatically expose that information programmatically.
+Relationships between elements, active states, and live content must be reflected in the
+Accessibility Tree.
 
-For a table of contents, ensure the sidebar links use `aria-current="true"` or `aria-current="location"` when they are active.
+For a table of contents, ensure the sidebar links use `aria-current="true"` or
+`aria-current="location"` when they are active.
 
-In addition, be careful when using the `mandatory` value for `scroll-snap-type`, as it can cause content in-between snap-points to become inaccessible when longer than the screen.
-
+In addition, be careful when using the `mandatory` value for `scroll-snap-type`, as it can cause
+content in-between snap-points to become inaccessible when longer than the screen.
 
 ## Fallback strategies
 
@@ -64,7 +77,9 @@ Browser support for Scroll snap events: Limited availability.
 Supported by: Chrome 129 (Sep 2024) and Edge 129 (Sep 2024).
 Unsupported in: Firefox and Safari.
 
-If `scrollsnapchange` is not supported, use `IntersectionObserver` to detect which element is currently at the top of the scroller. Note this is different behavior than `scrollsnapchange`, as this will trigger while the scroll happens, rather than only when the scroll has settled.
+If `scrollsnapchange` is not supported, use `IntersectionObserver` to detect which element is
+currently at the top of the scroller. Note this is different behavior than `scrollsnapchange`, as
+this will trigger while the scroll happens, rather than only when the scroll has settled.
 
 ```javascript
 // Feature detect support for scroll snap events

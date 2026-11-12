@@ -1,12 +1,18 @@
 # Scrollytelling
 
-Scrollytelling is a popular technique used to create engaging and immersive web experiences. It involves animating elements on a page as the user scrolls, effectively telling a story or guiding the user through a narrative. With CSS Scroll-Driven Animations, you can create these effects directly in CSS, without needing to rely on JavaScript. The animations are controlled by the scroll position, not a time-based clock, which ensures they are always in sync with the user's scroll.
+Scrollytelling is a popular technique used to create engaging and immersive web experiences. It
+involves animating elements on a page as the user scrolls, effectively telling a story or guiding
+the user through a narrative. With CSS Scroll-Driven Animations, you can create these effects
+directly in CSS, without needing to rely on JavaScript. The animations are controlled by the scroll
+position, not a time-based clock, which ensures they are always in sync with the user's scroll.
 
 ## How to implement
 
-To create a scrollytelling experience, you need two sets of elements: one to track the scroll position and another to be animated.
+To create a scrollytelling experience, you need two sets of elements: one to track the scroll
+position and another to be animated.
 
-First, define a named `view-timeline` on the elements you want to track. These will act as the drivers for your animations.
+First, define a named `view-timeline` on the elements you want to track. These will act as the
+drivers for your animations.
 
 ```css
 #tracked {
@@ -18,7 +24,8 @@ First, define a named `view-timeline` on the elements you want to track. These w
 }
 ```
 
-Next, apply animations to the elements you want to animate and link them to the timelines you just created using the `animation-timeline` property.
+Next, apply animations to the elements you want to animate and link them to the timelines you just
+created using the `animation-timeline` property.
 
 ```css
 #animated {
@@ -35,7 +42,9 @@ Next, apply animations to the elements you want to animate and link them to the 
 }
 ```
 
-For the `animation-timeline` to be able to reference the named timelines, they need to be in the same scope. You can use the `timeline-scope` property on a common ancestor to make the timelines available to all the elements that need them. The `:root` element is often a good choice for this.
+For the `animation-timeline` to be able to reference the named timelines, they need to be in the
+same scope. You can use the `timeline-scope` property on a common ancestor to make the timelines
+available to all the elements that need them. The `:root` element is often a good choice for this.
 
 ```css
 html {
@@ -43,7 +52,9 @@ html {
 }
 ```
 
-Finally, you can use the `animation-range` property to specify the exact range of the timeline during which the animation should run. This gives you fine-grained control over when the animations are triggered and how they progress.
+Finally, you can use the `animation-range` property to specify the exact range of the timeline
+during which the animation should run. This gives you fine-grained control over when the animations
+are triggered and how they progress.
 
 ```css
 #animated section {
@@ -100,21 +111,36 @@ html {
 
 ## Best Practices
 
-When using scroll-driven animations, it's important to follow a few best practices to ensure a smooth and accessible experience:
+When using scroll-driven animations, it's important to follow a few best practices to ensure a
+smooth and accessible experience:
 
-- **DO** include feature detection: Not all browsers support scroll-driven animations. Use `@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%))` to check for support and provide a fallback for browsers that don't support it.
-  - The `(animation-range: 0% 100%)` check **MUST** be included here, to filter out browsers with only partial support.
-  - **DO NOT** use the `scroll-timeline-polyfill` package for the fallback strategy as it is not feature complete and has a lot of known issues.
-  - If the animation is only considered to be decorative, opt for Progressive Enhancement and **DO NOT** provide a fallback.
-- **DO** respect user preferences: Some users prefer to have less motion on the web. Use the `prefers-reduced-motion` media query to disable or reduce your animations for these users.
-- **DO** try to animate only performant CSS properties: For the smoothest animations, stick to animating properties that can be handled by the browser's compositor thread, such as `transform` and `opacity`. Animating other properties like `width` or `height` can lead to performance issues.
-- **DO** use the correct declaration order: When using the `animation` shorthand property, declare `animation-timeline` and `animation-range` *after* it to prevent the shorthand from resetting the timeline.
+- **DO** include feature detection: Not all browsers support scroll-driven animations. Use
+  `@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%))` to check for support
+  and provide a fallback for browsers that don't support it.
+    - The `(animation-range: 0% 100%)` check **MUST** be included here, to filter out browsers with
+      only partial support.
+    - **DO NOT** use the `scroll-timeline-polyfill` package for the fallback strategy as it is not
+      feature complete and has a lot of known issues.
+    - If the animation is only considered to be decorative, opt for Progressive Enhancement and **DO
+      NOT** provide a fallback.
+- **DO** respect user preferences: Some users prefer to have less motion on the web. Use the
+  `prefers-reduced-motion` media query to disable or reduce your animations for these users.
+- **DO** try to animate only performant CSS properties: For the smoothest animations, stick to
+  animating properties that can be handled by the browser's compositor thread, such as `transform`
+  and `opacity`. Animating other properties like `width` or `height` can lead to performance issues.
+- **DO** use the correct declaration order: When using the `animation` shorthand property, declare
+  `animation-timeline` and `animation-range` *after* it to prevent the shorthand from resetting the
+  timeline.
 
 When using the `view-timeline` property to create a scroll-driven animation:
 
 - **DO** use a CSS `<dashed-ident>` for the name.
-- **OPTIONAL** be explicit about the axis to track: When not targeting the default `block` axis (such as in a horizontal scroller), be explicit about which axis to track with `view-timeline-axis`.
-- **DO** make sure the scope of the lookup works: When the element that is declaring the `view-timeline` is not a flat tree ancestor of the animated element, hoist up the visibility of the `view-timeline`’s name by using `timeline-scope` on a shared ancestor.
+- **OPTIONAL** be explicit about the axis to track: When not targeting the default `block` axis
+  (such as in a horizontal scroller), be explicit about which axis to track with
+  `view-timeline-axis`.
+- **DO** make sure the scope of the lookup works: When the element that is declaring the
+  `view-timeline` is not a flat tree ancestor of the animated element, hoist up the visibility of
+  the `view-timeline`’s name by using `timeline-scope` on a shared ancestor.
 
 ## Fallback strategies
 
@@ -122,13 +148,19 @@ Browser support for Scroll-driven animations: Limited availability.
 Supported by: Chrome 115 (Jul 2023), Edge 115 (Jul 2023), and Safari 26 (Sep 2025).
 Unsupported in: Firefox.
 
-For browsers that do not support scroll-driven animations, you can use a fallback to recreate the visual effects. The fallbacks are typically built with either a scroll listener (for ScrollTimeline effects) or the IntersectionObserver API (for ViewTimeline effects).
+For browsers that do not support scroll-driven animations, you can use a fallback to recreate the
+visual effects. The fallbacks are typically built with either a scroll listener (for ScrollTimeline
+effects) or the IntersectionObserver API (for ViewTimeline effects).
 
-In browsers with built-in support for scroll-driven animations, ALWAYS use the native CSS implementation as those are more performant.
+In browsers with built-in support for scroll-driven animations, ALWAYS use the native CSS
+implementation as those are more performant.
 
 Note that not every effect can be recreated using the fallbacks approach.
 
-For this use-case specifically, the following script applies the fallback for browsers that do not support scroll-driven animations. It uses an `IntersectionObserver` to track the visibility of each `#tracked section` element and updates the `transform` property of the corresponding `#animated section` accordingly.
+For this use-case specifically, the following script applies the fallback for browsers that do not
+support scroll-driven animations. It uses an `IntersectionObserver` to track the visibility of each
+`#tracked section` element and updates the `transform` property of the corresponding
+`#animated section` accordingly.
 
 ```js
 const animatedSections = document.querySelectorAll('#animated section');
@@ -178,4 +210,7 @@ And the accompanying CSS:
 }
 ```
 
-This fallback provides a more accurate, scroll-driven animation for browsers that do not support the native CSS feature, ensuring a more consistent experience for all users. By using a series of thresholds for the `IntersectionObserver`, we can track the scroll position with more precision and create a smoother animation.
+This fallback provides a more accurate, scroll-driven animation for browsers that do not support the
+native CSS feature, ensuring a more consistent experience for all users. By using a series of
+thresholds for the `IntersectionObserver`, we can track the scroll position with more precision and
+create a smoother animation.

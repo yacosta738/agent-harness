@@ -1,22 +1,31 @@
 # Progress ring
 
-A progress ring (or circular progress bar) provides visual feedback on the status of a task. Unlike a linear progress bar, its circular shape is ideal for dashboards, card components, or anywhere space is constrained.
+A progress ring (or circular progress bar) provides visual feedback on the status of a task. Unlike
+a linear progress bar, its circular shape is ideal for dashboards, card components, or anywhere
+space is constrained.
 
 This guide implements a progress ring by:
 
-- Using the native `<progress>` element as the semantic foundation to ensure the component is accessible to screen readers and keyboard users out-of-the-box.
-- Styling the component with `conic-gradient()` and `mask-image`, allowing for a fully responsive and themeable ring without the complexity of SVG path manipulation.
-- Leveraging CSS Custom Properties and `@property` to enable smooth, GPU-accelerated transitions of the progress fill.
+- Using the native `<progress>` element as the semantic foundation to ensure the component is
+  accessible to screen readers and keyboard users out-of-the-box.
+- Styling the component with `conic-gradient()` and `mask-image`, allowing for a fully responsive
+  and themeable ring without the complexity of SVG path manipulation.
+- Leveraging CSS Custom Properties and `@property` to enable smooth, GPU-accelerated transitions of
+  the progress fill.
 
-This approach is preferred over SVG-only solutions because it uses the semantic `<progress>` element rather than ARIA, and more easily integrates with existing layout, design systems and typography.
+This approach is preferred over SVG-only solutions because it uses the semantic `<progress>` element
+rather than ARIA, and more easily integrates with existing layout, design systems and typography.
 
-See the `spinner` (via `npx -y modern-web-guidance@latest retrieve "spinner"`) for handling indeterminate loading states.
+See the `spinner` (via `npx -y modern-web-guidance@latest retrieve "spinner"`) for handling
+indeterminate loading states.
 
 ## Implementation
 
 ### 1. Markup
 
-Use a wrapper to hold both the visual ring and the optional center content. The `<progress>` element remains the semantic source of truth. Use a utility class to visually hide the native progress bar while keeping it accessible.
+Use a wrapper to hold both the visual ring and the optional center content. The `<progress>` element
+remains the semantic source of truth. Use a utility class to visually hide the native progress bar
+while keeping it accessible.
 
 ```html
 <div class="ring-wrapper">
@@ -31,7 +40,9 @@ Use a wrapper to hold both the visual ring and the optional center content. The 
 ### 2. Styles
 
 #### Hiding Native UI
-To style the `<progress>` element as a progress ring, first hide the default browser styling for progress bars.
+
+To style the `<progress>` element as a progress ring, first hide the default browser styling for
+progress bars.
 
 ```css
 /* Hide native bars */
@@ -97,10 +108,12 @@ You can also use a `radial-gradient` to make rounded end caps.
 
 #### Enable smooth transitions with `@property`
 
-To animate the progress ring smoothly when the value changes, register `--value` as a numeric custom property. 
+To animate the progress ring smoothly when the value changes, register `--value` as a numeric custom
+property.
 
-Users with motion sensitivities may find the transition between values disorienting. Respect the `prefers-reduced-motion` media query by having a 0 second (immediate) duration by default, and setting a longer time for users with no preference.
-
+Users with motion sensitivities may find the transition between values disorienting. Respect the
+`prefers-reduced-motion` media query by having a 0 second (immediate) duration by default, and
+setting a longer time for users with no preference.
 
 ```css
 @property --value {
@@ -120,11 +133,13 @@ progress.progress-ring {
 
 ### 3. Progress Updates
 
-Update the `value` attribute on the `<progress>` element and the text content of `.progress-ring-content` (if displaying a percentage) whenever the value changes.
+Update the `value` attribute on the `<progress>` element and the text content of
+`.progress-ring-content` (if displaying a percentage) whenever the value changes.
 
 ### 4. Optional Success State
 
-You can use the CSS attribute selector to automatically update the ring's appearance (e.g., changing the color to green) when the task reaches completion.
+You can use the CSS attribute selector to automatically update the ring's appearance (e.g., changing
+the color to green) when the task reaches completion.
 
 ```css
 /* Change the fill color to green when the progress reaches 100% */
@@ -135,22 +150,28 @@ progress.progress-ring[value="100"] {
 
 ## Fallback strategies
 
-Do not add a fallback value inside the `<progress>` element. It is not used by assistive technology and ignored by all modern browsers.
+Do not add a fallback value inside the `<progress>` element. It is not used by assistive technology
+and ignored by all modern browsers.
 
 #### Animation fallback
 
-Baseline status for Registered custom properties: Newly available. It's been Baseline since 2024-07-09.
-Supported by: Chrome 85 (Aug 2020), Edge 85 (Aug 2020), Firefox 128 (Jul 2024), and Safari 16.4 (Mar 2023).
+Baseline status for Registered custom properties: Newly available. It's been Baseline since
+2024-07-09.
+Supported by: Chrome 85 (Aug 2020), Edge 85 (Aug 2020), Firefox 128 (Jul 2024), and Safari 16.4 (Mar
+2023).
 
-If `@property` is not supported, the ring will jump to the new value instantly instead of transitioning smoothly. In most cases this is fine, and does not break any functionality.
+If `@property` is not supported, the ring will jump to the new value instantly instead of
+transitioning smoothly. In most cases this is fine, and does not break any functionality.
 
-If the transition is absolutely necessary, you can check for `@property` support and use a `requestAnimationFrame()` loop to interpolate `--value` in older browsers.
+If the transition is absolutely necessary, you can check for `@property` support and use a
+`requestAnimationFrame()` loop to interpolate `--value` in older browsers.
 
 Browser support for background-clip: border-area: Limited availability.
 Supported by: Chrome 150 (Jun 2026), Edge 150 (Jul 2026), and Safari 18.2 (Dec 2024).
 Unsupported in: Firefox.
 
-For browsers that don't yet support `background-clip: border-area`, fall back to a `mask-image` to hollow out the center of the `<progress>` element.
+For browsers that don't yet support `background-clip: border-area`, fall back to a `mask-image` to
+hollow out the center of the `<progress>` element.
 
 ```css
 @supports not (background-clip: border-area) {
@@ -162,11 +183,12 @@ For browsers that don't yet support `background-clip: border-area`, fall back to
 }
 ```
 
-Browser support for attr(): Limited availability.
+Browser support for attr (): Limited availability.
 Supported by: Chrome 133 (Feb 2025), Edge 133 (Feb 2025), and Firefox 155 (Sep 2026).
 Unsupported in: Safari.
 
-For browsers that don't support the `attr()` CSS function for any property, use a `MutationObserver` to automatically sync the `value` attribute to the `--value` custom property.
+For browsers that don't support the `attr()` CSS function for any property, use a `MutationObserver`
+to automatically sync the `value` attribute to the `--value` custom property.
 
 ```js
 if (!CSS.supports("width: attr(value type(<number>))")) {

@@ -1,10 +1,16 @@
 # Enable interactive HTML content in 3D scenes
 
-The HTML-in-Canvas API allows rendering real DOM directly inside a canvas element. When applied to 3D rendering contexts like WebGL, WebGPU, or Three.js, adding the `content="drawable"` attribute to the canvas, and the `drawable` attribute to its descendant HTML elements, enables those elements to be seamlessly projected into the 3D scene. Crucially, because the HTML elements remain part of the active DOM layout tree, they retain full interactivity—allowing users to click buttons, select text, and trigger focus states natively without requiring complex raycasting or custom event handling.
+The HTML-in-Canvas API allows rendering real DOM directly inside a canvas element. When applied to
+3D rendering contexts like WebGL, WebGPU, or Three.js, adding the `content="drawable"` attribute to
+the canvas, and the `drawable` attribute to its descendant HTML elements, enables those elements to
+be seamlessly projected into the 3D scene. Crucially, because the HTML elements remain part of the
+active DOM layout tree, they retain full interactivity—allowing users to click buttons, select text,
+and trigger focus states natively without requiring complex raycasting or custom event handling.
 
 ## How to implement
 
 ### WebGL and WebGPU
+
 When using WebGL or WebGPU, follow these steps:
 
 1. Check if HTML-in-Canvas is supported in the browser:
@@ -20,7 +26,10 @@ if ('content' in HTMLCanvasElement.prototype) {
 > [!NOTE]
 > HTML-in-Canvas is supported from Chrome 157.
 
-2. Initialize `<canvas>` to support descendant HTML elements by adding the `content="drawable"` attribute to the `<canvas>` HTML element. Place your HTML content inside the `<canvas>` element, and add the `drawable` attribute to every element that you draw. An element with `drawable` captures its subtree, except nested descendants that are also `drawable`:
+2. Initialize `<canvas>` to support descendant HTML elements by adding the `content="drawable"`
+   attribute to the `<canvas>` HTML element. Place your HTML content inside the `<canvas>` element,
+   and add the `drawable` attribute to every element that you draw. An element with `drawable`
+   captures its subtree, except nested descendants that are also `drawable`:
 
 ```html
 <canvas id="canvas" content="drawable">
@@ -50,9 +59,13 @@ const options = supportsDevicePixelContentBox
 observer.observe(canvas, options);
 ```
 
-4. Render the HTML content to a texture inside a `canvas.onpaint` event handler. An element can only be uploaded after the canvas has painted it: call `canvas.requestPaint()` to request a `paint` event.
+4. Render the HTML content to a texture inside a `canvas.onpaint` event handler. An element can only
+   be uploaded after the canvas has painted it: call `canvas.requestPaint()` to request a `paint`
+   event.
 
-Size the texture from `canvas.captureElementImage(element)`. Its `width` and `height` are in canvas grid (backing store) pixels, so round them up with `Math.ceil()`. `captureElementImage()` throws if the element has no paint record yet: call `requestPaint()`, and retry on the next `paint` event.
+Size the texture from `canvas.captureElementImage(element)`. Its `width` and `height` are in canvas
+grid (backing store) pixels, so round them up with `Math.ceil()`. `captureElementImage()` throws if
+the element has no paint record yet: call `requestPaint()`, and retry on the next `paint` event.
 
 ```js
 // Returns the element's size in canvas grid pixels, or null if the element
@@ -72,9 +85,14 @@ function getElementImageSize(canvas, element) {
 }
 ```
 
-- In WebGL context, pre-allocate the texture backing first using the `texImage2D` method. The snippets in this guide use a WebGL 2 context (`canvas.getContext("webgl2")`). Allocate texture storage by calling `texImage2D()` with `null` instead of pixel data, which reserves GPU memory of the given size and format without uploading any pixels. Follow these rules:
-  - Size the texture from `captureElementImage()`, as shown above.
-  - Allocate level 0 only on the first upload, or when the size changes, because reallocating clears the texture. Use mutable storage: immutable `texStorage2D()` storage can't be resized when the element changes size.
+- In WebGL context, pre-allocate the texture backing first using the `texImage2D` method. The
+  snippets in this guide use a WebGL 2 context (`canvas.getContext("webgl2")`). Allocate texture
+  storage by calling `texImage2D()` with `null` instead of pixel data, which reserves GPU memory of
+  the given size and format without uploading any pixels. Follow these rules:
+    - Size the texture from `captureElementImage()`, as shown above.
+    - Allocate level 0 only on the first upload, or when the size changes, because reallocating
+      clears the texture. Use mutable storage: immutable `texStorage2D()` storage can't be resized
+      when the element changes size.
 
 ```js
 // Binds the texture, and allocates its storage on the first upload, and when
@@ -103,9 +121,11 @@ const texture = gl.createTexture();
 const textureState = { width: 0, height: 0 };
 ```
 
-- Then, in WebGL context, render the HTML content to the texture using the `texElementSubImage2D` method. Follow these rules:
-  - Pass `{ width, height }` in the config. It makes the copy fill the allocated texture regardless of how the canvas is scaled.
-  - Reallocate the texture if the size changed, as shown above.
+- Then, in WebGL context, render the HTML content to the texture using the `texElementSubImage2D`
+  method. Follow these rules:
+    - Pass `{ width, height }` in the config. It makes the copy fill the allocated texture
+      regardless of how the canvas is scaled.
+    - Reallocate the texture if the size changed, as shown above.
 
 ```js
 // Uploads the element into the texture. Returns false if the element has no
@@ -131,9 +151,13 @@ canvas.onpaint = () => {
 ```
 
 - In WebGPU context, use the `drawElementImageToTexture` method. Follow these rules:
-  - Create the texture with `COPY_DST` and `RENDER_ATTACHMENT` usage, and add `TEXTURE_BINDING` to sample it in shaders. A wrong usage is reported as a WebGPU validation error, not as an exception.
-  - Pass the texture size as `size`. Without `size`, a larger element is clipped to the texture. With `size`, the element is scaled to fill it.
-  - WebGPU textures can't be resized. Recreate the texture when the element size changes, and rebuild the bind groups that reference it.
+    - Create the texture with `COPY_DST` and `RENDER_ATTACHMENT` usage, and add `TEXTURE_BINDING` to
+      sample it in shaders. A wrong usage is reported as a WebGPU validation error, not as an
+      exception.
+    - Pass the texture size as `size`. Without `size`, a larger element is clipped to the texture.
+      With `size`, the element is scaled to fill it.
+    - WebGPU textures can't be resized. Recreate the texture when the element size changes, and
+      rebuild the bind groups that reference it.
 
 ```js
 // WebGPU textures can't be resized. Create the texture once, and recreate it
@@ -172,7 +196,10 @@ canvas.onpaint = () => {
 };
 ```
 
-When using a `requestAnimationFrame` loop to render the scene, call `canvas.requestPaint()` within the loop to ensure that the HTML content is rendered to the canvas. `event.changedElements` lists the elements whose rendering changed. Make sure you only re-upload the texture if there has been an update to the descendant HTML elements:
+When using a `requestAnimationFrame` loop to render the scene, call `canvas.requestPaint()` within
+the loop to ensure that the HTML content is rendered to the canvas. `event.changedElements` lists
+the elements whose rendering changed. Make sure you only re-upload the texture if there has been an
+update to the descendant HTML elements:
 
 ```js
 function render() {
@@ -192,11 +219,21 @@ canvas.onpaint = (event) => {
 
 5. Sync the element geometry.
 
-Compute a `DOMMatrix` that maps the element's border box, in CSS pixels, to the canvas, in CSS pixels. The browser needs to map from the 3D coordinate space into the CSS coordinate space using a viewport transform. To facilitate this, do the following:
-  - Normalize the HTML element. HTML elements are sized in pixels (for example, 200px wide). WebGL, however, usually treats objects as "unit squares", for example, ranging from -0.5 to 0.5. If you don't normalize, your 200px button will look 200 times larger. This step also flips the Y-axis, because in CSS, down is positive, but in WebGL, up is positive.
-  - Convert the WebGL MVP Matrix to a DOM Matrix.
-  - Map to the canvas viewport. This step is the "re-scaling" phase: it stretches that unit-space math back out to match the CSS pixel dimensions of your `<canvas>` element on the screen, and flips the Y-axis back.
-  - Calculate the final transform. Multiply the matrices in order: Viewport * MVP * Normalization. Combining them into one final transform produces a "map" that tells the browser exactly where that HTML element should sit to align with the 3D drawing. The browser performs the perspective divide.
+Compute a `DOMMatrix` that maps the element's border box, in CSS pixels, to the canvas, in CSS
+pixels. The browser needs to map from the 3D coordinate space into the CSS coordinate space using a
+viewport transform. To facilitate this, do the following:
+
+- Normalize the HTML element. HTML elements are sized in pixels (for example, 200px wide). WebGL,
+  however, usually treats objects as "unit squares", for example, ranging from -0.5 to 0.5. If you
+  don't normalize, your 200px button will look 200 times larger. This step also flips the Y-axis,
+  because in CSS, down is positive, but in WebGL, up is positive.
+- Convert the WebGL MVP Matrix to a DOM Matrix.
+- Map to the canvas viewport. This step is the "re-scaling" phase: it stretches that unit-space math
+  back out to match the CSS pixel dimensions of your `<canvas>` element on the screen, and flips the
+  Y-axis back.
+- Calculate the final transform. Multiply the matrices in order: Viewport * MVP * Normalization.
+  Combining them into one final transform produces a "map" that tells the browser exactly where that
+  HTML element should sit to align with the 3D drawing. The browser performs the perspective divide.
 
   ```js
   // Maps the element's border box (CSS pixels) to the canvas (CSS pixels), for a
@@ -227,7 +264,10 @@ Compute a `DOMMatrix` that maps the element's border box, in CSS pixels, to the 
   }
   ```
 
-Then pass the transform to `canvas.updateElementGeometry()` as `canvasTransform`. This moves the HTML element to sit directly on top of its rendered pixels. This ensures that when a user clicks a button or selects text, they are actually hitting the real HTML element. The browser also uses the transform for the element's accessibility bounds, for example, for screen reader focus rings:
+Then pass the transform to `canvas.updateElementGeometry()` as `canvasTransform`. This moves the
+HTML element to sit directly on top of its rendered pixels. This ensures that when a user clicks a
+button or selects text, they are actually hitting the real HTML element. The browser also uses the
+transform for the element's accessibility bounds, for example, for screen reader focus rings:
 
   ```js
   canvas.updateElementGeometry(targetHTMLElement, {
@@ -236,8 +276,11 @@ Then pass the transform to `canvas.updateElementGeometry()` as `canvasTransform`
   ```
 
 Use these options to control hit testing:
-  - Each `updateElementGeometry()` call moves the element to the top of the hit-testing order. Pass `{ preserveHitTestOrder: true }` to keep its position.
-  - Call `canvas.clearElementGeometry(element)` to remove an element from hit testing, for example, when you hide it.
+
+- Each `updateElementGeometry()` call moves the element to the top of the hit-testing order. Pass
+  `{ preserveHitTestOrder: true }` to keep its position.
+- Call `canvas.clearElementGeometry(element)` to remove an element from hit testing, for example,
+  when you hide it.
 
 ### Three.js
 
@@ -256,14 +299,20 @@ if ('content' in HTMLCanvasElement.prototype) {
 
 2. Create a custom geometry and material for the HTML content.
 
-3. Pass the DOM element into THREE.HTMLTexture. The renderer adds the element to its canvas, and sets the required attributes:
+3. Pass the DOM element into THREE.HTMLTexture. The renderer adds the element to its canvas, and
+   sets the required attributes:
+
 ```js
   material.map = new THREE.HTMLTexture(element);
   mesh = new THREE.Mesh( geometry, material );
   scene.add( mesh );
 ```
 
-4. Register the mesh with `InteractionManager` to make the HTML element interactive. It keeps the element aligned with the mesh, and syncs the element geometry with the canvas, so that clicks and text selection hit the real HTML element. Call `interactions.update()` in the animation loop, before rendering:
+4. Register the mesh with `InteractionManager` to make the HTML element interactive. It keeps the
+   element aligned with the mesh, and syncs the element geometry with the canvas, so that clicks and
+   text selection hit the real HTML element. Call `interactions.update()` in the animation loop,
+   before rendering:
+
 ```js
   import { InteractionManager } from 'three/addons/interaction/InteractionManager.js';
 
@@ -407,31 +456,48 @@ function animate() {
 ## Best Practices
 
 - **MANDATORY**: Check browser support for the HTML-in-Canvas API before using it.
-- **MANDATORY**: When using WebGL or WebGPU, always add the `content="drawable"` attribute to the `<canvas>` element.
-- **MANDATORY**: When using WebGL or WebGPU, add the `drawable` attribute to every element that you draw, including direct children of the canvas.
-- **MANDATORY**: When using WebGL or WebGPU, use an `onpaint` event handler to render the HTML content to the canvas.
-- **MANDATORY**: When using WebGL, pre-allocate the texture buffer with `texImage2D()` once (when it's initialized or when the element size changes). Reallocate the texture only when the size changes, and set `TEXTURE_MIN_FILTER` to `LINEAR`.
-- **MANDATORY**: When using WebGL, use the `texElementSubImage2D` method to render the HTML content to a texture that you pre-allocate with `texImage2D()`, sized from `captureElementImage()`.
-- **MANDATORY**: When using WebGPU, use the `drawElementImageToTexture` method to render the HTML content to the canvas. Size the texture from `captureElementImage()`, and recreate it only when the size changes. Create the texture with `COPY_DST` and `RENDER_ATTACHMENT` usage, and pass the texture size as `size`.
-- **MANDATORY**: When using WebGL or WebGPU, sync the geometry of the HTML element with the rendered content by calling `canvas.updateElementGeometry(element, { canvasTransform })`.
-- **MANDATORY**: When using Three.js, register the mesh with `InteractionManager`, and call `interactions.update()` in the animation loop, so the HTML element receives input.
-- **MANDATORY**: Observe the screen size and update the canvas size to match device pixels, for example, by using `ResizeObserver`.
+- **MANDATORY**: When using WebGL or WebGPU, always add the `content="drawable"` attribute to the
+  `<canvas>` element.
+- **MANDATORY**: When using WebGL or WebGPU, add the `drawable` attribute to every element that you
+  draw, including direct children of the canvas.
+- **MANDATORY**: When using WebGL or WebGPU, use an `onpaint` event handler to render the HTML
+  content to the canvas.
+- **MANDATORY**: When using WebGL, pre-allocate the texture buffer with `texImage2D()` once (when
+  it's initialized or when the element size changes). Reallocate the texture only when the size
+  changes, and set `TEXTURE_MIN_FILTER` to `LINEAR`.
+- **MANDATORY**: When using WebGL, use the `texElementSubImage2D` method to render the HTML content
+  to a texture that you pre-allocate with `texImage2D()`, sized from `captureElementImage()`.
+- **MANDATORY**: When using WebGPU, use the `drawElementImageToTexture` method to render the HTML
+  content to the canvas. Size the texture from `captureElementImage()`, and recreate it only when
+  the size changes. Create the texture with `COPY_DST` and `RENDER_ATTACHMENT` usage, and pass the
+  texture size as `size`.
+- **MANDATORY**: When using WebGL or WebGPU, sync the geometry of the HTML element with the rendered
+  content by calling `canvas.updateElementGeometry(element, { canvasTransform })`.
+- **MANDATORY**: When using Three.js, register the mesh with `InteractionManager`, and call
+  `interactions.update()` in the animation loop, so the HTML element receives input.
+- **MANDATORY**: Observe the screen size and update the canvas size to match device pixels, for
+  example, by using `ResizeObserver`.
 - **DO NOT** embed cross-origin content in a canvas, as it is not supported.
-- **DO NOT** initialize `ResizeObserver` within the `onpaint` event handler, as it may lead to memory leaks.
+- **DO NOT** initialize `ResizeObserver` within the `onpaint` event handler, as it may lead to
+  memory leaks.
 
 ### Fallback strategies
 
 HTML in canvas is not natively supported by any major browser yet.
 
-The HTML-in-Canvas API is not currently supported in all modern browsers, thus a fallback strategy is typically required.
+The HTML-in-Canvas API is not currently supported in all modern browsers, thus a fallback strategy
+is typically required.
 
-However, given the improved performance benefits of this API, HTML-in-Canvas should be used if the browser supports it.
+However, given the improved performance benefits of this API, HTML-in-Canvas should be used if the
+browser supports it.
 
-The fallback strategy depends on the use case. For example, for an interactive HTML content in canvas, if HTML-in-Canvas is not supported, place the HTML content on top of the canvas using CSS.
+The fallback strategy depends on the use case. For example, for an interactive HTML content in
+canvas, if HTML-in-Canvas is not supported, place the HTML content on top of the canvas using CSS.
 
 ### HTML-in-Canvas polyfill
 
-Use the following polyfill script to mimic the HTML-in-Canvas API in browsers that do not support it.
+Use the following polyfill script to mimic the HTML-in-Canvas API in browsers that do not support
+it.
 
 1. Install or embed the library:
 

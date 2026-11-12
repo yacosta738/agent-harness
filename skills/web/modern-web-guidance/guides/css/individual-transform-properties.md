@@ -1,24 +1,36 @@
 # Individual Transform Properties
 
-The `transform` property allows you to apply multiple transformations in a specified order, but any changes to a single transformation require re-specifying the entire transformation chain. This makes it tricky to animate or transition a single transformation.
+The `transform` property allows you to apply multiple transformations in a specified order, but any
+changes to a single transformation require re-specifying the entire transformation chain. This makes
+it tricky to animate or transition a single transformation.
 
-The individual CSS transform properties (`translate`, `rotate`, and `scale`) allow you to apply transformations independently of the `transform` property. This approach makes it simpler to override a single transformation, for instance on `:hover`.
+The individual CSS transform properties (`translate`, `rotate`, and `scale`) allow you to apply
+transformations independently of the `transform` property. This approach makes it simpler to
+override a single transformation, for instance on `:hover`.
 
 ### Key Implementation Details
 
-Individual transform properties are always applied in a **fixed order**, regardless of their order in your CSS:
+Individual transform properties are always applied in a **fixed order**, regardless of their order
+in your CSS:
+
 1. `translate`
 2. `rotate`
 3. `scale`
 4. `transform` (applied last)
 
-If you require a different order (e.g., scaling *before* rotating), you must continue using the `transform` property functions.
+If you require a different order (e.g., scaling *before* rotating), you must continue using the
+`transform` property functions.
 
-Transform functions do not override the individual transform properties. In other words, `scale: 2; transform: scale(3);` will first scale by 2x, then again by 3x, for a total of 6x.
+Transform functions do not override the individual transform properties. In other words,
+`scale: 2; transform: scale(3);` will first scale by 2x, then again by 3x, for a total of 6x.
 
 ### Preventing Unexpected Changes in Stacking Contexts and Containing Blocks
 
-The `transform` property and individual transform properties impact the layout and rendering of the page and may cause unexpected behavior with the z-index or anchor positioning. MANDATORY: If an element may have a transform applied as part of a state change like `:hover`, or a transition or animation, apply an identity transformation to the base element. This ensures that the element's stacking context and containment do not change when a transform is applied.
+The `transform` property and individual transform properties impact the layout and rendering of the
+page and may cause unexpected behavior with the z-index or anchor positioning. MANDATORY: If an
+element may have a transform applied as part of a state change like `:hover`, or a transition or
+animation, apply an identity transformation to the base element. This ensures that the element's
+stacking context and containment do not change when a transform is applied.
 
 ```css
 .element{
@@ -38,7 +50,8 @@ The `transform` property and individual transform properties impact the layout a
 
 ### Independent Animation and Transitions
 
-The primary benefit is the ability to define overlapping animations or transitions that target different properties without conflict.
+The primary benefit is the ability to define overlapping animations or transitions that target
+different properties without conflict.
 
 ```css
 .card {
@@ -65,10 +78,14 @@ The primary benefit is the ability to define overlapping animations or transitio
 
 ### Fallback strategies
 
-Baseline status for Individual transform properties: Widely available. It's been Baseline since 2022-08-05.
-Supported by: Chrome 104 (Aug 2022), Edge 104 (Aug 2022), Firefox 72 (Jan 2020), Safari 14.1 (Apr 2021), and Safari iOS 14.5 (Apr 2021).
+Baseline status for Individual transform properties: Widely available. It's been Baseline since
+2022-08-05.
+Supported by: Chrome 104 (Aug 2022), Edge 104 (Aug 2022), Firefox 72 (Jan 2020), Safari 14.1 (Apr
+2021), and Safari iOS 14.5 (Apr 2021).
 
-For browsers that do not support individual transform properties, use the traditional `transform` property. Note that this requires re-declaring the entire transform stack if you want to modify one part in a different state.
+For browsers that do not support individual transform properties, use the traditional `transform`
+property. Note that this requires re-declaring the entire transform stack if you want to modify one
+part in a different state.
 
 ```css
 .element {

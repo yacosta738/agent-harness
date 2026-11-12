@@ -2,24 +2,42 @@
 
 Standard paint and responsiveness metrics leave a measurement gap after the initial page load:
 
-- **`LargestContentfulPaint` (`largest-contentful-paint`)** only measures the initial ("hard") document load and stops emitting entries as soon as the user first interacts with the page.
-- **`PerformanceEventTiming` and `event` / Interaction to Next Paint (INP)** measures input responsiveness up to the *very next frame* (such as a button active state or loading spinner), but does not track subsequent asynchronous paints—such as new content rendered after a `fetch()` resolves, or a client-side route transition completes.
-- Observing route changes in a Single Page App (SPA) can be difficult outside of framework code. Just monitoring URL updates can over report URL changes that are not linked to route changes (for example, anchor link changes, multiple "redirects" for a single route change).
+- **`LargestContentfulPaint` (`largest-contentful-paint`)** only measures the initial ("hard")
+  document load and stops emitting entries as soon as the user first interacts with the page.
+- **`PerformanceEventTiming` and `event` / Interaction to Next Paint (INP)** measures input
+  responsiveness up to the *very next frame* (such as a button active state or loading spinner), but
+  does not track subsequent asynchronous paints—such as new content rendered after a `fetch()`
+  resolves, or a client-side route transition completes.
+- Observing route changes in a Single Page App (SPA) can be difficult outside of framework code.
+  Just monitoring URL updates can over report URL changes that are not linked to route changes (for
+  example, anchor link changes, multiple "redirects" for a single route change).
 
-The `InteractionContentfulPaint` (`interaction-contentful-paint`) and `PerformanceSoftNavigation` (`soft-navigation`) performance entry types fill this gap. They propagate interaction causality across asynchronous tasks (`fetch`, `await`, `setTimeout`) to attribute new contentful paints and Single-Page Application (SPA) route transitions directly back to the user interaction that triggered them.
+The `InteractionContentfulPaint` (`interaction-contentful-paint`) and `PerformanceSoftNavigation`
+(`soft-navigation`) performance entry types fill this gap. They propagate interaction causality
+across asynchronous tasks (`fetch`, `await`, `setTimeout`) to attribute new contentful paints and
+Single-Page Application (SPA) route transitions directly back to the user interaction that triggered
+them.
 
 ## How to implement
 
 ### 1. Observe contentful paints triggered by interactions
 
-Use a `PerformanceObserver` with `type: 'interaction-contentful-paint'` and `buffered: true` to observe progressively larger contentful paints attributable to any user interaction.
+Use a `PerformanceObserver` with `type: 'interaction-contentful-paint'` and `buffered: true` to
+observe progressively larger contentful paints attributable to any user interaction.
 
 Each `InteractionContentfulPaint` entry provides:
-- `interactionId`: The unique identifier of the initiating user interaction (matching `PerformanceEventTiming.interactionId` and `PerformanceSoftNavigation.interactionId`).
-- `startTime`: The timestamp when the initiating user interaction started, relative to the initial hard navigation time origin.
-- `paintTime` and `presentationTime`: When the rendering phase ended and when the painted pixels were drawn on screen.
-- `duration`: The elapsed time from interaction start to paint presentation (`presentationTime - startTime`).
-- `largestContentfulPaint`: A snapshot `LargestContentfulPaint` object containing details about the largest painted element for that interaction so far (`element`, `size`, `url`, `id`, `renderTime`, `loadTime`).
+
+- `interactionId`: The unique identifier of the initiating user interaction (matching
+  `PerformanceEventTiming.interactionId` and `PerformanceSoftNavigation.interactionId`).
+- `startTime`: The timestamp when the initiating user interaction started, relative to the initial
+  hard navigation time origin.
+- `paintTime` and `presentationTime`: When the rendering phase ended and when the painted pixels
+  were drawn on screen.
+- `duration`: The elapsed time from interaction start to paint presentation
+  (`presentationTime - startTime`).
+- `largestContentfulPaint`: A snapshot `LargestContentfulPaint` object containing details about the
+  largest painted element for that interaction so far (`element`, `size`, `url`, `id`, `renderTime`,
+  `loadTime`).
 
 ```javascript
 /**
@@ -55,11 +73,20 @@ export function observeInteractionPaints(onInteractionPaint) {
 
 ### 2. Measure Largest Contentful Paint (LCP) for SPA soft navigations
 
-A soft navigation is emitted by the browser when a trusted user interaction causes both a visible URL change and a contentful paint. To calculate LCP for each soft navigation:
+A soft navigation is emitted by the browser when a trusted user interaction causes both a visible
+URL change and a contentful paint. To calculate LCP for each soft navigation:
 
-1. Observe both `'soft-navigation'` and `'interaction-contentful-paint'` entries with `buffered: true`.
-2. **MANDATORY:** When a `'soft-navigation'` entry is received, seed its initial LCP candidate by calling `softNavEntry.getLargestInteractionContentfulPaint()`. If the application painted content *before* updating the URL (for example, rendering a view and then calling `history.pushState()`), those early `interaction-contentful-paint` entries were emitted before the `soft-navigation` entry and still carry the *previous* `navigationId`.
-3. **MANDATORY:** Correlate subsequent `'interaction-contentful-paint'` entries to the active soft navigation by matching `entry.interactionId === softNavEntry.interactionId`, **DO NOT** match by `entry.navigationId`. Using `interactionId` ensures you include paints that occurred before the URL update and exclude paints from later, unrelated interactions on the new route.
+1. Observe both `'soft-navigation'` and `'interaction-contentful-paint'` entries with
+   `buffered: true`.
+2. **MANDATORY:** When a `'soft-navigation'` entry is received, seed its initial LCP candidate by
+   calling `softNavEntry.getLargestInteractionContentfulPaint()`. If the application painted content
+   *before* updating the URL (for example, rendering a view and then calling `history.pushState()`),
+   those early `interaction-contentful-paint` entries were emitted before the `soft-navigation`
+   entry and still carry the *previous* `navigationId`.
+3. **MANDATORY:** Correlate subsequent `'interaction-contentful-paint'` entries to the active soft
+   navigation by matching `entry.interactionId === softNavEntry.interactionId`, **DO NOT** match by
+   `entry.navigationId`. Using `interactionId` ensures you include paints that occurred before the
+   URL update and exclude paints from later, unrelated interactions on the new route.
 
 ```javascript
 /**
@@ -149,7 +176,9 @@ export function trackSoftNavigationLCP(onSoftNavReport) {
 
 ### 3. Measure Core Web Vitals across soft navigations with `web-vitals`
 
-If your goal is to report standard Core Web Vitals (LCP, CLS, and INP) across both hard and soft navigations to an analytics endpoint, use the `web-vitals` library (v6.0.0+) with `{ reportSoftNavs: true }` rather than manually slicing every metric timeline.
+If your goal is to report standard Core Web Vitals (LCP, CLS, and INP) across both hard and soft
+navigations to an analytics endpoint, use the `web-vitals` library (v6.0.0+) with
+`{ reportSoftNavs: true }` rather than manually slicing every metric timeline.
 
 ```javascript
 import { onLCP, onFCP, onCLS, onINP } from 'web-vitals';
@@ -177,12 +206,21 @@ onINP(sendToAnalytics, { reportSoftNavs: true });
 
 ## Best practices
 
-- **DO** feature-detect `'interaction-contentful-paint'` and `'soft-navigation'` using `PerformanceObserver.supportedEntryTypes?.includes(...)` before calling `observer.observe()`.
-- **DO** pass `{ buffered: true }` when observing `'interaction-contentful-paint'` and `'soft-navigation'` so early entries are not missed if analytics code initializes asynchronously.
-- **DO** call `softNavEntry.getLargestInteractionContentfulPaint()` when handling a new `soft-navigation` entry so paints that occurred prior to the URL update are included in LCP.
-- **DO** match `interaction-contentful-paint` entries to a soft navigation using `interactionId`, not `navigationId`.
-- **DO** use `entry.duration` (or `entry.presentationTime - entry.startTime`) to measure interaction paint latency, rather than reporting `entry.presentationTime` directly. All `PerformanceEntry` timestamps are measured from the initial hard page load time origin, not from the soft navigation start.
-- **DO NOT** rely on `performance.getEntriesByType('soft-navigation')` to monitor long-lived single-page applications, as the browser's buffer is limited to the first 50 soft navigation entries.
+- **DO** feature-detect `'interaction-contentful-paint'` and `'soft-navigation'` using
+  `PerformanceObserver.supportedEntryTypes?.includes(...)` before calling `observer.observe()`.
+- **DO** pass `{ buffered: true }` when observing `'interaction-contentful-paint'` and
+  `'soft-navigation'` so early entries are not missed if analytics code initializes asynchronously.
+- **DO** call `softNavEntry.getLargestInteractionContentfulPaint()` when handling a new
+  `soft-navigation` entry so paints that occurred prior to the URL update are included in LCP.
+- **DO** match `interaction-contentful-paint` entries to a soft navigation using `interactionId`,
+  not `navigationId`.
+- **DO** use `entry.duration` (or `entry.presentationTime - entry.startTime`) to measure interaction
+  paint latency, rather than reporting `entry.presentationTime` directly. All `PerformanceEntry`
+  timestamps are measured from the initial hard page load time origin, not from the soft navigation
+  start.
+- **DO NOT** rely on `performance.getEntriesByType('soft-navigation')` to monitor long-lived
+  single-page applications, as the browser's buffer is limited to the first 50 soft navigation
+  entries.
 
 ## Fallback strategies
 
@@ -194,7 +232,16 @@ Browser support for Soft navigation performance entries: Limited availability.
 Supported by: Chrome 151 (Jul 2026) and Edge 151 (Jul 2026).
 Unsupported in: Firefox and Safari.
 
-If your Baseline target includes browsers that do not support `InteractionContentfulPaint` or `PerformanceSoftNavigation`, treat these APIs as a progressive enhancement for Real User Monitoring (RUM):
+If your Baseline target includes browsers that do not support `InteractionContentfulPaint` or
+`PerformanceSoftNavigation`, treat these APIs as a progressive enhancement for Real User Monitoring
+(RUM):
 
-1. **Feature detection and graceful degradation:** Guard observer registration with `PerformanceObserver.supportedEntryTypes?.includes('interaction-contentful-paint')` and `PerformanceObserver.supportedEntryTypes?.includes('soft-navigation')`. In browsers lacking support, skip registering the observers so your application runs without throwing errors.
-2. **Keep standard hard-navigation observers active:** Continue observing standard `'largest-contentful-paint'`, `'event'`, and `'layout-shift'` entries across all browsers. Because `LargestContentfulPaint` is finalized on the first user interaction regardless of soft-navigation support, measuring soft navigations in supporting browsers does not alter or break initial hard-load LCP measurements.
+1. **Feature detection and graceful degradation:** Guard observer registration with
+   `PerformanceObserver.supportedEntryTypes?.includes('interaction-contentful-paint')` and
+   `PerformanceObserver.supportedEntryTypes?.includes('soft-navigation')`. In browsers lacking
+   support, skip registering the observers so your application runs without throwing errors.
+2. **Keep standard hard-navigation observers active:** Continue observing standard
+   `'largest-contentful-paint'`, `'event'`, and `'layout-shift'` entries across all browsers.
+   Because `LargestContentfulPaint` is finalized on the first user interaction regardless of
+   soft-navigation support, measuring soft navigations in supporting browsers does not alter or
+   break initial hard-load LCP measurements.

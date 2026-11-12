@@ -1,28 +1,41 @@
 # Shaped Cutouts
 
 ## Overview
-CSS Masking allows you to clip an element to a custom shape, such as adding a notch to a card or creating a shaped border. When combining shapes for complex layouts, choose your masking strategy based on the type of content the element contains:
 
-| Masking strategy                | Best For                        | Text Impact                    |
-| ------------------------------- | ------------------------------- | ------------------------------ |
-| Direct Element SVG Masking      | Images, Icons, Decorative shapes, Complex shapes | Not recommended (can crop text) |
-| Adjacent Element SVG Masking    | Cards with Text, Crucial content | Text remains fully readable    |
-| Pure CSS Gradients              | Simple Geometric Shapes           | Not recommended (can crop text) |
+CSS Masking allows you to clip an element to a custom shape, such as adding a notch to a card or
+creating a shaped border. When combining shapes for complex layouts, choose your masking strategy
+based on the type of content the element contains:
+
+| Masking strategy             | Best For                                         | Text Impact                     |
+|------------------------------|--------------------------------------------------|---------------------------------|
+| Direct Element SVG Masking   | Images, Icons, Decorative shapes, Complex shapes | Not recommended (can crop text) |
+| Adjacent Element SVG Masking | Cards with Text, Crucial content                 | Text remains fully readable     |
+| Pure CSS Gradients           | Simple Geometric Shapes                          | Not recommended (can crop text) |
 
 ---
 
 ## Implementation
+
 To implement shaped cutouts:
 
 ### Using an SVG Mask
-SVG masks allow you to define shapes that subtract from or add to the visible area using white (reveal) and black (hide) fills.
 
-> **Luminance vs. Alpha Masking**: SVG masks default to **luminance** (brightness) mode, which is why we use `fill="white"` to reveal areas and `fill="black"` to cut them out. If you prefer to use the SVG's transparency (alpha channel) instead of colors, you can set `mask-type: alpha;` in CSS or `mask-type="alpha"` on the SVG `<mask>` element.
+SVG masks allow you to define shapes that subtract from or add to the visible area using white
+(reveal) and black (hide) fills.
+
+> **Luminance vs. Alpha Masking**: SVG masks default to **luminance** (brightness) mode, which is
+> why we use `fill="white"` to reveal areas and `fill="black"` to cut them out. If you prefer to use
+> the SVG's transparency (alpha channel) instead of colors, you can set `mask-type: alpha;` in CSS
+> or
+> `mask-type="alpha"` on the SVG `<mask>` element.
 
 #### Direct Element SVG Masking
-When there is no text inside the element to worry about (such as profile avatars, product images, or illustrations), you can apply the SVG mask directly to the element.
 
-Using `maskContentUnits="objectBoundingBox"` inside the SVG mask ensures that the mask scales automatically to the width and height of any element it is applied to.
+When there is no text inside the element to worry about (such as profile avatars, product images, or
+illustrations), you can apply the SVG mask directly to the element.
+
+Using `maskContentUnits="objectBoundingBox"` inside the SVG mask ensures that the mask scales
+automatically to the width and height of any element it is applied to.
 
 ```html
 <!-- 1. Define the mask in SVG (hidden from view) -->
@@ -53,13 +66,18 @@ Using `maskContentUnits="objectBoundingBox"` inside the SVG mask ensures that th
 ```
 
 #### Adjacent Element SVG Masking
-Apply the mask to an adjacent element rather than the parent element containing text. This ensures that text doesn't get clipped and remains readable.
+
+Apply the mask to an adjacent element rather than the parent element containing text. This ensures
+that text doesn't get clipped and remains readable.
 
 To solve this, structure your component into a two-part layout:
-1. A **safe, unmasked text container** (`.card-body`) for all readable content.
-2. An **empty decorative `div`** (`.card-accent`) placed next to it, which receives the custom SVG mask.
 
-By assigning both parts the same background color, they visually merge into a single, custom-shaped component.
+1. A **safe, unmasked text container** (`.card-body`) for all readable content.
+2. An **empty decorative `div`** (`.card-accent`) placed next to it, which receives the custom SVG
+   mask.
+
+By assigning both parts the same background color, they visually merge into a single, custom-shaped
+component.
 
 ```html
 <!-- 1. Define the SVG mask (hidden from view) -->
@@ -115,7 +133,10 @@ By assigning both parts the same background color, they visually merge into a si
 ```
 
 ### Using a Single CSS Gradient for Simple Cutouts
-When you only need simple geometric cutouts (such as a semi-circular top notch, side indentations, or straight diagonal cuts), you do not need to write or reference an external SVG. Instead, you can define a CSS radial or linear gradient directly inside the `mask-image` property.
+
+When you only need simple geometric cutouts (such as a semi-circular top notch, side indentations,
+or straight diagonal cuts), you do not need to write or reference an external SVG. Instead, you can
+define a CSS radial or linear gradient directly inside the `mask-image` property.
 
 ```html
 <div class="gradient-masked-card">
@@ -139,10 +160,17 @@ When you only need simple geometric cutouts (such as a semi-circular top notch, 
 ```
 
 ## Fallback strategies
+
 Baseline status for Masks: Widely available. It's been Baseline since 2023-12-07.
-Supported by: Chrome 120 (Dec 2023), Edge 120 (Dec 2023), Firefox 53 (Apr 2017), and Safari 15.4 (Mar 2022).
+Supported by: Chrome 120 (Dec 2023), Edge 120 (Dec 2023), Firefox 53 (Apr 2017), and Safari 15.4
+(Mar 2022).
 
 If a browser does not support `mask-image` or the prefixed version:
-- **For Shaped Images**: The element will degrade gracefully, displaying as a normal rectangular element with its default fallback styles.
-- **For Shaped Cards**: The adjacent decorative `.card-accent` element will remain a solid, unmasked rectangle. Since it shares the same background color as the text container, the entire card will simply render as a standard, clean rectangular container.
-- **Progressive Enhancement**: By keeping text layers outside the mask entirely, your content is guaranteed to remain completely readable, structured, and accessible on older browsers.
+
+- **For Shaped Images**: The element will degrade gracefully, displaying as a normal rectangular
+  element with its default fallback styles.
+- **For Shaped Cards**: The adjacent decorative `.card-accent` element will remain a solid, unmasked
+  rectangle. Since it shares the same background color as the text container, the entire card will
+  simply render as a standard, clean rectangular container.
+- **Progressive Enhancement**: By keeping text layers outside the mask entirely, your content is
+  guaranteed to remain completely readable, structured, and accessible on older browsers.

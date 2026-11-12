@@ -1,19 +1,28 @@
 # Content Based Styling
 
-Historically, applying different layouts to a component based on its content required either JavaScript or conditional logic in your HTML templating language to inject modifier classes (like `.card--has-image` or `.card--text-only`).
+Historically, applying different layouts to a component based on its content required either
+JavaScript or conditional logic in your HTML templating language to inject modifier classes (like
+`.card--has-image` or `.card--text-only`).
 
-The `:has()` pseudo-class eliminates this need by acting as a parent selector. It allows you to conditionally style a container element based on the presence or absence of specific descendant elements.
+The `:has()` pseudo-class eliminates this need by acting as a parent selector. It allows you to
+conditionally style a container element based on the presence or absence of specific descendant
+elements.
 
-Using `:has()`, you can easily define distinct layout variations entirely in CSS based on a component's actual DOM content. You can also optionally combine it with `:not()` to explicitly target the *absence* of content to define default layouts.
+Using `:has()`, you can easily define distinct layout variations entirely in CSS based on a
+component's actual DOM content. You can also optionally combine it with `:not()` to explicitly
+target the *absence* of content to define default layouts.
 
 ### Implementing content-based container styling
 
-**MANDATORY**: You must use the `:has()` selector on the container element to detect the presence of specific child content.
+**MANDATORY**: You must use the `:has()` selector on the container element to detect the presence of
+specific child content.
 
 To build a component that changes its layout based on its content:
 
-1. **Define the default styling**: Apply the base layout styles to the container element (e.g., a simple single-column stack).
-2. **Apply content-based overrides**: Target the container with `:has([child-selector])` and apply the new layout styles for when that content is present (e.g., a multi-column grid).
+1. **Define the default styling**: Apply the base layout styles to the container element (e.g., a
+   simple single-column stack).
+2. **Apply content-based overrides**: Target the container with `:has([child-selector])` and apply
+   the new layout styles for when that content is present (e.g., a multi-column grid).
 
 *Example: A card component that switches to a side-by-side layout if an image is present.*
 
@@ -72,20 +81,31 @@ To build a component that changes its layout based on its content:
 </article>
 ```
 
-**Performance tip**: When using `:has()`, scope the selector to the most specific component container possible (like `.article-card`). Avoid anchoring it to very high-level elements like `body:has(img)` if the styling changes are highly localized, as broad `:has()` queries can trigger more layout recalculations.
+**Performance tip**: When using `:has()`, scope the selector to the most specific component
+container possible (like `.article-card`). Avoid anchoring it to very high-level elements like
+`body:has(img)` if the styling changes are highly localized, as broad `:has()` queries can trigger
+more layout recalculations.
 
 ### Fallback strategies
 
-Baseline status for :has(): Widely available. It's been Baseline since 2023-12-19.
-Supported by: Chrome 105 (Sep 2022), Edge 105 (Sep 2022), Firefox 121 (Dec 2023), and Safari 15.4 (Mar 2022).
+Baseline status for :has (): Widely available. It's been Baseline since 2023-12-19.
+Supported by: Chrome 105 (Sep 2022), Edge 105 (Sep 2022), Firefox 121 (Dec 2023), and Safari 15.4
+(Mar 2022).
 
-If the content-based layout styling is critical to the user experience or page design, you must provide a fallback for browsers that do not support the `:has()` selector. For purely decorative effects, `:has()` can be used as a progressive enhancement without a fallback.
+If the content-based layout styling is critical to the user experience or page design, you must
+provide a fallback for browsers that do not support the `:has()` selector. For purely decorative
+effects, `:has()` can be used as a progressive enhancement without a fallback.
 
-**MANDATORY**: When implementing a fallback for critical layouts, you must use `@supports not selector(:has(*))` in your CSS to define a traditional class-based fallback (e.g., `.has-image`).
+**MANDATORY**: When implementing a fallback for critical layouts, you must use
+`@supports not selector(:has(*))` in your CSS to define a traditional class-based fallback (e.g.,
+`.has-image`).
 
-Unlike interactive state-based styling, content presence is typically known at render time. The most robust fallback is to have your server-side templating engine (or static site generator) inject a class like `.has-image` onto the container if the child element (like an image) exists in the data.
+Unlike interactive state-based styling, content presence is typically known at render time. The most
+robust fallback is to have your server-side templating engine (or static site generator) inject a
+class like `.has-image` onto the container if the child element (like an image) exists in the data.
 
-If server-side rendering is not an option, you must use a small script with `CSS.supports()` to detect the content and append the class on load or after dynamic content injection.
+If server-side rendering is not an option, you must use a small script with `CSS.supports()` to
+detect the content and append the class on load or after dynamic content injection.
 
 ```css
 /* Fallback CSS for older browsers */
