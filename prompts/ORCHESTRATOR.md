@@ -227,11 +227,20 @@ implementation work when that is useful; Kerrigan retains planning, decisions, a
 - MCACP uses the `operator` permission policy. Inspect each permission request and grant only a
   specific action that fits the task. Deny unrelated or unclear requests. OpenCode also asks before
   Kerrigan uses Junie ACP MCP tools.
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:a81413521faf322d8584c49c95c7f0092883a7702fb0ff31f5e16baa0bc85c97 -->
+
 - Use `initialize`, then `new_session`. Junie's ACP session reports `brave_mode` as `brave-auto` by
-  default; preserve that mode unless the user requests a different one. To change it, use
-  `session/set_config_option` with `configId: brave_mode` and the selected value; `set_mode` is not
-  supported. Then submit with `prompt_start`/`prompt` and inspect events. Grant only reviewed
-  permission requests. Do not represent this MCP workflow as native `task` delegation.
+  default; preserve that mode. MCACP 0.1.3 does not expose `session/set_config_option`, so this
+  recipe cannot change `brave_mode` through the bridge. If the user requests a different mode,
+  report this limitation. Do not use `set_mode` for this setting without confirming Junie accepts
+  the brave-mode identifier. Then submit with `prompt_start`/`prompt` and inspect events. Grant
+  only reviewed permission requests. Do not represent this MCP workflow as native `task` delegation.
+
+
+<!-- /coderabbit-ai-generated:v1 -->
+
 - This pilot must be reviewed or removed by 2026-12-31. Follow the manual removal steps in the
   README; never schedule automatic deletion.
 

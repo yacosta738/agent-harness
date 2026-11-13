@@ -88,6 +88,17 @@ test('Junie ACP pilot uses MCACP config from its working directory and enables L
   assert.match(readFileSync(path.join(root, 'docs/JUNIE-ACP-PILOT.md'), 'utf8'), /2026-12-31/);
 });
 
+test('only Kerrigan can request Junie ACP tools', () => {
+  assert.equal(config.permission['junie_acp_*'], 'deny');
+  assert.equal(agents.kerrigan.permission['junie_acp_*'], 'ask');
+  for (const [name, agent] of Object.entries(agents)) {
+    if (name === 'kerrigan') continue;
+    // All other declared agents, including judges, inherit the global denial.
+    assert.equal(agent.permission?.['junie_acp_*'] ?? config.permission['junie_acp_*'],
+        'deny', `${name} must not be able to delegate to Junie`);
+  }
+});
+
 test('kerrigan may spawn every team specialist', () => {
   const allow = agents.kerrigan?.permission?.task;
   assert.ok(allow, 'kerrigan must declare permission.task');

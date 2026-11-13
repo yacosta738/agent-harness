@@ -252,8 +252,15 @@ a specific grant. No permission is granted automatically.
   `mcacp.json` at `~/.config/opencode/mcacp.json`. OpenCode starts MCACP with that directory as
   its `cwd`, because MCACP 0.1.3 reads `mcacp.json` from its working directory and does not read
   `MCACP_CONFIG`.
-- Render and deploy the bundle using the normal [deployment](#deployment) steps. Confirm
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:a91e4755f521b0359a189b970b44b9396560737021c2b2921815311e3deacb49 -->
+
+- Render and deploy the bundle using the normal [deployment](#deployment-render-bundle--dotter) steps. Confirm
   `~/.config/opencode/mcacp.json` exists after deploy.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
 - `mcacp.json` starts `junie --acp=true --skip-update-check`. Junie's `--acp` requires an explicit
   boolean value. `mcacp@0.1.3` is pinned; do not use `latest`.
 
@@ -320,9 +327,14 @@ npm run deploy -- --output distribution/opencode
 Dotter maps the bundle → `~/.config/opencode` (adjust the submodule path to
 yours; re-render after pulling):
 
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:b6f6d2181fc3f6d0603b84f1c3e43e5850f510f7fb31b9c774d2a934324c1367 -->
+
 ```toml
 "editors/agents/agent-harness/distribution/opencode/opencode.json" = "~/.config/opencode/opencode.json"
 "editors/agents/agent-harness/distribution/opencode/cli.json" = "~/.config/opencode/cli.json"
+"editors/agents/agent-harness/distribution/opencode/mcacp.json" = "~/.config/opencode/mcacp.json"
 "editors/agents/agent-harness/distribution/opencode/themes" = "~/.config/opencode/themes"
 "editors/agents/agent-harness/distribution/opencode/scripts" = "~/.config/opencode/scripts"
 "editors/agents/agent-harness/distribution/opencode/prompts" = "~/.config/opencode/prompts"
@@ -330,6 +342,8 @@ yours; re-render after pulling):
 "editors/agents/agent-harness/distribution/opencode/commands" = "~/.config/opencode/commands"
 "editors/agents/agent-harness/distribution/opencode/harness.config.json" = "~/.config/opencode/harness.config.json"
 ```
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 No-build alternative: symlink the source tree 1:1 instead, stripping the
 `adapters/opencode/` prefix by hand (`opencode.json`, `cli.json`, `scripts/`,
