@@ -3,7 +3,7 @@
   "agent_servers": {
     "junie": {
       "command": "junie",
-      "args": ["--acp=true", "--skip-update-check"],
+      "args": ["--acp=true", "--skip-update-check", "--model=junie-lite"],
       "permissionPolicy": "operator"
     }
   }

@@ -8,7 +8,7 @@ subagent.
 
 - Node.js 20 or newer; MCACP 0.1.3 requires it.
 - Junie CLI installed and available as `junie` on `PATH`; this pilot invokes
-  `junie --acp=true --skip-update-check` because the ACP flag requires an explicit boolean value.
+  `junie --acp=true --skip-update-check --model=junie-lite` because the ACP flag requires an explicit boolean value. Junie Lite is selected by its CLI model ID, `junie-lite`.
 - Junie authentication may be required. ACP `initialize` advertises the `jetbrains-account` method.
   No `authStatus` confirmation is available for the current user's session, so treat auth as blocked
   until Junie confirms authentication or the user completes the JetBrains sign-in flow. Never store
@@ -18,8 +18,10 @@ subagent.
   `{env:HOME}/.config/opencode`. MCACP 0.1.3 reads configuration from `cwd/mcacp.json` and does not
   read `MCACP_CONFIG`.
 - `mcacp.json` sets Junie's ACP command to `junie --acp` and its permission policy to `operator`.
-  OpenCode asks before Kerrigan calls Junie MCP tools. MCACP surfaces Junie's permission requests
-  for explicit review; grant only an action that is in scope. This does not guarantee a separate
+  OpenCode allows Kerrigan to call only MCACP's read-only discovery and status tools without
+  approval. It asks before process initialization, session creation or resumption, prompt submission,
+  permission changes, and other mutating tools. MCACP surfaces Junie's permission requests for
+  explicit review; grant only an action that is in scope. This does not guarantee a separate
   confirmation for every action: Junie's default `brave-auto` mode can perform actions without one.
 
 The bridge starts Junie with the `cwd` provided to `new_session`. Junie's ACP session reports
