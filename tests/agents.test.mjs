@@ -65,6 +65,29 @@ test('every team specialist is a flat subagent with a prompt', () => {
   }
 });
 
+test('Junie ACP pilot uses MCACP config from its working directory and enables Linear', () => {
+  const bridge = config.mcp?.servers?.junie_acp;
+  assert.ok(bridge, 'Junie ACP MCP server must be registered');
+  assert.equal(bridge.disabled, false);
+  assert.equal(bridge.cwd, '{env:HOME}/.config/opencode');
+  assert.equal('environment' in bridge, false,
+      'MCACP 0.1.3 does not read MCACP_CONFIG');
+  assert.deepEqual(bridge.command, ['npx', '-y', 'mcacp@0.1.3']);
+
+  const mcacp = JSON.parse(readFileSync(path.join(root, 'adapters/opencode/mcacp.json'), 'utf8'));
+  assert.equal(mcacp.agent_servers?.junie?.command, 'junie');
+  assert.deepEqual(mcacp.agent_servers.junie.args, ['--acp=true', '--skip-update-check']);
+  assert.equal(mcacp.agent_servers.junie.permissionPolicy, 'operator');
+  assert.equal(config.mcp.servers.linear?.disabled, false,
+      'Linear MCP server must be enabled');
+  assert.equal(config.mcp.servers['resolve-ai-bridge']?.disabled, true,
+      'Resolve AI Bridge MCP server must be registered at the mcp.servers level and disabled');
+  assert.equal('enabled' in config.mcp.servers['resolve-ai-bridge'], false,
+      'OpenCode MCP server config must use disabled, not enabled');
+  assert.match(readFileSync(path.join(root, 'README.md'), 'utf8'), /Junie ACP/);
+  assert.match(readFileSync(path.join(root, 'docs/JUNIE-ACP-PILOT.md'), 'utf8'), /2026-12-31/);
+});
+
 test('kerrigan may spawn every team specialist', () => {
   const allow = agents.kerrigan?.permission?.task;
   assert.ok(allow, 'kerrigan must declare permission.task');

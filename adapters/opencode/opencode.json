@@ -36,185 +36,184 @@
     }
   },
   "mcp": {
-    "engram": {
-      "command": [
-        "engram",
-        "mcp",
-        "--tools=agent"
-      ],
-      "type": "local",
-      "enabled": true
-    },
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
-      },
-      "enabled": true
-    },
-    "ahrefs": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "mcp-remote",
-        "https://api.ahrefs.com/mcp/mcp"
-      ],
-      "enabled": false
-    },
-    "stitch": {
-      "type": "remote",
-      "url": "https://stitch.googleapis.com/mcp",
-      "enabled": false,
-      "headers": {
-        "X-Goog-Api-Key": "{env:STITCH_API_KEY}"
-      }
-    },
-    "gh_grep": {
-      "type": "remote",
-      "url": "https://mcp.grep.app",
-      "enabled": false
-    },
-    "chrome-devtools": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "chrome-devtools-mcp@v1.11.0"
-      ],
-      "enabled": true
-    },
-    "playwright": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@playwright/mcp@latest"
-      ],
-      "enabled": false
-    },
-    "semgrep": {
-      "type": "local",
-      "command": [
-        "semgrep",
-        "mcp"
-      ],
-      "enabled": false
-    },
-    "cloudflare-api": {
-      "type": "remote",
-      "url": "https://mcp.cloudflare.com/mcp",
-      "enabled": false,
-      "oauth": {}
-    },
-    "linear": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "mcp-remote",
-        "https://mcp.linear.app/mcp"
-      ],
-      "enabled": false
-    },
-    "notion": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "mcp-remote",
-        "https://mcp.notion.com/mcp"
-      ],
-      "enabled": false
-    },
-    "n8n": {
-      "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "supergateway",
-        "--streamableHttp",
-        "https://n8n.ahome.quest/mcp-server/http",
-        "--header",
-        "authorization:Bearer {env:N8N_MCP_AUTH_TOKEN}"
-      ],
-      "enabled": false
-    },
-    "sonarqube": {
-      "type": "local",
-      "command": [
-        "sh",
-        "-c",
-        "exec \"$HOME/.config/opencode/scripts/wrap-sonarqube-mcp.sh\" \"$@\"",
-        "wrap-sonarqube-mcp"
-      ],
-      "environment": {
-        "SONARQUBE_TOKEN": "{env:SONARQUBE_TOKEN}",
-        "SONARQUBE_URL": "{env:SONARQUBE_URL}",
-        "SONARQUBE_ORG": "{env:SONARQUBE_ORG}"
-      },
-      "enabled": false
-    },
-    "jetbrains": {
-      "command": [
-        "npx",
-        "-y",
-        "mcp-remote",
-        "http://127.0.0.1:64343/stream"
-      ],
-      "type": "local",
-      "enabled": false
-    },
-    "vercel": {
-      "type": "remote",
-      "url": "https://mcp.vercel.com",
-      "enabled": false
-    },
-    "GitGuardianDeveloper": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "--from",
-        "git+https://github.com/GitGuardian/gg-mcp.git",
-        "developer-mcp-server"
-      ],
-      "enabled": false
-    },
-    "socket-mcp": {
-      "type": "remote",
-      "url": "https://mcp.socket.dev/",
-      "enabled": false
-    },
-    "codegraph": {
-      "type": "local",
-      "command": [
-        "codegraph",
-        "serve",
-        "--mcp"
-      ],
-      "enabled": false
-    },
-    "grafana": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "mcp-grafana"
-      ],
-      "environment": {
-        "GRAFANA_URL": "{env:GRAFANA_URL}",
-        "GRAFANA_SERVICE_ACCOUNT_TOKEN": "{env:GRAFANA_SERVICE_ACCOUNT_TOKEN}"
-      },
-      "enabled": false
-    },
-    "resend": {
-      "type": "remote",
-      "url": "https://mcp.resend.com/mcp",
-      "enabled": false
-    },
     "servers": {
+      "engram": {
+        "command": [
+          "engram",
+          "mcp",
+          "--tools=agent"
+        ],
+        "type": "local",
+        "disabled": false
+      },
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp",
+        "headers": {
+          "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+        },
+        "disabled": false
+      },
+      "ahrefs": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "mcp-remote",
+          "https://api.ahrefs.com/mcp/mcp"
+        ],
+        "disabled": true
+      },
+      "stitch": {
+        "type": "remote",
+        "url": "https://stitch.googleapis.com/mcp",
+        "headers": {
+          "X-Goog-Api-Key": "{env:STITCH_API_KEY}"
+        },
+        "disabled": true
+      },
+      "gh_grep": {
+        "type": "remote",
+        "url": "https://mcp.grep.app",
+        "disabled": true
+      },
+      "chrome-devtools": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "chrome-devtools-mcp@v1.11.0"
+        ],
+        "disabled": false
+      },
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp@latest"
+        ],
+        "disabled": true
+      },
+      "semgrep": {
+        "type": "local",
+        "command": [
+          "semgrep",
+          "mcp"
+        ],
+        "disabled": true
+      },
+      "cloudflare-api": {
+        "type": "remote",
+        "url": "https://mcp.cloudflare.com/mcp",
+        "oauth": {},
+        "disabled": true
+      },
+      "linear": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "mcp-remote",
+          "https://mcp.linear.app/mcp"
+        ],
+        "disabled": false
+      },
+      "notion": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "mcp-remote",
+          "https://mcp.notion.com/mcp"
+        ],
+        "disabled": true
+      },
+      "n8n": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "supergateway",
+          "--streamableHttp",
+          "https://n8n.ahome.quest/mcp-server/http",
+          "--header",
+          "authorization:Bearer {env:N8N_MCP_AUTH_TOKEN}"
+        ],
+        "disabled": true
+      },
+      "sonarqube": {
+        "type": "local",
+        "command": [
+          "sh",
+          "-c",
+          "exec \"$HOME/.config/opencode/scripts/wrap-sonarqube-mcp.sh\" \"$@\"",
+          "wrap-sonarqube-mcp"
+        ],
+        "environment": {
+          "SONARQUBE_TOKEN": "{env:SONARQUBE_TOKEN}",
+          "SONARQUBE_URL": "{env:SONARQUBE_URL}",
+          "SONARQUBE_ORG": "{env:SONARQUBE_ORG}"
+        },
+        "disabled": true
+      },
+      "jetbrains": {
+        "command": [
+          "npx",
+          "-y",
+          "mcp-remote",
+          "http://127.0.0.1:64343/stream"
+        ],
+        "type": "local",
+        "disabled": true
+      },
+      "vercel": {
+        "type": "remote",
+        "url": "https://mcp.vercel.com",
+        "disabled": true
+      },
+      "GitGuardianDeveloper": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "--from",
+          "git+https://github.com/GitGuardian/gg-mcp.git",
+          "developer-mcp-server"
+        ],
+        "disabled": true
+      },
+      "socket-mcp": {
+        "type": "remote",
+        "url": "https://mcp.socket.dev/",
+        "disabled": true
+      },
+      "codegraph": {
+        "type": "local",
+        "command": [
+          "codegraph",
+          "serve",
+          "--mcp"
+        ],
+        "disabled": true
+      },
+      "grafana": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "mcp-grafana"
+        ],
+        "environment": {
+          "GRAFANA_URL": "{env:GRAFANA_URL}",
+          "GRAFANA_SERVICE_ACCOUNT_TOKEN": "{env:GRAFANA_SERVICE_ACCOUNT_TOKEN}"
+        },
+        "disabled": true
+      },
+      "resend": {
+        "type": "remote",
+        "url": "https://mcp.resend.com/mcp",
+        "disabled": true
+      },
       "resolve-ai-bridge": {
-        "enabled": false,
         "type": "local",
         "command": [
           "/Users/acosta/.resolve-ai-bridge/.venv/bin/python",
@@ -222,7 +221,19 @@
         ],
         "environment": {
           "RESOLVE_AI_BRIDGE_HOME": "/Users/acosta/.resolve-ai-bridge"
-        }
+        },
+        "disabled": true
+      },
+      "junie_acp": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "mcacp@0.1.3"
+        ],
+        "cwd": "{env:HOME}/.config/opencode",
+        "disabled": false,
+        "codemode": false
       }
     }
   },

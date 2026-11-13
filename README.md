@@ -233,6 +233,48 @@ the default OpenAI endpoint directly — no custom infrastructure required.
 **Disabling custom services:** All custom-service URLs have safe defaults. If you don't set
 `N8N_MCP_URL`, the n8n integration uses a placeholder URL and remains disabled by default anyway.
 
+## Junie ACP pilot (temporary through 2026-12-31)
+
+The optional Junie integration uses MCACP 0.1.3 as an MCP-to-ACP bridge. Junie is **not** an OpenCode
+native `task` subagent: Kerrigan calls `junie_acp_*` tools explicitly and retains planning, decisions,
+and final diff/test review. The bridge runs with `operator` permission policy; OpenCode asks before
+Kerrigan uses each Junie ACP MCP tool, and Junie permission requests require explicit inspection and
+a specific grant. No permission is granted automatically.
+
+### Setup and deploy
+
+- Install Node.js 20+ and Junie CLI 26.11.1+; ensure `junie` is on `PATH`.
+- Complete Junie sign-in with the JetBrains account flow when requested. ACP `initialize` advertises
+  `jetbrains-account` authentication. The pilot has not confirmed the current user's `authStatus` or
+  authenticated session, so treat authentication as a blocker until Junie reports it or the user
+  completes login. Do not put credentials or tokens in this repository or MCP config.
+- The adapter source includes `adapters/opencode/mcacp.json`; bundle rendering maps it to
+  `mcacp.json` at `~/.config/opencode/mcacp.json`. OpenCode starts MCACP with that directory as
+  its `cwd`, because MCACP 0.1.3 reads `mcacp.json` from its working directory and does not read
+  `MCACP_CONFIG`.
+- Render and deploy the bundle using the normal [deployment](#deployment) steps. Confirm
+  `~/.config/opencode/mcacp.json` exists after deploy.
+- `mcacp.json` starts `junie --acp=true --skip-update-check`. Junie's `--acp` requires an explicit
+  boolean value. `mcacp@0.1.3` is pinned; do not use `latest`.
+
+### Use and safety
+
+Kerrigan must call the bridge tools explicitly: initialize Junie, create a session with the intended
+project `cwd`, preserve Junie's default `brave_mode` (`brave-auto`), send a bounded prompt with
+context and acceptance criteria, inspect returned events, and review the resulting diff and relevant
+checks. Do not use MCP `set_mode`; Junie does not support that ACP method.
+Junie can modify files under that `cwd`; use only authorized work. Kerrigan owns all decisions and
+acceptance. This is MCP tool use, not native OpenCode `task` delegation.
+
+### Manual review/removal by 2026-12-31
+
+Review or remove the pilot by 2026-12-31. Removal is manual; no automatic deletion is configured.
+Disable or remove `mcp.servers.junie_acp` and its Junie permission rules from
+`adapters/opencode/opencode.json`; remove the pilot section from `prompts/ORCHESTRATOR.md`,
+`adapters/opencode/mcacp.json` from `adapters/opencode/adapter.json`, the pilot test assertions, and
+this README section plus `docs/JUNIE-ACP-PILOT.md`. Re-render/deploy and validate with
+`npm run test:agents` and `npm run validate`. Do not delete MCACP session/user data automatically.
+
 ## Permissions
 
 Also in `adapters/opencode/opencode.json`:

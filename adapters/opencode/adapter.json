@@ -27,7 +27,9 @@
     },
     "permissions": {
       "include": [
-        "adapters/opencode/opencode.json"
+        "adapters/opencode/opencode.json",
+        "adapters/opencode/mcacp.json",
+        "docs/JUNIE-ACP-PILOT.md"
       ]
     },
     "persona": {
@@ -35,7 +37,8 @@
         "prompts/ORCHESTRATOR.md",
         "prompts/acs/WRITING_STYLE.md",
         "prompts/communication/CONTROLLED_LANGUAGE.md",
-        "adapters/opencode/opencode.json"
+        "adapters/opencode/opencode.json",
+        "adapters/opencode/mcacp.json"
       ]
     },
     "delegation": {
