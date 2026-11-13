@@ -65,7 +65,12 @@ test('every team specialist is a flat subagent with a prompt', () => {
   }
 });
 
-test('Junie ACP pilot uses MCACP config from its working directory and enables Linear', () => {
+test('Junie ACP access is denied globally and asks for Kerrigan', () => {
+  assert.equal(config.permission?.['junie_acp_*'], 'deny');
+  assert.equal(agents.kerrigan?.permission?.['junie_acp_*'], 'ask');
+});
+
+test('Junie ACP pilot documents MCACP limitations and deployment mapping', () => {
   const bridge = config.mcp?.servers?.junie_acp;
   assert.ok(bridge, 'Junie ACP MCP server must be registered');
   assert.equal(bridge.disabled, false);
@@ -84,8 +89,26 @@ test('Junie ACP pilot uses MCACP config from its working directory and enables L
       'Resolve AI Bridge MCP server must be registered at the mcp.servers level and disabled');
   assert.equal('enabled' in config.mcp.servers['resolve-ai-bridge'], false,
       'OpenCode MCP server config must use disabled, not enabled');
-  assert.match(readFileSync(path.join(root, 'README.md'), 'utf8'), /Junie ACP/);
-  assert.match(readFileSync(path.join(root, 'docs/JUNIE-ACP-PILOT.md'), 'utf8'), /2026-12-31/);
+  const readme = readFileSync(path.join(root, 'README.md'), 'utf8');
+  const pilotGuide = readFileSync(path.join(root, 'docs/JUNIE-ACP-PILOT.md'), 'utf8');
+  const orchestrator = readFileSync(path.join(root, 'prompts/ORCHESTRATOR.md'), 'utf8');
+
+  assert.match(readme, /Junie ACP/);
+  assert.match(pilotGuide, /brave-auto.*without one/s);
+  assert.match(readme, /distribution\/opencode\/mcacp\.json.*~\/\.config\/opencode\/mcacp\.json/);
+  assert.match(readme, /mcp\.servers/);
+  assert.match(readme, /`disabled`/);
+  assert.doesNotMatch(readme, /disabled-by-default integrations \(GitHub, Cloudflare API, Linear/);
+  assert.match(readme, /#deployment-render-bundle--dotter/);
+  assert.match(readme, /brave-auto[\s\S]*without a separate confirmation/);
+  assert.match(pilotGuide, /2026-12-31/);
+  for (const document of [orchestrator, pilotGuide, readme]) {
+    assert.match(document, /brave-auto/);
+    assert.match(document, /session\/set_config_option/);
+    assert.match(document, /session\/set_mode/);
+    assert.match(document, /not available|unavailable/);
+  }
+  assert.doesNotMatch(orchestrator, /To change it, use\s+`session\/set_config_option`/);
 });
 
 test('only Kerrigan can request Junie ACP tools', () => {

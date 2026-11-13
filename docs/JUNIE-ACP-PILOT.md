@@ -19,11 +19,13 @@ subagent.
   read `MCACP_CONFIG`.
 - `mcacp.json` sets Junie's ACP command to `junie --acp` and its permission policy to `operator`.
   OpenCode asks before Kerrigan calls Junie MCP tools. MCACP surfaces Junie's permission requests
-  for explicit review; grant only an action that is in scope.
+  for explicit review; grant only an action that is in scope. This does not guarantee a separate
+  confirmation for every action: Junie's default `brave-auto` mode can perform actions without one.
 
 The bridge starts Junie with the `cwd` provided to `new_session`. Junie's ACP session reports
-`brave_mode` as `brave-auto` by default; preserve it unless the user requests a different mode. The
-MCP `set_mode` wrapper does not work with Junie's ACP implementation. Use the intended project root.
+`brave_mode` as `brave-auto` by default; preserve it. Changing the mode is not available through
+MCACP 0.1.3: `session/set_config_option` is not reachable through the bridge, and the MCP
+`set_mode` wrapper calls `session/set_mode`, which Junie rejects. Use the intended project root.
 Because Junie may modify files in that directory, only delegate user-authorized, bounded changes.
 Inspect the diff and run relevant checks before accepting the result. Do not delegate commits or
 pushes.
