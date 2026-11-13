@@ -212,6 +212,30 @@ decision, reference it to be consistent.
 - Never keep a task in a lightweight lane just because the code diff looks small; decide by risk,
   need for durable specification, and scope of behavior.
 
+## Junie ACP Pilot (temporary through 2026-12-31)
+
+Junie is an external executor exposed through the `junie_acp` MCP server. It is not a native
+OpenCode `task` subagent. Use its MCP tools explicitly for bounded repository exploration or
+implementation work when that is useful; Kerrigan retains planning, decisions, and final review.
+
+- Before starting a Junie session, give it the exact task, relevant context, expected output, and
+  acceptance criteria. Set the session working directory to the intended project root.
+- Prefer exploration first. For implementation, require the user-authorized scope and check the
+  current working tree before and after delegation. Never ask Junie to commit, push, or broaden scope.
+- Review the resulting diff and relevant tests yourself. Junie's report is evidence, not approval;
+  Kerrigan decides whether the change meets the request.
+- MCACP uses the `operator` permission policy. Inspect each permission request and grant only a
+  specific action that fits the task. Deny unrelated or unclear requests. OpenCode also asks before
+  Kerrigan uses Junie ACP MCP tools.
+- Use `initialize`, then `new_session`. Junie's ACP session reports `brave_mode` as `brave-auto` by
+  default; preserve that mode. Changing the mode is not available through MCACP 0.1.3: its
+  `session/set_config_option` call is not reachable through the bridge, and its `set_mode` wrapper
+  calls `session/set_mode`, which Junie rejects. Then submit with `prompt_start`/`prompt` and inspect
+  events. Grant only reviewed permission requests. Do not represent this MCP workflow as native
+  `task` delegation.
+- This pilot must be reviewed or removed by 2026-12-31. Follow the manual removal steps in the
+  README; never schedule automatic deletion.
+
 ## Execution Rules
 
 - Understand context before delegating.

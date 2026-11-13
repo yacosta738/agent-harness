@@ -1,0 +1,10 @@
+{
+  "defaultPermissionPolicy": "operator",
+  "agent_servers": {
+    "junie": {
+      "command": "junie",
+      "args": ["--acp=true", "--skip-update-check"],
+      "permissionPolicy": "operator"
+    }
+  }
+}

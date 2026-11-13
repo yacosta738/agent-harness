@@ -65,6 +65,63 @@ test('every team specialist is a flat subagent with a prompt', () => {
   }
 });
 
+test('Junie ACP access is denied globally and asks for Kerrigan', () => {
+  assert.equal(config.permission?.['junie_acp_*'], 'deny');
+  assert.equal(agents.kerrigan?.permission?.['junie_acp_*'], 'ask');
+});
+
+test('Junie ACP pilot documents MCACP limitations and deployment mapping', () => {
+  const bridge = config.mcp?.servers?.junie_acp;
+  assert.ok(bridge, 'Junie ACP MCP server must be registered');
+  assert.equal(bridge.disabled, false);
+  assert.equal(bridge.cwd, '{env:HOME}/.config/opencode');
+  assert.equal('environment' in bridge, false,
+      'MCACP 0.1.3 does not read MCACP_CONFIG');
+  assert.deepEqual(bridge.command, ['npx', '-y', 'mcacp@0.1.3']);
+
+  const mcacp = JSON.parse(readFileSync(path.join(root, 'adapters/opencode/mcacp.json'), 'utf8'));
+  assert.equal(mcacp.agent_servers?.junie?.command, 'junie');
+  assert.deepEqual(mcacp.agent_servers.junie.args, ['--acp=true', '--skip-update-check']);
+  assert.equal(mcacp.agent_servers.junie.permissionPolicy, 'operator');
+  assert.equal(config.mcp.servers.linear?.disabled, false,
+      'Linear MCP server must be enabled');
+  assert.equal(config.mcp.servers['resolve-ai-bridge']?.disabled, true,
+      'Resolve AI Bridge MCP server must be registered at the mcp.servers level and disabled');
+  assert.equal('enabled' in config.mcp.servers['resolve-ai-bridge'], false,
+      'OpenCode MCP server config must use disabled, not enabled');
+  const readme = readFileSync(path.join(root, 'README.md'), 'utf8');
+  const pilotGuide = readFileSync(path.join(root, 'docs/JUNIE-ACP-PILOT.md'), 'utf8');
+  const orchestrator = readFileSync(path.join(root, 'prompts/ORCHESTRATOR.md'), 'utf8');
+
+  assert.match(readme, /Junie ACP/);
+  assert.match(pilotGuide, /brave-auto.*without one/s);
+  assert.match(readme, /distribution\/opencode\/mcacp\.json.*~\/\.config\/opencode\/mcacp\.json/);
+  assert.match(readme, /mcp\.servers/);
+  assert.match(readme, /`disabled`/);
+  assert.doesNotMatch(readme, /disabled-by-default integrations \(GitHub, Cloudflare API, Linear/);
+  assert.match(readme, /#deployment-render-bundle--dotter/);
+  assert.match(readme, /brave-auto[\s\S]*without a separate confirmation/);
+  assert.match(pilotGuide, /2026-12-31/);
+  for (const document of [orchestrator, pilotGuide, readme]) {
+    assert.match(document, /brave-auto/);
+    assert.match(document, /session\/set_config_option/);
+    assert.match(document, /session\/set_mode/);
+    assert.match(document, /not available|unavailable/);
+  }
+  assert.doesNotMatch(orchestrator, /To change it, use\s+`session\/set_config_option`/);
+});
+
+test('only Kerrigan can request Junie ACP tools', () => {
+  assert.equal(config.permission['junie_acp_*'], 'deny');
+  assert.equal(agents.kerrigan.permission['junie_acp_*'], 'ask');
+  for (const [name, agent] of Object.entries(agents)) {
+    if (name === 'kerrigan') continue;
+    // All other declared agents, including judges, inherit the global denial.
+    assert.equal(agent.permission?.['junie_acp_*'] ?? config.permission['junie_acp_*'],
+        'deny', `${name} must not be able to delegate to Junie`);
+  }
+});
+
 test('kerrigan may spawn every team specialist', () => {
   const allow = agents.kerrigan?.permission?.task;
   assert.ok(allow, 'kerrigan must declare permission.task');
