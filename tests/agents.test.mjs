@@ -65,9 +65,49 @@ test('every team specialist is a flat subagent with a prompt', () => {
   }
 });
 
-test('Junie ACP access is denied globally and asks for Kerrigan', () => {
-  assert.equal(config.permission?.['junie_acp_*'], 'deny');
-  assert.equal(agents.kerrigan?.permission?.['junie_acp_*'], 'ask');
+test('Junie ACP access is denied globally and allows only observation for Kerrigan', () => {
+  const globalPermission = config.permission;
+  const kerriganPermission = agents.kerrigan?.permission;
+  const observationTools = [
+    'junie_acp_list_installed_agents',
+    'junie_acp_list_running_agents',
+    'junie_acp_discover_agents',
+    'junie_acp_get_agent_status',
+    'junie_acp_list_sessions',
+    'junie_acp_prompt_events',
+    'junie_acp_events',
+  ];
+  const approvalTools = [
+    'junie_acp_initialize',
+    'junie_acp_new_session',
+    'junie_acp_prompt_start',
+    'junie_acp_prompt',
+    'junie_acp_registry_search',
+    'junie_acp_agent_install',
+    'junie_acp_agent_uninstall',
+    'junie_acp_agent_check_upgrades',
+    'junie_acp_reload_config',
+    'junie_acp_shutdown',
+    'junie_acp_load_session',
+    'junie_acp_close_session',
+    'junie_acp_grant_permission',
+    'junie_acp_request_permission',
+    'junie_acp_cancel',
+    'junie_acp_set_mode',
+    'junie_acp_set_agent_status',
+  ];
+
+  assert.equal(globalPermission?.['junie_acp_*'], 'deny');
+  assert.equal(kerriganPermission?.['junie_acp_*'], undefined,
+      'Kerrigan must not override the global denial with a broad wildcard');
+  for (const tool of observationTools) {
+    assert.equal(kerriganPermission?.[tool], 'allow',
+        `${tool} is read-only and must not require approval`);
+  }
+  for (const tool of approvalTools) {
+    assert.equal(kerriganPermission?.[tool], 'ask',
+        `${tool} can create work or a session and must require approval`);
+  }
 });
 
 test('Junie ACP pilot documents MCACP limitations and deployment mapping', () => {
@@ -81,7 +121,9 @@ test('Junie ACP pilot documents MCACP limitations and deployment mapping', () =>
 
   const mcacp = JSON.parse(readFileSync(path.join(root, 'adapters/opencode/mcacp.json'), 'utf8'));
   assert.equal(mcacp.agent_servers?.junie?.command, 'junie');
-  assert.deepEqual(mcacp.agent_servers.junie.args, ['--acp=true', '--skip-update-check']);
+  assert.deepEqual(mcacp.agent_servers.junie.args, [
+    '--acp=true', '--skip-update-check', '--model=junie-lite',
+  ]);
   assert.equal(mcacp.agent_servers.junie.permissionPolicy, 'operator');
   assert.equal(config.mcp.servers.linear?.disabled, false,
       'Linear MCP server must be enabled');
@@ -113,12 +155,24 @@ test('Junie ACP pilot documents MCACP limitations and deployment mapping', () =>
 
 test('only Kerrigan can request Junie ACP tools', () => {
   assert.equal(config.permission['junie_acp_*'], 'deny');
-  assert.equal(agents.kerrigan.permission['junie_acp_*'], 'ask');
+  const observationTools = [
+    'junie_acp_list_installed_agents',
+    'junie_acp_list_running_agents',
+    'junie_acp_discover_agents',
+    'junie_acp_get_agent_status',
+    'junie_acp_list_sessions',
+    'junie_acp_prompt_events',
+    'junie_acp_events',
+  ];
   for (const [name, agent] of Object.entries(agents)) {
     if (name === 'kerrigan') continue;
     // All other declared agents, including judges, inherit the global denial.
     assert.equal(agent.permission?.['junie_acp_*'] ?? config.permission['junie_acp_*'],
         'deny', `${name} must not be able to delegate to Junie`);
+    for (const tool of observationTools) {
+      assert.equal(agent.permission?.[tool] ?? config.permission['junie_acp_*'],
+          'deny', `${name} must not access ${tool}`);
+    }
   }
 });
 
