@@ -213,7 +213,7 @@ archived on 2026-10-21; see `~/Downloads/Other/skills-archive/README.md` for the
 
 Configured in `adapters/opencode/opencode.json` under `mcp.servers`; that file is the source of
 truth, and each server uses `disabled: true` or `disabled: false`. Currently enabled: Engram
-(persistent memory), Context7, Chrome DevTools, Linear, and Junie ACP. Other wired servers are
+(persistent memory), Context7, Chrome DevTools, and Linear. Other wired servers are
 disabled by default, including GitHub, Cloudflare API, Notion, SonarQube, Vercel, Ahrefs, Stitch,
 Playwright, Semgrep, Socket, Codegraph, and others. To enable a server, set its `disabled` value to
 `false` and provide any required environment variables.
@@ -234,51 +234,24 @@ the default OpenAI endpoint directly — no custom infrastructure required.
 **Disabling custom services:** All custom-service URLs have safe defaults. If you don't set
 `N8N_MCP_URL`, the n8n integration uses a placeholder URL and remains disabled by default anyway.
 
-## Junie ACP pilot (temporary through 2026-12-31)
+## Junie (CLI only)
 
-The optional Junie integration uses MCACP 0.1.3 as an MCP-to-ACP bridge. Junie is **not** an OpenCode
-native `task` subagent: Kerrigan calls `junie_acp_*` tools explicitly and retains planning, decisions,
-and final diff/test review. The bridge runs with `operator` permission policy; OpenCode asks before
-Kerrigan uses each Junie ACP MCP tool, and Junie permission requests require explicit inspection and
-a specific grant. MCP tool access uses explicit permission rules; Junie's `brave-auto` mode can
-perform approved actions without a separate confirmation, so review the task scope before delegation.
+The Junie ACP pilot was retired on 2026-11-14. A Junie account with Junie Lite-only access
+authenticates over ACP and then rejects every prompt with `-32002 model_not_available`, while the
+same model completes through the CLI. The `junie_acp` MCP server, its permission rules, and
+`adapters/opencode/mcacp.json` were removed from this adapter. See
+[`docs/JUNIE-ACP-PILOT.md`](docs/JUNIE-ACP-PILOT.md) for the reproduced evidence and the criteria to
+reintroduce ACP.
 
-### Setup and deploy
+Use Junie manually when you need it:
 
-- Install Node.js 20+ and Junie CLI 26.11.1+; ensure `junie` is on `PATH`.
-- Complete Junie sign-in with the JetBrains account flow when requested. ACP `initialize` advertises
-  `jetbrains-account` authentication. The pilot has not confirmed the current user's `authStatus` or
-  authenticated session, so treat authentication as a blocker until Junie reports it or the user
-  completes login. Do not put credentials or tokens in this repository or MCP config.
-- The adapter source includes `adapters/opencode/mcacp.json`; bundle rendering maps it to
-  `mcacp.json` at `~/.config/opencode/mcacp.json`. OpenCode starts MCACP with that directory as
-  its `cwd`, because MCACP 0.1.3 reads `mcacp.json` from its working directory and does not read
-  `MCACP_CONFIG`.
-- Render and deploy the bundle using the normal [deployment](#deployment-render-bundle--dotter) steps. Confirm
-  `~/.config/opencode/mcacp.json` exists after deploy.
+```bash
+junie --model=junie-lite "Review this diff and report only blocking issues"
+```
 
-- `mcacp.json` starts `junie --acp=true --skip-update-check`. Junie's `--acp` requires an explicit
-  boolean value. `mcacp@0.1.3` is pinned; do not use `latest`.
-
-### Use and safety
-
-Kerrigan must call the bridge tools explicitly: initialize Junie, create a session with the intended
-project `cwd`, preserve Junie's default `brave_mode` (`brave-auto`), send a bounded prompt with
-context and acceptance criteria, inspect returned events, and review the resulting diff and relevant
-checks. Preserve `brave-auto`: mode changes are unavailable through MCACP 0.1.3 because
-`session/set_config_option` is not reachable through the bridge, and `set_mode` calls
-`session/set_mode`, which Junie rejects.
-Junie can modify files under that `cwd`; use only authorized work. Kerrigan owns all decisions and
-acceptance. This is MCP tool use, not native OpenCode `task` delegation.
-
-### Manual review/removal by 2026-12-31
-
-Review or remove the pilot by 2026-12-31. Removal is manual; no automatic deletion is configured.
-Disable or remove `mcp.servers.junie_acp` and its Junie permission rules from
-`adapters/opencode/opencode.json`; remove the pilot section from `prompts/ORCHESTRATOR.md`,
-`adapters/opencode/mcacp.json` from `adapters/opencode/adapter.json`, the pilot test assertions, and
-this README section plus `docs/JUNIE-ACP-PILOT.md`. Re-render/deploy and validate with
-`npm run test:agents` and `npm run validate`. Do not delete MCACP session/user data automatically.
+Run it in the intended project root, review the resulting diff yourself, and do not delegate commits
+or pushes. The CLI is a separate process: it is not native OpenCode `task` delegation and it is not
+wired as an MCP server. Tracking issue: `yacosta738/agent-harness#33`.
 
 ## Permissions
 
@@ -332,7 +305,6 @@ yours; re-render after pulling):
 ```toml
 "editors/agents/agent-harness/distribution/opencode/opencode.json" = "~/.config/opencode/opencode.json"
 "editors/agents/agent-harness/distribution/opencode/cli.json" = "~/.config/opencode/cli.json"
-"editors/agents/agent-harness/distribution/opencode/mcacp.json" = "~/.config/opencode/mcacp.json"
 "editors/agents/agent-harness/distribution/opencode/themes" = "~/.config/opencode/themes"
 "editors/agents/agent-harness/distribution/opencode/scripts" = "~/.config/opencode/scripts"
 "editors/agents/agent-harness/distribution/opencode/prompts" = "~/.config/opencode/prompts"
