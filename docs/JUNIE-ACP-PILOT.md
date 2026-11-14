@@ -1,51 +1,77 @@
-# Junie ACP pilot (temporary)
+# Junie integration: ACP pilot retired
 
-This adapter uses Junie CLI 26.11.1 over ACP through MCACP 0.1.3. Kerrigan remains the
-orchestrator and reviewer. Junie is exposed as MCP tools, not as an OpenCode native `task`
-subagent.
+The Junie ACP pilot is **retired**. The `junie_acp` MCP server, its permission rules, and the
+`mcacp.json` bridge configuration were removed from this adapter on 2026-11-14. This document
+records why, what was verified, and what would have to change before the ACP path is reintroduced.
 
-## Prerequisites and configuration
+Junie remains usable through its CLI. That is the only supported path today.
 
-- Node.js 20 or newer; MCACP 0.1.3 requires it.
-- Junie CLI installed and available as `junie` on `PATH`; this pilot invokes
-  `junie --acp=true --skip-update-check --model=junie-lite` because the ACP flag requires an explicit boolean value. Junie Lite is selected by its CLI model ID, `junie-lite`.
-- Junie authentication may be required. ACP `initialize` advertises the `jetbrains-account` method.
-  No `authStatus` confirmation is available for the current user's session, so treat auth as blocked
-  until Junie confirms authentication or the user completes the JetBrains sign-in flow. Never store
-  login secrets in repository configuration.
-- The rendered OpenCode configuration must be deployed so it can read `mcacp.json` from
-  `~/.config/opencode/mcacp.json`. OpenCode sets the MCACP process `cwd` to
-  `{env:HOME}/.config/opencode`. MCACP 0.1.3 reads configuration from `cwd/mcacp.json` and does not
-  read `MCACP_CONFIG`.
-- `mcacp.json` sets Junie's ACP command to `junie --acp` and its permission policy to `operator`.
-  OpenCode allows Kerrigan to call only MCACP's read-only discovery and status tools without
-  approval. It asks before process initialization, session creation or resumption, prompt submission,
-  permission changes, and other mutating tools. MCACP surfaces Junie's permission requests for
-  explicit review; grant only an action that is in scope. This does not guarantee a separate
-  confirmation for every action: Junie's default `brave-auto` mode can perform actions without one.
+## Why the pilot was retired
 
-The bridge starts Junie with the `cwd` provided to `new_session`. Junie's ACP session reports
-`brave_mode` as `brave-auto` by default; preserve it. Changing the mode is not available through
-MCACP 0.1.3: `session/set_config_option` is not reachable through the bridge, and the MCP
-`set_mode` wrapper calls `session/set_mode`, which Junie rejects. Use the intended project root.
-Because Junie may modify files in that directory, only delegate user-authorized, bounded changes.
-Inspect the diff and run relevant checks before accepting the result. Do not delegate commits or
-pushes.
+A Junie account with **Junie Lite-only access** cannot submit a prompt over ACP. The agent
+authenticates, reports the model as available, and then rejects every prompt before execution. The
+same account and the same model work through the CLI.
 
-## Manual removal or review by 2026-12-31
+The blocking behaviour is a Junie account/path restriction, not a defect in this repository.
 
-Review whether to retain this pilot no later than 2026-12-31. Removal is manual; no cleanup job is
-installed.
+## Evidence (reproduced 2026-11-14)
 
-1. Set `mcp.servers.junie_acp.disabled` to `true` or remove the `junie_acp` entry from
-   `adapters/opencode/opencode.json`.
-2. Remove the Junie-specific MCP permission entries from `agent.kerrigan.permission` in that same
-   config, if present.
-3. Remove the Junie ACP pilot section from `prompts/ORCHESTRATOR.md`.
-4. Remove `adapters/opencode/mcacp.json` and its bundle references from
-   `adapters/opencode/adapter.json`.
-5. Remove the Junie pilot documentation and its assertions from `tests/agents.test.mjs`.
-6. Verify the config still parses and run `npm run test:agents` and `npm run validate`.
+Environment: macOS aarch64, Junie CLI `26.11.1 (4020.10)`, account `license_type=NONE`
+(Junie Lite-only).
 
-Do not remove user data or `.mcacp` session data as part of the config change. Inspect and handle
-those files separately if needed.
+Raw ACP client, JSON-RPC over stdio, no MCACP in the loop, `--acp-logging=true`:
+
+| Step | Result |
+|------|--------|
+| `initialize` | `protocolVersion 1`, `authMethods: [jetbrains-account]`, `_meta.jetbrains.air.capabilities` includes `providerModels` |
+| `authenticate(jetbrains-account)` | `{}` — authentication succeeds |
+| `session/new` | `configOptions: [mode, brave_mode]` only; **no `models` state** |
+| `session/prompt` (`junie-lite`) | `-32002` `model_not_available` |
+| `session/set_config_option(mode, brave_mode)` | accepted; prompt still rejects |
+| `session/prompt` (`--model=gemini-3.7-flash`) | `-32012` `no_model_provider` |
+
+CLI comparison with the same account:
+
+| Command | Result |
+|---------|--------|
+| `junie --model=junie-lite "..."` | completes the task |
+| `junie --model=gemini-3.7-flash "..."` | `Model ... is unavailable with Junie Lite-only access` |
+
+Findings:
+
+1. ACP model selection is not expressed through `configOptions`. Junie publishes no model state at
+   all (`session/new` has no `models` field), although `initialize` advertises the `providerModels`
+   capability. No ACP client can select a model, so a `set_config_option`-based fix cannot work.
+2. `mcacp@0.1.3` (verified from the published npm tarball) has no `session/authenticate`,
+   `session/set_config_option`, or `session/set_model` support. Its `newSession` returns only
+   `{ sessionId, modes }`.
+3. The set of prompt-capable models depends on the account. On a Junie Lite-only account only
+   `junie-lite` is allowed, and ACP refuses it.
+
+## Supported path: Junie CLI
+
+```bash
+junie --model=junie-lite "Review this diff and report only blocking issues"
+```
+
+Run it in the intended project root, review the diff yourself, and do not delegate commits or
+pushes. The CLI is a separate process; it is not native OpenCode `task` delegation and it is not
+wired as an MCP server.
+
+## Reintroduction criteria
+
+Reintroduce ACP only when **all** of the following hold:
+
+1. Junie advertises model state in `session/new` (or the account is not Lite-only).
+2. A prompt completes over ACP for the selected model on this account.
+3. A bridge version implements `session/authenticate` and forwards `models` and `configOptions`.
+
+Re-check with the same raw probe before re-adding `mcacp.json`, the `junie_acp` server entry, and
+its permission rules. `session/set_mode` remains unsupported by Junie; a mode change must go
+through `session/set_config_option`.
+
+## Tracking
+
+GitHub issue: `yacosta738/agent-harness#33`. The issue tracks the MCACP gap (missing
+`configOptions`/`authenticate` exposure, useful for other ACP agents) and the JetBrains-side
+question about Junie Lite over third-party ACP clients.
