@@ -51,8 +51,7 @@
         "url": "https://mcp.context7.com/mcp",
         "headers": {
           "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
-        },
-        "disabled": false
+        }
       },
       "ahrefs": {
         "type": "local",
@@ -83,8 +82,7 @@
           "npx",
           "-y",
           "chrome-devtools-mcp@v1.11.0"
-        ],
-        "disabled": false
+        ]
       },
       "playwright": {
         "type": "local",
@@ -92,8 +90,7 @@
           "npx",
           "-y",
           "@playwright/mcp@latest"
-        ],
-        "disabled": true
+        ]
       },
       "semgrep": {
         "type": "local",
@@ -116,8 +113,7 @@
           "-y",
           "mcp-remote",
           "https://mcp.linear.app/mcp"
-        ],
-        "disabled": false
+        ]
       },
       "notion": {
         "type": "local",
@@ -193,8 +189,7 @@
           "codegraph",
           "serve",
           "--mcp"
-        ],
-        "disabled": true
+        ]
       },
       "grafana": {
         "type": "local",
