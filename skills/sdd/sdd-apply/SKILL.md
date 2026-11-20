@@ -35,8 +35,26 @@ provide real verification evidence, and stop for orchestrator review before star
 From the orchestrator:
 
 - Change name
-- The specific task (s) to implement (e.g., "Phase 1, tasks 1.1-1.3")
+- The assigned slice identifier, or an instruction to implement all remaining tasks
 - Artifact store mode (`openspec`)
+
+### Resolve the Assigned Slice Before Mutation
+
+Before writing, editing, deleting, or generating any project file:
+
+1. Read `tasks.md` and identify its functional slices in listed order.
+2. If the assignment names exactly one slice identifier, use that slice. Do not expand the assignment to
+   adjacent or later slices.
+3. If the assignment says to implement all remaining tasks, select the first slice with incomplete
+   tasks. Record that slice identifier as the effective assignment and implement only that slice.
+4. If the assignment names multiple slices, gives task identifiers that cross slice boundaries, or
+   does not identify one slice and is not the all-remaining-tasks instruction, stop before mutation
+   and ask the orchestrator to assign exactly one slice.
+5. If no incomplete slice remains, report that there is no implementation work and do not mutate
+   files.
+
+After completing the effective assignment, stop for orchestrator review. Do not select or begin
+another slice automatically.
 
 ## Execution and Persistence Contract
 

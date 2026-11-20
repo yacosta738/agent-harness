@@ -87,12 +87,14 @@ controls together — do not split them into separate phases.
 - [ ] 1.3 GREEN: Implement minimum code to pass
 - [ ] 1.4 REFACTOR: Clean up, verify tests still pass
 - [ ] 1.5 {Update docs or configuration required for this capability}
+- [ ] 1.6 VERIFY: Run the slice's acceptance checks and record the result before marking the slice complete
 
 ## Slice 2: {Next Functional Capability}
 
 - [ ] 2.1 RED: Write failing test for {behavior}
 - [ ] 2.2 GREEN: Implement minimum code to pass
 - [ ] 2.3 REFACTOR: Clean up, verify tests still pass
+- [ ] 2.4 VERIFY: Run the slice's acceptance checks and record the result before marking the slice complete
 
 For a behavior-preserving business-logic refactor, plan a passing baseline test (or a
 characterization test if coverage is missing), then refactor and rerun it. Do not invent a failing
