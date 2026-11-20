@@ -127,9 +127,12 @@ Follow these steps to create a Pull Request:
     tmp_file="$(mktemp)"
     trap 'rm -f "$tmp_file"' EXIT
     # Write the drafted description to "$tmp_file"
-    gh pr create --base <base_branch> --head <head_branch> --title "type(scope): succinct description" --body-file "$tmp_file"
+    gh pr create --draft --base <base_branch> --head <head_branch> --title "type(scope): succinct description" --body-file "$tmp_file"
     ```
 
+- **Draft by default** — Include `--draft` unless the user explicitly requests a
+  ready-for-review PR. This ensures the PR is not immediately visible to all
+  repository members and gives the author time to add final context.
 - **Title**: Use a semantic PR title following
   [Conventional Commits](https://www.conventionalcommits.org/) style when the
   repository supports it (e.g., `feat(ui): add new button`,
@@ -138,9 +141,9 @@ Follow these steps to create a Pull Request:
   using `--attach` (requires `gh >= 2.99.0`). Verify version and authentication first.
   Reference each file in the body using local paths (e.g., `![Before](./evidence/before.png)`);
   GitHub CLI rewrites these to uploaded URLs. Add `--attach './evidence/before.png#Alt text'`
-  for each evidence file. If `--attach` is unavailable, commit evidence files to the branch
-  and reference them using raw GitHub URLs. Sanitize all evidence before attaching — never
-  upload credentials or sensitive data.
+  for each evidence file. If `--attach` is unavailable, evidence files must already be committed
+  to the branch (prepared by `yeet` before push) — do not commit files yourself. Sanitize all
+  evidence before attaching — never upload credentials or sensitive data.
 
 8. **Align Semantics**: Keep branch name, commit message, and PR title aligned in
    intent.

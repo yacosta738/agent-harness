@@ -71,15 +71,37 @@ file method below.
 
 #### Fallback: Committed Evidence Files
 
-When `--attach` is not available, commit evidence files to the PR branch and reference them:
+When `--attach` is not available, evidence files must be committed to the PR branch **before**
+`pr-creator` runs. This preparation is the responsibility of `yeet`, not `pr-creator`.
 
-1. Create an `evidence/` directory in the branch root.
+**In `yeet`** (before step 7 — push):
+
+1. If evidence files exist and `--attach` is unavailable, create an `evidence/` directory in the
+   branch root.
 2. Place captured files there, e.g., `evidence/before.png`.
-3. Commit the evidence with the PR changes.
-4. Reference from the body using the raw GitHub URL pattern:
-   ```markdown
-   ![Before](https://raw.githubusercontent.com/<owner>/<repo>/<branch>/evidence/before.png)
-   ```
+3. Commit the evidence with the PR changes (alongside the main commit or as a separate commit
+   within the same push).
+4. Push the branch with evidence included.
+
+**In `pr-creator`** (step 7 — create PR):
+
+- If `--attach` is unavailable and evidence files are already committed, reference them using
+  **relative paths** so the PR works for both public and private repositories:
+  ```markdown
+  ![Before](evidence/before.png)
+  ```
+- GitHub renders relative image paths in PR descriptions by resolving them against the repository
+  root at the PR's head commit, which works correctly for private repos and avoids branch-mutable
+  URLs.
+- If evidence files are not committed and `--attach` is unavailable, report the limitation
+  truthfully — **do not commit files yourself**. `pr-creator` has no commit contract and runs
+  after `yeet`'s push.
+
+**Why relative paths over `raw.githubusercontent.com`:**
+- Relative paths work for private repositories where raw content URLs may be inaccessible.
+- They resolve at the PR's head commit, so evidence is tied to a specific version rather than a
+  mutable branch.
+- GitHub's PR body renderer supports relative paths natively.
 
 #### Code Evidence
 

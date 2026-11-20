@@ -109,20 +109,30 @@ verified escape hatch.
   `feature-branch-chain`, or explicitly approved `size-exception`.
 - Never use the ambiguous legacy values `stacked-prs` or `stacked-to-main` as strategy values.
 
-7. Push with tracking: `git push -u origin "$(git branch --show-current)"`.
-8. Create the PR via `pr-creator`.
+7. Prepare evidence for publication (if applicable).
+
+- If the change includes captured images or videos and `--attach` is unavailable
+  (`gh < 2.99.0`), commit evidence files to the branch before pushing. Create an
+  `evidence/` directory, place captured files there, and include them in the commit.
+- This step ensures `pr-creator` can reference committed evidence files without
+  committing files itself — `pr-creator` runs after the push and has no commit contract.
+- If `--attach` is available, skip this step; `pr-creator` will attach files directly.
+
+8. Push with tracking: `git push -u origin "$(git branch --show-current)"`.
+9. Create the PR via `pr-creator`.
 
 - After the push succeeds, delegate PR creation to `pr-creator`. Pass the base branch, head
   branch, title, and any evidence files captured during implementation.
 - `pr-creator` handles: template compliance, evidence-driven descriptions, review assessment,
   attaching evidence using `--attach` when available, and the `gh pr create` call.
 - Default to a draft PR unless the user explicitly requests ready-for-review.
-- `yeet` retains: authorizations, commits, push, branch strategy, review budget checks, and
-  stack coordination. Do not duplicate PR body rules or evidence guidelines here.
+- `yeet` retains: authorizations, commits, push, branch strategy, review budget checks,
+  evidence preparation, and stack coordination. Do not duplicate PR body rules or evidence
+  guidelines here.
 
-9. Summarize the result with branch name, commit, PR target, validation, review-budget status, and
-   anything the user still
-   needs to confirm.
+10. Summarize the result with branch name, commit, PR target, validation, review-budget status, and
+    anything the user still
+    needs to confirm.
 
 ## Write Safety
 
