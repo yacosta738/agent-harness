@@ -27,8 +27,7 @@
     },
     "permissions": {
       "include": [
-        "adapters/opencode/opencode.json",
-        "docs/JUNIE-ACP-PILOT.md"
+        "adapters/opencode/opencode.json"
       ]
     },
     "persona": {

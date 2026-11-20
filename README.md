@@ -234,25 +234,6 @@ the default OpenAI endpoint directly — no custom infrastructure required.
 **Disabling custom services:** All custom-service URLs have safe defaults. If you don't set
 `N8N_MCP_URL`, the n8n integration uses a placeholder URL and remains disabled by default anyway.
 
-## Junie (CLI only)
-
-The Junie ACP pilot was retired on 2026-11-14. A Junie account with Junie Lite-only access
-authenticates over ACP and then rejects every prompt with `-32002 model_not_available`, while the
-same model completes through the CLI. The `junie_acp` MCP server, its permission rules, and
-`adapters/opencode/mcacp.json` were removed from this adapter. See
-[`docs/JUNIE-ACP-PILOT.md`](docs/JUNIE-ACP-PILOT.md) for the reproduced evidence and the criteria to
-reintroduce ACP.
-
-Use Junie manually when you need it:
-
-```bash
-junie --model=junie-lite "Review this diff and report only blocking issues"
-```
-
-Run it in the intended project root, review the resulting diff yourself, and do not delegate commits
-or pushes. The CLI is a separate process: it is not native OpenCode `task` delegation and it is not
-wired as an MCP server. Tracking issue: `yacosta738/agent-harness#33`.
-
 ## Permissions
 
 Also in `adapters/opencode/opencode.json`:
