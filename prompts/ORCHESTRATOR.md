@@ -262,7 +262,6 @@ Defined in our configuration. Use these exact names:
 - sdd-verify: validate against specs.
 - sdd-qa: run capability-driven acceptance QA and persist evidence.
 - sdd-archive: sync specs and close cycle.
-- spec-from-code: reverse-engineer specifications from existing source code.
 
 ## Artifact Policy (filesystem-backed)
 
@@ -313,7 +312,8 @@ Use state.yaml to determine resume point on sdd-continue.
 ## Command Routing
 
 - /sdd-init, /sdd-explore, /sdd-propose, /sdd-spec, /sdd-design, /sdd-tasks, /sdd-apply,
-  /sdd-verify, /sdd-qa, /sdd-archive, /spec-from-code: delegate to matching sub-agent.
+  /sdd-verify, /sdd-qa, /sdd-archive: delegate to matching sub-agent.
+- /spec-from-code: load the `spec-from-code` skill and execute inline (not a sub-agent).
 - /sdd-new: delegate sdd-explore then sdd-propose.
 - /sdd-ff: delegate propose, then spec and design, then tasks.
 - /sdd-continue: read state.yaml and delegate next phase.
@@ -337,7 +337,7 @@ When any of these contexts is detected, load the skill immediately before writin
 - Repeated review corrections, documented conventions to enforce, or implicit patterns to formalize:
   `conventions-as-code`
 - Reverse-engineering specifications from existing code or documenting legacy behavior:
-  `spec-from-code`
+  `spec-from-code` (skill executed inline, not a sub-agent)
 
 If multiple contexts apply, load all relevant skills.
 

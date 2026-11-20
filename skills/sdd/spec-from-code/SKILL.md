@@ -12,7 +12,7 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for reverse-engineering specifications from existing source code.
+You are responsible for reverse-engineering specifications from existing source code.
 You analyze a bounded scope of implementation, classify what you find as evidence, and produce a
 reviewable draft specification compatible with the existing SDD conventions.
 
@@ -159,7 +159,10 @@ Generate a draft specification compatible with existing SDD conventions.
 
 ### Format Requirements
 
-- Use **RFC 2119 keywords** (MUST, SHALL, SHOULD, MAY) only for `[Confirmed]` requirements.
+- Use **RFC 2119 keywords** (MUST, SHALL, SHOULD, MAY) **only** for `[Confirmed]` requirements.
+- For `[Observed]`, `[Inferred]`, and `[Unverified]` findings, use **descriptive language** without
+  normative force: "The current implementation does X", "The code appears to Y", not "The system
+  SHALL X".
 - Use **Given/When/Then** scenarios for behavioral descriptions.
 - Include happy paths and meaningful error or edge cases.
 - Separate behavior from implementation details.
@@ -185,13 +188,13 @@ Generate a draft specification compatible with existing SDD conventions.
 | Unverified    | N     |
 | Defect?       | N     |
 
-## Requirements
+## Findings
 
 ### {Domain Area 1}
 
-#### REQ-001: {Title}
+#### F-001: {Title}
 
-**Classification**: [Confirmed] / [Observed] / [Inferred] / [Unverified] / [Defect?]
+**Classification**: [Confirmed]
 **Sources**: `path/to/file.kt:42`, `path/to/test.kt:15`
 
 The system SHALL {requirement text}.
@@ -200,6 +203,20 @@ The system SHALL {requirement text}.
 - Given {precondition}
 - When {action}
 - Then {expected outcome}
+
+---
+
+#### F-002: {Title}
+
+**Classification**: [Observed]
+**Sources**: `path/to/file.kt:78`
+
+The current implementation rejects requests where quantity is zero or negative.
+
+**Scenario**: {Name}
+- Given {precondition}
+- When {action}
+- Then {observed outcome}
 
 ---
 
@@ -225,10 +242,36 @@ The system SHALL {requirement text}.
 1. Write the draft to `.agents/sdd/changes/{change-name}/specs/{domain}/spec-from-code-draft.md`.
 2. Present the draft to the user for review.
 3. The user must explicitly accept before the draft becomes a canonical spec.
-4. On acceptance, the user may promote the draft using `sdd-spec` or manual promotion.
-5. On rejection, discard the draft — do not persist it.
+4. On rejection, discard the draft — do not persist it.
 
 **Never** write directly to `.agents/sdd/specs/{domain}/spec.md` without explicit user approval.
+
+### Promoting an Approved Baseline
+
+When the user accepts the draft, promote it through a bounded procedure that does not fake a full
+SDD cycle:
+
+1. **Compare**: If a canonical spec already exists at `.agents/sdd/specs/{domain}/spec.md`, read it
+   and compare with the approved draft. Show the user the differences — what the baseline adds,
+   modifies, or removes.
+2. **Check for silent overwrite**: If the canonical spec exists and differs significantly, warn the
+   user. Do not proceed without explicit confirmation.
+3. **Merge or create**:
+   - If no canonical spec exists: Copy the approved draft (renamed to `spec.md`) to
+     `.agents/sdd/specs/{domain}/spec.md`.
+   - If a canonical spec exists: Merge the approved draft into the existing spec, preserving
+     requirements not mentioned in the baseline. Match by requirement name/title.
+4. **Mark provenance**: Add a visible note at the top of the promoted spec:
+   ```
+   > **Provenance**: This spec was reverse-engineered from existing code on {date} using
+   > spec-from-code. It documents observed behavior, not approved requirements. Review and
+   > confirm each requirement before treating it as normative.
+   ```
+5. **Do not** pretend this baseline has passed implementation, verification, or QA. The
+   `sdd-archive` gate (verify-report + qa-report) remains the only path for specs produced by a
+   full SDD cycle. This promotion path is exclusively for documenting existing behavior as a
+   historical baseline.
+6. After promotion, remove the draft file from the change directory.
 
 ## Conflict Handling
 

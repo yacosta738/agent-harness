@@ -1,23 +1,44 @@
 ---
 description: Reverse-engineer specifications from existing source code
-agent: spec-from-code
-subtask: true
+agent: kerrigan
 ---
 
-You are an SDD sub-agent. Read the executor prompt at ~/.config/opencode/prompts/sdd/spec-from-code.md
-and the shared protocol at ~/.config/opencode/skills/sdd/_shared/sdd-phase-common.md FIRST, then
-follow their instructions exactly.
+Load the `spec-from-code` skill and execute it to reverse-engineer specifications from existing
+source code.
+
+MODE:
+
+The command accepts an optional mode prefix in the argument:
+
+- **Analyze** (default): Read-only investigation. No persistent artifacts. Use when you want to
+  understand what a module does without creating SDD artifacts.
+- **Draft**: Generate a reviewable draft spec. Requires an explicit change name. Use when you want
+  to create a baseline that can be approved and promoted.
+
+ARGUMENT FORMAT:
+
+- Analyze mode: `spec-from-code {scope}` or `spec-from-code analyze {scope}`
+- Draft mode: `spec-from-code draft {change-name} {scope}`
+
+If the argument starts with `draft`, parse it as: `draft {change-name} {scope}`.
+Otherwise, treat the entire argument as the scope in analyze mode.
 
 CONTEXT:
 
 - Working directory: {workdir}
 - Current project: {project}
-- Scope: {argument}
+- Argument: {argument}
 - Artifact store mode: openspec
 
 TASK:
-Analyze the bounded scope to reverse-engineer specifications from existing source code: {argument}.
-Collect evidence, classify findings, and produce a reviewable draft specification.
 
-Return a structured result with: status, executive_summary, detailed_report, artifacts,
-next_recommended, and risks.
+1. Parse the argument to determine mode (analyze or draft), optional change name, and scope.
+2. Load the `spec-from-code` skill and execute it with the parsed parameters.
+3. For **analyze mode**: operate read-only — collect evidence, classify findings, and return a
+   structured report without persisting artifacts.
+4. For **draft mode**: require a change name, write the draft to
+   `.agents/sdd/changes/{change-name}/specs/{domain}/spec-from-code-draft.md`, and present it for
+   user review.
+
+CRITICAL: Do not invent a change name. If draft mode is requested but no change name is provided,
+ask the user for one before proceeding.
