@@ -163,12 +163,12 @@ Two standards are used, separated on purpose:
   expert instruction or a self-contained guide. `spec-from-code` is a standalone command that
   delegates to `kerrigan` via `agent: kerrigan`.
 
-| Group           | Commands                                                                                                                                                                 |
-|-----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| SDD (13)        | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
+| Group             | Commands                                                                                                                                                                 |
+|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SDD (13)          | `sdd-init`, `sdd-explore`, `sdd-propose`, `sdd-spec`, `sdd-design`, `sdd-tasks`, `sdd-apply`, `sdd-verify`, `sdd-qa`, `sdd-archive`, `sdd-new`, `sdd-ff`, `sdd-continue` |
 | SDD Companion (1) | `spec-from-code`                                                                                                                                                         |
-| Diagrams (3)    | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
-| Assorted (6)    | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                   |
+| Diagrams (3)      | `diagram-export`, `diagram-import-drawio`, `diagram-import-mermaid`                                                                                                      |
+| Assorted (6)      | `a11y-expert`, `build-and-run-macos-app`, `fix-codesign-error`, `test-macos-app`, `pr-watch`, `review`                                                                   |
 
 The five Vercel commands were retired from the active catalog. They are preserved, together with the
 Vercel skills, in the local canonical ZIP `~/Documents/vercel.zip`, outside the repository. The ZIP
@@ -188,7 +188,7 @@ trust the filesystem, not this table:
 | `design/`         | 7                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                       |
 | `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                           |
 | `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                     |
-| `sdd/`            | 12                     | Ten phase skills, inline onboarding, `spec-from-code`, and the `_shared/` protocol                  |
+| `sdd/`            | 12                     | Ten phase skills, inline onboarding, `spec-from-code`, and the `_shared/` protocol                   |
 | `github/`         | 10                     | Actions, PR flow, stacked PRs, CI fixes, reviews, `pr-watch`, `yeet`                                 |
 | `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                                    |
 | `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                               |

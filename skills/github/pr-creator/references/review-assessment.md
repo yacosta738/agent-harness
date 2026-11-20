@@ -39,6 +39,7 @@ Review Effort: [Low/Medium/High]
 Examples:
 
 -
+
 `Review Effort: Low — 15-line change to a single utility function with clear input/output behavior.`
 -
 `Review Effort: Medium — Touches three files across the auth and notification modules; reviewer should check the callback wiring in auth-handler.ts.`
@@ -79,6 +80,7 @@ Examples:
 - `Change Risk: Low — Updates error message text; no behavioral change.`
 - `Change Risk: Medium — Modifies the payment calculation logic; a bug could affect billing.`
 -
+
 `Change Risk: High — Alters the authentication token validation flow; a defect could allow unauthorized access.`
 
 ## Independence of Effort and Risk

@@ -16,7 +16,8 @@ You are responsible for reverse-engineering specifications from existing source 
 You analyze a bounded scope of implementation, classify what you find as evidence, and produce a
 reviewable draft specification compatible with the existing SDD conventions.
 
-**Core principle: Existing implementation is evidence of behavior, not proof of correct requirements.**
+**Core principle: Existing implementation is evidence of behavior, not proof of correct
+requirements.**
 
 Do not automatically convert legacy bugs, accidental implementation details, or undocumented
 assumptions into normative specifications.
@@ -29,9 +30,10 @@ assumptions into normative specifications.
 This skill does **not** follow Section C (persistence) in the standard way — it writes a **draft**
 specification, never a canonical one. See the approval gate below.
 
-- Write draft specs only to `.agents/sdd/drafts/spec-from-code/{name}/draft.md`.
-  **Do not** place drafts inside `.agents/sdd/changes/` — that directory represents active SDD
-  changes per the persistence contract. A draft there can appear as an active change to `sdd-continue`
+- Write draft specs only to `.agents/sdd/drafts/spec-from-code/{name}/draft.md`. **Do not** place
+  drafts inside `.agents/sdd/changes/` — that directory represents active SDD
+  changes per the persistence contract. A draft there can appear as an active change to
+  `sdd-continue`
   or leave an empty directory that continues to register as active.
 - **Never** write directly to `.agents/sdd/specs/{domain}/spec.md` without explicit user approval.
 - If no draft name is provided, operate in read-only mode — analyze and report without persisting
@@ -122,7 +124,8 @@ unestablished.
 
 **Marker**: `[Confirmed]`
 
-**Example**: "Orders with quantity <= 0 are rejected — confirmed by domain owner and implementation."
+**Example**: "Orders with quantity <= 0 are rejected — confirmed by domain owner and
+implementation."
 
 ### Inferred Behavior
 
@@ -275,9 +278,11 @@ SDD cycle. The promoted document **must** use the canonical SDD format so that `
 3. **Ask which findings to approve**. Present the list of findings and let the user confirm which
    ones should become normative requirements. Only findings explicitly approved at this step become
    `[Confirmed]` in the promoted document.
-4. **Generate the canonical document**. The draft uses a findings catalog (`## Findings`, `#### F-NNN`)
+4. **Generate the canonical document**. The draft uses a findings catalog (`## Findings`,
+   `#### F-NNN`)
    for evidence. The promoted document must use the SDD format (`## Requirements`,
-   `### Requirement: {Name}`). **Only** approved `[Confirmed]` findings become normative requirements
+   `### Requirement: {Name}`). **Only** approved `[Confirmed]` findings become normative
+   requirements
    with RFC 2119 keywords. **Preserve source references** in each promoted requirement so the
    evidence trail remains traceable. Non-confirmed findings must be preserved as an evidence
    appendix, not silently promoted to requirements:
@@ -315,10 +320,10 @@ SDD cycle. The promoted document **must** use the canonical SDD format so that `
    ```
 
 5. **Merge or create**:
-   - If no canonical spec exists: Write the promoted document to
-     `.agents/sdd/specs/{domain}/spec.md`.
-   - If a canonical spec exists: Merge the promoted requirements into the existing spec, preserving
-     requirements not mentioned in the baseline. Match by requirement name/title.
+    - If no canonical spec exists: Write the promoted document to
+      `.agents/sdd/specs/{domain}/spec.md`.
+    - If a canonical spec exists: Merge the promoted requirements into the existing spec, preserving
+      requirements not mentioned in the baseline. Match by requirement name/title.
 6. **Mark provenance**: Add a visible note at the top of the promoted spec:
    ```
    > **Provenance**: This spec was reverse-engineered from existing code on {date} using

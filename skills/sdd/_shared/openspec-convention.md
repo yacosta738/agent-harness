@@ -29,21 +29,21 @@ Note: spec-from-code writes draft specs to:
 
 ## Artifact File Paths
 
-| Skill        | Creates / Reads    | Path                                                                                                    |
-|--------------|--------------------|---------------------------------------------------------------------------------------------------------|
-| orchestrator | Creates/Updates    | `.agents/sdd/changes/{change-name}/state.yaml`                                                          |
-| sdd-init     | Creates            | `.agents/sdd/config.yaml`, `.agents/sdd/specs/`, `.agents/sdd/changes/`, `.agents/sdd/changes/archive/` |
-| sdd-explore  | Creates (optional) | `.agents/sdd/changes/{change-name}/exploration.md`                                                      |
-| sdd-propose  | Creates            | `.agents/sdd/changes/{change-name}/proposal.md`                                                         |
-| sdd-spec     | Creates            | `.agents/sdd/changes/{change-name}/specs/{domain}/spec.md`                                              |
-| sdd-design   | Creates            | `.agents/sdd/changes/{change-name}/design.md`                                                           |
-| sdd-tasks    | Creates            | `.agents/sdd/changes/{change-name}/tasks.md`                                                            |
-| sdd-apply    | Updates            | `.agents/sdd/changes/{change-name}/tasks.md` (marks `[x]`)                                              |
-| sdd-verify   | Creates            | `.agents/sdd/changes/{change-name}/verify-report.md`                                                    |
-| sdd-qa       | Creates            | `.agents/sdd/changes/{change-name}/qa-report.md`                                                        |
-| sdd-archive  | Moves              | `.agents/sdd/changes/{change-name}/` → `.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/`          |
-| sdd-archive  | Updates            | `.agents/sdd/specs/{domain}/spec.md` (merges deltas into main specs)                                    |
-| spec-from-code | Creates (draft)  | `.agents/sdd/drafts/spec-from-code/{name}/draft.md`                                                      |
+| Skill          | Creates / Reads    | Path                                                                                                    |
+|----------------|--------------------|---------------------------------------------------------------------------------------------------------|
+| orchestrator   | Creates/Updates    | `.agents/sdd/changes/{change-name}/state.yaml`                                                          |
+| sdd-init       | Creates            | `.agents/sdd/config.yaml`, `.agents/sdd/specs/`, `.agents/sdd/changes/`, `.agents/sdd/changes/archive/` |
+| sdd-explore    | Creates (optional) | `.agents/sdd/changes/{change-name}/exploration.md`                                                      |
+| sdd-propose    | Creates            | `.agents/sdd/changes/{change-name}/proposal.md`                                                         |
+| sdd-spec       | Creates            | `.agents/sdd/changes/{change-name}/specs/{domain}/spec.md`                                              |
+| sdd-design     | Creates            | `.agents/sdd/changes/{change-name}/design.md`                                                           |
+| sdd-tasks      | Creates            | `.agents/sdd/changes/{change-name}/tasks.md`                                                            |
+| sdd-apply      | Updates            | `.agents/sdd/changes/{change-name}/tasks.md` (marks `[x]`)                                              |
+| sdd-verify     | Creates            | `.agents/sdd/changes/{change-name}/verify-report.md`                                                    |
+| sdd-qa         | Creates            | `.agents/sdd/changes/{change-name}/qa-report.md`                                                        |
+| sdd-archive    | Moves              | `.agents/sdd/changes/{change-name}/` → `.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/`          |
+| sdd-archive    | Updates            | `.agents/sdd/specs/{domain}/spec.md` (merges deltas into main specs)                                    |
+| spec-from-code | Creates (draft)    | `.agents/sdd/drafts/spec-from-code/{name}/draft.md`                                                     |
 
 ## Reading Artifacts
 

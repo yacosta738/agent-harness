@@ -282,7 +282,8 @@ function matchCanonicalSection(name) {
   // "Elevation & Depth" -> "Elevation", etc.
   for (const c of CANONICAL_SECTIONS) {
     const key = normalizeApostrophes(c).toLowerCase();
-    const pattern = new RegExp(`\\b${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
+    const pattern = new RegExp(
+        `\\b${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`);
     if (pattern.test(normalized)) {
       return c;
     }

@@ -21,8 +21,10 @@ ARGUMENT FORMAT:
 - Draft mode: `spec-from-code draft {draft-name} {scope}`
 
 Parse the argument:
+
 - If it starts with `draft`, parse as: `draft {draft-name} {scope}`.
-- If it starts with `analyze` (case-insensitive), strip that prefix and treat the remainder as the scope.
+- If it starts with `analyze` (case-insensitive), strip that prefix and treat the remainder as the
+  scope.
 - Otherwise, treat the entire argument as the scope in analyze mode.
 
 CONTEXT:
