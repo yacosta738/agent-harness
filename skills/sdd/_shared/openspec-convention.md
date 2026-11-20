@@ -23,7 +23,8 @@
         └── qa-report.md     <- from sdd-qa; preserved in archive
 
 Note: spec-from-code writes draft specs to:
-        specs/{domain}/spec-from-code-draft.md  <- draft, requires approval before promotion
+        drafts/spec-from-code-draft.md  <- draft, requires approval before promotion
+        (Do not place drafts in specs/ — sdd-archive iterates specs/ and may pick them up.)
 ```
 
 ## Artifact File Paths
@@ -42,7 +43,7 @@ Note: spec-from-code writes draft specs to:
 | sdd-qa       | Creates            | `.agents/sdd/changes/{change-name}/qa-report.md`                                                        |
 | sdd-archive  | Moves              | `.agents/sdd/changes/{change-name}/` → `.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/`          |
 | sdd-archive  | Updates            | `.agents/sdd/specs/{domain}/spec.md` (merges deltas into main specs)                                    |
-| spec-from-code | Creates (draft)  | `.agents/sdd/changes/{change-name}/specs/{domain}/spec-from-code-draft.md`                              |
+| spec-from-code | Creates (draft)  | `.agents/sdd/changes/{change-name}/drafts/spec-from-code-draft.md`                                      |
 
 ## Reading Artifacts
 

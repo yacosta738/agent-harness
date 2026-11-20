@@ -37,8 +37,9 @@ TASK:
 3. For **analyze mode**: operate read-only — collect evidence, classify findings, and return a
    structured report without persisting artifacts.
 4. For **draft mode**: require a change name, write the draft to
-   `.agents/sdd/changes/{change-name}/specs/{domain}/spec-from-code-draft.md`, and present it for
-   user review.
+   `.agents/sdd/changes/{change-name}/drafts/spec-from-code-draft.md`, and present it for user
+   review. Do not place the draft inside `specs/` — `sdd-archive` iterates that directory and may
+   pick up unapproved drafts.
 
 CRITICAL: Do not invent a change name. If draft mode is requested but no change name is provided,
 ask the user for one before proceeding.

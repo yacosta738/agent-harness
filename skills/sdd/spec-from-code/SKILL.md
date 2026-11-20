@@ -29,7 +29,9 @@ assumptions into normative specifications.
 This skill does **not** follow Section C (persistence) in the standard way — it writes a **draft**
 specification, never a canonical one. See the approval gate below.
 
-- Write draft specs only to `.agents/sdd/changes/{change-name}/specs/{domain}/spec-from-code-draft.md`.
+- Write draft specs only to `.agents/sdd/changes/{change-name}/drafts/spec-from-code-draft.md`.
+  **Do not** place drafts inside the `specs/` subdirectory — `sdd-archive` iterates `specs/` and may
+  pick up unapproved drafts.
 - **Never** write directly to `.agents/sdd/specs/{domain}/spec.md` without explicit user approval.
 - If no change name is provided, operate in read-only mode — analyze and report without persisting
   artifacts.
@@ -239,7 +241,7 @@ The current implementation rejects requests where quantity is zero or negative.
 
 ### Approval Gate
 
-1. Write the draft to `.agents/sdd/changes/{change-name}/specs/{domain}/spec-from-code-draft.md`.
+1. Write the draft to `.agents/sdd/changes/{change-name}/drafts/spec-from-code-draft.md`.
 2. Present the draft to the user for review.
 3. The user must explicitly accept before the draft becomes a canonical spec.
 4. On rejection, discard the draft — do not persist it.
@@ -249,29 +251,66 @@ The current implementation rejects requests where quantity is zero or negative.
 ### Promoting an Approved Baseline
 
 When the user accepts the draft, promote it through a bounded procedure that does not fake a full
-SDD cycle:
+SDD cycle. The promoted document **must** use the canonical SDD format so that `sdd-spec`,
+`sdd-verify`, and `sdd-archive` can process it correctly.
 
 1. **Compare**: If a canonical spec already exists at `.agents/sdd/specs/{domain}/spec.md`, read it
    and compare with the approved draft. Show the user the differences — what the baseline adds,
    modifies, or removes.
 2. **Check for silent overwrite**: If the canonical spec exists and differs significantly, warn the
    user. Do not proceed without explicit confirmation.
-3. **Merge or create**:
-   - If no canonical spec exists: Copy the approved draft (renamed to `spec.md`) to
+3. **Generate the canonical document**. The draft uses a findings catalog (`## Findings`, `#### F-NNN`)
+   for evidence. The promoted document must use the SDD format (`## Requirements`,
+   `### Requirement: {Name}`). **Only** `[Confirmed]` findings become normative requirements with
+   RFC 2119 keywords. Non-confirmed findings must be preserved as an evidence appendix, not silently
+   promoted to requirements:
+
+   ```markdown
+   # {Domain} Specification
+
+   ## Purpose
+
+   {High-level description derived from the scope.}
+
+   ## Requirements
+
+   ### Requirement: {Name from F-001}
+
+   The system SHALL {requirement text from confirmed findings only.}
+
+   #### Scenario: {Name}
+
+   - GIVEN {precondition}
+   - WHEN {action}
+   - THEN {expected outcome}
+
+   ## Evidence Appendix
+
+   > The following observations were reverse-engineered from existing code but are not yet confirmed
+   > as normative requirements. Review each item and decide whether to promote it.
+
+   | Finding | Classification | Observation |
+   |---------|---------------|-------------|
+   | F-002   | [Observed]    | The current implementation rejects zero-quantity orders. |
+   | F-003   | [Inferred]    | Retry logic suggests idempotency for payment processing. |
+   ```
+
+4. **Merge or create**:
+   - If no canonical spec exists: Write the promoted document to
      `.agents/sdd/specs/{domain}/spec.md`.
-   - If a canonical spec exists: Merge the approved draft into the existing spec, preserving
+   - If a canonical spec exists: Merge the promoted requirements into the existing spec, preserving
      requirements not mentioned in the baseline. Match by requirement name/title.
-4. **Mark provenance**: Add a visible note at the top of the promoted spec:
+5. **Mark provenance**: Add a visible note at the top of the promoted spec:
    ```
    > **Provenance**: This spec was reverse-engineered from existing code on {date} using
    > spec-from-code. It documents observed behavior, not approved requirements. Review and
    > confirm each requirement before treating it as normative.
    ```
-5. **Do not** pretend this baseline has passed implementation, verification, or QA. The
+6. **Do not** pretend this baseline has passed implementation, verification, or QA. The
    `sdd-archive` gate (verify-report + qa-report) remains the only path for specs produced by a
    full SDD cycle. This promotion path is exclusively for documenting existing behavior as a
    historical baseline.
-6. After promotion, remove the draft file from the change directory.
+7. After promotion, remove the draft file from the change directory.
 
 ## Conflict Handling
 
@@ -310,7 +349,9 @@ Follow Section D of `sdd-phase-common.md`. Return:
 - `executive_summary`: 1-3 sentence summary of findings
 - `detailed_report`: evidence classification summary and key findings
 - `artifacts`: list of draft spec paths written
-- `next_recommended`: `sdd-spec` to finalize, or `none` for read-only analysis
+- `next_recommended`: `review-and-approve` to review the draft baseline, or `none` for read-only
+  analysis. Do not recommend `sdd-spec` — that route creates delta specs for new changes, not
+  baseline promotions.
 - `risks`: contradictions, defects, or gaps discovered
 - `skill_resolution`: how skills were loaded
 
@@ -320,8 +361,8 @@ Example:
 **Status**: success
 **Summary**: Analyzed OrderService module — 12 confirmed requirements, 8 observed behaviors,
   3 potential defects identified.
-**Artifacts**: `.agents/sdd/changes/review-orders/specs/ordering/spec-from-code-draft.md`
-**Next**: sdd-spec to finalize the draft, or user review and approval
+**Artifacts**: `.agents/sdd/changes/review-orders/drafts/spec-from-code-draft.md`
+**Next**: review-and-approve — review the draft baseline and decide which findings to promote.
 **Risks**: 3 potential defects found — negative quantity validation gap, race condition in status
   transitions, missing idempotency for retries
 **Skill Resolution**: none
