@@ -212,21 +212,6 @@ decision, reference it to be consistent.
 - Never keep a task in a lightweight lane just because the code diff looks small; decide by risk,
   need for durable specification, and scope of behavior.
 
-## Junie (CLI only, ACP retired)
-
-The `junie_acp` MCP server and the ACP pilot were retired on 2026-11-14: a Junie Lite-only account
-authenticates over ACP and then rejects every prompt with `-32002 model_not_available`, while the
-same model completes through the CLI. Do not re-add ACP tooling, and do not represent Junie as an
-ACP or MCP delegate.
-
-- When Junie work is useful, run the CLI in the intended project root:
-  `junie --model=junie-lite "<bounded task>"`.
-- Treat its output as external evidence, not approval. Review the diff and the relevant checks
-  yourself; Kerrigan owns decisions and acceptance.
-- Do not ask Junie to commit or push, and do not broaden scope beyond the user-authorized change.
-- Reintroducing ACP requires the criteria in `docs/JUNIE-ACP-PILOT.md`. Tracking:
-  `yacosta738/agent-harness#33`.
-
 ## Execution Rules
 
 - Understand context before delegating.
