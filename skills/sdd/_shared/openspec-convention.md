@@ -21,6 +21,9 @@
         ├── tasks.md         <- from sdd-tasks (updated by sdd-apply)
         ├── verify-report.md <- from sdd-verify
         └── qa-report.md     <- from sdd-qa; preserved in archive
+
+Note: spec-from-code writes draft specs to:
+        specs/{domain}/spec-from-code-draft.md  <- draft, requires approval before promotion
 ```
 
 ## Artifact File Paths
@@ -39,6 +42,7 @@
 | sdd-qa       | Creates            | `.agents/sdd/changes/{change-name}/qa-report.md`                                                        |
 | sdd-archive  | Moves              | `.agents/sdd/changes/{change-name}/` → `.agents/sdd/changes/archive/YYYY-MM-DD-{change-name}/`          |
 | sdd-archive  | Updates            | `.agents/sdd/specs/{domain}/spec.md` (merges deltas into main specs)                                    |
+| spec-from-code | Creates (draft)  | `.agents/sdd/changes/{change-name}/specs/{domain}/spec-from-code-draft.md`                              |
 
 ## Reading Artifacts
 
@@ -110,7 +114,7 @@ rules:
     - Include sequence diagrams for complex flows
     - Document architecture decisions with rationale
   tasks:
-    - Group by phase, use hierarchical numbering
+    - Organize into functional vertical slices, use hierarchical numbering
     - Keep tasks completable in one session
   apply:
     - Follow existing code patterns

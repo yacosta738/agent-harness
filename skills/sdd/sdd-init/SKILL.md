@@ -111,7 +111,7 @@ rules:
     - Include sequence diagrams for complex flows
     - Document architecture decisions with rationale
   tasks:
-    - Group tasks by phase (infrastructure, implementation, testing)
+    - Organize tasks into functional vertical slices, each delivering a complete verifiable outcome
     - Use hierarchical numbering (1.1, 1.2, etc.)
     - Keep tasks small enough to complete in one session
   apply:
