@@ -32,7 +32,7 @@ a review; it does not authorize changes, commits, push, GitHub comments, or deli
    changing the working tree:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs start --required --cwd "$PWD" --pr-url "<url>"
+   node {harness}/scripts/review.mjs start --required --cwd "$PWD" --pr-url "<url>"
    ```
 
    Use `baseSha`, `headSha`, and `changedPaths` from the response. If it cannot verify the PR or
@@ -47,7 +47,7 @@ a review; it does not authorize changes, commits, push, GitHub comments, or deli
 Without a PR URL, start RDD for the working tree:
 
 ```bash
-node ~/.config/opencode/scripts/review.mjs start --required --cwd "$PWD"
+node {harness}/scripts/review.mjs start --required --cwd "$PWD"
 ```
 
 `--required` makes `/review` start RDD without enabling it globally. Do not omit this flag. Do not
@@ -77,9 +77,9 @@ a PR review with local changes that are not part of that PR.
    returned:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs materialize --cwd "$PWD" \
+   node {harness}/scripts/review.mjs materialize --cwd "$PWD" \
      --subject-hash "<subjectHash>"
-   node ~/.config/opencode/scripts/review.mjs capture --cwd "$PWD" \
+   node {harness}/scripts/review.mjs capture --cwd "$PWD" \
      --lineage "<lineage>" --revision "<revision>" --target "<target>" \
      --subject-hash "<subjectHash>" --candidate-path "<materializedPath>" \
      --findings '<JSON>' --reviewers "<names>" --review-evidence '<JSON>'
@@ -99,7 +99,7 @@ a PR review with local changes that are not part of that PR.
    exact binding and token to close the receipt:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs acknowledge-approved --cwd "$PWD" \
+   node {harness}/scripts/review.mjs acknowledge-approved --cwd "$PWD" \
      --lineage "<lineage>" --revision "<revision>" --target "<target>" \
      --subject-hash "<subjectHash>" --acknowledgement "<token>"
    ```
@@ -110,7 +110,7 @@ a PR review with local changes that are not part of that PR.
    recovery token returned:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs close --cwd "$PWD" \
+   node {harness}/scripts/review.mjs close --cwd "$PWD" \
      --lineage "<lineage>" --revision "<revision>" --target "<target>" \
      --subject-hash "<subjectHash>" --recovery-token "<token>" \
      --resolution "<user decision>"

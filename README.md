@@ -1,13 +1,20 @@
 # Agent Harness
 
-Portable agent configuration for [OpenCode](https://opencode.ai) — Kerrigan, a fullstack architect,
+Portable agent configuration for **OpenCode**, **Claude Code**, and **JetBrains Junie** — Kerrigan, a fullstack architect,
 plus team sub-agents, a Spec-Driven Development (SDD) pipeline, and
 auto-discovered skills and commands.
 
 The filesystem is the source of truth: `skills/**/SKILL.md` for skills, `commands/*.md` for
 commands, `adapters/opencode/opencode.json` for MCP/permissions, and
-`adapters/opencode/adapter.json`
-for deploy composition.
+`adapters/*/adapter.json` for deploy composition.
+
+Distributed to three runtimes from one canonical source:
+
+- **OpenCode** — `~/.config/opencode` (default, backward compatible)
+- **Claude Code** — project-level `.claude/` with `CLAUDE.md`
+- **JetBrains Junie** — project-level `.junie/` with `AGENTS.md`
+
+See [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) for installation, [docs/capability-matrix.md](docs/capability-matrix.md) for feature parity, and [docs/multi-runtime-architecture.md](docs/multi-runtime-architecture.md) for the design decision.
 
 ## Operating model
 
@@ -40,9 +47,16 @@ npm run validate
 # List every file in the complete bundle
 npm run list
 
-# Render + verify the complete deployable bundle (distribution/ is gitignored)
-npm run deploy
+# Render + verify all targets (distribution/ is gitignored)
+npm run deploy:all
+
+# Or deploy a single target
+npm run deploy:opencode
+npm run deploy:claude-code
+npm run deploy:junie
 ```
+
+See [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) for installation details per runtime.
 
 Deploy keeps this repo canonical and maps it 1:1 onto `~/.config/opencode`, except
 every `adapters/opencode/**` file lands with that prefix stripped (`opencode.json`,

@@ -2,12 +2,15 @@
 // Render + verify the deployable bundle. distribution/ is gitignored by design —
 // run this after cloning/pulling, before (re)running dotter.
 //
-//   node scripts/deploy.mjs [--output <dir>] [--validate-only]
+//   node scripts/deploy.mjs [--target <target>] [--output <dir>] [--validate-only]
+//   node scripts/deploy.mjs all [--validate-only]
 //
+// Targets: opencode, claude-code, junie
 // Defaults:
-//   output  = "distribution/opencode"
+//   target  = "opencode"
+//   output  = "distribution/<target>"
 //
-// Step 1: invoke generate-bundle.mjs render
+// Step 1: invoke generate-bundle.mjs render [--target <target>]
 // Step 2: invoke check-refs.mjs --root <output> (bundle mode)
 //
 // Cross-platform: no shell, no `&&`, no `bash`. Node child_process handles
@@ -22,11 +25,21 @@ import {fileURLToPath} from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "..");
 
+const TARGETS = ["opencode", "claude-code", "junie"];
+
 function parseArgs(argv) {
-  const out = {output: null, validateOnly: false, help: false};
+  const out = {target: "opencode", output: null, validateOnly: false, help: false, all: false};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === "--output") {
+    if (a === "all") {
+      out.all = true;
+    } else if (a === "--target") {
+      const value = argv[++i];
+      if (!value || value.startsWith("--")) {
+        throw new Error("--target requires a target name");
+      }
+      out.target = value;
+    } else if (a === "--output") {
       const value = argv[++i];
       if (!value || value.startsWith("--")) {
         throw new Error("--output requires a directory path");
@@ -53,28 +66,20 @@ function runNode(scriptRel, args) {
   return result.status ?? 1;
 }
 
-function main() {
-  const args = parseArgs(process.argv.slice(2));
-  if (args.help) {
-    console.log(
-        "Usage: node scripts/deploy.mjs [--output <dir>] [--validate-only]\n" +
-        "  Renders the complete Agent Harness bundle.\n" +
-        "  Default output: 'distribution/opencode'.",
-    );
-    return 0;
-  }
-  const output = args.output ? resolve(REPO, args.output) : resolve(REPO,
-      "distribution/opencode");
-
-  if (!args.validateOnly) {
-    console.log(`rendering complete bundle -> ${output}`);
+function deployTarget(target, output, validateOnly) {
+  console.log(`\n--- Deploying ${target} ---`);
+  
+  if (!validateOnly) {
+    console.log(`rendering ${target} bundle -> ${output}`);
     const renderCode = runNode("generate-bundle.mjs", [
       "render",
+      "--target",
+      target,
       "--output",
       output,
     ]);
     if (renderCode !== 0) {
-      console.error(`generate-bundle.mjs failed (exit ${renderCode})`);
+      console.error(`generate-bundle.mjs failed for ${target} (exit ${renderCode})`);
       return renderCode;
     }
   } else {
@@ -85,14 +90,45 @@ function main() {
     }
   }
 
-  const checkCode = runNode("check-refs.mjs", ["--root", output]);
+  const checkCode = runNode("check-refs.mjs", ["--root", output, "--target", target]);
   if (checkCode !== 0) {
-    console.error(`check-refs.mjs failed (exit ${checkCode})`);
+    console.error(`check-refs.mjs failed for ${target} (exit ${checkCode})`);
     return checkCode;
   }
 
-  console.log(`bundle ready: ${output} — now run dotter deploy`);
+  console.log(`bundle ready: ${output}`);
   return 0;
+}
+
+function main() {
+  const args = parseArgs(process.argv.slice(2));
+  if (args.help) {
+    console.log(
+        "Usage: node scripts/deploy.mjs [--target <target>] [--output <dir>] [--validate-only]\n" +
+        "       node scripts/deploy.mjs all [--validate-only]\n" +
+        "  Renders and validates the Agent Harness bundle.\n" +
+        `  Targets: ${TARGETS.join(", ")}\n` +
+        "  Default target: 'opencode'.\n" +
+        "  'all' deploys all targets.",
+    );
+    return 0;
+  }
+
+  if (args.all) {
+    let exitCode = 0;
+    for (const target of TARGETS) {
+      const output = resolve(REPO, `distribution/${target}`);
+      const code = deployTarget(target, output, args.validateOnly);
+      if (code !== 0) {
+        exitCode = code;
+      }
+    }
+    return exitCode;
+  }
+
+  const output = args.output ? resolve(REPO, args.output) : resolve(REPO,
+      `distribution/${args.target}`);
+  return deployTarget(args.target, output, args.validateOnly);
 }
 
 process.exit(main());
