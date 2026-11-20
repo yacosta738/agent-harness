@@ -14,7 +14,9 @@ tasks. DRY. YAGNI. TDD. Frequent review checkpoints; commits only when explicitl
 
 **Required:** When the plan includes code behavior changes, load/use `test-driven-development` while
 drafting test-first steps. Use `work-unit-commits` to group implementation steps by deliverable
-behavior, and use `reviewable-pr-slices` when the plan may produce a large PR.
+behavior, and use `reviewable-pr-slices` when the plan may produce a large PR. When the plan spans
+multiple deliverable units, follow the vertical slice contract in `../_shared/vertical-slices.md`:
+each unit ships with its implementation, tests, documentation, and required controls together.
 
 Assume they are a skilled developer, but know almost nothing about our toolset or problem domain.
 Assume they don't know good test design very well.
@@ -56,7 +58,10 @@ responsible for. This is where decomposition decisions get locked in.
 This structure informs the task decomposition. Each task should produce self-contained changes that
 make sense independently. Prefer work-unit tasks: each task should deliver a behavior, fix,
 migration, or documentation unit with its verification, not a horizontal layer like "models" or "
-tests" alone.
+tests" alone. When the plan covers multiple capabilities, group them as functional slices — see
+`../_shared/vertical-slices.md` — so each slice delivers a verifiable result with its tests and
+controls. Keep RED → GREEN → REFACTOR inside each business behavior, not as separate product
+phases.
 
 ## Bite-Sized Task Granularity
 

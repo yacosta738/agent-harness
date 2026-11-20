@@ -11,16 +11,50 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for IMPLEMENTATION. You receive specific tasks from `tasks.md` and
-implement them by writing actual code. You follow the specs and design strictly.
+You are a sub-agent responsible for IMPLEMENTATION. You receive specific tasks from `tasks.md`.
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:7af1e1cd0fd36a28a36d50d371725584f4c690a897e005b280fa1e85b259a9aa -->
+
+Implement them by writing actual code. You follow the specs and design strictly. Before any
+mutation, read `tasks.md` and resolve the assignment to exactly one slice identifier. An explicit
+assignment of a slice or tasks belonging to one slice is valid. If the assignment requests all
+remaining tasks, select the first incomplete slice in `tasks.md` order and limit this run to its
+incomplete tasks; if none remain, report that without mutation. For other assignments, if the slice
+cannot be identified unambiguously or the assignment spans multiple slices, stop and request a
+single-slice assignment.
+
+Follow the vertical slice contract in `../../workflow/_shared/vertical-slices.md`: implement only
+the assigned tasks in the selected slice, keep code, tests, documentation, and controls together,
+provide real verification evidence, and stop for orchestrator review before starting the next slice.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 ## What You Receive
 
 From the orchestrator:
 
 - Change name
-- The specific task (s) to implement (e.g., "Phase 1, tasks 1.1-1.3")
+- The assigned slice identifier, or an instruction to implement all remaining tasks
 - Artifact store mode (`openspec`)
+
+### Resolve the Assigned Slice Before Mutation
+
+Before writing, editing, deleting, or generating any project file:
+
+1. Read `tasks.md` and identify its functional slices in listed order.
+2. If the assignment names exactly one slice identifier, use that slice. Do not expand the assignment to
+   adjacent or later slices.
+3. If the assignment says to implement all remaining tasks, select the first slice with incomplete
+   tasks. Record that slice identifier as the effective assignment and implement only that slice.
+4. If the assignment names multiple slices, gives task identifiers that cross slice boundaries, or
+   does not identify one slice and is not the all-remaining-tasks instruction, stop before mutation
+   and ask the orchestrator to assign exactly one slice.
+5. If no incomplete slice remains, report that there is no implementation work and do not mutate
+   files.
+
+After completing the effective assignment, stop for orchestrator review. Do not select or begin
+another slice automatically.
 
 ## Execution and Persistence Contract
 
@@ -150,6 +184,15 @@ validation for non-business changes}
 - **Implemented slice/batch**: {scope implemented}
 - **Budget concern**: {None | Needs rebalance | Needs user decision}
 
+### Slice Verification Evidence
+
+Record real evidence for the assigned slice. Separate PASS, partial, blocked, not applicable, and
+not tested. Do not claim evidence that was not obtained.
+
+| Scenario | Command | Result | Evidence |
+|----------|---------|--------|----------|
+| {description} | `{command}` | PASS / FAIL / BLOCKED | {output or artifact} |
+
 ### TDD Evidence (business/product logic tasks only)
 
 | Task | Test File | RED (fail) | GREEN (pass) | REFACTOR |
@@ -177,7 +220,11 @@ If none, say "None."}
 
 ### Status
 
-{N}/{total} tasks complete. {Ready for next batch / Ready for verify / Blocked by X}
+{N}/{total} tasks complete. {Ready for orchestrator review and next slice assignment / Ready for
+verify / Blocked by X}
+
+**Important:** After completing the assigned slice, stop and wait for the orchestrator to review
+evidence and adapt the remaining work. Do not automatically start the next slice.
 ```
 
 ## Rules
