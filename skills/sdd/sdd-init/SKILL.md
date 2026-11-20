@@ -111,7 +111,7 @@ rules:
     - Include sequence diagrams for complex flows
     - Document architecture decisions with rationale
   tasks:
-    - Group tasks by phase (infrastructure, implementation, testing)
+    - Organize tasks into functional vertical slices, each delivering a complete verifiable outcome
     - Use hierarchical numbering (1.1, 1.2, etc.)
     - Keep tasks small enough to complete in one session
   apply:
@@ -131,6 +131,19 @@ testing:
   build_command: ""
   coverage_threshold: 0
 ```
+
+### Step 3.5: Migrate Legacy Config Rules
+
+If `.agents/sdd/config.yaml` already exists, check for outdated rules and propose updates:
+
+- **Horizontal-phase task rule**: If `rules.tasks` contains text matching "phase" (e.g.,
+  "Group tasks by phase"), the config uses the old horizontal-phase guidance. Propose replacing
+  that specific rule with the current vertical-slice guidance:
+  "Organize tasks into functional vertical slices, each delivering a complete verifiable outcome".
+  Preserve all other custom rules in the file. Do not silently modify the config — present the
+  proposed change and wait for user confirmation.
+
+- Do not modify any other existing rules without explicit user request.
 
 ### Step 4: Return Summary
 
