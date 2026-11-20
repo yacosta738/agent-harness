@@ -153,7 +153,7 @@ control
 plane re-checks the tree when it captures the review and rejects changes; for a read-only guarantee
 against concurrent local processes, use a Unix environment.
 
-## Commands (22)
+## Commands (23)
 
 Two standards are used, separated on purpose:
 
@@ -173,7 +173,7 @@ Vercel skills, in the local canonical ZIP `~/Documents/vercel.zip`, outside the 
 is not part of the repository or of the deployable bundle; do not look for a copy in `skills/` or
 `distribution/`.
 
-## Skills (124)
+## Skills (125)
 
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
@@ -247,8 +247,8 @@ Also in `adapters/opencode/opencode.json`:
 ```
 agent-harness/
 ├── prompts/                  ← ORCHESTRATOR.md (kerrigan), acs/, team/ (10), sdd/ (10), linear-pm, lens/mirror/scalpel
-├── commands/                ← 22 comandos (13 SDD + 3 diagramas + 6 varios)
-├── skills/                  ← 124 skills in 18 groups (filesystem = truth)
+├── commands/                ← 23 comandos (13 SDD + 3 diagramas + 6 varios + 1 spec-from-code)
+├── skills/                  ← 125 skills in 18 groups (filesystem = truth)
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
