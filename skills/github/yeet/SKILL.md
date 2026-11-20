@@ -118,6 +118,14 @@ verified escape hatch.
   committing files itself — `pr-creator` runs after the push and has no commit contract.
 - If `--attach` is available, skip this step; `pr-creator` will attach files directly.
 
+7a. Re-check review budget after evidence preparation.
+
+- If evidence files were committed in step 7, recalculate the diff size because the
+  evidence files add to the total changed lines. Run
+  `git diff --shortstat origin/<base>...HEAD` again.
+- If the new total approaches or exceeds the budget, stop and follow the same slicing
+  strategy as step 6.
+
 8. Push with tracking: `git push -u origin "$(git branch --show-current)"`.
 9. Create the PR via `pr-creator`.
 

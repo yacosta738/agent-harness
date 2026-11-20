@@ -86,22 +86,20 @@ When `--attach` is not available, evidence files must be committed to the PR bra
 **In `pr-creator`** (step 7 — create PR):
 
 - If `--attach` is unavailable and evidence files are already committed, reference them using
-  **relative paths** so the PR works for both public and private repositories:
+  the **blob URL pattern** so the PR works for both public and private repositories:
   ```markdown
-  ![Before](evidence/before.png)
+  ![Before](../blob/<commit-sha>/evidence/before.png?raw=true)
   ```
-- GitHub renders relative image paths in PR descriptions by resolving them against the repository
-  root at the PR's head commit, which works correctly for private repos and avoids branch-mutable
-  URLs.
+  Replace `<commit-sha>` with the commit SHA that contains the evidence files. This ties the
+  evidence to a specific version rather than a mutable branch.
+- GitHub's PR body renderer does not resolve simple relative paths (e.g., `evidence/before.png`)
+  when the Markdown is in a PR description — it only works for `.md` files in the repository.
+  The `../blob/` pattern is the documented syntax for versioned images in PR bodies.
+- This pattern works for private repositories when the reviewer has access, and avoids depending
+  on `raw.githubusercontent.com` which may be inaccessible for private repos.
 - If evidence files are not committed and `--attach` is unavailable, report the limitation
   truthfully — **do not commit files yourself**. `pr-creator` has no commit contract and runs
   after `yeet`'s push.
-
-**Why relative paths over `raw.githubusercontent.com`:**
-- Relative paths work for private repositories where raw content URLs may be inaccessible.
-- They resolve at the PR's head commit, so evidence is tied to a specific version rather than a
-  mutable branch.
-- GitHub's PR body renderer supports relative paths natively.
 
 #### Code Evidence
 

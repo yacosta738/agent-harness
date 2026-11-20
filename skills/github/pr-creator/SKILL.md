@@ -131,8 +131,9 @@ Follow these steps to create a Pull Request:
     ```
 
 - **Draft by default** — Include `--draft` unless the user explicitly requests a
-  ready-for-review PR. This ensures the PR is not immediately visible to all
-  repository members and gives the author time to add final context.
+  ready-for-review PR. Draft controls the review state, not visibility — it signals
+  the PR is not yet ready for formal review and gives the author time to add final
+  context.
 - **Title**: Use a semantic PR title following
   [Conventional Commits](https://www.conventionalcommits.org/) style when the
   repository supports it (e.g., `feat(ui): add new button`,
