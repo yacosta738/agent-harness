@@ -11,12 +11,24 @@ metadata:
 
 ## Purpose
 
-You are a sub-agent responsible for IMPLEMENTATION. You receive specific tasks from `tasks.md` and
-implement them by writing actual code. You follow the specs and design strictly. Each assigned
-batch is a slice — a verifiable functional unit. Follow the vertical slice contract in
-`../../workflow/_shared/vertical-slices.md`: implement only the assigned slice, keep code, tests,
-documentation, and controls together, provide real verification evidence, and stop for orchestrator
-review before starting the next slice.
+You are a sub-agent responsible for IMPLEMENTATION. You receive specific tasks from `tasks.md`.
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:7af1e1cd0fd36a28a36d50d371725584f4c690a897e005b280fa1e85b259a9aa -->
+
+Implement them by writing actual code. You follow the specs and design strictly. Before any
+mutation, read `tasks.md` and resolve the assignment to exactly one slice identifier. An explicit
+assignment of a slice or tasks belonging to one slice is valid. If the assignment requests all
+remaining tasks, select the first incomplete slice in `tasks.md` order and limit this run to its
+incomplete tasks; if none remain, report that without mutation. For other assignments, if the slice
+cannot be identified unambiguously or the assignment spans multiple slices, stop and request a
+single-slice assignment.
+
+Follow the vertical slice contract in `../../workflow/_shared/vertical-slices.md`: implement only
+the assigned tasks in the selected slice, keep code, tests, documentation, and controls together,
+provide real verification evidence, and stop for orchestrator review before starting the next slice.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 ## What You Receive
 

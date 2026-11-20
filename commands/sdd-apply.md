@@ -25,7 +25,20 @@ TASK:
 Find the active SDD change artifacts (proposal, specs, design, tasks) using the shared active change
 resolution rule. Read them to understand what needs to be implemented.
 
-Implement the remaining incomplete tasks. For each task:
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:6b289bd6b04616e344798479b84c5335c40473895b8e3326023fa9b76c16aa10 -->
+
+Before any mutation, identify exactly one slice in `tasks.md`. For the normal assignment of all
+remaining tasks, select the first incomplete slice in `tasks.md` order and implement only its
+incomplete tasks; if none remain, report that without mutation. For other explicit assignments, use
+the assigned slice or resolve task identifiers to one slice; if they span multiple slices or are
+ambiguous, stop and request a single-slice assignment. After completing the selected slice, stop for
+orchestrator review before starting another slice.
+
+For each assigned task in the selected slice:
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 1. Read the relevant spec scenarios (acceptance criteria)
 2. Read the design decisions (technical approach)
