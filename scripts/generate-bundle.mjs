@@ -221,6 +221,11 @@ function render(outDir, target = "opencode") {
     }
   }
   
+  // Post-process OpenCode bundle: resolve {harness} placeholder
+  if (target === "opencode") {
+    replaceOpencodePaths(outDir, bundled, target);
+  }
+
   // Generate target-specific files
   if (target === "claude-code") {
     generateClaudeMd(outDir, bundled);
@@ -228,25 +233,27 @@ function render(outDir, target = "opencode") {
     generateCommandFiles(outDir, target);
     generateSkillsDir(outDir, target);
     generateClaudeSettings(outDir);
-    generateMcpTemplate(outDir);
+    generateMcpTemplate(outDir, target);
     // Post-process: replace OpenCode-specific paths in all markdown files
-    replaceOpencodePaths(outDir, bundled);
+    replaceOpencodePaths(outDir, bundled, target);
   } else if (target === "junie") {
     generateJunieAgentsMd(outDir, bundled);
     generateAgentFiles(outDir, target);
     generateCommandFiles(outDir, target);
     generateSkillsDir(outDir, target);
-    generateMcpTemplate(outDir);
+    generateMcpTemplate(outDir, target);
     // Post-process: replace OpenCode-specific paths in all markdown files
-    replaceOpencodePaths(outDir, bundled);
+    replaceOpencodePaths(outDir, bundled, target);
   }
   
+  // Build manifest from the final output tree, including all generated files
+  const allFiles = collectAllFiles(outDir);
   const manifest = {
     generator: "scripts/generate-bundle.mjs",
     target,
     flatten: {[`${prefix}**`]: "**"},
     pruned,
-    files: [...bundled].sort(),
+    files: allFiles.sort(),
   };
   writeFileSync(join(outDir, "manifest.json"),
       JSON.stringify(manifest, null, 2) + "\n");
@@ -258,6 +265,7 @@ function render(outDir, target = "opencode") {
 }
 
 // Generate CLAUDE.md for Claude Code target
+// Adapt orchestrator content to remove OpenCode-specific instructions
 function generateClaudeMd(outDir, bundled) {
   const orchestratorPath = join(ROOT, "prompts/ORCHESTRATOR.md");
   const controlledLanguagePath = join(ROOT, "prompts/communication/CONTROLLED_LANGUAGE.md");
@@ -269,6 +277,8 @@ function generateClaudeMd(outDir, bundled) {
 
   if (existsSync(orchestratorPath)) {
     orchestrator = readFileSync(orchestratorPath, "utf8");
+    // Strip OpenCode-specific sections from orchestrator for Claude Code
+    orchestrator = adaptOrchestratorForRuntime(orchestrator, "claude-code");
   }
   if (existsSync(controlledLanguagePath)) {
     controlledLanguage = readFileSync(controlledLanguagePath, "utf8");
@@ -277,7 +287,7 @@ function generateClaudeMd(outDir, bundled) {
     writingStyle = readFileSync(writingStylePath, "utf8");
   }
 
-  // Build CLAUDE.md from orchestrator and shared prompts
+  // Build CLAUDE.md from adapted orchestrator and shared prompts
   const claudeMd = `# Project Instructions
 
 This project uses Agent Harness for portable agent configuration.
@@ -306,21 +316,56 @@ ${controlledLanguage}
 ## Skills
 
 Skills are located in .claude/skills/ and are loaded on demand.
-Use / to list available skills.
 
 ## Commands
 
-Custom commands are available via their skill names.
+Custom commands are available in .claude/commands/.
+
+## Limitations
+
+- Granular task permissions from OpenCode cannot be enforced in Claude Code.
+- MCP servers must be configured manually — see .mcp.json.
+- Provider configuration is OpenCode-only.
 `;
 
   const claudeDir = join(outDir, ".claude");
   mkdirSync(claudeDir, {recursive: true});
-  writeFileSync(join(claudeDir, "CLAUDE.md"), claudeMd);
-  // Also write CLAUDE.md at the bundle root for project-level discovery
+  // Write CLAUDE.md at the project root for Claude Code discovery
   writeFileSync(join(outDir, "CLAUDE.md"), claudeMd);
 }
 
+// Adapt orchestrator content by removing OpenCode-specific instructions
+function adaptOrchestratorForRuntime(text, target) {
+  let adapted = text;
+  // Remove OpenCode-specific path references
+  adapted = adapted.replace(/~\/\.config\/opencode/g, "{harness}");
+  // Remove OpenCode-specific permission references
+  adapted = adapted.replace(/opencode\.json/g, "configuration");
+  return adapted;
+}
+
+// Collect all files in the output directory for the manifest
+function collectAllFiles(dir) {
+  const files = [];
+  const walk = (absDir, relDir) => {
+    const entries = readdirSync(absDir, {withFileTypes: true});
+    for (const e of entries) {
+      if (e.name === ".DS_Store") continue;
+      const abs = join(absDir, e.name);
+      const rel = relDir === "." ? e.name : `${relDir}/${e.name}`;
+      if (e.isDirectory()) {
+        walk(abs, rel);
+      } else {
+        files.push(rel);
+      }
+    }
+  };
+  walk(dir, ".");
+  return files;
+}
+
 // Generate AGENTS.md for Junie target
+// Adapt orchestrator content to remove OpenCode-specific instructions
 function generateJunieAgentsMd(outDir, bundled) {
   const orchestratorPath = join(ROOT, "prompts/ORCHESTRATOR.md");
   const controlledLanguagePath = join(ROOT, "prompts/communication/CONTROLLED_LANGUAGE.md");
@@ -332,6 +377,8 @@ function generateJunieAgentsMd(outDir, bundled) {
 
   if (existsSync(orchestratorPath)) {
     orchestrator = readFileSync(orchestratorPath, "utf8");
+    // Strip OpenCode-specific sections from orchestrator for Junie
+    orchestrator = adaptOrchestratorForRuntime(orchestrator, "junie");
   }
   if (existsSync(controlledLanguagePath)) {
     controlledLanguage = readFileSync(controlledLanguagePath, "utf8");
@@ -373,6 +420,13 @@ Skills are located in .junie/skills/ and are loaded on demand.
 ## Subagents
 
 Custom subagents are defined in .junie/agents/ with YAML frontmatter.
+
+## Limitations
+
+- Granular task permissions from OpenCode cannot be enforced in Junie.
+- MCP servers must be configured manually — see .junie/mcp/mcp.json.
+- Provider configuration is OpenCode-only.
+- Junie CLI and IDE integration may behave differently for some features.
 `;
 
   const junieDir = join(outDir, ".junie");
@@ -429,19 +483,16 @@ ${promptBody}
   }
 }
 
-// Generate command files with translated paths
+// Generate command files with translated paths and frontmatter
 function generateCommandFiles(outDir, target) {
   const cmdsDir = join(ROOT, "commands");
   if (!existsSync(cmdsDir)) return;
 
   let destDir;
-  let pathPrefix;
   if (target === "claude-code") {
     destDir = join(outDir, ".claude/commands");
-    pathPrefix = "";
   } else if (target === "junie") {
     destDir = join(outDir, ".junie/commands");
-    pathPrefix = "";
   } else {
     return;
   }
@@ -452,13 +503,36 @@ function generateCommandFiles(outDir, target) {
   for (const name of files) {
     const src = join(cmdsDir, name);
     let text = readFileSync(src, "utf8");
+
+    // Translate frontmatter for non-OpenCode targets
+    // Remove OpenCode-specific fields: agent, subtask
+    text = text.replace(/^agent:.*$/gm, "");
+    text = text.replace(/^subtask:.*$/gm, "");
+
     // Replace OpenCode-specific paths with relative paths
-    text = text.replace(/~\/\.config\/opencode\//g, pathPrefix || "");
+    text = text.replace(/~\/\.config\/opencode\//g, "");
+
+    // Replace OpenCode-specific placeholders with target-appropriate equivalents
+    // {workdir} and {project} are OpenCode-specific; document them as unavailable
+    if (target === "claude-code") {
+      text = text.replace(/\{workdir\}/g, "$CWD");
+      text = text.replace(/\{project\}/g, "$PROJECT_NAME");
+      text = text.replace(/\{argument\}/g, "$1");
+    } else if (target === "junie") {
+      text = text.replace(/\{workdir\}/g, "$workdir");
+      text = text.replace(/\{project\}/g, "$project");
+      text = text.replace(/\{argument\}/g, "$argument");
+    }
+
+    // Clean up empty lines left by removed frontmatter fields
+    text = text.replace(/\n\n\n+/g, "\n\n");
+
     writeFileSync(join(destDir, name), text);
   }
 }
 
-// Generate skills directory
+// Generate skills directory with flat structure for discovery
+// Each skill becomes <destDir>/<skill-name>/ containing SKILL.md and auxiliary files
 function generateSkillsDir(outDir, target) {
   const skillsSrc = join(ROOT, "skills");
   if (!existsSync(skillsSrc)) return;
@@ -472,70 +546,196 @@ function generateSkillsDir(outDir, target) {
     return;
   }
 
-  // Copy entire skills directory recursively
-  cpSync(skillsSrc, destDir, {recursive: true});
+  mkdirSync(destDir, {recursive: true});
+
+  // Find all SKILL.md files and collect their parent directories (skill names)
+  const skillDirs = [];
+  const seen = new Set();
+  const findSkills = (dir) => {
+    const entries = readdirSync(dir, {withFileTypes: true});
+    for (const e of entries) {
+      if (e.name === ".DS_Store") continue;
+      const abs = join(dir, e.name);
+      if (e.isDirectory()) {
+        // Check if this directory contains SKILL.md
+        const skillPath = join(abs, "SKILL.md");
+        if (existsSync(skillPath)) {
+          const rel = dir === skillsSrc ? e.name : join(dir.replace(skillsSrc + "/", ""), e.name);
+          const skillName = e.name;
+          if (seen.has(skillName)) {
+            console.warn(`skill collision: '${skillName}' found in multiple categories`);
+          } else {
+            seen.add(skillName);
+            skillDirs.push({name: skillName, source: abs});
+          }
+        }
+        findSkills(abs);
+      }
+    }
+  };
+  findSkills(skillsSrc);
+
+  // Copy each skill to its own flat directory
+  for (const {name, source} of skillDirs) {
+    const dest = join(destDir, name);
+    cpSync(source, dest, {recursive: true});
+  }
 }
 
-// Generate settings.json template for Claude Code
+// Generate settings.json template for Claude Code with proper permissions structure
 function generateClaudeSettings(outDir) {
+  const opencodePath = join(ROOT, "adapters/opencode/opencode.json");
+  const opencodeCfg = existsSync(opencodePath) ? JSON.parse(readFileSync(opencodePath, "utf8")) : {};
+  const opencodePermissions = opencodeCfg.permission || {};
+
+  // Translate OpenCode permissions to Claude Code's permissions structure
+  // Claude Code uses: allow, ask, deny for each tool category
+  const permissions = {};
+
+  // Translate bash permissions
+  if (opencodePermissions.bash) {
+    const bashRules = [];
+    for (const [pattern, action] of Object.entries(opencodePermissions.bash)) {
+      if (action === "allow") {
+        bashRules.push({type: "allow", pattern});
+      } else if (action === "ask") {
+        bashRules.push({type: "ask", pattern});
+      } else if (action === "deny") {
+        bashRules.push({type: "deny", pattern});
+      }
+    }
+    if (bashRules.length > 0) {
+      permissions.bash = bashRules;
+    }
+  }
+
+  // Translate read permissions
+  if (opencodePermissions.read) {
+    const readRules = [];
+    for (const [pattern, action] of Object.entries(opencodePermissions.read)) {
+      if (action === "allow") {
+        readRules.push({type: "allow", pattern});
+      } else if (action === "ask") {
+        readRules.push({type: "ask", pattern});
+      } else if (action === "deny") {
+        readRules.push({type: "deny", pattern});
+      }
+    }
+    if (readRules.length > 0) {
+      permissions.read = readRules;
+    }
+  }
+
   const settings = {
     // Claude Code settings template
-    // Granular task permissions from OpenCode are not supported in Claude Code.
-    // These are documented but not enforced.
-    allow: {
-      // Allow all tools by default; review manually for sensitive operations
-    },
-    // Note: OpenCode's permission.task block (allowing specific subagent delegation)
-    // has no equivalent in Claude Code. These permissions are documented but not enforced.
+    // Translated from OpenCode's permission model.
+    // Granular task permissions (subagent delegation) are not supported in Claude Code.
+    // These are documented but not enforced at the same granularity.
+    permissions
   };
   const settingsPath = join(outDir, ".claude/settings.json");
   mkdirSync(dirname(settingsPath), {recursive: true});
   writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + "\n");
 }
 
-// Generate MCP template
-function generateMcpTemplate(outDir) {
+// Generate MCP template in native format for the target runtime
+function generateMcpTemplate(outDir, target) {
   const opencodePath = join(ROOT, "adapters/opencode/opencode.json");
   if (!existsSync(opencodePath)) return;
   const cfg = JSON.parse(readFileSync(opencodePath, "utf8"));
   const mcpServers = cfg.mcp?.servers || {};
 
+  // Build mcpServers object — all disabled by default
+  const servers = {};
+  for (const [name, server] of Object.entries(mcpServers)) {
+    const entry = {};
+    if (server.type === "local" && Array.isArray(server.command)) {
+      entry.command = server.command[0] || "";
+      entry.args = server.command.slice(1) || [];
+      if (server.environment) {
+        entry.env = server.environment;
+      }
+    } else if (server.type === "remote" && server.url) {
+      entry.url = server.url;
+      if (server.headers) {
+        entry.headers = server.headers;
+      }
+    }
+    entry.disabled = true;
+    servers[name] = entry;
+  }
+
   const mcpTemplate = {
     // MCP server template — all servers disabled by default.
     // Enable and configure manually per runtime.
     // MCP setup is inherently machine-specific.
-    servers: {}
+    mcpServers
   };
 
-  for (const [name, server] of Object.entries(mcpServers)) {
-    mcpTemplate.servers[name] = {
-      disabled: true,
-      command: Array.isArray(server.command) ? server.command : [],
-      type: server.type || "local",
-      url: server.url || "",
-      environment: server.environment || {},
-      headers: server.headers || {},
-      note: "Enable manually and configure authentication as needed"
-    };
+  if (target === "claude-code") {
+    // Claude Code: .mcp.json at project root
+    writeFileSync(join(outDir, ".mcp.json"), JSON.stringify(mcpTemplate, null, 2) + "\n");
+  } else if (target === "junie") {
+    // Junie CLI: .junie/mcp/mcp.json
+    const junieMcpDir = join(outDir, ".junie/mcp");
+    mkdirSync(junieMcpDir, {recursive: true});
+    writeFileSync(join(junieMcpDir, "mcp.json"), JSON.stringify(mcpTemplate, null, 2) + "\n");
   }
-
-  writeFileSync(join(outDir, "mcp.json"), JSON.stringify(mcpTemplate, null, 2) + "\n");
 }
 
-// Replace OpenCode-specific paths in markdown files for non-OpenCode targets
-function replaceOpencodePaths(outDir, bundled) {
-  for (const rel of bundled) {
-    if (!rel.endsWith(".md")) continue;
-    const abs = join(outDir, rel);
-    if (!existsSync(abs)) continue;
-    try {
-      let text = readFileSync(abs, "utf8");
-      const replaced = text.replace(/~\/\.config\/opencode\//g, "");
-      if (replaced !== text) {
-        writeFileSync(abs, replaced);
-      }
-    } catch {
-      // Skip binary files
+// Replace OpenCode-specific paths and placeholders in markdown files for non-OpenCode targets
+function replaceOpencodePaths(outDir, bundled, target) {
+  const harnessRoot = target === "opencode" ? "~/.config/opencode" : ".";
+  const allFiles = [...bundled];
+
+  // Also include post-generated files
+  const generatedDirs = [];
+  if (target === "claude-code") {
+    generatedDirs.push(".claude/agents", ".claude/commands", ".claude/skills", ".claude");
+  } else if (target === "junie") {
+    generatedDirs.push(".junie/agents", ".junie/commands", ".junie/skills", ".junie");
+  }
+
+  for (const rel of allFiles) {
+    processMarkdownFile(outDir, rel, harnessRoot, target);
+  }
+  // Process post-generated files
+  for (const dir of generatedDirs) {
+    walkAndProcess(outDir, dir, harnessRoot, target);
+  }
+}
+
+function processMarkdownFile(outDir, rel, harnessRoot, target) {
+  if (!rel.endsWith(".md")) return;
+  const abs = join(outDir, rel);
+  if (!existsSync(abs)) return;
+  try {
+    let text = readFileSync(abs, "utf8");
+    let replaced = text;
+    // Replace OpenCode-specific absolute paths
+    replaced = replaced.replace(/~\/\.config\/opencode\//g, "");
+    // Resolve {harness} placeholder
+    replaced = replaced.replace(/\{harness\}/g, harnessRoot);
+    if (replaced !== text) {
+      writeFileSync(abs, replaced);
+    }
+  } catch {
+    // Skip binary files
+  }
+}
+
+function walkAndProcess(baseDir, relDir, harnessRoot, target) {
+  const absDir = join(baseDir, relDir);
+  if (!existsSync(absDir)) return;
+  const entries = readdirSync(absDir, {withFileTypes: true});
+  for (const e of entries) {
+    if (e.name === ".DS_Store") continue;
+    const abs = join(absDir, e.name);
+    if (e.isDirectory()) {
+      walkAndProcess(baseDir, join(relDir, e.name), harnessRoot, target);
+    } else if (e.name.endsWith(".md")) {
+      const rel = join(relDir, e.name);
+      processMarkdownFile(baseDir, rel, harnessRoot, target);
     }
   }
 }

@@ -35,6 +35,10 @@ a review; it does not authorize changes, commits, push, GitHub comments, or deli
    node {harness}/scripts/review.mjs start --required --cwd "$PWD" --pr-url "<url>"
    ```
 
+   If the control plane script is not available (e.g., this skill was installed
+   outside the full harness), stop and tell the user that `/review` requires the
+   complete harness distribution. Do not substitute another target.
+
    Use `baseSha`, `headSha`, and `changedPaths` from the response. If it cannot verify the PR or
    fetch
    both commits, stop. Never pick another target as a substitute, and do not use `gh pr checkout`.
