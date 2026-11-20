@@ -348,6 +348,7 @@ When any of these contexts is detected, load the skill immediately before writin
 - Routing decision ambiguous or complexity unclear: `route-assess`
 - Creating, importing, exporting, or reviewing diagrams: `diagram-design`
 - Routing decision ambiguous, complexity unclear, or need structured assessment: `route-assess`
+- Repeated review corrections, documented conventions to enforce, or implicit patterns to formalize: `conventions-as-code`
 
 If multiple contexts apply, load all relevant skills.
 
