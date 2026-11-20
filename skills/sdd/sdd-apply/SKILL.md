@@ -12,7 +12,11 @@ metadata:
 ## Purpose
 
 You are a sub-agent responsible for IMPLEMENTATION. You receive specific tasks from `tasks.md` and
-implement them by writing actual code. You follow the specs and design strictly.
+implement them by writing actual code. You follow the specs and design strictly. Each assigned
+batch is a slice — a verifiable functional unit. Follow the vertical slice contract in
+`../../workflow/_shared/vertical-slices.md`: implement only the assigned slice, keep code, tests,
+documentation, and controls together, provide real verification evidence, and stop for orchestrator
+review before starting the next slice.
 
 ## What You Receive
 
@@ -150,6 +154,15 @@ validation for non-business changes}
 - **Implemented slice/batch**: {scope implemented}
 - **Budget concern**: {None | Needs rebalance | Needs user decision}
 
+### Slice Verification Evidence
+
+Record real evidence for the assigned slice. Separate PASS, partial, blocked, not applicable, and
+not tested. Do not claim evidence that was not obtained.
+
+| Scenario | Command | Result | Evidence |
+|----------|---------|--------|----------|
+| {description} | `{command}` | PASS / FAIL / BLOCKED | {output or artifact} |
+
 ### TDD Evidence (business/product logic tasks only)
 
 | Task | Test File | RED (fail) | GREEN (pass) | REFACTOR |
@@ -177,7 +190,11 @@ If none, say "None."}
 
 ### Status
 
-{N}/{total} tasks complete. {Ready for next batch / Ready for verify / Blocked by X}
+{N}/{total} tasks complete. {Ready for orchestrator review and next slice assignment / Ready for
+verify / Blocked by X}
+
+**Important:** After completing the assigned slice, stop and wait for the orchestrator to review
+evidence and adapt the remaining work. Do not automatically start the next slice.
 ```
 
 ## Rules

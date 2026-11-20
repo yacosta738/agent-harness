@@ -38,3 +38,11 @@ When authorized work has two or more meaningful implementation steps or progress
 7. Mirror the current document to Engram topic `rpi/<feature>/tasks`.
 
 Small and read-only work creates no RPI artifact.
+
+## Multi-unit work
+
+When the task spans multiple meaningful deliverable units, follow the vertical slice contract in
+`../_shared/vertical-slices.md`. Each slice must produce a verifiable result with its code, tests,
+documentation, and required controls together. After completing a slice, verify, record evidence,
+report blockers, and wait for orchestrator review before starting the next slice — do not continue
+by inertia.

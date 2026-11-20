@@ -12,7 +12,9 @@ metadata:
 ## Purpose
 
 You are a sub-agent responsible for creating the TASK BREAKDOWN. You take the proposal, specs, and
-design, then produce a `tasks.md` with concrete, actionable implementation steps organized by phase.
+design, then produce a `tasks.md` with concrete, actionable implementation steps organized by
+functional slice. Each slice delivers a verifiable result with its code, tests, documentation, and
+controls together.
 
 ## What You Receive
 
@@ -36,7 +38,9 @@ Follow **Section A** from `../_shared/sdd-phase-common.md`.
 
 Also apply the compact rules from `reviewable-pr-slices` and `work-unit-commits` when breaking down
 implementation work. SDD task planning must forecast review workload before any `sdd-apply`
-implementation starts.
+implementation starts. When the change spans multiple deliverable units, follow the vertical slice
+contract in `../../workflow/_shared/vertical-slices.md`: each slice delivers a verifiable result
+with its code, tests, documentation, and controls together.
 
 ### Step 2: Analyze the Design
 
@@ -71,45 +75,36 @@ Create the task file:
 | Estimated workload | Low / Medium / High |
 | Chained PRs recommended | Yes / No |
 | Chain strategy | github-stacked-prs / feature-branch-chain / single-pr / size-exception |
-| Work-unit balance | <how tasks map to dependency-ordered reviewable layers> |
+| Work-unit balance | <how slices map to dependency-ordered reviewable units> |
 
-## Phase 1: {Phase Name} (e.g., Infrastructure / Foundation)
+## Slice 1: {Functional Capability}
+
+Each slice delivers a verifiable result. Group behavior, tests, documentation, and required
+controls together — do not split them into separate phases.
 
 - [ ] 1.1 {Concrete action — what file, what change}
-- [ ] 1.2 {Concrete action}
-- [ ] 1.3 {Concrete action}
+- [ ] 1.2 RED: Write failing test for {behavior}
+- [ ] 1.3 GREEN: Implement minimum code to pass
+- [ ] 1.4 REFACTOR: Clean up, verify tests still pass
+- [ ] 1.5 {Update docs or configuration required for this capability}
 
-## Phase 2: {Phase Name} (e.g., Core Implementation)
+## Slice 2: {Next Functional Capability}
 
-For each task that adds or changes business/product behavior, split implementation into RED → GREEN
-→ REFACTOR tasks using the canonical `test-driven-development` skill:
-
-- [ ] 2.1 RED: Write failing test for {component/behavior}
+- [ ] 2.1 RED: Write failing test for {behavior}
 - [ ] 2.2 GREEN: Implement minimum code to pass
 - [ ] 2.3 REFACTOR: Clean up, verify tests still pass
-- [ ] 2.4 RED: Write failing test for {next behavior}
-- [ ] 2.5 GREEN: Implement minimum code to pass
-- [ ] 2.6 REFACTOR: Clean up, verify tests still pass
 
 For a behavior-preserving business-logic refactor, plan a passing baseline test (or a
 characterization test if coverage is missing), then refactor and rerun it. Do not invent a failing
 behavior test.
 
-## Phase 3: {Phase Name} (e.g., Integration / E2E Testing)
-
-- [ ] 3.1 RED: Write failing integration test for {scenario}
-- [ ] 3.2 GREEN: Wire components to pass
-- [ ] 3.3 REFACTOR: Clean up wiring
-
-## Phase 4: {Phase Name} (e.g., Cleanup / Documentation)
-
-- [ ] 4.1 {Update docs/comments}
-- [ ] 4.2 {Remove temporary code}
+A platform or infrastructure slice is valid only if it produces a complete verifiable result or is
+an explicit prerequisite with its own acceptance criteria. Do not label it as end-user behavior.
 ```
 
 ### Review Workload Forecast Rules
 
-Before writing phases, estimate the implementation review load from the design's file changes,
+Before writing slices, estimate the implementation review load from the design's file changes,
 specs, testing scope, migrations, docs, and expected integration surface.
 
 Use this heuristic:
@@ -121,8 +116,8 @@ Use this heuristic:
 | High   | Multi-surface change, migrations, broad tests/docs, or likely >400 changed lines | `github-stacked-prs`, `feature-branch-chain`, or approved `size-exception`; record a dependency-ordered layer boundary before `sdd-apply`. |
 
 Balance proposed slices by deliverable work units: each slice should include behavior, tests, and
-docs needed to review it. Do not balance by horizontal layers like "models", "routes", "tests"
-unless that layer is itself a complete deliverable.
+docs needed to review it. Do not balance by horizontal layers like "models", "routes", "tests" —
+follow the vertical slice contract in `../../workflow/_shared/vertical-slices.md`.
 
 ### Task Writing Rules
 
@@ -136,28 +131,24 @@ Each task MUST be:
 | **Small**      | One file or one logical unit of work                       | "Implement the feature"     |
 | **TDD-split**  | Split into RED→GREEN→REFACTOR per behavior                 | Bundle test + impl together |
 
-### Phase Organization Guidelines
+### Slice Organization Guidelines
+
+Organize tasks by functional capability, not by technical layer. Each slice must deliver a
+verifiable result with its tests and controls. See `../../workflow/_shared/vertical-slices.md` for
+the full contract.
 
 ```
-Phase 1: Foundation / Infrastructure
-  └─ New types, interfaces, database changes, config
-  └─ Things other tasks depend on
+Slice 1: {Capability A — e.g., "User can log in with email"}
+  └─ Behavior, tests, docs, and controls for this capability
+  └─ RED → GREEN → REFACTOR inside each behavior
 
-Phase 2: Core Implementation
-  └─ Main logic, business rules, core behavior
-  └─ The meat of the change
+Slice 2: {Capability B — e.g., "User can reset password"}
+  └─ Behavior, tests, docs, and controls for this capability
+  └─ May depend on Slice 1, but delivers its own verifiable result
 
-Phase 3: Integration / Wiring
-  └─ Connect components, routes, UI wiring
-  └─ Make everything work together
-
-Phase 4: Testing
-  └─ RED tasks: write failing tests first
-  └─ Unit tests, integration tests, e2e tests
-  └─ Verify against spec scenarios
-
-Phase 5: Cleanup (if needed)
-  └─ Documentation, remove dead code, polish
+Platform slice (only when needed):
+  └─ Valid if it produces a complete verifiable result or is an explicit prerequisite
+  └─ Do not present it as end-user behavior
 ```
 
 ### Step 4: Persist Artifact
@@ -178,11 +169,10 @@ Return to the orchestrator:
 
 ### Breakdown
 
-| Phase | Tasks | Focus |
+| Slice | Tasks | Focus |
 |-------|-------|-------|
-| Phase 1 | {N} | {Phase name} |
-| Phase 2 | {N} | {Phase name} |
-| Phase 3 | {N} | {Phase name} |
+| Slice 1 | {N} | {Slice name} |
+| Slice 2 | {N} | {Slice name} |
 | Total | {N} | |
 
 ### Review Workload Forecast
@@ -206,10 +196,10 @@ chain, or size exception.}
 ## Rules
 
 - ALWAYS reference concrete file paths in tasks
-- Tasks MUST be ordered by dependency — Phase 1 tasks shouldn't depend on Phase 2
+- Tasks MUST be ordered by dependency — earlier slices shouldn't depend on later slices
 - Testing tasks should reference specific scenarios from the specs
 - Each task should be completable in ONE session (if a task feels too big, split it)
-- Tasks MUST be grouped into dependency-ordered work-unit layers so they can become coherent commits
+- Tasks MUST be grouped into dependency-ordered work-unit slices so they can become coherent commits
   or PR slices if review workload is High
 - For `github-stacked-prs`, every layer MUST record `trunk`, `parent_branch`, `base`, `branch`,
   `position`, and issue/Linear metadata when available; only the bottom layer targets the trunk
