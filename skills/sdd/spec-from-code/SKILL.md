@@ -327,8 +327,11 @@ SDD cycle. The promoted document **must** use the canonical SDD format so that `
    > normative status. This document has not passed implementation, verification, or QA.
    ```
 7. **Preserve the original draft**. Do not delete the draft after promotion. Rename it to
-   `.agents/sdd/drafts/spec-from-code/{name}/draft-{date}.md` to keep it as historical evidence.
-   Record which findings were approved and which were not.
+   `.agents/sdd/drafts/spec-from-code/{name}/draft-{date}-{revision}.md` to keep it as historical
+   evidence. Use a sequential revision suffix (`r1`, `r2`, etc.) to avoid collisions when multiple
+   promotions of the same draft occur on the same day: check for existing files matching
+   `draft-{date}-*.md` and increment the revision number accordingly. Record which findings were
+   approved and which were not.
 8. **Do not** pretend this baseline has passed implementation, verification, or QA. The
    `sdd-archive` gate (verify-report + qa-report) remains the only path for specs produced by a
    full SDD cycle. This promotion path is exclusively for documenting existing behavior as a

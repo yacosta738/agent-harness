@@ -86,9 +86,26 @@ Create this directory structure:
     └── archive/             ← Completed changes
 ```
 
-### Step 3: Generate Config
+### Step 3: Check Existing Config for Legacy Rules
 
-Based on what you detected, create the config when in `openspec` mode:
+Before writing any configuration, check whether `.agents/sdd/config.yaml` already exists.
+If it does, inspect `rules.tasks` for outdated guidance:
+
+- **Horizontal-phase task rule**: If `rules.tasks` contains text matching "phase" (e.g.,
+  "Group tasks by phase"), the config uses the old horizontal-phase guidance. Propose replacing
+  that specific rule with the current vertical-slice guidance:
+  "Organize tasks into functional vertical slices, each delivering a complete verifiable outcome".
+  Preserve all other custom rules in the file. Do not silently modify the config — present the
+  proposed change and wait for user confirmation.
+
+- Do not modify any other existing rules without explicit user request.
+
+This check runs **before** any write so that legacy rules are addressed during the same
+initialization pass rather than requiring a separate migration step.
+
+### Step 3.5: Generate Config
+
+If no config exists, create it based on what you detected when in `openspec` mode:
 
 ```yaml
 # .agents/sdd/config.yaml
@@ -131,19 +148,6 @@ testing:
   build_command: ""
   coverage_threshold: 0
 ```
-
-### Step 3.5: Migrate Legacy Config Rules
-
-If `.agents/sdd/config.yaml` already exists, check for outdated rules and propose updates:
-
-- **Horizontal-phase task rule**: If `rules.tasks` contains text matching "phase" (e.g.,
-  "Group tasks by phase"), the config uses the old horizontal-phase guidance. Propose replacing
-  that specific rule with the current vertical-slice guidance:
-  "Organize tasks into functional vertical slices, each delivering a complete verifiable outcome".
-  Preserve all other custom rules in the file. Do not silently modify the config — present the
-  proposed change and wait for user confirmation.
-
-- Do not modify any other existing rules without explicit user request.
 
 ### Step 4: Return Summary
 

@@ -61,6 +61,7 @@
     "sdd": {
       "include": [
         "commands/sdd-*.md",
+        "commands/spec-from-code.md",
         "prompts/sdd/**",
         "skills/sdd/**",
         "skills/workflow/**"

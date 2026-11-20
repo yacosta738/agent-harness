@@ -210,7 +210,11 @@ chain, or size exception.}
 - A `size-exception` MUST state the explicit approval and rationale before apply
 - Use hierarchical numbering: 1.1, 1.2, 2.1, 2.2, etc.
 - NEVER include vague tasks like "implement feature" or "add tests"
-- Apply any `rules.tasks` from `.agents/sdd/config.yaml`
+- Apply any `rules.tasks` from `.agents/sdd/config.yaml`. However, the vertical slice contract
+  defined in `../../workflow/_shared/vertical-slices.md` takes precedence: if an existing config
+  rule conflicts with vertical slicing (e.g., groups tasks by horizontal phase such as "models",
+  "routes", "tests"), ignore the conflicting rule and follow the vertical slice contract. Report
+  the conflict so the user can update the config via `/sdd-init`.
 - TDD IS MANDATORY for business/product logic in RPI and SDD. For a task that adds or changes
   behavior, split it into:
     - RED task: write the failing test FIRST
