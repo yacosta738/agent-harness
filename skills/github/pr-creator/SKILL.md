@@ -134,6 +134,13 @@ Follow these steps to create a Pull Request:
   [Conventional Commits](https://www.conventionalcommits.org/) style when the
   repository supports it (e.g., `feat(ui): add new button`,
   `fix(core): resolve crash`, `chore(ci): update workflow permissions`).
+- **Attach evidence** — If the PR includes captured images or videos, attach them
+  using `--attach` (requires `gh >= 2.99.0`). Verify version and authentication first.
+  Reference each file in the body using local paths (e.g., `![Before](./evidence/before.png)`);
+  GitHub CLI rewrites these to uploaded URLs. Add `--attach './evidence/before.png#Alt text'`
+  for each evidence file. If `--attach` is unavailable, commit evidence files to the branch
+  and reference them using raw GitHub URLs. Sanitize all evidence before attaching — never
+  upload credentials or sensitive data.
 
 8. **Align Semantics**: Keep branch name, commit message, and PR title aligned in
    intent.

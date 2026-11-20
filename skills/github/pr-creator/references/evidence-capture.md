@@ -36,12 +36,60 @@ For before/after comparisons, ensure both observations are comparable:
 - **Diagrams**: Describe real architecture; avoid decorative diagrams that add no information.
 
 ### Evidence Inclusion
-Include evidence in the PR description using GitHub-native Markdown:
-- Images via GitHub's built-in image embedding (paste or reference committed files).
-- Code blocks for API requests/responses, CLI output, or configuration diffs.
-- Tables for structured comparisons.
 
-Do not introduce external media storage services. If a capture mechanism is unavailable, report the limitation clearly rather than inventing results, media files, screenshots, measurements, or URLs.
+Include evidence in the PR description using GitHub-native mechanisms. Choose the method
+based on available tooling:
+
+#### Primary: `gh pr create --attach` (Recommended)
+
+When `gh >= 2.99.0` is available, attach images and videos directly during PR creation:
+
+1. **Verify version**: Run `gh --version` and confirm `>= 2.99.0`.
+2. **Verify authentication**: Run `gh auth status` before attaching.
+3. **Capture evidence** to local files, e.g., `./evidence/before.png` and `./evidence/after.png`.
+4. **Reference in body** — write the PR body with local image references:
+   ```markdown
+   ![Before the change](./evidence/before.png)
+   ![After the change](./evidence/after.png)
+   ```
+5. **Attach during creation** — use `--attach` for each file. GitHub CLI rewrites the body
+   references to uploaded URLs automatically:
+   ```bash
+   gh pr create --draft \
+     --base main \
+     --head feat/example \
+     --title "feat(ui): improve settings" \
+     --body-file /tmp/pr-body.md \
+     --attach './evidence/before.png#Before the change' \
+     --attach './evidence/after.png#After the change'
+   ```
+6. Paths in `--body-file` are relative to its directory, falling back to the working directory.
+7. Up to 50 files per command. Alt text follows the path after `#`.
+
+If `--attach` is unavailable (`gh < 2.99.0` or the flag is missing), fall back to the committed
+file method below.
+
+#### Fallback: Committed Evidence Files
+
+When `--attach` is not available, commit evidence files to the PR branch and reference them:
+
+1. Create an `evidence/` directory in the branch root.
+2. Place captured files there, e.g., `evidence/before.png`.
+3. Commit the evidence with the PR changes.
+4. Reference from the body using the raw GitHub URL pattern:
+   ```markdown
+   ![Before](https://raw.githubusercontent.com/<owner>/<repo>/<branch>/evidence/before.png)
+   ```
+
+#### Code Evidence
+
+For non-visual evidence, use Markdown directly in the PR body:
+- **Code blocks** for API requests/responses, CLI output, or configuration diffs.
+- **Tables** for structured comparisons.
+
+Do not introduce external media storage services. If a capture mechanism is unavailable, report
+the limitation clearly rather than inventing results, media files, screenshots, measurements, or
+URLs.
 
 ## Security Rules
 
@@ -53,6 +101,7 @@ Evidence may contain sensitive information. Enforce these rules:
 4. **Respect access restrictions** — Follow repository authorization rules; do not expose restricted data.
 5. **Distinguish verification** — Clearly separate real verification from planned, unavailable, or skipped checks. Never label an unexecuted check as passed.
 6. **No external uploads** — Do not automatically upload evidence to external services without explicit user approval.
+7. **Sanitize before attaching** — When using `--attach`, verify the file does not contain credentials, tokens, or sensitive data before uploading.
 
 ## When Capture Is Unavailable
 
@@ -73,7 +122,10 @@ new position matches the design spec.
 ## Evidence Lifecycle
 
 1. **Identify** — During implementation or PR preparation, determine what evidence would help the reviewer.
-2. **Capture before-state** — When available, capture the system state before the change.
+2. **Capture before-state** — `pr-creator` runs after implementation, so before-state evidence may not exist. Follow this precedence:
+   - **Use captured evidence** — If the agent captured before-state during implementation, use it directly.
+   - **Reproduce base state** — If safe and feasible, reproduce the base state in a git worktree or isolated environment. For example, `git worktree add ../base main` and capture from that branch.
+   - **Document the limitation** — If before-state cannot be captured or reproduced, report the limitation truthfully. Do not fabricate before-state evidence.
 3. **Capture after-state** — After implementing the change, capture the new state.
 4. **Verify comparability** — Ensure both observations use equivalent conditions.
 5. **Include in PR** — Add evidence to the PR description using supported GitHub mechanisms.

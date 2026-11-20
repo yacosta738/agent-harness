@@ -90,6 +90,29 @@ These classifications complement, not replace, the existing 400-line review budg
 
 A PR can be within budget but still be high effort or high risk. Use all three signals together to decide whether to slice, request additional reviewers, or proceed with a standard review.
 
+## Special Case: Agent Instruction Changes
+
+In repositories that contain agent instructions, skills, or orchestrator prompts, **modifying
+these files changes expected product behavior** — even though no executable code is touched.
+
+When assessing risk for skill or prompt modifications:
+
+- **Consider behavioral impact** — A skill change alters how the agent prepares PRs, publishes
+  changes, or makes decisions. A defect here affects every future PR or publish action.
+- **Risk may be Medium** — If the change modifies agent decision-making in a high-frequency path
+  (e.g., PR preparation, publish flow), classify risk as Medium even if the diff is small.
+- **Explain the behavioral change** — The risk justification should state that the modification
+  alters agent behavior, not just that it changes documentation.
+
+Example:
+```
+Change Risk: Medium — Modifies the pr-creator skill, which changes how the agent prepares
+and publishes PRs. A defect here would affect all future PR descriptions.
+```
+
+Do not automatically escalate to High. A well-scoped skill change that adds optional behavior
+without altering existing paths may still be Low risk.
+
 ## Including in PR Descriptions
 
 Add both classifications to the PR description where relevant. Keep explanations brief and fact-based:

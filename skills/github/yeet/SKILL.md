@@ -13,7 +13,8 @@ branch setup if needed, staging, commit, push, and opening a pull request.
 This workflow uses local Git and GitHub CLI:
 
 - Use local `git` for branch creation, staging, commit, and push.
-- Use `gh` for GitHub PR discovery, auth checks, metadata, and PR creation.
+- Use `gh` for GitHub PR discovery, auth checks, and metadata.
+- Delegate PR creation to `pr-creator` for template compliance and evidence-driven descriptions.
 
 ## Prerequisites
 
@@ -41,6 +42,8 @@ This workflow uses local Git and GitHub CLI:
   topology, push/link/sync/rebase/merge mechanics. `yeet` retains authorization and scope checks.
 - Preserve `feature-branch-chain` as a separate workflow; do not invoke `gh stack` for it.
 - Use `cognitive-doc-design` when drafting a non-trivial PR body.
+- Use `pr-creator` for all PR creation; it owns template compliance, evidence-driven
+  descriptions, review assessment, and the `gh pr create` call.
 
 ## Workflow
 
@@ -107,14 +110,15 @@ verified escape hatch.
 - Never use the ambiguous legacy values `stacked-prs` or `stacked-to-main` as strategy values.
 
 7. Push with tracking: `git push -u origin "$(git branch --show-current)"`.
-8. Open a draft PR.
+8. Create the PR via `pr-creator`.
 
-- Use `gh pr create --draft` for PR creation after the push succeeds unless the user explicitly
-  requested ready-for-review.
-- Use a semantic PR title matching the Conventional Commit style used for the change.
-- Derive the repository from the remote, for example with `gh repo view --json nameWithOwner`.
-- Derive `head_branch` from `git branch --show-current`.
-- Write the PR body to a temp file with real newlines so the markdown renders cleanly.
+- After the push succeeds, delegate PR creation to `pr-creator`. Pass the base branch, head
+  branch, title, and any evidence files captured during implementation.
+- `pr-creator` handles: template compliance, evidence-driven descriptions, review assessment,
+  attaching evidence using `--attach` when available, and the `gh pr create` call.
+- Default to a draft PR unless the user explicitly requests ready-for-review.
+- `yeet` retains: authorizations, commits, push, branch strategy, review budget checks, and
+  stack coordination. Do not duplicate PR body rules or evidence guidelines here.
 
 9. Summarize the result with branch name, commit, PR target, validation, review-budget status, and
    anything the user still
@@ -128,12 +132,7 @@ verified escape hatch.
 - If the repository does not appear to be connected to an accessible GitHub remote, stop and explain
   the blocker before making assumptions.
 
-## PR Body Expectations
+## PR Body
 
-The PR description should use real Markdown prose and cover:
-
-- what changed
-- why it changed
-- the user or developer impact
-- the root cause when the PR is a fix
-- the checks used to validate it
+PR body construction, evidence inclusion, and review assessment are delegated to `pr-creator`.
+Do not duplicate those rules here.
