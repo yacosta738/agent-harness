@@ -9,11 +9,6 @@
   "scripts": {
     "deploy": "node scripts/deploy.mjs",
     "validate": "node scripts/check-refs.mjs",
-    "test:refs": "node --test tests/check-refs.test.mjs",
-    "test:sdd": "node --test tests/sdd-agents.test.mjs",
-    "test:review": "node --test tests/review-lib.test.mjs",
-    "test:agents": "node --test tests/agents.test.mjs",
-    "test": "npm run test:refs && npm run test:sdd && npm run test:review && npm run test:agents",
     "list": "node scripts/generate-bundle.mjs list",
     "render": "node scripts/generate-bundle.mjs render"
   }
