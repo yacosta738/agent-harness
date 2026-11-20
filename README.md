@@ -178,26 +178,26 @@ is not part of the repository or of the deployable bundle; do not look for a cop
 Auto-discovered from `skills/**/SKILL.md` across 18 groups. Counts drift as the ecosystem grows —
 trust the filesystem, not this table:
 
-| Group             | #                      | What                                                                                            |
-|-------------------|------------------------|-------------------------------------------------------------------------------------------------|
+| Group             | #                      | What                                                                                                 |
+|-------------------|------------------------|------------------------------------------------------------------------------------------------------|
 | `workflow/`       | 27                     | Brainstorming, debugging, planning, reviews, conventions-as-code, worktrees, RPI/RDD, output control |
-| `testing/`        | 1                      | Test-driven development and test design                                                         |
-| `design-pattern/` | 1                      | Consolidated GoF pattern skill (22 patterns in `references/`)                                   |
-| `design/`         | 7                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                  |
-| `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                      |
-| `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                |
-| `sdd/`            | 11                     | Ten phase skills, inline onboarding, and the `_shared/` protocol                                |
-| `github/`         | 10                     | Actions, PR flow, stacked PRs, CI fixes, reviews, `pr-watch`, `yeet`                            |
-| `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                               |
-| `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                          |
-| `ios/`            | 6                      | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor                               |
-| `obsidian/`       | 5                      | CLI, markdown, bases, canvas, defuddle                                                          |
-| `devops/`         | 4                      | Docker, Grafana, Make, SQL optimization                                                         |
-| `notion/`         | 4                      | Capture, meetings, research docs, spec→implementation                                           |
-| `security/`       | 5 (+12 attack classes) | Orchestrator + threat model, finding discovery/triage/fix; attack-classes library in `_shared/` |
-| `personal/`       | 3                      | `haci` (Spanish IRPF), `imagegen`, `yuniel-writing-style`                                       |
-| `languages/`      | 2                      | TypeScript, Rust (Ratatui)                                                                      |
-| `android/`        | 1                      | Emulator QA                                                                                     |
+| `testing/`        | 1                      | Test-driven development and test design                                                              |
+| `design-pattern/` | 1                      | Consolidated GoF pattern skill (22 patterns in `references/`)                                        |
+| `design/`         | 7                      | Brand, frontend taste, diagram-design, imagegen, impeccable, …                                       |
+| `web/`            | 11                     | A11y, SEO, performance, Core Web Vitals, nothing-design, …                                           |
+| `macos/`          | 11                     | Build/run/debug, signing, packaging, SwiftUI, windows, telemetry                                     |
+| `sdd/`            | 11                     | Ten phase skills, inline onboarding, and the `_shared/` protocol                                     |
+| `github/`         | 10                     | Actions, PR flow, stacked PRs, CI fixes, reviews, `pr-watch`, `yeet`                                 |
+| `cloudflare/`     | 8                      | Workers, wrangler, D1/KV/R2, Durable Objects, Agents SDK, sandbox                                    |
+| `tools/`          | 7                      | Linear, Sentry, webapp-testing, portless, jules-cli, …                                               |
+| `ios/`            | 6                      | App Intents, SwiftUI patterns, Liquid Glass, perf audit, refactor                                    |
+| `obsidian/`       | 5                      | CLI, markdown, bases, canvas, defuddle                                                               |
+| `devops/`         | 4                      | Docker, Grafana, Make, SQL optimization                                                              |
+| `notion/`         | 4                      | Capture, meetings, research docs, spec→implementation                                                |
+| `security/`       | 5 (+12 attack classes) | Orchestrator + threat model, finding discovery/triage/fix; attack-classes library in `_shared/`      |
+| `personal/`       | 3                      | `haci` (Spanish IRPF), `imagegen`, `yuniel-writing-style`                                            |
+| `languages/`      | 2                      | TypeScript, Rust (Ratatui)                                                                           |
+| `android/`        | 1                      | Emulator QA                                                                                          |
 
 Notable: `skills/design/diagram-design` is a pinned offline-first snapshot (upstream release
 2.3.5) with local `references/`, `scripts/`, `assets/` trees and `/diagram-*` command adapters.

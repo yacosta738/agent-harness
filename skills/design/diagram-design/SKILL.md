@@ -28,9 +28,9 @@ they're still the shipped defaults (paper `#f5f5f5`, ink `#2d3142`, accent `#eb6
 atomic-tangerine), **pause and ask the user**:
 
 > *"This is your first diagram in this project. The style guide is still at the default (neutral
-white-smoke + atomic-tangerine). Do you want to customize it to match your brand first? Options: (a)
-pull from your website URL, (b) extract from an installed skill, (c) extract from a local folder /
-design-system directory, (d) paste tokens manually, (e) proceed with the default for now."*
+> white-smoke + atomic-tangerine). Do you want to customize it to match your brand first? Options: (a)
+> pull from your website URL, (b) extract from an installed skill, (c) extract from a local folder /
+> design-system directory, (d) paste tokens manually, (e) proceed with the default for now."*
 
 Then branch:
 

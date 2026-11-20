@@ -34,10 +34,13 @@ npx -y modern-web-guidance@latest search "<query>" --skill-version 2026_10_30-58
 > **Note**: Returns `[{ "id", "description" }, ...]`. Judge results by their `description` fields:
 > - **Match found**: Call `retrieve` directly—do not also run `list`.
 > - **No match on a web UI/CSS/DOM behavior (or broad UI audit)**: If `search` returns `[]` or
+
     unrelated descriptions because your phrasing differed from the catalog (or your task spans
     multiple categories), run `npx -y modern-web-guidance@latest list` once to check if the pattern
     is covered under more general terminology.
+
 > - **Topic not covered**: If no guide `description` directly matches your task, proceed with your
+
     implementation without retry loops or retrieving unrelated guides.
 
 ### Step 2. Retrieve Best Practices

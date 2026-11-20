@@ -6,14 +6,15 @@ routing.
 ## Quick Navigation
 
 **Need to...**
-| Task | Go to |
-|------|-------|
-| Set up TypeScript types | [configuration.md](./configuration.md) - TypeScript Setup |
-| Configure bindings (KV, D1, R2) | [configuration.md](./configuration.md) - wrangler.jsonc |
-| Access request/env/params | [api.md](./api.md) - EventContext |
-| Add middleware or auth | [patterns.md](./patterns.md) - Middleware, Auth |
-| Background tasks (waitUntil) | [patterns.md](./patterns.md) - Background Tasks |
-| Debug errors or check limits | [gotchas.md](./gotchas.md) - Common Errors, Limits |
+
+| Task                            | Go to                                                     |
+|---------------------------------|-----------------------------------------------------------|
+| Set up TypeScript types         | [configuration.md](./configuration.md) - TypeScript Setup |
+| Configure bindings (KV, D1, R2) | [configuration.md](./configuration.md) - wrangler.jsonc   |
+| Access request/env/params       | [api.md](./api.md) - EventContext                         |
+| Add middleware or auth          | [patterns.md](./patterns.md) - Middleware, Auth           |
+| Background tasks (waitUntil)    | [patterns.md](./patterns.md) - Background Tasks           |
+| Debug errors or check limits    | [gotchas.md](./gotchas.md) - Common Errors, Limits        |
 
 ## Decision Tree: Is This Pages Functions?
 

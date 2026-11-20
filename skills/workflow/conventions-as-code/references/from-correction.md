@@ -12,22 +12,24 @@ Extract the exact convention from the correction:
 - What files or patterns does it apply to?
 - Is this the first time this correction appears, or has it recurred?
 
-**If this is a one-off correction with no history of repetition, do not create a convention.** Document the feedback briefly and move on.
+**If this is a one-off correction with no history of repetition, do not create a convention.**
+Document the feedback briefly and move on.
 
 ### 2. Determine Durability
 
 Ask whether this correction expresses a durable convention:
 
-| Signal | Likely Durable | Likely One-Off |
-|--------|---------------|----------------|
-| Appears in 3+ reviews | Yes | — |
-| Referenced in project docs | Yes | — |
-| Tied to architecture decision | Yes | — |
-| Single file, specific context | — | Yes |
-| Personal style preference | — | Yes |
-| Workaround for known issue | — | Yes |
+| Signal                        | Likely Durable | Likely One-Off |
+|-------------------------------|----------------|----------------|
+| Appears in 3+ reviews         | Yes            | —              |
+| Referenced in project docs    | Yes            | —              |
+| Tied to architecture decision | Yes            | —              |
+| Single file, specific context | —              | Yes            |
+| Personal style preference     | —              | Yes            |
+| Workaround for known issue    | —              | Yes            |
 
-**If the correction is not durable, skip enforcement.** A single review comment does not establish a convention.
+**If the correction is not durable, skip enforcement.** A single review comment does not establish a
+convention.
 
 ### 3. Check Existing Tooling
 
@@ -38,7 +40,8 @@ Before proposing any enforcement, inspect what already exists:
 - Does the type system or compiler already prevent this?
 - Is there an architecture check that covers this?
 
-**If existing tooling already enforces the convention, report it and stop.** Do not add a second checker.
+**If existing tooling already enforces the convention, report it and stop.** Do not add a second
+checker.
 
 ### 4. Propose Enforcement
 
@@ -84,24 +87,29 @@ $ detekt --input src/
 > Build completed with no warnings.
 ```
 
-**Note:** The above command is illustrative. Use the project's actual Detekt configuration (e.g., `detekt.yml` with `FunctionNaming` rule) rather than ad-hoc CLI flags.
+**Note:** The above command is illustrative. Use the project's actual Detekt configuration (e.g.,
+`detekt.yml` with `FunctionNaming` rule) rather than ad-hoc CLI flags.
 
 ## Common Scenarios
 
 **Repeated naming correction:**
+
 - Check formatter first (KtLint, Prettier)
 - Then linter (Detekt, ESLint naming rules)
 - Only create custom checks if neither covers the pattern
 
 **Import ordering correction:**
+
 - Formatter almost always handles this (ImportOrder in Checkstyle, eslint-plugin-import)
 - Extend existing config; do not create a new script
 
 **Architecture boundary violation:**
+
 - Investigate architecture checkers (ArchUnit for Java, custom lint for TypeScript)
 - Do not implement string matching and claim it guarantees correctness
 - May require rung 4 or 5 of the enforcement ladder
 
 **Domain terminology correction:**
+
 - Reuse `domain-language` skill for glossary management
 - Document the term; enforce only structural aspects if checkable

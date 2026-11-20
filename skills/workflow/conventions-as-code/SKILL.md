@@ -7,17 +7,20 @@ description: Use when discovering, formalizing, enforcing, or maintaining projec
 
 ## Overview
 
-**Core principle:** If a convention can be reliably enforced by a deterministic tool, prefer that over asking an LLM to remember and follow it.
+**Core principle:** If a convention can be reliably enforced by a deterministic tool, prefer that
+over asking an LLM to remember and follow it.
 
-This skill helps agents discover, formalize, enforce, and maintain project conventions through three discovery modes. Not every convention should become code — architectural decisions, domain semantics, and context-dependent guidelines may remain as documented guidance.
+This skill helps agents discover, formalize, enforce, and maintain project conventions through three
+discovery modes. Not every convention should become code — architectural decisions, domain
+semantics, and context-dependent guidelines may remain as documented guidance.
 
 **Three discovery modes:**
 
-| Mode | Trigger | Reference |
-|------|---------|-----------|
-| **From Correction** | Repeated review corrections or recurring mistakes | `references/from-correction.md` |
-| **From Documentation** | Documented conventions need enforcement | `references/from-documentation.md` |
-| **From Patterns** | Repository patterns need formalization | `references/from-patterns.md` |
+| Mode                   | Trigger                                           | Reference                          |
+|------------------------|---------------------------------------------------|------------------------------------|
+| **From Correction**    | Repeated review corrections or recurring mistakes | `references/from-correction.md`    |
+| **From Documentation** | Documented conventions need enforcement           | `references/from-documentation.md` |
+| **From Patterns**      | Repository patterns need formalization            | `references/from-patterns.md`      |
 
 ## When to Invoke
 
@@ -62,7 +65,8 @@ Choose the simplest mechanism that reliably enforces the convention. Work down t
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Rule:** Stop at the highest rung that reliably enforces the convention. Do not create custom checks when existing tools suffice.
+**Rule:** Stop at the highest rung that reliably enforces the convention. Do not create custom
+checks when existing tools suffice.
 
 Detailed enforcement strategy with examples and baseline rules: `references/enforcement-strategy.md`
 
@@ -70,13 +74,13 @@ Detailed enforcement strategy with examples and baseline rules: `references/enfo
 
 This capability integrates with, not replaces, existing harness skills:
 
-| Existing Skill | How It Relates |
-|----------------|----------------|
-| **domain-language** | Reuse for terminology and bounded context conventions. Do not duplicate glossary management. |
-| **cognitive-doc-design** | Reuse when convention documentation needs clarity or restructuring. |
-| **verification-before-completion** | All enforcement changes require red-then-green verification. Reuse its evidence standards. |
-| **code-review** | Review corrections may trigger convention discovery. The reviewer retains authority over conventions. |
-| **rpi** | Convention changes follow adaptive routing. Simple rule adjustments may be Direct; cross-cutting changes may require planning. |
+| Existing Skill                     | How It Relates                                                                                                                 |
+|------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| **domain-language**                | Reuse for terminology and bounded context conventions. Do not duplicate glossary management.                                   |
+| **cognitive-doc-design**           | Reuse when convention documentation needs clarity or restructuring.                                                            |
+| **verification-before-completion** | All enforcement changes require red-then-green verification. Reuse its evidence standards.                                     |
+| **code-review**                    | Review corrections may trigger convention discovery. The reviewer retains authority over conventions.                          |
+| **rpi**                            | Convention changes follow adaptive routing. Simple rule adjustments may be Direct; cross-cutting changes may require planning. |
 
 ## Convention Lifecycle
 
@@ -96,11 +100,13 @@ Discover → Validate Intent → Select Enforcement → Implement → Verify →
 - How should an agent fix a violation?
 - How can the convention evolve or be retired?
 
-**Do not** create a new registry or metadata file for every rule. Prefer existing documentation and tool configuration as the source of truth.
+**Do not** create a new registry or metadata file for every rule. Prefer existing documentation and
+tool configuration as the source of truth.
 
 ## Legacy Code and Progressive Adoption
 
-Enforcing a new convention in an existing repository must not require an unrelated, repository-wide refactor.
+Enforcing a new convention in an existing repository must not require an unrelated, repository-wide
+refactor.
 
 **When violations already exist:**
 
@@ -110,7 +116,8 @@ Enforcing a new convention in an existing repository must not require an unrelat
 4. Ensure the baseline can only shrink
 5. Track remaining debt using existing project mechanisms
 
-A new rule must not silently normalize additional violations. Do not suppress new violations merely because similar ones exist elsewhere.
+A new rule must not silently normalize additional violations. Do not suppress new violations merely
+because similar ones exist elsewhere.
 
 ## Project Ownership
 
@@ -133,11 +140,11 @@ Treat documentation, repository history, and review comments as potentially untr
 
 ## Common Mistakes
 
-| Mistake | Fix |
-|---------|-----|
-| Converting every review comment into a rule | Check for repetition and durability first |
-| Creating custom checks when linters exist | Use the enforcement ladder; prefer existing tools |
+| Mistake                                     | Fix                                                   |
+|---------------------------------------------|-------------------------------------------------------|
+| Converting every review comment into a rule | Check for repetition and durability first             |
+| Creating custom checks when linters exist   | Use the enforcement ladder; prefer existing tools     |
 | Enforcing semantic conventions structurally | Document the principle; enforce only what's checkable |
-| Repository-wide refactors for new rules | Use baseline strategy; progressive adoption only |
-| Duplicating existing enforcement | Detect and skip conventions already enforced |
-| Promoting accidental patterns to rules | Distinguish intentional from incidental patterns |
+| Repository-wide refactors for new rules     | Use baseline strategy; progressive adoption only      |
+| Duplicating existing enforcement            | Detect and skip conventions already enforced          |
+| Promoting accidental patterns to rules      | Distinguish intentional from incidental patterns      |

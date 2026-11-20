@@ -30,7 +30,8 @@ resolution rule. Read them to understand what needs to be implemented.
 <!-- coderabbit-ai-generated-section:v1:6b289bd6b04616e344798479b84c5335c40473895b8e3326023fa9b76c16aa10 -->
 
 Resolve exactly one slice before mutation, following the `sdd-apply` skill. If the assignment names
-one slice identifier, implement only that slice. If it requests all remaining tasks, select the first
+one slice identifier, implement only that slice. If it requests all remaining tasks, select the
+first
 incomplete slice in `tasks.md` order and implement only its incomplete tasks; if none remain, report
 that without mutation. For other explicit assignments, resolve task identifiers to one slice. If the
 assignment spans multiple slices or is ambiguous, stop and request a single-slice assignment. After

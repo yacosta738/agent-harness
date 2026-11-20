@@ -56,7 +56,7 @@ Infer what the destination makes obvious, then ask once for any material ambigui
 digest inform the options you offer:
 
 > *"18 nodes in 3 groups. Where's this going — slide, blog post, or hand-off? And should I keep
-every component or compress to the request path?"*
+> every component or compress to the request path?"*
 
 The digest's `budget:` line tells you whether the ask is even possible: a source over the node
 budget cannot go to `slide-16x9` at `faithful` without splitting. Say so at this step rather than

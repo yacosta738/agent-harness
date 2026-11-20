@@ -47,12 +47,13 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 properties and methods.
 
 **Duration Fields:**
-| Field | Type | Description |
-|-------|------|-------------|
-| `duration.days` | Number | Total days in duration |
-| `duration.hours` | Number | Total hours in duration |
-| `duration.minutes` | Number | Total minutes in duration |
-| `duration.seconds` | Number | Total seconds in duration |
+
+| Field                   | Type   | Description                    |
+|-------------------------|--------|--------------------------------|
+| `duration.days`         | Number | Total days in duration         |
+| `duration.hours`        | Number | Total hours in duration        |
+| `duration.minutes`      | Number | Total minutes in duration      |
+| `duration.seconds`      | Number | Total seconds in duration      |
 | `duration.milliseconds` | Number | Total milliseconds in duration |
 
 **IMPORTANT:** Duration does NOT support `.round()`, `.floor()`, `.ceil()` directly. You must access

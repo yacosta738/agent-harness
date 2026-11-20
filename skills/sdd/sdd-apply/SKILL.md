@@ -43,7 +43,8 @@ From the orchestrator:
 Before writing, editing, deleting, or generating any project file:
 
 1. Read `tasks.md` and identify its functional slices in listed order.
-2. If the assignment names exactly one slice identifier, use that slice. Do not expand the assignment to
+2. If the assignment names exactly one slice identifier, use that slice. Do not expand the
+   assignment to
    adjacent or later slices.
 3. If the assignment says to implement all remaining tasks, select the first slice with incomplete
    tasks. Record that slice identifier as the effective assignment and implement only that slice.

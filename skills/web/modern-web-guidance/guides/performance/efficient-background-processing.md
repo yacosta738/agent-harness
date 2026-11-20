@@ -60,6 +60,7 @@ handle this event reliably, you must either:
 >
 > - Attach the event listener directly to the element that has `content-visibility: auto` applied.
 > - Use a capturing event listener (`{ capture: true }`) if you are delegating events to a parent
+
     container.
 
 ```javascript

@@ -111,8 +111,8 @@ verified escape hatch.
 
 7. Prepare evidence for publication (if applicable).
 
-- If the change includes captured images or videos and `--attach` is unavailable
-  (`gh < 2.99.0`), commit evidence files to the branch before pushing. Create an
+- If the change includes captured images or videos and `--attach` is unavailable (`gh < 2.99.0`),
+  commit evidence files to the branch before pushing. Create an
   `evidence/` directory, place captured files there, and include them in the commit.
 - This step ensures `pr-creator` can reference committed evidence files without
   committing files itself — `pr-creator` runs after the push and has no commit contract.

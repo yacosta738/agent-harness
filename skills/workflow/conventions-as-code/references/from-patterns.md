@@ -8,29 +8,30 @@
 
 Systematically analyze the repository for repeated structures:
 
-| Pattern Type | How to Mine |
-|--------------|-------------|
-| Naming patterns | Scan class, function, file naming across packages |
-| Package structure | Analyze directory hierarchy and module boundaries |
-| Import patterns | Check import ordering, grouping, and forbidden imports |
-| Dependency direction | Map which layers/packages depend on which |
-| Configuration patterns | Check build files, lint configs, formatter settings |
-| Test patterns | Analyze test naming, placement, and structure |
-| Error handling | Check exception types, result types, error conventions |
+| Pattern Type           | How to Mine                                            |
+|------------------------|--------------------------------------------------------|
+| Naming patterns        | Scan class, function, file naming across packages      |
+| Package structure      | Analyze directory hierarchy and module boundaries      |
+| Import patterns        | Check import ordering, grouping, and forbidden imports |
+| Dependency direction   | Map which layers/packages depend on which              |
+| Configuration patterns | Check build files, lint configs, formatter settings    |
+| Test patterns          | Analyze test naming, placement, and structure          |
+| Error handling         | Check exception types, result types, error conventions |
 
 ### 2. Distinguish Intentional from Incidental
 
-**Frequency is evidence, not authority.** A pattern appearing everywhere does not make it a convention.
+**Frequency is evidence, not authority.** A pattern appearing everywhere does not make it a
+convention.
 
 Classify each discovered pattern:
 
-| Classification | Characteristics | Action |
-|----------------|-----------------|--------|
-| **Intentional convention** | Documented, consistent, has rationale | Formalize if not already enforced |
-| **Incidental pattern** | Common but no documentation, may be historical | Present as finding, do not enforce |
-| **Legacy technical debt** | Old pattern being replaced | Do not promote; may need migration plan |
-| **Transitional code** | Mixed patterns during migration | Wait for migration to complete |
-| **Contradicts architecture** | Pattern exists but violates documented arch | Flag as violation, not convention |
+| Classification               | Characteristics                                | Action                                  |
+|------------------------------|------------------------------------------------|-----------------------------------------|
+| **Intentional convention**   | Documented, consistent, has rationale          | Formalize if not already enforced       |
+| **Incidental pattern**       | Common but no documentation, may be historical | Present as finding, do not enforce      |
+| **Legacy technical debt**    | Old pattern being replaced                     | Do not promote; may need migration plan |
+| **Transitional code**        | Mixed patterns during migration                | Wait for migration to complete          |
+| **Contradicts architecture** | Pattern exists but violates documented arch    | Flag as violation, not convention       |
 
 **How to distinguish:**
 
@@ -44,11 +45,11 @@ Classify each discovered pattern:
 
 When patterns are ambiguous, weigh three factors:
 
-| Factor | Weight | Description |
-|--------|--------|-------------|
-| **Intent** | Highest | Is there documentation, ADRs, or tooling that shows deliberate choice? |
-| **Direction** | Medium | Is the codebase moving toward or away from this pattern? |
-| **Volume** | Lowest | How many files follow this pattern? |
+| Factor        | Weight  | Description                                                            |
+|---------------|---------|------------------------------------------------------------------------|
+| **Intent**    | Highest | Is there documentation, ADRs, or tooling that shows deliberate choice? |
+| **Direction** | Medium  | Is the codebase moving toward or away from this pattern?               |
+| **Volume**    | Lowest  | How many files follow this pattern?                                    |
 
 **Examples:**
 
@@ -98,17 +99,21 @@ Present findings, propose options, and wait for authorization.
 ## Common Scenarios
 
 **All repositories extend a base class:**
+
 - Check if this is documented or enforced
-- If undocumented, present as finding: "All 23 repositories extend `BaseRepository`. Is this intentional?"
+- If undocumented, present as finding: "All 23 repositories extend `BaseRepository`. Is this
+  intentional?"
 - Do not enforce the base class pattern without confirmation
 
 **Mixed naming conventions across modules:**
+
 - Map which modules use which convention
 - Check if modules have different ownership or history
 - Present the split pattern and request decision
 - Do not choose the majority pattern automatically
 
 **Pattern contradicts documented architecture:**
+
 - Flag the contradiction clearly
 - Documented architecture expresses known intent, but it may be outdated
 - Present both the documentation and the code evidence side by side
@@ -116,6 +121,7 @@ Present findings, propose options, and wait for authorization.
 - Do not automatically enforce either side without confirmation
 
 **New pattern emerging alongside old pattern:**
+
 - Check Git history for recent changes
 - Determine if this is a migration in progress
 - If migration, wait for completion before formalizing
@@ -123,11 +129,11 @@ Present findings, propose options, and wait for authorization.
 
 ## Anti-Patterns
 
-| Anti-Pattern | Why It's Wrong |
-|--------------|----------------|
-| Enforcing the most common pattern | Frequency ≠ intent; majority may be legacy debt |
-| Creating rules for transitional code | The pattern is changing; enforcement will fight migration |
+| Anti-Pattern                                    | Why It's Wrong                                                        |
+|-------------------------------------------------|-----------------------------------------------------------------------|
+| Enforcing the most common pattern               | Frequency ≠ intent; majority may be legacy debt                       |
+| Creating rules for transitional code            | The pattern is changing; enforcement will fight migration             |
 | Automatically enforcing documented architecture | Documentation may be outdated; verify current intent before enforcing |
-| Automatically enforcing code patterns | The team may want to change the discovered pattern |
-| Treating all patterns as conventions | Many patterns are incidental, not intentional |
-| Ignoring contradictions between docs and code | Present the gap and request a decision; don't choose sides silently |
+| Automatically enforcing code patterns           | The team may want to change the discovered pattern                    |
+| Treating all patterns as conventions            | Many patterns are incidental, not intentional                         |
+| Ignoring contradictions between docs and code   | Present the gap and request a decision; don't choose sides silently   |
