@@ -174,7 +174,7 @@
           "uvx",
           "--from",
           "git+https://github.com/GitGuardian/gg-mcp.git",
-          "developer-mcp-server"
+          "gg-mcp-server"
         ],
         "disabled": true
       },
