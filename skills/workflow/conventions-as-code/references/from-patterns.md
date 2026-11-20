@@ -110,9 +110,10 @@ Present findings, propose options, and wait for authorization.
 
 **Pattern contradicts documented architecture:**
 - Flag the contradiction clearly
-- The documented architecture wins over code patterns
-- Present the gap between documentation and reality
-- Do not enforce the code pattern; it's a violation
+- Documented architecture expresses known intent, but it may be outdated
+- Present both the documentation and the code evidence side by side
+- Request a decision: is the documentation current (enforce it) or obsolete (update it)?
+- Do not automatically enforce either side without confirmation
 
 **New pattern emerging alongside old pattern:**
 - Check Git history for recent changes
@@ -126,6 +127,7 @@ Present findings, propose options, and wait for authorization.
 |--------------|----------------|
 | Enforcing the most common pattern | Frequency ≠ intent; majority may be legacy debt |
 | Creating rules for transitional code | The pattern is changing; enforcement will fight migration |
-| Ignoring documented architecture | Documentation expresses intent; patterns may violate it |
-| Enforcing without confirmation | The team may want to change the discovered pattern |
+| Automatically enforcing documented architecture | Documentation may be outdated; verify current intent before enforcing |
+| Automatically enforcing code patterns | The team may want to change the discovered pattern |
 | Treating all patterns as conventions | Many patterns are incidental, not intentional |
+| Ignoring contradictions between docs and code | Present the gap and request a decision; don't choose sides silently |

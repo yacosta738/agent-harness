@@ -19,16 +19,18 @@
 
 ### Rung 2: Formatter
 
-**Use when:** The convention is about whitespace, naming, or structural formatting.
+**Use when:** The convention is about whitespace, import ordering, or structural formatting.
 
 | Convention | Enforcement |
 |------------|-------------|
-| Naming patterns | KtLint, Prettier, gofmt |
 | Import ordering | Formatter import rules |
 | Line length | Formatter max line length |
 | Trailing commas | Formatter configuration |
+| Whitespace & indentation | Prettier, KtLint, gofmt |
 
-**Example:** "All Kotlin files use camelCase for functions" → configure KtLint or Detekt FunctionNaming rule.
+**Note:** Formatters handle code structure, not identifier naming. For naming conventions, use the linter (Rung 3) — e.g., Detekt's `FunctionNaming` or ESLint's `camelcase`.
+
+**Example:** "Imports grouped by scope" → configure formatter import ordering rules.
 
 ### Rung 3: Linter / Static Analysis
 
@@ -42,7 +44,7 @@
 | Python | Ruff, Flake8 |
 | Go | golangci-lint |
 
-**Example:** "No more than 5 parameters per function" → Detekt `FunctionParameterLimit` rule.
+**Example:** "No more than 5 parameters per function" → Detekt `LongParameterList` rule.
 
 ### Rung 4: Framework Architecture Checks
 
@@ -96,24 +98,28 @@ Run the enforcement mechanism and collect all existing violations. This snapshot
 
 ### 2. Use the Tool's Baseline Mechanism
 
-Most tools support baselines natively:
+Most tools support baselines natively, but their capabilities vary:
 
-| Tool | Baseline Mechanism |
-|------|-------------------|
-| Detekt | `baseline.xml` |
-| ESLint | `--fix-dry-run` + ignore config |
-| ArchUnit | Test exclusion patterns |
-| Clippy | `#[allow]` attributes |
+| Tool | Baseline Mechanism | Limitations |
+|------|-------------------|-------------|
+| Detekt | `baseline.xml` | Reliable: tracks exact violations by file and line |
+| ESLint | Bulk suppressions (per-rule, per-file) | Cannot distinguish new violations within the same file; a file with an existing suppression may hide new ones |
+| ArchUnit | `FreezingArchRule` with `ViolationStore` | Requires explicit freeze/thaw cycle; test exclusion is not a baseline |
+| Clippy | `#[allow]` attributes | Suppression, not a verifiable baseline; track separately |
 
 **Prefer the tool's baseline mechanism over creating a custom baseline framework.**
 
-### 3. Progressive Adoption Rules
+### 3. Verifiable Baseline Contract
 
-- The baseline captures existing violations only
-- New violations are errors, not warnings
-- The baseline can only shrink — never grow
-- Baseline removal requires explicit approval
-- Track baseline violations using existing project mechanisms (issues, tickets)
+A baseline is not just a snapshot — it is a **verifiable contract**:
+
+1. **Record the initial baseline** — save the exact violation list with timestamps
+2. **Check the mechanism's capability** — determine whether the tool can distinguish new violations from existing ones
+3. **If the tool cannot distinguish** (e.g., ESLint bulk suppressions per file), add a complementary check: compare the current violation count against the baseline to detect growth
+4. **Baseline removal requires explicit approval** — never silently allow the baseline to grow
+5. **Track remaining debt** using existing project mechanisms (issues, tickets)
+
+**The baseline contract:** The initial baseline is recorded. New violations are detected and blocked. When the tool's mechanism cannot guarantee detection of new violations (e.g., per-file suppressions), a complementary comparison ensures the baseline does not grow. Baseline removal is explicit.
 
 ### 4. Red-Then-Green Verification
 
@@ -143,7 +149,8 @@ Every enforcement change must demonstrate:
 |---------|-------------|-----|
 | Skipping to custom checks | Maintenance burden, false positives | Use the ladder; prefer existing tools |
 | No baseline for legacy code | All existing code must be refactored | Use baseline strategy |
-| Baseline grows over time | New violations silently accepted | Ensure baseline only shrinks |
+| Baseline grows over time | New violations silently accepted | Use verifiable baseline contract |
 | Enforcing unenforceable conventions | False positives, rule fatigue | Use documentation for semantic conventions |
 | No red-green verification | Unclear if enforcement works | Always verify both directions |
 | Duplicating existing enforcement | Conflicting rules, confusion | Check existing tooling first |
+| Treating suppression as baseline | New violations hidden by broad suppressions | Use tool's baseline mechanism; add complementary check when needed |

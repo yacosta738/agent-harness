@@ -45,7 +45,7 @@ Before proposing any enforcement, inspect what already exists:
 When existing tooling does not cover the convention:
 
 1. Identify the highest rung on the enforcement ladder that reliably handles this convention
-2. Explain why lower rungs are insufficient
+2. Explain why higher-priority options (rungs above the chosen one) do not apply
 3. Show what configuration change is needed
 4. Estimate the scope: how many files are affected, how many existing violations exist
 
@@ -76,13 +76,15 @@ Use `verification-before-completion` standards:
 
 ```
 # Red: Violation detected
-$ detekt --rules=NamingConvention src/
-> [WARNING] File 'BadName.kt' violates naming convention
+$ detekt --input src/
+> [WARNING] Function 'badFunctionName' must match pattern '[a-z][a-zA-Z0-9]*'
 
 # Green: Compliant code passes
-$ detekt --rules=NamingConvention src/
-> Build successful. No warnings.
+$ detekt --input src/
+> Build completed with no warnings.
 ```
+
+**Note:** The above command is illustrative. Use the project's actual Detekt configuration (e.g., `detekt.yml` with `FunctionNaming` rule) rather than ad-hoc CLI flags.
 
 ## Common Scenarios
 
