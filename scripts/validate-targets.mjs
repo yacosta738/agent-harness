@@ -291,9 +291,10 @@ function validateClaudeCode(bundleRoot) {
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
-          const dirRef = ref.endsWith("/") ? ref : ref.replace(/\/[\w.-]+$/, "/");
-          const dirResolved = resolve(dirname(skill.abs), dirRef);
-          if (!existsSync(dirResolved)) {
+          // P2: Validate the exact file, not fall back to checking if a parent directory exists.
+          // A reference to a file must resolve to a file, not a directory.
+          const result = checkBundleFile(bundleRoot, resolved);
+          if (result !== true) {
             // Required resources: _shared references and script files must exist
             if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(".js")) {
               fail(`claude-code: ${skill.rel}: required relative reference '${ref}' does not resolve`);
@@ -395,9 +396,9 @@ function validateJunie(bundleRoot) {
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
-          const dirRef = ref.endsWith("/") ? ref : ref.replace(/\/[\w.-]+$/, "/");
-          const dirResolved = resolve(dirname(skill.abs), dirRef);
-          if (!existsSync(dirResolved)) {
+          // P2: Validate the exact file, not fall back to checking if a parent directory exists.
+          const result = checkBundleFile(bundleRoot, resolved);
+          if (result !== true) {
             // Required resources: _shared references and script files must exist
             if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(".js")) {
               fail(`junie: ${skill.rel}: required relative reference '${ref}' does not resolve`);
