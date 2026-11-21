@@ -27,7 +27,7 @@ import {
   rmSync,
   writeFileSync
 } from "node:fs";
-import {dirname, join, resolve} from "node:path";
+import {dirname, join, relative, resolve, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 // node <20.19 lacks require in ESM scope guard: use createRequire for walk()
 import {createRequire} from "node:module";
@@ -506,7 +506,7 @@ function generateCommandFiles(outDir, target) {
 
     // Parse frontmatter to check for subtask flag
     const frontmatterMatch = text.match(/^---\n([\s\S]*?)\n---/);
-    const hasSubtask = frontmatterMatch && /\nsubtask:\s*true/.test(frontmatterMatch[1]);
+    const hasSubtask = frontmatterMatch && /^subtask:[ \t]*true[ \t]*$/m.test(frontmatterMatch[1]);
 
     // Translate frontmatter for non-OpenCode targets
     // Remove OpenCode-specific fields: agent, subtask
@@ -521,9 +521,6 @@ function generateCommandFiles(outDir, target) {
         return `---\n${adapted}\ncontext: fork\n---`;
       });
     }
-
-    // Replace OpenCode-specific paths with relative paths
-    text = text.replace(/~\/\.config\/opencode\//g, "");
 
     // Replace OpenCode-specific placeholders with target-appropriate equivalents
     // {workdir} and {project} are OpenCode-specific; document them as unavailable
@@ -573,7 +570,6 @@ function generateSkillsDir(outDir, target) {
         // Check if this directory contains SKILL.md
         const skillPath = join(abs, "SKILL.md");
         if (existsSync(skillPath)) {
-          const rel = dir === skillsSrc ? e.name : join(dir.replace(skillsSrc + "/", ""), e.name);
           const skillName = e.name;
           if (seen.has(skillName)) {
             console.warn(`skill collision: '${skillName}' found in multiple categories`);
@@ -588,10 +584,47 @@ function generateSkillsDir(outDir, target) {
   };
   findSkills(skillsSrc);
 
-  // Copy each skill to its own flat directory
+  // Keep shared assets inside the installed skills tree, including for global installs.
+  const sharedDest = join(destDir, "_shared");
+  for (const category of readdirSync(skillsSrc).sort()) {
+    const source = join(skillsSrc, category, "_shared");
+    if (existsSync(source)) {
+      cpSync(source, join(sharedDest, category), {recursive: true});
+    }
+  }
+  cpSync(join(ROOT, "prompts/sdd"), join(sharedDest, "prompts/sdd"), {recursive: true});
+
+  const toPosix = (path) => path.split(sep).join("/");
+  // Copy each skill and rewrite only references to resources outside its own directory.
   for (const {name, source} of skillDirs) {
     const dest = join(destDir, name);
     cpSync(source, dest, {recursive: true});
+    for (const file of collectAllFiles(dest).filter(f => f.endsWith(".md"))) {
+      const destFile = join(dest, file);
+      const text = readFileSync(destFile, "utf8");
+      const relocated = text.replace(/(?:\.\.\/)+(?:[\w.-]+\/)*_shared\/[\w./-]+/g, ref => {
+        const resolved = resolve(source, dirname(file), ref);
+        const match = toPosix(relative(skillsSrc, resolved)).match(/^([\w-]+)\/_shared\/(.+)$/);
+        if (!match || !existsSync(resolved)) return ref;
+        return toPosix(relative(dirname(destFile), join(sharedDest, match[1], match[2])));
+      });
+      if (relocated !== text) writeFileSync(destFile, relocated);
+    }
+
+    // A native skill takes precedence over a command with the same name. Use the
+    // adapted command as its entry point and keep the detailed skill workflow.
+    const commandFile = join(destDir, "../commands", `${name}.md`);
+    if (!existsSync(commandFile)) continue;
+    const skillFile = join(dest, "SKILL.md");
+    const skillBody = readFileSync(skillFile, "utf8").replace(/^---\n[\s\S]*?\n---\n/, "").trim();
+    const canonicalSkill = toPosix(relative(ROOT, join(source, "SKILL.md")));
+    const command = readFileSync(commandFile, "utf8")
+      .replace(/^---\n/, `---\nname: ${name}\n`)
+      .replaceAll(`\`${canonicalSkill}\``, "the skill workflow below")
+      .replaceAll("~/.config/opencode/prompts/sdd/", "../_shared/prompts/sdd/")
+      .replaceAll("~/.config/opencode/skills/sdd/_shared/", "../_shared/sdd/");
+    writeFileSync(skillFile, `${command.trimEnd()}\n\n## Skill workflow\n\n${skillBody}\n`);
+    rmSync(commandFile);
   }
 }
 
@@ -602,50 +635,23 @@ function generateClaudeSettings(outDir) {
   const opencodeCfg = existsSync(opencodePath) ? JSON.parse(readFileSync(opencodePath, "utf8")) : {};
   const opencodePermissions = opencodeCfg.permission || {};
 
-  // Translate OpenCode permissions to Claude Code's permissions structure
-  // Claude Code uses: allow, ask, deny for each tool category
-  const permissions = {};
-
-  // Translate bash permissions
-  if (opencodePermissions.bash) {
-    const bashRules = [];
-    for (const [pattern, action] of Object.entries(opencodePermissions.bash)) {
-      if (action === "allow") {
-        bashRules.push({type: "allow", pattern});
-      } else if (action === "ask") {
-        bashRules.push({type: "ask", pattern});
-      } else if (action === "deny") {
-        bashRules.push({type: "deny", pattern});
+  // Claude Code groups tool rules by action.
+  const permissions = {allow: [], ask: [], deny: []};
+  for (const [key, tool] of [["bash", "Bash"], ["read", "Read"]]) {
+    const rules = {...opencodePermissions[key]};
+    if (key === "read") {
+      for (const pattern of ["**/.env", "**/.env.*", "*.env", "*.env.*"]) {
+        rules[pattern] = "deny";
       }
     }
-    if (bashRules.length > 0) {
-      permissions.bash = bashRules;
-    }
-  }
-
-  // Translate read permissions — preserve credential-file denials
-  // Canonical denials: *.key, *.pem, .aws/credentials, .env, .ssh/, etc.
-  if (opencodePermissions.read) {
-    const readRules = [];
-    for (const [pattern, action] of Object.entries(opencodePermissions.read)) {
-      if (action === "allow") {
-        readRules.push({type: "allow", pattern});
-      } else if (action === "ask") {
-        readRules.push({type: "ask", pattern});
-      } else if (action === "deny") {
-        readRules.push({type: "deny", pattern});
+    for (const [pattern, action] of Object.entries(rules)) {
+      if (!Object.hasOwn(permissions, action)) continue;
+      permissions[action].push(`${tool}(${pattern})`);
+      // Claude Code's unanchored file rules apply only under cwd. Keep recursive
+      // credential denials effective for absolute paths outside the project too.
+      if (tool === "Read" && action === "deny" && pattern.startsWith("**/")) {
+        permissions.deny.push(`Read(//${pattern})`);
       }
-    }
-    // Ensure .env file read is explicitly denied
-    const hasEnvDeny = readRules.some(r => r.type === "deny" && r.pattern && (r.pattern.includes(".env") || r.pattern === "*.env"));
-    if (!hasEnvDeny) {
-      readRules.push({type: "deny", pattern: "**/.env"});
-      readRules.push({type: "deny", pattern: "**/.env.*"});
-      readRules.push({type: "deny", pattern: "*.env"});
-      readRules.push({type: "deny", pattern: "*.env.*"});
-    }
-    if (readRules.length > 0) {
-      permissions.read = readRules;
     }
   }
 
@@ -729,9 +735,9 @@ function replaceOpencodePaths(outDir, bundled, target) {
   // Also include post-generated files
   const generatedDirs = [];
   if (target === "claude-code") {
-    generatedDirs.push(".claude/agents", ".claude/commands", ".claude/skills", ".claude");
+    generatedDirs.push(".claude");
   } else if (target === "junie") {
-    generatedDirs.push(".junie/agents", ".junie/commands", ".junie/skills", ".junie");
+    generatedDirs.push(".junie");
   }
 
   for (const rel of allFiles) {
@@ -750,8 +756,15 @@ function processMarkdownFile(outDir, rel, harnessRoot, target) {
   try {
     let text = readFileSync(abs, "utf8");
     let replaced = text;
-    // Replace OpenCode-specific absolute paths
-    replaced = replaced.replace(/~\/\.config\/opencode\//g, "");
+    if (target !== "opencode") {
+      replaced = replaced.replace(/~\/\.config\/opencode\//g, "");
+    }
+    // Shell placeholders are used inside double quotes.
+    const shellRoot = target === "opencode" ? "$HOME/.config/opencode" : harnessRoot;
+    const skillPath = dirname(rel).split(sep).join("/");
+    const skillDir = target === "opencode" ? `${shellRoot}/${skillPath}` : skillPath;
+    replaced = replaced.replaceAll("{harnessShell}", () => shellRoot);
+    replaced = replaced.replaceAll("{skillDir}", () => skillDir);
     // Resolve {harness} placeholder
     replaced = replaced.replace(/\{harness\}/g, harnessRoot);
     if (replaced !== text) {

@@ -28,7 +28,7 @@ Core principles:
    wherever the skill is installed. Export it once per session:
 
    ```sh
-   export SKILL_DIR="{harness}/skills/design/impeccable"
+   export SKILL_DIR="{skillDir}"
    ```
 
    On a per-project install the value is the project's own skill directory instead. If the runtime

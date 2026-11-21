@@ -29,21 +29,14 @@ import {
   existsSync,
   readdirSync,
   readFileSync,
-  realpathSync,
   statSync,
 } from "node:fs";
 import {dirname, join, relative, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
+import {checkBundleFile, isInside} from "./bundle-paths.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES = [];
-
-// True when `child` lives at or below `parent` (no `..` escapes past parent).
-// path.relative(parent, parent) === ""; escapes start with "../" or are absolute.
-function isInside(parent, child) {
-  const rel = relative(parent, child);
-  return rel !== "" && !rel.startsWith("..") && !/^[\\/]/.test(rel);
-}
 
 // Glob match check: returns true if `pattern` matches at least one file under `root`.
 // Supports `*`, `?`, and `**` (including the common `**/` recursive-directory form).
@@ -106,21 +99,7 @@ function checkLocalInstructionPattern(root, pattern) {
   if (/[*?]/.test(pattern)) {
     return globHasMatch(root, pattern);
   }
-  const target = resolve(root, pattern);
-  const rootPath = resolve(root);
-  if (!isInside(rootPath, target)) {
-    return "outside";
-  }
-  try {
-    const rootResolved = realpathSync(rootPath);
-    const actualTarget = realpathSync(target);
-    if (!isInside(rootResolved, actualTarget)) {
-      return "outside";
-    }
-    return statSync(actualTarget).isFile() ? true : "not-file";
-  } catch {
-    return false;
-  }
+  return checkBundleFile(root, pattern);
 }
 
 function checkOpencodeRefs(root, cfgRel) {

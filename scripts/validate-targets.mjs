@@ -22,10 +22,10 @@ import {
   existsSync,
   readdirSync,
   readFileSync,
-  statSync,
 } from "node:fs";
 import {dirname, join, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
+import {checkBundleFile} from "./bundle-paths.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES = [];
@@ -146,10 +146,13 @@ function validateOpenCode(bundleRoot) {
         refs.push(m[1]);
       }
       for (const ref of refs) {
-        const clean = ref.replace(/^\.\//, "");
-        const refAbs = join(bundleRoot, clean);
-        if (!existsSync(refAbs)) {
-          fail(`opencode: agent '${name}' references missing file {file:${ref}}`);
+        const prefix = "~/.config/opencode/";
+        const path = ref.startsWith(prefix) ? ref.slice(prefix.length) : ref;
+        const result = checkBundleFile(bundleRoot, path);
+        if (result !== true) {
+          const reason = result === "outside" ? "escapes the bundle root"
+            : result === "not-file" ? "is not a file" : "is missing";
+          fail(`opencode: agent '${name}' reference {file:${ref}} ${reason}`);
           allRefsOk = false;
         }
       }

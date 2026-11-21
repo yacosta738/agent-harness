@@ -47,36 +47,40 @@ export TARGET_PROJECT=/path/to/your/project
 
 npm run deploy:claude-code
 
-# Back up existing configuration before installing
-if [ -f "$TARGET_PROJECT/CLAUDE.md" ]; then
-  cp "$TARGET_PROJECT/CLAUDE.md" "$TARGET_PROJECT/CLAUDE.md.bak"
-fi
-if [ -f "$TARGET_PROJECT/.claude/settings.json" ]; then
-  cp "$TARGET_PROJECT/.claude/settings.json" "$TARGET_PROJECT/.claude/settings.json.bak"
-fi
+bundle=distribution/claude-code
+mkdir -p "$TARGET_PROJECT/.claude"
+cp -R "$bundle/.claude/skills" "$bundle/.claude/agents" "$bundle/.claude/commands" \
+  "$TARGET_PROJECT/.claude/"
 
-# Copy distributed files, merging with existing configuration
-cp -r distribution/claude-code/.claude "$TARGET_PROJECT/"
-cp distribution/claude-code/CLAUDE.md "$TARGET_PROJECT/"
-cp distribution/claude-code/.mcp.json "$TARGET_PROJECT/"
-
-# If you had custom settings, merge them back from the backup
-if [ -f "$TARGET_PROJECT/.claude/settings.json.bak" ]; then
-  # Manually merge custom permissions from settings.json.bak
-  mv "$TARGET_PROJECT/.claude/settings.json.bak" "$TARGET_PROJECT/.claude/settings.json"
-fi
-if [ -f "$TARGET_PROJECT/CLAUDE.md.bak" ]; then
-  # Manually merge custom instructions from CLAUDE.md.bak
-  mv "$TARGET_PROJECT/CLAUDE.md.bak" "$TARGET_PROJECT/CLAUDE.md"
-fi
+# Install templates only when a project file does not already exist.
+for file in CLAUDE.md .claude/settings.json .mcp.json; do
+  if [ -e "$TARGET_PROJECT/$file" ] || [ -L "$TARGET_PROJECT/$file" ]; then
+    if [ ! -e "$TARGET_PROJECT/$file.bak" ] && [ ! -L "$TARGET_PROJECT/$file.bak" ]; then
+      cp "$TARGET_PROJECT/$file" "$TARGET_PROJECT/$file.bak"
+    fi
+  else
+    cp "$bundle/$file" "$TARGET_PROJECT/$file"
+  fi
+done
 ```
+
+If a file already existed, complete the merge before using the harness. If a `.bak` file already
+exists, keep it and save the current project file under a new backup name before merging.
+
+- **Settings:** Start with the generated `.claude/settings.json` and merge custom settings from
+  `settings.json.bak`. Combine the permission arrays and keep the harness's credential denials.
+  Save the merged file as `.claude/settings.json` and retain the backup.
+- **Instructions:** Start with the generated `CLAUDE.md`, include the custom instructions from
+  `CLAUDE.md.bak`, and save the merged file as `CLAUDE.md`. Retain the backup.
+- **MCP:** Keep the existing `.mcp.json` as the base. Add any required template entries that are
+  missing, keeping existing servers and credentials. The current template has no server entries.
 
 This places:
 - `CLAUDE.md` at the project root (loaded every session)
 - `.claude/skills/` with all harness skills
 - `.claude/agents/` with subagent definitions
 - `.claude/commands/` with custom commands
-- `.mcp.json` with MCP server templates (disabled by default)
+- `.mcp.json` with your MCP configuration or an empty template
 
 **Global installation (skills only):**
 
@@ -100,27 +104,37 @@ export TARGET_PROJECT=/path/to/your/project
 
 npm run deploy:junie
 
-# Back up existing configuration before installing
-if [ -f "$TARGET_PROJECT/.junie/AGENTS.md" ]; then
-  cp "$TARGET_PROJECT/.junie/AGENTS.md" "$TARGET_PROJECT/.junie/AGENTS.md.bak"
-fi
+bundle=distribution/junie/.junie
+mkdir -p "$TARGET_PROJECT/.junie/mcp"
+cp -R "$bundle/skills" "$bundle/agents" "$bundle/commands" "$TARGET_PROJECT/.junie/"
 
-# Copy distributed files
-cp -r distribution/junie/.junie "$TARGET_PROJECT/"
-
-# If you had custom guidelines, merge them back from the backup
-if [ -f "$TARGET_PROJECT/.junie/AGENTS.md.bak" ]; then
-  # Manually merge custom instructions from AGENTS.md.bak
-  mv "$TARGET_PROJECT/.junie/AGENTS.md.bak" "$TARGET_PROJECT/.junie/AGENTS.md"
-fi
+# Back up existing guidelines and MCP settings without replacing the project files.
+for file in AGENTS.md mcp/mcp.json; do
+  if [ -e "$TARGET_PROJECT/.junie/$file" ] || [ -L "$TARGET_PROJECT/.junie/$file" ]; then
+    if [ ! -e "$TARGET_PROJECT/.junie/$file.bak" ] && [ ! -L "$TARGET_PROJECT/.junie/$file.bak" ]; then
+      cp "$TARGET_PROJECT/.junie/$file" "$TARGET_PROJECT/.junie/$file.bak"
+    fi
+  else
+    cp "$bundle/$file" "$TARGET_PROJECT/.junie/$file"
+  fi
+done
 ```
+
+If a file already existed, complete the merge before using the harness. If a `.bak` file already
+exists, keep it and save the current project file under a new backup name before merging.
+
+- **Guidelines:** Start with the generated `.junie/AGENTS.md`, include the custom instructions from
+  `AGENTS.md.bak`, and save the merged file as `.junie/AGENTS.md`. Retain the backup.
+- **MCP:** Keep the existing `.junie/mcp/mcp.json` as the base. Add any required entries from the
+  bundled configuration that are missing, keeping existing server settings and credentials.
+  The current template has no server entries.
 
 This places:
 - `.junie/AGENTS.md` at the project level (loaded every session)
 - `.junie/skills/` with all harness skills
 - `.junie/agents/` with subagent definitions
 - `.junie/commands/` with custom commands
-- `.junie/mcp/mcp.json` with MCP server templates (disabled by default)
+- `.junie/mcp/mcp.json` with your MCP configuration or an empty template
 
 **Global installation (skills only):**
 
