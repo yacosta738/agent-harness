@@ -22,7 +22,7 @@ This document describes which Agent Harness features are supported natively, ada
 | **Conventions as Code** | Native (skill registry) | Native (skill registry preserved) | Native (skill registry preserved) |
 | **TDD for business logic** | Native (workflow skill) | Native (workflow skill preserved) | Native (workflow skill preserved) |
 | **Security boundaries** | Native (permission rules) | Partial (settings.json template — manual review required) | Partial (allowlist — manual review required) |
-| **Destructive action permission** | Native (git commit/push ask) | Partial (settings.json template — manual review required) | Partial (brave mode — manual review required) |
+| **Destructive action permission** | Native (scoped authorization — ordinary commit/push allowed, destructive ops ask) | Partial (settings.json template — manual review required) | Partial (brave mode — manual review required) |
 
 ## Classification Legend
 

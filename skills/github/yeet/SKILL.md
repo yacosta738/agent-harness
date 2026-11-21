@@ -82,7 +82,7 @@ specific templates; use it only as an explicitly verified escape hatch.
   `feat/{description}`, `fix/{description}`, or `chore/{description}`.
 - Otherwise inspect upstream/remote status for the current branch. If it already tracks a remote
   branch that may contain shared work and the user did not explicitly authorize publication to it,
-  ask before committing or pushing.
+  the local commit may proceed but ask before pushing.
 
 3. Stage only the intended changes.
 
