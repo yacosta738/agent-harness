@@ -905,9 +905,12 @@ function processMarkdownFile(outDir, rel, harnessRoot, target) {
     } else if (target === "claude-code") {
       skillDir = '${CLAUDE_SKILL_DIR}';
     } else if (target === "junie") {
-      // Junie has no SKILL_DIR equivalent. Use a relative path from the skill's location.
-      // The skill directory is under .junie/skills/<skill-name>/, so scripts/ is a sibling.
-      skillDir = '.';
+      // Junie has no ${SKILL_DIR} equivalent. For project-level installs the skill
+      // lives at .junie/skills/<name>/ relative to the project root, so scripts/
+      // is a sibling of SKILL.md. Use a path relative to the project root.
+      // For global installs (~/.junie/skills/) the user should set SKILL_DIR manually.
+      const skillName = dirname(rel).split("/").pop();
+      skillDir = `.junie/skills/${skillName}`;
     } else {
       skillDir = skillPath;
     }

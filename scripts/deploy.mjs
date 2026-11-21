@@ -96,6 +96,14 @@ function deployTarget(target, output, validateOnly) {
     return checkCode;
   }
 
+  // Run cross-target validation (frontmatter duplicates, broken dependencies, etc.)
+  const distRoot = resolve(output, "..");
+  const validateCode = runNode("validate-targets.mjs", ["--root", distRoot]);
+  if (validateCode !== 0) {
+    console.error(`validate-targets.mjs failed for ${target} (exit ${validateCode})`);
+    return validateCode;
+  }
+
   console.log(`bundle ready: ${output}`);
   return 0;
 }
