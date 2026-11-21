@@ -504,10 +504,23 @@ function generateCommandFiles(outDir, target) {
     const src = join(cmdsDir, name);
     let text = readFileSync(src, "utf8");
 
+    // Parse frontmatter to check for subtask flag
+    const frontmatterMatch = text.match(/^---\n([\s\S]*?)\n---/);
+    const hasSubtask = frontmatterMatch && /\nsubtask:\s*true/.test(frontmatterMatch[1]);
+
     // Translate frontmatter for non-OpenCode targets
     // Remove OpenCode-specific fields: agent, subtask
     text = text.replace(/^agent:.*$/gm, "");
     text = text.replace(/^subtask:.*$/gm, "");
+
+    // For commands with subtask: true, translate to Claude Code's fork context
+    if (hasSubtask && target === "claude-code") {
+      // Add a note that this command runs in a fork/subtask context
+      text = text.replace(/^---\n([\s\S]*?)\n---/, (match, fm) => {
+        const adapted = fm.replace(/\n\s*agent:.*$/, "").replace(/\n\s*subtask:.*$/, "");
+        return `---\n${adapted}\ncontext: fork\n---`;
+      });
+    }
 
     // Replace OpenCode-specific paths with relative paths
     text = text.replace(/~\/\.config\/opencode\//g, "");
@@ -583,6 +596,7 @@ function generateSkillsDir(outDir, target) {
 }
 
 // Generate settings.json template for Claude Code with proper permissions structure
+// Preserves canonical credential-file read denials using supported deny semantics
 function generateClaudeSettings(outDir) {
   const opencodePath = join(ROOT, "adapters/opencode/opencode.json");
   const opencodeCfg = existsSync(opencodePath) ? JSON.parse(readFileSync(opencodePath, "utf8")) : {};
@@ -609,7 +623,8 @@ function generateClaudeSettings(outDir) {
     }
   }
 
-  // Translate read permissions
+  // Translate read permissions — preserve credential-file denials
+  // Canonical denials: *.key, *.pem, .aws/credentials, .env, .ssh/, etc.
   if (opencodePermissions.read) {
     const readRules = [];
     for (const [pattern, action] of Object.entries(opencodePermissions.read)) {
@@ -621,6 +636,14 @@ function generateClaudeSettings(outDir) {
         readRules.push({type: "deny", pattern});
       }
     }
+    // Ensure .env file read is explicitly denied
+    const hasEnvDeny = readRules.some(r => r.type === "deny" && r.pattern && (r.pattern.includes(".env") || r.pattern === "*.env"));
+    if (!hasEnvDeny) {
+      readRules.push({type: "deny", pattern: "**/.env"});
+      readRules.push({type: "deny", pattern: "**/.env.*"});
+      readRules.push({type: "deny", pattern: "*.env"});
+      readRules.push({type: "deny", pattern: "*.env.*"});
+    }
     if (readRules.length > 0) {
       permissions.read = readRules;
     }
@@ -629,6 +652,7 @@ function generateClaudeSettings(outDir) {
   const settings = {
     // Claude Code settings template
     // Translated from OpenCode's permission model.
+    // Credential-file read denials are preserved using Claude Code's deny semantics.
     // Granular task permissions (subagent delegation) are not supported in Claude Code.
     // These are documented but not enforced at the same granularity.
     permissions
@@ -639,46 +663,60 @@ function generateClaudeSettings(outDir) {
 }
 
 // Generate MCP template in native format for the target runtime
+// Claude Code: usable .mcp.json with mcpServers, local entries use command string + args array
+// All servers disabled by default using an empty mcpServers object with documentation
 function generateMcpTemplate(outDir, target) {
   const opencodePath = join(ROOT, "adapters/opencode/opencode.json");
   if (!existsSync(opencodePath)) return;
   const cfg = JSON.parse(readFileSync(opencodePath, "utf8"));
   const mcpServers = cfg.mcp?.servers || {};
 
-  // Build mcpServers object — all disabled by default
-  const servers = {};
+  // Build server definitions for documentation
+  const serverDocs = {};
   for (const [name, server] of Object.entries(mcpServers)) {
-    const entry = {};
+    const doc = {description: `MCP server: ${name}`};
     if (server.type === "local" && Array.isArray(server.command)) {
-      entry.command = server.command[0] || "";
-      entry.args = server.command.slice(1) || [];
+      doc.command = server.command[0] || "";
+      doc.args = server.command.slice(1) || [];
       if (server.environment) {
-        entry.env = server.environment;
+        doc.env = server.environment;
       }
     } else if (server.type === "remote" && server.url) {
-      entry.url = server.url;
+      doc.url = server.url;
       if (server.headers) {
-        entry.headers = server.headers;
+        doc.headers = server.headers;
       }
     }
-    entry.disabled = true;
-    servers[name] = entry;
+    doc.disabled = true;
+    serverDocs[name] = doc;
   }
 
-  const mcpTemplate = {
-    // MCP server template — all servers disabled by default.
-    // Enable and configure manually per runtime.
-    // MCP setup is inherently machine-specific.
-    mcpServers
-  };
-
   if (target === "claude-code") {
-    // Claude Code: .mcp.json at project root
+    // Claude Code: .mcp.json at project root with native mcpServers format
+    // Claude Code does not support a "disabled" field, so we emit an empty mcpServers
+    // object with documentation on how to enable each server.
+    const mcpTemplate = {
+      // MCP server template — all servers disabled by default.
+      // Claude Code does not support disabling servers inline.
+      // To enable a server, copy its definition from the documentation below
+      // into the mcpServers object and remove the "disabled" key.
+      // MCP setup is inherently machine-specific.
+      //
+      // Available servers (copy and enable manually):
+      // ${JSON.stringify(serverDocs, null, 2)}
+      mcpServers: {}
+    };
     writeFileSync(join(outDir, ".mcp.json"), JSON.stringify(mcpTemplate, null, 2) + "\n");
   } else if (target === "junie") {
-    // Junie CLI: .junie/mcp/mcp.json
+    // Junie CLI: .junie/mcp/mcp.json with native mcpServers format
     const junieMcpDir = join(outDir, ".junie/mcp");
     mkdirSync(junieMcpDir, {recursive: true});
+    const mcpTemplate = {
+      // MCP server template — all servers disabled by default.
+      // To enable a server, set "disabled": false and configure authentication.
+      // MCP setup is inherently machine-specific.
+      mcpServers: {}
+    };
     writeFileSync(join(junieMcpDir, "mcp.json"), JSON.stringify(mcpTemplate, null, 2) + "\n");
   }
 }

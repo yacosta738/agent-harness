@@ -26,7 +26,7 @@ Copy the generated files to your project root:
 ```bash
 cp -r distribution/claude-code/.claude /path/to/your/project/
 cp distribution/claude-code/CLAUDE.md /path/to/your/project/
-cp distribution/claude-code/mcp.json /path/to/your/project/
+cp distribution/claude-code/.mcp.json /path/to/your/project/.mcp.json
 ```
 
 The resulting structure:
@@ -34,9 +34,8 @@ The resulting structure:
 ```
 your-project/
   CLAUDE.md              # Project instructions
-  mcp.json               # MCP template (disabled by default)
+  .mcp.json              # MCP template (disabled by default)
   .claude/
-    CLAUDE.md            # Project instructions (duplicate for .claude/ discovery)
     agents/*.md          # Custom agents
     commands/*.md        # Custom commands
     skills/              # Agent skills
@@ -45,11 +44,12 @@ your-project/
 
 ### 3. Configure MCP Servers (Optional)
 
-The generated `mcp.json` includes all MCP servers from the OpenCode configuration, disabled by default. To enable a server:
+The generated `.mcp.json` uses Claude Code's native `mcpServers` format. It includes all MCP servers from the OpenCode configuration, disabled by default. To enable a server:
 
-1. Edit `mcp.json`
+1. Edit `.mcp.json`
 2. Set `"disabled": false` for the desired server
 3. Configure authentication (API keys, tokens) as needed
+4. Ensure the `command` and `args` fields point to valid executables on your machine
 
 ### 4. Review Settings
 

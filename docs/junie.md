@@ -25,30 +25,30 @@ Copy the generated files to your project root:
 
 ```bash
 cp -r distribution/junie/.junie /path/to/your/project/
-cp distribution/junie/mcp.json /path/to/your/project/
 ```
 
 The resulting structure:
 
 ```
 your-project/
-  mcp.json               # MCP template (disabled by default)
   .junie/
     AGENTS.md            # Project guidelines
     agents/*.md          # Custom subagents
     commands/*.md        # Custom commands
     skills/              # Agent skills
+    mcp/mcp.json         # MCP template (disabled by default)
 ```
 
 ### 3. Configure MCP Servers (Optional)
 
-The generated `mcp.json` includes all MCP servers from the OpenCode configuration, disabled by default. To enable a server:
+The generated `.junie/mcp/mcp.json` uses the native `mcpServers` format. It includes all MCP servers from the OpenCode configuration, disabled by default. To enable a server:
 
-1. Edit `mcp.json`
+1. Edit `.junie/mcp/mcp.json`
 2. Set `"disabled": false` for the desired server
 3. Configure authentication (API keys, tokens) as needed
+4. Ensure the `command` and `args` fields point to valid executables on your machine
 
-For Junie CLI, MCP servers are discovered from `~/.junie/mcp/mcp.json` or project-level `mcp.json`.
+For Junie CLI, MCP servers are discovered from `.junie/mcp/mcp.json` (project-level) or `~/.junie/mcp/mcp.json` (user-level).
 
 ### 4. SDD Discovery Conflict (Important)
 

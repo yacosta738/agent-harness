@@ -40,10 +40,35 @@ Claude Code discovers skills at `.claude/skills/` (project-level) or `~/.claude/
 
 **Project-level installation:**
 
+Set `TARGET_PROJECT` to the path of the project where you want to install the harness:
+
 ```bash
+export TARGET_PROJECT=/path/to/your/project
+
 npm run deploy:claude-code
-cp -r distribution/claude-code/.claude .
-cp distribution/claude-code/CLAUDE.md .
+
+# Back up existing configuration before installing
+if [ -f "$TARGET_PROJECT/CLAUDE.md" ]; then
+  cp "$TARGET_PROJECT/CLAUDE.md" "$TARGET_PROJECT/CLAUDE.md.bak"
+fi
+if [ -f "$TARGET_PROJECT/.claude/settings.json" ]; then
+  cp "$TARGET_PROJECT/.claude/settings.json" "$TARGET_PROJECT/.claude/settings.json.bak"
+fi
+
+# Copy distributed files, merging with existing configuration
+cp -r distribution/claude-code/.claude "$TARGET_PROJECT/"
+cp distribution/claude-code/CLAUDE.md "$TARGET_PROJECT/"
+cp distribution/claude-code/.mcp.json "$TARGET_PROJECT/"
+
+# If you had custom settings, merge them back from the backup
+if [ -f "$TARGET_PROJECT/.claude/settings.json.bak" ]; then
+  # Manually merge custom permissions from settings.json.bak
+  mv "$TARGET_PROJECT/.claude/settings.json.bak" "$TARGET_PROJECT/.claude/settings.json"
+fi
+if [ -f "$TARGET_PROJECT/CLAUDE.md.bak" ]; then
+  # Manually merge custom instructions from CLAUDE.md.bak
+  mv "$TARGET_PROJECT/CLAUDE.md.bak" "$TARGET_PROJECT/CLAUDE.md"
+fi
 ```
 
 This places:
@@ -51,8 +76,9 @@ This places:
 - `.claude/skills/` with all harness skills
 - `.claude/agents/` with subagent definitions
 - `.claude/commands/` with custom commands
+- `.mcp.json` with MCP server templates (disabled by default)
 
-**Global installation:**
+**Global installation (skills only):**
 
 ```bash
 npm run deploy:claude-code
@@ -67,9 +93,26 @@ Project guidelines are read from `.junie/AGENTS.md`.
 
 **Project-level installation:**
 
+Set `TARGET_PROJECT` to the path of the project where you want to install the harness:
+
 ```bash
+export TARGET_PROJECT=/path/to/your/project
+
 npm run deploy:junie
-cp -r distribution/junie/.junie .
+
+# Back up existing configuration before installing
+if [ -f "$TARGET_PROJECT/.junie/AGENTS.md" ]; then
+  cp "$TARGET_PROJECT/.junie/AGENTS.md" "$TARGET_PROJECT/.junie/AGENTS.md.bak"
+fi
+
+# Copy distributed files
+cp -r distribution/junie/.junie "$TARGET_PROJECT/"
+
+# If you had custom guidelines, merge them back from the backup
+if [ -f "$TARGET_PROJECT/.junie/AGENTS.md.bak" ]; then
+  # Manually merge custom instructions from AGENTS.md.bak
+  mv "$TARGET_PROJECT/.junie/AGENTS.md.bak" "$TARGET_PROJECT/.junie/AGENTS.md"
+fi
 ```
 
 This places:
@@ -77,8 +120,9 @@ This places:
 - `.junie/skills/` with all harness skills
 - `.junie/agents/` with subagent definitions
 - `.junie/commands/` with custom commands
+- `.junie/mcp/mcp.json` with MCP server templates (disabled by default)
 
-**Global installation:**
+**Global installation (skills only):**
 
 ```bash
 npm run deploy:junie

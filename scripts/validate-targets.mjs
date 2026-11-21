@@ -77,8 +77,8 @@ function validateSkillMd(absPath, relPath) {
       return false;
     }
     const frontmatter = frontmatterMatch[1];
-    const hasName = /^name:/.test(frontmatter);
-    const hasDescription = /^description:/.test(frontmatter);
+    const hasName = /^name:/m.test(frontmatter);
+    const hasDescription = /^description:/m.test(frontmatter);
     if (!hasName) {
       warn(`${relPath}: missing 'name' in frontmatter`);
     }
@@ -133,7 +133,30 @@ function validateOpenCode(bundleRoot) {
 
   try {
     const cfg = JSON.parse(readFileSync(opencodeJson, "utf8"));
-    ok(`opencode: ${Object.keys(cfg.agent || {}).length} agents registered`);
+    // Validate {file:} refs in agent prompts against the bundle
+    const agentCount = Object.keys(cfg.agent || {}).length;
+    // Validate {file:} refs in agent prompts
+    const fileRefPattern = /\{file:([^}]+)\}/g;
+    let allRefsOk = true;
+    for (const [name, def] of Object.entries(cfg.agent || {})) {
+      if (!def.prompt) continue;
+      const refs = [];
+      let m;
+      while ((m = fileRefPattern.exec(def.prompt)) !== null) {
+        refs.push(m[1]);
+      }
+      for (const ref of refs) {
+        const clean = ref.replace(/^\.\//, "");
+        const refAbs = join(bundleRoot, clean);
+        if (!existsSync(refAbs)) {
+          fail(`opencode: agent '${name}' references missing file {file:${ref}}`);
+          allRefsOk = false;
+        }
+      }
+    }
+    if (allRefsOk) {
+      ok(`opencode: ${agentCount} agents registered with valid references`);
+    }
   } catch (e) {
     fail(`opencode: opencode.json is not valid JSON - ${e.message}`);
   }

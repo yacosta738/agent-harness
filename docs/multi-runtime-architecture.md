@@ -41,7 +41,7 @@ Each adapter defines:
 - Skills land in `.claude/skills/` for native discovery.
 - `CLAUDE.md` is composed from orchestrator, writing style, and communication prompts.
 - No agent registration JSON — Claude Code discovers agents from skill descriptions.
-- No permission translation — Claude Code has no native permission system.
+- Partial permission translation — Claude Code has a native permission system in its settings, but OpenCode's granular task permissions (subagent delegation) are not translated. Only bash and read permissions are mapped.
 
 ### Junie
 - Skills land in `.junie/skills/` for native discovery.

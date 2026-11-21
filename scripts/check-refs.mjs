@@ -483,18 +483,18 @@ function checkClaudeCodeBundle(root) {
     }
   }
 
-  // Check mcp.json if present
-  const mcpPath = join(root, "mcp.json");
+  // Check .mcp.json (Claude Code native format)
+  const mcpPath = join(root, ".mcp.json");
   if (existsSync(mcpPath)) {
     try {
       const mcp = JSON.parse(readFileSync(mcpPath, "utf8"));
-      if (typeof mcp !== "object") {
-        fail("mcp.json: invalid structure");
+      if (typeof mcp !== "object" || !mcp.mcpServers) {
+        fail(".mcp.json: missing mcpServers key");
       } else {
-        console.log("mcp.json: valid structure");
+        console.log(".mcp.json: valid structure with mcpServers");
       }
     } catch (e) {
-      fail(`mcp.json: ${e.message}`);
+      fail(`.mcp.json: ${e.message}`);
     }
   }
 
@@ -519,18 +519,18 @@ function checkJunieBundle(root) {
   // Check .junie/skills/ frontmatter
   checkSkillsFrontmatter(root, ".junie/skills");
 
-  // Check mcp.json if present
-  const mcpPath = join(root, "mcp.json");
+  // Check .junie/mcp/mcp.json (Junie CLI native format)
+  const mcpPath = join(root, ".junie/mcp/mcp.json");
   if (existsSync(mcpPath)) {
     try {
       const mcp = JSON.parse(readFileSync(mcpPath, "utf8"));
-      if (typeof mcp !== "object") {
-        fail("mcp.json: invalid structure");
+      if (typeof mcp !== "object" || !mcp.mcpServers) {
+        fail(".junie/mcp/mcp.json: missing mcpServers key");
       } else {
-        console.log("mcp.json: valid structure");
+        console.log(".junie/mcp/mcp.json: valid structure with mcpServers");
       }
     } catch (e) {
-      fail(`mcp.json: ${e.message}`);
+      fail(`.junie/mcp/mcp.json: ${e.message}`);
     }
   }
 
@@ -558,25 +558,30 @@ function main() {
   if (args.root) {
     // Bundle mode: target-specific validation
     const root = resolve(args.root);
-    // Auto-detect target from path or manifest
+    // Auto-detect target: prefer manifest.target, then match exact directory components
     let target = args.target;
     if (!target) {
-      // Try to detect from path
-      if (root.includes("/opencode") || root.endsWith("/opencode")) {
-        target = "opencode";
-      } else if (root.includes("/claude-code") || root.endsWith("/claude-code")) {
-        target = "claude-code";
-      } else if (root.includes("/junie") || root.endsWith("/junie")) {
-        target = "junie";
-      } else {
-        // Try manifest.json
-        const manifestPath = join(root, "manifest.json");
-        if (existsSync(manifestPath)) {
-          const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-          target = manifest.target || "opencode";
-        } else {
-          target = "opencode";
+      // Try manifest.json first
+      const manifestPath = join(root, "manifest.json");
+      if (existsSync(manifestPath)) {
+        const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+        if (manifest.target) {
+          target = manifest.target;
         }
+      }
+      // Fallback: match exact directory components in the path
+      if (!target) {
+        const components = root.split("/").filter(Boolean);
+        if (components.includes("opencode")) {
+          target = "opencode";
+        } else if (components.includes("claude-code")) {
+          target = "claude-code";
+        } else if (components.includes("junie")) {
+          target = "junie";
+        }
+      }
+      if (!target) {
+        target = "opencode";
       }
     }
     console.log(`\n--- Checking ${target} bundle ---`);
