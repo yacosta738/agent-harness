@@ -32,8 +32,12 @@ a review; it does not authorize changes, commits, push, GitHub comments, or deli
    changing the working tree:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs start --required --cwd "$PWD" --pr-url "<url>"
+   node "{harnessShell}/scripts/review.mjs" start --required --cwd "$PWD" --pr-url "<url>"
    ```
+
+   If the control plane script is not available (e.g., this skill was installed
+   outside the full harness), stop and tell the user that `/review` requires the
+   complete harness distribution. Do not substitute another target.
 
    Use `baseSha`, `headSha`, and `changedPaths` from the response. If it cannot verify the PR or
    fetch
@@ -47,7 +51,7 @@ a review; it does not authorize changes, commits, push, GitHub comments, or deli
 Without a PR URL, start RDD for the working tree:
 
 ```bash
-node ~/.config/opencode/scripts/review.mjs start --required --cwd "$PWD"
+node "{harnessShell}/scripts/review.mjs" start --required --cwd "$PWD"
 ```
 
 `--required` makes `/review` start RDD without enabling it globally. Do not omit this flag. Do not
@@ -77,9 +81,9 @@ a PR review with local changes that are not part of that PR.
    returned:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs materialize --cwd "$PWD" \
+   node "{harnessShell}/scripts/review.mjs" materialize --cwd "$PWD" \
      --subject-hash "<subjectHash>"
-   node ~/.config/opencode/scripts/review.mjs capture --cwd "$PWD" \
+   node "{harnessShell}/scripts/review.mjs" capture --cwd "$PWD" \
      --lineage "<lineage>" --revision "<revision>" --target "<target>" \
      --subject-hash "<subjectHash>" --candidate-path "<materializedPath>" \
      --findings '<JSON>' --reviewers "<names>" --review-evidence '<JSON>'
@@ -99,7 +103,7 @@ a PR review with local changes that are not part of that PR.
    exact binding and token to close the receipt:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs acknowledge-approved --cwd "$PWD" \
+   node "{harnessShell}/scripts/review.mjs" acknowledge-approved --cwd "$PWD" \
      --lineage "<lineage>" --revision "<revision>" --target "<target>" \
      --subject-hash "<subjectHash>" --acknowledgement "<token>"
    ```
@@ -110,7 +114,7 @@ a PR review with local changes that are not part of that PR.
    recovery token returned:
 
    ```bash
-   node ~/.config/opencode/scripts/review.mjs close --cwd "$PWD" \
+   node "{harnessShell}/scripts/review.mjs" close --cwd "$PWD" \
      --lineage "<lineage>" --revision "<revision>" --target "<target>" \
      --subject-hash "<subjectHash>" --recovery-token "<token>" \
      --resolution "<user decision>"

@@ -33,6 +33,27 @@ npm run deploy
 
 Then follow the [README.md](README.md#deployment) deployment instructions to run `dotter deploy`.
 
+## Multi-Target Distribution
+
+Agent Harness supports three runtimes: **OpenCode**, **Claude Code**, and **JetBrains Junie**.
+
+```bash
+# Deploy all targets at once
+npm run deploy:all
+
+# Deploy a specific target
+npm run deploy:opencode
+npm run deploy:claude-code
+npm run deploy:junie
+
+# Or use flags
+npm run deploy -- --target opencode
+npm run deploy -- --target claude-code
+npm run deploy -- --target junie
+```
+
+Each target generates a self-contained bundle under `distribution/<target>/`. See [docs/capability-matrix.md](capability-matrix.md) for feature compatibility.
+
 ## Available npm Scripts
 
 | Command            | What it does                                                     |
@@ -40,24 +61,33 @@ Then follow the [README.md](README.md#deployment) deployment instructions to run
 | `npm run validate` | Validate all `{file:}` refs, adapter includes, and command paths |
 | `npm run list`     | List files included in the complete bundle                       |
 | `npm run render`   | Render bundle without validating                                 |
-| `npm run deploy`   | Render + validate (full pipeline)                                |
+| `npm run render:all` | Render all three targets without validating                   |
+| `npm run deploy`   | Render + validate (full pipeline, default: opencode)             |
+| `npm run deploy:all` | Render + validate all three targets                          |
+| `npm run deploy:opencode` | Render + validate OpenCode target                      |
+| `npm run deploy:claude-code` | Render + validate Claude Code target                |
+| `npm run deploy:junie` | Render + validate Junie target                          |
 
 ### Options
 
 Bundle commands:
 
 ```bash
-npm run deploy -- --output distribution/opencode
+npm run deploy -- --target opencode --output distribution/opencode
+npm run deploy -- --target claude-code
+npm run deploy -- --target junie
 npm run validate -- --root distribution/opencode    # validate a pre-rendered bundle
+npm run validate -- --root distribution/claude-code --target claude-code
 ```
 
 | Flag              | Default                 | Description                                   |
 |-------------------|-------------------------|-----------------------------------------------|
-| `--output`        | `distribution/opencode` | Where to write the complete bundle            |
+| `--target`        | `opencode`              | Target runtime (opencode, claude-code, junie) |
+| `--output`        | `distribution/<target>` | Where to write the complete bundle            |
 | `--validate-only` | `false`                 | Skip render, only validate an existing bundle |
 
 `npm run validate` also accepts `--root <dir>` to validate a pre-rendered bundle instead of the
-source tree.
+source tree. Target is auto-detected from the path or `--target` flag.
 
 Deploy always renders the complete bundle. It has no preset or profile selection.
 
