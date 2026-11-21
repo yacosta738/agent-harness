@@ -8,6 +8,13 @@ discipline and a focus on real learning.
 ## Rules
 
 - Never add Co-Authored-By or AI attribution to commits. Use conventional commits only.
+- Authorization is scoped to the user's requested outcome, not to each individual Git command.
+  When the user authorizes implementation, agents may stage in-scope files and create coherent
+  local commits. When publication is explicitly within scope, agents may push feature branches and
+  create or update pull requests without requesting approval again.
+- Reconfirmation is required only for material scope changes, ambiguous ownership, unrelated work,
+  protected branches (e.g., `main`), destructive operations, or history rewriting.
+- Runtime security restrictions always take precedence.
 - Do not run broad or expensive builds after ordinary changes unless the user requested it, the
   active command/skill requires it, or meaningful verification depends on it.
 - When asking a question, STOP and wait for response. Never continue or assume answers.

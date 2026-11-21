@@ -64,11 +64,11 @@ gh extension install github/gh-stack
 gh skill install github/gh-stack
 ```
 
-After preflight, `yeet` still requires explicit authorization for staging, commit, push, and PR
-creation. Use `gh stack push` for an authorized Stack push, then let `pr-creator` create template-
-compliant per-layer PRs and `gh stack link` them. Never use `gh stack submit` by default because its
-interactive/editor path can bypass repository-specific templates; use it only as an explicitly
-verified escape hatch.
+After preflight, proceed with the authorized publish flow. The user's initial request to publish
+already authorizes staging, commit, push, and PR creation. Use `gh stack push` for an authorized
+Stack push, then let `pr-creator` create template-compliant per-layer PRs and `gh stack link` them.
+Never use `gh stack submit` by default because its interactive/editor path can bypass repository-
+specific templates; use it only as an explicitly verified escape hatch.
 
 1. Confirm intended scope.
 
@@ -81,7 +81,8 @@ verified escape hatch.
 - If on `main`, `master`, or another default branch, create a semantic branch such as
   `feat/{description}`, `fix/{description}`, or `chore/{description}`.
 - Otherwise inspect upstream/remote status for the current branch. If it already tracks a remote
-  branch that may contain shared work, ask before committing or pushing to it.
+  branch that may contain shared work and the user did not explicitly authorize publication to it,
+  the local commit may proceed but ask before pushing.
 
 3. Stage only the intended changes.
 
@@ -144,11 +145,15 @@ verified escape hatch.
 
 ## Write Safety
 
+- Authorization is scoped to the user's requested outcome, not to each individual Git command.
+  The user's request to publish authorizes the full flow: staging, commit, push, and PR creation.
 - Never stage unrelated user changes silently.
 - Never push without confirming scope when the worktree is mixed.
 - Default to a draft PR unless the user explicitly asks for a ready-for-review PR.
 - If the repository does not appear to be connected to an accessible GitHub remote, stop and explain
   the blocker before making assumptions.
+- Reconfirmation is required only for material scope changes, ambiguous ownership, protected
+  branches (e.g., `main`), destructive operations, or history rewriting.
 
 ## PR Body
 
