@@ -484,22 +484,19 @@ function generateAgentFiles(outDir, target) {
     let extraFrontmatter = "";
     if (editDeny) {
       if (target === "claude-code") {
-        // Claude Code: use tools deny list to block write operations
+        // Claude Code: disallowedTools blocks specific tools for this subagent
         extraFrontmatter = `
-tools:
-  deny:
-    - Write
-    - Edit
-    - Bash(rm )
-    - Bash(git commit)
-    - Bash(git push)`;
+disallowedTools:
+  - Write
+  - Edit
+  - Bash`;
       } else if (target === "junie") {
-        // Junie: use allowedTools to restrict to read-only
+        // Junie: disallowedTools blocks specific tools for this subagent
         extraFrontmatter = `
-allowedTools:
-  - read
-  - grep
-  - glob`;
+disallowedTools:
+  - Write
+  - Edit
+  - Bash`;
       }
     }
 
@@ -530,21 +527,35 @@ function generateCommandFiles(outDir, target) {
 
   mkdirSync(destDir, {recursive: true});
 
+  // Load available agent names from opencode.json so we can preserve agent: when the agent exists
+  const opencodePath = join(ROOT, "adapters/opencode/opencode.json");
+  const opencodeAgents = existsSync(opencodePath)
+    ? Object.keys(JSON.parse(readFileSync(opencodePath, "utf8")).agent || {})
+    : [];
+
   const files = readdirSync(cmdsDir).filter((f) => f.endsWith(".md")).sort();
   for (const name of files) {
     const src = join(cmdsDir, name);
     let text = readFileSync(src, "utf8");
 
-    // Parse frontmatter to check for subtask flag
+    // Parse frontmatter to check for subtask flag and agent field
     const frontmatterMatch = text.match(/^---\n([\s\S]*?)\n---/);
     const hasSubtask = frontmatterMatch && /^subtask:[ \t]*true[ \t]*$/m.test(frontmatterMatch[1]);
+    const agentMatch = frontmatterMatch ? frontmatterMatch[1].match(/^agent:[ \t]*(.+)$/m) : null;
+    const originalAgent = agentMatch ? agentMatch[1].trim() : null;
 
     // Translate frontmatter for non-OpenCode targets
-    // Remove OpenCode-specific fields: agent, subtask
+    // Remove OpenCode-specific field: subtask
+    // Preserve agent: when the agent exists in the target's generated agents
     // Add 'name' derived from the file name so the command is discoverable
     const cmdName = name.replace(/\.md$/, "");
-    text = text.replace(/^agent:.*$/gm, "");
     text = text.replace(/^subtask:.*$/gm, "");
+
+    // Remove agent: only if the agent doesn't exist in the generated agents
+    // For SDD commands, the agent (e.g., sdd-apply) IS generated, so preserve it
+    if (originalAgent && !opencodeAgents.includes(originalAgent)) {
+      text = text.replace(/^agent:.*$/gm, "");
+    }
 
     // Ensure frontmatter has a name field
     const fmMatch = text.match(/^---\n([\s\S]*?)\n---/);
@@ -803,16 +814,17 @@ function generateMcpTemplate(outDir, target) {
   }
 }
 
-// Copy review.mjs and review-lib.mjs to non-OpenCode bundles so /review works
+// Copy review.mjs and review-lib.mjs inside the native runtime directory so installation includes them
+// Claude Code: .claude/scripts/  Junie: .junie/scripts/
 function copyReviewScripts(outDir, target) {
   const scriptsSrc = join(ROOT, "adapters/opencode/scripts");
   if (!existsSync(scriptsSrc)) return;
 
   let destScriptsDir;
   if (target === "claude-code") {
-    destScriptsDir = join(outDir, "scripts");
+    destScriptsDir = join(outDir, ".claude/scripts");
   } else if (target === "junie") {
-    destScriptsDir = join(outDir, "scripts");
+    destScriptsDir = join(outDir, ".junie/scripts");
   } else {
     return;
   }
@@ -849,6 +861,28 @@ function replaceOpencodePaths(outDir, bundled, target) {
   for (const dir of generatedDirs) {
     walkAndProcess(outDir, dir, harnessRoot, target);
   }
+
+  // Fix review.mjs path in code-review skill for non-OpenCode targets
+  // Scripts are now inside .claude/scripts/ or .junie/scripts/
+  if (target === "claude-code" || target === "junie") {
+    const skillDir = target === "claude-code" ? ".claude/skills/code-review" : ".junie/skills/code-review";
+    const skillFile = join(outDir, skillDir, "SKILL.md");
+    if (existsSync(skillFile)) {
+      let text = readFileSync(skillFile, "utf8");
+      const scriptsPath = target === "claude-code" ? ".claude/scripts" : ".junie/scripts";
+      // {harnessShell}/scripts/review.mjs becomes .claude/scripts/review.mjs or .junie/scripts/review.mjs
+      text = text.replace(/\{harnessShell\}\/scripts\/review\.mjs/g, `${scriptsPath}/review.mjs`);
+      // {harness}/scripts/review.mjs (unquoted variant)
+      text = text.replace(/\{harness\}\/scripts\/review\.mjs/g, `${scriptsPath}/review.mjs`);
+      // $HOME/.config/opencode/scripts/review.mjs (already-expanded shell path)
+      text = text.replace(/\$HOME\/\.config\/opencode\/scripts\/review\.mjs/g, `${scriptsPath}/review.mjs`);
+      // "./scripts/review.mjs" (after {harnessShell} -> . replacement, quoted) — fix to runtime path
+      text = text.replace(/"\.\/scripts\/review\.mjs"/g, `"${scriptsPath}/review.mjs"`);
+      // ./scripts/review.mjs (unquoted variant)
+      text = text.replace(/\.\/scripts\/review\.mjs/g, `${scriptsPath}/review.mjs`);
+      writeFileSync(skillFile, text);
+    }
+  }
 }
 
 function processMarkdownFile(outDir, rel, harnessRoot, target) {
@@ -871,7 +905,9 @@ function processMarkdownFile(outDir, rel, harnessRoot, target) {
     } else if (target === "claude-code") {
       skillDir = '${CLAUDE_SKILL_DIR}';
     } else if (target === "junie") {
-      skillDir = '$(dirname "$0")';
+      // Junie has no SKILL_DIR equivalent. Use a relative path from the skill's location.
+      // The skill directory is under .junie/skills/<skill-name>/, so scripts/ is a sibling.
+      skillDir = '.';
     } else {
       skillDir = skillPath;
     }

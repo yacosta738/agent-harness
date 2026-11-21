@@ -281,21 +281,25 @@ function validateClaudeCode(bundleRoot) {
   }
 
   // Cross-reference validation: check relative paths in skills resolve
+  // Required resources (scripts, _shared) are FAIL; optional references are WARN
   const claudeSkillsDir = join(bundleRoot, ".claude", "skills");
   if (existsSync(claudeSkillsDir)) {
     const claudeSkills = findSkillMds(claudeSkillsDir);
     for (const skill of claudeSkills) {
       const content = readFileSync(skill.abs, "utf8");
-      // Check relative path references like ../_shared/...
       const relRefs = [...content.matchAll(/\.\.\/[^\s`"<]+/g)].map(m => m[0]);
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
-          // Check if it's a directory reference (may end with /)
           const dirRef = ref.endsWith("/") ? ref : ref.replace(/\/[\w.-]+$/, "/");
           const dirResolved = resolve(dirname(skill.abs), dirRef);
           if (!existsSync(dirResolved)) {
-            warn(`claude-code: ${skill.rel}: relative reference '${ref}' does not resolve`);
+            // Required resources: _shared references and script files must exist
+            if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(".js")) {
+              fail(`claude-code: ${skill.rel}: required relative reference '${ref}' does not resolve`);
+            } else {
+              warn(`claude-code: ${skill.rel}: relative reference '${ref}' does not resolve`);
+            }
           }
         }
       }
@@ -381,6 +385,7 @@ function validateJunie(bundleRoot) {
   }
 
   // Cross-reference validation: check relative paths in skills resolve
+  // Required resources (scripts, _shared) are FAIL; optional references are WARN
   const junieSkillsDir = join(bundleRoot, ".junie", "skills");
   if (existsSync(junieSkillsDir)) {
     const skills = findSkillMds(junieSkillsDir);
@@ -393,7 +398,12 @@ function validateJunie(bundleRoot) {
           const dirRef = ref.endsWith("/") ? ref : ref.replace(/\/[\w.-]+$/, "/");
           const dirResolved = resolve(dirname(skill.abs), dirRef);
           if (!existsSync(dirResolved)) {
-            warn(`junie: ${skill.rel}: relative reference '${ref}' does not resolve`);
+            // Required resources: _shared references and script files must exist
+            if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(".js")) {
+              fail(`junie: ${skill.rel}: required relative reference '${ref}' does not resolve`);
+            } else {
+              warn(`junie: ${skill.rel}: relative reference '${ref}' does not resolve`);
+            }
           }
         }
       }

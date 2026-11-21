@@ -50,7 +50,7 @@ npm run deploy:claude-code
 bundle=distribution/claude-code
 mkdir -p "$TARGET_PROJECT/.claude"
 cp -R "$bundle/.claude/skills" "$bundle/.claude/agents" "$bundle/.claude/commands" \
-  "$TARGET_PROJECT/.claude/"
+  "$bundle/.claude/scripts" "$TARGET_PROJECT/.claude/"
 
 # Install templates only when a project file does not already exist.
 for file in CLAUDE.md .claude/settings.json .mcp.json; do
@@ -80,6 +80,7 @@ This places:
 - `.claude/skills/` with all harness skills
 - `.claude/agents/` with subagent definitions
 - `.claude/commands/` with custom commands
+- `.claude/scripts/` with review scripts (review.mjs, review-lib.mjs)
 - `.mcp.json` with your MCP configuration or an empty template
 
 **Global installation (skills only):**
@@ -106,7 +107,7 @@ npm run deploy:junie
 
 bundle=distribution/junie/.junie
 mkdir -p "$TARGET_PROJECT/.junie/mcp"
-cp -R "$bundle/skills" "$bundle/agents" "$bundle/commands" "$TARGET_PROJECT/.junie/"
+cp -R "$bundle/skills" "$bundle/agents" "$bundle/commands" "$bundle/scripts" "$TARGET_PROJECT/.junie/"
 
 # Back up existing guidelines and MCP settings without replacing the project files.
 for file in AGENTS.md mcp/mcp.json; do
@@ -134,6 +135,7 @@ This places:
 - `.junie/skills/` with all harness skills
 - `.junie/agents/` with subagent definitions
 - `.junie/commands/` with custom commands
+- `.junie/scripts/` with review scripts (review.mjs, review-lib.mjs)
 - `.junie/mcp/mcp.json` with your MCP configuration or an empty template
 
 **Global installation (skills only):**
