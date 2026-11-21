@@ -234,6 +234,8 @@ function render(outDir, target = "opencode") {
     generateSkillsDir(outDir, target);
     generateClaudeSettings(outDir);
     generateMcpTemplate(outDir, target);
+    // Distribute review scripts so /review works in Claude Code
+    copyReviewScripts(outDir, target);
     // Post-process: replace OpenCode-specific paths in all markdown files
     replaceOpencodePaths(outDir, bundled, target);
   } else if (target === "junie") {
@@ -242,6 +244,8 @@ function render(outDir, target = "opencode") {
     generateCommandFiles(outDir, target);
     generateSkillsDir(outDir, target);
     generateMcpTemplate(outDir, target);
+    // Distribute review scripts so /review works in Junie
+    copyReviewScripts(outDir, target);
     // Post-process: replace OpenCode-specific paths in all markdown files
     replaceOpencodePaths(outDir, bundled, target);
   }
@@ -448,6 +452,7 @@ function resolveFileRefs(prompt) {
 }
 
 // Generate agent files from opencode.json agent definitions
+// Translates permission constraints (e.g., edit: deny) to target-native frontmatter
 function generateAgentFiles(outDir, target) {
   const opencodePath = join(ROOT, "adapters/opencode/opencode.json");
   if (!existsSync(opencodePath)) return;
@@ -472,9 +477,35 @@ function generateAgentFiles(outDir, target) {
     const promptBody = resolveFileRefs(def.prompt);
     const description = def.description || "";
 
+    // Translate permission constraints to target-native frontmatter
+    const perms = def.permission || {};
+    const editDeny = perms.edit === "deny";
+
+    let extraFrontmatter = "";
+    if (editDeny) {
+      if (target === "claude-code") {
+        // Claude Code: use tools deny list to block write operations
+        extraFrontmatter = `
+tools:
+  deny:
+    - Write
+    - Edit
+    - Bash(rm )
+    - Bash(git commit)
+    - Bash(git push)`;
+      } else if (target === "junie") {
+        // Junie: use allowedTools to restrict to read-only
+        extraFrontmatter = `
+allowedTools:
+  - read
+  - grep
+  - glob`;
+      }
+    }
+
     const agentMd = `---
 name: ${name}
-description: ${description}
+description: ${description}${extraFrontmatter}
 ---
 
 ${promptBody}
@@ -553,6 +584,31 @@ function generateCommandFiles(outDir, target) {
   }
 }
 
+// Parse YAML frontmatter from markdown text, returning {raw, fields, body}
+// Handles duplicate keys by keeping the first occurrence
+function parseFrontmatter(text) {
+  const fmMatch = text.match(/^---\n([\s\S]*?)\n---/);
+  if (!fmMatch) return {raw: "", fields: {}, body: text};
+  const fm = fmMatch[1];
+  const fields = {};
+  const seen = new Set();
+  for (const line of fm.split("\n")) {
+    const m = line.match(/^(\w+):\s*(.*)$/);
+    if (m && !seen.has(m[1])) {
+      fields[m[1]] = m[2].trim();
+      seen.add(m[1]);
+    }
+  }
+  const body = text.slice(fmMatch[0].length).trim();
+  return {raw: fm, fields, body};
+}
+
+// Build YAML frontmatter from fields object, avoiding duplicate keys
+function buildFrontmatter(fields) {
+  const lines = Object.entries(fields).map(([k, v]) => `${k}: ${v}`);
+  return `---\n${lines.join("\n")}\n---`;
+}
+
 // Generate skills directory with flat structure for discovery
 // Each skill becomes <destDir>/<skill-name>/ containing SKILL.md and auxiliary files
 function generateSkillsDir(outDir, target) {
@@ -584,11 +640,11 @@ function generateSkillsDir(outDir, target) {
         if (existsSync(skillPath)) {
           const skillName = e.name;
           if (seen.has(skillName)) {
-            console.warn(`skill collision: '${skillName}' found in multiple categories`);
-          } else {
-            seen.add(skillName);
-            skillDirs.push({name: skillName, source: abs});
+            // P2: Error on collision instead of warning — a bundle must not silently lose capabilities
+            throw new Error(`Skill name collision: '${skillName}' found in multiple categories. Resolve explicitly before generating.`);
           }
+          seen.add(skillName);
+          skillDirs.push({name: skillName, source: abs});
         }
         findSkills(abs);
       }
@@ -625,17 +681,25 @@ function generateSkillsDir(outDir, target) {
 
     // A native skill takes precedence over a command with the same name. Use the
     // adapted command as its entry point and keep the detailed skill workflow.
+    // Build frontmatter through a single function to avoid duplicate keys.
     const commandFile = join(destDir, "../commands", `${name}.md`);
     if (!existsSync(commandFile)) continue;
     const skillFile = join(dest, "SKILL.md");
-    const skillBody = readFileSync(skillFile, "utf8").replace(/^---\n[\s\S]*?\n---\n/, "").trim();
+    const skillContent = readFileSync(skillFile, "utf8");
+    const skillBody = skillContent.replace(/^---\n[\s\S]*?\n---\n?/, "").trim();
     const canonicalSkill = toPosix(relative(ROOT, join(source, "SKILL.md")));
-    const command = readFileSync(commandFile, "utf8")
-      .replace(/^---\n/, `---\nname: ${name}\n`)
+    const commandText = readFileSync(commandFile, "utf8")
       .replaceAll(`\`${canonicalSkill}\``, "the skill workflow below")
       .replaceAll("~/.config/opencode/prompts/sdd/", "../_shared/prompts/sdd/")
       .replaceAll("~/.config/opencode/skills/sdd/_shared/", "../_shared/sdd/");
-    writeFileSync(skillFile, `${command.trimEnd()}\n\n## Skill workflow\n\n${skillBody}\n`);
+    const cmdParsed = parseFrontmatter(commandText);
+    // Merge command frontmatter fields, ensuring no duplicates
+    const mergedFields = {...cmdParsed.fields};
+    mergedFields.name = name; // ensure name is set exactly once
+    const mergedFrontmatter = buildFrontmatter(mergedFields);
+    const mergedBody = cmdParsed.body.trim();
+    const finalContent = `${mergedFrontmatter}\n\n${mergedBody}\n\n## Skill workflow\n\n${skillBody}\n`;
+    writeFileSync(skillFile, finalContent);
     rmSync(commandFile);
   }
 }
@@ -739,6 +803,32 @@ function generateMcpTemplate(outDir, target) {
   }
 }
 
+// Copy review.mjs and review-lib.mjs to non-OpenCode bundles so /review works
+function copyReviewScripts(outDir, target) {
+  const scriptsSrc = join(ROOT, "adapters/opencode/scripts");
+  if (!existsSync(scriptsSrc)) return;
+
+  let destScriptsDir;
+  if (target === "claude-code") {
+    destScriptsDir = join(outDir, "scripts");
+  } else if (target === "junie") {
+    destScriptsDir = join(outDir, "scripts");
+  } else {
+    return;
+  }
+
+  mkdirSync(destScriptsDir, {recursive: true});
+
+  // Copy review.mjs and review-lib.mjs
+  const reviewScripts = ["review.mjs", "review-lib.mjs"];
+  for (const script of reviewScripts) {
+    const src = join(scriptsSrc, script);
+    if (existsSync(src)) {
+      cpSync(src, join(destScriptsDir, script));
+    }
+  }
+}
+
 // Replace OpenCode-specific paths and placeholders in markdown files for non-OpenCode targets
 function replaceOpencodePaths(outDir, bundled, target) {
   const harnessRoot = target === "opencode" ? "~/.config/opencode" : ".";
@@ -774,7 +864,17 @@ function processMarkdownFile(outDir, rel, harnessRoot, target) {
     // Shell placeholders are used inside double quotes.
     const shellRoot = target === "opencode" ? "$HOME/.config/opencode" : harnessRoot;
     const skillPath = dirname(rel).split(sep).join("/");
-    const skillDir = target === "opencode" ? `${shellRoot}/${skillPath}` : skillPath;
+    // P2: For global installs, use runtime-resolvable variables instead of bundle-relative paths
+    let skillDir;
+    if (target === "opencode") {
+      skillDir = `${shellRoot}/${skillPath}`;
+    } else if (target === "claude-code") {
+      skillDir = '${CLAUDE_SKILL_DIR}';
+    } else if (target === "junie") {
+      skillDir = '$(dirname "$0")';
+    } else {
+      skillDir = skillPath;
+    }
     replaced = replaced.replaceAll("{harnessShell}", () => shellRoot);
     replaced = replaced.replaceAll("{skillDir}", () => skillDir);
     // Resolve {harness} placeholder

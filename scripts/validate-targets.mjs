@@ -67,16 +67,28 @@ function findSkillMds(dir, prefix = "") {
   return results;
 }
 
-// Validate SKILL.md frontmatter
-function validateSkillMd(absPath, relPath) {
+// Parse YAML frontmatter and check for duplicate keys
+function parseAndValidateFrontmatter(absPath, relPath) {
   try {
     const content = readFileSync(absPath, "utf8");
     const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
     if (!frontmatterMatch) {
       fail(`${relPath}: missing YAML frontmatter`);
-      return false;
+      return null;
     }
     const frontmatter = frontmatterMatch[1];
+    // Check for duplicate keys
+    const keys = [];
+    for (const line of frontmatter.split("\n")) {
+      const m = line.match(/^(\w+):\s*/);
+      if (m) {
+        const key = m[1];
+        if (keys.includes(key)) {
+          fail(`${relPath}: duplicate YAML key '${key}' in frontmatter`);
+        }
+        keys.push(key);
+      }
+    }
     const hasName = /^name:/m.test(frontmatter);
     const hasDescription = /^description:/m.test(frontmatter);
     if (!hasName) {
@@ -85,11 +97,16 @@ function validateSkillMd(absPath, relPath) {
     if (!hasDescription) {
       warn(`${relPath}: missing 'description' in frontmatter`);
     }
-    return true;
+    return {keys, hasName, hasDescription, content};
   } catch (e) {
     fail(`${relPath}: cannot read file - ${e.message}`);
-    return false;
+    return null;
   }
+}
+
+// Validate SKILL.md frontmatter (legacy wrapper)
+function validateSkillMd(absPath, relPath) {
+  return parseAndValidateFrontmatter(absPath, relPath) !== null;
 }
 
 // Check for OpenCode-specific references that shouldn't leak
@@ -263,6 +280,28 @@ function validateClaudeCode(bundleRoot) {
     }
   }
 
+  // Cross-reference validation: check relative paths in skills resolve
+  const claudeSkillsDir = join(bundleRoot, ".claude", "skills");
+  if (existsSync(claudeSkillsDir)) {
+    const claudeSkills = findSkillMds(claudeSkillsDir);
+    for (const skill of claudeSkills) {
+      const content = readFileSync(skill.abs, "utf8");
+      // Check relative path references like ../_shared/...
+      const relRefs = [...content.matchAll(/\.\.\/[^\s`"<]+/g)].map(m => m[0]);
+      for (const ref of relRefs) {
+        const resolved = resolve(dirname(skill.abs), ref);
+        if (!existsSync(resolved)) {
+          // Check if it's a directory reference (may end with /)
+          const dirRef = ref.endsWith("/") ? ref : ref.replace(/\/[\w.-]+$/, "/");
+          const dirResolved = resolve(dirname(skill.abs), dirRef);
+          if (!existsSync(dirResolved)) {
+            warn(`claude-code: ${skill.rel}: relative reference '${ref}' does not resolve`);
+          }
+        }
+      }
+    }
+  }
+
   // Check for leaks
   checkNoOpenCodeLeaks(bundleRoot, "claude-code");
 }
@@ -338,6 +377,26 @@ function validateJunie(bundleRoot) {
       }
     } catch (e) {
       fail(`junie: .junie/mcp/mcp.json is not valid JSON - ${e.message}`);
+    }
+  }
+
+  // Cross-reference validation: check relative paths in skills resolve
+  const junieSkillsDir = join(bundleRoot, ".junie", "skills");
+  if (existsSync(junieSkillsDir)) {
+    const skills = findSkillMds(junieSkillsDir);
+    for (const skill of skills) {
+      const content = readFileSync(skill.abs, "utf8");
+      const relRefs = [...content.matchAll(/\.\.\/[^\s`"<]+/g)].map(m => m[0]);
+      for (const ref of relRefs) {
+        const resolved = resolve(dirname(skill.abs), ref);
+        if (!existsSync(resolved)) {
+          const dirRef = ref.endsWith("/") ? ref : ref.replace(/\/[\w.-]+$/, "/");
+          const dirResolved = resolve(dirname(skill.abs), dirRef);
+          if (!existsSync(dirResolved)) {
+            warn(`junie: ${skill.rel}: relative reference '${ref}' does not resolve`);
+          }
+        }
+      }
     }
   }
 
