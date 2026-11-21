@@ -27,8 +27,8 @@ Use when:
 - Applying an implementation plan or SDD task list.
 - Deciding whether tests/docs belong with a code change.
 
-Do not use this to justify committing without explicit user request. Commit safety rules still
-apply.
+When the user authorizes implementation, this skill guides how to structure the resulting commits.
+Commit safety rules still apply.
 
 ## Core Rules
 
