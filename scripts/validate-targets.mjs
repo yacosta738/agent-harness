@@ -195,6 +195,74 @@ function validateClaudeCode(bundleRoot) {
     }
   }
 
+  // Check .claude/agents/
+  const agentsDir = join(bundleRoot, ".claude", "agents");
+  if (existsSync(agentsDir)) {
+    const agentFiles = readdirSync(agentsDir).filter(f => f.endsWith(".md")).sort();
+    let agentsValid = 0;
+    for (const af of agentFiles) {
+      const abs = join(agentsDir, af);
+      const content = readFileSync(abs, "utf8");
+      const fm = content.match(/^---\n([\s\S]*?)\n---/);
+      if (fm) {
+        const hasName = /^name:/m.test(fm[1]);
+        const hasDesc = /^description:/m.test(fm[1]);
+        if (hasName && hasDesc) agentsValid++;
+        else warn(`claude-code: agent '${af}' missing name or description`);
+      }
+    }
+    ok(`claude-code: ${agentsValid}/${agentFiles.length} agents valid in .claude/agents`);
+  }
+
+  // Check .claude/commands/
+  const cmdsDir = join(bundleRoot, ".claude", "commands");
+  if (existsSync(cmdsDir)) {
+    const cmdFiles = readdirSync(cmdsDir).filter(f => f.endsWith(".md")).sort();
+    let cmdsValid = 0;
+    for (const cf of cmdFiles) {
+      const abs = join(cmdsDir, cf);
+      const content = readFileSync(abs, "utf8");
+      const fm = content.match(/^---\n([\s\S]*?)\n---/);
+      if (fm) {
+        const hasName = /^name:/m.test(fm[1]);
+        if (hasName) cmdsValid++;
+        else warn(`claude-code: command '${cf}' missing name in frontmatter`);
+      }
+    }
+    ok(`claude-code: ${cmdsValid}/${cmdFiles.length} commands valid in .claude/commands`);
+  }
+
+  // Check .claude/settings.json
+  const settingsPath = join(bundleRoot, ".claude", "settings.json");
+  if (existsSync(settingsPath)) {
+    try {
+      const settings = JSON.parse(readFileSync(settingsPath, "utf8"));
+      const perms = settings.permissions;
+      if (perms && Array.isArray(perms.allow) && Array.isArray(perms.ask) && Array.isArray(perms.deny)) {
+        ok(`claude-code: settings.json permissions valid (allow: ${perms.allow.length}, ask: ${perms.ask.length}, deny: ${perms.deny.length})`);
+      } else {
+        fail("claude-code: settings.json permissions missing allow/ask/deny arrays");
+      }
+    } catch (e) {
+      fail(`claude-code: settings.json is not valid JSON - ${e.message}`);
+    }
+  }
+
+  // Check .mcp.json
+  const mcpPath = join(bundleRoot, ".mcp.json");
+  if (existsSync(mcpPath)) {
+    try {
+      const mcp = JSON.parse(readFileSync(mcpPath, "utf8"));
+      if (mcp.mcpServers !== undefined) {
+        ok("claude-code: .mcp.json: valid structure with mcpServers");
+      } else {
+        fail("claude-code: .mcp.json missing mcpServers key");
+      }
+    } catch (e) {
+      fail(`claude-code: .mcp.json is not valid JSON - ${e.message}`);
+    }
+  }
+
   // Check for leaks
   checkNoOpenCodeLeaks(bundleRoot, "claude-code");
 }
@@ -218,6 +286,58 @@ function validateJunie(bundleRoot) {
     ok(`junie: ${skills.length} skills in .junie/skills/`);
     for (const skill of skills) {
       validateSkillMd(skill.abs, skill.rel);
+    }
+  }
+
+  // Check .junie/agents/
+  const agentsDir = join(bundleRoot, ".junie", "agents");
+  if (existsSync(agentsDir)) {
+    const agentFiles = readdirSync(agentsDir).filter(f => f.endsWith(".md")).sort();
+    let agentsValid = 0;
+    for (const af of agentFiles) {
+      const abs = join(agentsDir, af);
+      const content = readFileSync(abs, "utf8");
+      const fm = content.match(/^---\n([\s\S]*?)\n---/);
+      if (fm) {
+        const hasName = /^name:/m.test(fm[1]);
+        const hasDesc = /^description:/m.test(fm[1]);
+        if (hasName && hasDesc) agentsValid++;
+        else warn(`junie: agent '${af}' missing name or description`);
+      }
+    }
+    ok(`junie: ${agentsValid}/${agentFiles.length} agents valid in .junie/agents`);
+  }
+
+  // Check .junie/commands/
+  const cmdsDir = join(bundleRoot, ".junie", "commands");
+  if (existsSync(cmdsDir)) {
+    const cmdFiles = readdirSync(cmdsDir).filter(f => f.endsWith(".md")).sort();
+    let cmdsValid = 0;
+    for (const cf of cmdFiles) {
+      const abs = join(cmdsDir, cf);
+      const content = readFileSync(abs, "utf8");
+      const fm = content.match(/^---\n([\s\S]*?)\n---/);
+      if (fm) {
+        const hasName = /^name:/m.test(fm[1]);
+        if (hasName) cmdsValid++;
+        else warn(`junie: command '${cf}' missing name in frontmatter`);
+      }
+    }
+    ok(`junie: ${cmdsValid}/${cmdFiles.length} commands valid in .junie/commands`);
+  }
+
+  // Check .junie/mcp/mcp.json
+  const mcpPath = join(bundleRoot, ".junie", "mcp", "mcp.json");
+  if (existsSync(mcpPath)) {
+    try {
+      const mcp = JSON.parse(readFileSync(mcpPath, "utf8"));
+      if (mcp.mcpServers !== undefined) {
+        ok("junie: .junie/mcp/mcp.json: valid structure with mcpServers");
+      } else {
+        fail("junie: .junie/mcp/mcp.json missing mcpServers key");
+      }
+    } catch (e) {
+      fail(`junie: .junie/mcp/mcp.json is not valid JSON - ${e.message}`);
     }
   }
 

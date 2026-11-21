@@ -510,8 +510,20 @@ function generateCommandFiles(outDir, target) {
 
     // Translate frontmatter for non-OpenCode targets
     // Remove OpenCode-specific fields: agent, subtask
+    // Add 'name' derived from the file name so the command is discoverable
+    const cmdName = name.replace(/\.md$/, "");
     text = text.replace(/^agent:.*$/gm, "");
     text = text.replace(/^subtask:.*$/gm, "");
+
+    // Ensure frontmatter has a name field
+    const fmMatch = text.match(/^---\n([\s\S]*?)\n---/);
+    if (fmMatch) {
+      const fm = fmMatch[1];
+      const hasName = /^name:/m.test(fm);
+      if (!hasName) {
+        text = text.replace(/^---\n/, `---\nname: ${cmdName}\n`);
+      }
+    }
 
     // For commands with subtask: true, translate to Claude Code's fork context
     if (hasSubtask && target === "claude-code") {

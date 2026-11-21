@@ -11,13 +11,13 @@ This document describes which Agent Harness features are supported natively, ada
 | **Custom agents** | Native (`opencode.json` agent block) | Adapted (.claude/agents/*.md generated) | Adapted (.junie/agents/*.md generated) |
 | **Slash commands** | Native (`commands/*.md`) | Adapted (.claude/commands/*.md generated) | Adapted (.junie/commands/*.md generated) |
 | **Permissions** | Native (`opencode.json` permission block) | Partial (.claude/settings.json template — no granular task permissions) | Partial (Brave mode / allowlist — no granular task permissions) |
-| **MCP servers** | Native (`opencode.json` mcp block) | Partial (mcp.json template — manual enable required) | Partial (mcp.json template — manual enable required) |
+| **MCP servers** | Native (`opencode.json` mcp block) | Partial (`.mcp.json` template — manual enable required) | Partial (`.junie/mcp/mcp.json` template — manual enable required) |
 | **Providers** | Native (`opencode.json` provider block) | Unsupported (Claude Code uses built-in providers) | Unsupported (Junie uses built-in providers) |
 | **CLI themes** | Native (`adapters/opencode/themes/`) | Unsupported (Claude Code has no theme system) | Unsupported (Junie has no theme system) |
 | **SDD persistence** | Native (`.agents/sdd/`) | Native (`.agents/sdd/` — shared convention) | Partial (`.agents/sdd/` — may conflict with `.agents/skills/` discovery) |
 | **Engram memory** | Native (MCP server) | Adapted (mcp.json template) | Adapted (mcp.json template) |
 | **Context7** | Native (MCP server) | Adapted (mcp.json template) | Adapted (mcp.json template) |
-| **Adaptive RPI routing** | Native (orchestrator logic) | Native (orchestrator logic preserved) | Native (orchestrator logic preserved) |
+| **Adaptive RPI routing** | Native (orchestrator logic) | Adapted (orchestrator logic preserved — not runtime-verified) | Adapted (orchestrator logic preserved — not runtime-verified) |
 | **Evidence-Driven PRs** | Native (workflow skill) | Native (workflow skill preserved) | Native (workflow skill preserved) |
 | **Conventions as Code** | Native (skill registry) | Native (skill registry preserved) | Native (skill registry preserved) |
 | **TDD for business logic** | Native (workflow skill) | Native (workflow skill preserved) | Native (workflow skill preserved) |
@@ -67,7 +67,7 @@ themes/                # CLI themes
 ### Claude Code (`distribution/claude-code/`)
 ```
 CLAUDE.md              # Project instructions (root + .claude/)
-mcp.json               # MCP template (disabled by default)
+.mcp.json              # MCP template (empty mcpServers — manual enable required)
 .claude/
   CLAUDE.md            # Project instructions
   agents/*.md          # Generated agent files with YAML frontmatter
@@ -78,7 +78,7 @@ mcp.json               # MCP template (disabled by default)
 
 ### Junie (`distribution/junie/`)
 ```
-mcp.json               # MCP template (disabled by default)
+.junie/mcp/mcp.json    # MCP template (empty mcpServers — manual enable required)
 .junie/
   AGENTS.md            # Project guidelines
   agents/*.md          # Generated agent files with YAML frontmatter
