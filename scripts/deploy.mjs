@@ -28,7 +28,13 @@ const REPO = resolve(HERE, "..");
 const TARGETS = ["opencode", "claude-code", "junie"];
 
 function parseArgs(argv) {
-  const out = {target: "opencode", output: null, validateOnly: false, help: false, all: false};
+  const out = {
+    target: "opencode",
+    output: null,
+    validateOnly: false,
+    help: false,
+    all: false
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "all") {
@@ -68,7 +74,7 @@ function runNode(scriptRel, args) {
 
 function deployTarget(target, output, validateOnly) {
   console.log(`\n--- Deploying ${target} ---`);
-  
+
   if (!validateOnly) {
     console.log(`rendering ${target} bundle -> ${output}`);
     const renderCode = runNode("generate-bundle.mjs", [
@@ -79,7 +85,8 @@ function deployTarget(target, output, validateOnly) {
       output,
     ]);
     if (renderCode !== 0) {
-      console.error(`generate-bundle.mjs failed for ${target} (exit ${renderCode})`);
+      console.error(
+          `generate-bundle.mjs failed for ${target} (exit ${renderCode})`);
       return renderCode;
     }
   } else {
@@ -90,7 +97,8 @@ function deployTarget(target, output, validateOnly) {
     }
   }
 
-  const checkCode = runNode("check-refs.mjs", ["--root", output, "--target", target]);
+  const checkCode = runNode("check-refs.mjs",
+      ["--root", output, "--target", target]);
   if (checkCode !== 0) {
     console.error(`check-refs.mjs failed for ${target} (exit ${checkCode})`);
     return checkCode;
@@ -100,7 +108,8 @@ function deployTarget(target, output, validateOnly) {
   const distRoot = resolve(output, "..");
   const validateCode = runNode("validate-targets.mjs", ["--root", distRoot]);
   if (validateCode !== 0) {
-    console.error(`validate-targets.mjs failed for ${target} (exit ${validateCode})`);
+    console.error(
+        `validate-targets.mjs failed for ${target} (exit ${validateCode})`);
     return validateCode;
   }
 
@@ -112,7 +121,8 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
     console.log(
-        "Usage: node scripts/deploy.mjs [--target <target>] [--output <dir>] [--validate-only]\n" +
+        "Usage: node scripts/deploy.mjs [--target <target>] [--output <dir>] [--validate-only]\n"
+        +
         "       node scripts/deploy.mjs all [--validate-only]\n" +
         "  Renders and validates the Agent Harness bundle.\n" +
         `  Targets: ${TARGETS.join(", ")}\n` +

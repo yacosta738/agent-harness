@@ -1,6 +1,7 @@
 # Agent Harness
 
-Portable agent configuration for **OpenCode**, **Claude Code**, and **JetBrains Junie** — Kerrigan, a fullstack architect,
+Portable agent configuration for **OpenCode**, **Claude Code**, and **JetBrains Junie** — Kerrigan,
+a fullstack architect,
 plus team sub-agents, a Spec-Driven Development (SDD) pipeline, and
 auto-discovered skills and commands.
 
@@ -14,7 +15,10 @@ Distributed to three runtimes from one canonical source:
 - **Claude Code** — project-level `.claude/` with `CLAUDE.md`
 - **JetBrains Junie** — project-level `.junie/` with `AGENTS.md`
 
-See [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) for installation, [docs/capability-matrix.md](docs/capability-matrix.md) for feature parity, and [docs/multi-runtime-architecture.md](docs/multi-runtime-architecture.md) for the design decision.
+See [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) for
+installation, [docs/capability-matrix.md](docs/capability-matrix.md) for feature parity,
+and [docs/multi-runtime-architecture.md](docs/multi-runtime-architecture.md) for the design
+decision.
 
 ## Operating model
 

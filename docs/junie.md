@@ -43,11 +43,13 @@ manually as a new named entry under `mcpServers`. Configure authentication (API 
 as needed. For local servers, make sure `command` points to a valid executable on your machine
 and that `args` contains the arguments it expects.
 
-For Junie CLI, MCP servers are discovered from `.junie/mcp/mcp.json` (project-level) or `~/.junie/mcp/mcp.json` (user-level).
+For Junie CLI, MCP servers are discovered from `.junie/mcp/mcp.json` (project-level) or
+`~/.junie/mcp/mcp.json` (user-level).
 
 ### 4. SDD Discovery Conflict (Important)
 
-Junie discovers `.agents/skills/` by default, which may conflict with SDD persistence under `.agents/sdd/`. To avoid conflicts:
+Junie discovers `.agents/skills/` by default, which may conflict with SDD persistence under
+`.agents/sdd/`. To avoid conflicts:
 
 - Configure Junie to use `.junie/skills/` explicitly for skill discovery
 - Keep SDD artifacts in `.agents/sdd/` as designed
@@ -63,20 +65,28 @@ cd /path/to/your/project
 junie
 ```
 
-Junie will automatically load `.junie/AGENTS.md` for project guidelines and discover skills, subagents, and commands from `.junie/`.
+Junie will automatically load `.junie/AGENTS.md` for project guidelines and discover skills,
+subagents, and commands from `.junie/`.
 
 ### JetBrains IDE Integration
 
-When using Junie through the IDE integration, the `.junie/` directory is discovered automatically. Note that some features (MCP, subagent models) may behave differently between CLI and IDE integration.
+When using Junie through the IDE integration, the `.junie/` directory is discovered automatically.
+Note that some features (MCP, subagent models) may behave differently between CLI and IDE
+integration.
 
 ## Limitations
 
-- **Granular task permissions**: Not enforced in Junie. Use Brave mode or allowlist for permission control.
-- **Provider configuration**: Junie uses built-in providers. Custom provider routing from OpenCode is not available.
+- **Granular task permissions**: Not enforced in Junie. Use Brave mode or allowlist for permission
+  control.
+- **Provider configuration**: Junie uses built-in providers. Custom provider routing from OpenCode
+  is not available.
 - **CLI themes**: Not supported in Junie.
-- **Command placeholders**: `{workdir}` and `{project}` are OpenCode-specific and may not be populated in Junie commands.
-- **`.agents/sdd/` discovery**: May conflict with `.agents/skills/` discovery. Configure explicit skill locations.
-- **IDE vs CLI differences**: MCP and subagent behavior may differ between Junie CLI and IDE integration.
+- **Command placeholders**: `{workdir}` and `{project}` are OpenCode-specific and may not be
+  populated in Junie commands.
+- **`.agents/sdd/` discovery**: May conflict with `.agents/skills/` discovery. Configure explicit
+  skill locations.
+- **IDE vs CLI differences**: MCP and subagent behavior may differ between Junie CLI and IDE
+  integration.
 
 ## Rebuilding
 

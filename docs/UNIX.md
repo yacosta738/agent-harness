@@ -52,21 +52,22 @@ npm run deploy -- --target claude-code
 npm run deploy -- --target junie
 ```
 
-Each target generates a self-contained bundle under `distribution/<target>/`. See [docs/capability-matrix.md](capability-matrix.md) for feature compatibility.
+Each target generates a self-contained bundle under `distribution/<target>/`.
+See [docs/capability-matrix.md](capability-matrix.md) for feature compatibility.
 
 ## Available npm Scripts
 
-| Command            | What it does                                                     |
-|--------------------|------------------------------------------------------------------|
-| `npm run validate` | Validate all `{file:}` refs, adapter includes, and command paths |
-| `npm run list`     | List files included in the complete bundle                       |
-| `npm run render`   | Render bundle without validating                                 |
-| `npm run render:all` | Render all three targets without validating                   |
-| `npm run deploy`   | Render + validate (full pipeline, default: opencode)             |
-| `npm run deploy:all` | Render + validate all three targets                          |
-| `npm run deploy:opencode` | Render + validate OpenCode target                      |
-| `npm run deploy:claude-code` | Render + validate Claude Code target                |
-| `npm run deploy:junie` | Render + validate Junie target                          |
+| Command                      | What it does                                                     |
+|------------------------------|------------------------------------------------------------------|
+| `npm run validate`           | Validate all `{file:}` refs, adapter includes, and command paths |
+| `npm run list`               | List files included in the complete bundle                       |
+| `npm run render`             | Render bundle without validating                                 |
+| `npm run render:all`         | Render all three targets without validating                      |
+| `npm run deploy`             | Render + validate (full pipeline, default: opencode)             |
+| `npm run deploy:all`         | Render + validate all three targets                              |
+| `npm run deploy:opencode`    | Render + validate OpenCode target                                |
+| `npm run deploy:claude-code` | Render + validate Claude Code target                             |
+| `npm run deploy:junie`       | Render + validate Junie target                                   |
 
 ### Options
 

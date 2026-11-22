@@ -32,7 +32,8 @@ npm run deploy:opencode
 # Then use dotter or copy distribution/opencode/ to ~/.config/opencode/
 ```
 
-Existing OpenCode installations are unchanged. The bundle layout and behavior are identical to before.
+Existing OpenCode installations are unchanged. The bundle layout and behavior are identical to
+before.
 
 ### Claude Code
 
@@ -76,6 +77,7 @@ exists, keep it and save the current project file under a new backup name before
   missing, keeping existing servers and credentials. The current template has no server entries.
 
 This places:
+
 - `CLAUDE.md` at the project root (loaded every session)
 - `.claude/skills/` with all harness skills
 - `.claude/agents/` with subagent definitions
@@ -131,6 +133,7 @@ exists, keep it and save the current project file under a new backup name before
   The current template has no server entries.
 
 This places:
+
 - `.junie/AGENTS.md` at the project level (loaded every session)
 - `.junie/skills/` with all harness skills
 - `.junie/agents/` with subagent definitions
@@ -148,21 +151,23 @@ cp -r distribution/junie/.junie/skills/* ~/.junie/skills/
 
 ## Commands reference
 
-| Command | Description |
-|---------|-------------|
-| `npm run deploy` | Deploy default target (opencode) |
-| `npm run deploy:all` | Deploy all three targets |
-| `npm run deploy:opencode` | Deploy OpenCode only |
-| `npm run deploy:claude-code` | Deploy Claude Code only |
-| `npm run deploy:junie` | Deploy Junie only |
-| `npm run render:all` | Render all bundles without validation |
-| `npm run validate` | Validate OpenCode bundle references |
-| `node scripts/validate-targets.mjs` | Cross-target validation |
+| Command                             | Description                           |
+|-------------------------------------|---------------------------------------|
+| `npm run deploy`                    | Deploy default target (opencode)      |
+| `npm run deploy:all`                | Deploy all three targets              |
+| `npm run deploy:opencode`           | Deploy OpenCode only                  |
+| `npm run deploy:claude-code`        | Deploy Claude Code only               |
+| `npm run deploy:junie`              | Deploy Junie only                     |
+| `npm run render:all`                | Render all bundles without validation |
+| `npm run validate`                  | Validate OpenCode bundle references   |
+| `node scripts/validate-targets.mjs` | Cross-target validation               |
 
 ## Architecture
 
-See [docs/multi-runtime-architecture.md](multi-runtime-architecture.md) for the design decision and adapter boundaries.
+See [docs/multi-runtime-architecture.md](multi-runtime-architecture.md) for the design decision and
+adapter boundaries.
 
 ## Capability matrix
 
-See [docs/capability-matrix.md](capability-matrix.md) for what is native, adapted, partial, or unsupported per runtime.
+See [docs/capability-matrix.md](capability-matrix.md) for what is native, adapted, partial, or
+unsupported per runtime.

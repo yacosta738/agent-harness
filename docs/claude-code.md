@@ -49,7 +49,9 @@ entry under `mcpServers`:
 
 ### 4. Review Settings
 
-The generated `.claude/settings.json` is a template. Review and adjust permission defaults as needed. Note that Claude Code does not support OpenCode's granular `permission.task` block — subagent delegation permissions are documented but not enforced.
+The generated `.claude/settings.json` is a template. Review and adjust permission defaults as
+needed. Note that Claude Code does not support OpenCode's granular `permission.task` block —
+subagent delegation permissions are documented but not enforced.
 
 ## Usage
 
@@ -60,14 +62,18 @@ cd /path/to/your/project
 claude
 ```
 
-Claude Code will automatically load `CLAUDE.md` for project instructions and discover skills, agents, and commands from `.claude/`.
+Claude Code will automatically load `CLAUDE.md` for project instructions and discover skills,
+agents, and commands from `.claude/`.
 
 ## Limitations
 
-- **Granular task permissions**: Not enforced in Claude Code. Review `.claude/settings.json` manually.
-- **Provider configuration**: Claude Code uses built-in providers. Custom provider routing from OpenCode is not available.
+- **Granular task permissions**: Not enforced in Claude Code. Review `.claude/settings.json`
+  manually.
+- **Provider configuration**: Claude Code uses built-in providers. Custom provider routing from
+  OpenCode is not available.
 - **CLI themes**: Not supported in Claude Code.
-- **Command placeholders**: `{workdir}` and `{project}` are OpenCode-specific and may not be populated in Claude Code commands.
+- **Command placeholders**: `{workdir}` and `{project}` are OpenCode-specific and may not be
+  populated in Claude Code commands.
 
 ## Rebuilding
 

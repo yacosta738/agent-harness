@@ -18,11 +18,7 @@
 //     - .junie/skills/ contains skills with SKILL.md
 //     - No opencode-specific references leak
 
-import {
-  existsSync,
-  readdirSync,
-  readFileSync,
-} from "node:fs";
+import {existsSync, readdirSync, readFileSync,} from "node:fs";
 import {dirname, join, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {checkBundleFile} from "./bundle-paths.mjs";
@@ -125,11 +121,13 @@ function checkNoOpenCodeLeaks(dir, target, prefix = "") {
         const content = readFileSync(abs, "utf8");
         // Check for OpenCode-specific paths
         if (content.includes("~/.config/opencode/")) {
-          fail(`${target}/${rel}: contains OpenCode-specific path ~/.config/opencode/`);
+          fail(
+              `${target}/${rel}: contains OpenCode-specific path ~/.config/opencode/`);
         }
         if (content.includes("{file:./prompts/") && target !== "opencode") {
           // {file:} syntax is OpenCode-specific
-          warn(`${target}/${rel}: contains {file:} reference (OpenCode-specific)`);
+          warn(
+              `${target}/${rel}: contains {file:} reference (OpenCode-specific)`);
         }
       } catch {
         // Skip binary files
@@ -156,7 +154,9 @@ function validateOpenCode(bundleRoot) {
     const fileRefPattern = /\{file:([^}]+)\}/g;
     let allRefsOk = true;
     for (const [name, def] of Object.entries(cfg.agent || {})) {
-      if (!def.prompt) continue;
+      if (!def.prompt) {
+        continue;
+      }
       const refs = [];
       let m;
       while ((m = fileRefPattern.exec(def.prompt)) !== null) {
@@ -168,7 +168,7 @@ function validateOpenCode(bundleRoot) {
         const result = checkBundleFile(bundleRoot, path);
         if (result !== true) {
           const reason = result === "outside" ? "escapes the bundle root"
-            : result === "not-file" ? "is not a file" : "is missing";
+              : result === "not-file" ? "is not a file" : "is missing";
           fail(`opencode: agent '${name}' reference {file:${ref}} ${reason}`);
           allRefsOk = false;
         }
@@ -215,7 +215,8 @@ function validateClaudeCode(bundleRoot) {
   // Check .claude/agents/
   const agentsDir = join(bundleRoot, ".claude", "agents");
   if (existsSync(agentsDir)) {
-    const agentFiles = readdirSync(agentsDir).filter(f => f.endsWith(".md")).sort();
+    const agentFiles = readdirSync(agentsDir).filter(
+        f => f.endsWith(".md")).sort();
     let agentsValid = 0;
     for (const af of agentFiles) {
       const abs = join(agentsDir, af);
@@ -224,8 +225,11 @@ function validateClaudeCode(bundleRoot) {
       if (fm) {
         const hasName = /^name:/m.test(fm[1]);
         const hasDesc = /^description:/m.test(fm[1]);
-        if (hasName && hasDesc) agentsValid++;
-        else warn(`claude-code: agent '${af}' missing name or description`);
+        if (hasName && hasDesc) {
+          agentsValid++;
+        } else {
+          warn(`claude-code: agent '${af}' missing name or description`);
+        }
       }
     }
     ok(`claude-code: ${agentsValid}/${agentFiles.length} agents valid in .claude/agents`);
@@ -242,8 +246,11 @@ function validateClaudeCode(bundleRoot) {
       const fm = content.match(/^---\n([\s\S]*?)\n---/);
       if (fm) {
         const hasName = /^name:/m.test(fm[1]);
-        if (hasName) cmdsValid++;
-        else warn(`claude-code: command '${cf}' missing name in frontmatter`);
+        if (hasName) {
+          cmdsValid++;
+        } else {
+          warn(`claude-code: command '${cf}' missing name in frontmatter`);
+        }
       }
     }
     ok(`claude-code: ${cmdsValid}/${cmdFiles.length} commands valid in .claude/commands`);
@@ -255,10 +262,12 @@ function validateClaudeCode(bundleRoot) {
     try {
       const settings = JSON.parse(readFileSync(settingsPath, "utf8"));
       const perms = settings.permissions;
-      if (perms && Array.isArray(perms.allow) && Array.isArray(perms.ask) && Array.isArray(perms.deny)) {
+      if (perms && Array.isArray(perms.allow) && Array.isArray(perms.ask)
+          && Array.isArray(perms.deny)) {
         ok(`claude-code: settings.json permissions valid (allow: ${perms.allow.length}, ask: ${perms.ask.length}, deny: ${perms.deny.length})`);
       } else {
-        fail("claude-code: settings.json permissions missing allow/ask/deny arrays");
+        fail(
+            "claude-code: settings.json permissions missing allow/ask/deny arrays");
       }
     } catch (e) {
       fail(`claude-code: settings.json is not valid JSON - ${e.message}`);
@@ -296,10 +305,13 @@ function validateClaudeCode(bundleRoot) {
           const result = checkBundleFile(bundleRoot, resolved);
           if (result !== true) {
             // Required resources: _shared references and script files must exist
-            if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(".js")) {
-              fail(`claude-code: ${skill.rel}: required relative reference '${ref}' does not resolve`);
+            if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(
+                ".js")) {
+              fail(
+                  `claude-code: ${skill.rel}: required relative reference '${ref}' does not resolve`);
             } else {
-              warn(`claude-code: ${skill.rel}: relative reference '${ref}' does not resolve`);
+              warn(
+                  `claude-code: ${skill.rel}: relative reference '${ref}' does not resolve`);
             }
           }
         }
@@ -336,7 +348,8 @@ function validateJunie(bundleRoot) {
   // Check .junie/agents/
   const agentsDir = join(bundleRoot, ".junie", "agents");
   if (existsSync(agentsDir)) {
-    const agentFiles = readdirSync(agentsDir).filter(f => f.endsWith(".md")).sort();
+    const agentFiles = readdirSync(agentsDir).filter(
+        f => f.endsWith(".md")).sort();
     let agentsValid = 0;
     for (const af of agentFiles) {
       const abs = join(agentsDir, af);
@@ -345,8 +358,11 @@ function validateJunie(bundleRoot) {
       if (fm) {
         const hasName = /^name:/m.test(fm[1]);
         const hasDesc = /^description:/m.test(fm[1]);
-        if (hasName && hasDesc) agentsValid++;
-        else warn(`junie: agent '${af}' missing name or description`);
+        if (hasName && hasDesc) {
+          agentsValid++;
+        } else {
+          warn(`junie: agent '${af}' missing name or description`);
+        }
       }
     }
     ok(`junie: ${agentsValid}/${agentFiles.length} agents valid in .junie/agents`);
@@ -363,8 +379,11 @@ function validateJunie(bundleRoot) {
       const fm = content.match(/^---\n([\s\S]*?)\n---/);
       if (fm) {
         const hasName = /^name:/m.test(fm[1]);
-        if (hasName) cmdsValid++;
-        else warn(`junie: command '${cf}' missing name in frontmatter`);
+        if (hasName) {
+          cmdsValid++;
+        } else {
+          warn(`junie: command '${cf}' missing name in frontmatter`);
+        }
       }
     }
     ok(`junie: ${cmdsValid}/${cmdFiles.length} commands valid in .junie/commands`);
@@ -400,10 +419,13 @@ function validateJunie(bundleRoot) {
           const result = checkBundleFile(bundleRoot, resolved);
           if (result !== true) {
             // Required resources: _shared references and script files must exist
-            if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(".js")) {
-              fail(`junie: ${skill.rel}: required relative reference '${ref}' does not resolve`);
+            if (ref.includes("_shared") || ref.endsWith(".mjs") || ref.endsWith(
+                ".js")) {
+              fail(
+                  `junie: ${skill.rel}: required relative reference '${ref}' does not resolve`);
             } else {
-              warn(`junie: ${skill.rel}: relative reference '${ref}' does not resolve`);
+              warn(
+                  `junie: ${skill.rel}: relative reference '${ref}' does not resolve`);
             }
           }
         }
@@ -423,7 +445,8 @@ function main() {
     if (args[i] === "--root") {
       distRoot = resolve(args[++i]);
     } else if (args[i] === "--help" || args[i] === "-h") {
-      console.log("Usage: node scripts/validate-targets.mjs [--root <distribution-dir>]");
+      console.log(
+          "Usage: node scripts/validate-targets.mjs [--root <distribution-dir>]");
       return 0;
     }
   }

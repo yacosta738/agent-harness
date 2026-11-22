@@ -25,12 +25,7 @@
 //
 // Cross-platform: no shell, no Python. Node 18+ built-ins only.
 
-import {
-  existsSync,
-  readdirSync,
-  readFileSync,
-  statSync,
-} from "node:fs";
+import {existsSync, readdirSync, readFileSync, statSync,} from "node:fs";
 import {dirname, join, relative, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {checkBundleFile, isInside} from "./bundle-paths.mjs";
@@ -301,14 +296,20 @@ function parseArgs(argv) {
 // Extract YAML frontmatter from a markdown file
 function extractFrontmatter(text) {
   const match = text.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return null;
+  if (!match) {
+    return null;
+  }
   const obj = {};
   for (const line of match[1].split("\n")) {
     const sep = line.indexOf(":");
-    if (sep < 0) continue;
+    if (sep < 0) {
+      continue;
+    }
     const key = line.slice(0, sep).trim();
     const val = line.slice(sep + 1).trim();
-    if (key) obj[key] = val;
+    if (key) {
+      obj[key] = val;
+    }
   }
   return obj;
 }
@@ -376,7 +377,9 @@ function checkSkillsFrontmatter(root, skillsDir) {
   const walk = (dir) => {
     const entries = readdirSync(dir, {withFileTypes: true});
     for (const e of entries) {
-      if (e.name === ".DS_Store") continue;
+      if (e.name === ".DS_Store") {
+        continue;
+      }
       const abs = join(dir, e.name);
       if (e.isDirectory()) {
         // Check for SKILL.md in this directory
@@ -403,17 +406,25 @@ function checkSkillsFrontmatter(root, skillsDir) {
 
 // Check for OpenCode-specific references leaking into other targets
 function checkNoOpencodeLeaks(root, target) {
-  if (target === "opencode") return;
+  if (target === "opencode") {
+    return;
+  }
   const manifestPath = join(root, "manifest.json");
-  if (!existsSync(manifestPath)) return;
+  if (!existsSync(manifestPath)) {
+    return;
+  }
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
   const files = manifest.files || [];
   let leaks = 0;
   for (const f of files) {
     // Check for opencode-specific paths in file content
     const abs = join(root, f);
-    if (!existsSync(abs)) continue;
-    if (!f.endsWith(".md") && !f.endsWith(".json")) continue;
+    if (!existsSync(abs)) {
+      continue;
+    }
+    if (!f.endsWith(".md") && !f.endsWith(".json")) {
+      continue;
+    }
     try {
       const text = readFileSync(abs, "utf8");
       if (text.includes("~/.config/opencode/")) {
@@ -425,7 +436,8 @@ function checkNoOpencodeLeaks(root, target) {
     }
   }
   if (leaks === 0) {
-    console.log(`leak check: no OpenCode-specific references in ${target} bundle`);
+    console.log(
+        `leak check: no OpenCode-specific references in ${target} bundle`);
   }
 }
 
@@ -516,7 +528,8 @@ function checkJunieBundle(root) {
   // Check for .agents/sdd/ discovery conflicts
   const sddPath = join(root, ".agents/sdd");
   if (existsSync(sddPath)) {
-    console.log(".agents/sdd: present (may conflict with .agents/skills/ discovery in Junie)");
+    console.log(
+        ".agents/sdd: present (may conflict with .agents/skills/ discovery in Junie)");
   }
 
   checkNoOpencodeLeaks(root, "junie");
@@ -526,7 +539,8 @@ function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
     console.log(
-        "Usage: node scripts/check-refs.mjs [--root <bundleDir>] [--target <target>]\n" +
+        "Usage: node scripts/check-refs.mjs [--root <bundleDir>] [--target <target>]\n"
+        +
         "  No --root: source mode (validates live repo).\n" +
         "  --root <path>: bundle mode (validates generated bundle).\n" +
         "  --target: opencode (default), claude-code, junie.\n" +
