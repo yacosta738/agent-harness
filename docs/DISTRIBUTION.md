@@ -1,10 +1,11 @@
 # Multi-Runtime Distribution
 
-Agent Harness now distributes to three runtimes from a single canonical source:
+Agent Harness now distributes to four runtimes from a single canonical source:
 
 - **OpenCode** — `~/.config/opencode` (existing, backward compatible)
 - **Claude Code** — project-level `.claude/` with `CLAUDE.md`
 - **JetBrains Junie** — project-level `.junie/` with `AGENTS.md`
+- **Antigravity CLI** — project-level `AGENTS.md` and `.agents/`
 
 ## Quick start
 
@@ -16,6 +17,7 @@ npm run deploy:all
 npm run deploy:opencode
 npm run deploy:claude-code
 npm run deploy:junie
+npm run deploy:antigravity
 
 # Validate without re-rendering
 npm run deploy:all -- --validate-only
@@ -149,15 +151,49 @@ mkdir -p ~/.junie/skills
 cp -r distribution/junie/.junie/skills/* ~/.junie/skills/
 ```
 
+### Antigravity CLI
+
+Antigravity CLI discovers project instructions from `AGENTS.md`, skills from `.agents/skills/`,
+custom agents from `.agents/agents/<name>/agent.md`, and project MCP servers from
+`.agents/mcp_config.json`.
+
+**Project-level installation:**
+
+Set `TARGET_PROJECT` to the path of the project where you want to install the harness:
+
+```bash
+export TARGET_PROJECT=/path/to/your/project
+npm run deploy:antigravity
+
+bundle=distribution/antigravity
+mkdir -p "$TARGET_PROJECT/.agents"
+cp -Rn "$bundle/.agents/skills" "$bundle/.agents/agents" "$TARGET_PROJECT/.agents/"
+
+# Merge these templates with existing project files instead of replacing them.
+if [ ! -e "$TARGET_PROJECT/AGENTS.md" ]; then
+  cp "$bundle/AGENTS.md" "$TARGET_PROJECT/AGENTS.md"
+fi
+if [ ! -e "$TARGET_PROJECT/.agents/mcp_config.json" ]; then
+  cp "$bundle/.agents/mcp_config.json" "$TARGET_PROJECT/.agents/mcp_config.json"
+fi
+```
+
+This places project instructions at the workspace root, shared skills and custom agents under
+`.agents/`, and an empty MCP template. Existing instructions, skills, agents, and MCP configuration
+should be reviewed and merged before use. Harness commands are adapted as Antigravity skills; their
+OpenCode-only permission and provider settings are not translated. This target does not write to
+`~/.gemini/` or install CLI-wide settings.
+
 ## Commands reference
 
 | Command                             | Description                           |
 |-------------------------------------|---------------------------------------|
 | `npm run deploy`                    | Deploy default target (opencode)      |
-| `npm run deploy:all`                | Deploy all three targets              |
+| `npm run deploy:all`                | Deploy all four targets               |
 | `npm run deploy:opencode`           | Deploy OpenCode only                  |
 | `npm run deploy:claude-code`        | Deploy Claude Code only               |
 | `npm run deploy:junie`              | Deploy Junie only                     |
+| `npm run deploy:antigravity`        | Deploy Antigravity CLI only           |
 | `npm run render:all`                | Render all bundles without validation |
 | `npm run validate`                  | Validate OpenCode bundle references   |
 | `node scripts/validate-targets.mjs` | Cross-target validation               |

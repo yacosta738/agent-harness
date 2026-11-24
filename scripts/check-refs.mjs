@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Validate harness references for generated bundles.
 //
-// Supports multiple targets: opencode, claude-code, junie.
+// Supports multiple targets: opencode, claude-code, junie, antigravity.
 //
 // Convention: repo root maps 1:1 to the deployment location, except
 //   adapters/opencode/opencode.json -> opencode.json
@@ -21,6 +21,7 @@
 //   - claude-code: validates CLAUDE.md exists, agent frontmatter, command frontmatter,
 //     settings.json structure.
 //   - junie: validates AGENTS.md exists, agent frontmatter, command frontmatter.
+//   - antigravity: validates AGENTS.md, native agent/skill layout, and MCP config.
 // Exit non-zero on any failure.
 //
 // Cross-platform: no shell, no Python. Node 18+ built-ins only.
@@ -366,7 +367,7 @@ function checkCommandFrontmatter(root, cmdsDir) {
 }
 
 // Validate skills have valid SKILL.md frontmatter
-function checkSkillsFrontmatter(root, skillsDir) {
+function checkSkillsFrontmatter(root, skillsDir, requireDescription = false) {
   const fullDir = join(root, skillsDir);
   if (!existsSync(fullDir)) {
     console.log(`skills: directory ${skillsDir} not found`);
@@ -392,6 +393,8 @@ function checkSkillsFrontmatter(root, skillsDir) {
             fail(`${e.name}/SKILL.md: missing YAML frontmatter`);
           } else if (!fm.name) {
             fail(`${e.name}/SKILL.md: frontmatter missing 'name'`);
+          } else if (requireDescription && !fm.description) {
+            fail(`${e.name}/SKILL.md: frontmatter missing 'description'`);
           } else {
             ok++;
           }
@@ -535,6 +538,89 @@ function checkJunieBundle(root) {
   checkNoOpencodeLeaks(root, "junie");
 }
 
+function checkAntigravityAgents(root) {
+  const agentDir = join(root, ".agents/agents");
+  if (!existsSync(agentDir)) {
+    fail(".agents/agents: MISSING");
+    return;
+  }
+  const agents = [];
+  const walk = (dir) => {
+    for (const entry of readdirSync(dir, {withFileTypes: true})) {
+      if (entry.name === ".DS_Store") {
+        continue;
+      }
+      const abs = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        const agentFile = join(abs, "agent.md");
+        if (existsSync(agentFile)) {
+          agents.push({name: entry.name, abs: agentFile});
+        }
+        walk(abs);
+      }
+    }
+  };
+  walk(agentDir);
+  if (agents.length === 0) {
+    fail(".agents/agents: no agent.md files found");
+    return;
+  }
+  for (const agent of agents) {
+    const content = readFileSync(agent.abs, "utf8");
+    const fm = extractFrontmatter(content);
+    if (!fm) {
+      fail(`${agent.abs}: missing YAML frontmatter`);
+    } else {
+      const body = content.replace(/^---\n[\s\S]*?\n---\n?/, "");
+      if (!fm.name) {
+        fail(`${agent.abs}: frontmatter missing 'name'`);
+      } else if (fm.name !== agent.name) {
+        fail(`${agent.abs}: name '${fm.name}' does not match directory '${agent.name}'`);
+      }
+      if (!fm.description) {
+        fail(`${agent.abs}: frontmatter missing 'description'`);
+      }
+      if (fm.subagent !== "true") {
+        fail(`${agent.abs}: frontmatter missing 'subagent: true'`);
+      }
+      if (/^---\n(?:name|description|disable-model-invocation|user-invocable):/m.test(body)) {
+        fail(`${agent.abs}: nested OpenCode frontmatter remains in the agent body`);
+      }
+    }
+  }
+  console.log(`agents: ${agents.length} native agent.md files checked`);
+}
+
+function checkAntigravityBundle(root) {
+  if (!existsSync(join(root, "AGENTS.md"))) {
+    fail("AGENTS.md: MISSING");
+  } else {
+    console.log("AGENTS.md: present");
+  }
+
+  checkAntigravityAgents(root);
+  checkSkillsFrontmatter(root, ".agents/skills", true);
+
+  const mcpPath = join(root, ".agents/mcp_config.json");
+  if (!existsSync(mcpPath)) {
+    fail(".agents/mcp_config.json: MISSING");
+  } else {
+    try {
+      const mcp = JSON.parse(readFileSync(mcpPath, "utf8"));
+      if (!mcp || typeof mcp !== "object" || !mcp.mcpServers ||
+          typeof mcp.mcpServers !== "object") {
+        fail(".agents/mcp_config.json: missing mcpServers object");
+      } else {
+        console.log(".agents/mcp_config.json: valid mcpServers object");
+      }
+    } catch (e) {
+      fail(`.agents/mcp_config.json: ${e.message}`);
+    }
+  }
+
+  checkNoOpencodeLeaks(root, "antigravity");
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) {
@@ -543,7 +629,7 @@ function main() {
         +
         "  No --root: source mode (validates live repo).\n" +
         "  --root <path>: bundle mode (validates generated bundle).\n" +
-        "  --target: opencode (default), claude-code, junie.\n" +
+        "  --target: opencode (default), claude-code, junie, antigravity.\n" +
         "  Target is auto-detected from --root path when possible.",
     );
     return 0;
@@ -571,6 +657,8 @@ function main() {
           target = "claude-code";
         } else if (components.includes("junie")) {
           target = "junie";
+        } else if (components.includes("antigravity")) {
+          target = "antigravity";
         }
       }
       if (!target) {
@@ -584,6 +672,8 @@ function main() {
       checkClaudeCodeBundle(root);
     } else if (target === "junie") {
       checkJunieBundle(root);
+    } else if (target === "antigravity") {
+      checkAntigravityBundle(root);
     } else {
       fail(`Unknown target: ${target}`);
     }

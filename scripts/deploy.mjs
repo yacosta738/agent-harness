@@ -5,7 +5,7 @@
 //   node scripts/deploy.mjs [--target <target>] [--output <dir>] [--validate-only]
 //   node scripts/deploy.mjs all [--validate-only]
 //
-// Targets: opencode, claude-code, junie
+// Targets: opencode, claude-code, junie, antigravity
 // Defaults:
 //   target  = "opencode"
 //   output  = "distribution/<target>"
@@ -25,7 +25,7 @@ import {fileURLToPath} from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = resolve(HERE, "..");
 
-const TARGETS = ["opencode", "claude-code", "junie"];
+const TARGETS = ["opencode", "claude-code", "junie", "antigravity"];
 
 function parseArgs(argv) {
   const out = {

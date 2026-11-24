@@ -1,7 +1,7 @@
 # Agent Harness
 
-Portable agent configuration for **OpenCode**, **Claude Code**, and **JetBrains Junie** — Kerrigan,
-a fullstack architect,
+Portable agent configuration for **OpenCode**, **Claude Code**, **JetBrains Junie**, and
+**Antigravity CLI** — Kerrigan, a fullstack architect,
 plus team sub-agents, a Spec-Driven Development (SDD) pipeline, and
 auto-discovered skills and commands.
 
@@ -9,11 +9,12 @@ The filesystem is the source of truth: `skills/**/SKILL.md` for skills, `command
 commands, `adapters/opencode/opencode.json` for MCP/permissions, and
 `adapters/*/adapter.json` for deploy composition.
 
-Distributed to three runtimes from one canonical source:
+Distributed to four runtimes from one canonical source:
 
 - **OpenCode** — `~/.config/opencode` (default, backward compatible)
 - **Claude Code** — project-level `.claude/` with `CLAUDE.md`
 - **JetBrains Junie** — project-level `.junie/` with `AGENTS.md`
+- **Antigravity CLI** — project-level `AGENTS.md` and `.agents/`
 
 See [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) for
 installation, [docs/capability-matrix.md](docs/capability-matrix.md) for feature parity,
@@ -58,6 +59,7 @@ npm run deploy:all
 npm run deploy:opencode
 npm run deploy:claude-code
 npm run deploy:junie
+npm run deploy:antigravity
 ```
 
 See [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) for installation details per runtime.
@@ -272,7 +274,7 @@ agent-harness/
 ├── docs/                    ← Platform-specific setup guides
 │   ├── WINDOWS.md          ← Windows: Node 18+ only, no WSL required
 │   └── UNIX.md             ← macOS + Linux: Node 18+ setup guides
-├── adapters/opencode/       ← opencode.json, cli.json, adapter.json, themes/, scripts/
+├── adapters/                ← OpenCode, Claude Code, Junie, and Antigravity adapters
 ├── scripts/                 ← check-refs.mjs (validate), generate-bundle.mjs (render/list bundle), deploy.mjs (render+verify)
 └── harness.config.json      ← persona
 ```
@@ -283,6 +285,7 @@ For platform-specific installation instructions, see:
 
 - [docs/WINDOWS.md](docs/WINDOWS.md) — Windows (PowerShell / cmd)
 - [docs/UNIX.md](docs/UNIX.md) — macOS and Linux
+- [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md) — project-level runtime bundles, including Antigravity CLI
 
 ## Deployment (render bundle + dotter)
 
@@ -320,6 +323,9 @@ No-build alternative: symlink the source tree 1:1 instead, stripping the
 `adapters/opencode/` prefix by hand (`opencode.json`, `cli.json`, `scripts/`,
 `themes/` land at target root). The source tree contains the complete harness, so every `{file:}`
 reference in the full bundle must resolve.
+
+For project-level Antigravity CLI support, run `npm run deploy:antigravity` and follow the
+merge-safe installation steps in [docs/DISTRIBUTION.md](docs/DISTRIBUTION.md).
 
 ---
 
