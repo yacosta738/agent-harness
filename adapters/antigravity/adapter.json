@@ -1,0 +1,77 @@
+{
+  "version": "agent-harness.adapter/v1",
+  "name": "antigravity",
+  "defaultTarget": ".agents",
+  "allowedLayers": [
+    "portable",
+    "adapter",
+    "runtime"
+  ],
+  "components": {
+    "core": {
+      "include": [
+        "prompts/ORCHESTRATOR.md",
+        "prompts/acs/WRITING_STYLE.md",
+        "prompts/communication/CONTROLLED_LANGUAGE.md",
+        "README.md",
+        "harness.config.json",
+        "adapters/antigravity/adapter.json"
+      ]
+    },
+    "skills": {
+      "include": [
+        "skills/**",
+        "commands/**"
+      ]
+    },
+    "persona": {
+      "include": [
+        "prompts/ORCHESTRATOR.md",
+        "prompts/acs/WRITING_STYLE.md",
+        "prompts/communication/CONTROLLED_LANGUAGE.md"
+      ]
+    },
+    "delegation": {
+      "include": [
+        "commands/**/*.md",
+        "prompts/team/**",
+        "prompts/linear-pm.md",
+        "skills/workflow/**"
+      ]
+    },
+    "engram": {
+      "include": [
+        "prompts/**",
+        "skills/**"
+      ]
+    },
+    "context7": {
+      "include": [
+        "prompts/**",
+        "skills/**"
+      ]
+    },
+    "sdd": {
+      "include": [
+        "commands/sdd-*.md",
+        "commands/spec-from-code.md",
+        "prompts/sdd/**",
+        "skills/sdd/**",
+        "skills/workflow/**"
+      ]
+    },
+    "judgment-day": {
+      "include": [
+        "prompts/lens.md",
+        "prompts/mirror.md",
+        "prompts/scalpel.md",
+        "skills/workflow/double-blind-review/**"
+      ]
+    },
+    "integrations": {
+      "include": [
+        "adapters/antigravity/**"
+      ]
+    }
+  }
+}

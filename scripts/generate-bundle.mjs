@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Render the complete deployable bundle from adapter.json components.
-// Supports multiple targets: opencode, claude-code, junie.
+// Supports multiple targets: opencode, claude-code, junie, antigravity.
 //
 //   node scripts/generate-bundle.mjs render [--target <target>] [--output <dir>]
 //   node scripts/generate-bundle.mjs list [--target <target>]
@@ -10,6 +10,7 @@
 //   opencode    — ~/.config/opencode layout (default, backward compatible)
 //   claude-code — .claude/ project layout with CLAUDE.md
 //   junie       — .junie/ project layout with AGENTS.md
+//   antigravity — .agents/ project layout with AGENTS.md
 //
 // Convention per target:
 //   opencode: bundle root mirrors ~/.config/opencode — every
@@ -38,7 +39,8 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ADAPTERS = {
   "opencode": "adapters/opencode/",
   "claude-code": "adapters/claude-code/",
-  "junie": "adapters/junie/"
+  "junie": "adapters/junie/",
+  "antigravity": "adapters/antigravity/"
 };
 
 function getAdapterPrefix(target) {
@@ -65,6 +67,13 @@ function destFor(repoPath, target) {
 
   if (target === "junie") {
     // Strip adapters/junie/ prefix for adapter-specific files
+    if (repoPath.startsWith(prefix)) {
+      return repoPath.slice(prefix.length);
+    }
+    return repoPath;
+  }
+
+  if (target === "antigravity") {
     if (repoPath.startsWith(prefix)) {
       return repoPath.slice(prefix.length);
     }
@@ -211,6 +220,10 @@ function render(outDir, target = "opencode") {
 
   for (const f of files) {
     const dest = destFor(f, target);
+    if (target === "antigravity"
+        && (f.startsWith("skills/") || f.startsWith("commands/"))) {
+      continue;
+    }
     const abs = join(outDir, dest);
     mkdirSync(dirname(abs), {recursive: true});
     if (f === `${prefix}opencode.json`) {
@@ -248,6 +261,14 @@ function render(outDir, target = "opencode") {
     // Distribute review scripts so /review works in Junie
     copyReviewScripts(outDir, target);
     // Post-process: replace OpenCode-specific paths in all markdown files
+    replaceOpencodePaths(outDir, bundled, target);
+  } else if (target === "antigravity") {
+    generateAntigravityAgentsMd(outDir);
+    generateAgentFiles(outDir, target);
+    generateCommandFiles(outDir, target);
+    generateSkillsDir(outDir, target);
+    generateMcpTemplate(outDir, target);
+    copyReviewScripts(outDir, target);
     replaceOpencodePaths(outDir, bundled, target);
   }
 
@@ -347,6 +368,9 @@ function adaptOrchestratorForRuntime(text, target) {
   adapted = adapted.replace(/~\/\.config\/opencode/g, "{harness}");
   // Remove OpenCode-specific permission references
   adapted = adapted.replace(/opencode\.json/g, "configuration");
+  if (target === "antigravity") {
+    adapted = adapted.replace(/AI\/OpenCode skills/g, "agent skills");
+  }
   return adapted;
 }
 
@@ -443,6 +467,64 @@ Custom subagents are defined in .junie/agents/ with YAML frontmatter.
   writeFileSync(join(junieDir, "AGENTS.md"), agentsMd);
 }
 
+// Generate Antigravity CLI project instructions at the workspace root
+function generateAntigravityAgentsMd(outDir) {
+  const orchestratorPath = join(ROOT, "prompts/ORCHESTRATOR.md");
+  const controlledLanguagePath = join(ROOT,
+      "prompts/communication/CONTROLLED_LANGUAGE.md");
+  const writingStylePath = join(ROOT, "prompts/acs/WRITING_STYLE.md");
+
+  let orchestrator = "";
+  if (existsSync(orchestratorPath)) {
+    orchestrator = adaptOrchestratorForRuntime(
+        readFileSync(orchestratorPath, "utf8"), "antigravity")
+        .replace(/\{harness\}/g, ".");
+  }
+  const controlledLanguage = existsSync(controlledLanguagePath)
+      ? readFileSync(controlledLanguagePath, "utf8") : "";
+  const writingStyle = existsSync(writingStylePath)
+      ? readFileSync(writingStylePath, "utf8") : "";
+
+  const agentsMd = `# Project Instructions
+
+This project uses Agent Harness for portable agent configuration.
+The following instructions apply to all Antigravity CLI sessions in this project.
+
+---
+
+## Orchestrator
+
+${orchestrator}
+
+---
+
+## Writing Style
+
+${writingStyle}
+
+---
+
+## Communication
+
+${controlledLanguage}
+
+---
+
+## Skills and Agents
+
+Skills are located in .agents/skills/ and are loaded on demand.
+Custom agents are defined in .agents/agents/ using agent.md files.
+Harness commands are exposed as Antigravity skills.
+
+## Limitations
+
+- OpenCode permission rules and provider configuration are not translated.
+- MCP servers must be configured manually in .agents/mcp_config.json.
+- Antigravity CLI discovers this project bundle; global ~/.gemini/ files are not installed.
+`;
+  writeFileSync(join(outDir, "AGENTS.md"), agentsMd);
+}
+
 // Resolve {file:...} references in a prompt string, reading from the repo root
 function resolveFileRefs(prompt) {
   if (typeof prompt !== "string") {
@@ -473,6 +555,8 @@ function generateAgentFiles(outDir, target) {
     agentDir = join(outDir, ".claude/agents");
   } else if (target === "junie") {
     agentDir = join(outDir, ".junie/agents");
+  } else if (target === "antigravity") {
+    agentDir = join(outDir, ".agents/agents");
   } else {
     return;
   }
@@ -487,14 +571,20 @@ function generateAgentFiles(outDir, target) {
       continue;
     }
 
-    const promptBody = resolveFileRefs(def.prompt);
+    let promptBody = resolveFileRefs(def.prompt);
+    if (target === "antigravity") {
+      const sourceFrontmatter = promptBody.match(/^---\n[\s\S]*?\n---\n*/);
+      if (sourceFrontmatter) {
+        promptBody = promptBody.slice(sourceFrontmatter[0].length).trimStart();
+      }
+    }
     const description = def.description || "";
 
     // Translate permission constraints to target-native frontmatter
     const perms = def.permission || {};
     const editDeny = perms.edit === "deny";
 
-    let extraFrontmatter = "";
+    let extraFrontmatter = target === "antigravity" ? "\nsubagent: true" : "";
     if (editDeny) {
       if (target === "claude-code") {
         // Claude Code: disallowedTools blocks specific tools for this subagent
@@ -513,14 +603,22 @@ disallowedTools:
       }
     }
 
+    const descriptionField = target === "antigravity"
+        ? JSON.stringify(description) : description;
     const agentMd = `---
 name: ${name}
-description: ${description}${extraFrontmatter}
+description: ${descriptionField}${extraFrontmatter}
 ---
 
 ${promptBody}
 `;
-    writeFileSync(join(agentDir, `${name}.md`), agentMd);
+    if (target === "antigravity") {
+      const agentPath = join(agentDir, name);
+      mkdirSync(agentPath, {recursive: true});
+      writeFileSync(join(agentPath, "agent.md"), agentMd);
+    } else {
+      writeFileSync(join(agentDir, `${name}.md`), agentMd);
+    }
   }
 }
 
@@ -536,6 +634,8 @@ function generateCommandFiles(outDir, target) {
     destDir = join(outDir, ".claude/commands");
   } else if (target === "junie") {
     destDir = join(outDir, ".junie/commands");
+  } else if (target === "antigravity") {
+    destDir = join(outDir, ".agents/commands");
   } else {
     return;
   }
@@ -570,7 +670,8 @@ function generateCommandFiles(outDir, target) {
 
     // Remove agent: only if the agent doesn't exist in the generated agents
     // For SDD commands, the agent (e.g., sdd-apply) IS generated, so preserve it
-    if (originalAgent && !opencodeAgents.includes(originalAgent)) {
+    if (target === "antigravity" ||
+        (originalAgent && !opencodeAgents.includes(originalAgent))) {
       text = text.replace(/^agent:.*$/gm, "");
     }
 
@@ -604,6 +705,13 @@ function generateCommandFiles(outDir, target) {
       text = text.replace(/\{workdir\}/g, "$workdir");
       text = text.replace(/\{project\}/g, "$project");
       text = text.replace(/\{argument\}/g, "$argument");
+    } else if (target === "antigravity") {
+      text = text.replace(/\{workdir\}/g, "the current workspace directory");
+      text = text.replace(/\{project\}/g, "the current project");
+      text = text.replace(/\{argument\}/g,
+          "arguments provided when invoking the skill");
+      text = text.replace(/\$ARGUMENTS/g,
+          "arguments provided when invoking the skill");
     }
 
     // Clean up empty lines left by removed frontmatter fields
@@ -653,6 +761,8 @@ function generateSkillsDir(outDir, target) {
     destDir = join(outDir, ".claude/skills");
   } else if (target === "junie") {
     destDir = join(outDir, ".junie/skills");
+  } else if (target === "antigravity") {
+    destDir = join(outDir, ".agents/skills");
   } else {
     return;
   }
@@ -700,6 +810,13 @@ function generateSkillsDir(outDir, target) {
       {recursive: true});
 
   const toPosix = (path) => path.split(sep).join("/");
+  const relocateCommandSkillRefs = (text) => {
+    for (const {name, source} of skillDirs) {
+      const sourcePath = toPosix(relative(skillsSrc, source));
+      text = text.replaceAll(`../skills/${sourcePath}/`, `../${name}/`);
+    }
+    return text;
+  };
   // Copy each skill and rewrite only references to resources outside its own directory.
   for (const {name, source} of skillDirs) {
     const dest = join(destDir, name);
@@ -734,7 +851,7 @@ function generateSkillsDir(outDir, target) {
     const skillContent = readFileSync(skillFile, "utf8");
     const skillBody = skillContent.replace(/^---\n[\s\S]*?\n---\n?/, "").trim();
     const canonicalSkill = toPosix(relative(ROOT, join(source, "SKILL.md")));
-    const commandText = readFileSync(commandFile, "utf8")
+    const commandText = relocateCommandSkillRefs(readFileSync(commandFile, "utf8"))
         .replaceAll(`\`${canonicalSkill}\``, "the skill workflow below")
         .replaceAll("~/.config/opencode/prompts/sdd/",
             "../_shared/prompts/sdd/")
@@ -749,6 +866,32 @@ function generateSkillsDir(outDir, target) {
     const finalContent = `${mergedFrontmatter}\n\n${mergedBody}\n\n## Skill workflow\n\n${skillBody}\n`;
     writeFileSync(skillFile, finalContent);
     rmSync(commandFile);
+  }
+
+  if (target === "antigravity") {
+    const commandDir = join(destDir, "../commands");
+    if (existsSync(commandDir)) {
+      const commandFiles = readdirSync(commandDir)
+          .filter(file => file.endsWith(".md")).sort();
+      for (const commandFile of commandFiles) {
+        const name = commandFile.replace(/\.md$/, "");
+        if (seen.has(name)) {
+          continue;
+        }
+        const commandText = relocateCommandSkillRefs(
+            readFileSync(join(commandDir, commandFile), "utf8"));
+        const parsed = parseFrontmatter(commandText);
+        if (!parsed.fields.description) {
+          throw new Error(
+              `Command '${name}' needs a description to become an Antigravity skill.`);
+        }
+        const skillDir = join(destDir, name);
+        mkdirSync(skillDir, {recursive: true});
+        writeFileSync(join(skillDir, "SKILL.md"),
+            `${buildFrontmatter({...parsed.fields, name})}\n\n${parsed.body}\n`);
+      }
+      rmSync(commandDir, {recursive: true, force: true});
+    }
   }
 }
 
@@ -855,11 +998,18 @@ function generateMcpTemplate(outDir, target) {
     };
     writeFileSync(join(junieMcpDir, "mcp.json"),
         JSON.stringify(mcpTemplate, null, 2) + "\n");
+  } else if (target === "antigravity") {
+    // Antigravity MCP configuration is machine-specific; keep the template empty.
+    const mcpTemplate = {mcpServers: {}};
+    const agentsDir = join(outDir, ".agents");
+    mkdirSync(agentsDir, {recursive: true});
+    writeFileSync(join(agentsDir, "mcp_config.json"),
+        JSON.stringify(mcpTemplate, null, 2) + "\n");
   }
 }
 
 // Copy review.mjs and review-lib.mjs inside the native runtime directory so installation includes them
-// Claude Code: .claude/scripts/  Junie: .junie/scripts/
+// Claude Code: .claude/scripts/  Junie: .junie/scripts/  Antigravity: .agents/scripts/
 function copyReviewScripts(outDir, target) {
   const scriptsSrc = join(ROOT, "adapters/opencode/scripts");
   if (!existsSync(scriptsSrc)) {
@@ -871,6 +1021,8 @@ function copyReviewScripts(outDir, target) {
     destScriptsDir = join(outDir, ".claude/scripts");
   } else if (target === "junie") {
     destScriptsDir = join(outDir, ".junie/scripts");
+  } else if (target === "antigravity") {
+    destScriptsDir = join(outDir, ".agents/scripts");
   } else {
     return;
   }
@@ -898,6 +1050,8 @@ function replaceOpencodePaths(outDir, bundled, target) {
     generatedDirs.push(".claude");
   } else if (target === "junie") {
     generatedDirs.push(".junie");
+  } else if (target === "antigravity") {
+    generatedDirs.push(".agents");
   }
 
   for (const rel of allFiles) {
@@ -910,14 +1064,16 @@ function replaceOpencodePaths(outDir, bundled, target) {
 
   // Fix review.mjs path in code-review skill for non-OpenCode targets
   // Scripts are now inside .claude/scripts/ or .junie/scripts/
-  if (target === "claude-code" || target === "junie") {
+  if (target === "claude-code" || target === "junie" ||
+      target === "antigravity") {
     const skillDir = target === "claude-code" ? ".claude/skills/code-review"
-        : ".junie/skills/code-review";
+        : target === "junie" ? ".junie/skills/code-review"
+          : ".agents/skills/code-review";
     const skillFile = join(outDir, skillDir, "SKILL.md");
     if (existsSync(skillFile)) {
       let text = readFileSync(skillFile, "utf8");
       const scriptsPath = target === "claude-code" ? ".claude/scripts"
-          : ".junie/scripts";
+          : target === "junie" ? ".junie/scripts" : ".agents/scripts";
       // {harnessShell}/scripts/review.mjs becomes .claude/scripts/review.mjs or .junie/scripts/review.mjs
       text = text.replace(/\{harnessShell\}\/scripts\/review\.mjs/g,
           `${scriptsPath}/review.mjs`);
@@ -933,6 +1089,10 @@ function replaceOpencodePaths(outDir, bundled, target) {
       // ./scripts/review.mjs (unquoted variant)
       text = text.replace(/\.\/scripts\/review\.mjs/g,
           `${scriptsPath}/review.mjs`);
+      if (target === "antigravity") {
+        text = text.replace(/(?<!\.agents\/)scripts\/review\.mjs/g,
+            `${scriptsPath}/review.mjs`);
+      }
       writeFileSync(skillFile, text);
     }
   }
@@ -1029,7 +1189,7 @@ for (let i = 0; i < rest.length; i += 1) {
     const value = rest[++i];
     if (!value || value.startsWith("--")) {
       throw new Error(
-          "--target requires a target name (opencode, claude-code, junie)");
+          "--target requires a target name (opencode, claude-code, junie, antigravity)");
     }
     args.target = value;
   } else if (option === "--output") {
@@ -1058,7 +1218,7 @@ if (cmd === "render") {
   console.log(
       "Usage: node scripts/generate-bundle.mjs [render|list|render-all] [--target <target>] [--output <dir>]\n"
       +
-      "Targets: opencode, claude-code, junie\n" +
+      "Targets: opencode, claude-code, junie, antigravity\n" +
       "Default target: opencode"
   );
 } else {

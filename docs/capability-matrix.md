@@ -25,6 +25,20 @@ not at all for each target runtime.
 | **Security boundaries**           | Native (permission rules)                                                         | Partial (settings.json template — manual review required)               | Partial (allowlist — manual review required)                             |
 | **Destructive action permission** | Native (scoped authorization — ordinary commit/push allowed, destructive ops ask) | Partial (settings.json template — manual review required)               | Partial (brave mode — manual review required)                            |
 
+## Antigravity CLI Compatibility
+
+| Feature | Support |
+|---------|---------|
+| Project instructions | Adapted to root `AGENTS.md` from canonical prompts. |
+| Agent Skills | Native discovery from `.agents/skills/<name>/SKILL.md`. |
+| Custom agents | Adapted to `.agents/agents/<name>/agent.md` with `name`, `description`, and `subagent: true` frontmatter. |
+| Slash commands | Adapted to skills; OpenCode-only frontmatter and invocation semantics are not preserved. |
+| Permissions | Partial; OpenCode permissions are not generated and CLI policy must be configured separately. |
+| MCP servers | Partial; `.agents/mcp_config.json` is an empty template and servers require manual setup. |
+| Providers and themes | Unsupported; OpenCode provider and theme configuration is not translated. |
+| SDD, RPI, and workflow skills | Adapted shared instructions and skills; runtime behavior is not yet verified. |
+| Global configuration | Not installed; the bundle only generates project files and does not modify `~/.gemini/`. |
+
 ## Classification Legend
 
 - **Native**: Supported directly by the runtime without transformation.
@@ -40,7 +54,8 @@ not at all for each target runtime.
    enforced.
 
 2. **Provider configuration**: OpenCode's custom provider setup (rook, model routing) cannot be
-   translated to Claude Code or Junie, which use built-in provider systems.
+   translated to Claude Code or Junie, which use built-in provider systems. Antigravity provider
+   settings are also not generated.
 
 3. **CLI themes**: OpenCode's theme system has no equivalent in other runtimes.
 
@@ -52,7 +67,8 @@ not at all for each target runtime.
    locations.
 
 6. **Command placeholders**: `{workdir}` and `{project}` are OpenCode-specific. Translated commands
-   may not receive these values in other runtimes.
+   may not receive these values in other runtimes. Antigravity receives commands as skills, not as
+   identical custom-command invocations.
 
 7. **IDE vs CLI differences**: Junie CLI and IDE integration may behave differently for some
    features (e.g., MCP, subagent models). The bundle targets Junie CLI behavior.
@@ -99,6 +115,18 @@ CLAUDE.md              # Project instructions (root + .claude/)
   skills/              # All skills with SKILL.md
 ```
 
+### Antigravity CLI (`distribution/antigravity/`)
+
+```text
+AGENTS.md                       # Project instructions
+.agents/
+  agents/<name>/agent.md        # Custom agents with native frontmatter
+  mcp_config.json               # Empty MCP template — manual server setup required
+  scripts/                      # Review scripts
+  skills/<name>/SKILL.md        # Shared and command-derived skills
+manifest.json                   # Target manifest and file list
+```
+
 ## Verification
 
 All bundles are validated by `scripts/check-refs.mjs` with target-specific checks:
@@ -108,5 +136,7 @@ All bundles are validated by `scripts/check-refs.mjs` with target-specific check
   structure, and no OpenCode-specific path leaks.
 - **Junie**: Validates AGENTS.md exists, agent frontmatter, command frontmatter, and no
   OpenCode-specific path leaks.
+- **Antigravity CLI**: Validates root `AGENTS.md`, native skill and agent frontmatter, MCP JSON,
+  references, and no OpenCode-specific path leaks.
 
 Deterministic output is verified by running the generator twice and comparing manifests.

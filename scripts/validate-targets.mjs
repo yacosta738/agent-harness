@@ -17,6 +17,9 @@
 //     - .junie/AGENTS.md exists
 //     - .junie/skills/ contains skills with SKILL.md
 //     - No opencode-specific references leak
+//   antigravity:
+//     - AGENTS.md and native .agents/skills/, .agents/agents/ layout exist
+//     - MCP template is valid and required local references resolve
 
 import {existsSync, readdirSync, readFileSync,} from "node:fs";
 import {dirname, join, resolve} from "node:path";
@@ -437,6 +440,130 @@ function validateJunie(bundleRoot) {
   checkNoOpenCodeLeaks(bundleRoot, "junie");
 }
 
+// Validate Antigravity CLI project bundle
+function validateAntigravity(bundleRoot) {
+  console.log("\n--- Validating Antigravity CLI ---");
+  const agentsMd = join(bundleRoot, "AGENTS.md");
+  if (!existsSync(agentsMd)) {
+    fail("antigravity: AGENTS.md not found");
+  } else {
+    ok("antigravity: AGENTS.md exists");
+  }
+
+  const skillsDir = join(bundleRoot, ".agents", "skills");
+  const skills = findSkillMds(skillsDir);
+  if (skills.length === 0) {
+    fail("antigravity: no skills found in .agents/skills/");
+  } else {
+    let validSkills = 0;
+    for (const skill of skills) {
+      const content = readFileSync(skill.abs, "utf8");
+      const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
+      if (!frontmatter) {
+        fail(`antigravity: ${skill.rel}: missing YAML frontmatter`);
+        continue;
+      }
+      const hasName = /^name:\s*\S+/m.test(frontmatter[1]);
+      const hasDescription = /^description:\s*\S+/m.test(frontmatter[1]);
+      if (!hasName || !hasDescription) {
+        fail(`antigravity: ${skill.rel}: missing name or description`);
+      } else {
+        validSkills++;
+      }
+
+      const relRefs = [
+        ...[...content.matchAll(/\[[^\]]+\]\((\.\.\/[^)\s]+)\)/g)]
+            .map(match => match[1]),
+        ...[...content.matchAll(
+            /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|yaml|toml|sh|swift|py))`/g)]
+            .map(match => match[1]),
+      ];
+      for (const ref of relRefs) {
+        const resolved = resolve(dirname(skill.abs), ref);
+        if (!existsSync(resolved)) {
+          const result = checkBundleFile(bundleRoot, resolved);
+          if (result !== true) {
+            if (ref.includes("_shared") || ref.endsWith(".mjs") ||
+                ref.endsWith(".js")) {
+              fail(`antigravity: ${skill.rel}: required reference '${ref}' does not resolve`);
+            } else {
+              warn(`antigravity: ${skill.rel}: optional reference '${ref}' does not resolve`);
+            }
+          }
+        }
+      }
+    }
+    ok(`antigravity: ${validSkills}/${skills.length} skills have required metadata`);
+  }
+
+  const agentsDir = join(bundleRoot, ".agents", "agents");
+  const agentFiles = [];
+  const walkAgents = (dir) => {
+    if (!existsSync(dir)) {
+      return;
+    }
+    for (const entry of readdirSync(dir, {withFileTypes: true})) {
+      if (entry.name === ".DS_Store") {
+        continue;
+      }
+      const abs = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        const agentFile = join(abs, "agent.md");
+        if (existsSync(agentFile)) {
+          agentFiles.push({abs: agentFile, name: entry.name});
+        }
+        walkAgents(abs);
+      }
+    }
+  };
+  walkAgents(agentsDir);
+  if (agentFiles.length === 0) {
+    fail("antigravity: no agents found in .agents/agents/");
+  } else {
+    let validAgents = 0;
+    for (const agent of agentFiles) {
+      const content = readFileSync(agent.abs, "utf8");
+      const frontmatter = content.match(/^---\n([\s\S]*?)\n---/);
+      if (!frontmatter) {
+        fail(`antigravity: ${agent.abs}: missing YAML frontmatter`);
+        continue;
+      }
+      const name = frontmatter[1].match(/^name:\s*(\S+)/m)?.[1];
+      const hasDescription = /^description:\s*\S+/m.test(frontmatter[1]);
+      const isSubagent = /^subagent:\s*true$/m.test(frontmatter[1]);
+      if (!name || name !== agent.name || !hasDescription || !isSubagent) {
+        fail(`antigravity: ${agent.abs}: invalid name or description`);
+      } else {
+        validAgents++;
+      }
+      const body = content.slice(frontmatter[0].length);
+      if (/^---\n(?:name|description|disable-model-invocation|user-invocable):/m.test(body)) {
+        fail(`antigravity: ${agent.abs}: nested OpenCode frontmatter remains in agent body`);
+      }
+    }
+    ok(`antigravity: ${validAgents}/${agentFiles.length} agents have required metadata`);
+  }
+
+  const mcpPath = join(bundleRoot, ".agents", "mcp_config.json");
+  if (!existsSync(mcpPath)) {
+    fail("antigravity: .agents/mcp_config.json not found");
+  } else {
+    try {
+      const mcp = JSON.parse(readFileSync(mcpPath, "utf8"));
+      if (!mcp || typeof mcp !== "object" || !mcp.mcpServers ||
+          typeof mcp.mcpServers !== "object") {
+        fail("antigravity: .agents/mcp_config.json missing mcpServers object");
+      } else {
+        ok("antigravity: .agents/mcp_config.json has mcpServers object");
+      }
+    } catch (e) {
+      fail(`antigravity: .agents/mcp_config.json is not valid JSON - ${e.message}`);
+    }
+  }
+
+  checkNoOpenCodeLeaks(bundleRoot, "antigravity");
+}
+
 function main() {
   const args = process.argv.slice(2);
   let distRoot = join(ROOT, "distribution");
@@ -460,6 +587,7 @@ function main() {
   const opencodeDir = join(distRoot, "opencode");
   const claudeCodeDir = join(distRoot, "claude-code");
   const junieDir = join(distRoot, "junie");
+  const antigravityDir = join(distRoot, "antigravity");
 
   if (existsSync(opencodeDir)) {
     validateOpenCode(opencodeDir);
@@ -477,6 +605,12 @@ function main() {
     validateJunie(junieDir);
   } else {
     warn("Junie bundle not found, skipping");
+  }
+
+  if (existsSync(antigravityDir)) {
+    validateAntigravity(antigravityDir);
+  } else {
+    warn("Antigravity CLI bundle not found, skipping");
   }
 
   // Summary
