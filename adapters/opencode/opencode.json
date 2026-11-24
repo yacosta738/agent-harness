@@ -3,7 +3,8 @@
   "default_agent": "kerrigan",
   "autoupdate": true,
   "plugin": [
-    "@wakatime/opencode-wakatime"
+    "@wakatime/opencode-wakatime",
+    "opencode-antigravity-auth@latest"
   ],
   "instructions": [
     "~/.config/opencode/prompts/communication/CONTROLLED_LANGUAGE.md"
