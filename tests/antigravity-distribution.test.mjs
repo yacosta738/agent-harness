@@ -16,6 +16,10 @@ import {dirname, join, relative, resolve, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 import {spawnSync} from "node:child_process";
 import {tmpdir} from "node:os";
+import {
+  parseYamlFrontmatter,
+  parseYamlStringScalar
+} from "../scripts/yaml-frontmatter.mjs";
 
 const ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const sandbox = mkdtempSync(join(tmpdir(), "antigravity-cli-test-"));
@@ -24,6 +28,45 @@ const node = process.execPath;
 
 after(() => {
   rmSync(sandbox, {recursive: true, force: true});
+});
+
+test("rejects YAML collections while preserving quoted flow-looking strings", () => {
+  for (const value of ["[]", "[item]", "{}", "{key: value}", "- item",
+    "key: value"]) {
+    assert.equal(parseYamlStringScalar(value), null, value);
+  }
+  assert.equal(parseYamlStringScalar('"[]"'), "[]");
+  assert.equal(parseYamlStringScalar("'{}'"), "{}");
+});
+
+test("rejects unsupported and malformed YAML escapes", () => {
+  for (const value of ['"\\q"', '"\\xG1"', '"\\u123"',
+    '"\\U00110000"']) {
+    assert.equal(parseYamlStringScalar(value), null, value);
+  }
+});
+
+test("decodes supported YAML escapes and escaped line continuations", () => {
+  assert.equal(parseYamlStringScalar('"line\\n\\x41\\u0042\\U00000043"'),
+      "line\nABC");
+  assert.equal(parseYamlStringScalar('"first\\\n  second"'), "firstsecond");
+});
+
+test("parses multiline YAML frontmatter and keeps collection values non-string", () => {
+  const frontmatter = parseYamlFrontmatter([
+    "name: example",
+    "description: |",
+    "  first line",
+    "  second line",
+    "summary: >",
+    "  folded",
+    "  line",
+    "items: []"
+  ].join("\n"));
+  assert.equal(frontmatter.name, "example");
+  assert.equal(frontmatter.description, "first line\nsecond line\n");
+  assert.equal(frontmatter.summary, "folded line\n");
+  assert.equal(frontmatter.items, null);
 });
 
 function markdownFiles(dir) {
@@ -354,6 +397,10 @@ test("renders and validates a native Antigravity CLI project bundle", () => {
   for (const file of ["README.md", "harness.config.json"]) {
     copyFileSync(join(ROOT, file), join(deployRoot, file));
   }
+  mkdirSync(join(deployRoot, "node_modules"));
+  cpSync(join(ROOT, "node_modules", "yaml"),
+      join(deployRoot, "node_modules", "yaml"),
+      {recursive: true, dereference: true});
   const staleBundle = join(deployRoot, "distribution/antigravity");
   mkdirSync(staleBundle, {recursive: true});
   writeFileSync(join(staleBundle, "AGENTS.md"), "stale Antigravity bundle\n");

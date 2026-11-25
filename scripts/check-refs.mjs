@@ -30,7 +30,7 @@ import {existsSync, readdirSync, readFileSync, statSync,} from "node:fs";
 import {dirname, join, relative, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {checkBundleFile, isInside} from "./bundle-paths.mjs";
-import {hasClosingYamlQuote, parseYamlStringScalar} from "./yaml-frontmatter.mjs";
+import {parseYamlFrontmatter} from "./yaml-frontmatter.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES = [];
@@ -298,38 +298,11 @@ function parseArgs(argv) {
 // Extract YAML frontmatter from a markdown file
 function extractFrontmatter(text) {
   const match = text.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) {
-    return null;
-  }
-  const obj = {};
-  const lines = match[1].split("\n");
-  for (let i = 0; i < lines.length; i += 1) {
-    const line = lines[i];
-    const sep = line.indexOf(":");
-    if (sep < 0) {
-      continue;
-    }
-    const key = line.slice(0, sep).trim();
-    let val = line.slice(sep + 1).trim();
-    if (val.startsWith('"') || val.startsWith("'")) {
-      const quote = val[0];
-      while (!hasClosingYamlQuote(val, quote) && i + 1 < lines.length) {
-        if (/^[\w-]+:[ \t]*/.test(lines[i + 1])) {
-          break;
-        }
-        val += `\n${lines[++i]}`;
-      }
-    }
-    if (key) {
-      obj[key] = val;
-    }
-  }
-  return obj;
+  return match ? parseYamlFrontmatter(match[1]) : null;
 }
 
 function hasFrontmatterValue(value) {
-  const scalar = parseYamlStringScalar(value);
-  return typeof scalar === "string" && scalar.trim().length > 0;
+  return typeof value === "string" && value.trim().length > 0;
 }
 
 // Validate agent files have required frontmatter
@@ -606,7 +579,7 @@ function checkAntigravityAgents(root) {
       if (!hasFrontmatterValue(fm.description)) {
         fail(`${agent.abs}: frontmatter missing 'description'`);
       }
-      if (fm.subagent !== "true") {
+      if (fm.subagent !== true) {
         fail(`${agent.abs}: frontmatter missing 'subagent: true'`);
       }
       if (/^---\n(?:name|description|disable-model-invocation|user-invocable):/m.test(body)) {

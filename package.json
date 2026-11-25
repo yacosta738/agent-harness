@@ -18,5 +18,8 @@
     "render": "node scripts/generate-bundle.mjs render",
     "render:all": "node scripts/generate-bundle.mjs render-all",
     "test:antigravity": "node --test tests/antigravity-distribution.test.mjs"
+  },
+  "dependencies": {
+    "yaml": "^2.9.1"
   }
 }

@@ -25,7 +25,7 @@ import {existsSync, readdirSync, readFileSync,} from "node:fs";
 import {dirname, join, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {checkBundleFile} from "./bundle-paths.mjs";
-import {hasClosingYamlQuote, parseYamlStringScalar} from "./yaml-frontmatter.mjs";
+import {parseYamlFrontmatter} from "./yaml-frontmatter.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES = [];
@@ -105,26 +105,8 @@ function parseAndValidateFrontmatter(absPath, relPath) {
 }
 
 function getNonEmptyFrontmatterValue(frontmatter, key) {
-  const lines = frontmatter.split(/\r?\n/);
-  const keyPattern = new RegExp(`^${key}:[ \\t]*`);
-  const keyIndex = lines.findIndex(line => keyPattern.test(line));
-  if (keyIndex < 0) {
-    return null;
-  }
-  let value = lines[keyIndex].replace(keyPattern, "").trimEnd();
-  if (value.startsWith('"') || value.startsWith("'")) {
-    const quote = value[0];
-    let nextLine = keyIndex + 1;
-    while (!hasClosingYamlQuote(value, quote) && nextLine < lines.length) {
-      if (/^[\w-]+:[ \t]*/.test(lines[nextLine])) {
-        return null;
-      }
-      value += `\n${lines[nextLine++]}`;
-    }
-  }
-  const scalar = parseYamlStringScalar(value);
-  return typeof scalar === "string" && scalar.trim()
-      ? scalar.trim() : null;
+  const value = parseYamlFrontmatter(frontmatter)?.[key];
+  return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
 // Validate SKILL.md frontmatter (legacy wrapper)
