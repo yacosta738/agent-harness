@@ -104,6 +104,23 @@ test("renders and validates a native Antigravity CLI project bundle", () => {
   assert.equal(manifest.target, "antigravity");
   assert.ok(manifest.files.includes("AGENTS.md"));
 
+  const globalRulesDir = join(bundle, "global/rules");
+  for (const name of ["writing-style.md", "controlled-language.md"]) {
+    const rulePath = join(globalRulesDir, name);
+    assert.ok(existsSync(rulePath), `expected global Antigravity rule ${name}`);
+    assert.ok(manifest.files.includes(`global/rules/${name}`));
+    const content = readFileSync(rulePath, "utf8");
+    const frontmatter = content.match(/^---\n([\s\S]*?)\n---\n/);
+    assert.ok(frontmatter, `${name} must have YAML frontmatter`);
+    assert.equal(parseYamlFrontmatter(frontmatter[1]).trigger, "always_on");
+  }
+  const writingStyle = readFileSync(
+      join(globalRulesDir, "writing-style.md"), "utf8");
+  assert.doesNotMatch(writingStyle,
+      /prompts\/communication\/CONTROLLED_LANGUAGE\.md/);
+  assert.ok(!existsSync(join(bundle, "global/AGENTS.md")),
+      "project instructions must not be exposed as global instructions");
+
   const skillsDir = join(bundle, ".agents/skills");
   const skills = markdownFiles(skillsDir).filter(path => path.endsWith("/SKILL.md"));
   assert.ok(skills.length >= 100, `expected shared skills, found ${skills.length}`);

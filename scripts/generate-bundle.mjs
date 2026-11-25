@@ -264,6 +264,7 @@ function render(outDir, target = "opencode") {
     replaceOpencodePaths(outDir, bundled, target);
   } else if (target === "antigravity") {
     generateAntigravityAgentsMd(outDir);
+    generateAntigravityGlobalRules(outDir);
     generateAgentFiles(outDir, target);
     generateCommandFiles(outDir, target);
     generateSkillsDir(outDir, target);
@@ -523,6 +524,36 @@ Harness commands are exposed as Antigravity skills.
 - Antigravity CLI discovers this project bundle; global ~/.gemini/ files are not installed.
 `;
   writeFileSync(join(outDir, "AGENTS.md"), agentsMd);
+}
+
+function generateAntigravityGlobalRules(outDir) {
+  const rulesDir = join(outDir, "global/rules");
+  const rules = [
+    {
+      name: "writing-style.md",
+      source: "prompts/acs/WRITING_STYLE.md"
+    },
+    {
+      name: "controlled-language.md",
+      source: "prompts/communication/CONTROLLED_LANGUAGE.md"
+    }
+  ];
+
+  mkdirSync(rulesDir, {recursive: true});
+  for (const rule of rules) {
+    const sourcePath = join(ROOT, rule.source);
+    if (!existsSync(sourcePath)) {
+      continue;
+    }
+    let content = readFileSync(sourcePath, "utf8").trim();
+    if (rule.name === "writing-style.md") {
+      content = content.replace(
+          "`prompts/communication/CONTROLLED_LANGUAGE.md`",
+          "the global Controlled Technical Communication rule");
+    }
+    writeFileSync(join(rulesDir, rule.name),
+        `---\ntrigger: always_on\n---\n\n${content}\n`);
+  }
 }
 
 // Resolve {file:...} references in a prompt string, reading from the repo root

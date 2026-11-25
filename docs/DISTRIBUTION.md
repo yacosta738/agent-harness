@@ -182,8 +182,13 @@ fi
 This places project instructions at the workspace root, shared skills and custom agents under
 `.agents/`, and an empty MCP template. Existing instructions, skills, agents, and MCP configuration
 should be reviewed and merged before use. Harness commands are adapted as Antigravity skills; their
-OpenCode-only permission and provider settings are not translated. This target does not write to
-`~/.gemini/` or install CLI-wide settings.
+OpenCode-only permission and provider settings are not translated.
+
+The generated `global/rules/` directory contains always-active style and communication rules for
+global installation. On macOS, the `dotfiles` Dotter configuration links Antigravity skills and
+agents to `~/.gemini/antigravity-cli/` and these rules to `~/.gemini/config/rules/`. The harness
+deployment itself only renders files; it does not write to `~/.gemini/`. The workspace `AGENTS.md`
+is intentionally not installed globally because it contains project-specific instructions.
 
 ## Commands reference
 
