@@ -72,7 +72,7 @@ function runNode(scriptRel, args) {
   return result.status ?? 1;
 }
 
-function deployTarget(target, output, validateOnly) {
+function deployTarget(target, output, validateOnly, validateAllTargets = true) {
   console.log(`\n--- Deploying ${target} ---`);
 
   if (!validateOnly) {
@@ -104,16 +104,22 @@ function deployTarget(target, output, validateOnly) {
     return checkCode;
   }
 
-  // Run cross-target validation (frontmatter duplicates, broken dependencies, etc.)
-  const distRoot = resolve(output, "..");
-  const validateCode = runNode("validate-targets.mjs", ["--root", distRoot]);
-  if (validateCode !== 0) {
-    console.error(
-        `validate-targets.mjs failed for ${target} (exit ${validateCode})`);
-    return validateCode;
+  if (validateAllTargets) {
+    // Run cross-target validation (frontmatter duplicates, broken dependencies, etc.)
+    const distRoot = resolve(output, "..");
+    const validateCode = runNode("validate-targets.mjs", ["--root", distRoot]);
+    if (validateCode !== 0) {
+      console.error(
+          `validate-targets.mjs failed for ${target} (exit ${validateCode})`);
+      return validateCode;
+    }
   }
 
-  console.log(`bundle ready: ${output}`);
+  if (validateAllTargets) {
+    console.log(`bundle ready: ${output}`);
+  } else {
+    console.log(`bundle rendered and per-target checks passed: ${output}`);
+  }
   return 0;
 }
 
@@ -136,12 +142,26 @@ function main() {
     let exitCode = 0;
     for (const target of TARGETS) {
       const output = resolve(REPO, `distribution/${target}`);
-      const code = deployTarget(target, output, args.validateOnly);
+      const code = deployTarget(target, output, args.validateOnly, false);
       if (code !== 0) {
         exitCode = code;
       }
     }
-    return exitCode;
+    if (exitCode !== 0) {
+      return exitCode;
+    }
+
+    const validateCode = runNode("validate-targets.mjs", [
+      "--root",
+      resolve(REPO, "distribution")
+    ]);
+    if (validateCode !== 0) {
+      console.error(
+          `validate-targets.mjs failed for all targets (exit ${validateCode})`);
+      return validateCode;
+    }
+    console.log("all target bundles ready");
+    return 0;
   }
 
   const output = args.output ? resolve(REPO, args.output) : resolve(REPO,
