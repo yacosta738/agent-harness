@@ -30,6 +30,7 @@ import {existsSync, readdirSync, readFileSync, statSync,} from "node:fs";
 import {dirname, join, relative, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {checkBundleFile, isInside} from "./bundle-paths.mjs";
+import {hasClosingYamlQuote, parseYamlStringScalar} from "./yaml-frontmatter.mjs";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES = [];
@@ -301,18 +302,34 @@ function extractFrontmatter(text) {
     return null;
   }
   const obj = {};
-  for (const line of match[1].split("\n")) {
+  const lines = match[1].split("\n");
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
     const sep = line.indexOf(":");
     if (sep < 0) {
       continue;
     }
     const key = line.slice(0, sep).trim();
-    const val = line.slice(sep + 1).trim();
+    let val = line.slice(sep + 1).trim();
+    if (val.startsWith('"') || val.startsWith("'")) {
+      const quote = val[0];
+      while (!hasClosingYamlQuote(val, quote) && i + 1 < lines.length) {
+        if (/^[\w-]+:[ \t]*/.test(lines[i + 1])) {
+          break;
+        }
+        val += `\n${lines[++i]}`;
+      }
+    }
     if (key) {
       obj[key] = val;
     }
   }
   return obj;
+}
+
+function hasFrontmatterValue(value) {
+  const scalar = parseYamlStringScalar(value);
+  return typeof scalar === "string" && scalar.trim().length > 0;
 }
 
 // Validate agent files have required frontmatter
@@ -370,7 +387,12 @@ function checkCommandFrontmatter(root, cmdsDir) {
 function checkSkillsFrontmatter(root, skillsDir, requireDescription = false) {
   const fullDir = join(root, skillsDir);
   if (!existsSync(fullDir)) {
-    console.log(`skills: directory ${skillsDir} not found`);
+    const message = `skills: directory ${skillsDir} not found`;
+    if (requireDescription) {
+      fail(message);
+    } else {
+      console.log(message);
+    }
     return;
   }
   let total = 0;
@@ -391,9 +413,10 @@ function checkSkillsFrontmatter(root, skillsDir, requireDescription = false) {
           const fm = extractFrontmatter(text);
           if (!fm) {
             fail(`${e.name}/SKILL.md: missing YAML frontmatter`);
-          } else if (!fm.name) {
+          } else if (requireDescription
+              ? !hasFrontmatterValue(fm.name) : !fm.name) {
             fail(`${e.name}/SKILL.md: frontmatter missing 'name'`);
-          } else if (requireDescription && !fm.description) {
+          } else if (requireDescription && !hasFrontmatterValue(fm.description)) {
             fail(`${e.name}/SKILL.md: frontmatter missing 'description'`);
           } else {
             ok++;
@@ -404,6 +427,9 @@ function checkSkillsFrontmatter(root, skillsDir, requireDescription = false) {
     }
   };
   walk(fullDir);
+  if (requireDescription && total === 0) {
+    fail(`skills: no SKILL.md files found in ${skillsDir}`);
+  }
   console.log(`skills: ${ok}/${total} valid SKILL.md files in ${skillsDir}`);
 }
 
@@ -572,12 +598,12 @@ function checkAntigravityAgents(root) {
       fail(`${agent.abs}: missing YAML frontmatter`);
     } else {
       const body = content.replace(/^---\n[\s\S]*?\n---\n?/, "");
-      if (!fm.name) {
+      if (!hasFrontmatterValue(fm.name)) {
         fail(`${agent.abs}: frontmatter missing 'name'`);
       } else if (fm.name !== agent.name) {
         fail(`${agent.abs}: name '${fm.name}' does not match directory '${agent.name}'`);
       }
-      if (!fm.description) {
+      if (!hasFrontmatterValue(fm.description)) {
         fail(`${agent.abs}: frontmatter missing 'description'`);
       }
       if (fm.subagent !== "true") {

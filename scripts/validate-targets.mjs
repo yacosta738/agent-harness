@@ -25,6 +25,7 @@ import {existsSync, readdirSync, readFileSync,} from "node:fs";
 import {dirname, join, resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {checkBundleFile} from "./bundle-paths.mjs";
+import {hasClosingYamlQuote, parseYamlStringScalar} from "./yaml-frontmatter.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES = [];
@@ -101,6 +102,29 @@ function parseAndValidateFrontmatter(absPath, relPath) {
     fail(`${relPath}: cannot read file - ${e.message}`);
     return null;
   }
+}
+
+function getNonEmptyFrontmatterValue(frontmatter, key) {
+  const lines = frontmatter.split(/\r?\n/);
+  const keyPattern = new RegExp(`^${key}:[ \\t]*`);
+  const keyIndex = lines.findIndex(line => keyPattern.test(line));
+  if (keyIndex < 0) {
+    return null;
+  }
+  let value = lines[keyIndex].replace(keyPattern, "").trimEnd();
+  if (value.startsWith('"') || value.startsWith("'")) {
+    const quote = value[0];
+    let nextLine = keyIndex + 1;
+    while (!hasClosingYamlQuote(value, quote) && nextLine < lines.length) {
+      if (/^[\w-]+:[ \t]*/.test(lines[nextLine])) {
+        return null;
+      }
+      value += `\n${lines[nextLine++]}`;
+    }
+  }
+  const scalar = parseYamlStringScalar(value);
+  return typeof scalar === "string" && scalar.trim()
+      ? scalar.trim() : null;
 }
 
 // Validate SKILL.md frontmatter (legacy wrapper)
@@ -463,8 +487,9 @@ function validateAntigravity(bundleRoot) {
         fail(`antigravity: ${skill.rel}: missing YAML frontmatter`);
         continue;
       }
-      const hasName = /^name:\s*\S+/m.test(frontmatter[1]);
-      const hasDescription = /^description:\s*\S+/m.test(frontmatter[1]);
+      const hasName = getNonEmptyFrontmatterValue(frontmatter[1], "name");
+      const hasDescription = getNonEmptyFrontmatterValue(
+          frontmatter[1], "description");
       if (!hasName || !hasDescription) {
         fail(`antigravity: ${skill.rel}: missing name or description`);
       } else {
@@ -480,15 +505,17 @@ function validateAntigravity(bundleRoot) {
       ];
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
-        if (!existsSync(resolved)) {
-          const result = checkBundleFile(bundleRoot, resolved);
-          if (result !== true) {
-            if (ref.includes("_shared") || ref.endsWith(".mjs") ||
-                ref.endsWith(".js")) {
-              fail(`antigravity: ${skill.rel}: required reference '${ref}' does not resolve`);
-            } else {
-              warn(`antigravity: ${skill.rel}: optional reference '${ref}' does not resolve`);
-            }
+        const result = checkBundleFile(bundleRoot, resolved);
+        if (result === "outside") {
+          fail(`antigravity: ${skill.rel}: reference '${ref}' escapes the bundle root`);
+        } else if (result === "not-file") {
+          fail(`antigravity: ${skill.rel}: reference '${ref}' is not a file`);
+        } else if (result !== true) {
+          if (ref.includes("_shared") || ref.endsWith(".mjs") ||
+              ref.endsWith(".js")) {
+            fail(`antigravity: ${skill.rel}: required reference '${ref}' does not resolve`);
+          } else {
+            warn(`antigravity: ${skill.rel}: optional reference '${ref}' does not resolve`);
           }
         }
       }
@@ -528,9 +555,10 @@ function validateAntigravity(bundleRoot) {
         fail(`antigravity: ${agent.abs}: missing YAML frontmatter`);
         continue;
       }
-      const name = frontmatter[1].match(/^name:\s*(\S+)/m)?.[1];
-      const hasDescription = /^description:\s*\S+/m.test(frontmatter[1]);
-      const isSubagent = /^subagent:\s*true$/m.test(frontmatter[1]);
+      const name = getNonEmptyFrontmatterValue(frontmatter[1], "name");
+      const hasDescription = getNonEmptyFrontmatterValue(
+          frontmatter[1], "description");
+      const isSubagent = /^subagent:[ \t]*true[ \t]*$/m.test(frontmatter[1]);
       if (!name || name !== agent.name || !hasDescription || !isSubagent) {
         fail(`antigravity: ${agent.abs}: invalid name or description`);
       } else {

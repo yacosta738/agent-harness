@@ -167,7 +167,8 @@ npm run deploy:antigravity
 
 bundle=distribution/antigravity
 mkdir -p "$TARGET_PROJECT/.agents"
-cp -Rn "$bundle/.agents/skills" "$bundle/.agents/agents" "$TARGET_PROJECT/.agents/"
+cp -Rn "$bundle/.agents/skills" "$bundle/.agents/agents" \
+  "$bundle/.agents/scripts" "$TARGET_PROJECT/.agents/"
 
 # Merge these templates with existing project files instead of replacing them.
 if [ ! -e "$TARGET_PROJECT/AGENTS.md" ]; then
