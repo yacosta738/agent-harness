@@ -45,6 +45,18 @@ function ok(msg) {
   console.log(`OK: ${msg}`);
 }
 
+// Extract relative file references from Markdown links and inline code paths.
+// Avoids trailing punctuation (e.g. `../foo/SKILL.md)`) and shell directory examples (e.g. `../worktrees/`).
+function extractRelativeSkillRefs(content) {
+  return [
+    ...[...content.matchAll(/\[[^\]]+\]\((\.\.\/[^)\s]+)\)/g)]
+        .map(match => match[1]),
+    ...[...content.matchAll(
+        /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|yaml|toml|sh|swift|py))`/g)]
+        .map(match => match[1]),
+  ];
+}
+
 // Find all SKILL.md files in a directory tree
 function findSkillMds(dir, prefix = "") {
   const results = [];
@@ -305,7 +317,7 @@ function validateClaudeCode(bundleRoot) {
     const claudeSkills = findSkillMds(claudeSkillsDir);
     for (const skill of claudeSkills) {
       const content = readFileSync(skill.abs, "utf8");
-      const relRefs = [...content.matchAll(/\.\.\/[^\s`"<]+/g)].map(m => m[0]);
+      const relRefs = extractRelativeSkillRefs(content);
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
@@ -420,7 +432,7 @@ function validateJunie(bundleRoot) {
     const skills = findSkillMds(junieSkillsDir);
     for (const skill of skills) {
       const content = readFileSync(skill.abs, "utf8");
-      const relRefs = [...content.matchAll(/\.\.\/[^\s`"<]+/g)].map(m => m[0]);
+      const relRefs = extractRelativeSkillRefs(content);
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
@@ -478,13 +490,7 @@ function validateAntigravity(bundleRoot) {
         validSkills++;
       }
 
-      const relRefs = [
-        ...[...content.matchAll(/\[[^\]]+\]\((\.\.\/[^)\s]+)\)/g)]
-            .map(match => match[1]),
-        ...[...content.matchAll(
-            /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|yaml|toml|sh|swift|py))`/g)]
-            .map(match => match[1]),
-      ];
+      const relRefs = extractRelativeSkillRefs(content);
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         const result = checkBundleFile(bundleRoot, resolved);
