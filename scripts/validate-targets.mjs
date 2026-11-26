@@ -47,14 +47,31 @@ function ok(msg) {
 
 // Extract relative file references from Markdown links and inline code paths.
 // Avoids trailing punctuation (e.g. `../foo/SKILL.md)`) and shell directory examples (e.g. `../worktrees/`).
-function extractRelativeSkillRefs(content) {
-  return [
-    ...[...content.matchAll(/\[[^\]]+\]\((\.\.\/[^)\s]+)\)/g)]
+// When includeFencedRequired is true, also detects required `_shared` and `.mjs`/`.js` paths in fenced code blocks.
+function extractRelativeSkillRefs(content, {includeFencedRequired = false} = {}) {
+  const refs = [
+    ...[...content.matchAll(
+        /\[[^\]]+\]\((\.\.\/[^)\s]+)(?:\s+(?:"[^"]*"|'[^']*'))?\)/g)]
         .map(match => match[1]),
     ...[...content.matchAll(
-        /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|yaml|toml|sh|swift|py))`/g)]
+        /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|ya?ml|toml|sh|swift|py))`/g)]
         .map(match => match[1]),
   ];
+  if (includeFencedRequired) {
+    for (const block of content.matchAll(/```[^\n]*\n([\s\S]*?)```/g)) {
+      for (const match of block[1].matchAll(/\.\.\/[^\s`"'<>()]+/g)) {
+        const candidate = match[0].replace(/[.,;:]+$/, "");
+        if (candidate.endsWith("/")) {
+          continue;
+        }
+        if (candidate.includes("_shared") || candidate.endsWith(".mjs") ||
+            candidate.endsWith(".js")) {
+          refs.push(candidate);
+        }
+      }
+    }
+  }
+  return [...new Set(refs)];
 }
 
 // Find all SKILL.md files in a directory tree
@@ -317,7 +334,7 @@ function validateClaudeCode(bundleRoot) {
     const claudeSkills = findSkillMds(claudeSkillsDir);
     for (const skill of claudeSkills) {
       const content = readFileSync(skill.abs, "utf8");
-      const relRefs = extractRelativeSkillRefs(content);
+      const relRefs = extractRelativeSkillRefs(content, {includeFencedRequired: true});
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
@@ -432,7 +449,7 @@ function validateJunie(bundleRoot) {
     const skills = findSkillMds(junieSkillsDir);
     for (const skill of skills) {
       const content = readFileSync(skill.abs, "utf8");
-      const relRefs = extractRelativeSkillRefs(content);
+      const relRefs = extractRelativeSkillRefs(content, {includeFencedRequired: true});
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
