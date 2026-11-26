@@ -45,6 +45,61 @@ function ok(msg) {
   console.log(`OK: ${msg}`);
 }
 
+// Extract relative file references from Markdown links and inline code paths.
+// Avoids trailing punctuation (e.g. `../foo/SKILL.md)`) and shell directory examples (e.g. `../worktrees/`).
+// When includeFencedRequired is true, also detects required `_shared` and `.mjs`/`.js` paths in fenced code blocks.
+function extractRelativeSkillRefs(content, {includeFencedRequired = false} = {}) {
+  const refs = [
+    ...[...content.matchAll(
+        /\[[^\]]+\]\((\.\.\/[^)\s]+)(?:\s+(?:"[^"]*"|'[^']*'))?\)/g)]
+        .map(match => match[1]),
+    ...[...content.matchAll(
+        /^[ ]{0,3}\[[^\]]+\]:[ \t]+<?(\.\.\/[^\s>]+)>?(?:[ \t]+(?:"[^"]*"|'[^']*'))?[ \t]*$/gm)]
+        .map(match => match[1])
+        .filter(ref => !ref.endsWith("/")),
+    ...[...content.matchAll(
+        /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|ya?ml|toml|sh|swift|py))`/g)]
+        .map(match => match[1]),
+  ];
+  if (includeFencedRequired) {
+    let fenceChar = null;
+    let fenceLen = 0;
+    for (const line of content.split(/\r?\n/)) {
+      if (fenceChar === null) {
+        const open = line.match(/^[ ]{0,3}(`{3,}|~{3,})/);
+        if (open) {
+          const ch = open[1][0];
+          const rest = line.slice(open[0].length);
+          if (ch === "~" || !rest.includes("`")) {
+            fenceChar = ch;
+            fenceLen = open[1].length;
+          }
+        }
+        continue;
+      }
+      const closeRe = fenceChar === "`"
+        ? new RegExp(`^[ ]{0,3}\`{${fenceLen},}[ \\t]*$`)
+        : new RegExp(`^[ ]{0,3}~{${fenceLen},}[ \\t]*$`);
+      if (closeRe.test(line)) {
+        fenceChar = null;
+        fenceLen = 0;
+        continue;
+      }
+      for (const match of line.matchAll(/\.\.\/[^\s`"'<>()]+/g)) {
+        const candidate = match[0].replace(/[.,;:]+$/, "");
+        if (candidate.endsWith("/")) {
+          continue;
+        }
+        if (candidate.includes("_shared") || candidate.endsWith(".mjs") ||
+            candidate.endsWith(".js")) {
+          refs.push(candidate);
+        }
+      }
+    }
+  }
+  return [...new Set(refs)];
+}
+
 // Find all SKILL.md files in a directory tree
 function findSkillMds(dir, prefix = "") {
   const results = [];
@@ -305,7 +360,7 @@ function validateClaudeCode(bundleRoot) {
     const claudeSkills = findSkillMds(claudeSkillsDir);
     for (const skill of claudeSkills) {
       const content = readFileSync(skill.abs, "utf8");
-      const relRefs = [...content.matchAll(/\.\.\/[^\s`"<]+/g)].map(m => m[0]);
+      const relRefs = extractRelativeSkillRefs(content, {includeFencedRequired: true});
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
@@ -420,7 +475,7 @@ function validateJunie(bundleRoot) {
     const skills = findSkillMds(junieSkillsDir);
     for (const skill of skills) {
       const content = readFileSync(skill.abs, "utf8");
-      const relRefs = [...content.matchAll(/\.\.\/[^\s`"<]+/g)].map(m => m[0]);
+      const relRefs = extractRelativeSkillRefs(content, {includeFencedRequired: true});
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         if (!existsSync(resolved)) {
@@ -478,13 +533,7 @@ function validateAntigravity(bundleRoot) {
         validSkills++;
       }
 
-      const relRefs = [
-        ...[...content.matchAll(/\[[^\]]+\]\((\.\.\/[^)\s]+)\)/g)]
-            .map(match => match[1]),
-        ...[...content.matchAll(
-            /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|yaml|toml|sh|swift|py))`/g)]
-            .map(match => match[1]),
-      ];
+      const relRefs = extractRelativeSkillRefs(content);
       for (const ref of relRefs) {
         const resolved = resolve(dirname(skill.abs), ref);
         const result = checkBundleFile(bundleRoot, resolved);
