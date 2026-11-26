@@ -54,12 +54,38 @@ function extractRelativeSkillRefs(content, {includeFencedRequired = false} = {})
         /\[[^\]]+\]\((\.\.\/[^)\s]+)(?:\s+(?:"[^"]*"|'[^']*'))?\)/g)]
         .map(match => match[1]),
     ...[...content.matchAll(
+        /^[ ]{0,3}\[[^\]]+\]:[ \t]+<?(\.\.\/[^\s>]+)>?(?:[ \t]+(?:"[^"]*"|'[^']*'))?[ \t]*$/gm)]
+        .map(match => match[1])
+        .filter(ref => !ref.endsWith("/")),
+    ...[...content.matchAll(
         /`(\.\.\/[^`\s]+?\.(?:md|mjs|js|json|ya?ml|toml|sh|swift|py))`/g)]
         .map(match => match[1]),
   ];
   if (includeFencedRequired) {
-    for (const block of content.matchAll(/```[^\n]*\n([\s\S]*?)```/g)) {
-      for (const match of block[1].matchAll(/\.\.\/[^\s`"'<>()]+/g)) {
+    let fenceChar = null;
+    let fenceLen = 0;
+    for (const line of content.split(/\r?\n/)) {
+      if (fenceChar === null) {
+        const open = line.match(/^[ ]{0,3}(`{3,}|~{3,})/);
+        if (open) {
+          const ch = open[1][0];
+          const rest = line.slice(open[0].length);
+          if (ch === "~" || !rest.includes("`")) {
+            fenceChar = ch;
+            fenceLen = open[1].length;
+          }
+        }
+        continue;
+      }
+      const closeRe = fenceChar === "`"
+        ? new RegExp(`^[ ]{0,3}\`{${fenceLen},}[ \\t]*$`)
+        : new RegExp(`^[ ]{0,3}~{${fenceLen},}[ \\t]*$`);
+      if (closeRe.test(line)) {
+        fenceChar = null;
+        fenceLen = 0;
+        continue;
+      }
+      for (const match of line.matchAll(/\.\.\/[^\s`"'<>()]+/g)) {
         const candidate = match[0].replace(/[.,;:]+$/, "");
         if (candidate.endsWith("/")) {
           continue;
