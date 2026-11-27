@@ -57,7 +57,8 @@
       "ahrefs": {
         "type": "local",
         "command": [
-          "pnpm dlx",
+          "pnpm",
+          "dlx",
           "-y",
           "mcp-remote",
           "https://api.ahrefs.com/mcp/mcp"
@@ -80,7 +81,8 @@
       "chrome-devtools": {
         "type": "local",
         "command": [
-          "pnpm dlx",
+          "pnpm",
+          "dlx",
           "-y",
           "chrome-devtools-mcp@v1.11.0"
         ]
@@ -88,7 +90,8 @@
       "playwright": {
         "type": "local",
         "command": [
-          "pnpm dlx",
+          "pnpm",
+          "dlx",
           "-y",
           "@playwright/mcp@latest"
         ]
@@ -108,18 +111,14 @@
         "disabled": true
       },
       "linear": {
-        "type": "local",
-        "command": [
-          "pnpm dlx",
-          "-y",
-          "mcp-remote",
-          "https://mcp.linear.app/mcp"
-        ]
+        "type": "remote",
+        "url": "https://mcp.linear.app/mcp"
       },
       "notion": {
         "type": "local",
         "command": [
-          "pnpm dlx",
+          "pnpm",
+          "dlx",
           "-y",
           "mcp-remote",
           "https://mcp.notion.com/mcp"
@@ -129,7 +128,8 @@
       "n8n": {
         "type": "local",
         "command": [
-          "pnpm dlx",
+          "pnpm",
+          "dlx",
           "-y",
           "supergateway",
           "--streamableHttp",
@@ -156,7 +156,8 @@
       },
       "jetbrains": {
         "command": [
-          "pnpm dlx",
+          "pnpm",
+          "dlx",
           "-y",
           "mcp-remote",
           "http://127.0.0.1:64343/stream"
